@@ -779,7 +779,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="bg-black text-white">
+    <main className="bg-black text-white overflow-x-hidden">
       <style>{`
         @keyframes gvsFadeIn {
           from { opacity: 0; }
@@ -860,7 +860,7 @@ export default function Home() {
                 href="https://wa.me/84937762607"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-full bg-green-600 px-7 py-4 font-semibold hover:bg-green-700 transition"
+                className="rounded-full bg-green-600 px-7 py-4 font-semibold hover:bg-green-700 transition text-center"
               >
                 Plan on WhatsApp
               </a>
@@ -869,14 +869,14 @@ export default function Home() {
                 href={DAO_WHATSAPP_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-full border border-white/60 px-7 py-4 font-semibold hover:bg-white hover:text-black transition"
+                className="rounded-full border border-white/60 px-7 py-4 font-semibold hover:bg-white hover:text-black transition text-center"
               >
                 Ask Đào
               </a>
 
               <a
                 href="#experiences"
-                className="rounded-full bg-yellow-400 px-7 py-4 font-semibold text-black hover:bg-yellow-500 transition"
+                className="rounded-full bg-yellow-400 px-7 py-4 font-semibold text-black hover:bg-yellow-500 transition text-center"
               >
                 View Experiences
               </a>
@@ -900,8 +900,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="experiences" className="bg-[#071f17] text-white px-8 md:px-20 py-24">
-        <div className="max-w-7xl mx-auto">
+      <section id="experiences" className="bg-[#071f17] text-white px-4 md:px-20 py-24">
+        <div className="max-w-7xl mx-auto w-full">
           <p className="text-yellow-400 uppercase tracking-[4px] text-sm font-semibold">
             Featured Experiences
           </p>
@@ -915,12 +915,12 @@ export default function Home() {
             designed for travelers who want comfort, trust and authentic local support.
           </p>
 
-          <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-4 md:gap-6">
             {tours.map((tour) => (
               <div
                 key={tour.title}
                 onClick={() => setSelectedTour(tour)}
-                className="cursor-pointer rounded-3xl bg-white/10 border border-white/10 p-5 md:p-6 hover:bg-white/15 hover:-translate-y-1 transition duration-300"
+                className="cursor-pointer w-full rounded-3xl bg-white/10 border border-white/10 p-5 md:p-6 hover:bg-white/15 hover:-translate-y-1 transition duration-300"
               >
                 <Image
                   src={tour.image}
@@ -963,8 +963,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="travelers" className="bg-[#f7f1df] text-[#06251b] px-8 md:px-20 py-24">
-        <div className="max-w-7xl mx-auto">
+      <section id="travelers" className="bg-[#f7f1df] text-[#06251b] px-4 md:px-20 py-24">
+        <div className="max-w-7xl mx-auto w-full">
           <p className="text-green-800 uppercase tracking-[4px] text-sm font-semibold">
             International Travelers
           </p>
@@ -1007,8 +1007,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-[#06251b] text-white px-8 md:px-20 py-24">
-        <div className="max-w-7xl mx-auto">
+      <section className="bg-[#06251b] text-white px-4 md:px-20 py-24">
+        <div className="max-w-7xl mx-auto w-full">
           <p className="text-yellow-400 uppercase tracking-[4px] text-sm font-semibold">
             Travel Services
           </p>
@@ -1022,16 +1022,16 @@ export default function Home() {
             comfortably and enjoy Central Vietnam with confidence.
           </p>
 
-          <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-4 md:gap-6">
             {services.map((service) => (
               <div
                 key={service.title}
                 onClick={() => setSelectedService(service)}
-                className="cursor-pointer rounded-3xl bg-white/5 border border-white/10 p-8 hover:bg-white/10 hover:-translate-y-1 transition duration-300"
+                className="cursor-pointer w-full rounded-3xl bg-white/5 border border-white/10 p-6 md:p-8 hover:bg-white/10 hover:-translate-y-1 transition duration-300"
               >
                 <div className="text-5xl mb-6">{service.icon}</div>
                 <h3 className="text-xl md:text-2xl font-bold">{service.title}</h3>
-                <p className="mt-4 text-white/70">{service.description}</p>
+                <p className="mt-4 text-white/70 text-base md:text-lg leading-relaxed">{service.description}</p>
                 <p className="mt-5 text-yellow-400 font-semibold">
                   View service →
                 </p>
@@ -1041,8 +1041,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="local-tips" className="bg-[#f7f1df] text-[#06251b] px-8 md:px-20 py-24">
-        <div className="max-w-7xl mx-auto">
+      <section id="local-tips" className="bg-[#f7f1df] text-[#06251b] px-4 md:px-20 py-24">
+        <div className="max-w-7xl mx-auto w-full">
           <p className="text-green-800 uppercase tracking-[4px] text-sm font-semibold">
             Local Tips
           </p>
@@ -1055,16 +1055,16 @@ export default function Home() {
             Simple local guidance to help you enjoy Da Nang, Hoi An and Hue with more confidence.
           </p>
 
-          <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-4 md:gap-6">
             {localTips.map((tip) => (
               <div
                 key={tip.title}
                 onClick={() => setSelectedTip(tip)}
-                className="cursor-pointer rounded-3xl bg-white/60 border border-[#06251b]/10 p-8 hover:bg-white hover:-translate-y-1 transition duration-300"
+                className="cursor-pointer w-full rounded-3xl bg-white/60 border border-[#06251b]/10 p-6 md:p-8 hover:bg-white hover:-translate-y-1 transition duration-300"
               >
                 <div className="text-5xl mb-6">{tip.icon}</div>
                 <h3 className="text-xl md:text-2xl font-bold">{tip.title}</h3>
-                <p className="mt-4 text-[#06251b]/70">{tip.description}</p>
+                <p className="mt-4 text-[#06251b]/70 text-base md:text-lg leading-relaxed">{tip.description}</p>
                 <button className="mt-6 text-green-800 font-semibold">
                   Read more →
                 </button>
@@ -1074,7 +1074,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-[#06251b] text-white px-8 md:px-20 py-24">
+      <section className="bg-[#06251b] text-white px-4 md:px-20 py-24">
         <div className="max-w-7xl mx-auto text-center">
           <p className="text-yellow-400 uppercase tracking-[4px] text-sm font-semibold">
             Google Reviews
@@ -1111,8 +1111,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="contact" className="relative bg-[#071f17] text-white px-8 md:px-20 py-32 overflow-hidden">
-        <div className="max-w-5xl mx-auto text-center">
+      <section id="contact" className="relative bg-[#071f17] text-white px-4 md:px-20 py-32 overflow-hidden">
+        <div className="max-w-5xl mx-auto w-full text-center">
           <p className="text-yellow-400 uppercase tracking-[4px] text-sm font-semibold">
             Ready To Explore Vietnam?
           </p>
@@ -1150,8 +1150,8 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="bg-[#02140f] text-white px-8 md:px-20 py-16 border-t border-white/10">
-        <div className="max-w-7xl mx-auto">
+      <footer className="bg-[#02140f] text-white px-4 md:px-20 py-16 border-t border-white/10">
+        <div className="max-w-7xl mx-auto w-full">
           <div className="grid md:grid-cols-4 gap-10">
             <div>
               <h3 className="text-xl md:text-2xl font-bold">GoVietStay</h3>
@@ -1198,7 +1198,7 @@ export default function Home() {
 
 
       {/* ĐÀO FLOATING LOCAL TRAVEL ASSISTANT */}
-      <div className="fixed bottom-5 right-5 md:bottom-6 md:right-6 z-40">
+      <div className="fixed bottom-20 right-4 md:bottom-6 md:right-6 z-40">
         <a
           href={DAO_WHATSAPP_LINK}
           target="_blank"
@@ -1229,7 +1229,7 @@ export default function Home() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-5 md:p-10">
-              <div className="flex items-start justify-between gap-6">
+              <div className="flex items-start justify-between gap-4 md:gap-4 md:gap-6">
                 <div>
                   <p className="text-green-800 uppercase tracking-[4px] text-sm font-semibold">
                     Travel Service
@@ -1315,7 +1315,7 @@ export default function Home() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-5 md:p-10">
-              <div className="flex items-start justify-between gap-6">
+              <div className="flex items-start justify-between gap-4 md:gap-4 md:gap-6">
                 <div>
                   <p className="text-green-800 uppercase tracking-[4px] text-sm font-semibold">
                     Local Tips
@@ -1399,7 +1399,7 @@ export default function Home() {
             />
 
             <div className="p-5 md:p-10">
-              <div className="flex items-start justify-between gap-6">
+              <div className="flex items-start justify-between gap-4 md:gap-4 md:gap-6">
                 <div>
                   <p className="text-green-800 uppercase tracking-[4px] text-sm font-semibold">
                     {selectedTour.category}
