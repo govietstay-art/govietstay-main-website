@@ -1,12 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 const EXCHANGE_RATE = 26000;
 
 const formatVND = (value: number) => value.toLocaleString("en-US") + " VND";
 const formatUSD = (value: number) => "$" + Math.round(value / EXCHANGE_RATE);
+
+const DAO_WHATSAPP_LINK =
+  "https://wa.me/84937762607?text=" +
+  encodeURIComponent(
+    "Hello GoVietStay, I would like to ask Đào for local travel help in Da Nang, Hoi An or Hue."
+  );
 
 type Tour = {
   title: string;
@@ -768,6 +774,10 @@ export default function Home() {
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [selectedTip, setSelectedTip] = useState<LocalTip | null>(null);
 
+  useEffect(() => {
+    document.title = "GoVietStay | Da Nang • Hoi An • Hue";
+  }, []);
+
   return (
     <main className="bg-black text-white">
       <style>{`
@@ -856,12 +866,12 @@ export default function Home() {
               </a>
 
               <a
-                href="https://opal.google/app/1hYRUzUL86jHeYCNp7XmAeAT_39-YL8nj"
+                href={DAO_WHATSAPP_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rounded-full border border-white/60 px-7 py-4 font-semibold hover:bg-white hover:text-black transition"
               >
-                Ask Đào AI
+                Ask Đào
               </a>
 
               <a
@@ -910,17 +920,17 @@ export default function Home() {
               <div
                 key={tour.title}
                 onClick={() => setSelectedTour(tour)}
-                className="cursor-pointer rounded-3xl bg-white/10 border border-white/10 p-6 hover:bg-white/15 hover:-translate-y-1 transition duration-300"
+                className="cursor-pointer rounded-3xl bg-white/10 border border-white/10 p-5 md:p-6 hover:bg-white/15 hover:-translate-y-1 transition duration-300"
               >
                 <Image
                   src={tour.image}
                   alt={tour.title}
                   width={600}
                   height={400}
-                  className="h-44 w-full object-cover rounded-2xl mb-6"
+                  className="h-40 md:h-44 w-full object-cover rounded-2xl mb-5 md:mb-6"
                 />
 
-                <h3 className="text-2xl font-bold">{tour.title}</h3>
+                <h3 className="text-xl md:text-2xl font-bold leading-tight">{tour.title}</h3>
 
                 <div className="mt-2 text-xs text-yellow-400 uppercase tracking-wider">
                   {tour.category}
@@ -1020,7 +1030,7 @@ export default function Home() {
                 className="cursor-pointer rounded-3xl bg-white/5 border border-white/10 p-8 hover:bg-white/10 hover:-translate-y-1 transition duration-300"
               >
                 <div className="text-5xl mb-6">{service.icon}</div>
-                <h3 className="text-2xl font-bold">{service.title}</h3>
+                <h3 className="text-xl md:text-2xl font-bold">{service.title}</h3>
                 <p className="mt-4 text-white/70">{service.description}</p>
                 <p className="mt-5 text-yellow-400 font-semibold">
                   View service →
@@ -1053,7 +1063,7 @@ export default function Home() {
                 className="cursor-pointer rounded-3xl bg-white/60 border border-[#06251b]/10 p-8 hover:bg-white hover:-translate-y-1 transition duration-300"
               >
                 <div className="text-5xl mb-6">{tip.icon}</div>
-                <h3 className="text-2xl font-bold">{tip.title}</h3>
+                <h3 className="text-xl md:text-2xl font-bold">{tip.title}</h3>
                 <p className="mt-4 text-[#06251b]/70">{tip.description}</p>
                 <button className="mt-6 text-green-800 font-semibold">
                   Read more →
@@ -1129,151 +1139,74 @@ export default function Home() {
             </a>
 
             <a
-              href="https://opal.google/app/1hYRUzUL86jHeYCNp7XmAeAT_39-YL8nj"
+              href={DAO_WHATSAPP_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-full border border-white/40 px-8 py-4 font-semibold hover:bg-white hover:text-black transition"
             >
-              Ask Đào AI
+              Ask Đào
             </a>
           </div>
         </div>
       </section>
 
-      <footer className="relative overflow-hidden bg-[#02140f] text-white px-8 md:px-20 py-20 border-t border-white/10">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#02140f] via-[#06251b] to-black" />
-        <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-yellow-400/10 blur-3xl" />
-        <div className="absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-green-500/10 blur-3xl" />
-
-        <div className="relative max-w-7xl mx-auto">
-          <div className="rounded-[2rem] bg-white/[0.04] border border-white/10 p-8 md:p-12 shadow-2xl">
-            <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-10 items-center">
-              <div>
-                <div className="flex items-center gap-4">
-                  <Image
-                    src="/logo.png"
-                    alt="GoVietStay"
-                    width={72}
-                    height={72}
-                    className="rounded-full"
-                  />
-
-                  <div>
-                    <p className="text-yellow-400 uppercase tracking-[4px] text-xs font-semibold">
-                      Trusted Local Support
-                    </p>
-                    <h3 className="mt-2 text-3xl md:text-5xl font-bold">
-                      GoVietStay
-                    </h3>
-                  </div>
-                </div>
-
-                <p className="mt-6 text-white/70 text-lg max-w-2xl leading-relaxed">
-                  Local travel support for international travelers exploring Da Nang,
-                  Hoi An and Hue — private tours, trusted guidance and fast WhatsApp
-                  assistance before and during your trip.
-                </p>
-
-                <div className="mt-8 flex flex-wrap gap-4">
-                  <a
-                    href="https://wa.me/84937762607"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="rounded-full bg-green-600 px-7 py-4 font-semibold hover:bg-green-700 transition"
-                  >
-                    Plan on WhatsApp
-                  </a>
-
-                  <a
-                    href="https://opal.google/app/1hYRUzUL86jHeYCNp7XmAeAT_39-YL8nj"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="rounded-full bg-yellow-400 px-7 py-4 font-semibold text-black hover:bg-yellow-500 transition"
-                  >
-                    Ask Đào
-                  </a>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                {[
-                  ["🌴", "Da Nang", "Beach city support"],
-                  ["🏮", "Hoi An", "Ancient town trips"],
-                  ["🏯", "Hue", "Imperial culture"],
-                  ["💬", "24/7", "WhatsApp help"],
-                ].map(([icon, title, text]) => (
-                  <div
-                    key={title}
-                    className="rounded-3xl bg-white/[0.06] border border-white/10 p-5 hover:bg-white/[0.09] transition"
-                  >
-                    <div className="text-3xl">{icon}</div>
-                    <div className="mt-4 text-xl font-bold">{title}</div>
-                    <div className="mt-1 text-sm text-white/60">{text}</div>
-                  </div>
-                ))}
-              </div>
+      <footer className="bg-[#02140f] text-white px-8 md:px-20 py-16 border-t border-white/10">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-4 gap-10">
+            <div>
+              <h3 className="text-xl md:text-2xl font-bold">GoVietStay</h3>
+              <p className="mt-4 text-white/60">
+                Trusted Local Support for international travelers exploring Central Vietnam.
+              </p>
             </div>
 
-            <div className="mt-12 grid md:grid-cols-4 gap-6">
-              <div className="rounded-3xl bg-black/20 border border-white/10 p-6">
-                <h4 className="font-bold text-yellow-400 mb-4">Destinations</h4>
-                <ul className="space-y-2 text-white/65">
-                  <li>Da Nang</li>
-                  <li>Hoi An</li>
-                  <li>Hue</li>
-                  <li>Central Vietnam</li>
-                </ul>
-              </div>
-
-              <div className="rounded-3xl bg-black/20 border border-white/10 p-6">
-                <h4 className="font-bold text-yellow-400 mb-4">Experiences</h4>
-                <ul className="space-y-2 text-white/65">
-                  <li>Private Tours</li>
-                  <li>Golden Bridge</li>
-                  <li>Hoi An Ancient Town</li>
-                  <li>Food & Cruise</li>
-                </ul>
-              </div>
-
-              <div className="rounded-3xl bg-black/20 border border-white/10 p-6">
-                <h4 className="font-bold text-yellow-400 mb-4">Services</h4>
-                <ul className="space-y-2 text-white/65">
-                  <li>Airport Transfer</li>
-                  <li>SIM & eSIM</li>
-                  <li>Private Car</li>
-                  <li>Travel Support</li>
-                </ul>
-              </div>
-
-              <div className="rounded-3xl bg-black/20 border border-white/10 p-6">
-                <h4 className="font-bold text-yellow-400 mb-4">Contact</h4>
-                <ul className="space-y-2 text-white/65">
-                  <li>WhatsApp 24/7</li>
-                  <li>Google Maps</li>
-                  <li>Telegram</li>
-                  <li>Đào Local Assistant</li>
-                </ul>
-              </div>
+            <div>
+              <h4 className="font-bold mb-4">Destinations</h4>
+              <ul className="space-y-2 text-white/60">
+                <li>Da Nang</li>
+                <li>Hoi An</li>
+                <li>Hue</li>
+              </ul>
             </div>
 
-            <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-white/45">
-              <p>© 2026 GoVietStay. All Rights Reserved.</p>
-              <p>Da Nang • Hoi An • Hue</p>
+            <div>
+              <h4 className="font-bold mb-4">Services</h4>
+              <ul className="space-y-2 text-white/60">
+                <li>Private Tours</li>
+                <li>Airport Transfer</li>
+                <li>SIM & eSIM</li>
+                <li>Travel Support</li>
+              </ul>
             </div>
+
+            <div>
+              <h4 className="font-bold mb-4">Contact</h4>
+              <ul className="space-y-2 text-white/60">
+                <li>WhatsApp</li>
+                <li>Google Maps</li>
+                <li>Telegram</li>
+                <li>Email</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="mt-12 pt-8 border-t border-white/10 text-center text-white/40">
+            © 2026 GoVietStay. All Rights Reserved.
           </div>
         </div>
       </footer>
 
 
       {/* ĐÀO FLOATING LOCAL TRAVEL ASSISTANT */}
-      <div className="fixed bottom-6 right-6 z-40">
+      <div className="fixed bottom-5 right-5 md:bottom-6 md:right-6 z-40">
         <a
-          href="https://opal.google/app/1hYRUzUL86jHeYCNp7XmAeAT_39-YL8nj"
+          href={DAO_WHATSAPP_LINK}
           target="_blank"
           rel="noopener noreferrer"
-          className="group flex items-center gap-3 rounded-full bg-[#0b6b4f] px-4 py-3 shadow-2xl border border-white/10 hover:scale-105 transition-all duration-300"
+          aria-label="Ask Đào Local Travel Assistant"
+          className="group flex items-center gap-3 rounded-full bg-[#0b6b4f] p-2 md:px-4 md:py-3 shadow-2xl border border-white/10 hover:scale-105 transition-all duration-300"
         >
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-yellow-400 text-2xl shadow-lg">
+          <div className="flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-full bg-yellow-400 text-2xl shadow-lg">
             👩🏻
           </div>
 
@@ -1288,21 +1221,21 @@ export default function Home() {
 
       {selectedService && (
         <div
-          className="gvs-overlay fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 md:p-6"
+          className="gvs-overlay fixed inset-0 z-50 bg-black/80 flex items-end md:items-center justify-center p-0 md:p-6"
           onClick={() => setSelectedService(null)}
         >
           <div
-            className="gvs-panel bg-[#f7f1df] text-[#06251b] rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+            className="gvs-panel bg-[#f7f1df] text-[#06251b] rounded-t-3xl md:rounded-3xl max-w-4xl w-full max-h-[92svh] md:max-h-[90vh] overflow-y-auto overscroll-contain shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-6 md:p-10">
+            <div className="p-5 md:p-10">
               <div className="flex items-start justify-between gap-6">
                 <div>
                   <p className="text-green-800 uppercase tracking-[4px] text-sm font-semibold">
                     Travel Service
                   </p>
                   <div className="mt-5 text-6xl">{selectedService.icon}</div>
-                  <h2 className="mt-5 text-3xl md:text-5xl font-bold">
+                  <h2 className="mt-5 text-3xl md:text-5xl font-bold leading-tight">
                     {selectedService.title}
                   </h2>
                   <p className="mt-4 text-lg text-[#06251b]/75">
@@ -1319,7 +1252,7 @@ export default function Home() {
               </div>
 
               <div className="mt-8 rounded-3xl bg-white/75 border border-[#06251b]/10 p-6">
-                <h3 className="text-2xl font-bold">Price</h3>
+                <h3 className="text-xl md:text-2xl font-bold">Price</h3>
                 <p className="mt-3 text-lg font-bold text-green-800">
                   {selectedService.price}
                 </p>
@@ -1328,9 +1261,9 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="rounded-3xl bg-white/60 border border-[#06251b]/10 p-6">
-                  <h3 className="text-2xl font-bold">Service Details</h3>
+              <div className="mt-8 md:mt-10 grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
+                <div className="rounded-3xl bg-white/60 border border-[#06251b]/10 p-5 md:p-6">
+                  <h3 className="text-xl md:text-2xl font-bold">Service Details</h3>
                   <ul className="mt-4 space-y-2 text-[#06251b]/75">
                     {selectedService.details.map((item) => (
                       <li key={item}>• {item}</li>
@@ -1338,8 +1271,8 @@ export default function Home() {
                   </ul>
                 </div>
 
-                <div className="rounded-3xl bg-white/60 border border-[#06251b]/10 p-6">
-                  <h3 className="text-2xl font-bold">Best For</h3>
+                <div className="rounded-3xl bg-white/60 border border-[#06251b]/10 p-5 md:p-6">
+                  <h3 className="text-xl md:text-2xl font-bold">Best For</h3>
                   <ul className="mt-4 space-y-2 text-[#06251b]/75">
                     {selectedService.bestFor.map((item) => (
                       <li key={item}>• {item}</li>
@@ -1374,21 +1307,21 @@ export default function Home() {
 
       {selectedTip && (
         <div
-          className="gvs-overlay fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 md:p-6"
+          className="gvs-overlay fixed inset-0 z-50 bg-black/80 flex items-end md:items-center justify-center p-0 md:p-6"
           onClick={() => setSelectedTip(null)}
         >
           <div
-            className="gvs-panel bg-[#f7f1df] text-[#06251b] rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+            className="gvs-panel bg-[#f7f1df] text-[#06251b] rounded-t-3xl md:rounded-3xl max-w-4xl w-full max-h-[92svh] md:max-h-[90vh] overflow-y-auto overscroll-contain shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-6 md:p-10">
+            <div className="p-5 md:p-10">
               <div className="flex items-start justify-between gap-6">
                 <div>
                   <p className="text-green-800 uppercase tracking-[4px] text-sm font-semibold">
                     Local Tips
                   </p>
                   <div className="mt-5 text-6xl">{selectedTip.icon}</div>
-                  <h2 className="mt-5 text-3xl md:text-5xl font-bold">
+                  <h2 className="mt-5 text-3xl md:text-5xl font-bold leading-tight">
                     {selectedTip.title}
                   </h2>
                   <p className="mt-4 text-lg text-[#06251b]/75">
@@ -1404,9 +1337,9 @@ export default function Home() {
                 </button>
               </div>
 
-              <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="rounded-3xl bg-white/60 border border-[#06251b]/10 p-6">
-                  <h3 className="text-2xl font-bold">Local Guidance</h3>
+              <div className="mt-8 md:mt-10 grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
+                <div className="rounded-3xl bg-white/60 border border-[#06251b]/10 p-5 md:p-6">
+                  <h3 className="text-xl md:text-2xl font-bold">Local Guidance</h3>
                   <ul className="mt-4 space-y-2 text-[#06251b]/75">
                     {selectedTip.details.map((item) => (
                       <li key={item}>• {item}</li>
@@ -1414,8 +1347,8 @@ export default function Home() {
                   </ul>
                 </div>
 
-                <div className="rounded-3xl bg-white/60 border border-[#06251b]/10 p-6">
-                  <h3 className="text-2xl font-bold">Best For</h3>
+                <div className="rounded-3xl bg-white/60 border border-[#06251b]/10 p-5 md:p-6">
+                  <h3 className="text-xl md:text-2xl font-bold">Best For</h3>
                   <ul className="mt-4 space-y-2 text-[#06251b]/75">
                     {selectedTip.bestFor.map((item) => (
                       <li key={item}>• {item}</li>
@@ -1450,11 +1383,11 @@ export default function Home() {
 
       {selectedTour && (
         <div
-          className="gvs-overlay fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 md:p-6"
+          className="gvs-overlay fixed inset-0 z-50 bg-black/80 flex items-end md:items-center justify-center p-0 md:p-6"
           onClick={() => setSelectedTour(null)}
         >
           <div
-            className="gvs-panel bg-[#f7f1df] text-[#06251b] rounded-3xl max-w-6xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+            className="gvs-panel bg-[#f7f1df] text-[#06251b] rounded-t-3xl md:rounded-3xl max-w-6xl w-full max-h-[92svh] md:max-h-[90vh] overflow-y-auto overscroll-contain shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <Image
@@ -1462,17 +1395,17 @@ export default function Home() {
               alt={selectedTour.title}
               width={1400}
               height={800}
-              className="w-full h-72 md:h-[420px] object-cover rounded-t-3xl"
+              className="w-full h-56 md:h-[420px] object-cover rounded-t-3xl"
             />
 
-            <div className="p-6 md:p-10">
+            <div className="p-5 md:p-10">
               <div className="flex items-start justify-between gap-6">
                 <div>
                   <p className="text-green-800 uppercase tracking-[4px] text-sm font-semibold">
                     {selectedTour.category}
                   </p>
 
-                  <h2 className="mt-3 text-3xl md:text-5xl font-bold">
+                  <h2 className="mt-3 text-3xl md:text-5xl font-bold leading-tight">
                     {selectedTour.title}
                   </h2>
 
@@ -1490,7 +1423,7 @@ export default function Home() {
               </div>
 
               <div className="mt-8 rounded-3xl bg-white/75 border border-[#06251b]/10 p-6">
-                <h3 className="text-2xl font-bold">Price</h3>
+                <h3 className="text-xl md:text-2xl font-bold">Price</h3>
 
                 {selectedTour.price.adult ? (
                   <>
@@ -1528,7 +1461,7 @@ export default function Home() {
               </p>
 
               <div className="mt-10">
-                <h3 className="text-2xl font-bold">Detailed Itinerary</h3>
+                <h3 className="text-xl md:text-2xl font-bold">Detailed Itinerary</h3>
                 <div className="mt-5 space-y-4">
                   {selectedTour.itinerary.map((item, index) => (
                     <div key={item} className="flex gap-4">
@@ -1543,7 +1476,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="mt-8 md:mt-10 grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
                 {[
                   ["Highlights", selectedTour.highlights],
                   ["Best For", selectedTour.bestFor],
@@ -1554,9 +1487,9 @@ export default function Home() {
                 ].map(([title, items]) => (
                   <div
                     key={title as string}
-                    className="rounded-3xl bg-white/60 border border-[#06251b]/10 p-6"
+                    className="rounded-3xl bg-white/60 border border-[#06251b]/10 p-5 md:p-6"
                   >
-                    <h3 className="text-2xl font-bold">{title as string}</h3>
+                    <h3 className="text-xl md:text-2xl font-bold">{title as string}</h3>
                     <ul className="mt-4 space-y-2 text-[#06251b]/75">
                       {(items as string[]).map((item) => (
                         <li key={item}>• {item}</li>
