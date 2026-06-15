@@ -14,6 +14,62 @@ const DAO_WHATSAPP_LINK =
     "Hello GoVietStay, I would like to ask Đào for local travel help in Da Nang, Hoi An or Hue."
   );
 
+type ChatMessage = {
+  role: "assistant" | "user";
+  content: string;
+};
+
+const DAO_STARTER_MESSAGE: ChatMessage = {
+  role: "assistant",
+  content:
+    "Xin chào, em là Đào – Local Travel Assistant của GoVietStay. Em có thể giúp anh/chị lên lịch trình Đà Nẵng, Hội An, Huế, tour riêng, xe sân bay, SIM/eSIM và local tips. Anh/chị đang cần hỗ trợ gì cho chuyến đi ạ?",
+};
+
+const buildWhatsAppLink = (message: string) =>
+  "https://wa.me/84937762607?text=" + encodeURIComponent(message);
+
+const generateDaoReply = (message: string) => {
+  const text = message.toLowerCase();
+
+  if (text.includes("price") || text.includes("cost") || text.includes("booking") || text.includes("book") || text.includes("whatsapp") || text.includes("transfer") || text.includes("airport") || text.includes("giá") || text.includes("đặt") || text.includes("sân bay") || text.includes("xe")) {
+    return "Dạ được ạ. Với giá, booking, xe sân bay hoặc lịch trình riêng, em khuyên mình chuyển qua WhatsApp để team địa phương kiểm tra nhanh và báo chính xác hơn. Anh/chị có thể bấm nút Continue on WhatsApp bên dưới, hoặc nhắn trực tiếp GoVietStay qua WhatsApp: +84 937 762 607.";
+  }
+
+  if (text.includes("family") || text.includes("kids") || text.includes("child") || text.includes("children") || text.includes("gia đình") || text.includes("trẻ em")) {
+    return "Nếu đi gia đình, em sẽ ưu tiên lịch trình nhẹ, ít di chuyển quá sức và dễ chăm sóc trẻ em. Ba Na Hills, Hoi An Evening, Coconut Forest Basket Boat, Han River Cruise và Marble Mountains thường rất phù hợp. Anh/chị đi mấy người và có bé bao nhiêu tuổi ạ?";
+  }
+
+  if (text.includes("couple") || text.includes("honeymoon") || text.includes("romantic") || text.includes("cặp đôi") || text.includes("tuần trăng mật")) {
+    return "Nếu đi cặp đôi, em sẽ chọn lịch trình chậm, đẹp và có không gian riêng hơn. Hoi An Evening, Han River Sunset Cruise, My Khe Beach sunset, Son Tra viewpoint hoặc Da Nang Omakase Experience sẽ hợp. Anh/chị thích lãng mạn nhẹ nhàng hay muốn có nhiều điểm chụp hình hơn ạ?";
+  }
+
+  if (text.includes("adventure") || text.includes("jeep") || text.includes("hai van") || text.includes("rafting") || text.includes("snorkeling") || text.includes("phiêu lưu") || text.includes("mạo hiểm")) {
+    return "Nếu thích adventure, em sẽ ưu tiên Hai Van Pass, Son Tra Jeep Adventure, Hoa Phu Thanh Rafting hoặc Cham Island Snorkeling. Những trải nghiệm này hợp với khách thích thiên nhiên, cảnh đẹp và hoạt động ngoài trời. Anh/chị muốn adventure nhẹ hay mạnh hơn ạ?";
+  }
+
+  if (text.includes("food") || text.includes("restaurant") || text.includes("coffee") || text.includes("ăn") || text.includes("cà phê") || text.includes("nhà hàng")) {
+    return "Về ăn uống, Đà Nẵng nên thử Mì Quảng, bánh xèo, hải sản và cà phê Việt Nam. Hội An có Cao Lầu, cơm gà, bánh hoa hồng và nhiều quán cà phê đẹp. Huế có Bún Bò Huế và món cung đình. Anh/chị có kiêng heo, hải sản hay đồ cay không ạ?";
+  }
+
+  if (text.includes("hoi an") || text.includes("hội an")) {
+    return "Hội An đẹp nhất từ chiều muộn đến tối, khi phố cổ lên đèn lồng. Lịch trình nên đi chậm: dạo phố cổ, cà phê ven sông, chợ đêm, thuyền đèn lồng và ăn tối nhẹ. Nếu muốn thoải mái hơn, GoVietStay có thể sắp xếp xe riêng từ Đà Nẵng. Anh/chị muốn đi Hội An nửa ngày hay kết hợp thêm Coconut Forest ạ?";
+  }
+
+  if (text.includes("ba na") || text.includes("golden bridge") || text.includes("bà nà") || text.includes("cầu vàng")) {
+    return "Ba Na Hills & Golden Bridge rất hợp cho khách lần đầu đến Đà Nẵng, gia đình và người thích chụp hình. Nên đi buổi sáng để thời tiết mát hơn và ảnh Cầu Vàng đẹp hơn. Anh/chị đi người lớn hay có trẻ em đi cùng ạ?";
+  }
+
+  if (text.includes("hue") || text.includes("huế")) {
+    return "Huế hợp với khách thích lịch sử, văn hóa và ẩm thực địa phương. Một ngày Huế thường gồm Đại Nội, chùa Thiên Mụ, lăng Khải Định hoặc Tự Đức và món Huế. Vì đường đi khá dài, nên xuất phát sớm và không xếp lịch quá dày. Anh/chị muốn đi Huế trong ngày hay ngủ lại một đêm ạ?";
+  }
+
+  if (text.includes("itinerary") || text.includes("days") || text.includes("plan") || text.includes("lịch trình") || text.includes("ngày")) {
+    return "Em có thể giúp mình lên lịch trình cân bằng giữa tham quan, ăn uống, nghỉ ngơi và thời gian di chuyển. Với Đà Nẵng – Hội An – Huế, lịch 3–5 ngày là đẹp nhất. Anh/chị dự định ở Đà Nẵng bao nhiêu ngày ạ?";
+  }
+
+  return "Dạ, em hiểu ạ. Với GoVietStay, em sẽ giúp mình trước, sau đó mới gợi ý tour nếu thật sự phù hợp. Để em tư vấn đúng hơn, anh/chị cho em biết mình đi Đà Nẵng – Hội An – Huế bao nhiêu ngày ạ?";
+};
+
 type Tour = {
   title: string;
   image: string;
@@ -773,6 +829,25 @@ export default function Home() {
   const [selectedTour, setSelectedTour] = useState<Tour | null>(null);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [selectedTip, setSelectedTip] = useState<LocalTip | null>(null);
+  const [daoOpen, setDaoOpen] = useState(false);
+  const [daoInput, setDaoInput] = useState("");
+  const [daoMessages, setDaoMessages] = useState<ChatMessage[]>([
+    DAO_STARTER_MESSAGE,
+  ]);
+
+  const sendDaoMessage = () => {
+    const trimmed = daoInput.trim();
+    if (!trimmed) return;
+
+    const userMessage: ChatMessage = { role: "user", content: trimmed };
+    const assistantMessage: ChatMessage = {
+      role: "assistant",
+      content: generateDaoReply(trimmed),
+    };
+
+    setDaoMessages((prev) => [...prev, userMessage, assistantMessage]);
+    setDaoInput("");
+  };
 
   useEffect(() => {
     document.title = "GoVietStay | Da Nang • Hoi An • Hue";
@@ -865,14 +940,12 @@ export default function Home() {
                 Plan on WhatsApp
               </a>
 
-              <a
-                href={DAO_WHATSAPP_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() => setDaoOpen(true)}
                 className="rounded-full border border-white/60 px-7 py-4 font-semibold hover:bg-white hover:text-black transition text-center"
               >
                 Ask Đào
-              </a>
+              </button>
 
               <a
                 href="#experiences"
@@ -1138,14 +1211,12 @@ export default function Home() {
               Plan on WhatsApp
             </a>
 
-            <a
-              href={DAO_WHATSAPP_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => setDaoOpen(true)}
               className="rounded-full border border-white/40 px-8 py-4 font-semibold hover:bg-white hover:text-black transition"
             >
               Ask Đào
-            </a>
+            </button>
           </div>
         </div>
       </section>
@@ -1199,10 +1270,8 @@ export default function Home() {
 
       {/* ĐÀO FLOATING LOCAL TRAVEL ASSISTANT */}
       <div className="fixed bottom-20 right-4 md:bottom-6 md:right-6 z-40">
-        <a
-          href={DAO_WHATSAPP_LINK}
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
+          onClick={() => setDaoOpen(true)}
           aria-label="Ask Đào Local Travel Assistant"
           className="group flex items-center gap-3 rounded-full bg-[#0b6b4f] p-2 md:px-4 md:py-3 shadow-2xl border border-white/10 hover:scale-105 transition-all duration-300"
         >
@@ -1210,14 +1279,94 @@ export default function Home() {
             👩🏻
           </div>
 
-          <div className="hidden md:block pr-2">
+          <div className="hidden md:block pr-2 text-left">
             <div className="font-bold text-white leading-tight">Đào</div>
             <div className="text-xs text-white/75">
               Local Travel Assistant
             </div>
           </div>
-        </a>
+        </button>
       </div>
+
+      {daoOpen && (
+        <div
+          className="gvs-overlay fixed inset-0 z-[999] bg-black/80 flex items-end md:items-center justify-center p-0 md:p-6"
+          onClick={() => setDaoOpen(false)}
+        >
+          <div
+            className="gvs-panel bg-[#f7f1df] text-[#06251b] rounded-t-3xl md:rounded-3xl w-full max-w-2xl h-[85svh] md:h-[78vh] flex flex-col overflow-hidden shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="bg-[#0b6b4f] text-white p-5 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-yellow-400 text-2xl">
+                  👩🏻
+                </div>
+                <div>
+                  <div className="font-bold text-lg">Đào</div>
+                  <div className="text-sm text-white/80">
+                    GoVietStay Local Travel Assistant
+                  </div>
+                </div>
+              </div>
+
+              <button
+                onClick={() => setDaoOpen(false)}
+                className="text-3xl leading-none hover:opacity-70"
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-[#f7f1df]">
+              {daoMessages.map((msg, index) => (
+                <div
+                  key={index}
+                  className={
+                    msg.role === "assistant"
+                      ? "max-w-[86%] rounded-2xl bg-white border border-[#06251b]/10 p-4 text-[#06251b]/80 leading-relaxed"
+                      : "max-w-[86%] ml-auto rounded-2xl bg-[#0b6b4f] p-4 text-white leading-relaxed"
+                  }
+                >
+                  {msg.content}
+                </div>
+              ))}
+            </div>
+
+            <div className="border-t border-[#06251b]/10 p-4 bg-white/80">
+              <div className="flex gap-2">
+                <input
+                  value={daoInput}
+                  onChange={(e) => setDaoInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") sendDaoMessage();
+                  }}
+                  placeholder="Ask Đào about Da Nang, Hoi An, Hue..."
+                  className="flex-1 rounded-full border border-[#06251b]/20 px-5 py-3 text-[#06251b] outline-none focus:border-[#0b6b4f]"
+                />
+
+                <button
+                  onClick={sendDaoMessage}
+                  className="rounded-full bg-[#0b6b4f] px-6 py-3 font-semibold text-white hover:bg-green-700 transition"
+                >
+                  Send
+                </button>
+              </div>
+
+              <a
+                href={buildWhatsAppLink(
+                  "Hello GoVietStay, I would like help planning my trip with Đào."
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 block rounded-full bg-green-600 px-6 py-3 text-center font-semibold text-white hover:bg-green-700 transition"
+              >
+                Continue on WhatsApp
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
 
       {selectedService && (
         <div
