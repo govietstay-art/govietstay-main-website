@@ -28,48 +28,6 @@ const DAO_STARTER_MESSAGE: ChatMessage = {
 const buildWhatsAppLink = (message: string) =>
   "https://wa.me/84937762607?text=" + encodeURIComponent(message);
 
-const generateDaoReply = (message: string) => {
-  const text = message.toLowerCase();
-
-  if (text.includes("price") || text.includes("cost") || text.includes("booking") || text.includes("book") || text.includes("whatsapp") || text.includes("transfer") || text.includes("airport") || text.includes("giá") || text.includes("đặt") || text.includes("sân bay") || text.includes("xe")) {
-    return "Dạ được ạ. Với giá, booking, xe sân bay hoặc lịch trình riêng, em khuyên mình chuyển qua WhatsApp để team địa phương kiểm tra nhanh và báo chính xác hơn. Anh/chị có thể bấm nút Continue on WhatsApp bên dưới, hoặc nhắn trực tiếp GoVietStay qua WhatsApp: +84 937 762 607.";
-  }
-
-  if (text.includes("family") || text.includes("kids") || text.includes("child") || text.includes("children") || text.includes("gia đình") || text.includes("trẻ em")) {
-    return "Nếu đi gia đình, em sẽ ưu tiên lịch trình nhẹ, ít di chuyển quá sức và dễ chăm sóc trẻ em. Ba Na Hills, Hoi An Evening, Coconut Forest Basket Boat, Han River Cruise và Marble Mountains thường rất phù hợp. Anh/chị đi mấy người và có bé bao nhiêu tuổi ạ?";
-  }
-
-  if (text.includes("couple") || text.includes("honeymoon") || text.includes("romantic") || text.includes("cặp đôi") || text.includes("tuần trăng mật")) {
-    return "Nếu đi cặp đôi, em sẽ chọn lịch trình chậm, đẹp và có không gian riêng hơn. Hoi An Evening, Han River Sunset Cruise, My Khe Beach sunset, Son Tra viewpoint hoặc Da Nang Omakase Experience sẽ hợp. Anh/chị thích lãng mạn nhẹ nhàng hay muốn có nhiều điểm chụp hình hơn ạ?";
-  }
-
-  if (text.includes("adventure") || text.includes("jeep") || text.includes("hai van") || text.includes("rafting") || text.includes("snorkeling") || text.includes("phiêu lưu") || text.includes("mạo hiểm")) {
-    return "Nếu thích adventure, em sẽ ưu tiên Hai Van Pass, Son Tra Jeep Adventure, Hoa Phu Thanh Rafting hoặc Cham Island Snorkeling. Những trải nghiệm này hợp với khách thích thiên nhiên, cảnh đẹp và hoạt động ngoài trời. Anh/chị muốn adventure nhẹ hay mạnh hơn ạ?";
-  }
-
-  if (text.includes("food") || text.includes("restaurant") || text.includes("coffee") || text.includes("ăn") || text.includes("cà phê") || text.includes("nhà hàng")) {
-    return "Về ăn uống, Đà Nẵng nên thử Mì Quảng, bánh xèo, hải sản và cà phê Việt Nam. Hội An có Cao Lầu, cơm gà, bánh hoa hồng và nhiều quán cà phê đẹp. Huế có Bún Bò Huế và món cung đình. Anh/chị có kiêng heo, hải sản hay đồ cay không ạ?";
-  }
-
-  if (text.includes("hoi an") || text.includes("hội an")) {
-    return "Hội An đẹp nhất từ chiều muộn đến tối, khi phố cổ lên đèn lồng. Lịch trình nên đi chậm: dạo phố cổ, cà phê ven sông, chợ đêm, thuyền đèn lồng và ăn tối nhẹ. Nếu muốn thoải mái hơn, GoVietStay có thể sắp xếp xe riêng từ Đà Nẵng. Anh/chị muốn đi Hội An nửa ngày hay kết hợp thêm Coconut Forest ạ?";
-  }
-
-  if (text.includes("ba na") || text.includes("golden bridge") || text.includes("bà nà") || text.includes("cầu vàng")) {
-    return "Ba Na Hills & Golden Bridge rất hợp cho khách lần đầu đến Đà Nẵng, gia đình và người thích chụp hình. Nên đi buổi sáng để thời tiết mát hơn và ảnh Cầu Vàng đẹp hơn. Anh/chị đi người lớn hay có trẻ em đi cùng ạ?";
-  }
-
-  if (text.includes("hue") || text.includes("huế")) {
-    return "Huế hợp với khách thích lịch sử, văn hóa và ẩm thực địa phương. Một ngày Huế thường gồm Đại Nội, chùa Thiên Mụ, lăng Khải Định hoặc Tự Đức và món Huế. Vì đường đi khá dài, nên xuất phát sớm và không xếp lịch quá dày. Anh/chị muốn đi Huế trong ngày hay ngủ lại một đêm ạ?";
-  }
-
-  if (text.includes("itinerary") || text.includes("days") || text.includes("plan") || text.includes("lịch trình") || text.includes("ngày")) {
-    return "Em có thể giúp mình lên lịch trình cân bằng giữa tham quan, ăn uống, nghỉ ngơi và thời gian di chuyển. Với Đà Nẵng – Hội An – Huế, lịch 3–5 ngày là đẹp nhất. Anh/chị dự định ở Đà Nẵng bao nhiêu ngày ạ?";
-  }
-
-  return "Dạ, em hiểu ạ. Với GoVietStay, em sẽ giúp mình trước, sau đó mới gợi ý tour nếu thật sự phù hợp. Để em tư vấn đúng hơn, anh/chị cho em biết mình đi Đà Nẵng – Hội An – Huế bao nhiêu ngày ạ?";
-};
-
 type Tour = {
   title: string;
   image: string;
@@ -835,18 +793,45 @@ export default function Home() {
     DAO_STARTER_MESSAGE,
   ]);
 
-  const sendDaoMessage = () => {
+  const sendDaoMessage = async () => {
     const trimmed = daoInput.trim();
     if (!trimmed) return;
 
     const userMessage: ChatMessage = { role: "user", content: trimmed };
-    const assistantMessage: ChatMessage = {
-      role: "assistant",
-      content: generateDaoReply(trimmed),
-    };
 
-    setDaoMessages((prev) => [...prev, userMessage, assistantMessage]);
+    setDaoMessages((prev) => [...prev, userMessage]);
     setDaoInput("");
+
+    try {
+      const response = await fetch("/api/dao", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: trimmed }),
+      });
+
+      const data = await response.json();
+
+      setDaoMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content:
+            data.reply ||
+            "Sorry, Đào is temporarily unavailable. Please contact GoVietStay via WhatsApp +84 937 762 607.",
+        },
+      ]);
+    } catch (error) {
+      setDaoMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content:
+            "Sorry, Đào is temporarily unavailable. Please contact GoVietStay via WhatsApp +84 937 762 607.",
+        },
+      ]);
+    }
   };
 
   useEffect(() => {
