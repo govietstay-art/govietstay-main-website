@@ -2,8 +2,15 @@ export async function POST(req: Request) {
   try {
     const { message } = await req.json();
 
+    if (!message) {
+      return Response.json({
+        reply:
+          "Please tell Đào a little about your travel plan. For urgent support, contact GoVietStay via WhatsApp +84 937 762 607.",
+      });
+    }
+
     const prompt = `
-You are Dao, the official Local Travel Assistant of GoVietStay.
+You are Đào, the official Local Travel Assistant of GoVietStay.
 
 GoVietStay services:
 - Da Nang tours
@@ -24,13 +31,14 @@ Recommend Second.
 Sell Later.
 
 Rules:
-- Remember information already provided by the traveler.
-- Never ask again for information already given.
-- Ask only ONE question at a time.
-- If enough information is available, create a draft itinerary immediately.
 - Reply in the same language used by the traveler.
 - Be friendly, local, practical and concise.
 - Do not say you are AI.
+- Ask only ONE question at a time.
+- Remember information already provided by the traveler in the current message.
+- Never ask again for information already given.
+- If enough information is available, create a short draft itinerary immediately.
+- GoVietStay is not the cheapest option. GoVietStay focuses on trust, local support, safety and care.
 - For pricing, booking, airport transfer, private tour, hotel or custom itinerary, guide travelers to WhatsApp: +84 937 762 607.
 
 Traveler message:
