@@ -1692,8 +1692,12 @@ export default function Home() {
           <div className="grid md:grid-cols-4 gap-10">
             <div>
               <h3 className="text-xl md:text-2xl font-bold">GoVietStay</h3>
-              <p className="mt-4 text-white/60">
-                Trusted Local Support for international travelers exploring Central Vietnam.
+              <p className="mt-4 text-white/60 leading-relaxed">
+                Private Tours • Local Guide • Travel Support
+                <br />
+                Da Nang • Hoi An • Hue
+                <br />
+                WhatsApp +84 937 762 607
               </p>
             </div>
 
@@ -1718,12 +1722,48 @@ export default function Home() {
 
             <div>
               <h4 className="font-bold mb-4">Contact</h4>
-              <ul className="space-y-2 text-white/60">
-                <li>WhatsApp</li>
-                <li>Google Maps</li>
-                <li>Telegram</li>
-                <li>Email</li>
-              </ul>
+
+              <div className="space-y-3 text-white/60">
+                <a
+                  href="https://wa.me/84937762607"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block hover:text-yellow-400 transition"
+                >
+                  WhatsApp
+                </a>
+
+                <a
+                  href="https://maps.app.goo.gl/znWBmL8zPKEJqnoW6?g_st=ic"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block hover:text-yellow-400 transition"
+                >
+                  Google Maps
+                </a>
+
+                <a
+                  href="https://t.me/govietstay_travel_bot"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block hover:text-yellow-400 transition"
+                >
+                  Telegram
+                </a>
+
+                <a
+                  href="mailto:govietstay@gmail.com"
+                  className="block hover:text-yellow-400 transition"
+                >
+                  govietstay@gmail.com
+                </a>
+
+                <div className="pt-3 text-sm text-white/40 leading-relaxed">
+                  WhatsApp +84 937 762 607
+                  <br />
+                  Available 24/7
+                </div>
+              </div>
             </div>
           </div>
 
