@@ -950,6 +950,30 @@ export default function Home() {
         .dao-online-dot {
           animation: daoOnlineBlink 1.6s ease-in-out infinite;
         }
+
+        @keyframes heroSoftZoom {
+          0%, 100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.06);
+          }
+        }
+
+        .hero-cinematic-image {
+          animation: heroSoftZoom 24s ease-in-out infinite;
+          transform-origin: center;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .hero-cinematic-image,
+          .travel-board-track,
+          .dao-floating-button,
+          .dao-floating-avatar::before,
+          .dao-online-dot {
+            animation: none;
+          }
+        }
       `}</style>
 
       <section className="relative min-h-screen overflow-hidden">
@@ -958,7 +982,7 @@ export default function Home() {
           alt="Hoi An Ancient Town"
           fill
           priority
-          className="object-cover object-center"
+          className="object-cover object-center hero-cinematic-image"
         />
 
         <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-black/20" />
@@ -1046,6 +1070,94 @@ export default function Home() {
                 <p>Fast travel assistance</p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#f7f1df] text-[#06251b] px-4 md:px-20 py-20">
+        <div className="max-w-7xl mx-auto w-full rounded-[2rem] border border-[#0b6b4f]/15 bg-white/65 p-6 md:p-10 shadow-xl shadow-[#06251b]/5">
+          <div className="text-center max-w-4xl mx-auto">
+            <p className="text-green-800 uppercase tracking-[4px] text-xs md:text-sm font-semibold">
+              Why Travelers Choose Us
+            </p>
+
+            <h2 className="mt-4 text-3xl md:text-5xl font-bold leading-tight">
+              Why Travelers Choose GoVietStay
+            </h2>
+
+            <p className="mt-5 text-[#06251b]/70 text-base md:text-lg leading-relaxed">
+              More than tours, GoVietStay gives travelers trusted local support,
+              flexible planning and real help before and during the journey.
+            </p>
+          </div>
+
+          <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+            {[
+              {
+                icon: "🛡️",
+                title: "Trusted Local Support",
+                text: "A real local team based in Central Vietnam, ready to guide you with honest advice and full support.",
+              },
+              {
+                icon: "💬",
+                title: "WhatsApp 24/7 Assistance",
+                text: "Fast help before and during your trip. One message away whenever you need local support.",
+              },
+              {
+                icon: "🚗",
+                title: "Private Tours & Transfers",
+                text: "Comfortable private cars, flexible tours and airport transfers designed around your schedule.",
+              },
+              {
+                icon: "🗓️",
+                title: "Personalized Travel Planning",
+                text: "We design experiences based on your interests, travel time, budget and preferred travel style.",
+              },
+              {
+                icon: "🌿",
+                title: "Real Local Knowledge",
+                text: "Hidden gems, local food, best timing and helpful tips you may not find on Google.",
+              },
+              {
+                icon: "🌏",
+                title: "Trusted By Travelers Worldwide",
+                text: "Supporting travelers from India, Russia, Europe, Australia, Kazakhstan and many more countries.",
+              },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className="rounded-3xl bg-[#f7f1df]/80 border border-[#06251b]/10 p-5 md:p-6 text-center hover:bg-white hover:-translate-y-1 transition duration-300"
+              >
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#0b6b4f]/10 text-3xl">
+                  {item.icon}
+                </div>
+                <h3 className="mt-5 text-lg md:text-xl font-bold">{item.title}</h3>
+                <p className="mt-3 text-sm md:text-base text-[#06251b]/70 leading-relaxed">
+                  {item.text}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8 rounded-3xl bg-[#eaf5eb] border border-[#0b6b4f]/20 p-5 md:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
+            <div className="flex items-start gap-4">
+              <div className="text-4xl">🌐</div>
+              <div>
+                <h3 className="font-bold text-lg">More Than Tours — Your Local Friend In Central Vietnam</h3>
+                <p className="mt-1 text-[#06251b]/70">
+                  From airport arrival to your last day, GoVietStay is here to help you travel with confidence.
+                </p>
+              </div>
+            </div>
+
+            <a
+              href="https://wa.me/84937762607"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="shrink-0 rounded-full bg-green-600 px-6 py-3 font-semibold text-white hover:bg-green-700 transition"
+            >
+              WhatsApp +84 937 762 607
+            </a>
           </div>
         </div>
       </section>
