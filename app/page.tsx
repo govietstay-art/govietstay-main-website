@@ -810,10 +810,10 @@ const tours: Tour[] = [
     duration: "Half Day",
     category: "Adventure Experience",
     price: {
-      adult: null,
-      child: null,
-      note: "Contact for updated price. Final price depends on route, group size and operator availability.",
-    },
+  adult: 1450000,
+  child: 1200000,
+  note: "Reference price. Final price may change by route, date and group size.",
+},
     description:
       "Enjoy an exciting ATV ride through nature trails, local countryside roads and scenic outdoor landscapes.",
     overview:
@@ -872,10 +872,10 @@ const tours: Tour[] = [
     duration: "Full Day",
     category: "Family Experience",
     price: {
-      adult: null,
-      child: null,
-      note: "Contact for updated ticket and transfer price.",
-    },
+  adult: 1250000,
+  child: 950000,
+  note: "Reference price. Final price depends on ticket option and pickup location.",
+},
     description:
       "Relax at Nui Than Tai Hot Springs Park with mineral baths, water park areas, nature scenery and family-friendly activities.",
     overview:
