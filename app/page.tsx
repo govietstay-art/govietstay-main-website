@@ -352,8 +352,8 @@ const tours: Tour[] = [
     duration: "Half Day / Evening",
     category: "Private Experience",
     price: {
-      adult: 1794000,
-      child: 1500000,
+      adult: 1250000,
+      child: 1000000,
       note: "Estimated private experience rate. Final price depends on pickup location and inclusions.",
     },
     description:
@@ -404,8 +404,8 @@ const tours: Tour[] = [
     duration: "07:00 – 19:00",
     category: "Private Experience",
     price: {
-      adult: 3335000,
-      child: 2668000,
+      adult: 2750000,
+      child: 2100000,
       note: "Reference package includes two meals.",
     },
     description:
@@ -600,7 +600,7 @@ const tours: Tour[] = [
     ],
   },
   {
-    title: "Hai Van Pass Jeep Adventure",
+    title: "Hai Van Pass OFF-ROAD Motorbike Adventure and Lang Co",
     image: "/tour/haivan.jpg",
     duration: "08:30 – 16:30",
     category: "Private Experience",
