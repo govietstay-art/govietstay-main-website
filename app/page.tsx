@@ -1695,7 +1695,7 @@ export default function Home() {
               <p className="mt-4 text-white/60 leading-relaxed">
                 Private Tours • Local Guide • Travel Support
                 <br />
-                Da Nang • Hoi An • Hue
+                Da Nang • Hoi An • Hue • Phu Quoc
                 <br />
                 WhatsApp +84 937 762 607
               </p>
