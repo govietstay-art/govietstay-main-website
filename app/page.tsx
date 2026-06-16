@@ -899,6 +899,57 @@ export default function Home() {
         .travel-board-track:hover {
           animation-play-state: paused;
         }
+
+        @keyframes daoPulse {
+          0%, 100% {
+            transform: scale(1);
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+          }
+          50% {
+            transform: scale(1.06);
+            box-shadow: 0 22px 55px rgba(255, 196, 0, 0.28);
+          }
+        }
+
+        @keyframes daoRing {
+          0% {
+            transform: scale(0.9);
+            opacity: 0.55;
+          }
+          70%, 100% {
+            transform: scale(1.45);
+            opacity: 0;
+          }
+        }
+
+        @keyframes daoOnlineBlink {
+          0%, 100% {
+            opacity: 1;
+            transform: scale(1);
+          }
+          50% {
+            opacity: 0.55;
+            transform: scale(0.86);
+          }
+        }
+
+        .dao-floating-button {
+          animation: daoPulse 2.2s ease-in-out infinite;
+        }
+
+        .dao-floating-avatar::before {
+          content: "";
+          position: absolute;
+          inset: -8px;
+          border-radius: 9999px;
+          background: rgba(255, 196, 0, 0.38);
+          animation: daoRing 2.2s ease-out infinite;
+          z-index: -1;
+        }
+
+        .dao-online-dot {
+          animation: daoOnlineBlink 1.6s ease-in-out infinite;
+        }
       `}</style>
 
       <section className="relative min-h-screen overflow-hidden">
@@ -1349,16 +1400,17 @@ export default function Home() {
         <button
           onClick={() => setDaoOpen(true)}
           aria-label="Ask Đào Local Travel Assistant"
-          className="group flex items-center gap-3 rounded-full bg-[#0b6b4f] p-2 md:px-4 md:py-3 shadow-2xl border border-white/10 hover:scale-105 transition-all duration-300"
+          className="dao-floating-button group flex items-center gap-3 rounded-full bg-[#0b6b4f] p-2 md:px-4 md:py-3 shadow-2xl border border-white/10 hover:scale-105 transition-all duration-300"
         >
-          <div className="flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-full bg-yellow-400 text-2xl shadow-lg">
-            👩🏻
+          <div className="dao-floating-avatar relative flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-full bg-yellow-400 text-2xl shadow-lg">
+            <span className="relative z-10">👩🏻</span>
+            <span className="dao-online-dot absolute right-0 top-0 z-20 h-3.5 w-3.5 rounded-full bg-green-500 border-2 border-white shadow-md" />
           </div>
 
           <div className="hidden md:block pr-2 text-left">
             <div className="font-bold text-white leading-tight">Đào</div>
             <div className="text-xs text-white/75">
-              Local Travel Assistant
+              Online • Local Travel Assistant
             </div>
           </div>
         </button>
