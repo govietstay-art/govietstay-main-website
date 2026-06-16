@@ -2,16 +2,21 @@ export async function POST(req: Request) {
   try {
     const { message } = await req.json();
 
+    const fallbackReply =
+      "Đào đang tạm quá tải một chút ạ. Anh/chị vui lòng thử lại sau ít phút, hoặc liên hệ GoVietStay qua WhatsApp/Zalo +84 937 762 607 để được hỗ trợ nhanh hơn.";
+
     if (!message) {
       return Response.json({
         reply:
-          "Please tell Đào a little about your travel plan. For urgent support, contact GoVietStay via WhatsApp +84 937 762 607.",
+          "Anh/chị cho Đào biết một chút về kế hoạch chuyến đi nhé. Nếu cần hỗ trợ nhanh, vui lòng liên hệ GoVietStay qua WhatsApp/Zalo +84 937 762 607.",
       });
     }
 
     if (!process.env.GEMINI_API_KEY) {
+      console.error("CONFIG ERROR: GEMINI_API_KEY is missing.");
+
       return Response.json({
-        reply: "CONFIG ERROR: GEMINI_API_KEY is missing.",
+        reply: fallbackReply,
       });
     }
 
@@ -45,7 +50,7 @@ Rules:
 - Never ask again for information already given.
 - If enough information is available, create a draft itinerary immediately.
 - GoVietStay focuses on trust, local support, safety and care.
-- For pricing, booking, airport transfer, private tour, hotel or custom itinerary, guide travelers to WhatsApp: +84 937 762 607.
+- For pricing, booking, airport transfer, private tour, hotel or custom itinerary, guide travelers to WhatsApp/Zalo: +84 937 762 607.
 
 Traveler message:
 ${message}
@@ -70,27 +75,26 @@ ${message}
 
     const data = await response.json();
 
-    console.log(
-      "GEMINI RESPONSE:",
-      JSON.stringify(data, null, 2)
-    );
+    console.log("GEMINI RESPONSE:", JSON.stringify(data, null, 2));
 
     if (!response.ok) {
+      console.error("GEMINI ERROR:", JSON.stringify(data, null, 2));
+
       return Response.json({
-        reply: `GEMINI ERROR: ${JSON.stringify(data)}`,
+        reply: fallbackReply,
       });
     }
 
     const reply =
-      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
-      "No response returned from Gemini.";
+      data?.candidates?.[0]?.content?.parts?.[0]?.text || fallbackReply;
 
     return Response.json({ reply });
   } catch (error: any) {
     console.error("DAO ERROR:", error);
 
     return Response.json({
-      reply: `DAO ERROR: ${error?.message || "Unknown error"}`,
+      reply:
+        "Đào đang tạm quá tải một chút ạ. Anh/chị vui lòng thử lại sau ít phút, hoặc liên hệ GoVietStay qua WhatsApp/Zalo +84 937 762 607 để được hỗ trợ nhanh hơn.",
     });
   }
 }
