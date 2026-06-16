@@ -267,6 +267,20 @@ const localTips: LocalTip[] = [
   },
 ];
 
+
+const travelUpdates = [
+  {
+    image: "/updates/bana-ticket.jpg",
+    title: "Ba Na Hills 2026 Ticket Price",
+    description: "Official ticket price reference and GoVietStay local support update.",
+  },
+  {
+    image: "/updates/car-price.jpg",
+    title: "Da Nang Transport Price",
+    description: "Airport transfer, Da Nang, Hoi An and local route price reference.",
+  },
+];
+
 const tours: Tour[] = [
   {
     title: "Ba Na Hills & Golden Bridge",
@@ -858,6 +872,24 @@ export default function Home() {
         .gvs-panel {
           animation: gvsSlideUp 260ms ease-out;
         }
+
+        @keyframes travelBoardScroll {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+
+        .travel-board-track {
+          width: max-content;
+          animation: travelBoardScroll 34s linear infinite;
+        }
+
+        .travel-board-track:hover {
+          animation-play-state: paused;
+        }
       `}</style>
 
       <section className="relative min-h-screen overflow-hidden">
@@ -1129,6 +1161,56 @@ export default function Home() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="bg-[#f7f1df] text-[#06251b] px-4 md:px-20 pb-24 overflow-hidden">
+        <div className="max-w-7xl mx-auto w-full">
+          <p className="text-green-800 uppercase tracking-[4px] text-sm font-semibold">
+            Latest Updates
+          </p>
+
+          <h2 className="mt-4 text-4xl md:text-6xl font-bold">
+            GoVietStay Travel Board
+          </h2>
+
+          <p className="mt-6 text-[#06251b]/70 max-w-3xl text-lg">
+            Fresh price boards, transport updates and useful travel information
+            from GoVietStay — the same updates we share on Google Maps.
+          </p>
+
+          <div className="mt-12 overflow-hidden rounded-3xl">
+            <div className="travel-board-track flex gap-6">
+              {[...travelUpdates, ...travelUpdates].map((update, index) => (
+                <div
+                  key={update.image + index}
+                  className="min-w-[330px] md:min-w-[560px] lg:min-w-[680px] rounded-3xl overflow-hidden bg-white shadow-2xl border border-[#06251b]/10"
+                >
+                  <div className="relative h-[430px] md:h-[560px] lg:h-[640px] bg-[#06251b]/5">
+                    <Image
+                      src={update.image}
+                      alt={update.title}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+
+                  <div className="p-5 md:p-6">
+                    <h3 className="text-xl md:text-2xl font-bold">
+                      {update.title}
+                    </h3>
+                    <p className="mt-2 text-[#06251b]/65">
+                      {update.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <p className="mt-6 text-sm text-[#06251b]/60">
+            Tip: hover on desktop to pause the board. On mobile, you can swipe horizontally.
+          </p>
         </div>
       </section>
 
