@@ -127,49 +127,24 @@ const travelers: Traveler[] = [
   },
 ];
 
-const happyTravelers: HappyTraveler[] = [
-  {
-    image: "/happy-travelers/Russian Banahill.jpg",
-    country: "Russia",
-    flag: "🇷🇺",
-    tour: "Ba Na Hills & Golden Bridge",
-    location: "Da Nang",
-    date: "June 2026",
-    note: "Russian travelers exploring one of Central Vietnam’s most iconic mountain experiences.",
-    featured: true,
-  },
-  {
-    image: "/happy-travelers/Russian Phu Quoc.jpg",
-    country: "Russia",
-    flag: "🇷🇺",
-    tour: "Phu Quoc Island Experience",
-    location: "Phu Quoc",
-    date: "June 2026",
-    note: "Island memories with GoVietStay local support.",
-  },
-  {
-    image: "/happy-travelers/Isreal Danang.jpg",
-    country: "Israel",
-    flag: "🇮🇱",
-    tour: "Da Nang Local Support",
-    location: "Da Nang",
-    date: "June 2026",
-    note: "Real travelers, real conversations and practical support in Da Nang.",
-  },
-  { image: "/happy-travelers/b66d3c9a-5c40-46f4-af45-90d5cca43dba.jpg", country: "International", flag: "🌍", tour: "Central Vietnam Memory", location: "Da Nang", date: "June 2026", note: "A small travel moment from GoVietStay’s growing guest story wall." },
-  { image: "/happy-travelers/15fd8898-ebeb-423d-8f81-98c183a63b28.jpg", country: "International", flag: "🌍", tour: "Private Travel Support", location: "Central Vietnam", date: "June 2026", note: "A real guest memory added to the GoVietStay travel gallery." },
-  { image: "/happy-travelers/1143580ef7c676982fd7.jpg", country: "International", flag: "🌍", tour: "Local Travel Moment", location: "Vietnam", date: "June 2026", note: "Every photo helps future travelers feel more confident before booking." },
-  { image: "/happy-travelers/2aOboQdyF3pPeVvoqqkK39tKsJX7qF5IhFsJkHw4e.jpg", country: "International", flag: "🌍", tour: "Happy Traveler Memory", location: "Vietnam", date: "June 2026", note: "GoVietStay captures real experiences, not only tour descriptions." },
-  { image: "/happy-travelers/2aOboQdyE5Azj1HQrXiuV2wRAuqacyKZApkzFoG0.jpg", country: "International", flag: "🌍", tour: "Guest Travel Story", location: "Central Vietnam", date: "June 2026", note: "A warm travel memory from guests supported by GoVietStay." },
-  { image: "/happy-travelers/2aOboQdyE33JtbHDcgPnXreZxoz25djT8IOPatg8.jpg", country: "International", flag: "🌍", tour: "Travel Support Moment", location: "Vietnam", date: "June 2026", note: "Real photo proof that GoVietStay is active with travelers every day." },
-  { image: "/happy-travelers/2aOboQdyDyCZxjvWS4pWAGlfpiDW7d741DX3HbsG.jpg", country: "International", flag: "🌍", tour: "Local Experience", location: "Vietnam", date: "June 2026", note: "A simple but powerful memory from a real travel day." },
-  { image: "/happy-travelers/2aOboQdyDmGiI6D5nUtB6GtbAErALMJqnGPZgyeW.jpg", country: "International", flag: "🌍", tour: "GoVietStay Guest Moment", location: "Vietnam", date: "June 2026", note: "Part of the GoVietStay happy traveler wall." },
-  { image: "/happy-travelers/2aOboQdyC7qu1jqWmUYWAj5mtfXgsCc0yJpIzbv6.jpg", country: "International", flag: "🌍", tour: "Central Vietnam Journey", location: "Vietnam", date: "June 2026", note: "One more real moment that builds trust for future travelers.", featured: true },
-  { image: "/happy-travelers/b975e8e3472bc6759f3a.jpg", country: "International", flag: "🌍", tour: "Private Support", location: "Vietnam", date: "June 2026", note: "A real travel memory added to GoVietStay.com." },
-  { image: "/happy-travelers/2aOboQdyL3wgpfXkhVi29MRms4rbEcuoJ15N8HIA.jpg", country: "International", flag: "🌍", tour: "Happy Travelers", location: "Vietnam", date: "June 2026", note: "Real travelers are the strongest proof of trust." },
-  { image: "/happy-travelers/2aOboQdyL9ZDgHIAx1szhULH9i1BNmcpgIlKffaC.jpg", country: "International", flag: "🌍", tour: "Vietnam Travel Memory", location: "Vietnam", date: "June 2026", note: "Every trip becomes part of the GoVietStay story." },
-  { image: "/happy-travelers/2aOboQdyKwj85EjVztQtyU2GDFEOygiNG3XvnyxU.jpg", country: "International", flag: "🌍", tour: "Guest Story", location: "Vietnam", date: "June 2026", note: "A travel memory from GoVietStay’s growing local support ecosystem." },
-  { image: "/happy-travelers/2aOboQdyKfMVLTHO65WubUJL6b87fb4iUyFRacRk.jpg", country: "International", flag: "🌍", tour: "GoVietStay Memory", location: "Vietnam", date: "June 2026", note: "Real journeys, real guests, real local care." },
+const happyTravelers: string[] = [
+  "/happy-travelers/b66d3c9a-5c40-46f4-af45-90d5cca43dba.jpg",
+  "/happy-travelers/15fd8898-ebeb-423d-8f81-98c183a63b28.jpg",
+  "/happy-travelers/Russian Phu Quoc.jpg",
+  "/happy-travelers/1143580ef7c676982fd7.jpg",
+  "/happy-travelers/2aOboQdyF3pPeVvoqqkK39tKsJX7qF5IhFsJkHw4e.jpg",
+  "/happy-travelers/2aOboQdyE5Azj1HQrXiuV2wRAuqacyKZApkzFoG0.jpg",
+  "/happy-travelers/2aOboQdyE33JtbHDcgPnXreZxoz25djT8IOPatg8.jpg",
+  "/happy-travelers/2aOboQdyDyCZxjvWS4pWAGlfpiDW7d741DX3HbsG.jpg",
+  "/happy-travelers/2aOboQdyDmGiI6D5nUtB6GtbAErALMJqnGPZgyeW.jpg",
+  "/happy-travelers/2aOboQdyC7qu1jqWmUYWAj5mtfXgsCc0yJpIzbv6.jpg",
+  "/happy-travelers/b975e8e3472bc6759f3a.jpg",
+  "/happy-travelers/Isreal Danang.jpg",
+  "/happy-travelers/Russian Banahill.jpg",
+  "/happy-travelers/2aOboQdyL3wgpfXkhVi29MRms4rbEcuoJ15N8HIA.jpg",
+  "/happy-travelers/2aOboQdyL9ZDgHIAx1szhULH9i1BNmcpgIlKffaC.jpg",
+  "/happy-travelers/2aOboQdyKwj85EjVztQtyU2GDFEOygiNG3XvnyxU.jpg",
+  "/happy-travelers/2aOboQdyKfMVLTHO65WubUJL6b87fb4iUyFRacRk.jpg",
 ];
 
 const services: Service[] = [
@@ -990,7 +965,7 @@ export default function Home() {
   const [selectedTour, setSelectedTour] = useState<Tour | null>(null);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [selectedTip, setSelectedTip] = useState<LocalTip | null>(null);
-  const [selectedMemory, setSelectedMemory] = useState<HappyTraveler | null>(null);
+  const [selectedMemory, setSelectedMemory] = useState<string | null>(null);
   const [daoOpen, setDaoOpen] = useState(false);
   const [daoInput, setDaoInput] = useState("");
   const [daoMessages, setDaoMessages] = useState<ChatMessage[]>([
@@ -1594,82 +1569,50 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="happy-travelers" className="relative bg-[#071f17] text-white px-4 md:px-20 py-24 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,196,0,0.18),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(11,107,79,0.55),transparent_38%)]" />
+      <section id="happy-travelers" className="relative bg-[#f7f1df] text-[#06251b] px-4 md:px-20 py-24 overflow-hidden">
+        <div className="absolute inset-0 opacity-70 bg-[radial-gradient(circle_at_top_left,rgba(11,107,79,0.10),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(255,196,0,0.20),transparent_40%)]" />
+
         <div className="relative max-w-7xl mx-auto w-full">
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
-            <div>
-              <p className="text-yellow-400 uppercase tracking-[4px] text-sm font-semibold">
-                Travel Memories
-              </p>
+          <div className="max-w-4xl">
+            <p className="text-green-800 uppercase tracking-[4px] text-sm font-semibold">
+              Real Travel Moments
+            </p>
 
-              <h2 className="mt-4 text-4xl md:text-6xl font-bold leading-tight">
-                Happy Travelers Gallery
-              </h2>
+            <h2 className="mt-4 text-4xl md:text-6xl font-bold leading-tight">
+              Happy Travelers Gallery
+            </h2>
 
-              <p className="mt-6 text-white/70 max-w-3xl text-lg leading-relaxed">
-                Real travelers, real experiences and real stories from Da Nang, Hoi An, Hue and Phu Quoc — captured by GoVietStay local support.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-3 gap-3 md:gap-4 min-w-full lg:min-w-[420px]">
-              {[
-                ["25+", "Countries"],
-                ["500+", "Happy Travelers"],
-                ["24/7", "Local Support"],
-              ].map(([number, label]) => (
-                <div key={label} className="rounded-3xl bg-white/10 border border-white/10 p-4 md:p-5 text-center backdrop-blur-sm">
-                  <div className="text-2xl md:text-4xl font-bold text-yellow-400">{number}</div>
-                  <div className="mt-1 text-xs md:text-sm text-white/65">{label}</div>
-                </div>
-              ))}
-            </div>
+            <p className="mt-6 text-[#06251b]/70 max-w-3xl text-lg leading-relaxed">
+              A simple wall of real guest photos from GoVietStay journeys. No staged advertising — just real travelers and real memories.
+            </p>
           </div>
 
-          <div className="mt-10 overflow-hidden rounded-full border border-white/10 bg-white/10 py-3 backdrop-blur-sm">
-            <div className="memory-marquee-track flex gap-4 px-4 text-sm md:text-base text-white/80">
-              {[...happyTravelers.slice(0, 8), ...happyTravelers.slice(0, 8)].map((memory, index) => (
-                <span key={memory.image + index} className="whitespace-nowrap rounded-full bg-black/20 px-4 py-2">
-                  {memory.flag} {memory.country} • {memory.tour} • {memory.location}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-14 columns-1 sm:columns-2 lg:columns-3 gap-5 space-y-5">
-            {happyTravelers.map((memory, index) => (
+          <div className="mt-12 columns-2 md:columns-3 lg:columns-4 gap-4 md:gap-5 space-y-4 md:space-y-5">
+            {happyTravelers.map((photo, index) => (
               <button
-                key={memory.image}
-                onClick={() => setSelectedMemory(memory)}
-                className={`memory-card group relative mb-5 w-full break-inside-avoid overflow-hidden rounded-[2rem] bg-white/10 text-left shadow-2xl border border-white/10 ${
-                  memory.featured ? "lg:rounded-[2.5rem]" : ""
-                }`}
-                style={{ animationDelay: `${(index % 8) * 70}ms` }}
+                key={photo}
+                onClick={() => setSelectedMemory(photo)}
+                className="memory-card group relative mb-4 md:mb-5 w-full break-inside-avoid overflow-hidden rounded-[1.7rem] bg-white shadow-xl shadow-[#06251b]/10 border border-[#06251b]/10 text-left hover:-translate-y-1 hover:rotate-[0.35deg] hover:shadow-2xl hover:shadow-[#06251b]/20 transition duration-500"
+                style={{ animationDelay: `${(index % 10) * 55}ms` }}
+                aria-label="Open GoVietStay traveler photo"
               >
-                <div className={`relative ${memory.featured ? "h-[520px]" : index % 3 === 0 ? "h-[440px]" : index % 3 === 1 ? "h-[340px]" : "h-[400px]"}`}>
-                  <Image
-                    src={memory.image}
-                    alt={`${memory.country} travelers - ${memory.tour}`}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="memory-card-image object-cover transition duration-700 group-hover:scale-110"
+                <div className="relative overflow-hidden bg-[#d8c7a1]/30">
+                  <img
+                    src={photo}
+                    alt="GoVietStay happy traveler"
+                    loading="lazy"
+                    className="block w-full h-auto object-cover transition duration-700 group-hover:scale-105"
+                    onError={(event) => {
+                      const card = event.currentTarget.closest("button");
+                      if (card) card.classList.add("hidden");
+                    }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-85 group-hover:opacity-95 transition" />
-                  <div className="absolute left-4 top-4 rounded-full bg-white/15 px-4 py-2 text-sm font-semibold text-white backdrop-blur-md border border-white/20">
-                    {memory.flag} {memory.country}
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
-                    <div className="text-xs uppercase tracking-[3px] text-yellow-300 font-semibold">
-                      {memory.location} • {memory.date}
-                    </div>
-                    <h3 className="mt-2 text-xl md:text-2xl font-bold leading-tight">
-                      {memory.tour}
-                    </h3>
-                    <p className="mt-2 text-sm text-white/70 line-clamp-2">
-                      {memory.note}
-                    </p>
-                    <div className="mt-4 inline-flex items-center rounded-full bg-yellow-400 px-4 py-2 text-sm font-bold text-black opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition duration-300">
-                      View memory →
+
+                  <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500 bg-gradient-to-t from-black/25 via-transparent to-white/10" />
+
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition duration-500 p-3">
+                    <div className="rounded-full bg-black/55 px-4 py-2 text-center text-xs md:text-sm font-semibold text-white backdrop-blur-md">
+                      View photo
                     </div>
                   </div>
                 </div>
@@ -1677,22 +1620,23 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="mt-12 rounded-3xl border border-yellow-400/20 bg-yellow-400/10 p-5 md:p-7 flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
+          <div className="mt-10 rounded-3xl bg-white/70 border border-[#06251b]/10 p-5 md:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 shadow-xl shadow-[#06251b]/5">
             <div>
               <h3 className="text-xl md:text-2xl font-bold">
-                Real photos build real trust.
+                Real photos. Real travelers. Real trust.
               </h3>
-              <p className="mt-2 text-white/70">
-                GoVietStay shares real guest memories so future travelers can see that our local support is active every day.
+              <p className="mt-2 text-[#06251b]/65">
+                GoVietStay keeps this gallery alive with guest photos from real tour days.
               </p>
             </div>
+
             <a
               href="https://wa.me/84937762607"
               target="_blank"
               rel="noopener noreferrer"
               className="shrink-0 rounded-full bg-green-600 px-6 py-3 font-semibold text-white hover:bg-green-700 transition"
             >
-              Plan Your Trip
+              Plan on WhatsApp
             </a>
           </div>
         </div>
@@ -2089,66 +2033,27 @@ export default function Home() {
 
       {selectedMemory && (
         <div
-          className="gvs-overlay fixed inset-0 z-[998] bg-black/90 flex items-center justify-center p-4 md:p-6"
+          className="gvs-overlay fixed inset-0 z-[998] bg-black/90 flex items-center justify-center p-4 md:p-8"
           onClick={() => setSelectedMemory(null)}
         >
           <div
-            className="gvs-panel relative w-full max-w-5xl overflow-hidden rounded-3xl bg-[#071f17] text-white shadow-2xl border border-white/10"
+            className="gvs-panel relative w-full max-w-6xl max-h-[92svh] rounded-[2rem] overflow-hidden bg-black shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={() => setSelectedMemory(null)}
-              className="absolute right-4 top-4 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-black/60 text-3xl leading-none text-white backdrop-blur-md hover:bg-black/80"
+              className="absolute right-4 top-4 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-black/60 text-3xl leading-none text-white backdrop-blur-md hover:bg-white hover:text-black transition"
+              aria-label="Close photo"
             >
               ×
             </button>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2">
-              <div className="relative min-h-[420px] lg:min-h-[720px] bg-black">
-                <Image
-                  src={selectedMemory.image}
-                  alt={`${selectedMemory.country} travelers - ${selectedMemory.tour}`}
-                  fill
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent lg:hidden" />
-              </div>
-
-              <div className="p-6 md:p-10 lg:p-12 flex flex-col justify-center">
-                <p className="text-yellow-400 uppercase tracking-[4px] text-sm font-semibold">
-                  GoVietStay Memory
-                </p>
-                <h2 className="mt-5 text-4xl md:text-6xl font-bold leading-tight">
-                  {selectedMemory.flag} {selectedMemory.country}
-                </h2>
-                <p className="mt-4 text-2xl text-white font-semibold">
-                  {selectedMemory.tour}
-                </p>
-                <p className="mt-2 text-white/60">
-                  {selectedMemory.location} • {selectedMemory.date}
-                </p>
-                <p className="mt-8 text-lg md:text-xl text-white/75 leading-relaxed">
-                  {selectedMemory.note}
-                </p>
-
-                <div className="mt-8 rounded-3xl border border-white/10 bg-white/10 p-5">
-                  <div className="text-yellow-300 font-bold">Trusted Local Support</div>
-                  <p className="mt-2 text-white/70">
-                    Private tours, local guide support and WhatsApp assistance for Da Nang, Hoi An, Hue and Phu Quoc.
-                  </p>
-                </div>
-
-                <a
-                  href={buildWhatsAppLink(
-                    `Hello GoVietStay, I saw the ${selectedMemory.tour} memory on your website and would like help planning a trip.`
-                  )}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-8 inline-flex justify-center rounded-full bg-green-600 px-8 py-4 font-semibold text-white hover:bg-green-700 transition"
-                >
-                  Ask About This Experience
-                </a>
-              </div>
+            <div className="relative h-[82svh] bg-black">
+              <img
+                src={selectedMemory}
+                alt="GoVietStay happy traveler"
+                className="h-full w-full object-contain"
+              />
             </div>
           </div>
         </div>
