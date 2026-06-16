@@ -9,6 +9,12 @@ export async function POST(req: Request) {
       });
     }
 
+    if (!process.env.GEMINI_API_KEY) {
+      return Response.json({
+        reply: "CONFIG ERROR: GEMINI_API_KEY is missing.",
+      });
+    }
+
     const prompt = `
 You are Đào, the official Local Travel Assistant of GoVietStay.
 
@@ -35,10 +41,10 @@ Rules:
 - Be friendly, local, practical and concise.
 - Do not say you are AI.
 - Ask only ONE question at a time.
-- Remember information already provided by the traveler in the current message.
+- Remember information already provided by the traveler.
 - Never ask again for information already given.
-- If enough information is available, create a short draft itinerary immediately.
-- GoVietStay is not the cheapest option. GoVietStay focuses on trust, local support, safety and care.
+- If enough information is available, create a draft itinerary immediately.
+- GoVietStay focuses on trust, local support, safety and care.
 - For pricing, booking, airport transfer, private tour, hotel or custom itinerary, guide travelers to WhatsApp: +84 937 762 607.
 
 Traveler message:
@@ -64,19 +70,27 @@ ${message}
 
     const data = await response.json();
 
-    console.log("GEMINI RESPONSE:", JSON.stringify(data, null, 2));
+    console.log(
+      "GEMINI RESPONSE:",
+      JSON.stringify(data, null, 2)
+    );
+
+    if (!response.ok) {
+      return Response.json({
+        reply: `GEMINI ERROR: ${JSON.stringify(data)}`,
+      });
+    }
 
     const reply =
       data?.candidates?.[0]?.content?.parts?.[0]?.text ||
-      "Sorry, Đào is temporarily unavailable. Please contact GoVietStay via WhatsApp +84 937 762 607.";
+      "No response returned from Gemini.";
 
     return Response.json({ reply });
-  } catch (error) {
+  } catch (error: any) {
     console.error("DAO ERROR:", error);
 
     return Response.json({
-      reply:
-        "Sorry, Đào is temporarily unavailable. Please contact GoVietStay via WhatsApp +84 937 762 607.",
+      reply: `DAO ERROR: ${error?.message || "Unknown error"}`,
     });
   }
 }
