@@ -279,8 +279,17 @@ const travelUpdates = [
     title: "Da Nang Transport Price",
     description: "Airport transfer, Da Nang, Hoi An and local route price reference.",
   },
+  {
+    image: "/updates/bana-ticket2.jpg",
+    title: "Ba Na Hills Promotion",
+    description: "Latest Ba Na Hills update from GoVietStay.",
+  },
+  {
+    image: "/updates/car-price2.jpg",
+    title: "Private Car Service",
+    description: "Updated transport options and private car services.",
+  },
 ];
-
 const tours: Tour[] = [
   {
     title: "Ba Na Hills & Golden Bridge",
