@@ -810,10 +810,10 @@ const tours: Tour[] = [
     duration: "Half Day",
     category: "Adventure Experience",
     price: {
-  adult: 1450000,
-  child: 1200000,
-  note: "Reference price. Final price may change by route, date and group size.",
-},
+      adult: null,
+      child: null,
+      note: "Contact for updated price. Final price depends on route, group size and operator availability.",
+    },
     description:
       "Enjoy an exciting ATV ride through nature trails, local countryside roads and scenic outdoor landscapes.",
     overview:
@@ -872,10 +872,10 @@ const tours: Tour[] = [
     duration: "Full Day",
     category: "Family Experience",
     price: {
-  adult: 1250000,
-  child: 950000,
-  note: "Reference price. Final price depends on ticket option and pickup location.",
-},
+      adult: null,
+      child: null,
+      note: "Contact for updated ticket and transfer price.",
+    },
     description:
       "Relax at Nui Than Tai Hot Springs Park with mineral baths, water park areas, nature scenery and family-friendly activities.",
     overview:
@@ -1282,6 +1282,109 @@ export default function Home() {
             >
               WhatsApp +84 937 762 607
             </a>
+          </div>
+        </div>
+      </section>
+
+      <section id="founder" className="bg-[#f7f1df] text-[#06251b] px-4 md:px-20 pb-24">
+        <div className="max-w-7xl mx-auto w-full rounded-[2rem] overflow-hidden border border-[#0b6b4f]/15 bg-white/75 shadow-xl shadow-[#06251b]/5">
+          <div className="grid grid-cols-1 lg:grid-cols-2">
+            <div className="relative min-h-[520px] lg:min-h-[720px] bg-[#d8c7a1]">
+              <Image
+                src="/founder/david-founder.png"
+                alt="David Tran founder of GoVietStay"
+                fill
+                className="object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+              <div className="absolute bottom-5 left-5 right-5 rounded-2xl bg-[#0b6b4f]/90 text-white p-4 shadow-xl backdrop-blur-sm">
+                <div className="text-sm uppercase tracking-[3px] text-yellow-300 font-semibold">
+                  Based in Central Vietnam
+                </div>
+                <div className="mt-1 text-lg font-bold">
+                  Da Nang • Hoi An • Hue • Phu Quoc
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 md:p-10 lg:p-14 flex flex-col justify-center">
+              <p className="text-green-800 uppercase tracking-[4px] text-xs md:text-sm font-semibold">
+                Meet The Founder
+              </p>
+
+              <h2 className="mt-5 text-4xl md:text-6xl font-bold leading-tight">
+                David Tran
+              </h2>
+
+              <p className="mt-3 text-xl md:text-2xl text-green-800 font-semibold">
+                Founder of GoVietStay
+              </p>
+
+              <p className="mt-7 text-lg md:text-xl font-bold leading-relaxed">
+                Local knowledge. Real experience. Trusted support.
+              </p>
+
+              <div className="mt-8 space-y-5">
+                {[
+                  {
+                    icon: "🏨",
+                    title: "15+ Years In Hospitality & Tourism",
+                    text: "Experience in guest services, luxury hospitality and real travel operations across Vietnam.",
+                  },
+                  {
+                    icon: "⭐",
+                    title: "Luxury Service Background",
+                    text: "Worked across service environments connected with MGM Grand, Nikko, Amara, InterContinental and Novaland.",
+                  },
+                  {
+                    icon: "📍",
+                    title: "Real Local Experience",
+                    text: "On-the-ground knowledge in Da Nang, Hoi An, Hue and Phu Quoc — not just online travel information.",
+                  },
+                  {
+                    icon: "🤝",
+                    title: "Human Support Before & During Your Trip",
+                    text: "GoVietStay is built to help travelers feel safe, supported and confident throughout the journey.",
+                  },
+                ].map((item) => (
+                  <div key={item.title} className="flex gap-4">
+                    <div className="shrink-0 flex h-12 w-12 items-center justify-center rounded-full bg-[#0b6b4f]/10 text-2xl">
+                      {item.icon}
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-lg">{item.title}</h3>
+                      <p className="mt-1 text-[#06251b]/70 leading-relaxed">
+                        {item.text}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-9 rounded-3xl border border-[#0b6b4f]/20 bg-[#f7f1df] p-5 md:p-6">
+                <p className="text-xl md:text-2xl font-bold leading-relaxed">
+                  “We don&apos;t sell tours. We create experiences and build trust.”
+                </p>
+              </div>
+
+              <div className="mt-8 flex flex-wrap gap-4">
+                <a
+                  href="https://wa.me/84937762607"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full bg-green-600 px-7 py-4 font-semibold text-white hover:bg-green-700 transition"
+                >
+                  Chat with David on WhatsApp
+                </a>
+
+                <button
+                  onClick={() => setDaoOpen(true)}
+                  className="rounded-full border border-[#06251b]/30 px-7 py-4 font-semibold hover:bg-[#06251b] hover:text-white transition"
+                >
+                  Ask Đào First
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
