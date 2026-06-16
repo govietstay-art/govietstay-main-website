@@ -804,6 +804,130 @@ const tours: Tour[] = [
       "Perfect if you want something more personal than a normal tour.",
     ],
   },
+  {
+    title: "ATV Adventure Experience",
+    image: "/tour/ATV.jpg",
+    duration: "Half Day",
+    category: "Adventure Experience",
+    price: {
+      adult: null,
+      child: null,
+      note: "Contact for updated price. Final price depends on route, group size and operator availability.",
+    },
+    description:
+      "Enjoy an exciting ATV ride through nature trails, local countryside roads and scenic outdoor landscapes.",
+    overview:
+      "A fun adventure experience near Da Nang for travelers who want something active, exciting and different from a normal sightseeing tour. GoVietStay helps arrange ATV booking, private transfer and local support before and during the experience.",
+    highlights: [
+      "ATV riding experience",
+      "Outdoor adventure",
+      "Nature and countryside scenery",
+      "Photo stops",
+      "Private transfer support",
+    ],
+    itinerary: [
+      "Hotel pickup from Da Nang or nearby area.",
+      "Transfer to the ATV experience location.",
+      "Safety briefing and basic riding instructions.",
+      "Enjoy ATV riding with local operator support.",
+      "Take photos and relax after the ride.",
+      "Return transfer to hotel.",
+    ],
+    included: [
+      "Trip planning support",
+      "ATV experience arrangement",
+      "Local operator coordination",
+      "WhatsApp support",
+      "Private transfer can be arranged on request",
+    ],
+    notIncluded: [
+      "Personal expenses",
+      "Meals and drinks",
+      "Tips",
+      "Insurance unless provided by operator",
+      "Transfer if not selected",
+    ],
+    childPolicy: [
+      "Age and height rules depend on operator safety policy.",
+      "Children may ride as passengers only when allowed by the operator.",
+      "Please share child age and height before booking.",
+    ],
+    bestFor: [
+      "Adventure travelers",
+      "Groups of friends",
+      "Couples",
+      "Young travelers",
+      "Travelers who want an active experience",
+    ],
+    localTips: [
+      "Wear comfortable clothes and closed shoes.",
+      "Bring sunglasses, sunscreen and a change of clothes if needed.",
+      "Best on clear-weather days.",
+      "GoVietStay can help check safety conditions before booking.",
+    ],
+  },
+  {
+    title: "Nui Than Tai Hot Springs Park",
+    image: "/tour/Nui Than Tai.jpg",
+    duration: "Full Day",
+    category: "Family Experience",
+    price: {
+      adult: null,
+      child: null,
+      note: "Contact for updated ticket and transfer price.",
+    },
+    description:
+      "Relax at Nui Than Tai Hot Springs Park with mineral baths, water park areas, nature scenery and family-friendly activities.",
+    overview:
+      "A relaxing full-day experience from Da Nang to Nui Than Tai Hot Springs Park. This is a good choice for families, couples and travelers who want a comfortable nature escape with hot springs, water activities and light entertainment.",
+    highlights: [
+      "Hot springs",
+      "Mineral bath",
+      "Water park",
+      "Nature scenery",
+      "Family-friendly activities",
+    ],
+    itinerary: [
+      "Hotel pickup in Da Nang.",
+      "Transfer to Nui Than Tai Hot Springs Park.",
+      "Enjoy hot springs, mineral bath and water park areas.",
+      "Free time for lunch and relaxing activities.",
+      "Optional paid services inside the park depending on your preference.",
+      "Return transfer to hotel.",
+    ],
+    included: [
+      "Trip planning support",
+      "Ticket support",
+      "Transfer arrangement",
+      "Local travel advice",
+      "WhatsApp support",
+    ],
+    notIncluded: [
+      "Entrance ticket if not included in selected package",
+      "Meals and drinks",
+      "Personal expenses",
+      "Optional paid services inside the park",
+      "Towels or rental items if required by operator",
+    ],
+    childPolicy: [
+      "Child price depends on park ticket policy.",
+      "Please share child age and height before booking.",
+      "Family pricing can be checked before confirmation.",
+    ],
+    bestFor: [
+      "Families",
+      "Couples",
+      "Relaxation travelers",
+      "Rainy-day backup plan",
+      "Travelers who want an easy day trip from Da Nang",
+    ],
+    localTips: [
+      "Bring swimwear, towel and dry clothes.",
+      "Good option for families with children.",
+      "Check ticket policy and weather before departure.",
+      "Can be combined with private transfer from Da Nang.",
+    ],
+  },
 ];
 
 export default function Home() {
