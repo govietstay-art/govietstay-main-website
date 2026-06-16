@@ -107,12 +107,12 @@ const travelers: Traveler[] = [
   {
     country: "🇦🇺 Australia",
     image: "/travelers/australia.jpg",
-    caption: "Beach and city discovery",
+    caption: "Imperial Hue Heritage Experience",
   },
   {
     country: "🇰🇷 Korea",
     image: "/travelers/korea.jpg",
-    caption: "Golden Bridge and local highlights",
+    caption: "Sunrise SUP Adventure at Man Thai Beach",
   },
 ];
 
@@ -696,7 +696,7 @@ const tours: Tour[] = [
     ],
   },
   {
-    title: "Han River Sunset Cruise",
+    title: "APHRODITE Cruise - Premium cruise experience",
     image: "/tour/cruise.jpg",
     duration: "17:30 – 21:30",
     category: "Private Experience",
