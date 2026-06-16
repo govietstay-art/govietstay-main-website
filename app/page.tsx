@@ -1707,6 +1707,7 @@ export default function Home() {
                 <li>Da Nang</li>
                 <li>Hoi An</li>
                 <li>Hue</li>
+                <li>Phu Quoc</li>
               </ul>
             </div>
 
@@ -1749,6 +1750,15 @@ export default function Home() {
                   className="block hover:text-yellow-400 transition"
                 >
                   Telegram
+                </a>
+
+                <a
+                  href="https://x.com/thangtran267"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block hover:text-yellow-400 transition"
+                >
+                  X / Twitter
                 </a>
 
                 <a
