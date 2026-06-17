@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import Image from "next/image";
 
 const EXCHANGE_RATE = 26000;
@@ -11,7 +11,7 @@ const formatUSD = (value: number) => "$" + Math.round(value / EXCHANGE_RATE);
 const DAO_WHATSAPP_LINK =
   "https://wa.me/84937762607?text=" +
   encodeURIComponent(
-    "Hello GoVietStay, I would like to ask Đào for local travel help in Da Nang, Hoi An or Hue."
+    "Hello GoVietStay, I would like to ask Đào for local travel help in Da Nang, Hoi An or Hue.",
   );
 
 type ChatMessage = {
@@ -65,6 +65,30 @@ type LocalTip = {
   description: string;
   details: string[];
   bestFor: string[];
+};
+
+type BookingForm = {
+  fullName: string;
+  whatsapp: string;
+  email: string;
+  travelDate: string;
+  adults: string;
+  children: string;
+  hotel: string;
+  pickupLocation: string;
+  specialRequest: string;
+};
+
+const emptyBookingForm: BookingForm = {
+  fullName: "",
+  whatsapp: "",
+  email: "",
+  travelDate: "",
+  adults: "",
+  children: "",
+  hotel: "",
+  pickupLocation: "",
+  specialRequest: "",
 };
 
 type Traveler = {
@@ -167,14 +191,12 @@ const services: Service[] = [
       "Late-night or early-morning flights",
       "Travelers who want a smooth arrival",
     ],
-    note:
-      "Send us your flight time, hotel name and number of guests. GoVietStay will suggest the right car option.",
+    note: "Send us your flight time, hotel name and number of guests. GoVietStay will suggest the right car option.",
   },
   {
     icon: "📱",
     title: "SIM & eSIM",
-    description:
-      "Stay connected from the moment you arrive in Vietnam.",
+    description: "Stay connected from the moment you arrive in Vietnam.",
     price: "From 150,000 VND / $6",
     details: [
       "Vietnam travel SIM support",
@@ -189,8 +211,7 @@ const services: Service[] = [
       "Families needing navigation",
       "Guests using WhatsApp, Grab and Google Maps",
     ],
-    note:
-      "Popular option: 5GB/day for 30 days, depending on current carrier availability.",
+    note: "Popular option: 5GB/day for 30 days, depending on current carrier availability.",
   },
   {
     icon: "🚗",
@@ -211,14 +232,12 @@ const services: Service[] = [
       "Small groups",
       "Travelers who dislike fixed group schedules",
     ],
-    note:
-      "Send your route, date, pickup location and number of guests for a suitable quote.",
+    note: "Send your route, date, pickup location and number of guests for a suitable quote.",
   },
   {
     icon: "💬",
     title: "Travel Support 24/7",
-    description:
-      "Fast local assistance before and during your journey.",
+    description: "Fast local assistance before and during your journey.",
     price: "Free consultation on WhatsApp",
     details: [
       "Local travel advice for Da Nang, Hoi An and Hue",
@@ -233,8 +252,7 @@ const services: Service[] = [
       "Guests comparing tour options",
       "People who prefer human support",
     ],
-    note:
-      "GoVietStay focuses on helping first, recommending second and selling later.",
+    note: "GoVietStay focuses on helping first, recommending second and selling later.",
   },
 ];
 
@@ -298,17 +316,18 @@ const localTips: LocalTip[] = [
   },
 ];
 
-
 const travelUpdates = [
   {
     image: "/updates/bana-ticket.jpg",
     title: "Ba Na Hills 2026 Ticket Price",
-    description: "Official ticket price reference and GoVietStay local support update.",
+    description:
+      "Official ticket price reference and GoVietStay local support update.",
   },
   {
     image: "/updates/car-price.jpg",
     title: "Da Nang Transport Price",
-    description: "Airport transfer, Da Nang, Hoi An and local route price reference.",
+    description:
+      "Airport transfer, Da Nang, Hoi An and local route price reference.",
   },
   {
     image: "/updates/bana-ticket2.jpg",
@@ -323,241 +342,249 @@ const travelUpdates = [
 ];
 const tours: Tour[] = [
   {
-    title: "Ba Na Hills & Golden Bridge",
+    title: "Full Day Ba Na Hills & Golden Bridge",
     image: "/tour/bana.jpg",
     duration: "08:00 – 17:00 / 11:30 – 19:00",
-    category: "Private Experience",
+    category: "Mountain • Iconic Landmark • Family Favorite",
     price: {
       adult: 1770000,
       child: 1450000,
-      note: "Morning tour reference price. Afternoon option from 1,700,000 VND/adult.",
+      note: "Morning tour: Adult 1,770,000 VND, Child 1,450,000 VND. Afternoon tour: Adult 1,700,000 VND, Child 1,350,000 VND. Includes tour fee, cable car ticket and Ba Na buffet meal according to selected option.",
     },
     description:
-      "Visit the iconic Golden Bridge, cable cars, French Village and breathtaking mountain views.",
+      "Ride the world-famous cable car, walk the Golden Bridge, explore French Village and enjoy a complete Ba Na Hills day trip.",
     overview:
-      "A full-day Ba Na Hills experience from Da Nang with the Golden Bridge, cable car, French Village, Fantasy Park and beautiful mountain scenery. This is one of the most popular day trips for first-time travelers in Central Vietnam.",
+      "One of Central Vietnam’s most iconic experiences. This tour is designed for first-time visitors, families and couples who want a smooth day at Ba Na Hills with clear timing, hotel transfer, Golden Bridge photo time, French Village, Fantasy Park and buffet meal support.",
     highlights: [
-      "Golden Bridge",
-      "Cable Car",
-      "French Village",
-      "Fantasy Park",
-      "Mountain views",
+      "Golden Bridge photo experience",
+      "Ba Na Hills cable car",
+      "French Village walking route",
+      "Le Jardin D’Amour Garden and Linh Ung Pagoda",
+      "Fantasy Park free time",
+      "Buffet lunch or dinner depending on selected option",
     ],
     itinerary: [
-      "Hotel pickup and transfer to Ba Na Hills.",
-      "Experience the cable car and enjoy panoramic mountain views.",
-      "Check in at Golden Bridge, Le Jardin Garden and Linh Ung Pagoda.",
-      "Enjoy lunch or buffet depending on selected package.",
-      "Explore French Village and Fantasy Park.",
-      "Return by cable car and transfer back to hotel.",
+      "08:00 – 09:00 / 11:30 – 12:30: Hotel pickup and transfer to Sun World Ba Na Hills.",
+      "09:00 – 09:30 / 12:30 – 13:00: Take the cable car and enjoy panoramic mountain views.",
+      "09:30 – 11:30 / 13:00 – 16:30: Check in at Golden Bridge, Le Jardin D’Amour Garden and Linh Ung Pagoda.",
+      "11:30 – 13:00: Morning option enjoys buffet lunch at Ba Na Hills restaurant.",
+      "13:00 – 15:30: Explore French Village and enjoy free time at Fantasy Park.",
+      "15:30 – 16:00 / 17:30 – 18:00: Take the cable car down the mountain.",
+      "16:00 – 17:00 / 18:00 – 19:00: Transfer back and drop off at your hotel.",
     ],
     included: [
-      "Hotel pickup and drop-off",
-      "English-speaking support",
-      "Round-trip cable car",
+      "Door-to-door hotel transfer",
+      "Professional English-speaking guide",
+      "Round-trip Ba Na cable car",
       "Golden Bridge ticket",
-      "Meal option depending on package",
+      "Meal according to selected itinerary",
       "Bottled water",
     ],
     notIncluded: [
-      "Personal expenses",
-      "Wax Museum ticket",
-      "Wine Cellar ticket",
+      "Wax Museum and Wine Cellar entrance tickets",
       "Prize-winning games",
+      "Alpine Coaster and climbing fees",
+      "Personal expenses",
     ],
     childPolicy: [
       "Under 1m: free of charge",
-      "1m – 1.3m: child rate",
-      "Above 1.3m: adult rate",
+      "1m – 1.3m: child rate applies",
+      "Above 1.3m: adult rate applies depending on Sun World seasonal policy",
     ],
     bestFor: ["Families", "Couples", "First-time visitors", "Photo lovers"],
     localTips: [
-      "Go early for better Golden Bridge photos.",
-      "Bring a light jacket because the mountain can be cool.",
-      "Buffet option is convenient for families.",
+      "Go in the morning for better Golden Bridge photos and lighter crowds.",
+      "Bring a light jacket because Ba Na Hills can be cool and misty.",
+      "Buffet option is convenient for families and groups.",
     ],
   },
   {
-    title: "Hoi An Ancient Town",
+    title: "Hoi An By Night & Flower Lantern Release Experience",
     image: "/tour/hoian.jpg",
-    duration: "Half Day / Evening",
-    category: "Private Experience",
+    duration: "15:15 – 19:30",
+    category: "Heritage • Lantern Night • Joined Tour",
     price: {
       adult: 1250000,
-      child: 1000000,
-      note: "Estimated private experience rate. Final price depends on pickup location and inclusions.",
+      child: 950000,
+      note: "Joined tour price. Private tour price available on request based on pickup location and group size.",
     },
     description:
-      "Explore lantern streets, riverside cafés, local food and the charm of Vietnam’s heritage town.",
+      "Walk through Hoi An Ancient Town at dusk, ride a wooden boat on the Hoai River and release a flower lantern for good luck.",
     overview:
-      "A relaxing cultural trip to Hoi An Ancient Town with lantern streets, riverside atmosphere, local food, cafés, night market and optional boat experience. Best for travelers who want a slow, beautiful evening experience.",
+      "A romantic and cultural evening in Hoi An designed for travelers who want the best lantern atmosphere without rushing. The experience combines ancient streets, riverside scenery, a traditional wooden boat ride, flower lantern release and local dinner specialties.",
     highlights: [
-      "Lantern streets",
-      "Japanese Covered Bridge area",
-      "Hoi An night market",
-      "Riverside walking route",
-      "Local food and cafés",
+      "Hoi An Ancient Town walking tour",
+      "Lantern streets at dusk",
+      "Traditional wooden boat on the Hoai River",
+      "Flower lantern release experience",
+      "Local dinner specialties",
     ],
     itinerary: [
-      "Hotel pickup from Da Nang or Hoi An.",
-      "Walk through the ancient streets and heritage houses area.",
-      "Visit the Japanese Covered Bridge area and local shops.",
-      "Enjoy riverside cafés, lantern streets and night market.",
-      "Optional boat ride or local dinner experience.",
-      "Transfer back to hotel.",
+      "14:00 – 15:00: Pickup and transfer to the center of Hoi An Ancient Town.",
+      "15:00 – 17:30: Walking tour through UNESCO World Heritage streets at dusk.",
+      "17:30 – 18:00: Take a traditional wooden boat ride on the poetic Hoai River.",
+      "18:00 – 18:30: Release flower lanterns by hand for good luck.",
+      "18:30 – 19:30: Enjoy local dinner specialties and end the tour.",
     ],
     included: [
-      "Trip planning support",
-      "Hotel pickup arrangement",
-      "Local recommendations",
-      "WhatsApp support",
+      "Door-to-door transfer",
+      "Entrance tickets to heritage sites",
+      "English-speaking guide",
+      "Traditional boat ride on the Hoai River",
+      "Flower lantern release experience",
+      "Dinner at a local restaurant",
     ],
-    notIncluded: [
-      "Entrance ticket if required",
-      "Meals and drinks",
-      "Boat ride fee",
-      "Personal expenses",
-    ],
+    notIncluded: ["Personal expenses", "Additional drinks"],
     childPolicy: [
-      "Child policy depends on final transport and activity package.",
-      "Contact GoVietStay for family pricing.",
+      "Child price applies according to joined tour policy.",
+      "Please share child age before booking for confirmation.",
     ],
     bestFor: ["Couples", "Families", "Culture lovers", "Photographers"],
     localTips: [
-      "Best time is late afternoon to evening.",
-      "Lantern photos are best after sunset.",
+      "Best photo time is from late afternoon to after sunset.",
       "Hoi An is best enjoyed slowly, not rushed.",
+      "Good option for guests who want a gentle evening after a day in Da Nang.",
     ],
   },
   {
-    title: "Hue Imperial City",
+    title: "Hue Imperial City Heritage Journey",
     image: "/tour/hue.jpg",
-    duration: "07:00 – 19:00",
-    category: "Private Experience",
+    duration: "07:30 – 18:30",
+    category: "Heritage • Full Day By Car • Joined Tour",
     price: {
       adult: 2750000,
       child: 2100000,
-      note: "Reference package includes two meals.",
+      note: "Joined tour price. Free upgrade to private tour for groups of 4 or more when available.",
     },
     description:
-      "Discover Vietnam’s royal history through ancient citadels, pagodas and imperial tombs.",
+      "Travel from Da Nang to Hue to explore the Imperial City, royal tombs, Thien Mu Pagoda and traditional Hue cuisine.",
     overview:
-      "A full-day journey to Hue, Vietnam’s former imperial capital. Visit the Imperial Citadel, Khai Dinh Tomb, Thien Mu Pagoda and enjoy the poetic atmosphere of the Perfume River.",
+      "A full-day heritage journey into Vietnam’s former imperial capital. This route is designed for travelers who want history, architecture, royal culture, spiritual sites and a scenic transfer through Lang Co Bay or Hai Van route depending on conditions.",
     highlights: [
-      "Imperial Citadel",
+      "Imperial City and The Citadel",
+      "Lang Co Bay scenic stop",
+      "Tu Duc Tomb",
       "Khai Dinh Tomb",
       "Thien Mu Pagoda",
-      "Dragon boat cruise",
-      "Traditional craft village",
+      "Traditional royal-flavored lunch",
     ],
     itinerary: [
-      "Hotel pickup and depart for Hue.",
-      "Visit the Imperial Citadel and royal heritage area.",
-      "Explore Khai Dinh Tomb and historical architecture.",
-      "Visit Thien Mu Pagoda by the Perfume River.",
-      "Enjoy a dragon boat cruise.",
-      "Lunch in Hue and dinner in Tra Que depending on package.",
-      "Return to Da Nang or Hoi An.",
+      "07:30 – 08:00: Pickup in Da Nang and depart for Hue via Hai Van Tunnel or scenic Hai Van Pass.",
+      "09:00 – 09:15: Short break at Lang Co Bay.",
+      "10:30 – 12:00: Explore the Imperial City, including Ngo Mon Gate, Thai Hoa Palace and Forbidden Purple City area.",
+      "12:15 – 13:15: Enjoy traditional Hue lunch at a local restaurant.",
+      "13:30 – 14:30: Visit Tu Duc Tomb and admire poetic royal architecture.",
+      "14:45 – 15:45: Discover Khai Dinh Tomb with Asian-European design details.",
+      "16:00 – 16:45: Visit Thien Mu Pagoda by the Perfume River.",
+      "16:45 – 18:30: Return to Da Nang. Tour ends.",
     ],
     included: [
-      "Hotel pickup and drop-off",
-      "English-speaking guide",
-      "Entrance tickets",
-      "Boat ride",
-      "Lunch in Hue",
-      "Dinner in Tra Que",
+      "Round-trip transfer",
+      "English/Vietnamese-speaking guide",
+      "All entrance fees",
+      "Specialty Hue lunch",
+      "Bottled water",
     ],
-    notIncluded: ["Drinks", "Tips for guide and driver", "Personal expenses"],
+    notIncluded: ["Personal expenses", "Additional drinks", "Tips for guide"],
     childPolicy: [
-      "Child price available according to package.",
-      "Children under supplier height/age rules may receive discounted rate.",
+      "Child price applies according to joined tour policy.",
+      "Please share child age and height before booking.",
     ],
-    bestFor: ["History lovers", "Culture travelers", "Families", "Slow travelers"],
+    bestFor: [
+      "History lovers",
+      "Culture travelers",
+      "Families",
+      "Slow travelers",
+    ],
     localTips: [
-      "Start early because this is a long full-day trip.",
-      "Bring sun protection.",
-      "Hue food is very special, so enjoy the local meals.",
+      "This is a long day, so start early and wear comfortable shoes.",
+      "Bring sun protection for Citadel and tomb visits.",
+      "Hue food is a highlight, especially for culture-focused travelers.",
     ],
   },
   {
-    title: "Marble Mountains & Son Tra",
+    title: "Marble Mountains & Monkey Mountain Discovery",
     image: "/tour/marble.jpg",
     duration: "08:00 – 14:00 / 14:00 – 18:30",
-    category: "Private Experience",
+    category: "Nature • Culture • Half Day",
     price: {
       adult: 850000,
       child: 650000,
-      note: "Morning tour reference price. Afternoon option from 800,000 VND/adult.",
+      note: "Morning tour: Adult 850,000 VND, Child 650,000 VND. Afternoon tour: Adult 800,000 VND, Child 600,000 VND.",
     },
     description:
-      "Visit caves, temples, Lady Buddha and scenic viewpoints overlooking Da Nang coastline.",
+      "Explore Marble Mountains, pagodas, caves, Non Nuoc Stone Village and Son Tra Peninsula with Lady Buddha ocean views.",
     overview:
-      "A half-day discovery of Marble Mountains and Son Tra Peninsula, combining natural caves, pagodas, ocean views, stone carving village and Linh Ung Pagoda.",
+      "A compact but rich half-day experience combining natural caves, Buddhist pagodas, stone carving village, Son Tra coastal scenery and the famous Lady Buddha at Linh Ung Pagoda.",
     highlights: [
-      "Marble Mountains",
-      "Natural caves",
-      "Stone carving village",
-      "Son Tra Peninsula",
-      "Linh Ung Pagoda",
-      "Lady Buddha",
+      "Marble Mountains caves and pagodas",
+      "Non Nuoc Stone Carving Village",
+      "Son Tra Peninsula scenic views",
+      "Linh Ung Pagoda and Lady Buddha",
+      "Local lunch for morning option",
     ],
     itinerary: [
-      "Hotel pickup and depart for Marble Mountains.",
-      "Explore mystical caves and ancient pagodas.",
-      "Visit Non Nuoc Stone Carving Village.",
-      "Enjoy lunch with local family near Marble Mountains for morning option.",
-      "Transfer to Son Tra Peninsula.",
-      "Visit Linh Ung Pagoda and enjoy panoramic ocean views.",
-      "Return to hotel.",
+      "08:00 – 09:00: Pickup and depart for Marble Mountains.",
+      "09:00 – 11:30: Explore caves and visit Tam Thai and Linh Ung Pagodas on the mountain.",
+      "11:30 – 12:30: Visit Non Nuoc Stone Carving Village.",
+      "12:30 – 13:00: Enjoy traditional Vietnamese lunch with a local family near Marble Mountains. Morning tour only.",
+      "13:00 – 13:30: Transfer to Son Tra Peninsula.",
+      "13:30 – 14:00: Visit Linh Ung Pagoda and enjoy panoramic ocean views.",
+      "Afternoon option follows a shorter route from 14:00 to 18:30 without dinner.",
     ],
     included: [
       "Door-to-door transfer",
       "English-speaking guide",
       "Entrance fees",
       "Bottled water",
-      "Lunch for morning tour",
+      "Lunch for morning tour only",
     ],
     notIncluded: ["Personal expenses", "Additional drinks"],
     childPolicy: [
       "Under 4 years old: free",
-      "5 – 9 years old: 75% adult price",
+      "5 – 9 years old: 75% of adult price",
       "From 10 years old: adult price",
     ],
-    bestFor: ["Families", "Nature lovers", "Culture travelers", "Easy adventure"],
+    bestFor: [
+      "Families",
+      "Nature lovers",
+      "Culture travelers",
+      "Easy adventure",
+    ],
     localTips: [
-      "Wear comfortable shoes for steps and caves.",
-      "Morning or late afternoon is better for photos.",
-      "Respect temple areas and dress politely.",
+      "Wear comfortable shoes because Marble Mountains has stairs and caves.",
+      "Morning and late afternoon are better for light and temperature.",
+      "Dress respectfully for pagoda areas.",
     ],
   },
   {
-    title: "Coconut Forest Basket Boat",
+    title: "Hoi An Cooking Class & Basket Boat",
     image: "/tour/coconut.jpg",
     duration: "08:00 – 13:00 / 14:00 – 19:00",
-    category: "Private Experience",
+    category: "Cooking Class • Basket Boat • Local Cuisine",
     price: {
       adult: 900000,
       child: 650000,
-      note: "Morning cooking class & basket boat package. Afternoon from 1,000,000 VND/adult.",
+      note: "Morning tour: Adult 900,000 VND, Child 650,000 VND. Afternoon tour: Adult 1,000,000 VND, Child 750,000 VND.",
     },
     description:
-      "Enjoy a fun basket boat ride through the coconut jungle and local fishing culture.",
+      "Visit a local market, ride a bamboo basket boat in Cam Thanh Coconut Forest and cook traditional Hoi An dishes.",
     overview:
-      "A fun Hoi An countryside experience combining Cam Thanh Coconut Forest, basket boat ride, local market visit and hands-on cooking class.",
+      "A hands-on Hoi An countryside experience combining market culture, coconut forest, basket boat, fishing demonstrations and cooking class. A strong family-friendly tour for guests who want both fun and local food.",
     highlights: [
-      "Basket boat experience",
-      "Coconut forest",
+      "Bamboo basket boat experience",
+      "Cam Thanh Coconut Forest",
       "Local market visit",
       "Hands-on cooking class",
-      "Local cuisine",
+      "Lunch or dinner with your own dishes",
     ],
     itinerary: [
-      "Pickup at hotel in Hoi An center.",
-      "Visit a local market and hand-pick fresh ingredients.",
-      "Explore Cam Thanh Coconut Forest by bamboo basket boat.",
-      "Watch local fishermen demonstrate traditional fishing.",
-      "Join a cooking class and prepare local dishes.",
-      "Enjoy lunch or dinner and return to hotel.",
+      "08:00 / 14:00: Pickup at your hotel in Hoi An center.",
+      "09:00 / 14:30: Visit a local market and hand-pick fresh ingredients.",
+      "10:00 / 15:30: Explore Cam Thanh Coconut Forest by bamboo basket boat and watch local fishing techniques.",
+      "11:00 / 16:30: Start cooking class with dishes such as papaya salad, braised fish in clay pot, fried spring rolls, stir-fried water spinach and Vietnamese crispy pancake.",
+      "12:15 / 17:45: Enjoy your creations for lunch or dinner.",
+      "13:00 / 19:00: End of program and drop-off.",
     ],
     included: [
       "Round-trip transfer within Hoi An center",
@@ -571,45 +598,46 @@ const tours: Tour[] = [
     notIncluded: ["Personal expenses", "Tips for guide and driver"],
     childPolicy: [
       "Up to 4 years old: free",
-      "5 – 9 years old: 75% adult price",
-      "From 10 years old: adult price",
+      "5 – 9 years old: 75% of adult price",
+      "From 10 years old: charged as adult",
     ],
-    bestFor: ["Families", "Kids", "Groups", "Food lovers"],
+    bestFor: ["Families", "Kids", "Food lovers", "Groups"],
     localTips: [
-      "Can combine with Hoi An Ancient Town.",
-      "Good for families who want a relaxed activity.",
-      "Tell us if you have dietary restrictions.",
+      "Tell us early if you are vegetarian or avoid seafood, pork or spicy food.",
+      "This tour pairs well with Hoi An Ancient Town in the evening.",
+      "Good choice for families who want an easy and interactive activity.",
     ],
   },
   {
-    title: "Cham Island Snorkeling",
+    title: "Cham Island & Snorkeling By Large Wooden Boat",
     image: "/tour/cham.jpg",
     duration: "08:00 – 17:00",
-    category: "Private Experience",
+    category: "Island • Snorkeling • Wooden Boat",
     price: {
       adult: 1550000,
       child: 1200000,
-      note: "Joined tour by large wooden boat.",
+      note: "Joined tour by large wooden boat, capacity around 40–50 guests.",
     },
     description:
-      "Experience crystal-clear waters, coral reefs and tropical island relaxation.",
+      "Sail to Cham Island by large wooden boat, snorkel at two spots, enjoy seafood lunch and relax on the beach.",
     overview:
-      "A full-day Cham Island sea experience with wooden boat transfer, snorkeling at two spots, seafood lunch and free beach time.",
+      "A full-day sea escape from Hoi An/Da Nang for guests who want clear water, coral areas, a relaxed wooden boat journey, seafood lunch and island beach time. Sea conditions are checked before confirmation.",
     highlights: [
-      "Wooden boat round trip",
+      "Large wooden boat round trip",
       "Snorkeling at 2 spots",
       "Seafood lunch",
       "Beach free time",
-      "Island scenery",
+      "Cham Island scenery",
     ],
     itinerary: [
-      "Pickup and transfer to Cua Dai port.",
-      "Board the wooden boat to Cham Island.",
-      "First snorkeling session.",
-      "Move to marine protected area for second snorkeling session.",
-      "Enjoy seafood lunch on the island.",
-      "Free time for resting and sunbathing on the beach.",
-      "Return by wooden boat and transfer back to hotel.",
+      "08:00 – 08:45: Pickup and transfer to Cua Dai Port.",
+      "08:45 – 09:30: Board the wooden boat to Cham Island.",
+      "09:30 – 11:00: First snorkeling session.",
+      "11:00 – 11:30: Move to the marine protected area for the second snorkeling session.",
+      "11:30 – 12:30: Enjoy seafood lunch on the island.",
+      "12:30 – 15:00: Free time for resting and sunbathing on the beach.",
+      "15:00 – 16:00: Board the wooden boat back to mainland.",
+      "16:00 – 17:00: Transfer back and drop-off at your hotel.",
     ],
     included: [
       "Shared wooden boat",
@@ -620,145 +648,151 @@ const tours: Tour[] = [
     ],
     notIncluded: ["Personal drinks", "Other incurred expenses"],
     childPolicy: [
-      "Child price available according to tour package.",
-      "Final child policy depends on boat operator rules.",
+      "Child price applies according to joined tour policy.",
+      "Please share child age before booking.",
     ],
-    bestFor: ["Beach lovers", "Adventure travelers", "Groups", "Families"],
+    bestFor: [
+      "Beach lovers",
+      "Groups",
+      "Families",
+      "Relaxed adventure travelers",
+    ],
     localTips: [
-      "Weather and sea conditions matter for this tour.",
-      "Bring swimwear, towel and sunscreen.",
-      "Best during calm sea season.",
+      "This tour depends strongly on weather and sea conditions.",
+      "Bring swimwear, towel, sunscreen and a change of clothes.",
+      "Best during calm sea season from Hoi An.",
     ],
   },
   {
-    title: "Hai Van Pass OFF-ROAD Motorbike Adventure and Lang Co",
+    title: "Hai Van Pass Off-Road Motorbike Adventure & Lang Co Seafood",
     image: "/tour/haivan.jpg",
     duration: "08:30 – 16:30",
-    category: "Private Experience",
+    category: "Luxury Adventure • Scenic Ride • Seafood",
     price: {
       adult: 2700000,
       child: null,
-      note: "Reference price from Hai Van Pass off-road adventure package.",
+      note: "Private tour reference price: 2,700,000 VND/adult. Best private tour rate available on request.",
     },
     description:
-      "Travel one of Vietnam’s most scenic coastal roads with unforgettable mountain views.",
+      "Ride along one of Vietnam’s most spectacular coastal roads, conquer Hai Van Pass and enjoy Lang Co seafood.",
     overview:
-      "A scenic adventure through Hai Van Pass with mountain views, coastal roads, photo stops and Lang Co fishing village. Ideal for travelers who want a more adventurous Central Vietnam experience.",
+      "A premium scenic adventure for travelers who want something more exciting than a normal city tour. The route combines coastal roads, Hai Van Pass viewpoints, mountain scenery, photo stops and a fresh seafood lunch in Lang Co.",
     highlights: [
-      "Hai Van Pass views",
-      "Off-road adventure style",
-      "Lang Co seafood",
-      "Coastal road",
-      "Photo viewpoints",
+      "Off-road motorbike adventure style",
+      "Hai Van Pass panoramic views",
+      "Lang Co fishing village",
+      "Premium seafood lunch",
+      "Coastal photo stops",
     ],
     itinerary: [
-      "Pickup and receive vehicle or meet driver.",
-      "Ride along the spectacular coastal road.",
-      "Conquer Hai Van Pass and stop for scenic photos.",
-      "Stop at Lang Co fishing village.",
-      "Enjoy premium seafood lunch.",
-      "Leisurely ride back to the city and drop-off.",
+      "08:30 – 09:30: Pickup and receive motorbikes, either self-driving or riding pillion with a safe driver.",
+      "09:30 – 12:00: Ride along the coastal road, conquer Hai Van Pass and stop for photos.",
+      "12:00 – 14:00: Stop at Lang Co fishing village for a premium seafood lunch.",
+      "14:00 – 16:30: Leisurely ride back to the city center and drop-off at your hotel.",
     ],
     included: [
-      "Vehicle with safe driver or self-driving option",
-      "English-speaking guide",
+      "Motorbike with safe driver or self-driving option",
+      "Enthusiastic English-speaking guide",
       "Fresh seafood lunch",
       "Bottled water",
       "Entrance fees",
     ],
     notIncluded: ["Personal expenses", "Additional drinks"],
     childPolicy: [
-      "Contact GoVietStay for child and family pricing.",
-      "Adventure route suitability depends on age and safety conditions.",
+      "Adventure route suitability depends on age, height and safety conditions.",
+      "Please contact GoVietStay before booking for family or child participation.",
     ],
-    bestFor: ["Adventure travelers", "Photographers", "Couples", "Small groups"],
+    bestFor: [
+      "Adventure travelers",
+      "Couples",
+      "Photographers",
+      "Small groups",
+    ],
     localTips: [
-      "Best on clear-weather days.",
-      "Bring sunglasses and sunscreen.",
-      "Great for travelers who want something more unique than a standard city tour.",
+      "Best on clear-weather days for ocean views.",
+      "Bring sunglasses, sunscreen and comfortable clothes.",
+      "Choose pillion rider option if you want to relax and enjoy the scenery safely.",
     ],
   },
   {
-    title: "Da Nang Food Experience",
+    title: "Da Nang Food Tour & Dragon Bridge Fire Show Cruise",
     image: "/tour/food.jpg",
     duration: "15:30 – 21:30",
-    category: "Private Experience",
+    category: "Food • Han River Cruise • Weekend Fire Show",
     price: {
       adult: 1300000,
       child: 1000000,
-      note: "Reference from Da Nang Food Tour & Dragon Bridge Fire Show Cruise.",
+      note: "Joined tour price. Private tour price available on request.",
     },
     description:
-      "Taste authentic local dishes, hidden eateries and the vibrant street food scene.",
+      "Taste more than 6 local dishes, cruise the Han River and enjoy Dragon Bridge fire show on weekend nights.",
     overview:
-      "An evening food and city experience featuring local Da Nang dishes, Han River cruise, night city views and the Dragon Bridge fire show on weekends.",
+      "A strong evening experience for Da Nang visitors. This tour combines local food stops with traveler-friendly hygiene selection, Han River cruise, night city views and Dragon Bridge fire and water show on Friday, Saturday and Sunday nights.",
     highlights: [
-      "6+ authentic dishes",
-      "Local food stops",
-      "Han River cruise",
-      "Dragon Bridge fire show",
-      "Night city views",
+      "6+ authentic local dishes",
+      "Mi Quang, Banh Xeo, Nem Lui and local specialties",
+      "Han River cruise ticket",
+      "Dragon Bridge fire and water show on weekends",
+      "Da Nang night city views",
     ],
     itinerary: [
-      "Hotel pickup.",
-      "Explore local eateries and enjoy 6+ authentic dishes.",
-      "Try Central Vietnam specialties such as Mi Quang, Banh Xeo and local seafood options.",
-      "Board the Han River Cruise.",
-      "Watch the city lights and Dragon Bridge fire show on weekends.",
-      "Transfer back to hotel.",
+      "15:30 – 16:00: Hotel pickup.",
+      "16:00 – 19:00: Explore selected local eateries and enjoy over 6 authentic specialties.",
+      "19:00 – 20:00: Board the Han River Cruise and enjoy the cool breeze and city lights.",
+      "20:00 – 21:15: Watch Dragon Bridge fire and water show on Friday, Saturday or Sunday. On weekdays, enjoy a relaxing cruise view of Da Nang by night.",
+      "21:15 – 21:30: Transfer back to your hotel.",
     ],
     included: [
       "Door-to-door transfer",
       "Local English-speaking guide",
-      "Food experience with more than 6 dishes",
+      "Culinary experience with more than 6 dishes",
       "Entrance fees",
       "Han River cruise ticket",
     ],
     notIncluded: ["Personal drinks", "Tips for guide"],
     childPolicy: [
-      "Child price available according to package.",
-      "Children’s menu can be adjusted when possible.",
+      "Child price applies according to joined tour policy.",
+      "Please tell us if children need lighter food options.",
     ],
     bestFor: ["Food lovers", "Couples", "Small groups", "First-time visitors"],
     localTips: [
       "Tell us if you avoid pork, seafood or spicy food.",
-      "Weekend nights are best for Dragon Bridge fire show.",
-      "This is a strong evening experience for Da Nang.",
+      "Weekend nights are best for the Dragon Bridge fire show.",
+      "Good choice for travelers who want both food and evening sightseeing.",
     ],
   },
   {
-    title: "APHRODITE Cruise - Premium cruise experience",
+    title: "Aphrodite Cruise – Stunning Sunset Escape",
     image: "/tour/cruise.jpg",
     duration: "17:30 – 21:30",
-    category: "Private Experience",
+    category: "Premium Cruise • Sunset • Fine Dining",
     price: {
       adult: 2400000,
-      child: 1900000,
-      note: "Reference from Aphrodite S16 premium sunset cruise package.",
+      child: 1950000,
+      note: "Premium Aphrodite S16 cruise package. Private tour available on request.",
     },
     description:
-      "Enjoy sunset views, city lights and the famous Dragon Bridge along the Han River.",
+      "Enjoy a premium sunset cruise aboard Aphrodite S16 with fine dining, drinks and romantic evening views.",
     overview:
-      "A premium sunset escape aboard Aphrodite S16 with hotel pickup, welcome drinks, sunset sailing, fine dining and relaxing evening views.",
+      "A premium cruise experience designed for couples, families and VIP travelers who want a beautiful sunset, spacious luxury setting, fine dining and relaxing evening atmosphere aboard Aphrodite S16.",
     highlights: [
-      "Premium cruise",
-      "Sunset views",
+      "Premium cruise aboard Aphrodite S16",
+      "Stunning sunset views",
       "Fine dining experience",
-      "Welcome drink",
-      "Memorable moments",
+      "Water, soft drinks and welcome drink",
+      "Romantic and memorable moments",
     ],
     itinerary: [
-      "Hotel pickup and transfer to cruise dock.",
-      "Welcome aboard Aphrodite S16.",
-      "Enjoy drinks and admire the sunset.",
-      "Premium fine dining dinner between courses.",
-      "Return to the dock and transfer back to hotel.",
+      "17:30 – 18:00: Hotel pickup and transfer to the cruise dock.",
+      "18:00 – 19:00: Welcome aboard Aphrodite S16, enjoy drinks and admire the sunset.",
+      "19:00 – 21:00: Enjoy a premium fine dining dinner with live music between courses.",
+      "21:00 – 21:30: Return to the dock and transfer back to your hotel.",
     ],
     included: [
       "Hotel pickup and drop-off",
       "Cruise onboard Aphrodite",
       "Premium fine dining",
-      "Water / soft drinks / welcome drink",
+      "Water, soft drinks and welcome drink",
     ],
     notIncluded: [
       "Additional drinks or cocktails",
@@ -767,14 +801,14 @@ const tours: Tour[] = [
       "VAT",
     ],
     childPolicy: [
-      "Child 4+ years old reference rate available.",
-      "Private cruise conditions may vary by operator.",
+      "Child rate applies for 4–9 years old according to cruise policy.",
+      "Please confirm child age before booking.",
     ],
-    bestFor: ["Couples", "Families", "Luxury travelers", "Evening plans"],
+    bestFor: ["Couples", "Luxury travelers", "Families", "Special occasions"],
     localTips: [
-      "Best for sunset and romantic photos.",
-      "Book early for premium seats.",
-      "Private tour options can be arranged on request.",
+      "Book early for better seating and sunset timing.",
+      "Best for romantic photos and special celebrations.",
+      "Private cruise options can be arranged with advance notice.",
     ],
   },
   {
@@ -836,133 +870,120 @@ const tours: Tour[] = [
     ],
   },
   {
-    title: "ATV Adventure Experience",
+    title: "Jungle ATV Adventure & BBQ Party",
     image: "/tour/ATV.jpg",
-    duration: "Half Day",
-    category: "Adventure Experience",
+    duration: "07:00 – 12:45 / 11:30 – 17:15",
+    category: "Adventure • Half Day • BBQ Party",
     price: {
-      adult: null,
+      adult: 2650000,
       child: null,
-      note: "Contact for updated price. Final price depends on route, group size and operator availability.",
+      note: "Tandem rider: 2,650,000 VND/guest, total 5,300,000 VND/bike. Single rider: 3,500,000 VND/guest.",
     },
     description:
-      "Enjoy an exciting ATV ride through nature trails, local countryside roads and scenic outdoor landscapes.",
+      "Drive an ATV through rice fields, village trails and jungle terrain, then enjoy a BBQ farm feast.",
     overview:
-      "A fun adventure experience near Da Nang for travelers who want something active, exciting and different from a normal sightseeing tour. GoVietStay helps arrange ATV booking, private transfer and local support before and during the experience.",
+      "A high-energy half-day adventure for guests who want adrenaline, countryside scenery and a BBQ finish. This tour is suitable for adventurous travelers and groups who want something different from classic sightseeing.",
     highlights: [
-      "ATV riding experience",
-      "Outdoor adventure",
-      "Nature and countryside scenery",
-      "Photo stops",
-      "Private transfer support",
+      "ATV ride through villages, jungles and muddy terrains",
+      "Rice fields and village trails",
+      "1.5 – 2 hours of self-driving ATV adventure",
+      "Organic farm BBQ party",
+      "Morning and afternoon schedule options",
     ],
     itinerary: [
-      "Hotel pickup from Da Nang or nearby area.",
-      "Transfer to the ATV experience location.",
-      "Safety briefing and basic riding instructions.",
-      "Enjoy ATV riding with local operator support.",
-      "Take photos and relax after the ride.",
-      "Return transfer to hotel.",
+      "07:00 / 11:30: Hotel pickup in Da Nang and transfer about 75 minutes to the farm in Duy Xuyen.",
+      "08:30 / 13:00: Arrive at the farm for safety briefing, ATV training and liability waiver signing.",
+      "09:00 – 11:00 / 13:30 – 15:30: Enjoy 1.5 – 2 hours of ATV driving through traditional villages, rice fields and jungle trails.",
+      "11:00 / 15:30: Enjoy a hot BBQ party with fresh local ingredients. Vegetarian and vegan options available.",
+      "11:30 / 16:00: Transfer back to Da Nang.",
+      "12:45 / 17:15: Drop off at your hotel. Tour ends.",
     ],
     included: [
-      "Trip planning support",
-      "ATV experience arrangement",
-      "Local operator coordination",
-      "WhatsApp support",
-      "Private transfer can be arranged on request",
+      "ATV rental and helmet",
+      "Professional guide",
+      "Refreshments and BBQ meal",
+      "Round-trip hotel transfer",
     ],
-    notIncluded: [
-      "Personal expenses",
-      "Meals and drinks",
-      "Tips",
-      "Insurance unless provided by operator",
-      "Transfer if not selected",
-    ],
+    notIncluded: ["Tips", "Personal drinks"],
     childPolicy: [
-      "Age and height rules depend on operator safety policy.",
-      "Children may ride as passengers only when allowed by the operator.",
-      "Please share child age and height before booking.",
+      "Children from 14 years old can join as tandem riders.",
+      "Under 16 years old are not allowed to drive solo.",
+      "Safety rules depend on operator confirmation.",
     ],
     bestFor: [
       "Adventure travelers",
       "Groups of friends",
       "Couples",
       "Young travelers",
-      "Travelers who want an active experience",
     ],
     localTips: [
       "Wear comfortable clothes and closed shoes.",
-      "Bring sunglasses, sunscreen and a change of clothes if needed.",
-      "Best on clear-weather days.",
-      "GoVietStay can help check safety conditions before booking.",
+      "Bring sunglasses, sunscreen and a change of clothes.",
+      "This tour is best on clear-weather days and may get muddy.",
     ],
   },
   {
     title: "Nui Than Tai Hot Springs Park",
     image: "/tour/Nui Than Tai.jpg",
-    duration: "Full Day",
-    category: "Family Experience",
+    duration: "08:30 – 16:30",
+    category: "Hot Springs • Water Park • Family Day",
     price: {
-      adult: null,
-      child: null,
-      note: "Contact for updated ticket and transfer price.",
+      adult: 2500000,
+      child: 2050000,
+      note: "Joined tour price including transfer, guide, entrance ticket, basic hot spring bath package, premium buffet lunch and bottled water.",
     },
     description:
-      "Relax at Nui Than Tai Hot Springs Park with mineral baths, water park areas, nature scenery and family-friendly activities.",
+      "Relax in natural hot springs, enjoy jacuzzi pools, premium buffet lunch and water park fun in the mountains near Da Nang.",
     overview:
-      "A relaxing full-day experience from Da Nang to Nui Than Tai Hot Springs Park. This is a good choice for families, couples and travelers who want a comfortable nature escape with hot springs, water activities and light entertainment.",
+      "A comfortable full-day nature and relaxation experience for families, couples and groups. Nui Than Tai combines hot springs, jacuzzi, buffet lunch, water park and mountain scenery in an easy day trip from Da Nang.",
     highlights: [
-      "Hot springs",
-      "Mineral bath",
-      "Water park",
-      "Nature scenery",
-      "Family-friendly activities",
+      "Natural hot springs and jacuzzi",
+      "Premium buffet lunch",
+      "Water park and wave pool",
+      "Round-trip transfer",
+      "Mountain resort scenery",
     ],
     itinerary: [
-      "Hotel pickup in Da Nang.",
-      "Transfer to Nui Than Tai Hot Springs Park.",
-      "Enjoy hot springs, mineral bath and water park areas.",
-      "Free time for lunch and relaxing activities.",
-      "Optional paid services inside the park depending on your preference.",
-      "Return transfer to hotel.",
+      "08:30 – 09:30: Pickup and depart for Nui Than Tai Hot Springs Park.",
+      "09:30 – 12:00: Relax in natural hot spring pools and modern jacuzzis.",
+      "12:00 – 13:30: Enjoy a diverse premium buffet lunch at the resort restaurant.",
+      "13:30 – 15:30: Have fun at the Water Park with slides and wave pool.",
+      "15:30 – 16:30: Gather at the vehicle and transfer back to the original pickup point.",
     ],
     included: [
-      "Trip planning support",
-      "Ticket support",
-      "Transfer arrangement",
-      "Local travel advice",
-      "WhatsApp support",
+      "Round-trip transfer",
+      "English/Vietnamese-speaking guide",
+      "Entrance ticket and basic hot spring bath package",
+      "Premium buffet lunch",
+      "Bottled water",
     ],
     notIncluded: [
-      "Entrance ticket if not included in selected package",
-      "Meals and drinks",
       "Personal expenses",
-      "Optional paid services inside the park",
-      "Towels or rental items if required by operator",
+      "Special bath packages such as mud bath, wine bath or tea bath",
+      "Additional drinks",
     ],
     childPolicy: [
-      "Child price depends on park ticket policy.",
+      "Child price depends on park policy and package rules.",
       "Please share child age and height before booking.",
-      "Family pricing can be checked before confirmation.",
     ],
     bestFor: [
       "Families",
       "Couples",
       "Relaxation travelers",
       "Rainy-day backup plan",
-      "Travelers who want an easy day trip from Da Nang",
     ],
     localTips: [
       "Bring swimwear, towel and dry clothes.",
       "Good option for families with children.",
       "Check ticket policy and weather before departure.",
-      "Can be combined with private transfer from Da Nang.",
     ],
   },
 ];
 
 export default function Home() {
   const [selectedTour, setSelectedTour] = useState<Tour | null>(null);
+  const [bookingOpen, setBookingOpen] = useState(false);
+  const [bookingForm, setBookingForm] = useState<BookingForm>(emptyBookingForm);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [selectedTip, setSelectedTip] = useState<LocalTip | null>(null);
   const [selectedMemory, setSelectedMemory] = useState<string | null>(null);
@@ -1011,6 +1032,38 @@ export default function Home() {
         },
       ]);
     }
+  };
+
+  const openBookingForm = () => {
+    setBookingForm(emptyBookingForm);
+    setBookingOpen(true);
+  };
+
+  const handleBookingChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = event.target;
+    setBookingForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const sendBookingRequest = (tour: Tour) => {
+    const message =
+      `BOOKING REQUEST - GoVietStay\n\n` +
+      `Tour: ${tour.title}\n` +
+      `Price note: ${tour.price.note}\n\n` +
+      `Guest name: ${bookingForm.fullName || "Not provided"}\n` +
+      `WhatsApp / Phone: ${bookingForm.whatsapp || "Not provided"}\n` +
+      `Email: ${bookingForm.email || "Not provided"}\n` +
+      `Travel date: ${bookingForm.travelDate || "Not specified"}\n` +
+      `Adults: ${bookingForm.adults || "Not specified"}\n` +
+      `Children: ${bookingForm.children || "None / Not specified"}\n` +
+      `Hotel: ${bookingForm.hotel || "Not specified"}\n` +
+      `Pickup location: ${bookingForm.pickupLocation || "Not specified"}\n` +
+      `Special request: ${bookingForm.specialRequest || "None"}\n\n` +
+      `Please confirm availability and send the best booking details. Thank you.\n` +
+      `Website: GoVietStay.com`;
+
+    window.open(buildWhatsAppLink(message), "_blank", "noopener,noreferrer");
   };
 
   useEffect(() => {
@@ -1328,7 +1381,9 @@ export default function Home() {
                 <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#0b6b4f]/10 text-3xl">
                   {item.icon}
                 </div>
-                <h3 className="mt-5 text-lg md:text-xl font-bold">{item.title}</h3>
+                <h3 className="mt-5 text-lg md:text-xl font-bold">
+                  {item.title}
+                </h3>
                 <p className="mt-3 text-sm md:text-base text-[#06251b]/70 leading-relaxed">
                   {item.text}
                 </p>
@@ -1340,9 +1395,12 @@ export default function Home() {
             <div className="flex items-start gap-4">
               <div className="text-4xl">🌐</div>
               <div>
-                <h3 className="font-bold text-lg">More Than Tours — Your Local Friend In Central Vietnam</h3>
+                <h3 className="font-bold text-lg">
+                  More Than Tours — Your Local Friend In Central Vietnam
+                </h3>
                 <p className="mt-1 text-[#06251b]/70">
-                  From airport arrival to your last day, GoVietStay is here to help you travel with confidence.
+                  From airport arrival to your last day, GoVietStay is here to
+                  help you travel with confidence.
                 </p>
               </div>
             </div>
@@ -1359,7 +1417,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="founder" className="bg-[#f7f1df] text-[#06251b] px-4 md:px-20 pb-24">
+      <section
+        id="founder"
+        className="bg-[#f7f1df] text-[#06251b] px-4 md:px-20 pb-24"
+      >
         <div className="max-w-7xl mx-auto w-full rounded-[2rem] overflow-hidden border border-[#0b6b4f]/15 bg-white/75 shadow-xl shadow-[#06251b]/5">
           <div className="grid grid-cols-1 lg:grid-cols-2">
             <div className="relative min-h-[520px] lg:min-h-[720px] bg-[#d8c7a1]">
@@ -1436,7 +1497,8 @@ export default function Home() {
 
               <div className="mt-9 rounded-3xl border border-[#0b6b4f]/20 bg-[#f7f1df] p-5 md:p-6">
                 <p className="text-xl md:text-2xl font-bold leading-relaxed">
-                  “We don&apos;t sell tours. We create experiences and build trust.”
+                  “We don&apos;t sell tours. We create experiences and build
+                  trust.”
                 </p>
               </div>
 
@@ -1462,7 +1524,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="experiences" className="bg-[#071f17] text-white px-4 md:px-20 py-24">
+      <section
+        id="experiences"
+        className="bg-[#071f17] text-white px-4 md:px-20 py-24"
+      >
         <div className="max-w-7xl mx-auto w-full">
           <p className="text-yellow-400 uppercase tracking-[4px] text-sm font-semibold">
             Featured Experiences
@@ -1474,7 +1539,8 @@ export default function Home() {
 
           <p className="mt-6 text-white/70 max-w-2xl text-lg">
             Handpicked private experiences across Da Nang, Hoi An and Hue —
-            designed for travelers who want comfort, trust and authentic local support.
+            designed for travelers who want comfort, trust and authentic local
+            support.
           </p>
 
           <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-4 md:gap-6">
@@ -1492,7 +1558,9 @@ export default function Home() {
                   className="h-40 md:h-44 w-full object-cover rounded-2xl mb-5 md:mb-6"
                 />
 
-                <h3 className="text-xl md:text-2xl font-bold leading-tight">{tour.title}</h3>
+                <h3 className="text-xl md:text-2xl font-bold leading-tight">
+                  {tour.title}
+                </h3>
 
                 <div className="mt-2 text-xs text-yellow-400 uppercase tracking-wider">
                   {tour.category}
@@ -1517,7 +1585,7 @@ export default function Home() {
                 </div>
 
                 <button className="mt-6 text-yellow-400 font-semibold">
-                  View details →
+                  View details / Book Now →
                 </button>
               </div>
             ))}
@@ -1525,7 +1593,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="travelers" className="bg-[#f7f1df] text-[#06251b] px-4 md:px-20 py-24">
+      <section
+        id="travelers"
+        className="bg-[#f7f1df] text-[#06251b] px-4 md:px-20 py-24"
+      >
         <div className="max-w-7xl mx-auto w-full">
           <p className="text-green-800 uppercase tracking-[4px] text-sm font-semibold">
             International Travelers
@@ -1536,8 +1607,9 @@ export default function Home() {
           </h2>
 
           <p className="mt-6 text-[#06251b]/70 max-w-3xl text-lg">
-            Travelers from India, Russia, Kazakhstan, Germany, Australia and many
-            other countries have explored Central Vietnam with GoVietStay local support.
+            Travelers from India, Russia, Kazakhstan, Germany, Australia and
+            many other countries have explored Central Vietnam with GoVietStay
+            local support.
           </p>
 
           <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -1569,7 +1641,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="happy-travelers" className="relative bg-[#f7f1df] text-[#06251b] px-4 md:px-20 py-24 overflow-hidden">
+      <section
+        id="happy-travelers"
+        className="relative bg-[#f7f1df] text-[#06251b] px-4 md:px-20 py-24 overflow-hidden"
+      >
         <div className="absolute inset-0 opacity-70 bg-[radial-gradient(circle_at_top_left,rgba(11,107,79,0.10),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(255,196,0,0.20),transparent_40%)]" />
 
         <div className="relative max-w-7xl mx-auto w-full">
@@ -1583,7 +1658,8 @@ export default function Home() {
             </h2>
 
             <p className="mt-6 text-[#06251b]/70 max-w-3xl text-lg leading-relaxed">
-              A simple wall of real guest photos from GoVietStay journeys. No staged advertising — just real travelers and real memories.
+              A simple wall of real guest photos from GoVietStay journeys. No
+              staged advertising — just real travelers and real memories.
             </p>
           </div>
 
@@ -1626,7 +1702,8 @@ export default function Home() {
                 Real photos. Real travelers. Real trust.
               </h3>
               <p className="mt-2 text-[#06251b]/65">
-                GoVietStay keeps this gallery alive with guest photos from real tour days.
+                GoVietStay keeps this gallery alive with guest photos from real
+                tour days.
               </p>
             </div>
 
@@ -1665,8 +1742,12 @@ export default function Home() {
                 className="cursor-pointer w-full rounded-3xl bg-white/5 border border-white/10 p-6 md:p-8 hover:bg-white/10 hover:-translate-y-1 transition duration-300"
               >
                 <div className="text-5xl mb-6">{service.icon}</div>
-                <h3 className="text-xl md:text-2xl font-bold">{service.title}</h3>
-                <p className="mt-4 text-white/70 text-base md:text-lg leading-relaxed">{service.description}</p>
+                <h3 className="text-xl md:text-2xl font-bold">
+                  {service.title}
+                </h3>
+                <p className="mt-4 text-white/70 text-base md:text-lg leading-relaxed">
+                  {service.description}
+                </p>
                 <p className="mt-5 text-yellow-400 font-semibold">
                   View service →
                 </p>
@@ -1676,7 +1757,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="local-tips" className="bg-[#f7f1df] text-[#06251b] px-4 md:px-20 py-24">
+      <section
+        id="local-tips"
+        className="bg-[#f7f1df] text-[#06251b] px-4 md:px-20 py-24"
+      >
         <div className="max-w-7xl mx-auto w-full">
           <p className="text-green-800 uppercase tracking-[4px] text-sm font-semibold">
             Local Tips
@@ -1687,7 +1771,8 @@ export default function Home() {
           </h2>
 
           <p className="mt-6 text-[#06251b]/70 max-w-3xl text-lg">
-            Simple local guidance to help you enjoy Da Nang, Hoi An and Hue with more confidence.
+            Simple local guidance to help you enjoy Da Nang, Hoi An and Hue with
+            more confidence.
           </p>
 
           <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-4 md:gap-6">
@@ -1699,7 +1784,9 @@ export default function Home() {
               >
                 <div className="text-5xl mb-6">{tip.icon}</div>
                 <h3 className="text-xl md:text-2xl font-bold">{tip.title}</h3>
-                <p className="mt-4 text-[#06251b]/70 text-base md:text-lg leading-relaxed">{tip.description}</p>
+                <p className="mt-4 text-[#06251b]/70 text-base md:text-lg leading-relaxed">
+                  {tip.description}
+                </p>
                 <button className="mt-6 text-green-800 font-semibold">
                   Read more →
                 </button>
@@ -1754,7 +1841,8 @@ export default function Home() {
           </div>
 
           <p className="mt-6 text-sm text-[#06251b]/60">
-            Tip: hover on desktop to pause the board. On mobile, you can swipe horizontally.
+            Tip: hover on desktop to pause the board. On mobile, you can swipe
+            horizontally.
           </p>
         </div>
       </section>
@@ -1770,7 +1858,8 @@ export default function Home() {
           </h2>
 
           <p className="mt-6 text-white/70 max-w-3xl mx-auto text-lg">
-            Real travelers choose GoVietStay for private tours, local support and smooth travel experiences across Central Vietnam.
+            Real travelers choose GoVietStay for private tours, local support
+            and smooth travel experiences across Central Vietnam.
           </p>
 
           <div className="mt-12 rounded-3xl bg-white/5 border border-white/10 p-8 md:p-12">
@@ -1781,7 +1870,8 @@ export default function Home() {
             </h3>
 
             <p className="mt-4 text-white/70 max-w-2xl mx-auto">
-              Your review helps other international travelers discover trusted local support in Da Nang, Hoi An and Hue.
+              Your review helps other international travelers discover trusted
+              local support in Da Nang, Hoi An and Hue.
             </p>
 
             <a
@@ -1796,7 +1886,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="contact" className="relative bg-[#071f17] text-white px-4 md:px-20 py-32 overflow-hidden">
+      <section
+        id="contact"
+        className="relative bg-[#071f17] text-white px-4 md:px-20 py-32 overflow-hidden"
+      >
         <div className="max-w-5xl mx-auto w-full text-center">
           <p className="text-yellow-400 uppercase tracking-[4px] text-sm font-semibold">
             Ready To Explore Vietnam?
@@ -1929,7 +2022,6 @@ export default function Home() {
         </div>
       </footer>
 
-
       {/* ĐÀO FLOATING LOCAL TRAVEL ASSISTANT */}
       <div className="fixed bottom-20 right-4 md:bottom-6 md:right-6 z-40">
         <button
@@ -2018,7 +2110,7 @@ export default function Home() {
 
               <a
                 href={buildWhatsAppLink(
-                  "Hello GoVietStay, I would like help planning my trip with Đào."
+                  "Hello GoVietStay, I would like help planning my trip with Đào.",
                 )}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -2103,7 +2195,9 @@ export default function Home() {
 
               <div className="mt-8 md:mt-10 grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
                 <div className="rounded-3xl bg-white/60 border border-[#06251b]/10 p-5 md:p-6">
-                  <h3 className="text-xl md:text-2xl font-bold">Service Details</h3>
+                  <h3 className="text-xl md:text-2xl font-bold">
+                    Service Details
+                  </h3>
                   <ul className="mt-4 space-y-2 text-[#06251b]/75">
                     {selectedService.details.map((item) => (
                       <li key={item}>• {item}</li>
@@ -2124,7 +2218,7 @@ export default function Home() {
               <div className="mt-10 flex flex-wrap gap-4">
                 <a
                   href={`https://wa.me/84937762607?text=${encodeURIComponent(
-                    `Hello GoVietStay, I would like to ask about ${selectedService.title}.`
+                    `Hello GoVietStay, I would like to ask about ${selectedService.title}.`,
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -2179,7 +2273,9 @@ export default function Home() {
 
               <div className="mt-8 md:mt-10 grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
                 <div className="rounded-3xl bg-white/60 border border-[#06251b]/10 p-5 md:p-6">
-                  <h3 className="text-xl md:text-2xl font-bold">Local Guidance</h3>
+                  <h3 className="text-xl md:text-2xl font-bold">
+                    Local Guidance
+                  </h3>
                   <ul className="mt-4 space-y-2 text-[#06251b]/75">
                     {selectedTip.details.map((item) => (
                       <li key={item}>• {item}</li>
@@ -2200,7 +2296,7 @@ export default function Home() {
               <div className="mt-10 flex flex-wrap gap-4">
                 <a
                   href={`https://wa.me/84937762607?text=${encodeURIComponent(
-                    `Hello GoVietStay, I would like to ask about local tips: ${selectedTip.title}.`
+                    `Hello GoVietStay, I would like to ask about local tips: ${selectedTip.title}.`,
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -2224,7 +2320,10 @@ export default function Home() {
       {selectedTour && (
         <div
           className="gvs-overlay fixed inset-0 z-50 bg-black/80 flex items-end md:items-center justify-center p-0 md:p-6"
-          onClick={() => setSelectedTour(null)}
+          onClick={() => {
+            setSelectedTour(null);
+            setBookingOpen(false);
+          }}
         >
           <div
             className="gvs-panel bg-[#f7f1df] text-[#06251b] rounded-t-3xl md:rounded-3xl max-w-6xl w-full max-h-[92svh] md:max-h-[90vh] overflow-y-auto overscroll-contain shadow-2xl"
@@ -2255,7 +2354,10 @@ export default function Home() {
                 </div>
 
                 <button
-                  onClick={() => setSelectedTour(null)}
+                  onClick={() => {
+                    setSelectedTour(null);
+                    setBookingOpen(false);
+                  }}
                   className="text-3xl font-bold leading-none hover:opacity-60"
                 >
                   ×
@@ -2301,7 +2403,9 @@ export default function Home() {
               </p>
 
               <div className="mt-10">
-                <h3 className="text-xl md:text-2xl font-bold">Detailed Itinerary</h3>
+                <h3 className="text-xl md:text-2xl font-bold">
+                  Detailed Itinerary
+                </h3>
                 <div className="mt-5 space-y-4">
                   {selectedTour.itinerary.map((item, index) => (
                     <div key={item} className="flex gap-4">
@@ -2329,7 +2433,9 @@ export default function Home() {
                     key={title as string}
                     className="rounded-3xl bg-white/60 border border-[#06251b]/10 p-5 md:p-6"
                   >
-                    <h3 className="text-xl md:text-2xl font-bold">{title as string}</h3>
+                    <h3 className="text-xl md:text-2xl font-bold">
+                      {title as string}
+                    </h3>
                     <ul className="mt-4 space-y-2 text-[#06251b]/75">
                       {(items as string[]).map((item) => (
                         <li key={item}>• {item}</li>
@@ -2340,24 +2446,119 @@ export default function Home() {
               </div>
 
               <div className="mt-10 flex flex-wrap gap-4">
-                <a
-                  href={`https://wa.me/84937762607?text=${encodeURIComponent(
-                    `Hello GoVietStay, I would like to ask about ${selectedTour.title}.`
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-full bg-green-600 px-8 py-4 font-semibold text-white hover:bg-green-700 transition"
+                <button
+                  onClick={openBookingForm}
+                  className="rounded-full bg-green-600 px-8 py-4 font-semibold text-white hover:bg-green-700 transition shadow-lg shadow-green-900/20"
                 >
-                  Plan This Tour on WhatsApp
-                </a>
+                  Book Now
+                </button>
 
                 <button
-                  onClick={() => setSelectedTour(null)}
+                  onClick={() => {
+                    setSelectedTour(null);
+                    setBookingOpen(false);
+                  }}
                   className="rounded-full border border-[#06251b]/30 px-8 py-4 font-semibold hover:bg-[#06251b] hover:text-white transition"
                 >
                   Close
                 </button>
               </div>
+
+              {bookingOpen && (
+                <div className="mt-8 rounded-[2rem] bg-white border border-[#06251b]/10 p-5 md:p-8 shadow-xl shadow-[#06251b]/10">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="text-green-800 uppercase tracking-[3px] text-xs font-semibold">
+                        Secure Booking Request
+                      </p>
+                      <h3 className="mt-2 text-2xl md:text-3xl font-bold">
+                        Book This Tour
+                      </h3>
+                      <p className="mt-2 text-[#06251b]/65 leading-relaxed">
+                        Fill in your details. When you tap Send Booking Request,
+                        WhatsApp will open with the full booking information
+                        ready to send to GoVietStay.
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={() => setBookingOpen(false)}
+                      className="text-2xl font-bold leading-none hover:opacity-60"
+                    >
+                      ×
+                    </button>
+                  </div>
+
+                  <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {[
+                      ["fullName", "Full Name *", "Your full name"],
+                      ["whatsapp", "WhatsApp / Phone *", "+84 / +7 / +82 ..."],
+                      ["email", "Email", "Your email address"],
+                      ["travelDate", "Travel Date", "dd/mm/yyyy"],
+                      ["adults", "Adults *", "e.g. 2"],
+                      ["children", "Children", "e.g. 1 child, 6 years old"],
+                      ["hotel", "Hotel Name", "Your hotel name"],
+                      [
+                        "pickupLocation",
+                        "Pickup Location",
+                        "Hotel / address / airport",
+                      ],
+                    ].map(([name, label, placeholder]) => (
+                      <label key={name} className="block">
+                        <span className="text-sm font-semibold text-[#06251b]/80">
+                          {label}
+                        </span>
+                        <input
+                          name={name}
+                          value={bookingForm[name as keyof BookingForm]}
+                          onChange={handleBookingChange}
+                          placeholder={placeholder}
+                          className="mt-2 w-full rounded-2xl border border-[#06251b]/15 bg-[#f7f1df]/40 px-4 py-3 text-[#06251b] outline-none focus:border-green-700 focus:bg-white"
+                        />
+                      </label>
+                    ))}
+
+                    <label className="block md:col-span-2">
+                      <span className="text-sm font-semibold text-[#06251b]/80">
+                        Special Requests
+                      </span>
+                      <textarea
+                        name="specialRequest"
+                        value={bookingForm.specialRequest}
+                        onChange={handleBookingChange}
+                        placeholder="Dietary requirements, private tour request, Russian/English guide, mobility needs, etc."
+                        rows={4}
+                        className="mt-2 w-full rounded-2xl border border-[#06251b]/15 bg-[#f7f1df]/40 px-4 py-3 text-[#06251b] outline-none focus:border-green-700 focus:bg-white"
+                      />
+                    </label>
+                  </div>
+
+                  <div className="mt-5 rounded-2xl bg-green-50 border border-green-700/15 p-4 text-green-900">
+                    <p className="font-bold">WhatsApp booking preview</p>
+                    <p className="mt-1 text-sm leading-relaxed">
+                      Tour name, price note, guest details, travel date, hotel,
+                      pickup location and special requests will be sent to +84
+                      937 762 607.
+                    </p>
+                  </div>
+
+                  <div className="mt-6 flex flex-wrap gap-4">
+                    <button
+                      onClick={() => sendBookingRequest(selectedTour)}
+                      className="rounded-full bg-green-600 px-8 py-4 font-semibold text-white hover:bg-green-700 transition"
+                    >
+                      Send Booking Request
+                    </button>
+
+                    <button
+                      onClick={() => setBookingOpen(false)}
+                      className="rounded-full border border-[#06251b]/30 px-8 py-4 font-semibold hover:bg-[#06251b] hover:text-white transition"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -2365,4 +2566,3 @@ export default function Home() {
     </main>
   );
 }
-
