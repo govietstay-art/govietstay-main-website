@@ -154,7 +154,7 @@ const travelers: Traveler[] = [
 const services: Service[] = [
   {
     icon: "🚕",
-    title: "Airport Transfer",
+    title: "Da Nang Airport Transfer",
     description:
       "Convenient airport pickup and drop-off with trusted local drivers.",
     price: "Contact for route-based price",
@@ -216,7 +216,7 @@ const services: Service[] = [
   },
   {
     icon: "💬",
-    title: "Travel Support 24/7",
+    title: "Local Travel Support & WhatsApp Travel Assistant",
     description: "Fast local assistance before and during your journey.",
     price: "Free consultation on WhatsApp",
     details: [
@@ -322,7 +322,7 @@ const travelUpdates = [
 ];
 const tours: Tour[] = [
   {
-    title: "Full Day Ba Na Hills & Golden Bridge",
+    title: "Ba Na Hills Tour & Golden Bridge From Da Nang",
     image: "/tour/bana.jpg",
     duration: "08:00 – 17:00 / 11:30 – 19:00",
     category: "Mountain • Iconic Landmark • Family Favorite",
@@ -379,7 +379,7 @@ const tours: Tour[] = [
     ],
   },
   {
-    title: "Hoi An By Night & Flower Lantern Release Experience",
+    title: "Hoi An Tours: Ancient Town By Night & Lantern Release",
     image: "/tour/hoian.jpg",
     duration: "15:15 – 19:30",
     category: "Heritage • Lantern Night • Joined Tour",
@@ -427,7 +427,7 @@ const tours: Tour[] = [
     ],
   },
   {
-    title: "Hue Imperial City Heritage Journey",
+    title: "Hue Tours: Imperial City Heritage Journey",
     image: "/tour/hue.jpg",
     duration: "07:30 – 18:30",
     category: "Heritage • Full Day By Car • Joined Tour",
@@ -483,7 +483,7 @@ const tours: Tour[] = [
     ],
   },
   {
-    title: "Marble Mountains & Monkey Mountain Discovery",
+    title: "Marble Mountains Tour & Monkey Mountain Discovery",
     image: "/tour/marble.jpg",
     duration: "08:00 – 14:00 / 14:00 – 18:30",
     category: "Nature • Culture • Half Day",
@@ -538,7 +538,7 @@ const tours: Tour[] = [
     ],
   },
   {
-    title: "Hoi An Cooking Class & Basket Boat",
+    title: "Hoi An Basket Boat Tour & Cooking Class",
     image: "/tour/coconut.jpg",
     duration: "08:00 – 13:00 / 14:00 – 19:00",
     category: "Cooking Class • Basket Boat • Local Cuisine",
@@ -589,7 +589,7 @@ const tours: Tour[] = [
     ],
   },
   {
-    title: "Cham Island & Snorkeling By Large Wooden Boat",
+    title: "Cham Island Tour & Snorkeling By Wooden Boat",
     image: "/tour/cham.jpg",
     duration: "08:00 – 17:00",
     category: "Island • Snorkeling • Wooden Boat",
@@ -644,7 +644,7 @@ const tours: Tour[] = [
     ],
   },
   {
-    title: "Hai Van Pass Off-Road Motorbike Adventure & Lang Co Seafood",
+    title: "Hai Van Pass Tour: Off-Road Motorbike Adventure & Lang Co Seafood",
     image: "/tour/haivan.jpg",
     duration: "08:30 – 16:30",
     category: "Luxury Adventure • Scenic Ride • Seafood",
@@ -695,7 +695,7 @@ const tours: Tour[] = [
     ],
   },
   {
-    title: "Da Nang Food Tour & Dragon Bridge Fire Show Cruise",
+    title: "Da Nang Tours: Food Tour & Dragon Bridge Fire Show Cruise",
     image: "/tour/food.jpg",
     duration: "15:30 – 21:30",
     category: "Food • Han River Cruise • Weekend Fire Show",
@@ -742,7 +742,7 @@ const tours: Tour[] = [
     ],
   },
   {
-    title: "Aphrodite Cruise – Stunning Sunset Escape",
+    title: "Da Nang Sunset Cruise – Aphrodite Premium Experience",
     image: "/tour/cruise.jpg",
     duration: "17:30 – 21:30",
     category: "Premium Cruise • Sunset • Fine Dining",
@@ -1048,6 +1048,9 @@ export default function Home() {
   };
 
   useEffect(() => {
+    document.title =
+      "GoVietStay | Da Nang Tours • Hoi An Tours • Hue Tours • Private Tours Vietnam";
+
     fetch("/api/happy-travelers")
       .then((res) => res.json())
       .then((files) => {
@@ -1060,10 +1063,6 @@ export default function Home() {
       .catch(() => {
         setHappyTravelers([]);
       });
-  }, []);
-
-  useEffect(() => {
-    document.title = "GoVietStay | Da Nang • Hoi An • Hue";
   }, []);
 
   return (
@@ -1274,8 +1273,28 @@ export default function Home() {
             </h1>
 
             <p className="mt-7 text-lg md:text-2xl text-white/90 max-w-2xl leading-relaxed">
-              Private tours, local guides and WhatsApp support 24/7.
+              Private Tours in Da Nang, Hoi An & Hue. Golden Bridge Tour, Ba Na Hills Tour, Cham Island Tour, Da Nang Airport Transfer and Local Travel Support with WhatsApp Travel Assistant 24/7.
             </p>
+
+            <div className="mt-6 flex flex-wrap gap-2 text-xs md:text-sm text-white/85">
+              {[
+                "Da Nang Tours",
+                "Hoi An Tours",
+                "Hue Tours",
+                "Private Tours Vietnam",
+                "Golden Bridge Tour",
+                "Ba Na Hills Tour",
+                "Cham Island Tour",
+                "Da Nang Airport Transfer",
+              ].map((keyword) => (
+                <span
+                  key={keyword}
+                  className="rounded-full border border-white/25 bg-black/25 px-3 py-2 backdrop-blur-sm"
+                >
+                  {keyword}
+                </span>
+              ))}
+            </div>
 
             <div className="mt-9 flex flex-wrap gap-4">
               <a
@@ -1305,15 +1324,15 @@ export default function Home() {
             <div className="mt-12 hidden md:grid grid-cols-3 gap-8 text-sm text-white/80">
               <div>
                 <p className="font-bold text-white">Private Tours</p>
-                <p>Flexible local itineraries</p>
+                <p>Da Nang Tours • Hoi An Tours</p>
               </div>
               <div>
                 <p className="font-bold text-white">Trusted Support</p>
-                <p>Da Nang • Hoi An • Hue</p>
+                <p>Private Tours Vietnam</p>
               </div>
               <div>
                 <p className="font-bold text-white">WhatsApp 24/7</p>
-                <p>Fast travel assistance</p>
+                <p>WhatsApp Travel Assistant</p>
               </div>
             </div>
           </div>
@@ -1332,8 +1351,7 @@ export default function Home() {
             </h2>
 
             <p className="mt-5 text-[#06251b]/70 text-base md:text-lg leading-relaxed">
-              More than tours, GoVietStay gives travelers trusted local support,
-              flexible planning and real help before and during the journey.
+              More than Da Nang Tours, Hoi An Tours and Hue Tours, GoVietStay gives travelers trusted Local Travel Support, flexible Private Tours Vietnam planning and real help before and during the journey.
             </p>
           </div>
 
@@ -1530,13 +1548,11 @@ export default function Home() {
           </p>
 
           <h2 className="mt-4 text-4xl md:text-6xl font-bold">
-            Curated Local Tours
+Da Nang Tours, Hoi An Tours & Hue Tours
           </h2>
 
           <p className="mt-6 text-white/70 max-w-2xl text-lg">
-            Handpicked private experiences across Da Nang, Hoi An and Hue —
-            designed for travelers who want comfort, trust and authentic local
-            support.
+            Handpicked Private Tours Vietnam experiences including Golden Bridge Tour, Ba Na Hills Tour, Cham Island Tour, Hoi An Tours, Hue Tours and Da Nang Airport Transfer — designed for travelers who want comfort, trust and authentic Local Travel Support.
           </p>
 
           <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-4 md:gap-6">
@@ -1898,8 +1914,7 @@ export default function Home() {
           </h2>
 
           <p className="mt-8 text-xl text-white/70 max-w-3xl mx-auto">
-            Private tours, trusted local support and fast WhatsApp assistance
-            for travelers visiting Da Nang, Hoi An and Hue.
+            Da Nang Tours, Hoi An Tours, Hue Tours, Private Tours Vietnam, Da Nang Airport Transfer and fast WhatsApp Travel Assistant support for travelers visiting Central Vietnam.
           </p>
 
           <div className="mt-12 flex flex-wrap justify-center gap-4">
@@ -1928,20 +1943,20 @@ export default function Home() {
             <div>
               <h3 className="text-xl md:text-2xl font-bold">GoVietStay</h3>
               <p className="mt-4 text-white/60 leading-relaxed">
-                Private Tours • Local Guide • Travel Support
+                Da Nang Tours • Hoi An Tours • Hue Tours
                 <br />
-                Da Nang • Hoi An • Hue • Phu Quoc
+                Private Tours Vietnam • Local Travel Support
                 <br />
-                WhatsApp +84 937 762 607
+                WhatsApp Travel Assistant +84 937 762 607
               </p>
             </div>
 
             <div>
               <h4 className="font-bold mb-4">Destinations</h4>
               <ul className="space-y-2 text-white/60">
-                <li>Da Nang</li>
-                <li>Hoi An</li>
-                <li>Hue</li>
+                <li>Da Nang Tours</li>
+                <li>Hoi An Tours</li>
+                <li>Hue Tours</li>
                 <li>Phu Quoc</li>
               </ul>
             </div>
@@ -1949,10 +1964,12 @@ export default function Home() {
             <div>
               <h4 className="font-bold mb-4">Services</h4>
               <ul className="space-y-2 text-white/60">
-                <li>Private Tours</li>
-                <li>Airport Transfer</li>
-                <li>SIM & eSIM</li>
-                <li>Travel Support</li>
+                <li>Private Tours Vietnam</li>
+                <li>Da Nang Airport Transfer</li>
+                <li>Golden Bridge Tour</li>
+                <li>Ba Na Hills Tour</li>
+                <li>Cham Island Tour</li>
+                <li>Local Travel Support</li>
               </ul>
             </div>
 
@@ -2010,6 +2027,13 @@ export default function Home() {
                 </div>
               </div>
             </div>
+          </div>
+
+          <div className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-5 md:p-6">
+            <h4 className="font-bold text-white mb-3">GoVietStay Travel Keywords</h4>
+            <p className="text-white/55 leading-relaxed text-sm md:text-base">
+              Da Nang Tours • Hoi An Tours • Hue Tours • Private Tours Vietnam • Golden Bridge Tour • Ba Na Hills Tour • Cham Island Tour • Da Nang Airport Transfer • Local Travel Support • WhatsApp Travel Assistant
+            </p>
           </div>
 
           <div className="mt-12 pt-8 border-t border-white/10 text-center text-white/40">
