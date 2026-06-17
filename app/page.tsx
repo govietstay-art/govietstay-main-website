@@ -151,26 +151,6 @@ const travelers: Traveler[] = [
   },
 ];
 
-const happyTravelers: string[] = [
-  "/happy-travelers/b66d3c9a-5c40-46f4-af45-90d5cca43dba.jpg",
-  "/happy-travelers/15fd8898-ebeb-423d-8f81-98c183a63b28.jpg",
-  "/happy-travelers/Russian Phu Quoc.jpg",
-  "/happy-travelers/1143580ef7c676982fd7.jpg",
-  "/happy-travelers/2aOboQdyF3pPeVvoqqkK39tKsJX7qF5IhFsJkHw4e.jpg",
-  "/happy-travelers/2aOboQdyE5Azj1HQrXiuV2wRAuqacyKZApkzFoG0.jpg",
-  "/happy-travelers/2aOboQdyE33JtbHDcgPnXreZxoz25djT8IOPatg8.jpg",
-  "/happy-travelers/2aOboQdyDyCZxjvWS4pWAGlfpiDW7d741DX3HbsG.jpg",
-  "/happy-travelers/2aOboQdyDmGiI6D5nUtB6GtbAErALMJqnGPZgyeW.jpg",
-  "/happy-travelers/2aOboQdyC7qu1jqWmUYWAj5mtfXgsCc0yJpIzbv6.jpg",
-  "/happy-travelers/b975e8e3472bc6759f3a.jpg",
-  "/happy-travelers/Isreal Danang.jpg",
-  "/happy-travelers/Russian Banahill.jpg",
-  "/happy-travelers/2aOboQdyL3wgpfXkhVi29MRms4rbEcuoJ15N8HIA.jpg",
-  "/happy-travelers/2aOboQdyL9ZDgHIAx1szhULH9i1BNmcpgIlKffaC.jpg",
-  "/happy-travelers/2aOboQdyKwj85EjVztQtyU2GDFEOygiNG3XvnyxU.jpg",
-  "/happy-travelers/2aOboQdyKfMVLTHO65WubUJL6b87fb4iUyFRacRk.jpg",
-];
-
 const services: Service[] = [
   {
     icon: "🚕",
@@ -987,6 +967,7 @@ export default function Home() {
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [selectedTip, setSelectedTip] = useState<LocalTip | null>(null);
   const [selectedMemory, setSelectedMemory] = useState<string | null>(null);
+  const [happyTravelers, setHappyTravelers] = useState<string[]>([]);
   const [daoOpen, setDaoOpen] = useState(false);
   const [daoInput, setDaoInput] = useState("");
   const [daoMessages, setDaoMessages] = useState<ChatMessage[]>([
@@ -1065,6 +1046,21 @@ export default function Home() {
 
     window.open(buildWhatsAppLink(message), "_blank", "noopener,noreferrer");
   };
+
+  useEffect(() => {
+    fetch("/api/happy-travelers")
+      .then((res) => res.json())
+      .then((files) => {
+        if (!Array.isArray(files)) return;
+
+        setHappyTravelers(
+          files.map((file: string) => `/happy-travelers/${file}`),
+        );
+      })
+      .catch(() => {
+        setHappyTravelers([]);
+      });
+  }, []);
 
   useEffect(() => {
     document.title = "GoVietStay | Da Nang • Hoi An • Hue";
