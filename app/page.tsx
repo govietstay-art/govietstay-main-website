@@ -281,11 +281,24 @@ const ticketAttractions: TicketAttraction[] = [
     description:
       "Hot springs, water park and mountain relaxation packages for families and groups.",
     packages: [
-      { name: "Nui Than Tai Ticket", govietstayPrice: 0, details: "Contact GoVietStay for the latest package price before booking." },
+      { name: "Standard Package - Adult", officialPrice: 471000, govietstayPrice: 451000, details: "Popular Nui Than Tai entrance package." },
+      { name: "Standard Package - Child", officialPrice: 236000, govietstayPrice: 216000, details: "Child rate from operator reference." },
+      { name: "Tich Loc Package - Adult", officialPrice: 687000, govietstayPrice: 667000 },
+      { name: "Tich Loc Package - Child", officialPrice: 344000, govietstayPrice: 324000 },
+      { name: "Duong Tue Phat Thu Package - Adult", officialPrice: 342000, govietstayPrice: 322000 },
+      { name: "Duong Tue Phat Thu Package - Child", officialPrice: 171000, govietstayPrice: 151000 },
+      { name: "Nap Khi Package - Adult", officialPrice: 613000, govietstayPrice: 593000 },
+      { name: "Nap Khi Package - Child", officialPrice: 306500, govietstayPrice: 286500 },
+      { name: "Nap Khi + Lunch Package - Adult", officialPrice: 843000, govietstayPrice: 823000 },
+      { name: "Nap Khi + Lunch Package - Child", officialPrice: 421500, govietstayPrice: 401500 },
+      { name: "One Day Tour Package - Adult", officialPrice: 843000, govietstayPrice: 823000 },
+      { name: "One Day Tour Package - Child", officialPrice: 422000, govietstayPrice: 402000 },
     ],
     notes: [
-      "Packages can include entrance, hot spring bath, water park, buffet or special bath services.",
-      "GoVietStay can arrange private car transfer and full-day local support.",
+      "Prices are based on the 2026 Nui Than Tai public reference list shown by the supplier.",
+      "Children under 1m are usually free; children from 1m to under 1.39m are commonly charged child rate.",
+      "Opening hours are usually 08:00 - 17:00.",
+      "GoVietStay can arrange private car transfer, ticket confirmation and full local support for families or groups.",
     ],
     keywords: ["Nui Than Tai", "Da Nang Tours", "Hot Springs"],
   },
@@ -1315,12 +1328,14 @@ const tours: Tour[] = [
 export default function Home() {
   const [selectedTour, setSelectedTour] = useState<Tour | null>(null);
   const [bookingOpen, setBookingOpen] = useState(false);
+  const [ticketBookingOpen, setTicketBookingOpen] = useState(false);
   const [bookingForm, setBookingForm] = useState<BookingForm>(emptyBookingForm);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [selectedTicket, setSelectedTicket] = useState<TicketAttraction | null>(null);
   const [selectedTip, setSelectedTip] = useState<LocalTip | null>(null);
   const [selectedMemory, setSelectedMemory] = useState<string | null>(null);
   const [happyTravelers, setHappyTravelers] = useState<string[]>([]);
+  const [showAllTravelers, setShowAllTravelers] = useState(false);
   const [daoOpen, setDaoOpen] = useState(false);
   const [daoInput, setDaoInput] = useState("");
   const [daoMessages, setDaoMessages] = useState<ChatMessage[]>([
@@ -1373,6 +1388,11 @@ export default function Home() {
     setBookingOpen(true);
   };
 
+  const openTicketBookingForm = () => {
+    setBookingForm(emptyBookingForm);
+    setTicketBookingOpen(true);
+  };
+
   const handleBookingChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
@@ -1398,6 +1418,75 @@ export default function Home() {
       `Website: GoVietStay.com`;
 
     window.open(buildWhatsAppLink(message), "_blank", "noopener,noreferrer");
+  };
+
+  const sendTicketBookingRequest = (ticket: TicketAttraction) => {
+    const availablePackages = ticket.packages
+      .map((pkg) => {
+        const price = pkg.govietstayPrice > 0 ? formatVND(pkg.govietstayPrice) : "Contact for latest price";
+        return `- ${pkg.name}: ${price}`;
+      })
+      .join("\n");
+
+    const message =
+      `TICKET BOOKING REQUEST - GoVietStay\n\n` +
+      `Ticket: ${ticket.title}\n` +
+      `Location: ${ticket.location}\n\n` +
+      `GoVietStay reference prices:\n${availablePackages}\n\n` +
+      `Guest name: ${bookingForm.fullName || "Not provided"}\n` +
+      `WhatsApp / Phone: ${bookingForm.whatsapp || "Not provided"}\n` +
+      `Email: ${bookingForm.email || "Not provided"}\n` +
+      `Travel date: ${bookingForm.travelDate || "Not specified"}\n` +
+      `Adults: ${bookingForm.adults || "Not specified"}\n` +
+      `Children: ${bookingForm.children || "None / Not specified"}\n` +
+      `Hotel: ${bookingForm.hotel || "Not specified"}\n` +
+      `Pickup location: ${bookingForm.pickupLocation || "Not specified"}\n` +
+      `Special request: ${bookingForm.specialRequest || "None"}\n\n` +
+      `Please confirm the latest ticket availability, exact price, pickup/transfer support if needed and payment details. Thank you.\n` +
+      `Website: GoVietStay.com`;
+
+    window.open(buildWhatsAppLink(message), "_blank", "noopener,noreferrer");
+  };
+
+
+
+  const quickActions: Array<{ icon: string; label: string; href?: string; external?: boolean; action?: () => void }> = [
+    { icon: "🎫", label: "Tickets", href: "#tickets" },
+    { icon: "🏝️", label: "Tours", href: "#experiences" },
+    { icon: "🚘", label: "Transfer", href: "#tickets" },
+    { icon: "🚗", label: "Private Car", href: "#tickets" },
+    { icon: "💬", label: "WhatsApp", href: "https://wa.me/84937762607", external: true },
+    { icon: "🤖", label: "Ask Đào", action: () => setDaoOpen(true) },
+  ];
+
+  const previewTravelers = happyTravelers.slice(0, 8);
+  const visibleTravelers = showAllTravelers ? happyTravelers : previewTravelers;
+  const selectedMemoryIndex = selectedMemory
+    ? happyTravelers.indexOf(selectedMemory)
+    : -1;
+
+  const openTravelerPhoto = (photo: string) => {
+    setSelectedMemory(photo);
+  };
+
+  const openFullTravelerGallery = () => {
+    setShowAllTravelers(true);
+    setTimeout(() => {
+      document
+        .getElementById("happy-travelers")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 80);
+  };
+
+  const moveTravelerPhoto = (direction: "prev" | "next") => {
+    if (!happyTravelers.length || selectedMemoryIndex < 0) return;
+
+    const nextIndex =
+      direction === "next"
+        ? (selectedMemoryIndex + 1) % happyTravelers.length
+        : (selectedMemoryIndex - 1 + happyTravelers.length) % happyTravelers.length;
+
+    setSelectedMemory(happyTravelers[nextIndex]);
   };
 
   useEffect(() => {
@@ -1560,6 +1649,21 @@ export default function Home() {
           animation-play-state: paused;
         }
 
+
+
+        .gvs-no-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+
+        .gvs-no-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+
+        .mobile-bottom-safe {
+          padding-bottom: env(safe-area-inset-bottom);
+        }
+
         @media (prefers-reduced-motion: reduce) {
           .hero-cinematic-image,
           .travel-board-track,
@@ -1629,7 +1733,7 @@ export default function Home() {
               Private Tours in Da Nang, Hoi An & Hue. Golden Bridge Tour, Ba Na Hills Tour, Cham Island Tour, Da Nang Airport Transfer and Local Travel Support with WhatsApp Travel Assistant 24/7.
             </p>
 
-            <div className="mt-6 flex flex-wrap gap-2 text-xs md:text-sm text-white/85">
+            <div className="mt-6 hidden md:flex flex-wrap gap-2 text-xs md:text-sm text-white/85">
               {[
                 "Da Nang Tours",
                 "Hoi An Tours",
@@ -1692,7 +1796,58 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-[#f7f1df] text-[#06251b] px-4 md:px-20 py-20">
+      <section className="bg-[#f7f1df] text-[#06251b] px-4 md:px-20 py-8 md:py-12">
+        <div className="max-w-7xl mx-auto w-full">
+          <div className="rounded-[2rem] border border-[#0b6b4f]/15 bg-white/80 p-4 md:p-6 shadow-xl shadow-[#06251b]/5">
+            <div className="flex items-center justify-between gap-4 mb-4">
+              <div>
+                <p className="text-green-800 uppercase tracking-[3px] text-xs font-semibold">
+                  Quick Access
+                </p>
+                <h2 className="mt-1 text-2xl md:text-3xl font-bold">
+                  What do you need today?
+                </h2>
+              </div>
+              <a
+                href="https://wa.me/84937762607"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden md:inline-flex rounded-full bg-green-600 px-5 py-3 font-semibold text-white hover:bg-green-700 transition"
+              >
+                WhatsApp Now
+              </a>
+            </div>
+
+            <div className="gvs-no-scrollbar flex gap-3 overflow-x-auto pb-1 md:grid md:grid-cols-6 md:overflow-visible md:pb-0">
+              {quickActions.map((action) =>
+                action.action ? (
+                  <button
+                    key={action.label}
+                    onClick={action.action}
+                    className="min-w-[128px] md:min-w-0 rounded-3xl border border-[#06251b]/10 bg-[#f7f1df] px-4 py-4 text-center hover:bg-white hover:-translate-y-1 transition"
+                  >
+                    <div className="text-3xl">{action.icon}</div>
+                    <div className="mt-2 text-sm font-bold">{action.label}</div>
+                  </button>
+                ) : (
+                  <a
+                    key={action.label}
+                    href={action.href}
+                    target={action.external ? "_blank" : undefined}
+                    rel={action.external ? "noopener noreferrer" : undefined}
+                    className="min-w-[128px] md:min-w-0 rounded-3xl border border-[#06251b]/10 bg-[#f7f1df] px-4 py-4 text-center hover:bg-white hover:-translate-y-1 transition"
+                  >
+                    <div className="text-3xl">{action.icon}</div>
+                    <div className="mt-2 text-sm font-bold">{action.label}</div>
+                  </a>
+                ),
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#f7f1df] text-[#06251b] px-4 md:px-20 py-12 md:py-20">
         <div className="max-w-7xl mx-auto w-full rounded-[2rem] border border-[#0b6b4f]/15 bg-white/65 p-6 md:p-10 shadow-xl shadow-[#06251b]/5">
           <div className="text-center max-w-4xl mx-auto">
             <p className="text-green-800 uppercase tracking-[4px] text-xs md:text-sm font-semibold">
@@ -2008,83 +2163,120 @@ Da Nang Tours, Hoi An Tours & Hue Tours
 
       <section
         id="happy-travelers"
-        className="relative bg-[#f7f1df] text-[#06251b] px-4 md:px-20 py-24 overflow-hidden"
+        className="relative bg-[#f7f1df] text-[#06251b] px-4 md:px-20 py-14 md:py-24 overflow-hidden"
       >
         <div className="absolute inset-0 opacity-70 bg-[radial-gradient(circle_at_top_left,rgba(11,107,79,0.10),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(255,196,0,0.20),transparent_40%)]" />
 
         <div className="relative max-w-7xl mx-auto w-full">
-          <div className="max-w-4xl">
-            <p className="text-green-800 uppercase tracking-[4px] text-sm font-semibold">
-              Real Travel Moments
-            </p>
+          <div className="rounded-[2rem] border border-[#06251b]/10 bg-white/75 p-5 md:p-8 shadow-xl shadow-[#06251b]/5">
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-5">
+              <div className="max-w-3xl">
+                <p className="text-green-800 uppercase tracking-[4px] text-xs md:text-sm font-semibold">
+                  Real Travel Moments
+                </p>
+                <h2 className="mt-3 text-3xl md:text-5xl font-bold leading-tight">
+                  Happy Travelers
+                </h2>
+                <p className="mt-4 text-[#06251b]/70 text-base md:text-lg leading-relaxed">
+                  Real guest photos from GoVietStay journeys. Browse a quick preview, or open the full gallery only when you want to see more.
+                </p>
+              </div>
 
-            <h2 className="mt-4 text-4xl md:text-6xl font-bold leading-tight">
-              Happy Travelers Gallery
-            </h2>
-
-            <p className="mt-6 text-[#06251b]/70 max-w-3xl text-lg leading-relaxed">
-              A simple wall of real guest photos from GoVietStay journeys. No
-              staged advertising — just real travelers and real memories.
-            </p>
-          </div>
-
-          <div className="mt-12 columns-2 md:columns-3 lg:columns-4 gap-4 md:gap-5 space-y-4 md:space-y-5">
-            {happyTravelers.map((photo, index) => (
-              <button
-                key={photo}
-                onClick={() => setSelectedMemory(photo)}
-                className="memory-card group relative mb-4 md:mb-5 w-full break-inside-avoid overflow-hidden rounded-[1.7rem] bg-white shadow-xl shadow-[#06251b]/10 border border-[#06251b]/10 text-left hover:-translate-y-1 hover:rotate-[0.35deg] hover:shadow-2xl hover:shadow-[#06251b]/20 transition duration-500"
-                style={{ animationDelay: `${(index % 10) * 55}ms` }}
-                aria-label="Open GoVietStay traveler photo"
-              >
-                <div className="relative overflow-hidden bg-[#d8c7a1]/30">
-                  <img
-                    src={photo}
-                    alt="GoVietStay happy traveler"
-                    loading="lazy"
-                    className="block w-full h-auto object-cover transition duration-700 group-hover:scale-105"
-                    onError={(event) => {
-                      const card = event.currentTarget.closest("button");
-                      if (card) card.classList.add("hidden");
-                    }}
-                  />
-
-                  <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500 bg-gradient-to-t from-black/25 via-transparent to-white/10" />
-
-                  <div className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition duration-500 p-3">
-                    <div className="rounded-full bg-black/55 px-4 py-2 text-center text-xs md:text-sm font-semibold text-white backdrop-blur-md">
-                      View photo
-                    </div>
-                  </div>
-                </div>
-              </button>
-            ))}
-          </div>
-
-          <div className="mt-10 rounded-3xl bg-white/70 border border-[#06251b]/10 p-5 md:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 shadow-xl shadow-[#06251b]/5">
-            <div>
-              <h3 className="text-xl md:text-2xl font-bold">
-                Real photos. Real travelers. Real trust.
-              </h3>
-              <p className="mt-2 text-[#06251b]/65">
-                GoVietStay keeps this gallery alive with guest photos from real
-                tour days.
-              </p>
+              <div className="flex flex-wrap gap-3">
+                <button
+                  onClick={() => {
+                    if (showAllTravelers) {
+                      setShowAllTravelers(false);
+                    } else {
+                      openFullTravelerGallery();
+                    }
+                  }}
+                  className="rounded-full bg-[#06251b] px-5 py-3 text-sm font-semibold text-white hover:bg-[#0b6b4f] transition"
+                >
+                  {showAllTravelers ? "Show Less" : "View Full Gallery"}
+                </button>
+                <a
+                  href="https://wa.me/84937762607"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full bg-green-600 px-5 py-3 text-sm font-semibold text-white hover:bg-green-700 transition"
+                >
+                  Plan My Trip
+                </a>
+              </div>
             </div>
 
-            <a
-              href="https://wa.me/84937762607"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="shrink-0 rounded-full bg-green-600 px-6 py-3 font-semibold text-white hover:bg-green-700 transition"
-            >
-              Plan on WhatsApp
-            </a>
+            {!showAllTravelers && (
+              <div className="mt-8 gvs-no-scrollbar flex gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-4 md:overflow-visible md:pb-0">
+                {previewTravelers.map((photo, index) => (
+                  <button
+                    key={photo}
+                    onClick={() => {
+                      if (index === previewTravelers.length - 1 && happyTravelers.length > previewTravelers.length) {
+                        openFullTravelerGallery();
+                      } else {
+                        openTravelerPhoto(photo);
+                      }
+                    }}
+                    className="group relative min-w-[170px] md:min-w-0 aspect-[4/5] overflow-hidden rounded-[1.5rem] bg-[#d8c7a1] shadow-lg shadow-[#06251b]/10 border border-[#06251b]/10 hover:-translate-y-1 transition duration-300"
+                    aria-label="Open GoVietStay traveler photo"
+                  >
+                    <img
+                      src={photo}
+                      alt="GoVietStay happy traveler"
+                      loading="lazy"
+                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                      onError={(event) => {
+                        const card = event.currentTarget.closest("button");
+                        if (card) card.classList.add("hidden");
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent opacity-80" />
+                    {index === previewTravelers.length - 1 && happyTravelers.length > previewTravelers.length && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-[#06251b]/65 text-white backdrop-blur-[2px]">
+                        <div className="text-center">
+                          <div className="text-2xl font-bold">+{happyTravelers.length - previewTravelers.length}</div>
+                          <div className="text-xs uppercase tracking-[2px]">more photos</div>
+                        </div>
+                      </div>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {showAllTravelers && (
+              <div className="mt-8 columns-2 md:columns-3 lg:columns-4 gap-4 md:gap-5 space-y-4 md:space-y-5">
+                {visibleTravelers.map((photo, index) => (
+                  <button
+                    key={photo}
+                    onClick={() => openTravelerPhoto(photo)}
+                    className="memory-card group relative mb-4 md:mb-5 w-full break-inside-avoid overflow-hidden rounded-[1.7rem] bg-white shadow-xl shadow-[#06251b]/10 border border-[#06251b]/10 text-left hover:-translate-y-1 hover:rotate-[0.35deg] hover:shadow-2xl hover:shadow-[#06251b]/20 transition duration-500"
+                    style={{ animationDelay: `${(index % 10) * 55}ms` }}
+                    aria-label="Open GoVietStay traveler photo"
+                  >
+                    <div className="relative overflow-hidden bg-[#d8c7a1]/30">
+                      <img
+                        src={photo}
+                        alt="GoVietStay happy traveler"
+                        loading="lazy"
+                        className="block w-full h-auto object-cover transition duration-700 group-hover:scale-105"
+                        onError={(event) => {
+                          const card = event.currentTarget.closest("button");
+                          if (card) card.classList.add("hidden");
+                        }}
+                      />
+                      <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500 bg-gradient-to-t from-black/25 via-transparent to-white/10" />
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </section>
 
-      <section className="bg-[#06251b] text-white px-4 md:px-20 py-24">
+      <section id="tickets" className="bg-[#06251b] text-white px-4 md:px-20 py-16 md:py-24">
         <div className="max-w-7xl mx-auto w-full">
           <p className="text-yellow-400 uppercase tracking-[4px] text-sm font-semibold">
             Tickets • Cars • SIM • Local Support
@@ -2298,12 +2490,12 @@ Da Nang Tours, Hoi An Tours & Hue Tours
             </div>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+          <div className="mt-12 gvs-no-scrollbar flex gap-4 overflow-x-auto pb-3 md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible md:pb-0 md:gap-6">
             {localTips.map((tip, index) => (
               <button
                 key={tip.title}
                 onClick={() => setSelectedTip(tip)}
-                className="group relative overflow-hidden text-left rounded-[2rem] bg-white/70 border border-[#06251b]/10 p-6 md:p-7 shadow-xl shadow-[#06251b]/5 hover:bg-white hover:-translate-y-2 hover:shadow-2xl hover:shadow-[#06251b]/15 transition duration-500"
+                className="group relative min-w-[82vw] md:min-w-0 overflow-hidden text-left rounded-[2rem] bg-white/70 border border-[#06251b]/10 p-6 md:p-7 shadow-xl shadow-[#06251b]/5 hover:bg-white hover:-translate-y-2 hover:shadow-2xl hover:shadow-[#06251b]/15 transition duration-500"
               >
                 <div className="absolute -right-10 -top-10 h-28 w-28 rounded-full bg-[#0b6b4f]/10 group-hover:scale-125 transition duration-500" />
                 <div className="absolute -bottom-12 -left-12 h-32 w-32 rounded-full bg-yellow-400/20 group-hover:scale-125 transition duration-500" />
@@ -2422,41 +2614,114 @@ Da Nang Tours, Hoi An Tours & Hue Tours
         </div>
       </section>
 
-      <section className="bg-[#06251b] text-white px-4 md:px-20 py-24">
-        <div className="max-w-7xl mx-auto text-center">
-          <p className="text-yellow-400 uppercase tracking-[4px] text-sm font-semibold">
-            Google Reviews
-          </p>
-
-          <h2 className="mt-4 text-4xl md:text-6xl font-bold">
-            Trusted By Travelers
-          </h2>
-
-          <p className="mt-6 text-white/70 max-w-3xl mx-auto text-lg">
-            Real travelers choose GoVietStay for private tours, local support
-            and smooth travel experiences across Central Vietnam.
-          </p>
-
-          <div className="mt-12 rounded-3xl bg-white/5 border border-white/10 p-8 md:p-12">
-            <div className="text-5xl">⭐⭐⭐⭐⭐</div>
-
-            <h3 className="mt-6 text-3xl md:text-4xl font-bold">
-              Share Your Experience On Google
-            </h3>
-
-            <p className="mt-4 text-white/70 max-w-2xl mx-auto">
-              Your review helps other international travelers discover trusted
-              local support in Da Nang, Hoi An and Hue.
+      <section id="google-reviews" className="relative bg-[#06251b] text-white px-4 md:px-20 py-16 md:py-24 overflow-hidden">
+        <div className="absolute inset-0 opacity-70 bg-[radial-gradient(circle_at_top_left,rgba(255,196,0,0.18),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(0,180,100,0.18),transparent_38%)]" />
+        <div className="relative max-w-7xl mx-auto">
+          <div className="text-center max-w-4xl mx-auto">
+            <p className="text-yellow-400 uppercase tracking-[4px] text-xs md:text-sm font-semibold">
+              Google Maps & Reviews
             </p>
 
-            <a
-              href="https://maps.app.goo.gl/znWBmL8zPKEJqnoW6?g_st=ic"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block mt-8 rounded-full bg-yellow-400 px-8 py-4 font-semibold text-black hover:bg-yellow-500 transition"
-            >
-              Review GoVietStay
-            </a>
+            <h2 className="mt-4 text-4xl md:text-6xl font-bold leading-tight">
+              See Why Travelers Trust GoVietStay
+            </h2>
+
+            <p className="mt-6 text-white/70 text-base md:text-lg leading-relaxed">
+              Open our Google Maps profile to check real traveler reviews, photos, business details and directions before booking your tour, ticket, transfer or local support.
+            </p>
+          </div>
+
+          <div className="mt-10 grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-5 md:gap-6 items-stretch">
+            <div className="rounded-[2rem] border border-white/10 bg-white/10 p-6 md:p-9 shadow-2xl shadow-black/20 backdrop-blur-sm">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+                <div>
+                  <div className="text-5xl">⭐⭐⭐⭐⭐</div>
+                  <h3 className="mt-5 text-3xl md:text-4xl font-bold leading-tight">
+                    Real Reviews. Real Local Support.
+                  </h3>
+                  <p className="mt-4 text-white/70 leading-relaxed">
+                    Guests can read reviews directly on Google Maps, see where GoVietStay is active, and contact us for Da Nang Tours, Hoi An Tours, Hue Tours, tickets and airport transfer support.
+                  </p>
+                </div>
+
+                <div className="shrink-0 rounded-3xl bg-[#f7f1df] p-5 text-[#06251b] text-center shadow-xl">
+                  <div className="text-4xl">📍</div>
+                  <div className="mt-3 text-xl font-bold">GoVietStay</div>
+                  <div className="mt-1 text-sm text-[#06251b]/65">Google Maps Profile</div>
+                </div>
+              </div>
+
+              <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {[
+                  { icon: "🧭", title: "Open Location", text: "Check our Google Maps profile and directions." },
+                  { icon: "📸", title: "See Photos", text: "View real traveler moments and service updates." },
+                  { icon: "💬", title: "Read Reviews", text: "Understand how guests feel before you book." },
+                ].map((item) => (
+                  <div key={item.title} className="rounded-2xl bg-black/15 border border-white/10 p-4 text-left">
+                    <div className="text-2xl">{item.icon}</div>
+                    <h4 className="mt-3 font-bold">{item.title}</h4>
+                    <p className="mt-2 text-sm text-white/60 leading-relaxed">{item.text}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-8 flex flex-col sm:flex-row gap-3">
+                <a
+                  href="https://maps.app.goo.gl/znWBmL8zPKEJqnoW6?g_st=ic"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full bg-yellow-400 px-6 py-4 text-center font-semibold text-black hover:bg-yellow-500 transition"
+                >
+                  Open Google Maps
+                </a>
+                <a
+                  href="https://maps.app.goo.gl/znWBmL8zPKEJqnoW6?g_st=ic"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full border border-white/25 px-6 py-4 text-center font-semibold text-white hover:bg-white hover:text-[#06251b] transition"
+                >
+                  Review GoVietStay
+                </a>
+                <a
+                  href="https://wa.me/84937762607"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full bg-green-600 px-6 py-4 text-center font-semibold text-white hover:bg-green-700 transition"
+                >
+                  Ask on WhatsApp
+                </a>
+              </div>
+            </div>
+
+            <div className="rounded-[2rem] border border-white/10 bg-[#f7f1df] p-6 md:p-8 text-[#06251b] shadow-2xl shadow-black/20">
+              <p className="text-green-800 uppercase tracking-[3px] text-xs font-semibold">
+                Why this matters
+              </p>
+              <h3 className="mt-4 text-2xl md:text-3xl font-bold leading-tight">
+                We want every guest to verify us before booking.
+              </h3>
+
+              <div className="mt-6 space-y-4">
+                {[
+                  "Read real public reviews instead of only trusting website promises.",
+                  "Check photos, service updates and local travel support activity.",
+                  "Save our Google Maps link before you arrive in Central Vietnam.",
+                  "After your trip, your review helps the next traveler choose safely.",
+                ].map((item) => (
+                  <div key={item} className="flex gap-3 rounded-2xl bg-white/70 border border-[#06251b]/10 p-4">
+                    <div className="text-green-700">✓</div>
+                    <p className="text-sm md:text-base text-[#06251b]/75 leading-relaxed">{item}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-6 rounded-2xl bg-[#eaf5eb] border border-[#0b6b4f]/20 p-4">
+                <div className="font-bold">Need help now?</div>
+                <p className="mt-1 text-sm text-[#06251b]/65">
+                  Tickets, airport transfer, private car, SIM/eSIM and local travel support are handled directly by GoVietStay on WhatsApp.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -2580,7 +2845,7 @@ Da Nang Tours, Hoi An Tours & Hue Tours
                   href="mailto:govietstay@gmail.com"
                   className="block hover:text-yellow-400 transition"
                 >
-                  govietstay@gmail.com
+                  Gmail
                 </a>
 
                 <div className="pt-3 text-sm text-white/40 leading-relaxed">
@@ -2592,11 +2857,8 @@ Da Nang Tours, Hoi An Tours & Hue Tours
             </div>
           </div>
 
-          <div className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-5 md:p-6">
-            <h4 className="font-bold text-white mb-3">GoVietStay Travel Keywords</h4>
-            <p className="text-white/55 leading-relaxed text-sm md:text-base">
-              Da Nang Tours • Hoi An Tours • Hue Tours • Private Tours Vietnam • Golden Bridge Tour • Ba Na Hills Tour • Cham Island Tour • Da Nang Airport Transfer • Local Travel Support • WhatsApp Travel Assistant
-            </p>
+          <div className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-4 md:p-5 text-sm text-white/45 leading-relaxed">
+            Da Nang • Hoi An • Hue • Phu Quoc • Ho Tram Coming Soon
           </div>
 
           <div className="mt-12 pt-8 border-t border-white/10 text-center text-white/40">
@@ -2605,8 +2867,30 @@ Da Nang Tours, Hoi An Tours & Hue Tours
         </div>
       </footer>
 
+
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 mobile-bottom-safe border-t border-white/10 bg-[#02140f]/95 backdrop-blur-xl px-3 pt-2">
+        <div className="grid grid-cols-4 gap-2 pb-2 text-[11px] font-semibold text-white">
+          <a href="#tickets" className="rounded-2xl bg-white/8 px-2 py-2 text-center active:scale-95 transition">
+            <div className="text-xl">🎫</div>
+            <div>Tickets</div>
+          </a>
+          <a href="https://wa.me/84937762607" target="_blank" rel="noopener noreferrer" className="rounded-2xl bg-green-600 px-2 py-2 text-center active:scale-95 transition">
+            <div className="text-xl">💬</div>
+            <div>WhatsApp</div>
+          </a>
+          <button onClick={() => setDaoOpen(true)} className="rounded-2xl bg-yellow-400 px-2 py-2 text-center text-[#06251b] active:scale-95 transition">
+            <div className="text-xl">🤖</div>
+            <div>Đào</div>
+          </button>
+          <a href="#experiences" className="rounded-2xl bg-white/8 px-2 py-2 text-center active:scale-95 transition">
+            <div className="text-xl">🏝️</div>
+            <div>Tours</div>
+          </a>
+        </div>
+      </div>
+
       {/* ĐÀO FLOATING LOCAL TRAVEL ASSISTANT */}
-      <div className="fixed bottom-20 right-4 md:bottom-6 md:right-6 z-40">
+      <div className="hidden md:block fixed bottom-6 right-6 z-40">
         <button
           onClick={() => setDaoOpen(true)}
           aria-label="Ask Đào Local Travel Assistant"
@@ -2723,12 +3007,54 @@ Da Nang Tours, Hoi An Tours & Hue Tours
               ×
             </button>
 
+            {happyTravelers.length > 1 && (
+              <>
+                <button
+                  onClick={() => moveTravelerPhoto("prev")}
+                  className="absolute left-4 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-3xl text-white backdrop-blur-md hover:bg-white hover:text-black transition md:flex"
+                  aria-label="Previous photo"
+                >
+                  ‹
+                </button>
+                <button
+                  onClick={() => moveTravelerPhoto("next")}
+                  className="absolute right-4 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-3xl text-white backdrop-blur-md hover:bg-white hover:text-black transition md:flex"
+                  aria-label="Next photo"
+                >
+                  ›
+                </button>
+              </>
+            )}
+
             <div className="relative h-[82svh] bg-black">
               <img
                 src={selectedMemory}
                 alt="GoVietStay happy traveler"
                 className="h-full w-full object-contain"
               />
+            </div>
+
+            <div className="absolute inset-x-0 bottom-0 z-20 flex items-center justify-between gap-3 bg-gradient-to-t from-black/90 to-transparent px-4 py-4 text-white">
+              <button
+                onClick={() => moveTravelerPhoto("prev")}
+                className="rounded-full bg-white/10 px-4 py-2 text-sm font-semibold backdrop-blur-md hover:bg-white hover:text-black transition md:hidden"
+              >
+                Prev
+              </button>
+              <div className="text-center text-xs md:text-sm text-white/80">
+                Happy Travelers Gallery
+                {selectedMemoryIndex >= 0 && happyTravelers.length > 0 ? (
+                  <span className="block text-white/60">
+                    {selectedMemoryIndex + 1} / {happyTravelers.length}
+                  </span>
+                ) : null}
+              </div>
+              <button
+                onClick={() => moveTravelerPhoto("next")}
+                className="rounded-full bg-white/10 px-4 py-2 text-sm font-semibold backdrop-blur-md hover:bg-white hover:text-black transition md:hidden"
+              >
+                Next
+              </button>
             </div>
           </div>
         </div>
@@ -2737,7 +3063,7 @@ Da Nang Tours, Hoi An Tours & Hue Tours
       {selectedTicket && (
         <div
           className="gvs-overlay fixed inset-0 z-50 bg-black/80 flex items-end md:items-center justify-center p-0 md:p-6"
-          onClick={() => setSelectedTicket(null)}
+          onClick={() => { setSelectedTicket(null); setTicketBookingOpen(false); }}
         >
           <div
             className="gvs-panel bg-[#f7f1df] text-[#06251b] rounded-t-3xl md:rounded-3xl max-w-5xl w-full max-h-[92svh] md:max-h-[90vh] overflow-y-auto overscroll-contain shadow-2xl"
@@ -2762,7 +3088,7 @@ Da Nang Tours, Hoi An Tours & Hue Tours
                 </div>
 
                 <button
-                  onClick={() => setSelectedTicket(null)}
+                  onClick={() => { setSelectedTicket(null); setTicketBookingOpen(false); }}
                   className="text-3xl font-bold leading-none hover:opacity-60"
                   aria-label="Close ticket details"
                 >
@@ -2820,39 +3146,124 @@ Da Nang Tours, Hoi An Tours & Hue Tours
                 </div>
 
                 <div className="rounded-3xl bg-white/60 border border-[#06251b]/10 p-5 md:p-6">
-                  <h3 className="text-xl md:text-2xl font-bold">SEO Keywords</h3>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {selectedTicket.keywords.map((item) => (
-                      <span
-                        key={item}
-                        className="rounded-full bg-[#0b6b4f]/10 px-3 py-2 text-sm font-semibold text-green-800"
-                      >
-                        {item}
-                      </span>
-                    ))}
-                  </div>
+                  <h3 className="text-xl md:text-2xl font-bold">GoVietStay Support</h3>
+                  <ul className="mt-4 space-y-2 text-[#06251b]/75">
+                    <li>• Latest ticket availability checked before confirmation.</li>
+                    <li>• Clear instructions sent by WhatsApp / Zalo before you go.</li>
+                    <li>• Private car, airport transfer or hotel pickup can be arranged.</li>
+                    <li>• Local assistance before, during and after your visit.</li>
+                  </ul>
                 </div>
               </div>
 
               <div className="mt-10 flex flex-wrap gap-4">
-                <a
-                  href={`https://wa.me/84937762607?text=${encodeURIComponent(
-                    `Hello GoVietStay, I would like to book tickets for ${selectedTicket.title}. Please confirm the latest GoVietStay price and support details.`,
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={openTicketBookingForm}
                   className="rounded-full bg-green-600 px-8 py-4 font-semibold text-white hover:bg-green-700 transition"
                 >
-                  Book This Ticket on WhatsApp
-                </a>
+                  Book This Ticket
+                </button>
 
                 <button
-                  onClick={() => setSelectedTicket(null)}
+                  onClick={() => { setSelectedTicket(null); setTicketBookingOpen(false); }}
                   className="rounded-full border border-[#06251b]/30 px-8 py-4 font-semibold hover:bg-[#06251b] hover:text-white transition"
                 >
                   Close
                 </button>
               </div>
+
+              {ticketBookingOpen && (
+                <div className="mt-8 rounded-[2rem] bg-white border border-[#06251b]/10 p-5 md:p-8 shadow-xl shadow-[#06251b]/10">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="text-green-800 uppercase tracking-[3px] text-xs font-semibold">
+                        Secure Ticket Request
+                      </p>
+                      <h3 className="mt-2 text-2xl md:text-3xl font-bold">
+                        Book This Ticket
+                      </h3>
+                      <p className="mt-2 text-[#06251b]/65 leading-relaxed">
+                        Fill in your details. WhatsApp will open with the ticket name, reference prices and your guest information ready to send to GoVietStay.
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={() => setTicketBookingOpen(false)}
+                      className="text-2xl font-bold leading-none hover:opacity-60"
+                      aria-label="Close ticket booking form"
+                    >
+                      ×
+                    </button>
+                  </div>
+
+                  <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {[
+                      ["fullName", "Full Name *", "Your full name"],
+                      ["whatsapp", "WhatsApp / Phone *", "+84 / +7 / +82 ..."],
+                      ["email", "Email", "Your email address"],
+                      ["travelDate", "Travel Date", "dd/mm/yyyy"],
+                      ["adults", "Adults *", "e.g. 2"],
+                      ["children", "Children", "e.g. 1 child, 6 years old"],
+                      ["hotel", "Hotel Name", "Your hotel name"],
+                      [
+                        "pickupLocation",
+                        "Pickup / Delivery Location",
+                        "Hotel / airport / ticket delivery point",
+                      ],
+                    ].map(([name, label, placeholder]) => (
+                      <label key={name} className="block">
+                        <span className="text-sm font-semibold text-[#06251b]/80">
+                          {label}
+                        </span>
+                        <input
+                          name={name}
+                          value={bookingForm[name as keyof BookingForm]}
+                          onChange={handleBookingChange}
+                          placeholder={placeholder}
+                          className="mt-2 w-full rounded-2xl border border-[#06251b]/15 bg-[#f7f1df]/40 px-4 py-3 text-[#06251b] outline-none focus:border-green-700 focus:bg-white"
+                        />
+                      </label>
+                    ))}
+
+                    <label className="block md:col-span-2">
+                      <span className="text-sm font-semibold text-[#06251b]/80">
+                        Special Requests
+                      </span>
+                      <textarea
+                        name="specialRequest"
+                        value={bookingForm.specialRequest}
+                        onChange={handleBookingChange}
+                        placeholder="Ticket type, preferred time, car transfer request, children height, Zalo/WhatsApp support, etc."
+                        rows={4}
+                        className="mt-2 w-full rounded-2xl border border-[#06251b]/15 bg-[#f7f1df]/40 px-4 py-3 text-[#06251b] outline-none focus:border-green-700 focus:bg-white"
+                      />
+                    </label>
+                  </div>
+
+                  <div className="mt-5 rounded-2xl bg-green-50 border border-green-700/15 p-4 text-green-900">
+                    <p className="font-bold">WhatsApp ticket booking preview</p>
+                    <p className="mt-1 text-sm leading-relaxed">
+                      Ticket name, GoVietStay reference prices, guest details, date, hotel, pickup or delivery location and special requests will be sent to +84 937 762 607.
+                    </p>
+                  </div>
+
+                  <div className="mt-6 flex flex-wrap gap-4">
+                    <button
+                      onClick={() => sendTicketBookingRequest(selectedTicket)}
+                      className="rounded-full bg-green-600 px-8 py-4 font-semibold text-white hover:bg-green-700 transition"
+                    >
+                      Send Ticket Request
+                    </button>
+
+                    <button
+                      onClick={() => setTicketBookingOpen(false)}
+                      className="rounded-full border border-[#06251b]/30 px-8 py-4 font-semibold hover:bg-[#06251b] hover:text-white transition"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
