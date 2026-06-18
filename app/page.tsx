@@ -11,7 +11,7 @@ const formatUSD = (value: number) => "$" + Math.round(value / EXCHANGE_RATE);
 const DAO_WHATSAPP_LINK =
   "https://wa.me/84937762607?text=" +
   encodeURIComponent(
-    "Hello GoVietStay, I would like to ask Đào for local travel help in Da Nang, Hoi An or Hue.",
+    "Hello GoVietStay, I would like to ask Đào for local travel help in Da Nang, Hoi An, Hue, Phu Quoc or future Ho Tram.",
   );
 
 type ChatMessage = {
@@ -22,7 +22,7 @@ type ChatMessage = {
 const DAO_STARTER_MESSAGE: ChatMessage = {
   role: "assistant",
   content:
-    "Xin chào, em là Đào – Local Travel Assistant của GoVietStay. Em có thể giúp anh/chị lên lịch trình Đà Nẵng, Hội An, Huế, tour riêng, xe sân bay, SIM/eSIM và local tips. Anh/chị đang cần hỗ trợ gì cho chuyến đi ạ?",
+    "Xin chào, em là Đào – Local Travel Assistant của GoVietStay. Em có thể giúp anh/chị lên lịch trình Đà Nẵng, Hội An, Huế, Phú Quốc, Hồ Tràm tương lai, tour riêng, xe sân bay, SIM/eSIM và local travel knowledge. Anh/chị đang cần hỗ trợ gì cho chuyến đi ạ?",
 };
 
 const buildWhatsAppLink = (message: string) =>
@@ -59,12 +59,33 @@ type Service = {
   note: string;
 };
 
+type TicketPackage = {
+  name: string;
+  officialPrice?: number;
+  govietstayPrice: number;
+  details?: string;
+};
+
+type TicketAttraction = {
+  icon: string;
+  title: string;
+  location: string;
+  description: string;
+  packages: TicketPackage[];
+  notes: string[];
+  keywords: string[];
+};
+
 type LocalTip = {
   icon: string;
   title: string;
+  category: string;
   description: string;
+  quickFacts: string[];
   details: string[];
   bestFor: string[];
+  recommendations: string[];
+  avoid: string[];
 };
 
 type BookingForm = {
@@ -151,19 +172,168 @@ const travelers: Traveler[] = [
   },
 ];
 
+const ticketAttractions: TicketAttraction[] = [
+  {
+    icon: "🌉",
+    title: "Ba Na Hills & Golden Bridge Tickets",
+    location: "Da Nang",
+    description:
+      "GoVietStay Ba Na Hills tickets with fast confirmation, clear local guidance and support before, during and after the trip.",
+    packages: [
+      { name: "Cable Car - Adult / International", officialPrice: 1000000, govietstayPrice: 980000, details: "Golden Bridge, Fantasy Park and main sightseeing areas." },
+      { name: "Cable Car - Child / International", officialPrice: 800000, govietstayPrice: 780000, details: "For children from 1m to under 1.4m." },
+      { name: "Cable Car + Buffet - Adult", officialPrice: 1300000, govietstayPrice: 1280000, details: "Cable car ticket with buffet lunch package." },
+      { name: "Cable Car + Buffet - Child", officialPrice: 1000000, govietstayPrice: 980000, details: "Child buffet package from 1m to under 1.4m." },
+      { name: "Cable Car + Food Voucher - Adult", officialPrice: 1250000, govietstayPrice: 1230000, details: "Includes food voucher according to Sun World policy." },
+      { name: "Local Resident Cable Car - Adult", officialPrice: 650000, govietstayPrice: 630000, details: "For Da Nang / Quang Nam residents with valid ID." },
+      { name: "Local Resident Cable Car - Child", officialPrice: 550000, govietstayPrice: 530000, details: "For local children with valid documents." },
+    ],
+    notes: [
+      "Children under 1m are usually free according to operator policy.",
+      "Prices can change depending on Sun World policy and seasonal updates.",
+      "GoVietStay supports ticket checking, timing advice, transport and WhatsApp assistance during the whole trip.",
+    ],
+    keywords: ["Ba Na Hills Ticket", "Golden Bridge Tour", "Da Nang Tours"],
+  },
+  {
+    icon: "🎭",
+    title: "Hoi An Memories Show Tickets",
+    location: "Hoi An",
+    description:
+      "Hoi An Memories Land and the famous outdoor Hoi An Memories Show with GoVietStay local support and smooth booking assistance.",
+    packages: [
+      { name: "Memories Land Ticket - Adult", officialPrice: 100000, govietstayPrice: 80000 },
+      { name: "Memories Land Ticket - Child", officialPrice: 50000, govietstayPrice: 30000 },
+      { name: "Show ECO Seat - Adult", officialPrice: 600000, govietstayPrice: 580000 },
+      { name: "Show HIGH Seat - Adult", officialPrice: 750000, govietstayPrice: 730000 },
+      { name: "Show VIP Seat - Adult", officialPrice: 1200000, govietstayPrice: 1180000 },
+      { name: "Show ECO Seat - Child", officialPrice: 300000, govietstayPrice: 280000 },
+      { name: "Show HIGH Seat - Child", officialPrice: 375000, govietstayPrice: 355000 },
+      { name: "Show VIP Seat - Child", officialPrice: 600000, govietstayPrice: 580000 },
+    ],
+    notes: [
+      "Show time is usually 20:00 - 21:00, except selected closing days.",
+      "GoVietStay can arrange car transfer between Da Nang and Hoi An.",
+      "We support seat selection guidance, ticket confirmation and local help before and after the show.",
+    ],
+    keywords: ["Hoi An Memories Show", "Hoi An Tours", "Hoi An Tickets"],
+  },
+  {
+    icon: "🎡",
+    title: "VinWonders Nam Hoi An Tickets",
+    location: "Hoi An / Quang Nam",
+    description:
+      "Theme park, safari, river safari and family entertainment tickets with clear GoVietStay pricing and local travel support.",
+    packages: [
+      { name: "Entrance Ticket - Adult", officialPrice: 650000, govietstayPrice: 630000 },
+      { name: "Entrance Ticket - Child / Senior", officialPrice: 450000, govietstayPrice: 430000 },
+      { name: "Entrance + Buffet - Adult", officialPrice: 950000, govietstayPrice: 930000 },
+      { name: "Entrance + Buffet - Child", officialPrice: 600000, govietstayPrice: 580000 },
+      { name: "Entrance + Buggy + Buffet - Adult", officialPrice: 1080000, govietstayPrice: 1060000 },
+      { name: "Entrance + Buggy - Adult", officialPrice: 780000, govietstayPrice: 760000 },
+      { name: "Afternoon Ticket - Adult", officialPrice: 450000, govietstayPrice: 430000 },
+      { name: "Afternoon Ticket - Child / Senior", officialPrice: 340000, govietstayPrice: 320000 },
+    ],
+    notes: [
+      "Children under 1m are usually free according to operator policy.",
+      "Afternoon ticket and buffet conditions can change by date.",
+      "GoVietStay supports transfer advice from Da Nang or Hoi An and quick WhatsApp confirmation.",
+    ],
+    keywords: ["VinWonders Nam Hoi An", "Hoi An Tours", "Family Activities"],
+  },
+  {
+    icon: "🚤",
+    title: "Han River Cruise Tickets",
+    location: "Da Nang",
+    description:
+      "Evening cruise tickets for Han River, Dragon Bridge views and Da Nang night scenery with GoVietStay support.",
+    packages: [
+      { name: "Han River Cruise - Adult", govietstayPrice: 170000, details: "Popular evening cruise option in Da Nang." },
+      { name: "Han River Cruise - Child", govietstayPrice: 120000, details: "Child policy depends on cruise operator." },
+    ],
+    notes: [
+      "Best on Friday, Saturday and Sunday if guests want Dragon Bridge fire and water show.",
+      "Boarding time and pier location will be sent clearly via WhatsApp.",
+      "GoVietStay supports guests before boarding and during schedule changes.",
+    ],
+    keywords: ["Han River Cruise", "Da Nang Tours", "Dragon Bridge"],
+  },
+  {
+    icon: "🖼️",
+    title: "3D Art Museum Tickets",
+    location: "Da Nang",
+    description:
+      "A fun indoor photo stop for families, kids and rainy-day plans in Da Nang.",
+    packages: [
+      { name: "3D Art Museum - Adult", govietstayPrice: 160000 },
+      { name: "3D Art Museum - Child", govietstayPrice: 120000 },
+    ],
+    notes: [
+      "Good backup activity when the weather is rainy or too hot.",
+      "GoVietStay can combine this with private car service or city route planning.",
+    ],
+    keywords: ["Da Nang Attractions", "Da Nang Tickets", "Family Activities"],
+  },
+  {
+    icon: "♨️",
+    title: "Nui Than Tai Hot Springs Tickets",
+    location: "Da Nang Mountain Area",
+    description:
+      "Hot springs, water park and mountain relaxation packages for families and groups.",
+    packages: [
+      { name: "Nui Than Tai Ticket", govietstayPrice: 0, details: "Contact GoVietStay for the latest package price before booking." },
+    ],
+    notes: [
+      "Packages can include entrance, hot spring bath, water park, buffet or special bath services.",
+      "GoVietStay can arrange private car transfer and full-day local support.",
+    ],
+    keywords: ["Nui Than Tai", "Da Nang Tours", "Hot Springs"],
+  },
+];
+
+const privateCarPrices = [
+  { route: "Da Nang Airport ↔ Da Nang Hotel", car4: "350,000 VND", car7: "450,000 VND", car16: "650,000 VND" },
+  { route: "Hoi An ↔ Airport", car4: "400,000 VND", car7: "500,000 VND", car16: "800,000 VND" },
+  { route: "Hue ↔ Airport", car4: "800,000 VND", car7: "1,000,000 VND", car16: "1,600,000 VND" },
+  { route: "Private Car Rental", car4: "400,000 VND", car7: "600,000 VND", car16: "1,200,000 VND" },
+];
+
 const services: Service[] = [
   {
-    icon: "🚕",
+    icon: "🎫",
+    title: "Tickets & Attractions",
+    description:
+      "GoVietStay ticket prices are usually 20,000 VND lower than listed gate prices, with full local support.",
+    price: "GoVietStay rate = listed price - 20,000 VND",
+    details: [
+      "Ba Na Hills & Golden Bridge tickets",
+      "Hoi An Memories Show tickets",
+      "VinWonders Nam Hoi An tickets",
+      "Han River Cruise and 3D Art Museum tickets",
+      "Nui Than Tai, Coconut Forest and other attraction support",
+      "Fast confirmation via WhatsApp / Zalo / Email",
+      "Support before, during and after the trip",
+    ],
+    bestFor: [
+      "Self-guided travelers",
+      "Families who need clear instructions",
+      "Guests comparing official ticket prices",
+      "Travelers who want a local person to support the whole process",
+    ],
+    note: "Ticket prices may change without prior notice from operators. GoVietStay confirms the latest rate before booking.",
+  },
+  {
+    icon: "🚘",
     title: "Da Nang Airport Transfer",
     description:
-      "Convenient airport pickup and drop-off with trusted local drivers.",
-    price: "Contact for route-based price",
+      "Private airport pickup and drop-off with trusted local drivers and clear WhatsApp support.",
+    price: "From 350,000 VND for international traveler transfer routes",
     details: [
       "Da Nang Airport pickup and drop-off",
-      "Hotel transfer in Da Nang, Hoi An and nearby areas",
-      "Clear meeting point and WhatsApp support",
-      "Private car options for couples, families and groups",
-      "Flexible timing based on your flight schedule",
+      "Da Nang Airport to hotel in Da Nang, Hoi An or Hue",
+      "4-seat, 7-seat and 16-seat vehicles available",
+      "Clear meeting point and driver information before arrival",
+      "Flight-time based pickup support",
     ],
     bestFor: [
       "First-time visitors",
@@ -171,40 +341,20 @@ const services: Service[] = [
       "Late-night or early-morning flights",
       "Travelers who want a smooth arrival",
     ],
-    note: "Send us your flight time, hotel name and number of guests. GoVietStay will suggest the right car option.",
-  },
-  {
-    icon: "📱",
-    title: "SIM & eSIM",
-    description: "Stay connected from the moment you arrive in Vietnam.",
-    price: "From 150,000 VND / $6",
-    details: [
-      "Vietnam travel SIM support",
-      "High-data options for tourists",
-      "Simple setup guidance",
-      "Delivery or pickup support in central Da Nang when available",
-      "WhatsApp help if activation support is needed",
-    ],
-    bestFor: [
-      "International travelers",
-      "Remote workers",
-      "Families needing navigation",
-      "Guests using WhatsApp, Grab and Google Maps",
-    ],
-    note: "Popular option: 5GB/day for 30 days, depending on current carrier availability.",
+    note: "Send flight number, arrival time, hotel name and number of guests. GoVietStay will suggest the correct vehicle.",
   },
   {
     icon: "🚗",
     title: "Private Car Service",
     description:
-      "Flexible transportation for sightseeing, transfers and day trips.",
-    price: "Contact for custom route price",
+      "Flexible private cars for Da Nang, Hoi An, Hue, Hai Van Pass and custom day trips.",
+    price: "From 400,000 VND depending on car type and route",
     details: [
-      "Private car for Da Nang, Hoi An, Hue and nearby destinations",
-      "Half-day and full-day route planning",
-      "Comfortable option for families and small groups",
-      "Flexible stops for photos, cafés and meals",
-      "Local route advice before departure",
+      "4-seat car for 1-3 guests",
+      "7-seat car for 4-6 guests",
+      "16-seat van for 7-14 guests",
+      "Custom route planning for sightseeing, transfers and day trips",
+      "Clean vehicle, friendly driver and WhatsApp support",
     ],
     bestFor: [
       "Private tours",
@@ -212,25 +362,69 @@ const services: Service[] = [
       "Small groups",
       "Travelers who dislike fixed group schedules",
     ],
-    note: "Send your route, date, pickup location and number of guests for a suitable quote.",
+    note: "Prices can change by date, route, waiting time and vehicle availability. Contact GoVietStay for the best quote.",
+  },
+  {
+    icon: "🏝️",
+    title: "Private Tours Vietnam",
+    description:
+      "Da Nang Tours, Hoi An Tours, Hue Tours and custom Central Vietnam experiences with local care.",
+    price: "Contact for private tour price",
+    details: [
+      "Golden Bridge Tour and Ba Na Hills Tour",
+      "Cham Island Tour and snorkeling support",
+      "Hoi An Ancient Town, Memories Show and Coconut Forest",
+      "Hue Imperial City and heritage route",
+      "Private guide, private car and flexible itinerary options",
+    ],
+    bestFor: [
+      "Families with elderly guests",
+      "Couples",
+      "Groups of friends",
+      "Travelers who want comfort and trust",
+    ],
+    note: "GoVietStay designs private tours around guest pace, language, pickup location and travel style.",
+  },
+  {
+    icon: "📶",
+    title: "Tourist SIM & eSIM",
+    description: "Stay connected from the moment you arrive in Vietnam.",
+    price: "Popular package: 5GB/day, 100 free minutes, 30 days validity",
+    details: [
+      "VN SKY tourist SIM support",
+      "5GB/day data package option",
+      "100 free domestic mobile minutes depending on package",
+      "30 days validity",
+      "Delivery or pickup support in Da Nang when available",
+      "Setup guidance for WhatsApp, Grab and Google Maps",
+    ],
+    bestFor: [
+      "International travelers",
+      "Remote workers",
+      "Families needing navigation",
+      "Guests using WhatsApp, Grab and Google Maps",
+    ],
+    note: "Carrier packages can change. GoVietStay checks current SIM availability before confirmation.",
   },
   {
     icon: "💬",
     title: "Local Travel Support & WhatsApp Travel Assistant",
-    description: "Fast local assistance before and during your journey.",
-    price: "Free consultation on WhatsApp",
+    description:
+      "Real local assistance before, during and after the journey — not only ticket selling.",
+    price: "Free first consultation on WhatsApp",
     details: [
-      "Local travel advice for Da Nang, Hoi An and Hue",
-      "Help choosing tours, restaurants and timing",
-      "Support during weather changes or schedule changes",
-      "Recommendations for families, couples and international travelers",
-      "WhatsApp-first communication for fast replies",
+      "Tour planning and timing advice",
+      "Restaurant and local food recommendations",
+      "Ticket booking and vehicle coordination",
+      "English, Russian and local Vietnamese support",
+      "Help when plans change because of weather or schedule issues",
+      "Support before arrival, during the trip and even after the journey",
     ],
     bestFor: [
       "First-time Vietnam travelers",
       "Travelers needing local confidence",
-      "Guests comparing tour options",
-      "People who prefer human support",
+      "Guests comparing tour, ticket and car options",
+      "People who prefer real human support",
     ],
     note: "GoVietStay focuses on helping first, recommending second and selling later.",
   },
@@ -238,64 +432,222 @@ const services: Service[] = [
 
 const localTips: LocalTip[] = [
   {
-    icon: "🏖️",
-    title: "Best Time To Visit",
+    icon: "🧭",
+    title: "Before You Arrive",
+    category: "First-time Vietnam guide",
     description:
-      "When to visit beaches, old towns, mountains and night markets.",
+      "Essential preparation for international travelers before landing in Da Nang, Hoi An, Hue or future GoVietStay destinations.",
+    quickFacts: [
+      "Cash is still important for small shops, markets and local food.",
+      "Grab, Google Maps, WhatsApp and Google Translate make the trip much easier.",
+      "A tourist SIM or eSIM is useful immediately after arrival.",
+      "Airport pickup is the smoothest option for families, late arrivals and first-time visitors.",
+    ],
     details: [
-      "Ba Na Hills is best in the morning for cooler weather and fewer crowds.",
-      "Hoi An Ancient Town is most beautiful from late afternoon to evening.",
-      "Da Nang beaches are best in the morning or near sunset.",
-      "Marble Mountains and Son Tra are more comfortable early morning or late afternoon.",
-      "During rainy season, keep a flexible plan and ask GoVietStay before booking sea activities.",
+      "Prepare some small VND notes for taxis, markets, tips, street food and small shops.",
+      "Install Grab before arrival for car booking and price comparison.",
+      "Keep hotel name, address and booking screenshot ready for the driver.",
+      "Buy or arrange SIM/eSIM early so you can use WhatsApp, maps and translation.",
+      "Share your arrival time with GoVietStay if you need airport transfer, SIM pickup or first-day local support.",
     ],
     bestFor: [
-      "First-time visitors",
-      "Families",
-      "Photo lovers",
-      "Travelers planning multiple destinations",
+      "First-time Vietnam travelers",
+      "Families with luggage",
+      "Guests arriving late at night",
+      "Travelers who want a smooth first day",
+    ],
+    recommendations: [
+      "Use reliable transport instead of negotiating with random cars at the airport.",
+      "Keep passport photos and booking confirmations saved offline.",
+      "Ask GoVietStay to check your arrival plan before you land.",
+    ],
+    avoid: [
+      "Do not exchange all money at once without comparing rates.",
+      "Do not rely only on hotel Wi-Fi if you plan to move around independently.",
+      "Do not book a packed first-day schedule after a long flight.",
+    ],
+  },
+  {
+    icon: "🏨",
+    title: "Where To Stay",
+    category: "Da Nang • Hoi An • Hue",
+    description:
+      "Choose the right area based on beach, nightlife, family comfort, old town atmosphere or heritage sightseeing.",
+    quickFacts: [
+      "My Khe Beach is popular for beach access and first-time stays.",
+      "An Thuong is convenient for restaurants, cafes and international travelers.",
+      "Han River / Hai Chau is good for city life, bridges and evening walks.",
+      "Hoi An Ancient Town is best for culture, lanterns and slow evenings.",
+    ],
+    details: [
+      "My Khe Beach: good for beach lovers, families and travelers who want resort-style comfort.",
+      "An Thuong: strong for cafes, restaurants, bars, laundry, scooter rental and digital nomad convenience.",
+      "Han River / Hai Chau: suitable for guests who like city views, bridges, markets and shorter rides to restaurants.",
+      "Hoi An Ancient Town: best for couples, photographers, lantern nights and walking culture.",
+      "Hue city center: best for Imperial City, royal tombs, traditional food and slower heritage travel.",
+    ],
+    bestFor: [
+      "Families choosing hotel location",
+      "Couples planning Da Nang + Hoi An",
+      "Long-stay travelers",
+      "Guests comparing beach vs city",
+    ],
+    recommendations: [
+      "Stay near My Khe or An Thuong if this is your first time in Da Nang.",
+      "Stay one night in Hoi An if you want to enjoy lantern streets without rushing back.",
+      "Choose Hue city center if your main focus is history and food.",
+    ],
+    avoid: [
+      "Do not choose a hotel only because it is cheap; check walking distance and transport cost.",
+      "Avoid very remote locations if you need restaurants, pharmacy or easy Grab access.",
+      "Do not book Hoi An only for daytime; the evening is the most beautiful part.",
     ],
   },
   {
     icon: "🍜",
-    title: "Local Food Guide",
+    title: "Food, Coffee & Restaurants",
+    category: "Local taste with traveler safety",
     description:
-      "What to try in Da Nang, Hoi An and Hue — from street food to local restaurants.",
+      "What to eat in Central Vietnam and how to enjoy local food without falling into tourist traps.",
+    quickFacts: [
+      "Da Nang is known for Mi Quang, Bun Cha Ca, Banh Xeo and seafood.",
+      "Hoi An is famous for Cao Lau, chicken rice, white rose dumplings and riverside cafes.",
+      "Hue is strong for Bun Bo Hue, royal-style dishes and traditional snacks.",
+      "Salt coffee, coconut coffee and Vietnamese iced coffee are easy wins for visitors.",
+    ],
     details: [
-      "Da Nang: try Mi Quang, Banh Xeo, seafood and Vietnamese coffee.",
-      "Hoi An: try Cao Lau, chicken rice, white rose dumplings and local cafés.",
-      "Hue: try Bun Bo Hue, royal-style dishes and traditional local snacks.",
-      "Tell us if you avoid pork, seafood or spicy food.",
-      "For families, GoVietStay can suggest clean, comfortable and traveler-friendly food stops.",
+      "Da Nang: try Mi Quang, Bun Cha Ca, Banh Xeo, Nem Lui, fresh seafood and Vietnamese coffee.",
+      "Hoi An: try Cao Lau, Com Ga, White Rose, Mot herbal drink and riverside cafes.",
+      "Hue: try Bun Bo Hue, Banh Beo, Banh Nam, Banh Khoai and royal-style local dishes.",
+      "For seafood, check price per kilogram before ordering and ask locals if the restaurant is fair.",
+      "Tell GoVietStay early if guests avoid pork, seafood, spicy food, alcohol or need vegetarian options.",
     ],
     bestFor: [
       "Food lovers",
-      "Families",
-      "Couples",
+      "Families with kids",
+      "Guests with dietary limits",
       "Travelers who want authentic but safe local food",
+    ],
+    recommendations: [
+      "Ask for local restaurants that fit your hotel area instead of following random viral videos.",
+      "Try coffee in the morning and local food in smaller portions first.",
+      "Use GoVietStay support for seafood, group meals and clean family-friendly restaurants.",
+    ],
+    avoid: [
+      "Avoid restaurants without clear seafood prices.",
+      "Avoid eating too much street food on the first day if your stomach is sensitive.",
+      "Avoid choosing restaurants only because they are next to tourist attractions.",
+    ],
+  },
+  {
+    icon: "🌦️",
+    title: "Weather & Smart Timing",
+    category: "Best time to visit attractions",
+    description:
+      "Plan beaches, Ba Na Hills, Hoi An, Cham Island and outdoor activities with better timing and fewer surprises.",
+    quickFacts: [
+      "Ba Na Hills is usually better in the morning for cooler weather and photos.",
+      "Hoi An is most beautiful from late afternoon to evening.",
+      "Da Nang beaches are best early morning or near sunset.",
+      "Sea tours like Cham Island depend strongly on weather and water conditions.",
+    ],
+    details: [
+      "January to April: comfortable weather for city, culture and mountain sightseeing.",
+      "May to August: strong beach season, hot midday sun, good for early starts and sunset activities.",
+      "September to November: rainy season risk, flexible plans are important, especially for Hoi An and sea tours.",
+      "December: mixed weather; check forecast before booking outdoor or island activities.",
+      "Ba Na Hills can be cool, misty or rainy even when Da Nang city is sunny.",
+    ],
+    bestFor: [
+      "Families planning many tours",
+      "Photo lovers",
+      "Cham Island guests",
+      "Travelers visiting during rainy season",
+    ],
+    recommendations: [
+      "Start outdoor tours early and keep midday for lunch, cafes or indoor attractions.",
+      "Check sea conditions before confirming Cham Island, fishing or snorkeling.",
+      "Carry a light jacket for Ba Na Hills and a small raincoat in rainy season.",
+    ],
+    avoid: [
+      "Do not book sea tours without checking weather.",
+      "Avoid Marble Mountains at the hottest midday time if traveling with elderly guests.",
+      "Do not assume Ba Na Hills weather is the same as Da Nang city.",
     ],
   },
   {
     icon: "🎆",
-    title: "Events & Fireworks",
+    title: "Nightlife, Events & Local Experiences",
+    category: "Evening plans travelers love",
     description:
-      "Useful updates about festivals, fireworks, night activities and seasonal events.",
+      "Dragon Bridge, Han River Cruise, Hoi An lantern nights, night markets and evening routes that make Central Vietnam memorable.",
+    quickFacts: [
+      "Dragon Bridge fire and water show is usually on Friday, Saturday and Sunday nights.",
+      "Hoi An Lantern Festival is held around the 14th day of the lunar month.",
+      "Han River Cruise is popular for city lights and Dragon Bridge views.",
+      "Night markets are fun, but timing and pickup planning matter.",
+    ],
     details: [
-      "Dragon Bridge fire and water show usually happens on Friday, Saturday and Sunday nights.",
-      "Fireworks and festival dates can change depending on the event schedule.",
-      "Han River cruise is a good option for city lights and evening views.",
-      "Book early during fireworks season because good seats and boats can sell out.",
-      "Ask GoVietStay for weekly updates before planning your evening schedule.",
+      "Dragon Bridge: plan dinner nearby and arrive early on weekends for better viewing.",
+      "Han River Cruise: good for couples, families and guests who want a simple evening activity.",
+      "Hoi An Ancient Town: late afternoon to evening gives the best lantern atmosphere.",
+      "Son Tra Night Market and An Thuong area are useful for casual food, drinks and walking.",
+      "During fireworks or festival season, book transport and seats early because traffic and demand rise quickly.",
     ],
     bestFor: [
       "Couples",
       "Families",
       "Night activity seekers",
-      "Travelers visiting Da Nang on weekends",
+      "Weekend visitors",
+    ],
+    recommendations: [
+      "Combine Hoi An Ancient Town with boat ride, lantern release and dinner.",
+      "Use private car if traveling with elderly guests or children at night.",
+      "Ask GoVietStay for weekly event checks before planning your evening.",
+    ],
+    avoid: [
+      "Do not arrive at Dragon Bridge too late on weekends.",
+      "Avoid walking too far back alone late at night after drinking.",
+      "Do not book tight evening schedules during fireworks traffic.",
+    ],
+  },
+  {
+    icon: "🛡️",
+    title: "Traveler Safety & Local Support",
+    category: "Need help in Vietnam?",
+    description:
+      "Practical support for transport, tickets, weather changes, restaurants, pharmacy, hospitals and unexpected travel problems.",
+    quickFacts: [
+      "Da Nang is generally comfortable for travelers, but smart planning prevents stress.",
+      "Use trusted transport and keep valuables secure in crowded areas.",
+      "Keep GoVietStay WhatsApp ready for quick local help.",
+      "GoVietStay support will expand from Da Nang, Hoi An, Hue and Phu Quoc toward Ho Tram in the future.",
+    ],
+    details: [
+      "Use Grab or trusted private car for late-night returns and airport transfers.",
+      "Keep photos of passport, hotel card and travel insurance saved on your phone.",
+      "Ask GoVietStay before choosing expensive seafood restaurants, unknown tours or unclear ticket offers.",
+      "For urgent needs, we can help suggest nearby pharmacy, clinic, hospital, police contact direction or hotel communication support.",
+      "We support Da Nang, Hoi An, Hue, Phu Quoc and future Ho Tram travel planning as GoVietStay expands.",
+    ],
+    bestFor: [
+      "First-time Vietnam travelers",
+      "Solo travelers",
+      "Families with elderly guests",
+      "Guests who want real human support",
+    ],
+    recommendations: [
+      "Message GoVietStay before booking if a price or route feels unclear.",
+      "Use one trusted WhatsApp thread for tickets, cars, SIM, tours and schedule changes.",
+      "Plan with a local before paying for complicated travel services.",
+    ],
+    avoid: [
+      "Avoid paying full cash to unknown sellers without confirmation.",
+      "Avoid unclear pickup points, unclear ticket conditions or no-contact operators.",
+      "Avoid overpacking your schedule; Central Vietnam is better when paced well.",
     ],
   },
 ];
-
 const travelUpdates = [
   {
     image: "/updates/bana-ticket.jpg",
@@ -965,6 +1317,7 @@ export default function Home() {
   const [bookingOpen, setBookingOpen] = useState(false);
   const [bookingForm, setBookingForm] = useState<BookingForm>(emptyBookingForm);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [selectedTicket, setSelectedTicket] = useState<TicketAttraction | null>(null);
   const [selectedTip, setSelectedTip] = useState<LocalTip | null>(null);
   const [selectedMemory, setSelectedMemory] = useState<string | null>(null);
   const [happyTravelers, setHappyTravelers] = useState<string[]>([]);
@@ -1253,7 +1606,7 @@ export default function Home() {
           <nav className="hidden md:flex gap-8 text-white/90 font-medium">
             <a href="#experiences">Experiences</a>
             <a href="#travelers">International Travelers</a>
-            <a href="#local-tips">Local Tips</a>
+            <a href="#local-tips">Local Knowledge</a>
             <a href="#contact">Contact</a>
           </nav>
         </header>
@@ -1734,19 +2087,38 @@ Da Nang Tours, Hoi An Tours & Hue Tours
       <section className="bg-[#06251b] text-white px-4 md:px-20 py-24">
         <div className="max-w-7xl mx-auto w-full">
           <p className="text-yellow-400 uppercase tracking-[4px] text-sm font-semibold">
-            Travel Services
+            Tickets • Cars • SIM • Local Support
           </p>
 
-          <h2 className="mt-4 text-4xl md:text-6xl font-bold">
-            Everything You Need For A Smooth Trip
+          <h2 className="mt-4 text-4xl md:text-6xl font-bold leading-tight">
+            Da Nang Tickets, Private Cars & Travel Services
           </h2>
 
-          <p className="mt-6 text-white/70 max-w-3xl text-lg">
-            Beyond tours, GoVietStay helps travelers stay connected, move around
-            comfortably and enjoy Central Vietnam with confidence.
+          <p className="mt-6 text-white/70 max-w-4xl text-lg leading-relaxed">
+            GoVietStay helps travelers book attraction tickets, private cars, Da Nang Airport Transfer, Tourist SIM/eSIM and Local Travel Support. For many tickets, GoVietStay rate is 20,000 VND lower than listed gate price, with real support before, during and after the journey.
           </p>
 
-          <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-4 md:gap-6">
+          <div className="mt-8 flex flex-wrap gap-2 text-xs md:text-sm text-white/80">
+            {[
+              "Da Nang Tickets",
+              "Ba Na Hills Ticket",
+              "Golden Bridge Tour",
+              "Hoi An Memories Show",
+              "VinWonders Nam Hoi An",
+              "Da Nang Airport Transfer",
+              "Private Car Da Nang",
+              "WhatsApp Travel Assistant",
+            ].map((keyword) => (
+              <span
+                key={keyword}
+                className="rounded-full border border-white/15 bg-white/5 px-3 py-2"
+              >
+                {keyword}
+              </span>
+            ))}
+          </div>
+
+          <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
             {services.map((service) => (
               <div
                 key={service.title}
@@ -1754,11 +2126,14 @@ Da Nang Tours, Hoi An Tours & Hue Tours
                 className="cursor-pointer w-full rounded-3xl bg-white/5 border border-white/10 p-6 md:p-8 hover:bg-white/10 hover:-translate-y-1 transition duration-300"
               >
                 <div className="text-5xl mb-6">{service.icon}</div>
-                <h3 className="text-xl md:text-2xl font-bold">
+                <h3 className="text-xl md:text-2xl font-bold leading-tight">
                   {service.title}
                 </h3>
                 <p className="mt-4 text-white/70 text-base md:text-lg leading-relaxed">
                   {service.description}
+                </p>
+                <p className="mt-4 text-yellow-400 font-bold">
+                  {service.price}
                 </p>
                 <p className="mt-5 text-yellow-400 font-semibold">
                   View service →
@@ -1766,44 +2141,232 @@ Da Nang Tours, Hoi An Tours & Hue Tours
               </div>
             ))}
           </div>
+
+          <div className="mt-20 rounded-[2rem] border border-yellow-400/25 bg-[#f7f1df] text-[#06251b] p-5 md:p-8 shadow-2xl shadow-black/20">
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+              <div>
+                <p className="text-green-800 uppercase tracking-[4px] text-xs md:text-sm font-semibold">
+                  GoVietStay Ticket Center
+                </p>
+                <h3 className="mt-3 text-3xl md:text-5xl font-bold leading-tight">
+                  Official Attraction Tickets With Full Local Care
+                </h3>
+                <p className="mt-4 max-w-4xl text-[#06251b]/70 leading-relaxed">
+                  We do not only sell tickets. GoVietStay helps guests choose the right ticket, confirm the schedule, arrange car transfer, send clear instructions and support the whole process via WhatsApp / Zalo.
+                </p>
+              </div>
+
+              <a
+                href="https://wa.me/84937762607?text=Hello%20GoVietStay%2C%20I%20would%20like%20to%20book%20attraction%20tickets%20and%20need%20local%20support."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="shrink-0 rounded-full bg-green-600 px-7 py-4 font-semibold text-white hover:bg-green-700 transition text-center"
+              >
+                Book Tickets on WhatsApp
+              </a>
+            </div>
+
+            <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {ticketAttractions.map((ticket) => (
+                <div
+                  key={ticket.title}
+                  onClick={() => setSelectedTicket(ticket)}
+                  className="cursor-pointer rounded-3xl border border-[#06251b]/10 bg-white/75 p-5 hover:bg-white hover:-translate-y-1 transition duration-300"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#0b6b4f]/10 text-3xl">
+                      {ticket.icon}
+                    </div>
+                    <div>
+                      <h4 className="text-lg md:text-xl font-bold leading-tight">
+                        {ticket.title}
+                      </h4>
+                      <p className="mt-1 text-sm text-green-800 font-semibold">
+                        {ticket.location}
+                      </p>
+                    </div>
+                  </div>
+
+                  <p className="mt-4 text-[#06251b]/70 leading-relaxed">
+                    {ticket.description}
+                  </p>
+
+                  <div className="mt-5 rounded-2xl bg-[#f7f1df] border border-[#06251b]/10 overflow-hidden">
+                    {ticket.packages.slice(0, 3).map((pkg) => (
+                      <div
+                        key={pkg.name}
+                        className="flex items-center justify-between gap-3 border-b last:border-b-0 border-[#06251b]/10 px-4 py-3"
+                      >
+                        <span className="text-sm font-semibold text-[#06251b]/75">
+                          {pkg.name}
+                        </span>
+                        <span className="shrink-0 text-sm font-bold text-red-600">
+                          {pkg.govietstayPrice > 0 ? formatVND(pkg.govietstayPrice) : "Contact"}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <p className="mt-4 text-green-800 font-semibold">
+                    View all prices →
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-10 rounded-3xl bg-[#0b6b4f] text-white p-5 md:p-6">
+              <h4 className="text-2xl font-bold">Private Car & Airport Transfer</h4>
+              <p className="mt-2 text-white/75">
+                Clean cars, trusted local drivers and GoVietStay support for airport transfer, sightseeing and custom day trips.
+              </p>
+
+              <div className="mt-5 overflow-x-auto">
+                <table className="w-full min-w-[720px] text-left text-sm md:text-base">
+                  <thead>
+                    <tr className="border-b border-white/20 text-yellow-300">
+                      <th className="py-3 pr-4">Route</th>
+                      <th className="py-3 px-4">4-seat</th>
+                      <th className="py-3 px-4">7-seat</th>
+                      <th className="py-3 pl-4">16-seat</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {privateCarPrices.map((item) => (
+                      <tr key={item.route} className="border-b border-white/10 last:border-b-0">
+                        <td className="py-3 pr-4 font-semibold">{item.route}</td>
+                        <td className="py-3 px-4">{item.car4}</td>
+                        <td className="py-3 px-4">{item.car7}</td>
+                        <td className="py-3 pl-4">{item.car16}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              <p className="mt-4 text-sm text-white/65">
+                Prices can change depending on route, date, waiting time and vehicle availability. Contact GoVietStay for the best current rate.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
       <section
         id="local-tips"
-        className="bg-[#f7f1df] text-[#06251b] px-4 md:px-20 py-24"
+        className="relative bg-[#f7f1df] text-[#06251b] px-4 md:px-20 py-24 overflow-hidden"
       >
-        <div className="max-w-7xl mx-auto w-full">
-          <p className="text-green-800 uppercase tracking-[4px] text-sm font-semibold">
-            Local Tips
-          </p>
+        <div className="absolute inset-0 opacity-80 bg-[radial-gradient(circle_at_top_left,rgba(11,107,79,0.12),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(255,196,0,0.22),transparent_42%)]" />
+        <div className="relative max-w-7xl mx-auto w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-8 lg:gap-12 items-end">
+            <div>
+              <p className="text-green-800 uppercase tracking-[4px] text-sm font-semibold">
+                Local Knowledge Center
+              </p>
 
-          <h2 className="mt-4 text-4xl md:text-6xl font-bold">
-            Travel Like A Local
-          </h2>
+              <h2 className="mt-4 text-4xl md:text-6xl font-bold leading-tight">
+                Travel Smarter With Real Local Knowledge
+              </h2>
 
-          <p className="mt-6 text-[#06251b]/70 max-w-3xl text-lg">
-            Simple local guidance to help you enjoy Da Nang, Hoi An and Hue with
-            more confidence.
-          </p>
+              <p className="mt-6 text-[#06251b]/70 max-w-3xl text-lg leading-relaxed">
+                Practical Vietnam travel knowledge from GoVietStay: where to stay, what to eat,
+                how to plan weather-safe days, how to avoid tourist mistakes and how to get real
+                WhatsApp support before, during and after your trip.
+              </p>
+            </div>
 
-          <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-4 md:gap-6">
-            {localTips.map((tip) => (
-              <div
+            <div className="rounded-[2rem] bg-[#06251b] text-white p-6 md:p-8 shadow-2xl shadow-[#06251b]/20">
+              <div className="flex items-start gap-4">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-yellow-400 text-3xl">
+                  💬
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold">Need Help?</h3>
+                  <p className="mt-2 text-white/75 leading-relaxed">
+                    Ask GoVietStay for Da Nang, Hoi An, Hue, Phu Quoc and future Ho Tram travel support.
+                    Tickets, private cars, SIM/eSIM, local food, hotel areas, weather checks and emergency guidance in one place.
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-6 grid grid-cols-2 gap-3 text-sm">
+                {["Da Nang Tours", "Hoi An Tours", "Hue Tours", "Ho Tram Future", "Local Food", "Weather Check"].map((item) => (
+                  <div key={item} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                    ✓ {item}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+            {localTips.map((tip, index) => (
+              <button
                 key={tip.title}
                 onClick={() => setSelectedTip(tip)}
-                className="cursor-pointer w-full rounded-3xl bg-white/60 border border-[#06251b]/10 p-6 md:p-8 hover:bg-white hover:-translate-y-1 transition duration-300"
+                className="group relative overflow-hidden text-left rounded-[2rem] bg-white/70 border border-[#06251b]/10 p-6 md:p-7 shadow-xl shadow-[#06251b]/5 hover:bg-white hover:-translate-y-2 hover:shadow-2xl hover:shadow-[#06251b]/15 transition duration-500"
               >
-                <div className="text-5xl mb-6">{tip.icon}</div>
-                <h3 className="text-xl md:text-2xl font-bold">{tip.title}</h3>
-                <p className="mt-4 text-[#06251b]/70 text-base md:text-lg leading-relaxed">
-                  {tip.description}
-                </p>
-                <button className="mt-6 text-green-800 font-semibold">
-                  Read more →
-                </button>
-              </div>
+                <div className="absolute -right-10 -top-10 h-28 w-28 rounded-full bg-[#0b6b4f]/10 group-hover:scale-125 transition duration-500" />
+                <div className="absolute -bottom-12 -left-12 h-32 w-32 rounded-full bg-yellow-400/20 group-hover:scale-125 transition duration-500" />
+
+                <div className="relative">
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#f7f1df] text-4xl shadow-inner">
+                      {tip.icon}
+                    </div>
+                    <span className="rounded-full bg-[#0b6b4f]/10 px-3 py-1 text-xs font-bold text-green-800">
+                      0{index + 1}
+                    </span>
+                  </div>
+
+                  <p className="mt-6 text-green-800 uppercase tracking-[3px] text-xs font-semibold">
+                    {tip.category}
+                  </p>
+
+                  <h3 className="mt-2 text-2xl font-bold leading-tight">
+                    {tip.title}
+                  </h3>
+
+                  <p className="mt-4 text-[#06251b]/70 leading-relaxed">
+                    {tip.description}
+                  </p>
+
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {tip.quickFacts.slice(0, 2).map((fact) => (
+                      <span
+                        key={fact}
+                        className="rounded-full bg-[#06251b]/5 px-3 py-2 text-xs text-[#06251b]/70"
+                      >
+                        {fact}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="mt-6 font-semibold text-green-800 group-hover:translate-x-1 transition">
+                    Open local guide →
+                  </div>
+                </div>
+              </button>
             ))}
+          </div>
+
+          <div className="mt-10 rounded-[2rem] border border-[#0b6b4f]/20 bg-white/70 p-5 md:p-6 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5 shadow-xl shadow-[#06251b]/5">
+            <div>
+              <h3 className="text-xl md:text-2xl font-bold">
+                GoVietStay is not only a tour seller — we are your local travel support team.
+              </h3>
+              <p className="mt-2 text-[#06251b]/65">
+                We help with tickets, cars, SIM, food, timing, weather, hotels and real travel problems across Central Vietnam.
+              </p>
+            </div>
+
+            <a
+              href="https://wa.me/84937762607"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="shrink-0 rounded-full bg-green-600 px-7 py-4 font-semibold text-white hover:bg-green-700 transition"
+            >
+              Ask Local Support
+            </a>
           </div>
         </div>
       </section>
@@ -2171,6 +2734,130 @@ Da Nang Tours, Hoi An Tours & Hue Tours
         </div>
       )}
 
+      {selectedTicket && (
+        <div
+          className="gvs-overlay fixed inset-0 z-50 bg-black/80 flex items-end md:items-center justify-center p-0 md:p-6"
+          onClick={() => setSelectedTicket(null)}
+        >
+          <div
+            className="gvs-panel bg-[#f7f1df] text-[#06251b] rounded-t-3xl md:rounded-3xl max-w-5xl w-full max-h-[92svh] md:max-h-[90vh] overflow-y-auto overscroll-contain shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-5 md:p-10">
+              <div className="flex items-start justify-between gap-4 md:gap-6">
+                <div>
+                  <p className="text-green-800 uppercase tracking-[4px] text-sm font-semibold">
+                    GoVietStay Ticket Center
+                  </p>
+                  <div className="mt-5 text-6xl">{selectedTicket.icon}</div>
+                  <h2 className="mt-5 text-3xl md:text-5xl font-bold leading-tight">
+                    {selectedTicket.title}
+                  </h2>
+                  <p className="mt-2 text-green-800 font-semibold">
+                    {selectedTicket.location}
+                  </p>
+                  <p className="mt-4 text-lg text-[#06251b]/75 leading-relaxed">
+                    {selectedTicket.description}
+                  </p>
+                </div>
+
+                <button
+                  onClick={() => setSelectedTicket(null)}
+                  className="text-3xl font-bold leading-none hover:opacity-60"
+                  aria-label="Close ticket details"
+                >
+                  ×
+                </button>
+              </div>
+
+              <div className="mt-8 rounded-3xl bg-[#0b6b4f] text-white p-5 md:p-6">
+                <h3 className="text-xl md:text-2xl font-bold">
+                  Why book with GoVietStay?
+                </h3>
+                <p className="mt-3 text-white/80 leading-relaxed">
+                  GoVietStay checks the latest ticket information, confirms your booking, sends clear instructions and supports you through WhatsApp / Zalo before, during and after the trip.
+                </p>
+              </div>
+
+              <div className="mt-8 overflow-hidden rounded-3xl border border-[#06251b]/10 bg-white/75">
+                <div className="grid grid-cols-12 bg-[#06251b] text-white text-sm md:text-base font-bold">
+                  <div className="col-span-5 px-4 py-3">Ticket Type</div>
+                  <div className="col-span-3 px-4 py-3">Listed Price</div>
+                  <div className="col-span-4 px-4 py-3">GoVietStay Price</div>
+                </div>
+
+                {selectedTicket.packages.map((pkg) => (
+                  <div
+                    key={pkg.name}
+                    className="grid grid-cols-12 border-b last:border-b-0 border-[#06251b]/10 text-sm md:text-base"
+                  >
+                    <div className="col-span-5 px-4 py-4">
+                      <div className="font-bold">{pkg.name}</div>
+                      {pkg.details && (
+                        <div className="mt-1 text-xs md:text-sm text-[#06251b]/60 leading-relaxed">
+                          {pkg.details}
+                        </div>
+                      )}
+                    </div>
+                    <div className="col-span-3 px-4 py-4 text-[#06251b]/65">
+                      {pkg.officialPrice ? formatVND(pkg.officialPrice) : "Contact"}
+                    </div>
+                    <div className="col-span-4 px-4 py-4 font-bold text-red-600">
+                      {pkg.govietstayPrice > 0 ? formatVND(pkg.govietstayPrice) : "Contact for latest price"}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+                <div className="rounded-3xl bg-white/60 border border-[#06251b]/10 p-5 md:p-6">
+                  <h3 className="text-xl md:text-2xl font-bold">Important Notes</h3>
+                  <ul className="mt-4 space-y-2 text-[#06251b]/75">
+                    {selectedTicket.notes.map((item) => (
+                      <li key={item}>• {item}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="rounded-3xl bg-white/60 border border-[#06251b]/10 p-5 md:p-6">
+                  <h3 className="text-xl md:text-2xl font-bold">SEO Keywords</h3>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {selectedTicket.keywords.map((item) => (
+                      <span
+                        key={item}
+                        className="rounded-full bg-[#0b6b4f]/10 px-3 py-2 text-sm font-semibold text-green-800"
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-10 flex flex-wrap gap-4">
+                <a
+                  href={`https://wa.me/84937762607?text=${encodeURIComponent(
+                    `Hello GoVietStay, I would like to book tickets for ${selectedTicket.title}. Please confirm the latest GoVietStay price and support details.`,
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full bg-green-600 px-8 py-4 font-semibold text-white hover:bg-green-700 transition"
+                >
+                  Book This Ticket on WhatsApp
+                </a>
+
+                <button
+                  onClick={() => setSelectedTicket(null)}
+                  className="rounded-full border border-[#06251b]/30 px-8 py-4 font-semibold hover:bg-[#06251b] hover:text-white transition"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {selectedService && (
         <div
           className="gvs-overlay fixed inset-0 z-50 bg-black/80 flex items-end md:items-center justify-center p-0 md:p-6"
@@ -2265,58 +2952,110 @@ Da Nang Tours, Hoi An Tours & Hue Tours
           onClick={() => setSelectedTip(null)}
         >
           <div
-            className="gvs-panel bg-[#f7f1df] text-[#06251b] rounded-t-3xl md:rounded-3xl max-w-4xl w-full max-h-[92svh] md:max-h-[90vh] overflow-y-auto overscroll-contain shadow-2xl"
+            className="gvs-panel bg-[#f7f1df] text-[#06251b] rounded-t-3xl md:rounded-[2rem] max-w-6xl w-full max-h-[92svh] md:max-h-[90vh] overflow-y-auto overscroll-contain shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-5 md:p-10">
-              <div className="flex items-start justify-between gap-4 md:gap-4 md:gap-6">
+            <div className="relative overflow-hidden p-5 md:p-10">
+              <div className="absolute -right-24 -top-24 h-56 w-56 rounded-full bg-[#0b6b4f]/10" />
+              <div className="absolute -left-24 -bottom-24 h-56 w-56 rounded-full bg-yellow-400/20" />
+
+              <div className="relative flex items-start justify-between gap-4">
                 <div>
                   <p className="text-green-800 uppercase tracking-[4px] text-sm font-semibold">
-                    Local Tips
+                    Local Knowledge Center
                   </p>
-                  <div className="mt-5 text-6xl">{selectedTip.icon}</div>
-                  <h2 className="mt-5 text-3xl md:text-5xl font-bold leading-tight">
-                    {selectedTip.title}
-                  </h2>
-                  <p className="mt-4 text-lg text-[#06251b]/75">
+                  <div className="mt-5 flex items-center gap-4">
+                    <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-white/70 text-5xl shadow-inner">
+                      {selectedTip.icon}
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold uppercase tracking-[3px] text-green-800">
+                        {selectedTip.category}
+                      </p>
+                      <h2 className="mt-2 text-3xl md:text-5xl font-bold leading-tight">
+                        {selectedTip.title}
+                      </h2>
+                    </div>
+                  </div>
+                  <p className="mt-5 max-w-3xl text-lg text-[#06251b]/75 leading-relaxed">
                     {selectedTip.description}
                   </p>
                 </div>
 
                 <button
                   onClick={() => setSelectedTip(null)}
-                  className="text-3xl font-bold leading-none hover:opacity-60"
+                  className="relative text-3xl font-bold leading-none hover:opacity-60"
                 >
                   ×
                 </button>
               </div>
 
-              <div className="mt-8 md:mt-10 grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
-                <div className="rounded-3xl bg-white/60 border border-[#06251b]/10 p-5 md:p-6">
+              <div className="relative mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+                {selectedTip.quickFacts.map((fact) => (
+                  <div
+                    key={fact}
+                    className="rounded-2xl bg-[#06251b] px-4 py-4 text-sm font-medium leading-relaxed text-white shadow-lg shadow-[#06251b]/10"
+                  >
+                    ✓ {fact}
+                  </div>
+                ))}
+              </div>
+
+              <div className="relative mt-8 grid grid-cols-1 lg:grid-cols-3 gap-5">
+                <div className="rounded-3xl bg-white/70 border border-[#06251b]/10 p-5 md:p-6">
                   <h3 className="text-xl md:text-2xl font-bold">
                     Local Guidance
                   </h3>
-                  <ul className="mt-4 space-y-2 text-[#06251b]/75">
+                  <ul className="mt-4 space-y-3 text-[#06251b]/75 leading-relaxed">
                     {selectedTip.details.map((item) => (
                       <li key={item}>• {item}</li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="rounded-3xl bg-white/60 border border-[#06251b]/10 p-5 md:p-6">
-                  <h3 className="text-xl md:text-2xl font-bold">Best For</h3>
+                <div className="rounded-3xl bg-white/70 border border-[#06251b]/10 p-5 md:p-6">
+                  <h3 className="text-xl md:text-2xl font-bold">
+                    GoVietStay Recommends
+                  </h3>
+                  <ul className="mt-4 space-y-3 text-[#06251b]/75 leading-relaxed">
+                    {selectedTip.recommendations.map((item) => (
+                      <li key={item}>✓ {item}</li>
+                    ))}
+                  </ul>
+
+                  <h3 className="mt-7 text-xl md:text-2xl font-bold">
+                    Best For
+                  </h3>
                   <ul className="mt-4 space-y-2 text-[#06251b]/75">
                     {selectedTip.bestFor.map((item) => (
                       <li key={item}>• {item}</li>
                     ))}
                   </ul>
                 </div>
+
+                <div className="rounded-3xl bg-[#fff8e1] border border-yellow-500/25 p-5 md:p-6">
+                  <h3 className="text-xl md:text-2xl font-bold">
+                    Mistakes To Avoid
+                  </h3>
+                  <ul className="mt-4 space-y-3 text-[#06251b]/75 leading-relaxed">
+                    {selectedTip.avoid.map((item) => (
+                      <li key={item}>⚠️ {item}</li>
+                    ))}
+                  </ul>
+
+                  <div className="mt-7 rounded-2xl bg-[#06251b] p-4 text-white">
+                    <p className="font-bold">Need help?</p>
+                    <p className="mt-1 text-sm text-white/75">
+                      Da Nang • Hoi An • Hue • Phu Quoc • Ho Tram future support
+                    </p>
+                  </div>
+                </div>
               </div>
 
-              <div className="mt-10 flex flex-wrap gap-4">
+              <div className="relative mt-10 flex flex-wrap gap-4">
                 <a
                   href={`https://wa.me/84937762607?text=${encodeURIComponent(
-                    `Hello GoVietStay, I would like to ask about local tips: ${selectedTip.title}.`,
+                    `Hello GoVietStay, I would like to ask about local travel support: ${selectedTip.title}.`,
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
