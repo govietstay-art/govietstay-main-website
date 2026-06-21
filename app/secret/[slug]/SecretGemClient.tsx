@@ -22,6 +22,7 @@ export default function SecretGemClient({ gem }: { gem: SecretGem }) {
   const [wall, setWall] = useState<ExplorerPost[]>([]);
   const [form, setForm] = useState({ name: "", country: "", message: "" });
   const [imagePreview, setImagePreview] = useState<string>("");
+  const [showImage, setShowImage] = useState(false);
 
   const completed = quest >= gem.quests.length;
   const xp = quest * 20;
@@ -140,15 +141,30 @@ Note: Guest uploaded a photo on Explorer Wall. Please ask them to send the photo
           <div className="mt-6 grid gap-5 lg:grid-cols-[1.15fr_0.85fr]">
             <div className="overflow-hidden rounded-[1.8rem] border border-white/10 bg-white/5 shadow-2xl backdrop-blur-xl md:rounded-[2.5rem]">
               <div className="relative overflow-hidden bg-black">
-                <img
-                  src={gem.image}
-                  alt={gem.title}
-                  className="h-auto w-full object-contain"
-                />
+                <button
+                  type="button"
+                  onClick={() => setShowImage(true)}
+                  className="block w-full cursor-zoom-in"
+                  aria-label="Open full guide image"
+                >
+                  <img
+                    src={gem.image}
+                    alt={gem.title}
+                    className="h-auto w-full object-contain"
+                  />
+                </button>
                 <div className="absolute left-3 top-3 rounded-full bg-yellow-400 px-4 py-2 text-sm font-black text-[#06251b] md:left-5 md:top-5 md:px-5 md:py-3 md:text-base">
                   Hidden Gem #{gem.number}
                 </div>
               </div>
+
+              <button
+                type="button"
+                onClick={() => setShowImage(true)}
+                className="w-full border-t border-white/10 bg-black/35 px-4 py-3 text-center text-sm font-bold text-white/70 transition hover:bg-white/10 hover:text-white"
+              >
+                🔍 Tap image to zoom and read full guide
+              </button>
 
               <div className="p-5 md:p-6">
                 <h1 className="text-4xl font-black leading-tight md:text-6xl">{gem.title}</h1>
@@ -287,6 +303,33 @@ Note: Guest uploaded a photo on Explorer Wall. Please ask them to send the photo
           <p className="mt-2 text-[#06251b]/70">{nextGem.subtitle}</p>
         </Link>
       </section>
+
+      {showImage && (
+        <div
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 p-3"
+          onClick={() => setShowImage(false)}
+        >
+          <button
+            type="button"
+            onClick={() => setShowImage(false)}
+            className="absolute right-4 top-4 z-20 rounded-full bg-white px-4 py-2 font-black text-black shadow-xl"
+            aria-label="Close full guide image"
+          >
+            ✕
+          </button>
+
+          <div className="absolute left-4 top-4 z-20 rounded-full bg-black/55 px-4 py-2 text-xs font-bold text-white/80 backdrop-blur">
+            Pinch to zoom
+          </div>
+
+          <img
+            src={gem.image}
+            alt={gem.title}
+            className="max-h-[95svh] max-w-[96vw] object-contain"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
     </main>
   );
 }

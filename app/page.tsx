@@ -1452,6 +1452,7 @@ export default function Home() {
 
   const quickActions: Array<{ icon: string; label: string; href?: string; external?: boolean; action?: () => void }> = [
     { icon: "🗺️", label: "Secret Local", href: "/secret" },
+    { icon: "🍜", label: "Local Food", href: "/local-food" },
     { icon: "🎫", label: "Tickets", href: "#tickets" },
     { icon: "🏝️", label: "Tours", href: "#experiences" },
     { icon: "🤖", label: "Ask Đào", action: () => setDaoOpen(true) },
@@ -1708,6 +1709,7 @@ export default function Home() {
 
           <nav className="hidden md:flex gap-8 text-white/90 font-medium">
             <a href="/secret">Secret Local</a>
+            <a href="/local-food">Local Food</a>
             <a href="#experiences">Experiences</a>
             <a href="#travelers">International Travelers</a>
             <a href="#local-tips">Local Knowledge</a>
@@ -1776,6 +1778,13 @@ export default function Home() {
               >
                 View Experiences
               </a>
+
+              <a
+                href="/local-food"
+                className="rounded-full border border-yellow-400/70 bg-black/25 px-7 py-4 font-semibold text-yellow-300 hover:bg-yellow-400 hover:text-black transition text-center"
+              >
+                Local Food Guide
+              </a>
             </div>
 
             <div className="mt-12 hidden md:grid grid-cols-3 gap-8 text-sm text-white/80">
@@ -1818,7 +1827,7 @@ export default function Home() {
               </a>
             </div>
 
-            <div className="gvs-no-scrollbar flex gap-3 overflow-x-auto pb-1 md:grid md:grid-cols-5 md:overflow-visible md:pb-0">
+            <div className="gvs-no-scrollbar flex gap-3 overflow-x-auto pb-1 md:grid md:grid-cols-6 md:overflow-visible md:pb-0">
               {quickActions.map((action) =>
                 action.action ? (
                   <button
@@ -1981,6 +1990,12 @@ export default function Home() {
                     Enter Secret Map
                   </a>
                   <a
+                    href="/local-food"
+                    className="rounded-full bg-white px-7 py-4 text-center font-bold text-[#06251b] hover:bg-yellow-100 transition"
+                  >
+                    Open Local Food
+                  </a>
+                  <a
                     href="https://wa.me/84937762607?text=Hello%20GoVietStay%2C%20I%20would%20like%20to%20discover%20hidden%20gems%20and%20local%20food%20in%20Da%20Nang."
                     target="_blank"
                     rel="noopener noreferrer"
@@ -2024,7 +2039,7 @@ export default function Home() {
                 ].map((item) => (
                   <a
                     key={item.title}
-                    href="/secret"
+                    href={item.title === "Local Food Direction" ? "/local-food" : "/secret"}
                     className="group rounded-3xl border border-[#06251b]/10 bg-[#f7f1df]/80 p-5 hover:bg-white hover:-translate-y-1 transition"
                   >
                     <div className="flex gap-4">
@@ -2037,7 +2052,7 @@ export default function Home() {
                       </div>
                     </div>
                     <div className="mt-4 text-sm font-bold text-green-800 group-hover:translate-x-1 transition">
-                      Open Secret Local →
+                      {item.title === "Local Food Direction" ? "Open Local Food →" : "Open Secret Local →"}
                     </div>
                   </a>
                 ))}
@@ -2905,6 +2920,7 @@ Da Nang Tours, Hoi An Tours & Hue Tours
                 <li>Golden Bridge Tour</li>
                 <li>Ba Na Hills Tour</li>
                 <li>Cham Island Tour</li>
+                <li>Local Food Guide</li>
                 <li>Local Travel Support</li>
               </ul>
             </div>
@@ -2977,10 +2993,14 @@ Da Nang Tours, Hoi An Tours & Hue Tours
 
 
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 mobile-bottom-safe border-t border-white/10 bg-[#02140f]/95 backdrop-blur-xl px-2 pt-2">
-        <div className="grid grid-cols-5 gap-1.5 pb-2 text-[10px] font-semibold text-white">
+        <div className="grid grid-cols-6 gap-1.5 pb-2 text-[10px] font-semibold text-white">
           <a href="/secret" className="rounded-2xl bg-yellow-400 px-1.5 py-2 text-center text-[#06251b] active:scale-95 transition">
             <div className="text-xl">🗺️</div>
             <div>Secret</div>
+          </a>
+          <a href="/local-food" className="rounded-2xl bg-white/8 px-1.5 py-2 text-center active:scale-95 transition">
+            <div className="text-xl">🍜</div>
+            <div>Food</div>
           </a>
           <a href="#tickets" className="rounded-2xl bg-white/8 px-1.5 py-2 text-center active:scale-95 transition">
             <div className="text-xl">🎫</div>
@@ -2996,7 +3016,7 @@ Da Nang Tours, Hoi An Tours & Hue Tours
           </button>
           <a href="https://wa.me/84937762607" target="_blank" rel="noopener noreferrer" className="rounded-2xl bg-green-600 px-1.5 py-2 text-center active:scale-95 transition">
             <div className="text-xl">💬</div>
-            <div>WhatsApp</div>
+            <div>WA</div>
           </a>
         </div>
       </div>
