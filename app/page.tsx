@@ -1955,54 +1955,111 @@ export default function Home() {
       >
         <div className="absolute inset-0 opacity-80 bg-[radial-gradient(circle_at_top_left,rgba(11,107,79,0.12),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(255,196,0,0.24),transparent_42%)]" />
 
-        <div className="relative max-w-7xl mx-auto w-full rounded-[2rem] overflow-hidden border border-[#0b6b4f]/15 bg-white/80 shadow-2xl shadow-[#06251b]/10">
+        <div className="relative max-w-7xl mx-auto w-full overflow-hidden rounded-[2rem] border border-[#0b6b4f]/15 bg-white/85 shadow-2xl shadow-[#06251b]/10">
           <div className="grid grid-cols-1 lg:grid-cols-[1.08fr_0.92fr]">
-            <div className="relative min-h-[420px] md:min-h-[560px] bg-[#06251b] overflow-hidden">
-              <Image
-                src="/secret/hoabac.png"
-                alt="GoVietStay Secret Local Explorer"
-                fill
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#06251b] via-[#06251b]/70 to-black/10" />
+            <div className="bg-[#06251b]">
+              {/* Desktop version: cinematic overlay */}
+              <div className="relative hidden min-h-[560px] overflow-hidden lg:block">
+                <Image
+                  src="/secret/hoabac.png"
+                  alt="GoVietStay Secret Local Explorer"
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#06251b] via-[#06251b]/76 to-black/20" />
+                <div className="absolute inset-0 bg-black/15" />
 
-              <div className="absolute left-4 top-4 md:left-8 md:top-8 rounded-full bg-yellow-400 px-5 py-3 text-sm font-bold text-[#06251b] shadow-xl">
-                Secret Local Explorer
+                <div className="absolute left-8 top-8 rounded-full bg-yellow-400 px-5 py-3 text-sm font-bold text-[#06251b] shadow-xl">
+                  Secret Local Explorer
+                </div>
+
+                <div className="absolute bottom-0 left-0 right-0 p-10 text-white">
+                  <p className="uppercase tracking-[4px] text-yellow-300 text-sm font-semibold">
+                    Hidden Gems • Local Food • Explorer Badge
+                  </p>
+                  <h2 className="mt-4 text-6xl font-bold leading-tight">
+                    Open The Secret Door Of Da Nang
+                  </h2>
+                  <p className="mt-5 max-w-2xl text-white/80 text-lg leading-relaxed">
+                    A treasure-map style local guide by GoVietStay. Discover quiet beaches, Son Tra forest,
+                    Hòa Bắc village, hidden viewpoints and authentic local food beyond the famous attractions.
+                  </p>
+
+                  <div className="mt-7 flex flex-col sm:flex-row gap-3">
+                    <a
+                      href="/secret"
+                      className="rounded-full bg-yellow-400 px-7 py-4 text-center font-bold text-[#06251b] hover:bg-yellow-500 transition"
+                    >
+                      Enter Secret Map
+                    </a>
+                    <a
+                      href="/local-food"
+                      className="rounded-full bg-white px-7 py-4 text-center font-bold text-[#06251b] hover:bg-yellow-100 transition"
+                    >
+                      Open Local Food
+                    </a>
+                    <a
+                      href="https://wa.me/84937762607?text=Hello%20GoVietStay%2C%20I%20would%20like%20to%20discover%20hidden%20gems%20and%20local%20food%20in%20Da%20Nang."
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rounded-full border border-white/35 px-7 py-4 text-center font-bold text-white hover:bg-white hover:text-[#06251b] transition"
+                    >
+                      Ask Local Support
+                    </a>
+                  </div>
+                </div>
               </div>
 
-              <div className="absolute bottom-0 left-0 right-0 p-5 md:p-10 text-white">
-                <p className="uppercase tracking-[4px] text-yellow-300 text-xs md:text-sm font-semibold">
-                  Hidden Gems • Local Food • Explorer Badge
-                </p>
-                <h2 className="mt-4 text-4xl md:text-6xl font-bold leading-tight">
-                  Open The Secret Door Of Da Nang
-                </h2>
-                <p className="mt-5 max-w-2xl text-white/78 text-base md:text-lg leading-relaxed">
-                  A treasure-map style local guide by GoVietStay. Discover quiet beaches, Son Tra forest,
-                  Hòa Bắc village, hidden viewpoints and authentic local food beyond the famous attractions.
-                </p>
+              {/* Mobile version: image and text separated, no text overlap */}
+              <div className="lg:hidden">
+                <div className="relative h-[255px] overflow-hidden bg-[#06251b]">
+                  <Image
+                    src="/secret/hoabac.png"
+                    alt="GoVietStay Secret Local Explorer"
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#06251b]/35 via-transparent to-transparent" />
+                  <div className="absolute left-4 top-4 rounded-full bg-yellow-400 px-4 py-2 text-xs font-bold text-[#06251b] shadow-xl">
+                    Secret Local Explorer
+                  </div>
+                </div>
 
-                <div className="mt-7 flex flex-col sm:flex-row gap-3">
-                  <a
-                    href="/secret"
-                    className="rounded-full bg-yellow-400 px-7 py-4 text-center font-bold text-[#06251b] hover:bg-yellow-500 transition"
-                  >
-                    Enter Secret Map
-                  </a>
-                  <a
-                    href="/local-food"
-                    className="rounded-full bg-white px-7 py-4 text-center font-bold text-[#06251b] hover:bg-yellow-100 transition"
-                  >
-                    Open Local Food
-                  </a>
-                  <a
-                    href="https://wa.me/84937762607?text=Hello%20GoVietStay%2C%20I%20would%20like%20to%20discover%20hidden%20gems%20and%20local%20food%20in%20Da%20Nang."
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="rounded-full border border-white/35 px-7 py-4 text-center font-bold text-white hover:bg-white hover:text-[#06251b] transition"
-                  >
-                    Ask Local Support
-                  </a>
+                <div className="bg-[#06251b] px-5 pb-6 pt-5 text-white">
+                  <p className="text-[11px] font-semibold uppercase tracking-[3px] text-yellow-300">
+                    Hidden Gems • Local Food • Explorer Badge
+                  </p>
+
+                  <h2 className="mt-3 text-3xl font-bold leading-tight">
+                    Secret Door Of Da Nang
+                  </h2>
+
+                  <p className="mt-3 text-sm leading-relaxed text-white/75">
+                    Discover hidden beaches, Sơn Trà forest, Hòa Bắc village, viewpoints and local food with GoVietStay.
+                  </p>
+
+                  <div className="mt-5 flex flex-col gap-3">
+                    <a
+                      href="/secret"
+                      className="rounded-full bg-yellow-400 px-6 py-4 text-center text-base font-bold text-[#06251b] shadow-lg shadow-black/20 active:scale-[0.98] transition"
+                    >
+                      Enter Secret Map
+                    </a>
+                    <a
+                      href="/local-food"
+                      className="rounded-full bg-white px-6 py-4 text-center text-base font-bold text-[#06251b] shadow-lg shadow-black/20 active:scale-[0.98] transition"
+                    >
+                      Open Local Food
+                    </a>
+                    <a
+                      href="https://wa.me/84937762607?text=Hello%20GoVietStay%2C%20I%20would%20like%20to%20discover%20hidden%20gems%20and%20local%20food%20in%20Da%20Nang."
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rounded-full border border-white/25 bg-white/5 px-6 py-4 text-center text-base font-bold text-white backdrop-blur-sm active:scale-[0.98] transition"
+                    >
+                      Ask Local Support
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
