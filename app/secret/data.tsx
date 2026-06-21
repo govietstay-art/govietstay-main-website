@@ -1,0 +1,306 @@
+export type Quest = {
+  icon: string;
+  title: string;
+  task: string;
+  tip: string;
+};
+
+export type SecretGem = {
+  slug: string;
+  number: string;
+  title: string;
+  subtitle: string;
+  area: string;
+  image: string;
+  badge: string;
+  category: string;
+  difficulty: string;
+  bestTime: string;
+  mapUrl: string;
+  short: string;
+  story: string;
+  why: string[];
+  localTips: string[];
+  perfectFor: string[];
+  quests: Quest[];
+};
+
+export const secretGems: SecretGem[] = [
+  {
+    slug: "hoa-bac",
+    number: "01",
+    title: "Hòa Bắc",
+    subtitle: "The peaceful village in Da Nang's mountains",
+    area: "Hòa Bắc Commune, Da Nang",
+    image: "/secret/hoabac.png",
+    badge: "Hoa Bac Explorer",
+    category: "Nature • River • Local Life",
+    difficulty: "Easy",
+    bestTime: "06:00 – 09:00",
+    mapUrl: "https://www.google.com/maps/search/H%C3%B2a+B%E1%BA%AFc+%C4%90%C3%A0+N%E1%BA%B5ng",
+    short: "A quiet mountain village with rivers, fresh air and local countryside life.",
+    story: "Just 30–45 minutes from the city, Hòa Bắc feels like another world: green mountains, small rivers, local homes and slow countryside rhythm.",
+    why: ["Fresh and green", "Cool river atmosphere", "Local village life", "Great for slow travel"],
+    localTips: ["Go early for soft light and fresh air.", "Bring swimwear if you want to enjoy the river.", "Respect local homes and keep the area clean."],
+    perfectFor: ["Nature lovers", "Couples", "Families", "Photographers", "Slow travelers"],
+    quests: [
+      { icon: "🌉", title: "Find The Bridge", task: "Find a small bridge or river crossing and pause there for one quiet minute.", tip: "The best Hòa Bắc feeling often begins near the river." },
+      { icon: "🌊", title: "Listen To The River", task: "Sit beside the water for 10 minutes. No phone. No music.", tip: "The river is the real heart of this hidden valley." },
+      { icon: "☕", title: "Riverside Coffee", task: "Find a quiet local coffee stop and slow down.", tip: "Locals come here for peace, not just coffee." },
+      { icon: "🏔️", title: "Mountain Frame", task: "Take one photo with mountain, river and sky together.", tip: "Go further after the bridge. The view opens slowly." },
+      { icon: "👨‍🌾", title: "Ask A Local", task: "Ask one local what they love most about this place.", tip: "This turns the mission from a checklist into a real memory." },
+    ],
+  },
+  {
+    slug: "ghenh-bang",
+    number: "02",
+    title: "Ghềnh Bàng",
+    subtitle: "The last wild corner of Sơn Trà",
+    area: "Sơn Trà Peninsula, Da Nang",
+    image: "/secret/ghenhbang.png",
+    badge: "Hidden Coast Explorer",
+    category: "Secret Beach • Rocks • Nature",
+    difficulty: "Moderate",
+    bestTime: "06:00 – 08:30",
+    mapUrl: "https://www.google.com/maps/search/Gh%E1%BB%81nh+B%C3%A0ng+%C4%90%C3%A0+N%E1%BA%B5ng",
+    short: "A wild rocky coastline with clear water, forest trail and fewer crowds.",
+    story: "Most visitors stay on the main coastal road. Ghềnh Bàng asks you to leave the road and walk through a forest path before the sea opens in front of you.",
+    why: ["Crystal clear water", "Coral near shore", "Wild nature", "No crowds"],
+    localTips: ["Wear good sneakers; the path can be steep.", "Bring water because there are no shops.", "Avoid rainy days because the trail can be slippery."],
+    perfectFor: ["Photographers", "Couples", "Nature lovers", "Adventurers", "Solo travelers"],
+    quests: [
+      { icon: "🥾", title: "Leave The Road", task: "Find the trail entrance and walk slowly through the trees.", tip: "This is the moment the place changes from sightseeing to discovery." },
+      { icon: "🌊", title: "Clear Water Check", task: "Look for the clearest water area before choosing where to sit.", tip: "Morning light makes the water look more emerald." },
+      { icon: "📸", title: "Rock Frame", task: "Take one photo with rocks, sea and forest together.", tip: "The best frames are not always from the first viewpoint." },
+      { icon: "🧘", title: "No-Crowd Moment", task: "Stay silent for 3 minutes and listen to the waves.", tip: "Ghềnh Bàng is beautiful because it still feels raw." },
+      { icon: "♻️", title: "Leave No Trace", task: "Take all trash with you before leaving.", tip: "Hidden gems stay beautiful only when explorers protect them." },
+    ],
+  },
+  {
+    slug: "bai-rang",
+    number: "03",
+    title: "Bãi Rạng",
+    subtitle: "A hidden beach few people know",
+    area: "Sơn Trà Peninsula, Da Nang",
+    image: "/secret/bairang.png",
+    badge: "Secret Beach Explorer",
+    category: "Beach • Peace • Clear Water",
+    difficulty: "Easy",
+    bestTime: "06:30 – 09:00",
+    mapUrl: "https://www.google.com/maps/search/B%C3%A3i+R%E1%BA%A1ng+S%C6%A1n+Tr%C3%A0+%C4%90%C3%A0+N%E1%BA%B5ng",
+    short: "A peaceful beach escape on Sơn Trà with blue water, rocks and quiet corners.",
+    story: "Tucked away on the eastern side of Sơn Trà, Bãi Rạng offers a calmer feeling than the busy city beaches.",
+    why: ["Clear water", "Wild and peaceful", "Great for photos", "Perfect escape"],
+    localTips: ["Go early before 9 AM for best light.", "Bring water and sun protection.", "There is limited shade on the beach."],
+    perfectFor: ["Photographers", "Couples", "Nature lovers", "Adventurers", "Solo travelers"],
+    quests: [
+      { icon: "🏖️", title: "Find Your Quiet Corner", task: "Choose one peaceful spot away from the main entrance.", tip: "The best beach moments are often a few steps further." },
+      { icon: "🌊", title: "Wave Listening", task: "Sit and listen to the waves for 5 minutes.", tip: "This place is not for rushing." },
+      { icon: "📸", title: "Blue Water Photo", task: "Capture one photo showing clear water and rocks.", tip: "Shoot from a slightly higher angle." },
+      { icon: "☀️", title: "Morning Light", task: "Arrive before the sun becomes too strong.", tip: "Before 9 AM is the easiest time to enjoy it." },
+      { icon: "💚", title: "Respect The Beach", task: "Leave the beach cleaner than you found it.", tip: "GoVietStay explorers protect hidden places." },
+    ],
+  },
+  {
+    slug: "mui-nghe",
+    number: "04",
+    title: "Mũi Nghê",
+    subtitle: "Where Da Nang sees the first sunrise",
+    area: "Sơn Trà Peninsula, Da Nang",
+    image: "/secret/muinghe.png",
+    badge: "Sunrise Explorer",
+    category: "Sunrise • Rocks • Ocean View",
+    difficulty: "Moderate",
+    bestTime: "05:30 – 07:00",
+    mapUrl: "https://www.google.com/maps/search/M%C5%A9i+Ngh%C3%AA+%C4%90%C3%A0+N%E1%BA%B5ng",
+    short: "A raw sunrise spot at the edge of Sơn Trà with dramatic rocks and ocean views.",
+    story: "If you love watching sunrise, Mũi Nghê is a powerful place to begin the day. The horizon opens wide and the city feels far away.",
+    why: ["First sunrise spot", "Dramatic landscape", "Peaceful and quiet", "Perfect for photos"],
+    localTips: ["Arrive before 6 AM.", "Wear good shoes; some rocks can be slippery.", "Bring water and a light snack."],
+    perfectFor: ["Photographers", "Couples", "Nature lovers", "Adventurers", "Solo travelers"],
+    quests: [
+      { icon: "🌅", title: "Catch First Light", task: "Arrive before sunrise and watch the sky change colors.", tip: "The magic begins before the sun appears." },
+      { icon: "🪨", title: "Rock Safety", task: "Choose a safe place to stand, away from wet edges.", tip: "Beautiful photos are never worth unsafe risks." },
+      { icon: "📸", title: "Golden Moment", task: "Take one photo when the light touches the rocks.", tip: "Use the rocks as a natural frame." },
+      { icon: "🌊", title: "Ocean Breath", task: "Take 10 slow breaths facing the sea.", tip: "This is why the place feels powerful." },
+      { icon: "🧭", title: "Return Slowly", task: "Leave without rushing and enjoy the coastal road back.", tip: "The journey back is part of the experience." },
+    ],
+  },
+  {
+    slug: "ban-co",
+    number: "05",
+    title: "Đỉnh Bàn Cờ",
+    subtitle: "The chessboard peak of Da Nang",
+    area: "Sơn Trà District, Da Nang",
+    image: "/secret/banco.png",
+    badge: "Chess Peak Explorer",
+    category: "Viewpoint • Sunrise • Panorama",
+    difficulty: "Easy - Moderate",
+    bestTime: "05:00 – 08:00 / 16:30 – 18:30",
+    mapUrl: "https://www.google.com/maps/search/%C4%90%E1%BB%89nh+B%C3%A0n+C%E1%BB%9D+%C4%90%C3%A0+N%E1%BA%B5ng",
+    short: "A panoramic viewpoint where mountains, sea and city meet.",
+    story: "Đỉnh Bàn Cờ is one of the most iconic viewpoints in Da Nang, but it still feels special when you go at the right time.",
+    why: ["Breathtaking sunrise", "360° panorama", "Unique landmark", "Light trekking adventure"],
+    localTips: ["Start early to avoid heat.", "Bring water and wear good shoes.", "Weather changes quickly on Sơn Trà."],
+    perfectFor: ["Photographers", "Hikers", "Adventurers", "Nature lovers", "Solo travelers"],
+    quests: [
+      { icon: "♟️", title: "Find The Chessboard", task: "Reach the chessboard and take one quiet look over the city.", tip: "The view is the reward." },
+      { icon: "🌅", title: "Sky Watch", task: "Watch how the light changes over the sea and city.", tip: "Early morning or late afternoon gives the best colors." },
+      { icon: "📸", title: "Panorama Shot", task: "Take one wide photo with city, sea and mountains.", tip: "Step back to include more of the landscape." },
+      { icon: "🥾", title: "Short Climb", task: "Walk the final section slowly and carefully.", tip: "Small steps make the climb easier." },
+      { icon: "🧘", title: "Make Your Move", task: "Pause for one minute and enjoy the silence.", tip: "This is a place to feel the scale of Da Nang." },
+    ],
+  },
+  {
+    slug: "cay-da-ngan-nam",
+    number: "06",
+    title: "Cây Đa Ngàn Năm",
+    subtitle: "The thousand-year banyan tree of Da Nang",
+    area: "Hòa Vang District, Da Nang",
+    image: "/secret/caydangannam.png",
+    badge: "Ancient Tree Explorer",
+    category: "Nature • Culture • Heritage",
+    difficulty: "Easy",
+    bestTime: "06:00 – 09:00 / 16:00 – 18:00",
+    mapUrl: "https://www.google.com/maps/search/C%C3%A2y+%C4%90a+Ng%C3%A0n+N%C4%83m+%C4%90%C3%A0+N%E1%BA%B5ng",
+    short: "A living legend where nature, shade and local stories come together.",
+    story: "More than a tree, it is a symbol of resilience, memory and local life. It invites travelers to slow down.",
+    why: ["Timeless beauty", "Peace and shade", "Local heritage", "Great for photos"],
+    localTips: ["Visit early morning for quiet light.", "Talk to locals if possible.", "Keep the place clean and respectful."],
+    perfectFor: ["Nature lovers", "History buffs", "Photographers", "Families", "Slow travelers"],
+    quests: [
+      { icon: "🌳", title: "Meet The Tree", task: "Stand under the shade and look at the roots carefully.", tip: "The roots tell the story better than any signboard." },
+      { icon: "🧘", title: "Slow Down", task: "Sit quietly for 5 minutes near the tree.", tip: "This place is about stillness." },
+      { icon: "📸", title: "Root Detail", task: "Take one close-up photo of the roots or branches.", tip: "Details make the memory stronger." },
+      { icon: "👂", title: "Listen To Stories", task: "If locals are around, ask about the tree.", tip: "Local memory is part of the hidden gem." },
+      { icon: "💚", title: "Respect The Legend", task: "Do not climb or damage the tree.", tip: "A living legend must be protected." },
+    ],
+  },
+  {
+    slug: "hai-van-quan",
+    number: "07",
+    title: "Hải Vân Quan",
+    subtitle: "The gateway between heaven and sea",
+    area: "Hải Vân Pass, Da Nang",
+    image: "/secret/haivanquan.png",
+    badge: "Hai Van Explorer",
+    category: "Viewpoint • History • Road Trip",
+    difficulty: "Easy",
+    bestTime: "06:00 – 09:00 / 16:00 – 18:00",
+    mapUrl: "https://www.google.com/maps/search/H%E1%BA%A3i+V%C3%A2n+Quan",
+    short: "A historic pass with one of the most scenic coastal roads in Vietnam.",
+    story: "Clouds, curves, history and sea breeze meet at Hải Vân Quan. It is a road-trip classic for a reason.",
+    why: ["Scenic coastal road", "Amazing panorama", "Historic site", "Perfect road trip"],
+    localTips: ["Go early for fewer clouds and better views.", "Stop safely only at proper viewpoints.", "Weather can change quickly."],
+    perfectFor: ["Photographers", "Bikers", "Couples", "Adventurers", "Solo travelers"],
+    quests: [
+      { icon: "🛣️", title: "Ride The Pass", task: "Enjoy the road slowly and safely.", tip: "The journey is more important than speed." },
+      { icon: "🏯", title: "Historic Gate", task: "Stand near Hải Vân Quan and imagine the old border gate.", tip: "This place has both scenery and history." },
+      { icon: "🌫️", title: "Cloud Watch", task: "Watch how clouds move over the mountains.", tip: "Fog can make the pass feel magical." },
+      { icon: "📸", title: "Ocean Curve Photo", task: "Take one photo showing road, mountain and sea.", tip: "The curves are the signature." },
+      { icon: "☕", title: "Pass Coffee", task: "Try a simple coffee stop near the top.", tip: "A hot coffee tastes better with mountain wind." },
+    ],
+  },
+  {
+    slug: "nam-o",
+    number: "08",
+    title: "Nam Ô",
+    subtitle: "The authentic fishing village of Da Nang",
+    area: "Nam Ô Ward, Da Nang",
+    image: "/secret/Namo.png",
+    badge: "Fishing Village Explorer",
+    category: "Local Life • Seafood • Beach",
+    difficulty: "Easy",
+    bestTime: "05:30 – 08:00 / 16:30 – 18:30",
+    mapUrl: "https://www.google.com/maps/search/Nam+%C3%94+%C4%90%C3%A0+N%E1%BA%B5ng",
+    short: "An old fishing village where local life, rocky beach and fresh seafood still feel real.",
+    story: "Nam Ô is not made for tourists. Fishermen go out early, women sell seafood on the shore, and the sound of waves never stops.",
+    why: ["Untouched beauty", "Local culture", "Fresh seafood", "Perfect for photos"],
+    localTips: ["Visit early morning to see fishermen return.", "Try seafood at the local market.", "Respect local life and avoid disturbing residents."],
+    perfectFor: ["Photographers", "Food lovers", "Culture seekers", "Couples", "Solo travelers"],
+    quests: [
+      { icon: "🛶", title: "Fishing Village Walk", task: "Walk slowly along the rocky beach and look for basket boats.", tip: "Small details tell the story of Nam Ô." },
+      { icon: "🐟", title: "Seafood Moment", task: "Find a local seafood stall or market corner.", tip: "Freshness is the soul of this place." },
+      { icon: "🌅", title: "Sunrise Village", task: "If you go early, watch the village wake up.", tip: "Morning is the most authentic time." },
+      { icon: "📸", title: "Local Life Photo", task: "Capture one respectful photo of the village atmosphere.", tip: "Ask permission when photographing people closely." },
+      { icon: "💚", title: "Travel Gently", task: "Do not treat local life like a show.", tip: "Real places need respect." },
+    ],
+  },
+  {
+    slug: "nui-chua",
+    number: "09",
+    title: "Núi Chúa",
+    subtitle: "The untamed coast of Da Nang",
+    area: "Hòa Phú Commune, Da Nang",
+    image: "/secret/nuichua.png",
+    badge: "Untamed Coast Explorer",
+    category: "Coast • Road • Nature",
+    difficulty: "Moderate",
+    bestTime: "06:00 – 09:00 / 16:00 – 18:00",
+    mapUrl: "https://www.google.com/maps/search/N%C3%BAi+Ch%C3%BAa+%C4%90%C3%A0+N%E1%BA%B5ng",
+    short: "A coastal area where mountain, forest and ocean blend together in a raw way.",
+    story: "Núi Chúa is not about luxury. It is about freedom, adventure and the raw beauty of nature.",
+    why: ["Stunning coastline", "Scenic coastal road", "Crystal clear water", "Wild and peaceful"],
+    localTips: ["Go early for the best light.", "Bring water, snacks and sun protection.", "Respect wildlife and local nature."],
+    perfectFor: ["Photographers", "Adventurers", "Couples", "Nature lovers", "Solo travelers"],
+    quests: [
+      { icon: "🛣️", title: "Coastal Road", task: "Find one viewpoint where the road meets the ocean view.", tip: "The curve of the road is part of the beauty." },
+      { icon: "🌊", title: "Blue Water Stop", task: "Pause at a safe viewpoint and look for the clearest water.", tip: "Do not climb down unsafe areas." },
+      { icon: "📸", title: "Untamed Frame", task: "Take one photo showing mountain and sea together.", tip: "Wide angle works best here." },
+      { icon: "🌿", title: "Nature Respect", task: "Avoid leaving any trash or food waste.", tip: "Untouched places stay beautiful only with care." },
+      { icon: "🧭", title: "Find The Quiet", task: "Spend 5 minutes without taking photos.", tip: "Some places are meant to be felt first." },
+    ],
+  },
+  {
+    slug: "san-vooc",
+    number: "10",
+    title: "Săn Voọc Chà Vá Chân Nâu",
+    subtitle: "A rare encounter in the wild",
+    area: "Sơn Trà Peninsula, Da Nang",
+    image: "/secret/sanvooc.png",
+    badge: "Wildlife Explorer",
+    category: "Wildlife • Nature • Conservation",
+    difficulty: "Easy - Moderate",
+    bestTime: "05:30 – 08:30",
+    mapUrl: "https://www.google.com/maps/search/S%C6%A1n+Tr%C3%A0+Peninsula+red-shanked+douc+langur",
+    short: "A meaningful wildlife experience searching for red-shanked douc langurs in their natural home.",
+    story: "Sơn Trà is home to rare red-shanked douc langurs. You may see them early in the morning if nature allows.",
+    why: ["Wildlife encounter", "Local nature", "Scenic beauty", "Meaningful trip"],
+    localTips: ["Go early for the best chance.", "Stay quiet and keep your distance.", "Do not feed or touch animals."],
+    perfectFor: ["Photographers", "Nature lovers", "Hikers", "Families", "Solo travelers"],
+    quests: [
+      { icon: "🐒", title: "Quiet Observation", task: "Move slowly and observe the treetops quietly.", tip: "Wildlife appears when humans are patient." },
+      { icon: "🔭", title: "Bring Binoculars", task: "Use binoculars or zoom lens if you have them.", tip: "Distance protects both you and the animals." },
+      { icon: "🤫", title: "No Loud Noise", task: "Keep your voice low for the entire observation area.", tip: "Silence increases your chance of seeing wildlife." },
+      { icon: "💚", title: "Conservation Mindset", task: "Never feed, chase or block the animals.", tip: "A good explorer protects what they discover." },
+      { icon: "📸", title: "Memory Shot", task: "If you see them, take only respectful photos from far away.", tip: "A peaceful encounter is better than a close photo." },
+    ],
+  },
+];
+
+export const localFoodQuests = [
+  {
+    title: "Local Breakfast Quest",
+    icon: "🍜",
+    text: "Find a morning noodle shop where local people eat before work.",
+  },
+  {
+    title: "Seafood Like A Local",
+    icon: "🦞",
+    text: "Skip tourist menus and look for simple seafood spots with local families.",
+  },
+  {
+    title: "Slow Coffee Stop",
+    icon: "☕",
+    text: "Choose a quiet coffee place, sit longer, and watch local life move slowly.",
+  },
+  {
+    title: "Market Snack Mission",
+    icon: "🥟",
+    text: "Try one small local snack from a market or street corner.",
+  },
+];
+
+export function getGem(slug: string) {
+  return secretGems.find((gem) => gem.slug === slug);
+}

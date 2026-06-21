@@ -1451,12 +1451,11 @@ export default function Home() {
 
 
   const quickActions: Array<{ icon: string; label: string; href?: string; external?: boolean; action?: () => void }> = [
+    { icon: "🗺️", label: "Secret Local", href: "/secret" },
     { icon: "🎫", label: "Tickets", href: "#tickets" },
     { icon: "🏝️", label: "Tours", href: "#experiences" },
-    { icon: "🚘", label: "Transfer", href: "#tickets" },
-    { icon: "🚗", label: "Private Car", href: "#tickets" },
-    { icon: "💬", label: "WhatsApp", href: "https://wa.me/84937762607", external: true },
     { icon: "🤖", label: "Ask Đào", action: () => setDaoOpen(true) },
+    { icon: "💬", label: "WhatsApp", href: "https://wa.me/84937762607", external: true },
   ];
 
   const previewTravelers = happyTravelers.slice(0, 8);
@@ -1708,6 +1707,7 @@ export default function Home() {
           </div>
 
           <nav className="hidden md:flex gap-8 text-white/90 font-medium">
+            <a href="/secret">Secret Local</a>
             <a href="#experiences">Experiences</a>
             <a href="#travelers">International Travelers</a>
             <a href="#local-tips">Local Knowledge</a>
@@ -1818,7 +1818,7 @@ export default function Home() {
               </a>
             </div>
 
-            <div className="gvs-no-scrollbar flex gap-3 overflow-x-auto pb-1 md:grid md:grid-cols-6 md:overflow-visible md:pb-0">
+            <div className="gvs-no-scrollbar flex gap-3 overflow-x-auto pb-1 md:grid md:grid-cols-5 md:overflow-visible md:pb-0">
               {quickActions.map((action) =>
                 action.action ? (
                   <button
@@ -1935,6 +1935,114 @@ export default function Home() {
             >
               WhatsApp +84 937 762 607
             </a>
+          </div>
+        </div>
+      </section>
+
+
+      <section
+        id="secret-local"
+        className="relative bg-[#f7f1df] text-[#06251b] px-4 md:px-20 pb-16 md:pb-24 overflow-hidden"
+      >
+        <div className="absolute inset-0 opacity-80 bg-[radial-gradient(circle_at_top_left,rgba(11,107,79,0.12),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(255,196,0,0.24),transparent_42%)]" />
+
+        <div className="relative max-w-7xl mx-auto w-full rounded-[2rem] overflow-hidden border border-[#0b6b4f]/15 bg-white/80 shadow-2xl shadow-[#06251b]/10">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.08fr_0.92fr]">
+            <div className="relative min-h-[420px] md:min-h-[560px] bg-[#06251b] overflow-hidden">
+              <Image
+                src="/secret/hoabac.png"
+                alt="GoVietStay Secret Local Explorer"
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#06251b] via-[#06251b]/70 to-black/10" />
+
+              <div className="absolute left-4 top-4 md:left-8 md:top-8 rounded-full bg-yellow-400 px-5 py-3 text-sm font-bold text-[#06251b] shadow-xl">
+                Secret Local Explorer
+              </div>
+
+              <div className="absolute bottom-0 left-0 right-0 p-5 md:p-10 text-white">
+                <p className="uppercase tracking-[4px] text-yellow-300 text-xs md:text-sm font-semibold">
+                  Hidden Gems • Local Food • Explorer Badge
+                </p>
+                <h2 className="mt-4 text-4xl md:text-6xl font-bold leading-tight">
+                  Open The Secret Door Of Da Nang
+                </h2>
+                <p className="mt-5 max-w-2xl text-white/78 text-base md:text-lg leading-relaxed">
+                  A treasure-map style local guide by GoVietStay. Discover quiet beaches, Son Tra forest,
+                  Hòa Bắc village, hidden viewpoints and authentic local food beyond the famous attractions.
+                </p>
+
+                <div className="mt-7 flex flex-col sm:flex-row gap-3">
+                  <a
+                    href="/secret"
+                    className="rounded-full bg-yellow-400 px-7 py-4 text-center font-bold text-[#06251b] hover:bg-yellow-500 transition"
+                  >
+                    Enter Secret Map
+                  </a>
+                  <a
+                    href="https://wa.me/84937762607?text=Hello%20GoVietStay%2C%20I%20would%20like%20to%20discover%20hidden%20gems%20and%20local%20food%20in%20Da%20Nang."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-full border border-white/35 px-7 py-4 text-center font-bold text-white hover:bg-white hover:text-[#06251b] transition"
+                  >
+                    Ask Local Support
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-5 md:p-10 flex flex-col justify-center">
+              <p className="text-green-800 uppercase tracking-[4px] text-xs md:text-sm font-semibold">
+                Why This Is Different
+              </p>
+              <h3 className="mt-4 text-3xl md:text-5xl font-bold leading-tight">
+                Not a normal tour list — a local treasure map.
+              </h3>
+              <p className="mt-5 text-[#06251b]/70 leading-relaxed text-base md:text-lg">
+                Most travelers see the same famous places. GoVietStay Secret Local helps guests explore
+                step by step, unlock small missions, open Google Maps, collect badges and share discoveries.
+              </p>
+
+              <div className="mt-8 grid gap-4">
+                {[
+                  {
+                    icon: "🗺️",
+                    title: "10 Hidden Gems First",
+                    text: "Ghềnh Bàng, Hòa Bắc, Đỉnh Bàn Cờ, Cây Đa Ngàn Năm, Săn Voọc Sơn Trà and more.",
+                  },
+                  {
+                    icon: "🍜",
+                    title: "Local Food Direction",
+                    text: "Food spots and simple local guidance for travelers who want real taste, not only tourist restaurants.",
+                  },
+                  {
+                    icon: "🏅",
+                    title: "Explorer Game Feeling",
+                    text: "Guests follow a small path, complete missions, open Google Maps and unlock a badge.",
+                  },
+                ].map((item) => (
+                  <a
+                    key={item.title}
+                    href="/secret"
+                    className="group rounded-3xl border border-[#06251b]/10 bg-[#f7f1df]/80 p-5 hover:bg-white hover:-translate-y-1 transition"
+                  >
+                    <div className="flex gap-4">
+                      <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#0b6b4f]/10 text-3xl">
+                        {item.icon}
+                      </div>
+                      <div>
+                        <h4 className="text-lg md:text-xl font-bold">{item.title}</h4>
+                        <p className="mt-1 text-[#06251b]/68 leading-relaxed">{item.text}</p>
+                      </div>
+                    </div>
+                    <div className="mt-4 text-sm font-bold text-green-800 group-hover:translate-x-1 transition">
+                      Open Secret Local →
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -2868,23 +2976,27 @@ Da Nang Tours, Hoi An Tours & Hue Tours
       </footer>
 
 
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 mobile-bottom-safe border-t border-white/10 bg-[#02140f]/95 backdrop-blur-xl px-3 pt-2">
-        <div className="grid grid-cols-4 gap-2 pb-2 text-[11px] font-semibold text-white">
-          <a href="#tickets" className="rounded-2xl bg-white/8 px-2 py-2 text-center active:scale-95 transition">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 mobile-bottom-safe border-t border-white/10 bg-[#02140f]/95 backdrop-blur-xl px-2 pt-2">
+        <div className="grid grid-cols-5 gap-1.5 pb-2 text-[10px] font-semibold text-white">
+          <a href="/secret" className="rounded-2xl bg-yellow-400 px-1.5 py-2 text-center text-[#06251b] active:scale-95 transition">
+            <div className="text-xl">🗺️</div>
+            <div>Secret</div>
+          </a>
+          <a href="#tickets" className="rounded-2xl bg-white/8 px-1.5 py-2 text-center active:scale-95 transition">
             <div className="text-xl">🎫</div>
-            <div>Tickets</div>
+            <div>Ticket</div>
           </a>
-          <a href="https://wa.me/84937762607" target="_blank" rel="noopener noreferrer" className="rounded-2xl bg-green-600 px-2 py-2 text-center active:scale-95 transition">
-            <div className="text-xl">💬</div>
-            <div>WhatsApp</div>
+          <a href="#experiences" className="rounded-2xl bg-white/8 px-1.5 py-2 text-center active:scale-95 transition">
+            <div className="text-xl">🏝️</div>
+            <div>Tour</div>
           </a>
-          <button onClick={() => setDaoOpen(true)} className="rounded-2xl bg-yellow-400 px-2 py-2 text-center text-[#06251b] active:scale-95 transition">
+          <button onClick={() => setDaoOpen(true)} className="rounded-2xl bg-white/8 px-1.5 py-2 text-center active:scale-95 transition">
             <div className="text-xl">🤖</div>
             <div>Đào</div>
           </button>
-          <a href="#experiences" className="rounded-2xl bg-white/8 px-2 py-2 text-center active:scale-95 transition">
-            <div className="text-xl">🏝️</div>
-            <div>Tours</div>
+          <a href="https://wa.me/84937762607" target="_blank" rel="noopener noreferrer" className="rounded-2xl bg-green-600 px-1.5 py-2 text-center active:scale-95 transition">
+            <div className="text-xl">💬</div>
+            <div>WhatsApp</div>
           </a>
         </div>
       </div>
