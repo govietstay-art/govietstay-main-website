@@ -84,10 +84,34 @@ const allPlaces = sections.flatMap((s) =>
 );
 
 const journey = [
-  ["☀️ Morning", "Mì Quảng\nBún Chả Cá\nSalt Coffee", img("mi-quang.jpg")],
-  ["🍽 Lunch", "Bánh Xèo\nBún Mắm\nChicken Rice", img("banh-xeo.jpg")],
-  ["🌅 Sunset", "Seafood\nSnails\nBBQ", img("seafood.jpg")],
-  ["🌙 Night", "Sweet Soup\nSnacks\nLantern Walk", img("hoi-an-food.jpg")],
+  {
+    title: "☀️ Morning",
+    desc: "Start with real local breakfast.",
+    photo: img("mi-quang.jpg"),
+    places: ["Mì Quảng 1A", "Bún Chả Cá 109", "Bún Chả Cá Hờn", "Salt Coffee"],
+    search: "best local breakfast Da Nang Mi Quang Bun Cha Ca Salt Coffee",
+  },
+  {
+    title: "🍽 Lunch",
+    desc: "Central Vietnam flavors for lunch.",
+    photo: img("banh-xeo.jpg"),
+    places: ["Bánh Xèo Bà Dưỡng", "Bún Mắm", "Cơm Gà Hội An", "Cao Lầu Thanh"],
+    search: "Banh Xeo Ba Duong Bun Mam Da Nang Com Ga Hoi An Cao Lau Thanh",
+  },
+  {
+    title: "🌅 Sunset",
+    desc: "Seafood and beach dinner time.",
+    photo: img("seafood.jpg"),
+    places: ["Năm Đảnh Seafood", "Mộc Quán Seafood", "My Hanh Seafood", "Lang Chai Seafood"],
+    search: "Nam Danh Seafood Moc Quan My Hanh Lang Chai Da Nang",
+  },
+  {
+    title: "🌙 Night",
+    desc: "Dessert, snacks and night markets.",
+    photo: img("hoi-an-food.jpg"),
+    places: ["Chè Liên", "Sơn Trà Night Market", "An Thượng Night Market", "Kem Dừa Mã Lai"],
+    search: "Che Lien Son Tra Night Market An Thuong Night Market Kem Dua Ma Lai Da Nang",
+  },
 ];
 
 const areas = [
@@ -150,7 +174,7 @@ export default function LocalFoodPage() {
                   ← Back to GoVietStay
                 </Link>
                 <span className="rounded-full border border-emerald-300/40 bg-emerald-400/15 px-4 py-2 text-sm text-emerald-200 backdrop-blur">
-                  GoVietStay Local Food V2.5
+                  GoVietStay Local Food V2.6
                 </span>
               </div>
 
@@ -160,7 +184,7 @@ export default function LocalFoodPage() {
               </h1>
 
               <p className="mt-5 max-w-xl text-sm leading-6 text-white/85 md:text-lg md:leading-8">
-                40+ trusted food recommendations in Da Nang and Hoi An with clear addresses,
+                Trusted food recommendations in Da Nang and Hoi An with clear addresses,
                 Google Maps and WhatsApp support.
               </p>
 
@@ -168,6 +192,7 @@ export default function LocalFoodPage() {
                 <span>🍜 Local Favorites</span>
                 <span>⭐ Michelin Selected</span>
                 <span>📍 Google Maps Ready</span>
+                <span>💚 80% Value First</span>
               </div>
 
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
@@ -228,17 +253,41 @@ export default function LocalFoodPage() {
             Local Food Journey
           </p>
 
-          <div className="mt-4 flex gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-4 md:overflow-visible">
-            {journey.map(([title, desc, photo], i) => (
-              <div key={title} className="relative min-w-[220px] overflow-hidden rounded-3xl border border-white/10 p-5 md:min-w-0">
-                <div className="absolute inset-0 bg-cover bg-center opacity-45" style={{ backgroundImage: `url(${photo})` }} />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/55 to-black/20" />
-                <div className="relative flex items-end justify-between gap-4">
-                  <div>
-                    <h3 className="text-xl font-black">{title}</h3>
-                    <p className="mt-3 whitespace-pre-line text-sm leading-6 text-white/78">{desc}</p>
+          <div className="mt-4 grid gap-4 md:grid-cols-4">
+            {journey.map((item, i) => (
+              <div key={item.title} className="relative overflow-hidden rounded-3xl border border-white/10 p-5">
+                <div className="absolute inset-0 bg-cover bg-center opacity-45" style={{ backgroundImage: `url(${item.photo})` }} />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/65 to-black/25" />
+                <div className="relative">
+                  <div className="flex items-start justify-between gap-3">
+                    <h3 className="text-xl font-black">{item.title}</h3>
+                    {i < journey.length - 1 && <span className="hidden text-2xl text-white/70 md:block">→</span>}
                   </div>
-                  {i < journey.length - 1 && <span className="hidden text-2xl text-white/70 md:block">→</span>}
+
+                  <p className="mt-2 text-sm leading-6 text-white/75">{item.desc}</p>
+
+                  <div className="mt-4 space-y-2">
+                    {item.places.map((place) => (
+                      <a
+                        key={place}
+                        href={mapLink(place + " Da Nang Hoi An")}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block rounded-2xl bg-white/10 px-3 py-2 text-sm font-bold text-white/90 hover:bg-white/15"
+                      >
+                        📍 {place}
+                      </a>
+                    ))}
+                  </div>
+
+                  <a
+                    href={mapLink(item.search)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 block rounded-full bg-emerald-400 px-4 py-3 text-center text-sm font-black text-black"
+                  >
+                    Open Food Map
+                  </a>
                 </div>
               </div>
             ))}

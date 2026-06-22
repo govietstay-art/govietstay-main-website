@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { localFoodQuests, secretGems } from "./data";
+import { secretGems } from "./data";
 
 export default function SecretExplorerHome() {
   return (
@@ -12,18 +12,20 @@ export default function SecretExplorerHome() {
           <p className="text-xs font-semibold uppercase tracking-[0.45em] text-yellow-300">
             GoVietStay Secret Explorer
           </p>
+
           <h1 className="mt-5 max-w-4xl text-4xl font-black leading-tight md:text-7xl">
-            A secret door to hidden places and local food.
+            A secret door to hidden places in Da Nang.
           </h1>
+
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-white/75 md:text-xl">
-            Beyond famous attractions, GoVietStay helps travelers discover places locals love — hidden beaches, mountain villages, wildlife corners and real local food.
+            Beyond famous attractions, GoVietStay helps travelers discover places locals love — hidden beaches, mountain villages, wildlife corners and peaceful nature escapes.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3 text-sm font-semibold">
             <span className="rounded-full bg-white/10 px-5 py-3">🌿 10 Hidden Gems</span>
-            <span className="rounded-full bg-white/10 px-5 py-3">🍜 Local Food Quest</span>
             <span className="rounded-full bg-white/10 px-5 py-3">🏅 Explorer Badges</span>
             <span className="rounded-full bg-white/10 px-5 py-3">📍 Google Maps</span>
+            <span className="rounded-full bg-white/10 px-5 py-3">💚 Local Tips</span>
           </div>
         </div>
       </section>
@@ -34,8 +36,11 @@ export default function SecretExplorerHome() {
             <p className="text-xs font-bold uppercase tracking-[0.35em] text-emerald-800">
               Hidden Gems Collection 2026
             </p>
-            <h2 className="mt-3 text-3xl font-black md:text-5xl">Choose your secret card</h2>
+            <h2 className="mt-3 text-3xl font-black md:text-5xl">
+              Choose your secret card
+            </h2>
           </div>
+
           <p className="max-w-xl text-[#06251b]/65">
             Each card opens a simple exploration game with local tips, badge rewards, Google Maps and “I Discovered This Place”.
           </p>
@@ -54,10 +59,13 @@ export default function SecretExplorerHome() {
                   alt={gem.title}
                   className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
                 />
+
                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+
                 <div className="absolute left-4 top-4 rounded-full bg-yellow-400 px-4 py-2 text-sm font-black text-[#06251b]">
                   #{gem.number}
                 </div>
+
                 <div className="absolute bottom-4 left-4 right-4 text-white">
                   <h3 className="text-3xl font-black">{gem.title}</h3>
                   <p className="mt-1 text-sm text-white/80">{gem.subtitle}</p>
@@ -66,37 +74,24 @@ export default function SecretExplorerHome() {
 
               <div className="p-5">
                 <div className="flex flex-wrap gap-2 text-xs font-semibold text-[#06251b]/65">
-                  <span className="rounded-full bg-[#06251b]/5 px-3 py-2">{gem.category}</span>
-                  <span className="rounded-full bg-[#06251b]/5 px-3 py-2">🏅 {gem.badge}</span>
+                  <span className="rounded-full bg-[#06251b]/5 px-3 py-2">
+                    {gem.category}
+                  </span>
+                  <span className="rounded-full bg-[#06251b]/5 px-3 py-2">
+                    🏅 {gem.badge}
+                  </span>
                 </div>
-                <p className="mt-4 text-sm leading-relaxed text-[#06251b]/70">{gem.short}</p>
-                <div className="mt-5 font-black text-emerald-800">Open secret mission →</div>
+
+                <p className="mt-4 text-sm leading-relaxed text-[#06251b]/70">
+                  {gem.short}
+                </p>
+
+                <div className="mt-5 font-black text-emerald-800">
+                  Open secret mission →
+                </div>
               </div>
             </Link>
           ))}
-        </div>
-      </section>
-
-      <section className="bg-white px-4 py-12 md:px-20 md:py-16">
-        <div className="mx-auto max-w-7xl rounded-[2rem] border border-emerald-900/10 bg-[#f7f1df] p-6 md:p-10">
-          <p className="text-xs font-bold uppercase tracking-[0.35em] text-emerald-800">Local Food Quest</p>
-          <h2 className="mt-3 text-3xl font-black md:text-5xl">Eat where local people eat</h2>
-          <p className="mt-4 max-w-3xl text-[#06251b]/65">
-            This section is for real local food, not tourist traps. We start simple, then add verified Google Maps and photos for each food stop.
-          </p>
-
-          <div className="mt-8 grid gap-4 md:grid-cols-4">
-            {localFoodQuests.map((item) => (
-              <div key={item.title} className="rounded-[1.5rem] bg-white p-5 shadow-lg shadow-[#06251b]/5">
-                <div className="text-4xl">{item.icon}</div>
-                <h3 className="mt-4 text-xl font-black">{item.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-[#06251b]/65">{item.text}</p>
-                <div className="mt-5 rounded-full bg-[#06251b]/5 px-4 py-3 text-center text-sm font-bold text-[#06251b]/50">
-                  Coming next
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
     </main>

@@ -154,26 +154,32 @@ export const secretGems: SecretGem[] = [
   {
     slug: "cay-da-ngan-nam",
     number: "06",
-    title: "Cây Đa Ngàn Năm",
-    subtitle: "The thousand-year banyan tree of Da Nang",
-    area: "Hòa Vang District, Da Nang",
+    title: "Cây Đa Ngàn Năm Sơn Trà",
+    subtitle: "The legendary banyan tree of Son Tra Peninsula",
+    area: "Sơn Trà Peninsula, Da Nang",
     image: "/secret/caydangannam.png",
-    badge: "Ancient Tree Explorer",
-    category: "Nature • Culture • Heritage",
+    badge: "Son Tra Explorer",
+    category: "Nature • Heritage • Rainforest",
     difficulty: "Easy",
-    bestTime: "06:00 – 09:00 / 16:00 – 18:00",
-    mapUrl: "https://www.google.com/maps/search/C%C3%A2y+%C4%90a+Ng%C3%A0n+N%C4%83m+%C4%90%C3%A0+N%E1%BA%B5ng",
-    short: "A living legend where nature, shade and local stories come together.",
-    story: "More than a tree, it is a symbol of resilience, memory and local life. It invites travelers to slow down.",
-    why: ["Timeless beauty", "Peace and shade", "Local heritage", "Great for photos"],
-    localTips: ["Visit early morning for quiet light.", "Talk to locals if possible.", "Keep the place clean and respectful."],
-    perfectFor: ["Nature lovers", "History buffs", "Photographers", "Families", "Slow travelers"],
+    bestTime: "06:00 – 09:00 / 15:30 – 17:30",
+    mapUrl: "https://www.google.com/maps/search/C%C3%A2y+%C4%90a+Ng%C3%A0n+N%C4%83m+S%C6%A1n+Tr%C3%A0",
+    short: "One of Da Nang's most iconic natural treasures hidden inside Son Tra Peninsula.",
+    story: "Estimated to be hundreds of years old, the Thousand-Year Banyan Tree is one of the most remarkable natural landmarks in Son Tra Peninsula. Its enormous roots, giant canopy and untouched rainforest surroundings make visitors feel as if they have stepped into another world.",
+    why: ["Ancient heritage tree", "Massive aerial roots", "Rainforest atmosphere", "Great wildlife photography"],
+    localTips: [
+      "Visit early morning for the best forest light.",
+      "Follow Hoàng Sa Road toward Son Tra Peninsula.",
+      "Combine your visit with Ban Co Peak and Linh Ung Pagoda.",
+      "Keep noise low and respect the protected forest.",
+      "Watch carefully for Red-Shanked Douc Langurs nearby."
+    ],
+    perfectFor: ["Nature lovers", "Wildlife photographers", "Families", "Adventure travelers", "Hidden gem explorers"],
     quests: [
-      { icon: "🌳", title: "Meet The Tree", task: "Stand under the shade and look at the roots carefully.", tip: "The roots tell the story better than any signboard." },
-      { icon: "🧘", title: "Slow Down", task: "Sit quietly for 5 minutes near the tree.", tip: "This place is about stillness." },
-      { icon: "📸", title: "Root Detail", task: "Take one close-up photo of the roots or branches.", tip: "Details make the memory stronger." },
-      { icon: "👂", title: "Listen To Stories", task: "If locals are around, ask about the tree.", tip: "Local memory is part of the hidden gem." },
-      { icon: "💚", title: "Respect The Legend", task: "Do not climb or damage the tree.", tip: "A living legend must be protected." },
+      { icon: "🌳", title: "Meet The Ancient Guardian", task: "Walk around the tree and observe its massive roots.", tip: "The roots are the soul of this living heritage." },
+      { icon: "📸", title: "Capture The Giant", task: "Take one wide-angle photo showing the full canopy.", tip: "Morning light creates the best forest atmosphere." },
+      { icon: "🐒", title: "Wildlife Watch", task: "Look quietly into the treetops for wildlife.", tip: "You may spot the famous Red-Shanked Douc Langur." },
+      { icon: "🧘", title: "Forest Silence", task: "Spend 5 minutes listening to the sounds of the forest.", tip: "The experience is about more than taking photos." },
+      { icon: "💚", title: "Protect The Heritage", task: "Leave no trash and respect the environment.", tip: "A true explorer protects what they discover." },
     ],
   },
   {
@@ -275,29 +281,6 @@ export const secretGems: SecretGem[] = [
       { icon: "💚", title: "Conservation Mindset", task: "Never feed, chase or block the animals.", tip: "A good explorer protects what they discover." },
       { icon: "📸", title: "Memory Shot", task: "If you see them, take only respectful photos from far away.", tip: "A peaceful encounter is better than a close photo." },
     ],
-  },
-];
-
-export const localFoodQuests = [
-  {
-    title: "Local Breakfast Quest",
-    icon: "🍜",
-    text: "Find a morning noodle shop where local people eat before work.",
-  },
-  {
-    title: "Seafood Like A Local",
-    icon: "🦞",
-    text: "Skip tourist menus and look for simple seafood spots with local families.",
-  },
-  {
-    title: "Slow Coffee Stop",
-    icon: "☕",
-    text: "Choose a quiet coffee place, sit longer, and watch local life move slowly.",
-  },
-  {
-    title: "Market Snack Mission",
-    icon: "🥟",
-    text: "Try one small local snack from a market or street corner.",
   },
 ];
 

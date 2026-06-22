@@ -692,7 +692,7 @@ const tours: Tour[] = [
     duration: "08:00 – 17:00 / 11:30 – 19:00",
     category: "Mountain • Iconic Landmark • Family Favorite",
     price: {
-      adult: 1770000,
+      adult: 1550000,
       child: 1450000,
       note: "Morning tour: Adult 1,770,000 VND, Child 1,450,000 VND. Afternoon tour: Adult 1,700,000 VND, Child 1,350,000 VND. Includes tour fee, cable car ticket and Ba Na buffet meal according to selected option.",
     },
@@ -959,8 +959,8 @@ const tours: Tour[] = [
     duration: "08:00 – 17:00",
     category: "Island • Snorkeling • Wooden Boat",
     price: {
-      adult: 1550000,
-      child: 1200000,
+      adult: 990000,
+      child: 900000,
       note: "Joined tour by large wooden boat, capacity around 40–50 guests.",
     },
     description:
