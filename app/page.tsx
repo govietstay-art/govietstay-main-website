@@ -797,8 +797,8 @@ const tours: Tour[] = [
     duration: "07:30 – 18:30",
     category: "Heritage • Full Day By Car • Joined Tour",
     price: {
-      adult: 2750000,
-      child: 2100000,
+      adult: 1450000,
+      child: 1250000,
       note: "Joined tour price. Free upgrade to private tour for groups of 4 or more when available.",
     },
     description:
@@ -1014,7 +1014,7 @@ const tours: Tour[] = [
     duration: "08:30 – 16:30",
     category: "Luxury Adventure • Scenic Ride • Seafood",
     price: {
-      adult: 2700000,
+      adult: 1980000,
       child: null,
       note: "Private tour reference price: 2,700,000 VND/adult. Best private tour rate available on request.",
     },
@@ -1273,8 +1273,8 @@ const tours: Tour[] = [
     duration: "08:30 – 16:30",
     category: "Hot Springs • Water Park • Family Day",
     price: {
-      adult: 2500000,
-      child: 2050000,
+      adult:1490000,
+      child: 1290000,
       note: "Joined tour price including transfer, guide, entrance ticket, basic hot spring bath package, premium buffet lunch and bottled water.",
     },
     description:
