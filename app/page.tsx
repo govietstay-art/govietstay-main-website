@@ -2250,13 +2250,16 @@ Da Nang Tours, Hoi An Tours & Hue Tours
                 onClick={() => setSelectedTour(tour)}
                 className="cursor-pointer w-full rounded-3xl bg-white/10 border border-white/10 p-5 md:p-6 hover:bg-white/15 hover:-translate-y-1 transition duration-300"
               >
-                <Image
-                  src={tour.image}
-                  alt={tour.title}
-                  width={600}
-                  height={400}
-                  className="h-40 md:h-44 w-full object-cover rounded-2xl mb-5 md:mb-6"
-                />
+                <div className="relative mb-5 md:mb-6 h-56 md:h-60 w-full overflow-hidden rounded-2xl bg-black/20">
+                  <Image
+                    src={tour.image}
+                    alt={tour.title}
+                    fill
+                    sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
+                    quality={95}
+                    className="object-cover object-center transition duration-500 hover:scale-105"
+                  />
+                </div>
 
                 <h3 className="text-xl md:text-2xl font-bold leading-tight">
                   {tour.title}
@@ -3688,13 +3691,16 @@ Da Nang Tours, Hoi An Tours & Hue Tours
             className="gvs-panel bg-[#f7f1df] text-[#06251b] rounded-t-3xl md:rounded-3xl max-w-6xl w-full max-h-[92svh] md:max-h-[90vh] overflow-y-auto overscroll-contain shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <Image
-              src={selectedTour.image}
-              alt={selectedTour.title}
-              width={1400}
-              height={800}
-              className="w-full h-56 md:h-[420px] object-cover rounded-t-3xl"
-            />
+            <div className="relative h-72 md:h-[500px] w-full overflow-hidden rounded-t-3xl bg-black">
+              <Image
+                src={selectedTour.image}
+                alt={selectedTour.title}
+                fill
+                quality={95}
+                sizes="100vw"
+                className="object-cover object-center"
+              />
+            </div>
 
             <div className="p-5 md:p-10">
               <div className="flex items-start justify-between gap-4 md:gap-4 md:gap-6">
