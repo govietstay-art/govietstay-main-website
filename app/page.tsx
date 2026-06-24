@@ -2098,181 +2098,332 @@ export default function Home() {
       </section>
 
       {journeyOpen ? (
-        <div className="gvs-overlay fixed inset-0 z-[80] bg-black/75 p-2 text-[#073c2c] backdrop-blur-sm sm:p-4 md:p-8">
-          <div className="gvs-panel mx-auto flex max-h-[94vh] max-w-6xl flex-col overflow-hidden rounded-[1.7rem] border border-white/20 bg-[#f3ead2] shadow-2xl md:rounded-[2rem]">
-            <div className="flex items-center justify-between gap-3 border-b border-[#073c2c]/10 bg-[#fff7e6] px-4 py-3 md:px-7 md:py-4">
+        <div className="gvs-overlay fixed inset-0 z-[80] bg-[#04150f]/85 p-2 text-[#073c2c] backdrop-blur-md sm:p-4 md:p-8">
+          <div className="gvs-panel mx-auto flex max-h-[94vh] max-w-7xl flex-col overflow-hidden rounded-[2rem] border border-white/20 bg-[#efe3c8] shadow-2xl">
+            <div className="flex items-center justify-between gap-3 border-b border-[#073c2c]/10 bg-[#fff8e8] px-4 py-3 md:px-7 md:py-4">
               <div>
-                <p className="text-[10px] font-black uppercase tracking-[3px] text-[#d9762d] md:text-xs md:tracking-[4px]">Private guest journal</p>
-                <h3 className="text-xl font-black text-[#06432f] md:text-3xl">My Vietnam Journey</h3>
+                <p className="text-[10px] font-black uppercase tracking-[4px] text-[#b96a2d]">
+                  Private memory book
+                </p>
+                <h3 className="font-serif text-2xl font-black italic text-[#06432f] md:text-4xl">
+                  My Vietnam Journey
+                </h3>
               </div>
               <button
                 type="button"
                 onClick={() => setJourneyOpen(false)}
-                className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#06432f] text-xl text-white md:h-11 md:w-11"
+                className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#06432f] text-xl text-white shadow-lg md:h-11 md:w-11"
                 aria-label="Close My Vietnam Journey"
               >
                 ×
               </button>
             </div>
 
-            <div className="gvs-no-scrollbar overflow-y-auto p-3 md:p-7">
-              <div className="grid gap-4 lg:grid-cols-[0.9fr_1.35fr]">
-                <article className="overflow-hidden rounded-[1.7rem] border border-[#073c2c]/10 bg-[#fff8e8] shadow-xl">
-                  <div className="relative min-h-[390px] overflow-hidden bg-[#fff3d8] p-5 sm:min-h-[440px] md:p-7">
-                    <div className="absolute inset-0 opacity-40">
-                      <Image src="/hero-hoian-new.png" alt="Vietnam journey background" fill className="object-cover" />
-                      <div className="absolute inset-0 bg-gradient-to-b from-[#fff8e8]/95 via-[#fff8e8]/80 to-[#06432f]/90" />
-                    </div>
-                    <div className="relative flex h-full min-h-[340px] flex-col items-center justify-between text-center sm:min-h-[390px]">
-                      <div className="grid h-24 w-24 place-items-center overflow-hidden rounded-full border-4 border-[#06432f]/20 bg-[#fff8e8] shadow-xl shadow-[#06432f]/20 sm:h-28 sm:w-28">
+            <div className="gvs-no-scrollbar overflow-y-auto bg-[radial-gradient(circle_at_top_left,rgba(217,118,45,0.16),transparent_34%),linear-gradient(135deg,#f7edd5,#ead9b8)] p-3 md:p-7">
+              <div className="grid gap-5 xl:grid-cols-[0.86fr_1.14fr]">
+                <article className="relative overflow-hidden rounded-[2rem] border border-[#5e3b1f]/15 bg-[#fff8e8] p-3 shadow-2xl shadow-[#073c2c]/15">
+                  <div className="relative min-h-[680px] overflow-hidden rounded-[1.6rem] bg-[#f6e8c9]">
+                    <Image src="/hero-hoian-new.png" alt="My Vietnam Journey cover" fill className="object-cover" priority />
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#fff8e8]/82 via-[#fff8e8]/45 to-[#05291d]/92" />
+                    <div className="absolute inset-x-5 top-5 flex items-center justify-between">
+                      <div className="rounded-full bg-[#fff8e8]/90 px-4 py-2 text-[10px] font-black uppercase tracking-[3px] text-[#06432f] shadow-lg">
+                        Da Nang • Hoi An • Hue
+                      </div>
+                      <div className="grid h-20 w-20 place-items-center overflow-hidden rounded-full border-4 border-white/70 bg-[#fff8e8] shadow-xl">
                         <GVSLogo className="h-full w-full object-contain p-1.5" />
                       </div>
-                      <div>
-                        <p className="text-xs font-black uppercase tracking-[4px] text-[#06432f]">A special gift</p>
-                        <h4 className="mt-3 text-4xl font-black leading-[0.95] text-[#06432f] sm:text-5xl md:text-6xl">
-                          MY<br />VIETNAM<br />JOURNEY
-                        </h4>
-                        <p className="mt-5 font-serif text-2xl italic leading-tight text-[#d9762d] sm:text-3xl">
-                          Your Adventure<br />Your Story<br />Your Memories
-                        </p>
-                      </div>
-                      <div className="w-full rounded-3xl bg-[#06432f] p-4 text-white shadow-xl">
-                        <p className="text-xs font-bold uppercase tracking-[2px] text-white/70">Created by GoVietStay</p>
-                        <p className="mt-1 text-sm font-medium">Saved only on your phone. No database needed.</p>
-                      </div>
+                    </div>
+
+                    <div className="absolute inset-x-5 top-[38%] -translate-y-1/2 text-center">
+                      <p className="text-[11px] font-black uppercase tracking-[5px] text-[#06432f] drop-shadow-sm">
+                        A small gift from GoVietStay
+                      </p>
+                      <h4 className="mt-4 font-serif text-5xl font-black leading-[0.9] tracking-tight text-[#06432f] drop-shadow-sm sm:text-6xl md:text-7xl">
+                        MY<br />VIETNAM<br />JOURNEY
+                      </h4>
+                      <div className="mx-auto mt-5 h-px w-28 bg-[#d9762d]" />
+                      <p className="mt-5 font-serif text-2xl italic leading-tight text-[#b85f28] drop-shadow-sm sm:text-3xl">
+                        Your Adventure<br />Your Story<br />Your Memories
+                      </p>
+                    </div>
+
+                    <div className="absolute inset-x-5 bottom-5 rounded-[1.5rem] border border-white/30 bg-[#05291d]/88 p-5 text-center text-white shadow-2xl backdrop-blur">
+                      <p className="font-serif text-xl italic leading-snug">
+                        Some trips are measured in kilometers.
+                      </p>
+                      <p className="mt-1 text-sm text-white/75">
+                        The best ones are measured in memories.
+                      </p>
                     </div>
                   </div>
                 </article>
 
-                <article className="rounded-[1.7rem] border border-[#073c2c]/10 bg-[#fff8e8] p-4 shadow-xl md:p-5">
-                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                    <div>
-                      <h4 className="text-2xl font-black uppercase text-[#06432f] md:text-3xl">10 Tours Collection</h4>
-                      <p className="text-sm text-[#073c2c]/60">Tick your GoVietStay experiences and unlock travel badges.</p>
-                    </div>
-                    <div className="w-fit rounded-2xl bg-[#06432f] px-4 py-2 text-center text-white">
-                      <p className="text-xl font-black">{completedJourneyTours.length}/10</p>
-                      <p className="text-[10px] uppercase tracking-[2px]">Progress</p>
-                    </div>
-                  </div>
-                  <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                    {journeyTours.map((tour) => {
-                      const completed = completedJourneyTours.includes(tour.number);
-                      return (
-                        <button
-                          key={tour.number}
-                          type="button"
-                          onClick={() => toggleJourneyTour(tour.number)}
-                          className={`group flex items-center gap-3 rounded-3xl border p-2.5 text-left transition hover:-translate-y-1 ${completed ? "border-[#06432f] bg-[#06432f] text-white shadow-lg shadow-[#06432f]/20" : "border-[#073c2c]/10 bg-[#fbf3dd]"}`}
-                        >
-                          <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl shadow-md">
-                            <Image src={tour.image} alt={tour.title} fill className="object-cover" />
-                            <span className="absolute left-1 top-1 grid h-6 w-6 place-items-center rounded-full bg-[#06432f] text-xs font-black text-white ring-2 ring-white/80">{tour.number}</span>
-                          </div>
-                          <div className="min-w-0 flex-1">
-                            <p className="text-xs font-black uppercase leading-tight sm:text-sm">{tour.title}</p>
-                            <p className={`text-[11px] ${completed ? "text-white/75" : "text-[#073c2c]/55"}`}>{tour.subtitle}</p>
-                            <p className="mt-1 text-[11px] font-bold">{completed ? "✓ Completed" : "+ Add to journey"}</p>
-                          </div>
-                          <div className={`grid h-8 w-8 shrink-0 place-items-center rounded-full text-sm ${completed ? "bg-[#d9762d] text-white" : "bg-white text-[#06432f]"}`}>
-                            {completed ? "✓" : "+"}
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </article>
-              </div>
-
-              <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_1fr_1.05fr]">
-                <article className="rounded-[1.7rem] border border-[#073c2c]/10 bg-[#fff8e8] p-4 shadow-xl md:p-5">
-                  <h4 className="text-xl font-black uppercase text-[#06432f]">Today&apos;s Memory</h4>
-                  <div className="mt-4 space-y-3 text-sm">
-                    <label className="block font-bold">Date<input type="date" value={journeyForm.todayDate} onChange={(event) => updateJourneyField("todayDate", event.target.value)} className="mt-1 w-full rounded-xl border border-[#073c2c]/15 bg-[#fbf3dd] px-3 py-2 outline-none" /></label>
-                    {[
-                      ["todayPlace", "Where did you go?"],
-                      ["todayActivity", "What did you do?"],
-                      ["todayMoment", "Best moment of the day?"],
-                    ].map(([field, label]) => (
-                      <label key={field} className="block font-bold">{label}<input value={journeyForm[field as keyof JourneyForm]} onChange={(event) => updateJourneyField(field as keyof JourneyForm, event.target.value)} className="mt-1 w-full rounded-xl border border-[#073c2c]/15 bg-[#fbf3dd] px-3 py-2 outline-none" /></label>
-                    ))}
-                    <div>
-                      <p className="font-bold">How do you feel?</p>
-                      <div className="mt-2 grid grid-cols-5 gap-2">
-                        {[
-                          ["Amazing", "😍"],
-                          ["Happy", "😊"],
-                          ["Good", "🙂"],
-                          ["Okay", "😐"],
-                          ["Tired", "😴"],
-                        ].map(([mood, icon]) => (
-                          <button key={mood} type="button" onClick={() => updateJourneyField("todayMood", mood)} className={`rounded-2xl border px-1 py-2 text-[10px] transition sm:text-xs ${journeyForm.todayMood === mood ? "border-[#06432f] bg-[#06432f] text-white" : "border-[#073c2c]/10 bg-[#fbf3dd]"}`}>
-                            <span className="block text-lg">{icon}</span>{mood}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                    <label className="block font-bold">Favorite photo<input type="file" accept="image/*" onChange={handleFavoritePhotoChange} className="mt-1 w-full rounded-xl border border-dashed border-[#073c2c]/25 bg-[#fbf3dd] px-3 py-3 text-xs" /></label>
-                    {journeyForm.favoritePhoto ? <img src={journeyForm.favoritePhoto} alt="Favorite travel memory" className="h-36 w-full rounded-2xl object-cover" /> : null}
-                  </div>
-                </article>
-
-                <article className="rounded-[1.7rem] border border-[#073c2c]/10 bg-[#fff8e8] p-4 shadow-xl md:p-5">
-                  <h4 className="text-xl font-black uppercase text-[#06432f]">Food & Notes</h4>
-                  <div className="mt-4 space-y-3 text-sm">
-                    <label className="block font-bold">Best food today<input value={journeyForm.foodName} onChange={(event) => updateJourneyField("foodName", event.target.value)} className="mt-1 w-full rounded-xl border border-[#073c2c]/15 bg-[#fbf3dd] px-3 py-2 outline-none" /></label>
-                    <label className="block font-bold">Where did you try it?<input value={journeyForm.foodPlace} onChange={(event) => updateJourneyField("foodPlace", event.target.value)} className="mt-1 w-full rounded-xl border border-[#073c2c]/15 bg-[#fbf3dd] px-3 py-2 outline-none" /></label>
-                    <div>
-                      <p className="font-bold">How was it?</p>
-                      <div className="mt-1 flex gap-1 text-2xl text-[#d9762d]">
-                        {["1", "2", "3", "4", "5"].map((rating) => (
-                          <button key={rating} type="button" onClick={() => updateJourneyField("foodRating", rating)}>{Number(journeyForm.foodRating || 0) >= Number(rating) ? "★" : "☆"}</button>
-                        ))}
-                      </div>
-                    </div>
-                    <label className="block font-bold">Daily notes<textarea value={journeyForm.dailyNotes} onChange={(event) => updateJourneyField("dailyNotes", event.target.value)} rows={6} className="mt-1 w-full resize-none rounded-xl border border-[#073c2c]/15 bg-[#fbf3dd] px-3 py-2 outline-none" /></label>
-                  </div>
-                </article>
-
-                <article className="rounded-[1.7rem] border border-[#073c2c]/10 bg-[#fff8e8] p-4 shadow-xl md:p-5">
-                  <h4 className="text-xl font-black uppercase text-[#06432f]">Badges & Download</h4>
-                  <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-2">
-                    {journeyTours.map((tour) => {
-                      const unlocked = completedJourneyTours.includes(tour.number);
-                      const icons: Record<string, string> = {
-                        "1": "🌉",
-                        "2": "🏮",
-                        "3": "👑",
-                        "4": "⛰️",
-                        "5": "🐒",
-                        "6": "🚣",
-                        "7": "🐠",
-                        "8": "🛣️",
-                        "9": "🍜",
-                        "10": "✨",
-                      };
-                      return (
-                        <div
-                          key={tour.badge}
-                          className={`relative overflow-hidden rounded-[1.4rem] border p-3 text-center text-[10px] transition sm:text-[11px] ${unlocked ? "border-[#f2a23a] bg-gradient-to-br from-[#063b2b] via-[#07533d] to-[#0b7453] text-white shadow-lg shadow-[#06432f]/25" : "border-[#073c2c]/10 bg-[#fbf3dd] text-[#073c2c]/55"}`}
-                        >
-                          <div className="absolute -right-7 -top-7 h-20 w-20 rounded-full bg-white/10" />
-                          <div className={`mx-auto mb-2 grid h-16 w-16 place-items-center text-2xl shadow-xl ${unlocked ? "bg-gradient-to-br from-[#ffcf70] via-[#d9762d] to-[#7a3c12] text-white ring-4 ring-white/15" : "bg-white text-[#06432f]/30"}`} style={{ clipPath: "polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0 50%)" }}>
-                            {unlocked ? icons[tour.number] : "🔒"}
-                          </div>
-                          <p className="font-black leading-tight">{tour.badge}</p>
-                          {unlocked ? <p className="mt-1 text-[10px] text-white/70">Unlocked</p> : <p className="mt-1 text-[10px]">Complete to unlock</p>}
+                <div className="grid gap-5">
+                  <article className="overflow-hidden rounded-[2rem] border border-[#073c2c]/10 bg-[#fff8e8] shadow-xl">
+                    <div className="border-b border-[#073c2c]/10 bg-[#06432f] px-5 py-4 text-white md:px-6">
+                      <p className="text-[10px] font-black uppercase tracking-[4px] text-[#f7c982]">
+                        Travel collection
+                      </p>
+                      <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                        <div>
+                          <h4 className="font-serif text-3xl font-black italic md:text-4xl">
+                            Places I carried home
+                          </h4>
+                          <p className="mt-1 text-sm text-white/70">
+                            Tick the memories, not the tasks.
+                          </p>
                         </div>
-                      );
-                    })}
+                        <div className="w-fit rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-black">
+                          {completedJourneyTours.length}/10 memories
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="grid gap-3 p-4 md:grid-cols-2 md:p-5">
+                      {journeyTours.map((tour) => {
+                        const completed = completedJourneyTours.includes(tour.number);
+                        return (
+                          <button
+                            key={tour.number}
+                            type="button"
+                            onClick={() => toggleJourneyTour(tour.number)}
+                            className={`group relative overflow-hidden rounded-[1.4rem] border p-3 text-left transition hover:-translate-y-1 ${
+                              completed
+                                ? "border-[#06432f] bg-[#06432f] text-white shadow-lg shadow-[#06432f]/20"
+                                : "border-[#073c2c]/10 bg-[#fbf0d6] text-[#073c2c]"
+                            }`}
+                          >
+                            <div className="flex gap-3">
+                              <div className="relative h-20 w-20 shrink-0 rotate-[-2deg] overflow-hidden rounded-xl border-4 border-white bg-white shadow-md">
+                                <Image src={tour.image} alt={tour.title} fill className="object-cover" />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <div className="flex items-center justify-between gap-2">
+                                  <span className={`grid h-7 w-7 place-items-center rounded-full text-xs font-black ${completed ? "bg-[#d9762d] text-white" : "bg-white text-[#06432f]"}`}>
+                                    {completed ? "✓" : tour.number}
+                                  </span>
+                                  <span className={`rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-[2px] ${completed ? "bg-white/15 text-white" : "bg-[#06432f]/10 text-[#06432f]"}`}>
+                                    stamp
+                                  </span>
+                                </div>
+                                <p className="mt-2 font-serif text-lg font-black italic leading-tight">
+                                  {tour.title}
+                                </p>
+                                <p className={`mt-1 text-xs ${completed ? "text-white/70" : "text-[#073c2c]/55"}`}>
+                                  {tour.subtitle}
+                                </p>
+                              </div>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </article>
+
+                  <div className="grid gap-5 lg:grid-cols-2">
+                    <article className="rounded-[2rem] border border-[#073c2c]/10 bg-[#fff8e8] p-5 shadow-xl md:p-6">
+                      <p className="text-[10px] font-black uppercase tracking-[4px] text-[#b96a2d]">
+                        Diary page
+                      </p>
+                      <h4 className="mt-2 font-serif text-3xl font-black italic text-[#06432f]">
+                        Today I want to remember...
+                      </h4>
+                      <p className="mt-2 text-sm leading-6 text-[#073c2c]/65">
+                        Keep it simple. One place, one feeling, one moment.
+                      </p>
+
+                      <div className="mt-5 space-y-4 text-sm">
+                        <label className="block font-bold text-[#06432f]">
+                          Date
+                          <input
+                            type="date"
+                            value={journeyForm.todayDate}
+                            onChange={(event) => updateJourneyField("todayDate", event.target.value)}
+                            className="mt-2 w-full rounded-2xl border border-[#073c2c]/10 bg-[#fbf0d6] px-4 py-3 outline-none"
+                          />
+                        </label>
+
+                        <label className="block font-bold text-[#06432f]">
+                          Today I visited
+                          <input
+                            value={journeyForm.todayPlace}
+                            onChange={(event) => updateJourneyField("todayPlace", event.target.value)}
+                            placeholder="Ba Na Hills, Hoi An, Hue..."
+                            className="mt-2 w-full rounded-2xl border border-[#073c2c]/10 bg-[#fbf0d6] px-4 py-3 outline-none"
+                          />
+                        </label>
+
+                        <label className="block font-bold text-[#06432f]">
+                          My favorite moment
+                          <textarea
+                            value={journeyForm.todayMoment}
+                            onChange={(event) => updateJourneyField("todayMoment", event.target.value)}
+                            rows={4}
+                            placeholder="A smile, a sunset, a meal, a road, a person..."
+                            className="mt-2 w-full resize-none rounded-2xl border border-[#073c2c]/10 bg-[repeating-linear-gradient(to_bottom,#fbf0d6_0px,#fbf0d6_34px,rgba(7,60,44,0.18)_35px)] px-4 py-3 leading-[35px] outline-none"
+                          />
+                        </label>
+
+                        <div>
+                          <p className="font-bold text-[#06432f]">My feeling today</p>
+                          <div className="mt-2 grid grid-cols-5 gap-2">
+                            {[
+                              ["Amazing", "😍"],
+                              ["Happy", "😊"],
+                              ["Peaceful", "🌿"],
+                              ["Touched", "🥹"],
+                              ["Tired", "😴"],
+                            ].map(([mood, icon]) => (
+                              <button
+                                key={mood}
+                                type="button"
+                                onClick={() => updateJourneyField("todayMood", mood)}
+                                className={`rounded-2xl border px-1 py-3 text-[10px] transition ${
+                                  journeyForm.todayMood === mood
+                                    ? "border-[#06432f] bg-[#06432f] text-white"
+                                    : "border-[#073c2c]/10 bg-[#fbf0d6] text-[#073c2c]"
+                                }`}
+                              >
+                                <span className="block text-xl">{icon}</span>
+                                {mood}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </article>
+
+                    <article className="rounded-[2rem] border border-[#073c2c]/10 bg-[#fff8e8] p-5 shadow-xl md:p-6">
+                      <p className="text-[10px] font-black uppercase tracking-[4px] text-[#b96a2d]">
+                        Food memory
+                      </p>
+                      <h4 className="mt-2 font-serif text-3xl font-black italic text-[#06432f]">
+                        A taste I will miss
+                      </h4>
+
+                      <div className="mt-5 space-y-4 text-sm">
+                        <label className="block font-bold text-[#06432f]">
+                          Best food today
+                          <input
+                            value={journeyForm.foodName}
+                            onChange={(event) => updateJourneyField("foodName", event.target.value)}
+                            placeholder="Mi Quang, Cao Lau, Bun Bo Hue..."
+                            className="mt-2 w-full rounded-2xl border border-[#073c2c]/10 bg-[#fbf0d6] px-4 py-3 outline-none"
+                          />
+                        </label>
+                        <label className="block font-bold text-[#06432f]">
+                          Where I tried it
+                          <input
+                            value={journeyForm.foodPlace}
+                            onChange={(event) => updateJourneyField("foodPlace", event.target.value)}
+                            placeholder="A small local restaurant, a market, a family meal..."
+                            className="mt-2 w-full rounded-2xl border border-[#073c2c]/10 bg-[#fbf0d6] px-4 py-3 outline-none"
+                          />
+                        </label>
+
+                        <div>
+                          <p className="font-bold text-[#06432f]">How much did I love it?</p>
+                          <div className="mt-2 flex gap-1 text-3xl text-[#d9762d]">
+                            {["1", "2", "3", "4", "5"].map((rating) => (
+                              <button
+                                key={rating}
+                                type="button"
+                                onClick={() => updateJourneyField("foodRating", rating)}
+                                aria-label={`Rate ${rating} stars`}
+                              >
+                                {Number(journeyForm.foodRating || 0) >= Number(rating) ? "★" : "☆"}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+
+                        <label className="block font-bold text-[#06432f]">
+                          Favorite photo
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleFavoritePhotoChange}
+                            className="mt-2 w-full rounded-2xl border border-dashed border-[#073c2c]/25 bg-[#fbf0d6] px-4 py-4 text-xs"
+                          />
+                        </label>
+
+                        {journeyForm.favoritePhoto ? (
+                          <div className="rotate-[-1deg] rounded-2xl bg-white p-2 shadow-xl">
+                            <img src={journeyForm.favoritePhoto} alt="Favorite travel memory" className="h-48 w-full rounded-xl object-cover" />
+                            <p className="px-2 py-2 font-serif text-sm italic text-[#073c2c]/70">
+                              My favorite Vietnam memory
+                            </p>
+                          </div>
+                        ) : (
+                          <div className="grid h-48 place-items-center rounded-2xl border border-dashed border-[#073c2c]/20 bg-[#fbf0d6] text-center text-sm font-bold text-[#073c2c]/45">
+                            Add one photo you never want to forget
+                          </div>
+                        )}
+                      </div>
+                    </article>
                   </div>
-                  <div className="mt-5 space-y-3">
-                    <button type="button" onClick={saveJourneyToPhone} className="w-full rounded-full bg-[#06432f] px-5 py-3 font-bold text-white shadow-lg transition hover:bg-[#0a563f]">Save on this phone</button>
-                    <button type="button" onClick={downloadJourneyToDevice} className="w-full rounded-full bg-[#d9762d] px-5 py-3 font-bold text-white shadow-lg transition hover:bg-[#c15f1f]">Download & keep</button>
-                    {journeySavedAt ? <p className="text-center text-xs font-bold text-[#06432f]">Saved: {journeySavedAt}</p> : null}
-                    <a href={googleReviewLink} target="_blank" rel="noopener noreferrer" className="block rounded-2xl border border-[#06432f]/15 bg-white/80 p-4 text-center text-sm font-bold text-[#06432f] hover:bg-white">⭐ Leave a Google Review</a>
-                  </div>
-                </article>
+
+                  <article className="rounded-[2rem] border border-[#073c2c]/10 bg-[#fff8e8] p-5 shadow-xl md:p-6">
+                    <div className="grid gap-5 lg:grid-cols-[1fr_0.9fr]">
+                      <div>
+                        <p className="text-[10px] font-black uppercase tracking-[4px] text-[#b96a2d]">
+                          Last page
+                        </p>
+                        <h4 className="mt-2 font-serif text-3xl font-black italic text-[#06432f]">
+                          Before I leave Vietnam...
+                        </h4>
+                        <textarea
+                          value={journeyForm.dailyNotes}
+                          onChange={(event) => updateJourneyField("dailyNotes", event.target.value)}
+                          rows={7}
+                          placeholder="One day I will leave Vietnam. But the memories, the smiles, the sunsets and the people I met will travel with me forever..."
+                          className="mt-4 w-full resize-none rounded-2xl border border-[#073c2c]/10 bg-[repeating-linear-gradient(to_bottom,#fbf0d6_0px,#fbf0d6_34px,rgba(7,60,44,0.18)_35px)] px-4 py-3 leading-[35px] outline-none"
+                        />
+                      </div>
+
+                      <div className="rounded-[1.5rem] bg-[#06432f] p-5 text-white">
+                        <p className="font-serif text-2xl font-black italic">
+                          Thank you for letting us be a small part of your journey.
+                        </p>
+                        <p className="mt-3 text-sm leading-6 text-white/70">
+                          This memory book is saved on your own phone. GoVietStay only hopes you keep one warm feeling from Vietnam.
+                        </p>
+
+                        <div className="mt-5 grid grid-cols-2 gap-2">
+                          <button
+                            type="button"
+                            onClick={saveJourneyToPhone}
+                            className="rounded-full bg-white px-4 py-3 text-sm font-black text-[#06432f] shadow-lg"
+                          >
+                            Save
+                          </button>
+                          <button
+                            type="button"
+                            onClick={downloadJourneyToDevice}
+                            className="rounded-full bg-[#d9762d] px-4 py-3 text-sm font-black text-white shadow-lg"
+                          >
+                            Download
+                          </button>
+                        </div>
+
+                        {journeySavedAt ? (
+                          <p className="mt-3 text-center text-xs font-bold text-white/75">
+                            Saved: {journeySavedAt}
+                          </p>
+                        ) : null}
+
+                        <a
+                          href={googleReviewLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mt-4 block rounded-2xl border border-white/20 bg-white/10 p-4 text-center text-sm font-bold text-white hover:bg-white/15"
+                        >
+                          ⭐ Write your GoVietStay memory on Google
+                        </a>
+                      </div>
+                    </div>
+                  </article>
+                </div>
               </div>
             </div>
           </div>
