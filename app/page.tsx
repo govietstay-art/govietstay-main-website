@@ -1325,6 +1325,144 @@ const tours: Tour[] = [
   },
 ];
 
+
+const journeyTours = [
+  {
+    number: "1",
+    title: "Ba Na Hills",
+    subtitle: "Golden Bridge",
+    image: "/tour/bana.jpg",
+    badge: "Golden Bridge Explorer",
+  },
+  {
+    number: "2",
+    title: "Hoi An",
+    subtitle: "Ancient Town",
+    image: "/tour/hoian.jpg",
+    badge: "Hoi An Story Keeper",
+  },
+  {
+    number: "3",
+    title: "Hue",
+    subtitle: "Imperial City",
+    image: "/tour/hue.jpg",
+    badge: "Hue Heritage Explorer",
+  },
+  {
+    number: "4",
+    title: "Marble Mountains",
+    subtitle: "Caves & Pagodas",
+    image: "/tour/marble.jpg",
+    badge: "Marble Adventurer",
+  },
+  {
+    number: "5",
+    title: "Son Tra Peninsula",
+    subtitle: "Lady Buddha View",
+    image: "/tour/marble.jpg",
+    badge: "Son Tra Explorer",
+  },
+  {
+    number: "6",
+    title: "Coconut Forest",
+    subtitle: "Basket Boat",
+    image: "/tour/coconut.jpg",
+    badge: "Coconut Forest Rider",
+  },
+  {
+    number: "7",
+    title: "Cham Island",
+    subtitle: "Snorkeling Day",
+    image: "/tour/cham.jpg",
+    badge: "Island Discoverer",
+  },
+  {
+    number: "8",
+    title: "Hai Van Pass",
+    subtitle: "Ocean Road",
+    image: "/tour/haivan.jpg",
+    badge: "Hai Van Pass Rider",
+  },
+  {
+    number: "9",
+    title: "Da Nang Food",
+    subtitle: "Local Taste",
+    image: "/tour/food.jpg",
+    badge: "Food Explorer",
+  },
+  {
+    number: "10",
+    title: "Omakase Experience",
+    subtitle: "Your Secret Day",
+    image: "/tour/omakase.jpg",
+    badge: "GoVietStay Insider",
+  },
+];
+
+const journeyBadges = [
+  "Golden Bridge Explorer",
+  "Hoi An Story Keeper",
+  "Hue Heritage Explorer",
+  "Marble Adventurer",
+  "Son Tra Explorer",
+  "Coconut Forest Rider",
+  "Island Discoverer",
+  "Hai Van Pass Rider",
+  "Food Explorer",
+  "GoVietStay Insider",
+];
+
+const googleReviewLink = "https://maps.app.goo.gl/znWBmL8zPKEJqnoW6?g_st=ic";
+
+const GVSLogo = ({ className = "" }: { className?: string }) => (
+  <img
+    src="/logo.png"
+    alt="GoVietStay"
+    className={className}
+    onError={(event) => {
+      const image = event.currentTarget;
+      if (!image.src.endsWith('/logo.jpg')) image.src = '/logo.jpg';
+    }}
+  />
+);
+
+
+type JourneyForm = {
+  todayDate: string;
+  todayPlace: string;
+  todayActivity: string;
+  todayMoment: string;
+  todayMood: string;
+  foodName: string;
+  foodPlace: string;
+  foodRating: string;
+  eatAgain: string;
+  dailyNotes: string;
+  memoryOne: string;
+  memoryTwo: string;
+  memoryThree: string;
+  favoritePhoto: string;
+};
+
+const emptyJourneyForm: JourneyForm = {
+  todayDate: "",
+  todayPlace: "",
+  todayActivity: "",
+  todayMoment: "",
+  todayMood: "",
+  foodName: "",
+  foodPlace: "",
+  foodRating: "",
+  eatAgain: "",
+  dailyNotes: "",
+  memoryOne: "",
+  memoryTwo: "",
+  memoryThree: "",
+  favoritePhoto: "",
+};
+
+const JOURNEY_STORAGE_KEY = "govietstay-my-vietnam-journey-v1";
+
 export default function Home() {
   const [selectedTour, setSelectedTour] = useState<Tour | null>(null);
   const [bookingOpen, setBookingOpen] = useState(false);
@@ -1341,6 +1479,80 @@ export default function Home() {
   const [daoMessages, setDaoMessages] = useState<ChatMessage[]>([
     DAO_STARTER_MESSAGE,
   ]);
+  const [journeyForm, setJourneyForm] = useState<JourneyForm>(emptyJourneyForm);
+  const [completedJourneyTours, setCompletedJourneyTours] = useState<string[]>([]);
+  const [journeySavedAt, setJourneySavedAt] = useState<string>("");
+  const [journeyOpen, setJourneyOpen] = useState(false);
+
+  const updateJourneyField = (field: keyof JourneyForm, value: string) => {
+    setJourneyForm((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const toggleJourneyTour = (number: string) => {
+    setCompletedJourneyTours((prev) =>
+      prev.includes(number)
+        ? prev.filter((item) => item !== number)
+        : [...prev, number],
+    );
+  };
+
+  const saveJourneyToPhone = () => {
+    const savedAt = new Date().toLocaleString();
+    localStorage.setItem(
+      JOURNEY_STORAGE_KEY,
+      JSON.stringify({
+        form: journeyForm,
+        completedTours: completedJourneyTours,
+        savedAt,
+      }),
+    );
+    setJourneySavedAt(savedAt);
+  };
+
+  const handleFavoritePhotoChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === "string") {
+        updateJourneyField("favoritePhoto", reader.result);
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const downloadJourneyToDevice = () => {
+    const completedNames = journeyTours
+      .filter((tour) => completedJourneyTours.includes(tour.number))
+      .map((tour) => `${tour.number}. ${tour.title} - ${tour.subtitle}`)
+      .join("\n");
+
+    const content = `MY VIETNAM JOURNEY - GoVietStay\n\n` +
+      `Date: ${journeyForm.todayDate || ""}\n` +
+      `Place visited: ${journeyForm.todayPlace || ""}\n` +
+      `What I did: ${journeyForm.todayActivity || ""}\n` +
+      `Best moment: ${journeyForm.todayMoment || ""}\n` +
+      `Mood: ${journeyForm.todayMood || ""}\n\n` +
+      `Best food: ${journeyForm.foodName || ""}\n` +
+      `Where I tried it: ${journeyForm.foodPlace || ""}\n` +
+      `Food rating: ${journeyForm.foodRating || ""}/5\n` +
+      `Would eat again: ${journeyForm.eatAgain || ""}\n\n` +
+      `Tours completed:\n${completedNames || "Not selected yet"}\n\n` +
+      `Daily notes:\n${journeyForm.dailyNotes || ""}\n\n` +
+      `Memory highlights:\n1. ${journeyForm.memoryOne || ""}\n2. ${journeyForm.memoryTwo || ""}\n3. ${journeyForm.memoryThree || ""}\n\n` +
+      `Created with love by GoVietStay\nWebsite: GoVietStay.com\nWhatsApp: +84 937 762 607\nReview: ${googleReviewLink}\n`;
+
+    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "my-vietnam-journey-govietstay.txt";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  };
 
   const sendDaoMessage = async () => {
     const trimmed = daoInput.trim();
@@ -1488,6 +1700,40 @@ export default function Home() {
 
     setSelectedMemory(happyTravelers[nextIndex]);
   };
+
+  useEffect(() => {
+    try {
+      const savedJourney = localStorage.getItem(JOURNEY_STORAGE_KEY);
+      if (!savedJourney) return;
+
+      const parsed = JSON.parse(savedJourney) as {
+        form?: JourneyForm;
+        completedTours?: string[];
+        savedAt?: string;
+      };
+
+      if (parsed.form) setJourneyForm({ ...emptyJourneyForm, ...parsed.form });
+      if (Array.isArray(parsed.completedTours)) setCompletedJourneyTours(parsed.completedTours);
+      if (parsed.savedAt) setJourneySavedAt(parsed.savedAt);
+    } catch {
+      // Keep the journal empty if the saved browser data is unavailable.
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        JOURNEY_STORAGE_KEY,
+        JSON.stringify({
+          form: journeyForm,
+          completedTours: completedJourneyTours,
+          savedAt: journeySavedAt,
+        }),
+      );
+    } catch {
+      // Some browsers may block storage or reject very large images.
+    }
+  }, [journeyForm, completedJourneyTours, journeySavedAt]);
 
   useEffect(() => {
     document.title =
@@ -1692,13 +1938,7 @@ export default function Home() {
 
         <header className="absolute top-4 left-4 right-4 z-20 rounded-full bg-black/35 backdrop-blur-md border border-white/10 px-5 md:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Image
-              src="/logo.png"
-              alt="GoVietStay"
-              width={54}
-              height={54}
-              className="rounded-full"
-            />
+            <GVSLogo className="h-[54px] w-[54px] rounded-full object-contain" />
             <div>
               <h2 className="text-white font-bold text-lg md:text-xl">
                 GoVietStay
@@ -1855,6 +2095,254 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+
+      <section id="journey-gift" className="relative overflow-hidden bg-[#071f18] px-4 py-6 text-white md:px-20 md:py-8">
+        <div className="absolute inset-0 opacity-70">
+          <Image src="/hero-hoian-new.png" alt="Hoi An memories" fill className="object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black via-[#06251b]/90 to-black/70" />
+        </div>
+
+        <div className="relative mx-auto max-w-7xl">
+          <div className="overflow-hidden rounded-[2rem] border border-white/15 bg-[#fff4dc] text-[#06432f] shadow-2xl shadow-black/40">
+            <div className="grid items-center gap-5 p-4 sm:p-5 md:grid-cols-[150px_1fr_auto] md:p-7">
+              <div className="hidden md:block">
+                <div className="relative mx-auto grid h-28 w-28 place-items-center overflow-hidden rounded-full border-4 border-[#06432f]/20 bg-[#fff8e8] shadow-xl shadow-[#06432f]/20">
+                  <GVSLogo className="h-full w-full object-contain p-2" />
+                </div>
+              </div>
+
+              <div>
+                <p className="text-[11px] font-black uppercase tracking-[4px] text-[#d9762d]">
+                  Private gift for booked guests
+                </p>
+                <h2 className="mt-2 text-3xl font-black leading-tight md:text-5xl">
+                  My Vietnam Journey
+                </h2>
+                <p className="mt-1 font-serif text-xl italic text-[#c5662d] md:text-2xl">
+                  Your Adventure • Your Story • Your Memories
+                </p>
+                <p className="mt-3 max-w-3xl text-sm leading-6 text-[#073c2c]/75 md:text-base">
+                  A private travel journal for guests after booking. Save memories, photos and 10 GoVietStay tour milestones on your own phone.
+                </p>
+                <div className="mt-4 grid grid-cols-2 gap-2 text-xs font-bold sm:flex sm:flex-wrap">
+                  {[
+                    ["💚", "Save memories"],
+                    ["📷", "Add photos"],
+                    ["🏆", "Collect badges"],
+                    ["⬇️", "Download & keep"],
+                  ].map(([icon, item]) => (
+                    <span key={item} className="rounded-full border border-[#06432f]/15 bg-white/75 px-3 py-2 shadow-sm">
+                      {icon} {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-3 md:min-w-[230px]">
+                <button
+                  type="button"
+                  onClick={() => setJourneyOpen(true)}
+                  className="rounded-full bg-[#06432f] px-6 py-4 text-left font-bold text-white shadow-xl shadow-[#06432f]/25 transition hover:-translate-y-1 hover:bg-[#0a563f]"
+                >
+                  <span className="block text-lg">📖 Start My Journey</span>
+                  <span className="block text-xs font-medium text-white/70">For guests after booking</span>
+                </button>
+                <a
+                  href="https://wa.me/84937762607"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full border border-[#06432f]/20 bg-white/80 px-6 py-3 text-center text-sm font-bold text-[#06432f] transition hover:bg-white"
+                >
+                  Book a tour first
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {journeyOpen ? (
+        <div className="gvs-overlay fixed inset-0 z-[80] bg-black/75 p-2 text-[#073c2c] backdrop-blur-sm sm:p-4 md:p-8">
+          <div className="gvs-panel mx-auto flex max-h-[94vh] max-w-6xl flex-col overflow-hidden rounded-[1.7rem] border border-white/20 bg-[#f3ead2] shadow-2xl md:rounded-[2rem]">
+            <div className="flex items-center justify-between gap-3 border-b border-[#073c2c]/10 bg-[#fff7e6] px-4 py-3 md:px-7 md:py-4">
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-[3px] text-[#d9762d] md:text-xs md:tracking-[4px]">Private guest journal</p>
+                <h3 className="text-xl font-black text-[#06432f] md:text-3xl">My Vietnam Journey</h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setJourneyOpen(false)}
+                className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#06432f] text-xl text-white md:h-11 md:w-11"
+                aria-label="Close My Vietnam Journey"
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="gvs-no-scrollbar overflow-y-auto p-3 md:p-7">
+              <div className="grid gap-4 lg:grid-cols-[0.9fr_1.35fr]">
+                <article className="overflow-hidden rounded-[1.7rem] border border-[#073c2c]/10 bg-[#fff8e8] shadow-xl">
+                  <div className="relative min-h-[390px] overflow-hidden bg-[#fff3d8] p-5 sm:min-h-[440px] md:p-7">
+                    <div className="absolute inset-0 opacity-40">
+                      <Image src="/hero-hoian-new.png" alt="Vietnam journey background" fill className="object-cover" />
+                      <div className="absolute inset-0 bg-gradient-to-b from-[#fff8e8]/95 via-[#fff8e8]/80 to-[#06432f]/90" />
+                    </div>
+                    <div className="relative flex h-full min-h-[340px] flex-col items-center justify-between text-center sm:min-h-[390px]">
+                      <div className="grid h-24 w-24 place-items-center overflow-hidden rounded-full border-4 border-[#06432f]/20 bg-[#fff8e8] shadow-xl shadow-[#06432f]/20 sm:h-28 sm:w-28">
+                        <GVSLogo className="h-full w-full object-contain p-1.5" />
+                      </div>
+                      <div>
+                        <p className="text-xs font-black uppercase tracking-[4px] text-[#06432f]">A special gift</p>
+                        <h4 className="mt-3 text-4xl font-black leading-[0.95] text-[#06432f] sm:text-5xl md:text-6xl">
+                          MY<br />VIETNAM<br />JOURNEY
+                        </h4>
+                        <p className="mt-5 font-serif text-2xl italic leading-tight text-[#d9762d] sm:text-3xl">
+                          Your Adventure<br />Your Story<br />Your Memories
+                        </p>
+                      </div>
+                      <div className="w-full rounded-3xl bg-[#06432f] p-4 text-white shadow-xl">
+                        <p className="text-xs font-bold uppercase tracking-[2px] text-white/70">Created by GoVietStay</p>
+                        <p className="mt-1 text-sm font-medium">Saved only on your phone. No database needed.</p>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+
+                <article className="rounded-[1.7rem] border border-[#073c2c]/10 bg-[#fff8e8] p-4 shadow-xl md:p-5">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                      <h4 className="text-2xl font-black uppercase text-[#06432f] md:text-3xl">10 Tours Collection</h4>
+                      <p className="text-sm text-[#073c2c]/60">Tick your GoVietStay experiences and unlock travel badges.</p>
+                    </div>
+                    <div className="w-fit rounded-2xl bg-[#06432f] px-4 py-2 text-center text-white">
+                      <p className="text-xl font-black">{completedJourneyTours.length}/10</p>
+                      <p className="text-[10px] uppercase tracking-[2px]">Progress</p>
+                    </div>
+                  </div>
+                  <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                    {journeyTours.map((tour) => {
+                      const completed = completedJourneyTours.includes(tour.number);
+                      return (
+                        <button
+                          key={tour.number}
+                          type="button"
+                          onClick={() => toggleJourneyTour(tour.number)}
+                          className={`group flex items-center gap-3 rounded-3xl border p-2.5 text-left transition hover:-translate-y-1 ${completed ? "border-[#06432f] bg-[#06432f] text-white shadow-lg shadow-[#06432f]/20" : "border-[#073c2c]/10 bg-[#fbf3dd]"}`}
+                        >
+                          <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl shadow-md">
+                            <Image src={tour.image} alt={tour.title} fill className="object-cover" />
+                            <span className="absolute left-1 top-1 grid h-6 w-6 place-items-center rounded-full bg-[#06432f] text-xs font-black text-white ring-2 ring-white/80">{tour.number}</span>
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <p className="text-xs font-black uppercase leading-tight sm:text-sm">{tour.title}</p>
+                            <p className={`text-[11px] ${completed ? "text-white/75" : "text-[#073c2c]/55"}`}>{tour.subtitle}</p>
+                            <p className="mt-1 text-[11px] font-bold">{completed ? "✓ Completed" : "+ Add to journey"}</p>
+                          </div>
+                          <div className={`grid h-8 w-8 shrink-0 place-items-center rounded-full text-sm ${completed ? "bg-[#d9762d] text-white" : "bg-white text-[#06432f]"}`}>
+                            {completed ? "✓" : "+"}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </article>
+              </div>
+
+              <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_1fr_1.05fr]">
+                <article className="rounded-[1.7rem] border border-[#073c2c]/10 bg-[#fff8e8] p-4 shadow-xl md:p-5">
+                  <h4 className="text-xl font-black uppercase text-[#06432f]">Today&apos;s Memory</h4>
+                  <div className="mt-4 space-y-3 text-sm">
+                    <label className="block font-bold">Date<input type="date" value={journeyForm.todayDate} onChange={(event) => updateJourneyField("todayDate", event.target.value)} className="mt-1 w-full rounded-xl border border-[#073c2c]/15 bg-[#fbf3dd] px-3 py-2 outline-none" /></label>
+                    {[
+                      ["todayPlace", "Where did you go?"],
+                      ["todayActivity", "What did you do?"],
+                      ["todayMoment", "Best moment of the day?"],
+                    ].map(([field, label]) => (
+                      <label key={field} className="block font-bold">{label}<input value={journeyForm[field as keyof JourneyForm]} onChange={(event) => updateJourneyField(field as keyof JourneyForm, event.target.value)} className="mt-1 w-full rounded-xl border border-[#073c2c]/15 bg-[#fbf3dd] px-3 py-2 outline-none" /></label>
+                    ))}
+                    <div>
+                      <p className="font-bold">How do you feel?</p>
+                      <div className="mt-2 grid grid-cols-5 gap-2">
+                        {[
+                          ["Amazing", "😍"],
+                          ["Happy", "😊"],
+                          ["Good", "🙂"],
+                          ["Okay", "😐"],
+                          ["Tired", "😴"],
+                        ].map(([mood, icon]) => (
+                          <button key={mood} type="button" onClick={() => updateJourneyField("todayMood", mood)} className={`rounded-2xl border px-1 py-2 text-[10px] transition sm:text-xs ${journeyForm.todayMood === mood ? "border-[#06432f] bg-[#06432f] text-white" : "border-[#073c2c]/10 bg-[#fbf3dd]"}`}>
+                            <span className="block text-lg">{icon}</span>{mood}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <label className="block font-bold">Favorite photo<input type="file" accept="image/*" onChange={handleFavoritePhotoChange} className="mt-1 w-full rounded-xl border border-dashed border-[#073c2c]/25 bg-[#fbf3dd] px-3 py-3 text-xs" /></label>
+                    {journeyForm.favoritePhoto ? <img src={journeyForm.favoritePhoto} alt="Favorite travel memory" className="h-36 w-full rounded-2xl object-cover" /> : null}
+                  </div>
+                </article>
+
+                <article className="rounded-[1.7rem] border border-[#073c2c]/10 bg-[#fff8e8] p-4 shadow-xl md:p-5">
+                  <h4 className="text-xl font-black uppercase text-[#06432f]">Food & Notes</h4>
+                  <div className="mt-4 space-y-3 text-sm">
+                    <label className="block font-bold">Best food today<input value={journeyForm.foodName} onChange={(event) => updateJourneyField("foodName", event.target.value)} className="mt-1 w-full rounded-xl border border-[#073c2c]/15 bg-[#fbf3dd] px-3 py-2 outline-none" /></label>
+                    <label className="block font-bold">Where did you try it?<input value={journeyForm.foodPlace} onChange={(event) => updateJourneyField("foodPlace", event.target.value)} className="mt-1 w-full rounded-xl border border-[#073c2c]/15 bg-[#fbf3dd] px-3 py-2 outline-none" /></label>
+                    <div>
+                      <p className="font-bold">How was it?</p>
+                      <div className="mt-1 flex gap-1 text-2xl text-[#d9762d]">
+                        {["1", "2", "3", "4", "5"].map((rating) => (
+                          <button key={rating} type="button" onClick={() => updateJourneyField("foodRating", rating)}>{Number(journeyForm.foodRating || 0) >= Number(rating) ? "★" : "☆"}</button>
+                        ))}
+                      </div>
+                    </div>
+                    <label className="block font-bold">Daily notes<textarea value={journeyForm.dailyNotes} onChange={(event) => updateJourneyField("dailyNotes", event.target.value)} rows={6} className="mt-1 w-full resize-none rounded-xl border border-[#073c2c]/15 bg-[#fbf3dd] px-3 py-2 outline-none" /></label>
+                  </div>
+                </article>
+
+                <article className="rounded-[1.7rem] border border-[#073c2c]/10 bg-[#fff8e8] p-4 shadow-xl md:p-5">
+                  <h4 className="text-xl font-black uppercase text-[#06432f]">Badges & Download</h4>
+                  <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-2">
+                    {journeyTours.map((tour) => {
+                      const unlocked = completedJourneyTours.includes(tour.number);
+                      const icons: Record<string, string> = {
+                        "1": "🌉",
+                        "2": "🏮",
+                        "3": "👑",
+                        "4": "⛰️",
+                        "5": "🐒",
+                        "6": "🚣",
+                        "7": "🐠",
+                        "8": "🛣️",
+                        "9": "🍜",
+                        "10": "✨",
+                      };
+                      return (
+                        <div
+                          key={tour.badge}
+                          className={`relative overflow-hidden rounded-[1.4rem] border p-3 text-center text-[10px] transition sm:text-[11px] ${unlocked ? "border-[#f2a23a] bg-gradient-to-br from-[#063b2b] via-[#07533d] to-[#0b7453] text-white shadow-lg shadow-[#06432f]/25" : "border-[#073c2c]/10 bg-[#fbf3dd] text-[#073c2c]/55"}`}
+                        >
+                          <div className="absolute -right-7 -top-7 h-20 w-20 rounded-full bg-white/10" />
+                          <div className={`mx-auto mb-2 grid h-16 w-16 place-items-center text-2xl shadow-xl ${unlocked ? "bg-gradient-to-br from-[#ffcf70] via-[#d9762d] to-[#7a3c12] text-white ring-4 ring-white/15" : "bg-white text-[#06432f]/30"}`} style={{ clipPath: "polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0 50%)" }}>
+                            {unlocked ? icons[tour.number] : "🔒"}
+                          </div>
+                          <p className="font-black leading-tight">{tour.badge}</p>
+                          {unlocked ? <p className="mt-1 text-[10px] text-white/70">Unlocked</p> : <p className="mt-1 text-[10px]">Complete to unlock</p>}
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="mt-5 space-y-3">
+                    <button type="button" onClick={saveJourneyToPhone} className="w-full rounded-full bg-[#06432f] px-5 py-3 font-bold text-white shadow-lg transition hover:bg-[#0a563f]">Save on this phone</button>
+                    <button type="button" onClick={downloadJourneyToDevice} className="w-full rounded-full bg-[#d9762d] px-5 py-3 font-bold text-white shadow-lg transition hover:bg-[#c15f1f]">Download & keep</button>
+                    {journeySavedAt ? <p className="text-center text-xs font-bold text-[#06432f]">Saved: {journeySavedAt}</p> : null}
+                    <a href={googleReviewLink} target="_blank" rel="noopener noreferrer" className="block rounded-2xl border border-[#06432f]/15 bg-white/80 p-4 text-center text-sm font-bold text-[#06432f] hover:bg-white">⭐ Leave a Google Review</a>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : null}
 
       <section className="bg-[#f7f1df] text-[#06251b] px-4 md:px-20 py-12 md:py-20">
         <div className="max-w-7xl mx-auto w-full rounded-[2rem] border border-[#0b6b4f]/15 bg-white/65 p-6 md:p-10 shadow-xl shadow-[#06251b]/5">
