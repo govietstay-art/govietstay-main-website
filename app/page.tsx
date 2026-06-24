@@ -1662,15 +1662,6 @@ export default function Home() {
 
 
 
-  const quickActions: Array<{ icon: string; label: string; href?: string; external?: boolean; action?: () => void }> = [
-    { icon: "🗺️", label: "Secret Local", href: "/secret" },
-    { icon: "🍜", label: "Local Food", href: "/local-food" },
-    { icon: "🎫", label: "Tickets", href: "#tickets" },
-    { icon: "🏝️", label: "Tours", href: "#experiences" },
-    { icon: "🤖", label: "Ask Đào", action: () => setDaoOpen(true) },
-    { icon: "💬", label: "WhatsApp", href: "https://wa.me/84937762607", external: true },
-  ];
-
   const previewTravelers = happyTravelers.slice(0, 8);
   const visibleTravelers = showAllTravelers ? happyTravelers : previewTravelers;
   const selectedMemoryIndex = selectedMemory
@@ -2016,14 +2007,7 @@ export default function Home() {
                 href="#experiences"
                 className="rounded-full bg-yellow-400 px-7 py-4 font-semibold text-black hover:bg-yellow-500 transition text-center"
               >
-                View Experiences
-              </a>
-
-              <a
-                href="/local-food"
-                className="rounded-full border border-yellow-400/70 bg-black/25 px-7 py-4 font-semibold text-yellow-300 hover:bg-yellow-400 hover:text-black transition text-center"
-              >
-                Local Food Guide
+                Explore Vietnam
               </a>
             </div>
 
@@ -2045,56 +2029,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-[#f7f1df] text-[#06251b] px-4 md:px-20 py-8 md:py-12">
-        <div className="max-w-7xl mx-auto w-full">
-          <div className="rounded-[2rem] border border-[#0b6b4f]/15 bg-white/80 p-4 md:p-6 shadow-xl shadow-[#06251b]/5">
-            <div className="flex items-center justify-between gap-4 mb-4">
-              <div>
-                <p className="text-green-800 uppercase tracking-[3px] text-xs font-semibold">
-                  Quick Access
-                </p>
-                <h2 className="mt-1 text-2xl md:text-3xl font-bold">
-                  What do you need today?
-                </h2>
-              </div>
-              <a
-                href="https://wa.me/84937762607"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hidden md:inline-flex rounded-full bg-green-600 px-5 py-3 font-semibold text-white hover:bg-green-700 transition"
-              >
-                WhatsApp Now
-              </a>
-            </div>
-
-            <div className="gvs-no-scrollbar flex gap-3 overflow-x-auto pb-1 md:grid md:grid-cols-6 md:overflow-visible md:pb-0">
-              {quickActions.map((action) =>
-                action.action ? (
-                  <button
-                    key={action.label}
-                    onClick={action.action}
-                    className="min-w-[128px] md:min-w-0 rounded-3xl border border-[#06251b]/10 bg-[#f7f1df] px-4 py-4 text-center hover:bg-white hover:-translate-y-1 transition"
-                  >
-                    <div className="text-3xl">{action.icon}</div>
-                    <div className="mt-2 text-sm font-bold">{action.label}</div>
-                  </button>
-                ) : (
-                  <a
-                    key={action.label}
-                    href={action.href}
-                    target={action.external ? "_blank" : undefined}
-                    rel={action.external ? "noopener noreferrer" : undefined}
-                    className="min-w-[128px] md:min-w-0 rounded-3xl border border-[#06251b]/10 bg-[#f7f1df] px-4 py-4 text-center hover:bg-white hover:-translate-y-1 transition"
-                  >
-                    <div className="text-3xl">{action.icon}</div>
-                    <div className="mt-2 text-sm font-bold">{action.label}</div>
-                  </a>
-                ),
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
 
       <section id="journey-gift" className="relative overflow-hidden bg-[#071f18] px-4 py-6 text-white md:px-20 md:py-8">
