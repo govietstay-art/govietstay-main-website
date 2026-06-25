@@ -180,13 +180,48 @@ const ticketAttractions: TicketAttraction[] = [
     description:
       "GoVietStay Ba Na Hills tickets with fast confirmation, clear local guidance and support before, during and after the trip.",
     packages: [
-      { name: "Cable Car - Adult / International", officialPrice: 1000000, govietstayPrice: 980000, details: "Golden Bridge, Fantasy Park and main sightseeing areas." },
-      { name: "Cable Car - Child / International", officialPrice: 800000, govietstayPrice: 780000, details: "For children from 1m to under 1.4m." },
-      { name: "Cable Car + Buffet - Adult", officialPrice: 1300000, govietstayPrice: 1280000, details: "Cable car ticket with buffet lunch package." },
-      { name: "Cable Car + Buffet - Child", officialPrice: 1000000, govietstayPrice: 980000, details: "Child buffet package from 1m to under 1.4m." },
-      { name: "Cable Car + Food Voucher - Adult", officialPrice: 1250000, govietstayPrice: 1230000, details: "Includes food voucher according to Sun World policy." },
-      { name: "Local Resident Cable Car - Adult", officialPrice: 650000, govietstayPrice: 630000, details: "For Da Nang / Quang Nam residents with valid ID." },
-      { name: "Local Resident Cable Car - Child", officialPrice: 550000, govietstayPrice: 530000, details: "For local children with valid documents." },
+      {
+        name: "Cable Car - Adult / International",
+        officialPrice: 1000000,
+        govietstayPrice: 980000,
+        details: "Golden Bridge, Fantasy Park and main sightseeing areas.",
+      },
+      {
+        name: "Cable Car - Child / International",
+        officialPrice: 800000,
+        govietstayPrice: 780000,
+        details: "For children from 1m to under 1.4m.",
+      },
+      {
+        name: "Cable Car + Buffet - Adult",
+        officialPrice: 1300000,
+        govietstayPrice: 1280000,
+        details: "Cable car ticket with buffet lunch package.",
+      },
+      {
+        name: "Cable Car + Buffet - Child",
+        officialPrice: 1000000,
+        govietstayPrice: 980000,
+        details: "Child buffet package from 1m to under 1.4m.",
+      },
+      {
+        name: "Cable Car + Food Voucher - Adult",
+        officialPrice: 1250000,
+        govietstayPrice: 1230000,
+        details: "Includes food voucher according to Sun World policy.",
+      },
+      {
+        name: "Local Resident Cable Car - Adult",
+        officialPrice: 650000,
+        govietstayPrice: 630000,
+        details: "For Da Nang / Quang Nam residents with valid ID.",
+      },
+      {
+        name: "Local Resident Cable Car - Child",
+        officialPrice: 550000,
+        govietstayPrice: 530000,
+        details: "For local children with valid documents.",
+      },
     ],
     notes: [
       "Children under 1m are usually free according to operator policy.",
@@ -202,14 +237,46 @@ const ticketAttractions: TicketAttraction[] = [
     description:
       "Hoi An Memories Land and the famous outdoor Hoi An Memories Show with GoVietStay local support and smooth booking assistance.",
     packages: [
-      { name: "Memories Land Ticket - Adult", officialPrice: 100000, govietstayPrice: 80000 },
-      { name: "Memories Land Ticket - Child", officialPrice: 50000, govietstayPrice: 30000 },
-      { name: "Show ECO Seat - Adult", officialPrice: 600000, govietstayPrice: 580000 },
-      { name: "Show HIGH Seat - Adult", officialPrice: 750000, govietstayPrice: 730000 },
-      { name: "Show VIP Seat - Adult", officialPrice: 1200000, govietstayPrice: 1180000 },
-      { name: "Show ECO Seat - Child", officialPrice: 300000, govietstayPrice: 280000 },
-      { name: "Show HIGH Seat - Child", officialPrice: 375000, govietstayPrice: 355000 },
-      { name: "Show VIP Seat - Child", officialPrice: 600000, govietstayPrice: 580000 },
+      {
+        name: "Memories Land Ticket - Adult",
+        officialPrice: 100000,
+        govietstayPrice: 80000,
+      },
+      {
+        name: "Memories Land Ticket - Child",
+        officialPrice: 50000,
+        govietstayPrice: 30000,
+      },
+      {
+        name: "Show ECO Seat - Adult",
+        officialPrice: 600000,
+        govietstayPrice: 580000,
+      },
+      {
+        name: "Show HIGH Seat - Adult",
+        officialPrice: 750000,
+        govietstayPrice: 730000,
+      },
+      {
+        name: "Show VIP Seat - Adult",
+        officialPrice: 1200000,
+        govietstayPrice: 1180000,
+      },
+      {
+        name: "Show ECO Seat - Child",
+        officialPrice: 300000,
+        govietstayPrice: 280000,
+      },
+      {
+        name: "Show HIGH Seat - Child",
+        officialPrice: 375000,
+        govietstayPrice: 355000,
+      },
+      {
+        name: "Show VIP Seat - Child",
+        officialPrice: 600000,
+        govietstayPrice: 580000,
+      },
     ],
     notes: [
       "Show time is usually 20:00 - 21:00, except selected closing days.",
@@ -225,14 +292,46 @@ const ticketAttractions: TicketAttraction[] = [
     description:
       "Theme park, safari, river safari and family entertainment tickets with clear GoVietStay pricing and local travel support.",
     packages: [
-      { name: "Entrance Ticket - Adult", officialPrice: 650000, govietstayPrice: 630000 },
-      { name: "Entrance Ticket - Child / Senior", officialPrice: 450000, govietstayPrice: 430000 },
-      { name: "Entrance + Buffet - Adult", officialPrice: 950000, govietstayPrice: 930000 },
-      { name: "Entrance + Buffet - Child", officialPrice: 600000, govietstayPrice: 580000 },
-      { name: "Entrance + Buggy + Buffet - Adult", officialPrice: 1080000, govietstayPrice: 1060000 },
-      { name: "Entrance + Buggy - Adult", officialPrice: 780000, govietstayPrice: 760000 },
-      { name: "Afternoon Ticket - Adult", officialPrice: 450000, govietstayPrice: 430000 },
-      { name: "Afternoon Ticket - Child / Senior", officialPrice: 340000, govietstayPrice: 320000 },
+      {
+        name: "Entrance Ticket - Adult",
+        officialPrice: 650000,
+        govietstayPrice: 630000,
+      },
+      {
+        name: "Entrance Ticket - Child / Senior",
+        officialPrice: 450000,
+        govietstayPrice: 430000,
+      },
+      {
+        name: "Entrance + Buffet - Adult",
+        officialPrice: 950000,
+        govietstayPrice: 930000,
+      },
+      {
+        name: "Entrance + Buffet - Child",
+        officialPrice: 600000,
+        govietstayPrice: 580000,
+      },
+      {
+        name: "Entrance + Buggy + Buffet - Adult",
+        officialPrice: 1080000,
+        govietstayPrice: 1060000,
+      },
+      {
+        name: "Entrance + Buggy - Adult",
+        officialPrice: 780000,
+        govietstayPrice: 760000,
+      },
+      {
+        name: "Afternoon Ticket - Adult",
+        officialPrice: 450000,
+        govietstayPrice: 430000,
+      },
+      {
+        name: "Afternoon Ticket - Child / Senior",
+        officialPrice: 340000,
+        govietstayPrice: 320000,
+      },
     ],
     notes: [
       "Children under 1m are usually free according to operator policy.",
@@ -248,8 +347,16 @@ const ticketAttractions: TicketAttraction[] = [
     description:
       "Evening cruise tickets for Han River, Dragon Bridge views and Da Nang night scenery with GoVietStay support.",
     packages: [
-      { name: "Han River Cruise - Adult", govietstayPrice: 170000, details: "Popular evening cruise option in Da Nang." },
-      { name: "Han River Cruise - Child", govietstayPrice: 120000, details: "Child policy depends on cruise operator." },
+      {
+        name: "Han River Cruise - Adult",
+        govietstayPrice: 170000,
+        details: "Popular evening cruise option in Da Nang.",
+      },
+      {
+        name: "Han River Cruise - Child",
+        govietstayPrice: 120000,
+        details: "Child policy depends on cruise operator.",
+      },
     ],
     notes: [
       "Best on Friday, Saturday and Sunday if guests want Dragon Bridge fire and water show.",
@@ -281,18 +388,68 @@ const ticketAttractions: TicketAttraction[] = [
     description:
       "Hot springs, water park and mountain relaxation packages for families and groups.",
     packages: [
-      { name: "Standard Package - Adult", officialPrice: 471000, govietstayPrice: 451000, details: "Popular Nui Than Tai entrance package." },
-      { name: "Standard Package - Child", officialPrice: 236000, govietstayPrice: 216000, details: "Child rate from operator reference." },
-      { name: "Tich Loc Package - Adult", officialPrice: 687000, govietstayPrice: 667000 },
-      { name: "Tich Loc Package - Child", officialPrice: 344000, govietstayPrice: 324000 },
-      { name: "Duong Tue Phat Thu Package - Adult", officialPrice: 342000, govietstayPrice: 322000 },
-      { name: "Duong Tue Phat Thu Package - Child", officialPrice: 171000, govietstayPrice: 151000 },
-      { name: "Nap Khi Package - Adult", officialPrice: 613000, govietstayPrice: 593000 },
-      { name: "Nap Khi Package - Child", officialPrice: 306500, govietstayPrice: 286500 },
-      { name: "Nap Khi + Lunch Package - Adult", officialPrice: 843000, govietstayPrice: 823000 },
-      { name: "Nap Khi + Lunch Package - Child", officialPrice: 421500, govietstayPrice: 401500 },
-      { name: "One Day Tour Package - Adult", officialPrice: 843000, govietstayPrice: 823000 },
-      { name: "One Day Tour Package - Child", officialPrice: 422000, govietstayPrice: 402000 },
+      {
+        name: "Standard Package - Adult",
+        officialPrice: 471000,
+        govietstayPrice: 451000,
+        details: "Popular Nui Than Tai entrance package.",
+      },
+      {
+        name: "Standard Package - Child",
+        officialPrice: 236000,
+        govietstayPrice: 216000,
+        details: "Child rate from operator reference.",
+      },
+      {
+        name: "Tich Loc Package - Adult",
+        officialPrice: 687000,
+        govietstayPrice: 667000,
+      },
+      {
+        name: "Tich Loc Package - Child",
+        officialPrice: 344000,
+        govietstayPrice: 324000,
+      },
+      {
+        name: "Duong Tue Phat Thu Package - Adult",
+        officialPrice: 342000,
+        govietstayPrice: 322000,
+      },
+      {
+        name: "Duong Tue Phat Thu Package - Child",
+        officialPrice: 171000,
+        govietstayPrice: 151000,
+      },
+      {
+        name: "Nap Khi Package - Adult",
+        officialPrice: 613000,
+        govietstayPrice: 593000,
+      },
+      {
+        name: "Nap Khi Package - Child",
+        officialPrice: 306500,
+        govietstayPrice: 286500,
+      },
+      {
+        name: "Nap Khi + Lunch Package - Adult",
+        officialPrice: 843000,
+        govietstayPrice: 823000,
+      },
+      {
+        name: "Nap Khi + Lunch Package - Child",
+        officialPrice: 421500,
+        govietstayPrice: 401500,
+      },
+      {
+        name: "One Day Tour Package - Adult",
+        officialPrice: 843000,
+        govietstayPrice: 823000,
+      },
+      {
+        name: "One Day Tour Package - Child",
+        officialPrice: 422000,
+        govietstayPrice: 402000,
+      },
     ],
     notes: [
       "Prices are based on the 2026 Nui Than Tai public reference list shown by the supplier.",
@@ -305,10 +462,30 @@ const ticketAttractions: TicketAttraction[] = [
 ];
 
 const privateCarPrices = [
-  { route: "Da Nang Airport ↔ Da Nang Hotel", car4: "350,000 VND", car7: "450,000 VND", car16: "650,000 VND" },
-  { route: "Hoi An ↔ Airport", car4: "400,000 VND", car7: "500,000 VND", car16: "800,000 VND" },
-  { route: "Hue ↔ Airport", car4: "800,000 VND", car7: "1,000,000 VND", car16: "1,600,000 VND" },
-  { route: "Private Car Rental", car4: "400,000 VND", car7: "600,000 VND", car16: "1,200,000 VND" },
+  {
+    route: "Da Nang Airport ↔ Da Nang Hotel",
+    car4: "350,000 VND",
+    car7: "450,000 VND",
+    car16: "650,000 VND",
+  },
+  {
+    route: "Hoi An ↔ Airport",
+    car4: "400,000 VND",
+    car7: "500,000 VND",
+    car16: "800,000 VND",
+  },
+  {
+    route: "Hue ↔ Airport",
+    car4: "800,000 VND",
+    car7: "1,000,000 VND",
+    car16: "1,600,000 VND",
+  },
+  {
+    route: "Private Car Rental",
+    car4: "400,000 VND",
+    car7: "600,000 VND",
+    car16: "1,200,000 VND",
+  },
 ];
 
 const services: Service[] = [
@@ -1273,7 +1450,7 @@ const tours: Tour[] = [
     duration: "08:30 – 16:30",
     category: "Hot Springs • Water Park • Family Day",
     price: {
-      adult:1490000,
+      adult: 1490000,
       child: 1290000,
       note: "Joined tour price including transfer, guide, entrance ticket, basic hot spring bath package, premium buffet lunch and bottled water.",
     },
@@ -1324,7 +1501,6 @@ const tours: Tour[] = [
     ],
   },
 ];
-
 
 const journeyTours = [
   {
@@ -1421,11 +1597,10 @@ const GVSLogo = ({ className = "" }: { className?: string }) => (
     className={className}
     onError={(event) => {
       const image = event.currentTarget;
-      if (!image.src.endsWith('/logo.jpg')) image.src = '/logo.jpg';
+      if (!image.src.endsWith("/logo.jpg")) image.src = "/logo.jpg";
     }}
   />
 );
-
 
 type JourneyForm = {
   todayDate: string;
@@ -1469,7 +1644,9 @@ export default function Home() {
   const [ticketBookingOpen, setTicketBookingOpen] = useState(false);
   const [bookingForm, setBookingForm] = useState<BookingForm>(emptyBookingForm);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
-  const [selectedTicket, setSelectedTicket] = useState<TicketAttraction | null>(null);
+  const [selectedTicket, setSelectedTicket] = useState<TicketAttraction | null>(
+    null,
+  );
   const [selectedTip, setSelectedTip] = useState<LocalTip | null>(null);
   const [selectedMemory, setSelectedMemory] = useState<string | null>(null);
   const [happyTravelers, setHappyTravelers] = useState<string[]>([]);
@@ -1480,7 +1657,9 @@ export default function Home() {
     DAO_STARTER_MESSAGE,
   ]);
   const [journeyForm, setJourneyForm] = useState<JourneyForm>(emptyJourneyForm);
-  const [completedJourneyTours, setCompletedJourneyTours] = useState<string[]>([]);
+  const [completedJourneyTours, setCompletedJourneyTours] = useState<string[]>(
+    [],
+  );
   const [journeySavedAt, setJourneySavedAt] = useState<string>("");
   const [journeyOpen, setJourneyOpen] = useState(false);
 
@@ -1528,7 +1707,8 @@ export default function Home() {
       .map((tour) => `${tour.number}. ${tour.title} - ${tour.subtitle}`)
       .join("\n");
 
-    const content = `MY VIETNAM JOURNEY - GoVietStay\n\n` +
+    const content =
+      `MY VIETNAM JOURNEY - GoVietStay\n\n` +
       `Date: ${journeyForm.todayDate || ""}\n` +
       `Place visited: ${journeyForm.todayPlace || ""}\n` +
       `What I did: ${journeyForm.todayActivity || ""}\n` +
@@ -1635,7 +1815,10 @@ export default function Home() {
   const sendTicketBookingRequest = (ticket: TicketAttraction) => {
     const availablePackages = ticket.packages
       .map((pkg) => {
-        const price = pkg.govietstayPrice > 0 ? formatVND(pkg.govietstayPrice) : "Contact for latest price";
+        const price =
+          pkg.govietstayPrice > 0
+            ? formatVND(pkg.govietstayPrice)
+            : "Contact for latest price";
         return `- ${pkg.name}: ${price}`;
       })
       .join("\n");
@@ -1659,8 +1842,6 @@ export default function Home() {
 
     window.open(buildWhatsAppLink(message), "_blank", "noopener,noreferrer");
   };
-
-
 
   const previewTravelers = happyTravelers.slice(0, 8);
   const visibleTravelers = showAllTravelers ? happyTravelers : previewTravelers;
@@ -1687,7 +1868,8 @@ export default function Home() {
     const nextIndex =
       direction === "next"
         ? (selectedMemoryIndex + 1) % happyTravelers.length
-        : (selectedMemoryIndex - 1 + happyTravelers.length) % happyTravelers.length;
+        : (selectedMemoryIndex - 1 + happyTravelers.length) %
+          happyTravelers.length;
 
     setSelectedMemory(happyTravelers[nextIndex]);
   };
@@ -1704,7 +1886,8 @@ export default function Home() {
       };
 
       if (parsed.form) setJourneyForm({ ...emptyJourneyForm, ...parsed.form });
-      if (Array.isArray(parsed.completedTours)) setCompletedJourneyTours(parsed.completedTours);
+      if (Array.isArray(parsed.completedTours))
+        setCompletedJourneyTours(parsed.completedTours);
       if (parsed.savedAt) setJourneySavedAt(parsed.savedAt);
     } catch {
       // Keep the journal empty if the saved browser data is unavailable.
@@ -1963,7 +2146,9 @@ export default function Home() {
             </h1>
 
             <p className="mt-7 text-lg md:text-2xl text-white/90 max-w-2xl leading-relaxed">
-              Private Tours in Da Nang, Hoi An & Hue. Golden Bridge Tour, Ba Na Hills Tour, Cham Island Tour, Da Nang Airport Transfer and Local Travel Support with WhatsApp Travel Assistant 24/7.
+              Private Tours in Da Nang, Hoi An & Hue. Golden Bridge Tour, Ba Na
+              Hills Tour, Cham Island Tour, Da Nang Airport Transfer and Local
+              Travel Support with WhatsApp Travel Assistant 24/7.
             </p>
 
             <div className="mt-6 hidden md:flex flex-wrap gap-2 text-xs md:text-sm text-white/85">
@@ -2029,12 +2214,17 @@ export default function Home() {
         </div>
       </section>
 
-      
-
-
-      <section id="journey-gift" className="relative overflow-hidden bg-[#071f18] px-4 py-6 text-white md:px-20 md:py-8">
+      <section
+        id="journey-gift"
+        className="relative overflow-hidden bg-[#071f18] px-4 py-6 text-white md:px-20 md:py-8"
+      >
         <div className="absolute inset-0 opacity-70">
-          <Image src="/hero-hoian-new.png" alt="Hoi An memories" fill className="object-cover" />
+          <Image
+            src="/hero-hoian-new.png"
+            alt="Hoi An memories"
+            fill
+            className="object-cover"
+          />
           <div className="absolute inset-0 bg-gradient-to-r from-black via-[#06251b]/90 to-black/70" />
         </div>
 
@@ -2058,7 +2248,9 @@ export default function Home() {
                   Your Adventure • Your Story • Your Memories
                 </p>
                 <p className="mt-3 max-w-3xl text-sm leading-6 text-[#073c2c]/75 md:text-base">
-                  A private travel journal for guests after booking. Save memories, photos and 10 GoVietStay tour milestones on your own phone.
+                  A private travel journal for guests after booking. Save
+                  memories, photos and 10 GoVietStay tour milestones on your own
+                  phone.
                 </p>
                 <div className="mt-4 grid grid-cols-2 gap-2 text-xs font-bold sm:flex sm:flex-wrap">
                   {[
@@ -2067,7 +2259,10 @@ export default function Home() {
                     ["🏆", "Collect badges"],
                     ["⬇️", "Download & keep"],
                   ].map(([icon, item]) => (
-                    <span key={item} className="rounded-full border border-[#06432f]/15 bg-white/75 px-3 py-2 shadow-sm">
+                    <span
+                      key={item}
+                      className="rounded-full border border-[#06432f]/15 bg-white/75 px-3 py-2 shadow-sm"
+                    >
                       {icon} {item}
                     </span>
                   ))}
@@ -2081,7 +2276,9 @@ export default function Home() {
                   className="rounded-full bg-[#06432f] px-6 py-4 text-left font-bold text-white shadow-xl shadow-[#06432f]/25 transition hover:-translate-y-1 hover:bg-[#0a563f]"
                 >
                   <span className="block text-lg">📖 Start My Journey</span>
-                  <span className="block text-xs font-medium text-white/70">For guests after booking</span>
+                  <span className="block text-xs font-medium text-white/70">
+                    For guests after booking
+                  </span>
                 </button>
                 <a
                   href="https://wa.me/84937762607"
@@ -2098,60 +2295,73 @@ export default function Home() {
       </section>
 
       {journeyOpen ? (
-        <div className="gvs-overlay fixed inset-0 z-[80] bg-[#04150f]/85 p-2 text-[#073c2c] backdrop-blur-md sm:p-4 md:p-8">
-          <div className="gvs-panel mx-auto flex max-h-[94vh] max-w-7xl flex-col overflow-hidden rounded-[2rem] border border-white/20 bg-[#efe3c8] shadow-2xl">
-            <div className="flex items-center justify-between gap-3 border-b border-[#073c2c]/10 bg-[#fff8e8] px-4 py-3 md:px-7 md:py-4">
+        <div className="gvs-overlay fixed inset-0 z-[80] bg-[#04150f]/88 p-2 text-[#073c2c] backdrop-blur-md sm:p-4 md:p-8">
+          <div className="gvs-panel mx-auto flex max-h-[94vh] max-w-7xl flex-col overflow-hidden rounded-[1.6rem] border border-white/20 bg-[#efe3c8] shadow-2xl sm:rounded-[2rem]">
+            <div className="flex items-center justify-between gap-3 border-b border-[#073c2c]/10 bg-[#fff8e8] px-4 py-2.5 md:px-7 md:py-4">
               <div>
-                <p className="text-[10px] font-black uppercase tracking-[4px] text-[#b96a2d]">
+                <p className="text-[9px] font-black uppercase tracking-[3px] text-[#b96a2d] sm:text-[10px] sm:tracking-[4px]">
                   Private memory book
                 </p>
-                <h3 className="font-serif text-2xl font-black italic text-[#06432f] md:text-4xl">
+                <h3 className="font-serif text-[1.65rem] font-black italic leading-tight text-[#06432f] md:text-4xl">
                   My Vietnam Journey
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={() => setJourneyOpen(false)}
-                className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#06432f] text-xl text-white shadow-lg md:h-11 md:w-11"
+                className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#06432f] text-lg text-white shadow-lg transition hover:scale-105 md:h-11 md:w-11 md:text-xl"
                 aria-label="Close My Vietnam Journey"
               >
                 ×
               </button>
             </div>
 
-            <div className="gvs-no-scrollbar overflow-y-auto bg-[radial-gradient(circle_at_top_left,rgba(217,118,45,0.16),transparent_34%),linear-gradient(135deg,#f7edd5,#ead9b8)] p-3 md:p-7">
-              <div className="grid gap-5 xl:grid-cols-[0.86fr_1.14fr]">
-                <article className="relative overflow-hidden rounded-[2rem] border border-[#5e3b1f]/15 bg-[#fff8e8] p-3 shadow-2xl shadow-[#073c2c]/15">
-                  <div className="relative min-h-[680px] overflow-hidden rounded-[1.6rem] bg-[#f6e8c9]">
-                    <Image src="/hero-hoian-new.png" alt="My Vietnam Journey cover" fill className="object-cover" priority />
-                    <div className="absolute inset-0 bg-gradient-to-b from-[#fff8e8]/82 via-[#fff8e8]/45 to-[#05291d]/92" />
-                    <div className="absolute inset-x-5 top-5 flex items-center justify-between">
-                      <div className="rounded-full bg-[#fff8e8]/90 px-4 py-2 text-[10px] font-black uppercase tracking-[3px] text-[#06432f] shadow-lg">
-                        Da Nang • Hoi An • Hue
-                      </div>
-                      <div className="grid h-20 w-20 place-items-center overflow-hidden rounded-full border-4 border-white/70 bg-[#fff8e8] shadow-xl">
-                        <GVSLogo className="h-full w-full object-contain p-1.5" />
+            <div className="gvs-no-scrollbar overflow-y-auto bg-[radial-gradient(circle_at_top_left,rgba(217,118,45,0.16),transparent_34%),linear-gradient(135deg,#f7edd5,#ead9b8)] p-2.5 md:p-7">
+              <div className="grid gap-4 xl:grid-cols-[0.86fr_1.14fr] xl:gap-5">
+                <article className="relative overflow-hidden rounded-[1.5rem] border border-[#5e3b1f]/15 bg-[#fff8e8] p-2 shadow-2xl shadow-[#073c2c]/15 sm:rounded-[2rem] sm:p-3">
+                  <div className="relative min-h-[580px] overflow-hidden rounded-[1.3rem] bg-[#f6e8c9] sm:min-h-[680px] sm:rounded-[1.6rem]">
+                    <Image
+                      src="/hero-hoian-new.png"
+                      alt="My Vietnam Journey cover"
+                      fill
+                      className="object-cover"
+                      priority
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#fff8e8]/78 via-[#fff8e8]/38 to-[#05291d]/95" />
+                    <div className="absolute inset-0 bg-black/10 sm:bg-black/5" />
+                    <div className="absolute left-4 right-[5.2rem] top-4 z-10 sm:left-5 sm:right-[6.5rem] sm:top-5">
+                      <div className="inline-flex max-w-full flex-col rounded-2xl bg-[#fff8e8]/94 px-3.5 py-2.5 text-left shadow-lg backdrop-blur sm:rounded-full sm:px-5 sm:py-3">
+                        <span className="whitespace-nowrap text-[8px] font-black uppercase leading-none tracking-[2px] text-[#06432f] sm:text-[9px] sm:tracking-[3px]">
+                          Da Nang • Hoi An • Hue
+                        </span>
+                        <span className="mt-1 text-[7.5px] font-black uppercase leading-none tracking-[2px] text-[#b96a2d] sm:text-[8.5px] sm:tracking-[3px]">
+                          A small gift from GoVietStay
+                        </span>
                       </div>
                     </div>
+                    <div className="absolute right-4 top-4 z-20 grid h-14 w-14 shrink-0 place-items-center overflow-hidden rounded-full border-4 border-white/80 bg-[#fff8e8] shadow-xl sm:right-5 sm:top-5 sm:h-[4.6rem] sm:w-[4.6rem]">
+                      <GVSLogo className="h-full w-full object-contain p-1.5" />
+                    </div>
 
-                    <div className="absolute inset-x-5 top-[38%] -translate-y-1/2 text-center">
-                      <p className="text-[11px] font-black uppercase tracking-[5px] text-[#06432f] drop-shadow-sm">
-                        A small gift from GoVietStay
-                      </p>
-                      <h4 className="mt-4 font-serif text-5xl font-black leading-[0.9] tracking-tight text-[#06432f] drop-shadow-sm sm:text-6xl md:text-7xl">
-                        MY<br />VIETNAM<br />JOURNEY
+                    <div className="absolute inset-x-5 top-[39%] -translate-y-1/2 text-center sm:inset-x-7 sm:top-[39%]">
+                      <h4 className="mx-auto max-w-[18rem] font-serif text-[2.65rem] font-black italic leading-[0.9] tracking-tight text-[#06432f] drop-shadow-sm sm:max-w-[25rem] sm:text-[4.2rem] md:text-[4.9rem]">
+                        My Vietnam
+                        <br />
+                        Journey
                       </h4>
-                      <div className="mx-auto mt-5 h-px w-28 bg-[#d9762d]" />
-                      <p className="mt-5 font-serif text-2xl italic leading-tight text-[#b85f28] drop-shadow-sm sm:text-3xl">
-                        Your Adventure<br />Your Story<br />Your Memories
+                      <div className="mx-auto mt-4 h-px w-20 bg-[#d9762d]/85 sm:mt-5 sm:w-28" />
+                      <p className="mx-auto mt-4 max-w-[16rem] rounded-2xl border border-white/35 bg-[#fff8e8]/62 px-4 py-3 font-serif text-[1.1rem] italic leading-snug text-[#9f4f1f] shadow-sm backdrop-blur-[3px] sm:max-w-[18rem] sm:text-[1.45rem]">
+                        Your adventure.<br />
+                        Your story.<br />
+                        Your memories.
                       </p>
                     </div>
 
-                    <div className="absolute inset-x-5 bottom-5 rounded-[1.5rem] border border-white/30 bg-[#05291d]/88 p-5 text-center text-white shadow-2xl backdrop-blur">
-                      <p className="font-serif text-xl italic leading-snug">
+                    <div className="absolute inset-x-4 bottom-4 rounded-[1.3rem] border border-white/30 bg-[#05291d]/90 p-4 text-center text-white shadow-2xl backdrop-blur sm:inset-x-5 sm:bottom-5 sm:rounded-[1.5rem] sm:p-5">
+                      <p className="font-serif text-[1.35rem] italic leading-snug sm:text-xl">
                         Some trips are measured in kilometers.
                       </p>
-                      <p className="mt-1 text-sm text-white/75">
+                      <p className="mt-1 text-xs text-white/75 sm:text-sm">
                         The best ones are measured in memories.
                       </p>
                     </div>
@@ -2181,7 +2391,9 @@ export default function Home() {
 
                     <div className="grid gap-3 p-4 md:grid-cols-2 md:p-5">
                       {journeyTours.map((tour) => {
-                        const completed = completedJourneyTours.includes(tour.number);
+                        const completed = completedJourneyTours.includes(
+                          tour.number,
+                        );
                         return (
                           <button
                             key={tour.number}
@@ -2195,21 +2407,32 @@ export default function Home() {
                           >
                             <div className="flex gap-3">
                               <div className="relative h-20 w-20 shrink-0 rotate-[-2deg] overflow-hidden rounded-xl border-4 border-white bg-white shadow-md">
-                                <Image src={tour.image} alt={tour.title} fill className="object-cover" />
+                                <Image
+                                  src={tour.image}
+                                  alt={tour.title}
+                                  fill
+                                  className="object-cover"
+                                />
                               </div>
                               <div className="min-w-0 flex-1">
                                 <div className="flex items-center justify-between gap-2">
-                                  <span className={`grid h-7 w-7 place-items-center rounded-full text-xs font-black ${completed ? "bg-[#d9762d] text-white" : "bg-white text-[#06432f]"}`}>
+                                  <span
+                                    className={`grid h-7 w-7 place-items-center rounded-full text-xs font-black ${completed ? "bg-[#d9762d] text-white" : "bg-white text-[#06432f]"}`}
+                                  >
                                     {completed ? "✓" : tour.number}
                                   </span>
-                                  <span className={`rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-[2px] ${completed ? "bg-white/15 text-white" : "bg-[#06432f]/10 text-[#06432f]"}`}>
+                                  <span
+                                    className={`rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-[2px] ${completed ? "bg-white/15 text-white" : "bg-[#06432f]/10 text-[#06432f]"}`}
+                                  >
                                     stamp
                                   </span>
                                 </div>
                                 <p className="mt-2 font-serif text-lg font-black italic leading-tight">
                                   {tour.title}
                                 </p>
-                                <p className={`mt-1 text-xs ${completed ? "text-white/70" : "text-[#073c2c]/55"}`}>
+                                <p
+                                  className={`mt-1 text-xs ${completed ? "text-white/70" : "text-[#073c2c]/55"}`}
+                                >
                                   {tour.subtitle}
                                 </p>
                               </div>
@@ -2238,7 +2461,12 @@ export default function Home() {
                           <input
                             type="date"
                             value={journeyForm.todayDate}
-                            onChange={(event) => updateJourneyField("todayDate", event.target.value)}
+                            onChange={(event) =>
+                              updateJourneyField(
+                                "todayDate",
+                                event.target.value,
+                              )
+                            }
                             className="mt-2 w-full rounded-2xl border border-[#073c2c]/10 bg-[#fbf0d6] px-4 py-3 outline-none"
                           />
                         </label>
@@ -2247,7 +2475,12 @@ export default function Home() {
                           Today I visited
                           <input
                             value={journeyForm.todayPlace}
-                            onChange={(event) => updateJourneyField("todayPlace", event.target.value)}
+                            onChange={(event) =>
+                              updateJourneyField(
+                                "todayPlace",
+                                event.target.value,
+                              )
+                            }
                             placeholder="Ba Na Hills, Hoi An, Hue..."
                             className="mt-2 w-full rounded-2xl border border-[#073c2c]/10 bg-[#fbf0d6] px-4 py-3 outline-none"
                           />
@@ -2257,7 +2490,12 @@ export default function Home() {
                           My favorite moment
                           <textarea
                             value={journeyForm.todayMoment}
-                            onChange={(event) => updateJourneyField("todayMoment", event.target.value)}
+                            onChange={(event) =>
+                              updateJourneyField(
+                                "todayMoment",
+                                event.target.value,
+                              )
+                            }
                             rows={4}
                             placeholder="A smile, a sunset, a meal, a road, a person..."
                             className="mt-2 w-full resize-none rounded-2xl border border-[#073c2c]/10 bg-[repeating-linear-gradient(to_bottom,#fbf0d6_0px,#fbf0d6_34px,rgba(7,60,44,0.18)_35px)] px-4 py-3 leading-[35px] outline-none"
@@ -2265,7 +2503,9 @@ export default function Home() {
                         </label>
 
                         <div>
-                          <p className="font-bold text-[#06432f]">My feeling today</p>
+                          <p className="font-bold text-[#06432f]">
+                            My feeling today
+                          </p>
                           <div className="mt-2 grid grid-cols-5 gap-2">
                             {[
                               ["Amazing", "😍"],
@@ -2277,7 +2517,9 @@ export default function Home() {
                               <button
                                 key={mood}
                                 type="button"
-                                onClick={() => updateJourneyField("todayMood", mood)}
+                                onClick={() =>
+                                  updateJourneyField("todayMood", mood)
+                                }
                                 className={`rounded-2xl border px-1 py-3 text-[10px] transition ${
                                   journeyForm.todayMood === mood
                                     ? "border-[#06432f] bg-[#06432f] text-white"
@@ -2306,7 +2548,9 @@ export default function Home() {
                           Best food today
                           <input
                             value={journeyForm.foodName}
-                            onChange={(event) => updateJourneyField("foodName", event.target.value)}
+                            onChange={(event) =>
+                              updateJourneyField("foodName", event.target.value)
+                            }
                             placeholder="Mi Quang, Cao Lau, Bun Bo Hue..."
                             className="mt-2 w-full rounded-2xl border border-[#073c2c]/10 bg-[#fbf0d6] px-4 py-3 outline-none"
                           />
@@ -2315,23 +2559,35 @@ export default function Home() {
                           Where I tried it
                           <input
                             value={journeyForm.foodPlace}
-                            onChange={(event) => updateJourneyField("foodPlace", event.target.value)}
+                            onChange={(event) =>
+                              updateJourneyField(
+                                "foodPlace",
+                                event.target.value,
+                              )
+                            }
                             placeholder="A small local restaurant, a market, a family meal..."
                             className="mt-2 w-full rounded-2xl border border-[#073c2c]/10 bg-[#fbf0d6] px-4 py-3 outline-none"
                           />
                         </label>
 
                         <div>
-                          <p className="font-bold text-[#06432f]">How much did I love it?</p>
+                          <p className="font-bold text-[#06432f]">
+                            How much did I love it?
+                          </p>
                           <div className="mt-2 flex gap-1 text-3xl text-[#d9762d]">
                             {["1", "2", "3", "4", "5"].map((rating) => (
                               <button
                                 key={rating}
                                 type="button"
-                                onClick={() => updateJourneyField("foodRating", rating)}
+                                onClick={() =>
+                                  updateJourneyField("foodRating", rating)
+                                }
                                 aria-label={`Rate ${rating} stars`}
                               >
-                                {Number(journeyForm.foodRating || 0) >= Number(rating) ? "★" : "☆"}
+                                {Number(journeyForm.foodRating || 0) >=
+                                Number(rating)
+                                  ? "★"
+                                  : "☆"}
                               </button>
                             ))}
                           </div>
@@ -2349,7 +2605,11 @@ export default function Home() {
 
                         {journeyForm.favoritePhoto ? (
                           <div className="rotate-[-1deg] rounded-2xl bg-white p-2 shadow-xl">
-                            <img src={journeyForm.favoritePhoto} alt="Favorite travel memory" className="h-48 w-full rounded-xl object-cover" />
+                            <img
+                              src={journeyForm.favoritePhoto}
+                              alt="Favorite travel memory"
+                              className="h-48 w-full rounded-xl object-cover"
+                            />
                             <p className="px-2 py-2 font-serif text-sm italic text-[#073c2c]/70">
                               My favorite Vietnam memory
                             </p>
@@ -2374,7 +2634,9 @@ export default function Home() {
                         </h4>
                         <textarea
                           value={journeyForm.dailyNotes}
-                          onChange={(event) => updateJourneyField("dailyNotes", event.target.value)}
+                          onChange={(event) =>
+                            updateJourneyField("dailyNotes", event.target.value)
+                          }
                           rows={7}
                           placeholder="One day I will leave Vietnam. But the memories, the smiles, the sunsets and the people I met will travel with me forever..."
                           className="mt-4 w-full resize-none rounded-2xl border border-[#073c2c]/10 bg-[repeating-linear-gradient(to_bottom,#fbf0d6_0px,#fbf0d6_34px,rgba(7,60,44,0.18)_35px)] px-4 py-3 leading-[35px] outline-none"
@@ -2383,10 +2645,13 @@ export default function Home() {
 
                       <div className="rounded-[1.5rem] bg-[#06432f] p-5 text-white">
                         <p className="font-serif text-2xl font-black italic">
-                          Thank you for letting us be a small part of your journey.
+                          Thank you for letting us be a small part of your
+                          journey.
                         </p>
                         <p className="mt-3 text-sm leading-6 text-white/70">
-                          This memory book is saved on your own phone. GoVietStay only hopes you keep one warm feeling from Vietnam.
+                          This memory book is saved on your own phone.
+                          GoVietStay only hopes you keep one warm feeling from
+                          Vietnam.
                         </p>
 
                         <div className="mt-5 grid grid-cols-2 gap-2">
@@ -2442,7 +2707,10 @@ export default function Home() {
             </h2>
 
             <p className="mt-5 text-[#06251b]/70 text-base md:text-lg leading-relaxed">
-              More than Da Nang Tours, Hoi An Tours and Hue Tours, GoVietStay gives travelers trusted Local Travel Support, flexible Private Tours Vietnam planning and real help before and during the journey.
+              More than Da Nang Tours, Hoi An Tours and Hue Tours, GoVietStay
+              gives travelers trusted Local Travel Support, flexible Private
+              Tours Vietnam planning and real help before and during the
+              journey.
             </p>
           </div>
 
@@ -2522,7 +2790,6 @@ export default function Home() {
         </div>
       </section>
 
-
       <section
         id="secret-local"
         className="relative bg-[#f7f1df] text-[#06251b] px-4 md:px-20 pb-16 md:pb-24 overflow-hidden"
@@ -2555,8 +2822,10 @@ export default function Home() {
                     Open The Secret Door Of Da Nang
                   </h2>
                   <p className="mt-5 max-w-2xl text-white/80 text-lg leading-relaxed">
-                    A treasure-map style local guide by GoVietStay. Discover quiet beaches, Son Tra forest,
-                    Hòa Bắc village, hidden viewpoints and authentic local food beyond the famous attractions.
+                    A treasure-map style local guide by GoVietStay. Discover
+                    quiet beaches, Son Tra forest, Hòa Bắc village, hidden
+                    viewpoints and authentic local food beyond the famous
+                    attractions.
                   </p>
 
                   <div className="mt-7 flex flex-col sm:flex-row gap-3">
@@ -2609,7 +2878,8 @@ export default function Home() {
                   </h2>
 
                   <p className="mt-3 text-sm leading-relaxed text-white/75">
-                    Discover hidden beaches, Sơn Trà forest, Hòa Bắc village, viewpoints and local food with GoVietStay.
+                    Discover hidden beaches, Sơn Trà forest, Hòa Bắc village,
+                    viewpoints and local food with GoVietStay.
                   </p>
 
                   <div className="mt-5 flex flex-col gap-3">
@@ -2646,8 +2916,9 @@ export default function Home() {
                 Not a normal tour list — a local treasure map.
               </h3>
               <p className="mt-5 text-[#06251b]/70 leading-relaxed text-base md:text-lg">
-                Most travelers see the same famous places. GoVietStay Secret Local helps guests explore
-                step by step, unlock small missions, open Google Maps, collect badges and share discoveries.
+                Most travelers see the same famous places. GoVietStay Secret
+                Local helps guests explore step by step, unlock small missions,
+                open Google Maps, collect badges and share discoveries.
               </p>
 
               <div className="mt-8 grid gap-4">
@@ -2670,7 +2941,11 @@ export default function Home() {
                 ].map((item) => (
                   <a
                     key={item.title}
-                    href={item.title === "Local Food Direction" ? "/local-food" : "/secret"}
+                    href={
+                      item.title === "Local Food Direction"
+                        ? "/local-food"
+                        : "/secret"
+                    }
                     className="group rounded-3xl border border-[#06251b]/10 bg-[#f7f1df]/80 p-5 hover:bg-white hover:-translate-y-1 transition"
                   >
                     <div className="flex gap-4">
@@ -2678,12 +2953,18 @@ export default function Home() {
                         {item.icon}
                       </div>
                       <div>
-                        <h4 className="text-lg md:text-xl font-bold">{item.title}</h4>
-                        <p className="mt-1 text-[#06251b]/68 leading-relaxed">{item.text}</p>
+                        <h4 className="text-lg md:text-xl font-bold">
+                          {item.title}
+                        </h4>
+                        <p className="mt-1 text-[#06251b]/68 leading-relaxed">
+                          {item.text}
+                        </p>
                       </div>
                     </div>
                     <div className="mt-4 text-sm font-bold text-green-800 group-hover:translate-x-1 transition">
-                      {item.title === "Local Food Direction" ? "Open Local Food →" : "Open Secret Local →"}
+                      {item.title === "Local Food Direction"
+                        ? "Open Local Food →"
+                        : "Open Secret Local →"}
                     </div>
                   </a>
                 ))}
@@ -2810,11 +3091,14 @@ export default function Home() {
           </p>
 
           <h2 className="mt-4 text-4xl md:text-6xl font-bold">
-Da Nang Tours, Hoi An Tours & Hue Tours
+            Da Nang Tours, Hoi An Tours & Hue Tours
           </h2>
 
           <p className="mt-6 text-white/70 max-w-2xl text-lg">
-            Handpicked Private Tours Vietnam experiences including Golden Bridge Tour, Ba Na Hills Tour, Cham Island Tour, Hoi An Tours, Hue Tours and Da Nang Airport Transfer — designed for travelers who want comfort, trust and authentic Local Travel Support.
+            Handpicked Private Tours Vietnam experiences including Golden Bridge
+            Tour, Ba Na Hills Tour, Cham Island Tour, Hoi An Tours, Hue Tours
+            and Da Nang Airport Transfer — designed for travelers who want
+            comfort, trust and authentic Local Travel Support.
           </p>
 
           <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-4 md:gap-6">
@@ -2935,7 +3219,9 @@ Da Nang Tours, Hoi An Tours & Hue Tours
                   Happy Travelers
                 </h2>
                 <p className="mt-4 text-[#06251b]/70 text-base md:text-lg leading-relaxed">
-                  Real guest photos from GoVietStay journeys. Browse a quick preview, or open the full gallery only when you want to see more.
+                  Real guest photos from GoVietStay journeys. Browse a quick
+                  preview, or open the full gallery only when you want to see
+                  more.
                 </p>
               </div>
 
@@ -2969,7 +3255,10 @@ Da Nang Tours, Hoi An Tours & Hue Tours
                   <button
                     key={photo}
                     onClick={() => {
-                      if (index === previewTravelers.length - 1 && happyTravelers.length > previewTravelers.length) {
+                      if (
+                        index === previewTravelers.length - 1 &&
+                        happyTravelers.length > previewTravelers.length
+                      ) {
                         openFullTravelerGallery();
                       } else {
                         openTravelerPhoto(photo);
@@ -2989,14 +3278,19 @@ Da Nang Tours, Hoi An Tours & Hue Tours
                       }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent opacity-80" />
-                    {index === previewTravelers.length - 1 && happyTravelers.length > previewTravelers.length && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-[#06251b]/65 text-white backdrop-blur-[2px]">
-                        <div className="text-center">
-                          <div className="text-2xl font-bold">+{happyTravelers.length - previewTravelers.length}</div>
-                          <div className="text-xs uppercase tracking-[2px]">more photos</div>
+                    {index === previewTravelers.length - 1 &&
+                      happyTravelers.length > previewTravelers.length && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-[#06251b]/65 text-white backdrop-blur-[2px]">
+                          <div className="text-center">
+                            <div className="text-2xl font-bold">
+                              +{happyTravelers.length - previewTravelers.length}
+                            </div>
+                            <div className="text-xs uppercase tracking-[2px]">
+                              more photos
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      )}
                   </button>
                 ))}
               </div>
@@ -3033,7 +3327,10 @@ Da Nang Tours, Hoi An Tours & Hue Tours
         </div>
       </section>
 
-      <section id="tickets" className="bg-[#06251b] text-white px-4 md:px-20 py-16 md:py-24">
+      <section
+        id="tickets"
+        className="bg-[#06251b] text-white px-4 md:px-20 py-16 md:py-24"
+      >
         <div className="max-w-7xl mx-auto w-full">
           <p className="text-yellow-400 uppercase tracking-[4px] text-sm font-semibold">
             Tickets • Cars • SIM • Local Support
@@ -3044,7 +3341,10 @@ Da Nang Tours, Hoi An Tours & Hue Tours
           </h2>
 
           <p className="mt-6 text-white/70 max-w-4xl text-lg leading-relaxed">
-            GoVietStay helps travelers book attraction tickets, private cars, Da Nang Airport Transfer, Tourist SIM/eSIM and Local Travel Support. For many tickets, GoVietStay rate is 20,000 VND lower than listed gate price, with real support before, during and after the journey.
+            GoVietStay helps travelers book attraction tickets, private cars, Da
+            Nang Airport Transfer, Tourist SIM/eSIM and Local Travel Support.
+            For many tickets, GoVietStay rate is 20,000 VND lower than listed
+            gate price, with real support before, during and after the journey.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-2 text-xs md:text-sm text-white/80">
@@ -3101,7 +3401,10 @@ Da Nang Tours, Hoi An Tours & Hue Tours
                   Official Attraction Tickets With Full Local Care
                 </h3>
                 <p className="mt-4 max-w-4xl text-[#06251b]/70 leading-relaxed">
-                  We do not only sell tickets. GoVietStay helps guests choose the right ticket, confirm the schedule, arrange car transfer, send clear instructions and support the whole process via WhatsApp / Zalo.
+                  We do not only sell tickets. GoVietStay helps guests choose
+                  the right ticket, confirm the schedule, arrange car transfer,
+                  send clear instructions and support the whole process via
+                  WhatsApp / Zalo.
                 </p>
               </div>
 
@@ -3150,7 +3453,9 @@ Da Nang Tours, Hoi An Tours & Hue Tours
                           {pkg.name}
                         </span>
                         <span className="shrink-0 text-sm font-bold text-red-600">
-                          {pkg.govietstayPrice > 0 ? formatVND(pkg.govietstayPrice) : "Contact"}
+                          {pkg.govietstayPrice > 0
+                            ? formatVND(pkg.govietstayPrice)
+                            : "Contact"}
                         </span>
                       </div>
                     ))}
@@ -3164,9 +3469,12 @@ Da Nang Tours, Hoi An Tours & Hue Tours
             </div>
 
             <div className="mt-10 rounded-3xl bg-[#0b6b4f] text-white p-5 md:p-6">
-              <h4 className="text-2xl font-bold">Private Car & Airport Transfer</h4>
+              <h4 className="text-2xl font-bold">
+                Private Car & Airport Transfer
+              </h4>
               <p className="mt-2 text-white/75">
-                Clean cars, trusted local drivers and GoVietStay support for airport transfer, sightseeing and custom day trips.
+                Clean cars, trusted local drivers and GoVietStay support for
+                airport transfer, sightseeing and custom day trips.
               </p>
 
               <div className="mt-5 overflow-x-auto">
@@ -3181,8 +3489,13 @@ Da Nang Tours, Hoi An Tours & Hue Tours
                   </thead>
                   <tbody>
                     {privateCarPrices.map((item) => (
-                      <tr key={item.route} className="border-b border-white/10 last:border-b-0">
-                        <td className="py-3 pr-4 font-semibold">{item.route}</td>
+                      <tr
+                        key={item.route}
+                        className="border-b border-white/10 last:border-b-0"
+                      >
+                        <td className="py-3 pr-4 font-semibold">
+                          {item.route}
+                        </td>
                         <td className="py-3 px-4">{item.car4}</td>
                         <td className="py-3 px-4">{item.car7}</td>
                         <td className="py-3 pl-4">{item.car16}</td>
@@ -3193,7 +3506,9 @@ Da Nang Tours, Hoi An Tours & Hue Tours
               </div>
 
               <p className="mt-4 text-sm text-white/65">
-                Prices can change depending on route, date, waiting time and vehicle availability. Contact GoVietStay for the best current rate.
+                Prices can change depending on route, date, waiting time and
+                vehicle availability. Contact GoVietStay for the best current
+                rate.
               </p>
             </div>
           </div>
@@ -3217,9 +3532,10 @@ Da Nang Tours, Hoi An Tours & Hue Tours
               </h2>
 
               <p className="mt-6 text-[#06251b]/70 max-w-3xl text-lg leading-relaxed">
-                Practical Vietnam travel knowledge from GoVietStay: where to stay, what to eat,
-                how to plan weather-safe days, how to avoid tourist mistakes and how to get real
-                WhatsApp support before, during and after your trip.
+                Practical Vietnam travel knowledge from GoVietStay: where to
+                stay, what to eat, how to plan weather-safe days, how to avoid
+                tourist mistakes and how to get real WhatsApp support before,
+                during and after your trip.
               </p>
             </div>
 
@@ -3231,15 +3547,27 @@ Da Nang Tours, Hoi An Tours & Hue Tours
                 <div>
                   <h3 className="text-2xl font-bold">Need Help?</h3>
                   <p className="mt-2 text-white/75 leading-relaxed">
-                    Ask GoVietStay for Da Nang, Hoi An, Hue, Phu Quoc and future Ho Tram travel support.
-                    Tickets, private cars, SIM/eSIM, local food, hotel areas, weather checks and emergency guidance in one place.
+                    Ask GoVietStay for Da Nang, Hoi An, Hue, Phu Quoc and future
+                    Ho Tram travel support. Tickets, private cars, SIM/eSIM,
+                    local food, hotel areas, weather checks and emergency
+                    guidance in one place.
                   </p>
                 </div>
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-3 text-sm">
-                {["Da Nang Tours", "Hoi An Tours", "Hue Tours", "Ho Tram Future", "Local Food", "Weather Check"].map((item) => (
-                  <div key={item} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                {[
+                  "Da Nang Tours",
+                  "Hoi An Tours",
+                  "Hue Tours",
+                  "Ho Tram Future",
+                  "Local Food",
+                  "Weather Check",
+                ].map((item) => (
+                  <div
+                    key={item}
+                    className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3"
+                  >
                     ✓ {item}
                   </div>
                 ))}
@@ -3301,10 +3629,12 @@ Da Nang Tours, Hoi An Tours & Hue Tours
           <div className="mt-10 rounded-[2rem] border border-[#0b6b4f]/20 bg-white/70 p-5 md:p-6 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5 shadow-xl shadow-[#06251b]/5">
             <div>
               <h3 className="text-xl md:text-2xl font-bold">
-                GoVietStay is not only a tour seller — we are your local travel support team.
+                GoVietStay is not only a tour seller — we are your local travel
+                support team.
               </h3>
               <p className="mt-2 text-[#06251b]/65">
-                We help with tickets, cars, SIM, food, timing, weather, hotels and real travel problems across Central Vietnam.
+                We help with tickets, cars, SIM, food, timing, weather, hotels
+                and real travel problems across Central Vietnam.
               </p>
             </div>
 
@@ -3371,7 +3701,10 @@ Da Nang Tours, Hoi An Tours & Hue Tours
         </div>
       </section>
 
-      <section id="google-reviews" className="relative bg-[#06251b] text-white px-4 md:px-20 py-16 md:py-24 overflow-hidden">
+      <section
+        id="google-reviews"
+        className="relative bg-[#06251b] text-white px-4 md:px-20 py-16 md:py-24 overflow-hidden"
+      >
         <div className="absolute inset-0 opacity-70 bg-[radial-gradient(circle_at_top_left,rgba(255,196,0,0.18),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(0,180,100,0.18),transparent_38%)]" />
         <div className="relative max-w-7xl mx-auto">
           <div className="text-center max-w-4xl mx-auto">
@@ -3384,7 +3717,9 @@ Da Nang Tours, Hoi An Tours & Hue Tours
             </h2>
 
             <p className="mt-6 text-white/70 text-base md:text-lg leading-relaxed">
-              Open our Google Maps profile to check real traveler reviews, photos, business details and directions before booking your tour, ticket, transfer or local support.
+              Open our Google Maps profile to check real traveler reviews,
+              photos, business details and directions before booking your tour,
+              ticket, transfer or local support.
             </p>
           </div>
 
@@ -3397,27 +3732,48 @@ Da Nang Tours, Hoi An Tours & Hue Tours
                     Real Reviews. Real Local Support.
                   </h3>
                   <p className="mt-4 text-white/70 leading-relaxed">
-                    Guests can read reviews directly on Google Maps, see where GoVietStay is active, and contact us for Da Nang Tours, Hoi An Tours, Hue Tours, tickets and airport transfer support.
+                    Guests can read reviews directly on Google Maps, see where
+                    GoVietStay is active, and contact us for Da Nang Tours, Hoi
+                    An Tours, Hue Tours, tickets and airport transfer support.
                   </p>
                 </div>
 
                 <div className="shrink-0 rounded-3xl bg-[#f7f1df] p-5 text-[#06251b] text-center shadow-xl">
                   <div className="text-4xl">📍</div>
                   <div className="mt-3 text-xl font-bold">GoVietStay</div>
-                  <div className="mt-1 text-sm text-[#06251b]/65">Google Maps Profile</div>
+                  <div className="mt-1 text-sm text-[#06251b]/65">
+                    Google Maps Profile
+                  </div>
                 </div>
               </div>
 
               <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {[
-                  { icon: "🧭", title: "Open Location", text: "Check our Google Maps profile and directions." },
-                  { icon: "📸", title: "See Photos", text: "View real traveler moments and service updates." },
-                  { icon: "💬", title: "Read Reviews", text: "Understand how guests feel before you book." },
+                  {
+                    icon: "🧭",
+                    title: "Open Location",
+                    text: "Check our Google Maps profile and directions.",
+                  },
+                  {
+                    icon: "📸",
+                    title: "See Photos",
+                    text: "View real traveler moments and service updates.",
+                  },
+                  {
+                    icon: "💬",
+                    title: "Read Reviews",
+                    text: "Understand how guests feel before you book.",
+                  },
                 ].map((item) => (
-                  <div key={item.title} className="rounded-2xl bg-black/15 border border-white/10 p-4 text-left">
+                  <div
+                    key={item.title}
+                    className="rounded-2xl bg-black/15 border border-white/10 p-4 text-left"
+                  >
                     <div className="text-2xl">{item.icon}</div>
                     <h4 className="mt-3 font-bold">{item.title}</h4>
-                    <p className="mt-2 text-sm text-white/60 leading-relaxed">{item.text}</p>
+                    <p className="mt-2 text-sm text-white/60 leading-relaxed">
+                      {item.text}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -3465,9 +3821,14 @@ Da Nang Tours, Hoi An Tours & Hue Tours
                   "Save our Google Maps link before you arrive in Central Vietnam.",
                   "After your trip, your review helps the next traveler choose safely.",
                 ].map((item) => (
-                  <div key={item} className="flex gap-3 rounded-2xl bg-white/70 border border-[#06251b]/10 p-4">
+                  <div
+                    key={item}
+                    className="flex gap-3 rounded-2xl bg-white/70 border border-[#06251b]/10 p-4"
+                  >
                     <div className="text-green-700">✓</div>
-                    <p className="text-sm md:text-base text-[#06251b]/75 leading-relaxed">{item}</p>
+                    <p className="text-sm md:text-base text-[#06251b]/75 leading-relaxed">
+                      {item}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -3475,7 +3836,8 @@ Da Nang Tours, Hoi An Tours & Hue Tours
               <div className="mt-6 rounded-2xl bg-[#eaf5eb] border border-[#0b6b4f]/20 p-4">
                 <div className="font-bold">Need help now?</div>
                 <p className="mt-1 text-sm text-[#06251b]/65">
-                  Tickets, airport transfer, private car, SIM/eSIM and local travel support are handled directly by GoVietStay on WhatsApp.
+                  Tickets, airport transfer, private car, SIM/eSIM and local
+                  travel support are handled directly by GoVietStay on WhatsApp.
                 </p>
               </div>
             </div>
@@ -3499,7 +3861,9 @@ Da Nang Tours, Hoi An Tours & Hue Tours
           </h2>
 
           <p className="mt-8 text-xl text-white/70 max-w-3xl mx-auto">
-            Da Nang Tours, Hoi An Tours, Hue Tours, Private Tours Vietnam, Da Nang Airport Transfer and fast WhatsApp Travel Assistant support for travelers visiting Central Vietnam.
+            Da Nang Tours, Hoi An Tours, Hue Tours, Private Tours Vietnam, Da
+            Nang Airport Transfer and fast WhatsApp Travel Assistant support for
+            travelers visiting Central Vietnam.
           </p>
 
           <div className="mt-12 flex flex-wrap justify-center gap-4">
@@ -3625,30 +3989,49 @@ Da Nang Tours, Hoi An Tours & Hue Tours
         </div>
       </footer>
 
-
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 mobile-bottom-safe border-t border-white/10 bg-[#02140f]/95 backdrop-blur-xl px-2 pt-2">
         <div className="grid grid-cols-6 gap-1.5 pb-2 text-[10px] font-semibold text-white">
-          <a href="/secret" className="rounded-2xl bg-yellow-400 px-1.5 py-2 text-center text-[#06251b] active:scale-95 transition">
+          <a
+            href="/secret"
+            className="rounded-2xl bg-yellow-400 px-1.5 py-2 text-center text-[#06251b] active:scale-95 transition"
+          >
             <div className="text-xl">🗺️</div>
             <div>Secret</div>
           </a>
-          <a href="/local-food" className="rounded-2xl bg-white/8 px-1.5 py-2 text-center active:scale-95 transition">
+          <a
+            href="/local-food"
+            className="rounded-2xl bg-white/8 px-1.5 py-2 text-center active:scale-95 transition"
+          >
             <div className="text-xl">🍜</div>
             <div>Food</div>
           </a>
-          <a href="#tickets" className="rounded-2xl bg-white/8 px-1.5 py-2 text-center active:scale-95 transition">
+          <a
+            href="#tickets"
+            className="rounded-2xl bg-white/8 px-1.5 py-2 text-center active:scale-95 transition"
+          >
             <div className="text-xl">🎫</div>
             <div>Ticket</div>
           </a>
-          <a href="#experiences" className="rounded-2xl bg-white/8 px-1.5 py-2 text-center active:scale-95 transition">
+          <a
+            href="#experiences"
+            className="rounded-2xl bg-white/8 px-1.5 py-2 text-center active:scale-95 transition"
+          >
             <div className="text-xl">🏝️</div>
             <div>Tour</div>
           </a>
-          <button onClick={() => setDaoOpen(true)} className="rounded-2xl bg-white/8 px-1.5 py-2 text-center active:scale-95 transition">
+          <button
+            onClick={() => setDaoOpen(true)}
+            className="rounded-2xl bg-white/8 px-1.5 py-2 text-center active:scale-95 transition"
+          >
             <div className="text-xl">🤖</div>
             <div>Đào</div>
           </button>
-          <a href="https://wa.me/84937762607" target="_blank" rel="noopener noreferrer" className="rounded-2xl bg-green-600 px-1.5 py-2 text-center active:scale-95 transition">
+          <a
+            href="https://wa.me/84937762607"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-2xl bg-green-600 px-1.5 py-2 text-center active:scale-95 transition"
+          >
             <div className="text-xl">💬</div>
             <div>WA</div>
           </a>
@@ -3829,7 +4212,10 @@ Da Nang Tours, Hoi An Tours & Hue Tours
       {selectedTicket && (
         <div
           className="gvs-overlay fixed inset-0 z-50 bg-black/80 flex items-end md:items-center justify-center p-0 md:p-6"
-          onClick={() => { setSelectedTicket(null); setTicketBookingOpen(false); }}
+          onClick={() => {
+            setSelectedTicket(null);
+            setTicketBookingOpen(false);
+          }}
         >
           <div
             className="gvs-panel bg-[#f7f1df] text-[#06251b] rounded-t-3xl md:rounded-3xl max-w-5xl w-full max-h-[92svh] md:max-h-[90vh] overflow-y-auto overscroll-contain shadow-2xl"
@@ -3854,7 +4240,10 @@ Da Nang Tours, Hoi An Tours & Hue Tours
                 </div>
 
                 <button
-                  onClick={() => { setSelectedTicket(null); setTicketBookingOpen(false); }}
+                  onClick={() => {
+                    setSelectedTicket(null);
+                    setTicketBookingOpen(false);
+                  }}
                   className="text-3xl font-bold leading-none hover:opacity-60"
                   aria-label="Close ticket details"
                 >
@@ -3867,7 +4256,9 @@ Da Nang Tours, Hoi An Tours & Hue Tours
                   Why book with GoVietStay?
                 </h3>
                 <p className="mt-3 text-white/80 leading-relaxed">
-                  GoVietStay checks the latest ticket information, confirms your booking, sends clear instructions and supports you through WhatsApp / Zalo before, during and after the trip.
+                  GoVietStay checks the latest ticket information, confirms your
+                  booking, sends clear instructions and supports you through
+                  WhatsApp / Zalo before, during and after the trip.
                 </p>
               </div>
 
@@ -3892,10 +4283,14 @@ Da Nang Tours, Hoi An Tours & Hue Tours
                       )}
                     </div>
                     <div className="col-span-3 px-4 py-4 text-[#06251b]/65">
-                      {pkg.officialPrice ? formatVND(pkg.officialPrice) : "Contact"}
+                      {pkg.officialPrice
+                        ? formatVND(pkg.officialPrice)
+                        : "Contact"}
                     </div>
                     <div className="col-span-4 px-4 py-4 font-bold text-red-600">
-                      {pkg.govietstayPrice > 0 ? formatVND(pkg.govietstayPrice) : "Contact for latest price"}
+                      {pkg.govietstayPrice > 0
+                        ? formatVND(pkg.govietstayPrice)
+                        : "Contact for latest price"}
                     </div>
                   </div>
                 ))}
@@ -3903,7 +4298,9 @@ Da Nang Tours, Hoi An Tours & Hue Tours
 
               <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
                 <div className="rounded-3xl bg-white/60 border border-[#06251b]/10 p-5 md:p-6">
-                  <h3 className="text-xl md:text-2xl font-bold">Important Notes</h3>
+                  <h3 className="text-xl md:text-2xl font-bold">
+                    Important Notes
+                  </h3>
                   <ul className="mt-4 space-y-2 text-[#06251b]/75">
                     {selectedTicket.notes.map((item) => (
                       <li key={item}>• {item}</li>
@@ -3912,12 +4309,24 @@ Da Nang Tours, Hoi An Tours & Hue Tours
                 </div>
 
                 <div className="rounded-3xl bg-white/60 border border-[#06251b]/10 p-5 md:p-6">
-                  <h3 className="text-xl md:text-2xl font-bold">GoVietStay Support</h3>
+                  <h3 className="text-xl md:text-2xl font-bold">
+                    GoVietStay Support
+                  </h3>
                   <ul className="mt-4 space-y-2 text-[#06251b]/75">
-                    <li>• Latest ticket availability checked before confirmation.</li>
-                    <li>• Clear instructions sent by WhatsApp / Zalo before you go.</li>
-                    <li>• Private car, airport transfer or hotel pickup can be arranged.</li>
-                    <li>• Local assistance before, during and after your visit.</li>
+                    <li>
+                      • Latest ticket availability checked before confirmation.
+                    </li>
+                    <li>
+                      • Clear instructions sent by WhatsApp / Zalo before you
+                      go.
+                    </li>
+                    <li>
+                      • Private car, airport transfer or hotel pickup can be
+                      arranged.
+                    </li>
+                    <li>
+                      • Local assistance before, during and after your visit.
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -3931,7 +4340,10 @@ Da Nang Tours, Hoi An Tours & Hue Tours
                 </button>
 
                 <button
-                  onClick={() => { setSelectedTicket(null); setTicketBookingOpen(false); }}
+                  onClick={() => {
+                    setSelectedTicket(null);
+                    setTicketBookingOpen(false);
+                  }}
                   className="rounded-full border border-[#06251b]/30 px-8 py-4 font-semibold hover:bg-[#06251b] hover:text-white transition"
                 >
                   Close
@@ -3949,7 +4361,9 @@ Da Nang Tours, Hoi An Tours & Hue Tours
                         Book This Ticket
                       </h3>
                       <p className="mt-2 text-[#06251b]/65 leading-relaxed">
-                        Fill in your details. WhatsApp will open with the ticket name, reference prices and your guest information ready to send to GoVietStay.
+                        Fill in your details. WhatsApp will open with the ticket
+                        name, reference prices and your guest information ready
+                        to send to GoVietStay.
                       </p>
                     </div>
 
@@ -4009,7 +4423,9 @@ Da Nang Tours, Hoi An Tours & Hue Tours
                   <div className="mt-5 rounded-2xl bg-green-50 border border-green-700/15 p-4 text-green-900">
                     <p className="font-bold">WhatsApp ticket booking preview</p>
                     <p className="mt-1 text-sm leading-relaxed">
-                      Ticket name, GoVietStay reference prices, guest details, date, hotel, pickup or delivery location and special requests will be sent to +84 937 762 607.
+                      Ticket name, GoVietStay reference prices, guest details,
+                      date, hotel, pickup or delivery location and special
+                      requests will be sent to +84 937 762 607.
                     </p>
                   </div>
 

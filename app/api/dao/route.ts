@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { GoogleGenAI } from "@google/genai";
 
 export const runtime = "nodejs";
 
@@ -37,28 +38,14 @@ Conversation Rules:
 - Avoid marketing language.
 - Avoid brochure style writing.
 - Avoid long itinerary style responses.
-
-Memory Rules:
-- Remember information already provided in the conversation when available.
-- Never ask twice for travel date, group size, nationality, hotel, interests or family status.
-- If traveler already provided information, use it.
+- Keep most replies between 2 and 6 sentences.
+- Ask only ONE question at a time.
 
 Response Rules:
-For most conversations:
 1. Answer the question.
 2. Give one useful local tip.
 3. Ask one useful follow-up question.
 4. Stop.
-
-Keep most replies between 2 and 6 sentences.
-Ask only ONE question at a time.
-
-Do NOT:
-- create a full itinerary immediately
-- generate day 1 / day 2 / day 3 plans automatically
-- overwhelm travelers with too much information
-- push WhatsApp too early
-- push tours too early
 
 Price Questions:
 If traveler asks about ticket prices, Ba Na Hills, airport transfer, private car, private tour or guide services, collect missing information first:
@@ -66,14 +53,6 @@ If traveler asks about ticket prices, Ba Na Hills, airport transfer, private car
 - number of guests
 - adult or child
 - private or shared preference
-
-Good example:
-Traveler: Price Ba Na Hills?
-Reply: I can help check the best option. How many people are traveling?
-
-Bad example:
-Traveler: Price Ba Na Hills?
-Reply: Contact WhatsApp.
 
 Recommendations:
 Always prioritize:
@@ -111,11 +90,6 @@ Only suggest WhatsApp when:
 Before every reply ask yourself:
 "If David met this traveler in a coffee shop in Da Nang, would he really speak this way?"
 
-If not:
-- rewrite shorter
-- rewrite friendlier
-- rewrite more naturally
-
 Traveler message:
 ${message}
 
@@ -125,6 +99,58 @@ Give one useful local tip.
 Ask one useful follow-up question.
 Then stop.
 `;
+
+const fallbackReply =
+  "Đào is temporarily unavailable. Please contact GoVietStay on WhatsApp: +84 937 762 607.";
+
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function generateDaoReply(apiKey: string, message: string) {
+  const ai = new GoogleGenAI({ apiKey });
+
+  const models = [
+    "gemini-2.5-flash",
+    "gemini-2.0-flash",
+    "gemini-2.0-flash-lite",
+  ];
+
+  let lastError: unknown = null;
+
+  for (const model of models) {
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      try {
+        const result = await ai.models.generateContent({
+          model,
+          contents: buildDaoPrompt(message),
+          config: {
+            temperature: 0.7,
+            maxOutputTokens: 300,
+          },
+        });
+
+        const reply = result.text?.trim();
+
+        if (reply) {
+          return reply;
+        }
+
+        throw new Error(`Empty response from model: ${model}`);
+      } catch (error) {
+        lastError = error;
+
+        console.error("Đào Gemini error:", {
+          model,
+          attempt,
+          error,
+        });
+
+        await sleep(700);
+      }
+    }
+  }
+
+  throw lastError;
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -141,55 +167,24 @@ export async function POST(request: NextRequest) {
     const apiKey = process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
+      console.error("Missing GEMINI_API_KEY in .env.local");
+
       return NextResponse.json({
         reply:
           "Đào is temporarily offline. Please contact GoVietStay on WhatsApp: +84 937 762 607.",
       });
     }
 
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          contents: [
-            {
-              role: "user",
-              parts: [{ text: buildDaoPrompt(message) }],
-            },
-          ],
-          generationConfig: {
-            temperature: 0.7,
-            maxOutputTokens: 500,
-          },
-        }),
-      },
-    );
-
-    if (!response.ok) {
-      throw new Error(`Gemini API error: ${response.status}`);
-    }
-
-    const data = await response.json();
-
-    const reply =
-      data?.candidates?.[0]?.content?.parts
-        ?.map((part: { text?: string }) => part.text || "")
-        .join("")
-        .trim() ||
-      "Đào is temporarily unavailable. Please contact GoVietStay on WhatsApp: +84 937 762 607.";
+    const reply = await generateDaoReply(apiKey, message);
 
     return NextResponse.json({ reply });
   } catch (error) {
-    console.error("Dao API error:", error);
+    console.error("FULL ERROR");
+console.dir(error, { depth: null });
 
     return NextResponse.json(
       {
-        reply:
-          "Đào is temporarily unavailable. Please contact GoVietStay on WhatsApp: +84 937 762 607.",
+        reply: fallbackReply,
       },
       { status: 200 },
     );
