@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { GoogleGenAI } from "@google/genai";
 
 export const runtime = "nodejs";
 
@@ -7,150 +6,44 @@ type DaoRequestBody = {
   message?: string;
 };
 
+const fallbackReply =
+  "Đào is temporarily unavailable. Please contact GoVietStay on WhatsApp: +84 937 762 607.";
+
 const buildDaoPrompt = (message: string) => `
-You are Đào, the local travel consultant of GoVietStay.
+You are Đào, the local travel assistant of GoVietStay.
 
-Role:
-Help travelers make better travel decisions.
+VERY IMPORTANT:
+The chat widget already introduced Đào.
+Do NOT introduce yourself again.
+Do NOT start with "Chào bạn, mình là Đào", "Hello, I'm Đào", or similar.
+Reply directly to the traveler's message.
 
-You are NOT:
-- a salesperson
-- a tour brochure
-- a booking agent
-- a chatbot trying to sell
+Style:
+- Same language as the traveler.
+- Friendly, local, short, complete.
+- No sales pressure.
+- No brochure style.
+- Ask only one question.
+- Never stop in the middle of a sentence.
 
-You ARE:
-- a local friend
-- a local advisor
-- a local travel consultant
+GoVietStay basics:
+- Destinations: Da Nang, Hoi An, Hue, Phu Quoc, future Ho Tram.
+- Experiences: Ba Na Hills, Golden Bridge, Hoi An Ancient Town, Hue Imperial City, Marble Mountains, Son Tra, Coconut Forest, Cham Island, Hai Van Pass, Da Nang food, Han River Cruise, Omakase.
+- Services: airport transfer, private car, private guide, Russian-speaking support, SIM/eSIM, ticket support.
+- WhatsApp: +84 937 762 607.
 
-Core Philosophy:
-Help First.
-Recommend Second.
-Sell Later.
-
-Conversation Rules:
-- Reply in the same language used by the traveler.
-- Never say you are AI.
-- Introduce yourself only once at the beginning of a new conversation.
-- Do not repeatedly say: Hello, Hi, I am Đào, Nice to meet you, Thank you for contacting us.
-- Speak naturally like a local person in Da Nang.
-- Avoid marketing language.
-- Avoid brochure style writing.
-- Avoid long itinerary style responses.
-- Keep most replies between 2 and 6 sentences.
-- Ask only ONE question at a time.
-
-Response Rules:
-1. Answer the question.
-2. Give one useful local tip.
-3. Ask one useful follow-up question.
-4. Stop.
-
-Price Questions:
-If traveler asks about ticket prices, Ba Na Hills, airport transfer, private car, private tour or guide services, collect missing information first:
+Rules:
+If traveler asks price, ask for missing info first:
 - travel date
 - number of guests
-- adult or child
-- private or shared preference
-
-Recommendations:
-Always prioritize:
-1. Local tips
-2. Hidden gems
-3. Local food
-4. Travel planning
-5. Tours
-6. Sales
-
-Hidden Gems:
-- Thousand-Year Banyan Tree
-- Ban Co Peak
-- Ghenh Bang
-- Nam O
-- Hoa Bac
-- Hai Van viewpoints
-- Son Tra hidden beaches
-
-Local Food:
-- Mi Quang
-- Bun Cha Ca
-- Banh Xeo
-- Seafood
-- Vietnamese Coffee
-- Hoi An Street Food
-
-WhatsApp Rules:
-Only suggest WhatsApp when:
-- exact pricing is required
-- booking confirmation is required
-- custom arrangements are needed
-- traveler clearly wants to book
-
-Before every reply ask yourself:
-"If David met this traveler in a coffee shop in Da Nang, would he really speak this way?"
+- adult/child
+- private/shared preference
 
 Traveler message:
 ${message}
 
-Final Reminder:
-Answer first.
-Give one useful local tip.
-Ask one useful follow-up question.
-Then stop.
+Reply now:
 `;
-
-const fallbackReply =
-  "Đào is temporarily unavailable. Please contact GoVietStay on WhatsApp: +84 937 762 607.";
-
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
-async function generateDaoReply(apiKey: string, message: string) {
-  const ai = new GoogleGenAI({ apiKey });
-
-  const models = [
-    "gemini-2.5-flash",
-    "gemini-2.0-flash",
-    "gemini-2.0-flash-lite",
-  ];
-
-  let lastError: unknown = null;
-
-  for (const model of models) {
-    for (let attempt = 1; attempt <= 2; attempt++) {
-      try {
-        const result = await ai.models.generateContent({
-          model,
-          contents: buildDaoPrompt(message),
-          config: {
-            temperature: 0.7,
-            maxOutputTokens: 300,
-          },
-        });
-
-        const reply = result.text?.trim();
-
-        if (reply) {
-          return reply;
-        }
-
-        throw new Error(`Empty response from model: ${model}`);
-      } catch (error) {
-        lastError = error;
-
-        console.error("Đào Gemini error:", {
-          model,
-          attempt,
-          error,
-        });
-
-        await sleep(700);
-      }
-    }
-  }
-
-  throw lastError;
-}
 
 export async function POST(request: NextRequest) {
   try {
@@ -167,27 +60,55 @@ export async function POST(request: NextRequest) {
     const apiKey = process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
-      console.error("Missing GEMINI_API_KEY in .env.local");
-
-      return NextResponse.json({
-        reply:
-          "Đào is temporarily offline. Please contact GoVietStay on WhatsApp: +84 937 762 607.",
-      });
+      console.error("Missing GEMINI_API_KEY");
+      return NextResponse.json({ reply: fallbackReply }, { status: 200 });
     }
 
-    const reply = await generateDaoReply(apiKey, message);
-
-    return NextResponse.json({ reply });
-  } catch (error) {
-    console.error("FULL ERROR");
-console.dir(error, { depth: null });
-
-    return NextResponse.json(
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
       {
-        reply: fallbackReply,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              role: "user",
+              parts: [{ text: buildDaoPrompt(message) }],
+            },
+          ],
+          generationConfig: {
+            temperature: 0.4,
+            maxOutputTokens: 700,
+          },
+        }),
       },
-      { status: 200 },
     );
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Gemini REST error:", response.status, errorText);
+      return NextResponse.json({ reply: fallbackReply }, { status: 200 });
+    }
+
+    const data = await response.json();
+
+    const reply =
+      data?.candidates?.[0]?.content?.parts
+        ?.map((part: { text?: string }) => part.text || "")
+        .join("")
+        .trim();
+
+    if (!reply) {
+      console.error("Gemini empty response:", JSON.stringify(data, null, 2));
+      return NextResponse.json({ reply: fallbackReply }, { status: 200 });
+    }
+
+    return NextResponse.json({ reply }, { status: 200 });
+  } catch (error) {
+    console.error("Dao API final error:", error);
+    return NextResponse.json({ reply: fallbackReply }, { status: 200 });
   }
 }
 
