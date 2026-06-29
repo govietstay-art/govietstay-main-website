@@ -969,6 +969,66 @@ const tours: Tour[] = [
     ],
   },
   {
+    title: "Da Nang - Hoi An - Hoi An Memories Landmark Show",
+    image: "/tour/hoianmemories.jpg",
+    duration: "13:00 – 22:00",
+    category: "Marble Mountains • Hoi An Ancient Town • Boat Ride & Lanterns • Memories Show",
+    price: {
+      adult: 2400000,
+      child: 1900000,
+      note: "Joined tour price. Includes round-trip transfer, English/Vietnamese-speaking guide, all entrance fees, dinner menu or buffet and Hoi An Memories Show ticket.",
+    },
+    description:
+      "A complete Da Nang to Hoi An evening journey combining Marble Mountains, Hoi An Ancient Town, Hoai River boat ride, lantern release, dinner and the world-class Hoi An Memories outdoor show.",
+    overview:
+      "This joined tour is designed for travelers who want to experience the best of Da Nang and Hoi An in one smooth afternoon-to-night schedule. Start with Marble Mountains and Non Nuoc Stone Carving Village, continue to Hoi An Ancient Town, enjoy a poetic boat ride on the Hoai River with flower lanterns, have dinner at a local restaurant and finish with the spectacular Hoi An Memories Show before returning to Da Nang.",
+    highlights: [
+      "Visit Marble Mountains and Non Nuoc Stone Carving Village",
+      "Explore Hoi An Ancient Town and its nostalgic architecture",
+      "Boat ride on the Hoai River",
+      "Release flower lanterns for good luck",
+      "Dinner menu or buffet at a local restaurant",
+      "Hoi An Memories Show ticket included",
+      "Round-trip transfer from Da Nang",
+    ],
+    itinerary: [
+      "13:00 – 13:30: Pick up in Da Nang and depart for the journey.",
+      "13:30 – 15:30: Visit Marble Mountains and Non Nuoc Stone Carving Village.",
+      "15:30 – 17:30: Explore Hoi An Ancient Town and wander through its nostalgic architecture.",
+      "17:30 – 18:30: Enjoy a boat ride on the poetic Hoai River and release flower lanterns.",
+      "18:30 – 19:30: Dinner with menu or buffet at a local restaurant.",
+      "19:30 – 21:00: Experience the world-class outdoor visual arts performance, Hoi An Memories Show.",
+      "21:00 – 22:00: Transfer back to Da Nang. Tour ends.",
+    ],
+    included: [
+      "Round-trip transfer",
+      "English/Vietnamese-speaking guide",
+      "All entrance fees",
+      "Dinner menu or buffet",
+      "Hoi An Memories Show ticket",
+    ],
+    notIncluded: ["Personal expenses", "Additional drinks"],
+    childPolicy: [
+      "Child price: 1,900,000 VND.",
+      "Adult price: 2,400,000 VND.",
+      "Please share child age and height before booking for exact confirmation.",
+    ],
+    bestFor: [
+      "First-time visitors",
+      "Couples",
+      "Families",
+      "Culture lovers",
+      "Guests who want a full Hoi An night experience",
+    ],
+    localTips: [
+      "This is a long afternoon-to-night tour, so wear comfortable shoes.",
+      "Hoi An is most beautiful from late afternoon to evening, especially around lantern time.",
+      "Bring a small amount of cash for personal drinks, snacks or souvenirs.",
+      "During busy seasons, show seats and traffic can change, so early confirmation is recommended.",
+    ],
+  },
+
+  {
     title: "Hue Tours: Imperial City Heritage Journey",
     image: "/tour/hue.jpg",
     duration: "07:30 – 18:30",
@@ -1024,6 +1084,66 @@ const tours: Tour[] = [
       "Hue food is a highlight, especially for culture-focused travelers.",
     ],
   },
+  {
+    title: "Hue Imperial Heritage By Train",
+    image: "/tour/huebytrain.jpg",
+    duration: "07:30 – 18:30",
+    category: "Scenic Train Ride • Imperial Citadel • Hue Cuisine • Historic Landmarks",
+    price: {
+      adult: 1500000,
+      child: 1000000,
+      note: "Joined tour price. Free upgrade to private tour for groups of 4 or more when available. Includes Da Nang to Hue train ticket, Hue car transfer, English/Vietnamese-speaking guide, entrance tickets, specialty lunch and bottled water.",
+    },
+    description:
+      "Travel from Da Nang to Hue by scenic train, admire Lang Co Bay and Hai Van Pass, then explore the Imperial Citadel, Khai Dinh Tomb, Thien Mu Pagoda and Hue specialty cuisine.",
+    overview:
+      "A special Hue heritage journey for travelers who want more than a normal car transfer. The morning train ride gives beautiful views of Lang Co Bay and Hai Van Pass before arriving in Hue for a full cultural route including the Imperial Citadel, authentic Hue lunch, Khai Dinh Tomb and Thien Mu Pagoda. The return to Da Nang is by car for a smoother finish.",
+    highlights: [
+      "Scenic train ride from Da Nang to Hue",
+      "Views of Lang Co Bay and Hai Van Pass from the train window",
+      "Visit the Imperial Citadel",
+      "Authentic Hue specialty lunch",
+      "Visit Khai Dinh Tomb",
+      "Visit Thien Mu Pagoda",
+      "Return transfer to Da Nang by car",
+    ],
+    itinerary: [
+      "07:30 – 08:00: Pick up and transfer to Da Nang Railway Station.",
+      "08:00 – 10:30: Experience a scenic train ride, admiring Lang Co Bay and Hai Van Pass through the window.",
+      "10:30 – 12:30: Pick up at Hue Station and explore the Imperial Citadel.",
+      "12:30 – 14:00: Enjoy authentic Hue specialty cuisine for lunch at a traditional local restaurant.",
+      "14:00 – 16:00: Visit Khai Dinh Tomb and Thien Mu Pagoda.",
+      "16:00 – 18:30: Transfer back to Da Nang by car. Tour ends.",
+    ],
+    included: [
+      "Train ticket from Da Nang to Hue",
+      "Car transfer in Hue",
+      "English/Vietnamese-speaking guide",
+      "Entrance tickets",
+      "Specialty lunch",
+      "Bottled water",
+    ],
+    notIncluded: ["Personal expenses", "Additional drinks"],
+    childPolicy: [
+      "Child price: 1,000,000 VND.",
+      "Adult price: 1,500,000 VND.",
+      "Please share child age and height before booking for exact train and entrance ticket confirmation.",
+    ],
+    bestFor: [
+      "Heritage travelers",
+      "Train lovers",
+      "Couples",
+      "Families",
+      "Guests who want a scenic route to Hue",
+    ],
+    localTips: [
+      "Train schedules can change, so GoVietStay will reconfirm the exact time before departure.",
+      "Bring your passport or ID photo if required for train ticket confirmation.",
+      "Wear comfortable shoes because the Citadel and tomb areas require walking.",
+      "This route is best for guests who want both scenery and culture in one day.",
+    ],
+  },
+
   {
     title: "Marble Mountains Tour & Monkey Mountain Discovery",
     image: "/tour/marble.jpg",
@@ -1187,6 +1307,68 @@ const tours: Tour[] = [
       "Sea tours depend on weather and sea conditions; GoVietStay will confirm before departure.",
       "The best season is usually during calm sea months.",
       "Lunch menu may include fresh seafood such as shrimp, fish, squid, mussels, fried squid, seasonal vegetables, steamed fish, seafood soup, steamed rice and tropical fruits depending on daily availability.",
+    ],
+  },
+
+  {
+    title: "Hoa Phu Thanh Waterfall Rafting Adventure",
+    image: "/tour/hoaphuthanh.jpg",
+    duration: "08:00 – 17:30",
+    category: "Adventure • Waterfall Rafting • Nature • Da Nang",
+    price: {
+      adult: 1885000,
+      child: null,
+      note: "Joined group tour price. Private tour can be customized on request. Includes transfer, English-speaking guide, entrance ticket, rafting ticket with boat, life jacket and helmet, lunch and water.",
+    },
+    description:
+      "Feel the adrenaline at Hoa Phu Thanh with a thrilling waterfall rafting route, fresh mountain nature, local cuisine and free time for optional fishing or zipline activities.",
+    overview:
+      "A full-day adventure experience near Da Nang for travelers who want nature, excitement and something different from classic sightseeing. Guests descend a 3-kilometer rubber boat route through small waterfalls and rocky rapids, enjoy the untouched stream and forest scenery, recharge with lunch and have free time to relax or try optional activities such as zipline or fishing.",
+    highlights: [
+      "Thrilling waterfall rafting on a 3-kilometer rubber boat route",
+      "Rocky rapids, small waterfalls and mountain stream scenery",
+      "Immersive nature surrounded by lush forest",
+      "Local lunch with traditional mountain-style dishes",
+      "Free time to relax, take photos or join optional activities",
+      "Good adventure choice for groups of friends and active travelers",
+    ],
+    itinerary: [
+      "08:00: Pick up at hotel in Da Nang and transfer to Hoa Phu Thanh tourist area.",
+      "10:00: Start the rafting experience with safety equipment and guide support.",
+      "12:00: Enjoy lunch and free time in the nature area.",
+      "Afternoon: Relax, take photos or try optional activities such as zipline or fishing at your own expense.",
+      "17:30: Return to hotel. Tour ends.",
+    ],
+    included: [
+      "Round-trip transfer",
+      "English-speaking guide",
+      "Entrance ticket",
+      "Rafting ticket with rubber boat, life jacket and helmet",
+      "Lunch",
+      "Water",
+    ],
+    notIncluded: [
+      "Personal expenses",
+      "Optional activities such as zipline or fishing",
+      "Additional drinks",
+    ],
+    childPolicy: [
+      "This is an adventure activity and suitability depends on age, height, health and operator safety rules.",
+      "Children must be confirmed before booking.",
+      "Guests should be comfortable with water activities.",
+    ],
+    bestFor: [
+      "Adventure travelers",
+      "Groups of friends",
+      "Active couples",
+      "Nature lovers",
+      "Guests who want a different Da Nang experience",
+    ],
+    localTips: [
+      "Bring swimwear, towel, dry clothes and waterproof phone protection.",
+      "Wear secure sandals or shoes suitable for water activities.",
+      "This tour depends on weather, water level and operator safety conditions.",
+      "Optional activities such as zipline and fishing are not included in the base price.",
     ],
   },
 
