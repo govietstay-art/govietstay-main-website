@@ -15,12 +15,26 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.govietstay.com"),
 
-  title: "GoVietStay | Trusted Local Support",
+  title: {
+    default: "GoVietStay | Trusted Local Support",
+    template: "%s | GoVietStay",
+  },
 
   description:
     "Private tours, local guides and WhatsApp support 24/7 in Da Nang, Hoi An and Hue.",
 
   applicationName: "GoVietStay",
+
+  keywords: [
+    "GoVietStay",
+    "Da Nang Tours",
+    "Hoi An Tours",
+    "Hue Tours",
+    "Vietnam Travel",
+    "Airport Transfer",
+    "Private Tours",
+    "Local Travel Support",
+  ],
 
   alternates: {
     canonical: "https://www.govietstay.com",
@@ -34,6 +48,13 @@ export const metadata: Metadata = {
     siteName: "GoVietStay",
     locale: "en_US",
     type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "GoVietStay | Trusted Local Support",
+    description:
+      "Private tours, local guides and WhatsApp support 24/7 in Da Nang, Hoi An and Hue.",
   },
 };
 
@@ -51,13 +72,34 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebSite",
-              name: "GoVietStay",
-              alternateName: "GoVietStay.com",
-              url: "https://www.govietstay.com",
-            }),
+            __html: JSON.stringify([
+              {
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                name: "GoVietStay",
+                alternateName: "GoVietStay.com",
+                url: "https://www.govietstay.com",
+                logo: "https://www.govietstay.com/logo.png",
+                sameAs: ["https://x.com/thangtran267"],
+              },
+              {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                name: "GoVietStay",
+                alternateName: "GoVietStay.com",
+                url: "https://www.govietstay.com",
+              },
+              {
+                "@context": "https://schema.org",
+                "@type": "TravelAgency",
+                name: "GoVietStay",
+                url: "https://www.govietstay.com",
+                logo: "https://www.govietstay.com/logo.png",
+                telephone: "+84937762607",
+                areaServed: ["Da Nang", "Hoi An", "Hue"],
+                slogan: "Trusted Local Support",
+              },
+            ]),
           }}
         />
         {children}
