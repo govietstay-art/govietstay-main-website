@@ -388,9 +388,9 @@ export default function RussianPage() {
 
   return (
     <main className="bg-[#f7f1df] text-[#06251b] pb-24 md:pb-0">
-      {/* HERO - MOBILE FIRST */}
+      {/* HERO - MOBILE V6: IMAGE-FIRST */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 min-h-[820px] md:min-h-screen">
+        <div className="absolute inset-0 min-h-[760px] md:min-h-screen">
           <Image
             src="/hero-hoian-new.png"
             alt="GoVietStay Russian Page"
@@ -398,16 +398,17 @@ export default function RussianPage() {
             priority
             className="object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-[#04140f]/92 via-[#04140f]/76 to-[#04140f]/50" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#04140f]/58 via-[#04140f]/48 to-[#04140f]/78 md:bg-gradient-to-r md:from-[#04140f]/86 md:via-[#04140f]/68 md:to-[#04140f]/38" />
+          <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-[#04140f]/95 to-transparent" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8 lg:px-12 pt-4 md:pt-6 pb-10 md:pb-16 min-h-[820px] md:min-h-screen flex flex-col">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8 lg:px-12 pt-4 md:pt-6 pb-8 md:pb-16 min-h-[760px] md:min-h-screen flex flex-col">
           <div className="flex items-center justify-between gap-3">
             <Link
               href="/"
-              className="flex items-center gap-2 rounded-full bg-black/35 backdrop-blur px-2.5 py-2 border border-white/10"
+              className="flex items-center gap-2 rounded-full bg-black/25 backdrop-blur-md px-2.5 py-2 border border-white/10 shadow-lg"
             >
-              <Image src="/logo.png" alt="GoVietStay" width={46} height={46} className="rounded-full" />
+              <Image src="/logo.png" alt="GoVietStay" width={44} height={44} className="rounded-full" />
               <div className="text-white">
                 <div className="font-extrabold text-base leading-tight">GoVietStay</div>
                 <div className="text-[11px] text-white/70">Trusted Local Support</div>
@@ -429,37 +430,23 @@ export default function RussianPage() {
 
           <div className="mt-7 md:mt-14 grid lg:grid-cols-[1.05fr_0.95fr] gap-6 md:gap-8 items-center">
             <div className="text-white max-w-3xl">
-              <div className="inline-flex items-center gap-2 rounded-full border border-yellow-300/40 bg-yellow-300/10 px-3 py-2 text-[11px] md:text-sm font-extrabold text-yellow-300">
+              <div className="inline-flex items-center gap-2 rounded-full border border-yellow-300/55 bg-black/20 backdrop-blur-md px-3 py-2 text-[11px] md:text-sm font-extrabold text-yellow-300">
                 🇷🇺 СТРАНИЦА ДЛЯ РУССКОГОВОРЯЩИХ ГОСТЕЙ
               </div>
 
-              <h1 className="mt-5 text-3xl md:text-6xl font-extrabold leading-tight">
-                Вьетнам без языкового стресса
+              <h1 className="mt-5 text-3xl md:text-6xl font-extrabold leading-tight drop-shadow-[0_3px_12px_rgba(0,0,0,0.55)]">
+                Туры в Дананге,
                 <br />
-                <span className="text-yellow-300">туры в Дананге, Хойане и Хюэ на русском</span>
+                Хойане и Хюэ
+                <br />
+                <span className="text-yellow-300">с поддержкой на русском</span>
               </h1>
 
-              <p className="mt-5 text-base md:text-xl text-white/82 leading-relaxed">
-                Не нужно разбираться во всём самому. Ms. Anna поможет на русском: какой тур выбрать, какой формат удобнее для семьи или компании, когда лучше ехать и стоит ли брать private upgrade.
+              <p className="mt-4 text-base md:text-xl text-white/88 leading-relaxed max-w-2xl drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
+                Ms. Anna поможет выбрать тур, private формат, трансфер и удобный маршрут для семьи или компании.
               </p>
 
-              <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-sm md:text-base">
-                {[
-                  "Русскоговорящий гид по запросу",
-                  "Туры Дананг • Хойан • Хюэ",
-                  "От 4 гостей — private upgrade по запросу",
-                  "Получить подборку туров у Ms. Anna до и во время поездки",
-                ].map((item) => (
-                  <div
-                    key={item}
-                    className="rounded-2xl border border-white/15 bg-white/10 backdrop-blur px-3 py-3 text-white"
-                  >
-                    ✓ {item}
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-6 flex flex-col sm:flex-row gap-3">
+              <div className="mt-5 flex flex-col sm:flex-row gap-3">
                 <a
                   href={annaWa(
                     "Здравствуйте, Ms. Anna. Я хочу узнать о русскоязычных турах GoVietStay в Дананге / Хойане / Хюэ."
@@ -468,23 +455,46 @@ export default function RussianPage() {
                   rel="noopener noreferrer"
                   className="rounded-full bg-green-500 hover:bg-green-600 px-6 py-4 text-center text-base font-extrabold text-white transition shadow-lg"
                 >
-                  Получить подборку туров у Ms. Anna
+                  🇷🇺 WhatsApp Ms. Anna
                 </a>
 
                 <a
                   href="#ru-tours"
-                  className="rounded-full border border-white/30 bg-white/10 px-6 py-4 text-center text-base font-bold text-white hover:bg-white hover:text-[#06251b] transition"
+                  className="rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-6 py-4 text-center text-base font-bold text-white hover:bg-white hover:text-[#06251b] transition"
                 >
                   Посмотреть туры
                 </a>
               </div>
 
-              <div className="mt-5 rounded-3xl bg-[#0b6b4f]/92 p-4 text-white shadow-xl lg:hidden">
+              <div className="mt-5 grid grid-cols-2 gap-2.5 text-[12px] md:text-base">
+                {[
+                  "Русский гид по запросу",
+                  "Дананг • Хойан • Хюэ",
+                  "Private upgrade 4+ гостей",
+                  "Поддержка Ms. Anna",
+                ].map((item) => (
+                  <div
+                    key={item}
+                    className="rounded-2xl border border-white/14 bg-white/12 backdrop-blur-md px-3 py-3 text-white shadow-sm"
+                  >
+                    ✓ {item}
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-5 rounded-3xl bg-[#0b6b4f]/88 p-4 text-white shadow-xl lg:hidden border border-white/10 backdrop-blur-md">
                 <div className="text-xs uppercase tracking-[3px] text-yellow-300 font-extrabold">
                   Русский консультант
                 </div>
-                <div className="mt-2 text-2xl font-extrabold">Ms. Anna</div>
-                <div className="mt-1 text-white/85">WhatsApp: {ANNA_PHONE_DISPLAY}</div>
+                <div className="mt-2 flex items-end justify-between gap-3">
+                  <div>
+                    <div className="text-2xl font-extrabold">Ms. Anna</div>
+                    <div className="mt-1 text-white/85">WhatsApp: {ANNA_PHONE_DISPLAY}</div>
+                  </div>
+                  <span className="rounded-full bg-white/12 px-3 py-2 text-xs font-bold">
+                    24/7 support
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -527,6 +537,12 @@ export default function RussianPage() {
                   </a>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <div className="mt-auto pt-6 lg:hidden">
+            <div className="rounded-3xl bg-white/10 backdrop-blur-md border border-white/12 px-4 py-3 text-white/88 text-sm leading-relaxed">
+              Для русскоговорящих гостей: туры • трансферы • билеты • private маршруты • поддержка в WhatsApp.
             </div>
           </div>
         </div>
