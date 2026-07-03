@@ -2308,14 +2308,24 @@ export default function Home() {
             </div>
           </div>
 
-          <nav className="hidden md:flex gap-8 text-white/90 font-medium">
-            <a href="/secret">Secret Local</a>
-            <a href="/local-food">Local Food</a>
-            <a href="#experiences">Experiences</a>
-            <a href="#travelers">International Travelers</a>
-            <a href="#local-tips">Local Knowledge</a>
-            <a href="#contact">Contact</a>
-          </nav>
+          <div className="flex items-center gap-3">
+            <a
+              href="/ru"
+              className="rounded-full border border-yellow-400/70 bg-black/40 px-3 py-2 text-xs font-bold text-white shadow-sm backdrop-blur transition hover:bg-yellow-400 hover:text-black md:px-4 md:text-sm"
+              aria-label="Russian language page"
+            >
+              🇷🇺 Русский
+            </a>
+
+            <nav className="hidden md:flex gap-8 text-white/90 font-medium">
+              <a href="/secret">Secret Local</a>
+              <a href="/local-food">Local Food</a>
+              <a href="#experiences">Experiences</a>
+              <a href="#travelers">International Travelers</a>
+              <a href="#local-tips">Local Knowledge</a>
+              <a href="#contact">Contact</a>
+            </nav>
+          </div>
         </header>
 
         <div className="relative z-10 min-h-screen flex items-center px-6 md:px-20 pt-28">
