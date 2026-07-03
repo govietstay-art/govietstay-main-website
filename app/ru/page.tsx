@@ -431,13 +431,13 @@ export default function RussianPage() {
               </div>
 
               <h1 className="mt-5 text-3xl md:text-6xl font-extrabold leading-tight">
-                Дананг • Хойан • Хюэ
+                Вьетнам без языкового стресса
                 <br />
-                <span className="text-yellow-300">туры с русской поддержкой</span>
+                <span className="text-yellow-300">туры в Дананге, Хойане и Хюэ на русском</span>
               </h1>
 
               <p className="mt-5 text-base md:text-xl text-white/82 leading-relaxed">
-                Туры, трансфер, билеты и локальная помощь GoVietStay. Русский консультант Ms. Anna поможет выбрать понятный, безопасный и комфортный вариант — без языкового стресса и лишней неопределённости.
+                Не нужно разбираться во всём самому. Ms. Anna поможет на русском: какой тур выбрать, какой формат удобнее для семьи или компании, когда лучше ехать и стоит ли брать private upgrade.
               </p>
 
               <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-sm md:text-base">
@@ -445,7 +445,7 @@ export default function RussianPage() {
                   "Русскоговорящий гид по запросу",
                   "Туры Дананг • Хойан • Хюэ",
                   "От 4 гостей — private upgrade по запросу",
-                  "WhatsApp Ms. Anna до и во время поездки",
+                  "Получить подборку туров у Ms. Anna до и во время поездки",
                 ].map((item) => (
                   <div
                     key={item}
@@ -465,14 +465,14 @@ export default function RussianPage() {
                   rel="noopener noreferrer"
                   className="rounded-full bg-green-500 hover:bg-green-600 px-6 py-4 text-center text-base font-extrabold text-white transition shadow-lg"
                 >
-                  WhatsApp Ms. Anna
+                  Получить подборку туров у Ms. Anna
                 </a>
 
                 <a
                   href="#ru-tours"
                   className="rounded-full border border-white/30 bg-white/10 px-6 py-4 text-center text-base font-bold text-white hover:bg-white hover:text-[#06251b] transition"
                 >
-                  Смотреть туры
+                  Посмотреть туры
                 </a>
               </div>
 
@@ -537,10 +537,10 @@ export default function RussianPage() {
               Russian Page by GoVietStay
             </p>
             <h2 className="mt-4 text-3xl md:text-5xl font-extrabold leading-tight">
-              Эта страница сделана специально для русскоговорящих гостей
+              Русскоговорящим гостям важно понимать всё заранее
             </h2>
             <p className="mt-5 text-base md:text-lg text-[#06251b]/75 leading-relaxed">
-              Мы собрали основные туры, преимущества GoVietStay, отдельный контакт Ms. Anna и понятную поддержку для гостей, которым важно общаться на русском.
+              Что входит в тур, сколько времени занимает дорога, нужен ли русский гид, подходит ли маршрут детям или родителям — всё это лучше уточнить до оплаты. Поэтому у GoVietStay есть отдельная RU-страница и русскоязычный контакт Ms. Anna.
             </p>
           </div>
 
@@ -566,6 +566,48 @@ export default function RussianPage() {
               <div key={item.title} className="rounded-[2rem] border border-[#06251b]/10 bg-[#f7f1df] p-5 md:p-6 shadow-sm">
                 <h3 className="text-lg md:text-xl font-extrabold">{item.title}</h3>
                 <p className="mt-3 text-sm md:text-base text-[#06251b]/70 leading-relaxed">{item.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+
+      {/* RUSSIAN NATIVE TOUR GROUPS */}
+      <section className="px-4 md:px-8 lg:px-12 py-12 bg-[#f7f1df]">
+        <div className="max-w-7xl mx-auto">
+          <p className="text-green-800 uppercase tracking-[4px] text-xs md:text-sm font-extrabold">
+            Выберите свой стиль поездки
+          </p>
+          <h2 className="mt-4 text-3xl md:text-5xl font-extrabold leading-tight">
+            Не все гости хотят один и тот же тур
+          </h2>
+          <p className="mt-5 text-base md:text-lg text-[#06251b]/75 leading-relaxed max-w-4xl">
+            Кто-то хочет классические места без риска. Кто-то ищет приключения и скрытые локации.
+            А кому-то нужен спокойный private / premium маршрут для семьи, пары или небольшой компании.
+          </p>
+
+          <div className="mt-8 grid md:grid-cols-3 gap-5">
+            {[
+              {
+                title: "Classic Vietnam",
+                text: "Ba Na Hills, Golden Bridge, Hoi An, Hue — понятные маршруты для первого визита.",
+              },
+              {
+                title: "Adventure & Discovery",
+                text: "Cham Island, Hai Van Pass, hidden gems, локальная еда и маршруты не как у всех.",
+              },
+              {
+                title: "Private & Premium",
+                text: "Гибкий темп, private car, русский гид по запросу, комфорт для семьи и 4+ гостей.",
+              },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className="rounded-[2rem] bg-white border border-[#06251b]/10 p-6 shadow-sm"
+              >
+                <h3 className="text-2xl font-extrabold">{item.title}</h3>
+                <p className="mt-4 text-[#06251b]/72 leading-relaxed">{item.text}</p>
               </div>
             ))}
           </div>
@@ -725,7 +767,7 @@ export default function RussianPage() {
                 rel="noopener noreferrer"
                 className="mt-7 inline-flex w-full justify-center rounded-full bg-green-500 px-7 py-4 font-extrabold text-white hover:bg-green-600 transition sm:w-auto"
               >
-                Узнать больше у Ms. Anna
+                Получить подборку у Ms. Anna
               </a>
             </div>
           </div>
