@@ -39,10 +39,10 @@ const ruTours: RuTour[] = [
     duration: "На весь день",
     intro:
       "Золотой мост, французская деревня, канатная дорога и один из самых известных видов Центрального Вьетнама.",
-    groupPriceAdult: "от 1,550,000 VND",
-    groupPriceChild: "от 1,450,000 VND",
-    ruPriceAdult: "от 2,200,000 VND",
-    ruPriceChild: "от 2,000,000 VND",
+    groupPriceAdult: "от 1,550,000 VND (~$60)",
+    groupPriceChild: "от 1,450,000 VND (~$56)",
+    ruPriceAdult: "от 2,200,000 VND (~$85)",
+    ruPriceChild: "от 2,000,000 VND (~$77)",
     upgradeNote:
       "Для групп от 4 гостей GoVietStay может помочь перевести тур в более комфортный private формат.",
     highlights: [
@@ -73,10 +73,10 @@ const ruTours: RuTour[] = [
     duration: "На полдня / день",
     intro:
       "Быстрый катер, пляж, островная атмосфера и отдых на море недалеко от Хойана.",
-    groupPriceAdult: "от 950,000 VND / чел.",
+    groupPriceAdult: "от 950,000 VND (~$37) / чел.",
     groupPriceChild: "уточняется",
-    ruPriceAdult: "от 1,800,000 VND / чел.",
-    ruPriceChild: "от 1,500,000 VND / чел.",
+    ruPriceAdult: "от 1,800,000 VND (~$69) / чел.",
+    ruPriceChild: "от 1,500,000 VND (~$58) / чел.",
     upgradeNote:
       "Если вас 4 и больше, можно обсудить более удобный private формат с лучшей гибкостью по времени.",
     highlights: [
@@ -107,10 +107,10 @@ const ruTours: RuTour[] = [
     duration: "Полдня",
     intro:
       "Знаменитая корзинная лодка, кокосовый лес и лёгкая программа, которую удобно сочетать с древним городом Хойан.",
-    groupPriceAdult: "от 1,250,000 VND",
-    groupPriceChild: "от 1,000,000 VND",
-    ruPriceAdult: "от 1,800,000 VND",
-    ruPriceChild: "от 1,600,000 VND",
+    groupPriceAdult: "от 1,250,000 VND (~$48)",
+    groupPriceChild: "от 1,000,000 VND (~$38)",
+    ruPriceAdult: "от 1,800,000 VND (~$69)",
+    ruPriceChild: "от 1,600,000 VND (~$62)",
     upgradeNote:
       "Для группы от 4 человек можно сделать более удобный private маршрут с гибким временем.",
     highlights: [
@@ -141,10 +141,10 @@ const ruTours: RuTour[] = [
     duration: "Вечер",
     intro:
       "Один из самых известных вечерних культурных проектов Хойана. Удобно сочетать с прогулкой по древнему городу.",
-    groupPriceAdult: "от 2,400,000 VND",
-    groupPriceChild: "от 1,900,000 VND",
-    ruPriceAdult: "от 3,000,000 VND",
-    ruPriceChild: "от 2,800,000 VND",
+    groupPriceAdult: "от 2,400,000 VND (~$92)",
+    groupPriceChild: "от 1,900,000 VND (~$73)",
+    ruPriceAdult: "от 3,000,000 VND (~$115)",
+    ruPriceChild: "от 2,800,000 VND (~$108)",
     upgradeNote:
       "Для 4+ гостей можно организовать более комфортный private трансфер и вечерний маршрут.",
     highlights: [
@@ -175,10 +175,10 @@ const ruTours: RuTour[] = [
     duration: "На весь день",
     intro:
       "Классический маршрут в Хюэ: цитадель, история императорской династии и одна из самых культурных экскурсий Центрального Вьетнама.",
-    groupPriceAdult: "от 2,700,000 VND",
-    groupPriceChild: "от 2,400,000 VND",
-    ruPriceAdult: "от 3,200,000 VND",
-    ruPriceChild: "от 2,800,000 VND",
+    groupPriceAdult: "от 2,700,000 VND (~$104)",
+    groupPriceChild: "от 2,400,000 VND (~$92)",
+    ruPriceAdult: "от 3,200,000 VND (~$123)",
+    ruPriceChild: "от 2,800,000 VND (~$108)",
     upgradeNote:
       "Для 4 гостей и больше стоит рассматривать более комфортный private формат из-за длинной дороги и насыщенного дня.",
     highlights: [
@@ -209,10 +209,10 @@ const ruTours: RuTour[] = [
     duration: "Полдня",
     intro:
       "Красивый и лёгкий маршрут по Данангу: статуя Lady Buddha, виды с Son Tra и Мраморные горы.",
-    groupPriceAdult: "от 1,350,000 VND",
-    groupPriceChild: "от 1,150,000 VND",
-    ruPriceAdult: "от 1,900,000 VND",
-    ruPriceChild: "от 1,600,000 VND",
+    groupPriceAdult: "от 1,350,000 VND (~$52)",
+    groupPriceChild: "от 1,150,000 VND (~$44)",
+    ruPriceAdult: "от 1,900,000 VND (~$73)",
+    ruPriceChild: "от 1,600,000 VND (~$62)",
     upgradeNote:
       "Если вас 4+, можно собрать более удобный private маршрут с гибким темпом и остановками.",
     highlights: [
@@ -284,6 +284,9 @@ function TourDetailCard({ tour }: { tour: RuTour }) {
             <div className="text-xs uppercase tracking-[3px] text-green-800 font-extrabold">
               Формат / цены
             </div>
+            <p className="mt-2 text-xs text-[#06251b]/60 leading-relaxed">
+              Ориентир в USD рассчитан по курсу 1 USD ≈ 26,000 VND. Финальная цена подтверждается перед бронированием.
+            </p>
             <div className="mt-4 space-y-3 text-sm md:text-base">
               {tour.groupPriceAdult && (
                 <div className="flex justify-between gap-4">
@@ -881,6 +884,8 @@ export default function RussianPage() {
               Ms. Anna
               <br />
               WhatsApp: {ANNA_PHONE_DISPLAY}
+              <br />
+              Цены можно уточнить в VND и USD.
             </p>
           </div>
 
