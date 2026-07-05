@@ -49,163 +49,163 @@ type SignaturePackage = {
 const signaturePackages: SignaturePackage[] = [
   {
     id: "golden-bridge-hoian",
-    title: "Golden Bridge & Hoi An Escape",
+    title: "Золотой мост и вечерний Хойан",
     image: "/tour/bana.jpg",
-    route: "Дананг • Ba Na Hills • Golden Bridge • Хойан",
-    duration: "3D2N",
-    badge: "ICONIC FIRST TRIP",
+    route: "Дананг • Ba Na Hills • Золотой мост • Хойан",
+    duration: "3 дня / 2 ночи",
+    badge: "ПЕРВОЕ ЗНАКОМСТВО",
     intro:
-      "Короткое private-путешествие для первого визита: спокойный прилёт в Дананг, Ba Na Hills с Золотым мостом и атмосферный вечерний Хойан с поддержкой на русском.",
-    bestFor: ["Пары", "Семьи", "Первый визит", "Главные highlights без суеты"],
+      "Короткое private-путешествие для первого визита: спокойный прилёт в Дананг, Ba Na Hills с Золотым мостом и атмосферный вечерний Хойан с поддержкой на русском языке.",
+    bestFor: ["Пары", "Семьи", "Первый визит", "Главные места без суеты"],
     days: [
       {
-        title: "Day 1 — Arrival in Da Nang",
+        title: "День 1 — Прибытие в Дананг",
         items: [
-          "Private airport transfer в Дананге",
-          "Поддержка при заселении и первая локальная ориентация",
-          "Опционально: пляж, Han River, seafood dinner или лёгкая вечерняя прогулка",
+          "Индивидуальная встреча в аэропорту Дананга",
+          "Помощь при заселении и первая локальная ориентация",
+          "По желанию: пляж, река Хан, ужин с морепродуктами или лёгкая вечерняя прогулка",
         ],
       },
       {
-        title: "Day 2 — Ba Na Hills & Golden Bridge",
+        title: "День 2 — Ba Na Hills и Золотой мост",
         items: [
-          "Private car and driver",
-          "Ba Na Hills, Golden Bridge, cable car, French Village",
-          "Фото-время и гибкий темп для семьи / пары",
-          "Russian-speaking guide support during the tour day",
+          "Индивидуальный автомобиль с водителем",
+          "Ba Na Hills, Золотой мост, канатная дорога и Французская деревня",
+          "Время для фото и гибкий темп для семьи или пары",
+          "Поддержка русскоязычного гида во время экскурсионного дня",
         ],
       },
       {
-        title: "Day 3 — Hoi An Ancient Town",
+        title: "День 3 — Древний город Хойан",
         items: [
-          "Private transfer to Hoi An",
-          "Ancient Town walking experience, lantern streets and riverside atmosphere",
-          "Local food / café suggestions",
-          "Optional Hoai River lantern boat, return to Da Nang or airport drop-off depending on flight schedule",
+          "Индивидуальный трансфер в Хойан",
+          "Прогулка по древнему городу, улицы с фонарями и атмосфера набережной",
+          "Рекомендации по местной еде и кафе",
+          "По желанию: лодка с фонариками на реке Хоай, возвращение в Дананг или трансфер в аэропорт по расписанию рейса",
         ],
       },
     ],
     includes: [
-      "Private airport transfer",
-      "Private transportation for sightseeing days",
-      "Ba Na Hills arrangement",
-      "Hoi An private experience",
-      "Russian-speaking guide support for tour days",
-      "GoVietStay local assistance before and during the trip",
+      "Индивидуальный трансфер из аэропорта Дананга",
+      "Индивидуальный транспорт в экскурсионные дни",
+      "Организация дня Ba Na Hills",
+      "Индивидуальная программа в Хойане",
+      "Поддержка русскоязычного гида в экскурсионные дни",
+      "Локальная поддержка GoVietStay до поездки и во время путешествия",
     ],
-    priceVnd: "From 11,900,000 VND / 2 guests",
-    priceUsd: "From 458 USD / 2 guests",
+    priceVnd: "от 11,900,000 VND / 2 гостя",
+    priceUsd: "примерно от 458 USD / 2 гостя",
     whatsappText:
-      "Здравствуйте, Ms. Anna. Меня интересует пакет Golden Bridge & Hoi An Escape 3D2N. Подскажите, пожалуйста, точный маршрут и цену.",
+      "Здравствуйте, Ms. Anna. Меня интересует пакет Золотой мост и вечерний Хойан 3 дня / 2 ночи. Подскажите, пожалуйста, точный маршрут и цену.",
   },
   {
     id: "local-soul-danang-hoian",
-    title: "Local Soul of Da Nang & Hoi An",
+    title: "Локальный Дананг и закатный Хойан",
     image: "/tour/coconut.jpg",
-    route: "Дананг • Son Tra • Marble Mountains • Coconut Forest • Хойан",
-    duration: "3D2N",
-    badge: "LOCAL & SOFT PACE",
+    route: "Дананг • Сон Тра • Мраморные горы • Кокосовый лес • Хойан",
+    duration: "3 дня / 2 ночи",
+    badge: "МЯГКИЙ ЛОКАЛЬНЫЙ ТЕМП",
     intro:
       "Более мягкий и локальный private-маршрут для гостей, которые хотят увидеть Дананг и Хойан без перегруза: виды, культура, еда, кокосовый лес и вечерние фонари.",
-    bestFor: ["Пары", "Семьи", "Мягкий темп", "Local experience"],
+    bestFor: ["Пары", "Семьи", "Мягкий темп", "Локальные впечатления"],
     days: [
       {
-        title: "Day 1 — Arrival in Da Nang",
+        title: "День 1 — Прибытие в Дананг",
         items: [
-          "Private airport transfer",
-          "Hotel check-in support",
-          "Relaxed local orientation with Russian-speaking support",
+          "Индивидуальная встреча в аэропорту",
+          "Помощь при заселении в отель",
+          "Спокойная локальная ориентация с поддержкой на русском языке",
         ],
       },
       {
-        title: "Day 2 — Da Nang Local Discovery",
+        title: "День 2 — Локальное открытие Дананга",
         items: [
-          "Linh Ung Pagoda / Son Tra Peninsula",
-          "Marble Mountains and scenic coastal route",
-          "Local coffee stop or seafood / Central Vietnamese food suggestion",
-          "Russian-speaking guide support during the tour day",
+          "Пагода Линь Унг и полуостров Сон Тра",
+          "Мраморные горы и живописная прибрежная дорога",
+          "Остановка на местный кофе или рекомендация морепродуктов / кухни Центрального Вьетнама",
+          "Поддержка русскоязычного гида во время экскурсионного дня",
         ],
       },
       {
-        title: "Day 3 — Coconut Forest & Hoi An Sunset",
+        title: "День 3 — Кокосовый лес и вечерний Хойан",
         items: [
-          "Coconut Forest Basket Boat experience",
-          "Hoi An Ancient Town walking route",
-          "Lantern streets, local food, riverside cafés",
-          "Optional Hoai River lantern boat and return to Da Nang",
+          "Прогулка на корзинной лодке в кокосовом лесу",
+          "Пешеходный маршрут по древнему городу Хойан",
+          "Улицы с фонарями, местная еда и кафе у реки",
+          "По желанию: лодка с фонариками на реке Хоай и возвращение в Дананг",
         ],
       },
     ],
     includes: [
-      "Private airport transfer",
-      "Private transportation for sightseeing days",
-      "Da Nang local discovery route",
-      "Coconut Forest / Hoi An experience",
-      "Russian-speaking guide support for tour days",
-      "GoVietStay travel coordination before and during the trip",
+      "Индивидуальный трансфер из аэропорта Дананга",
+      "Индивидуальный транспорт в экскурсионные дни",
+      "Локальный маршрут по Данангу",
+      "Кокосовый лес и индивидуальная программа в Хойане",
+      "Поддержка русскоязычного гида в экскурсионные дни",
+      "Координация поездки GoVietStay до прибытия и во время путешествия",
     ],
-    priceVnd: "From 10,700,000 VND / 2 guests",
-    priceUsd: "From 412 USD / 2 guests",
+    priceVnd: "от 10,700,000 VND / 2 гостя",
+    priceUsd: "примерно от 412 USD / 2 гостя",
     whatsappText:
-      "Здравствуйте, Ms. Anna. Меня интересует пакет Local Soul of Da Nang & Hoi An 3D2N. Подскажите, пожалуйста, детали и цену.",
+      "Здравствуйте, Ms. Anna. Меня интересует пакет Локальный Дананг и закатный Хойан 3 дня / 2 ночи. Подскажите, пожалуйста, детали и цену.",
   },
   {
     id: "central-vietnam-signature",
-    title: "Central Vietnam Signature Journey",
+    title: "Фирменное путешествие по Центральному Вьетнаму",
     image: "/tour/hue.jpg",
     route: "Дананг • Ba Na Hills • Хойан • Хюэ",
-    duration: "4D3N",
-    badge: "FLAGSHIP JOURNEY",
+    duration: "4 дня / 3 ночи",
+    badge: "ФЛАГМАНСКИЙ МАРШРУТ",
     intro:
-      "Полное private-путешествие GoVietStay для первого знакомства с Центральным Вьетнамом: iconic highlights, культурное наследие, local atmosphere и русскоязычная поддержка.",
+      "Полное private-путешествие GoVietStay для первого знакомства с Центральным Вьетнамом: знаковые места, культурное наследие, локальная атмосфера и русскоязычная поддержка.",
     bestFor: ["Первый визит", "Пары и семьи", "Дананг + Хойан + Хюэ", "Полный маршрут"],
     days: [
       {
-        title: "Day 1 — Arrival in Da Nang",
+        title: "День 1 — Прибытие в Дананг",
         items: [
-          "Private airport transfer",
-          "Hotel check-in support and relaxed welcome",
-          "Optional evening: beach, Han River, local dinner or city view",
+          "Индивидуальная встреча в аэропорту",
+          "Помощь при заселении и спокойное знакомство с городом",
+          "По желанию: пляж, река Хан, местный ужин или видовая точка города",
         ],
       },
       {
-        title: "Day 2 — Ba Na Hills & Golden Bridge",
+        title: "День 2 — Ba Na Hills и Золотой мост",
         items: [
-          "Private car and driver",
-          "Ba Na Hills, Golden Bridge, cable car, French Village",
-          "Flexible pacing and Russian-speaking guide support",
+          "Индивидуальный автомобиль с водителем",
+          "Ba Na Hills, Золотой мост, канатная дорога и Французская деревня",
+          "Гибкий темп и поддержка русскоязычного гида",
         ],
       },
       {
-        title: "Day 3 — Hoi An Ancient Town & Local Experiences",
+        title: "День 3 — Хойан и локальные впечатления",
         items: [
-          "Optional Coconut Forest Basket Boat",
-          "Hoi An Ancient Town, lantern streets and riverside atmosphere",
-          "Local food / café suggestions and optional Hoai River lantern boat",
+          "По желанию: корзинные лодки в кокосовом лесу",
+          "Древний город Хойан, улицы с фонарями и атмосфера набережной",
+          "Рекомендации по местной еде / кафе и по желанию лодка с фонариками на реке Хоай",
         ],
       },
       {
-        title: "Day 4 — Hue Imperial Heritage Day",
+        title: "День 4 — Императорское наследие Хюэ",
         items: [
-          "Private day trip to Hue",
-          "Imperial City, cultural route and local food suggestions",
-          "Russian-speaking guide support and flexible return / onward travel arrangement",
+          "Индивидуальная поездка на день в Хюэ",
+          "Императорский город, культурный маршрут и рекомендации по местной кухне",
+          "Поддержка русскоязычного гида и гибкое возвращение / дальнейший трансфер по плану гостя",
         ],
       },
     ],
     includes: [
-      "Private airport transfer",
-      "Private car and driver for sightseeing days",
-      "Ba Na Hills arrangement",
-      "Hoi An private experience",
-      "Hue private day journey",
-      "Russian-speaking guide support for tour days",
-      "GoVietStay local assistance before and during the trip",
+      "Индивидуальный трансфер из аэропорта Дананга",
+      "Индивидуальный автомобиль с водителем в экскурсионные дни",
+      "Организация дня Ba Na Hills",
+      "Индивидуальная программа в Хойане",
+      "Индивидуальная поездка в Хюэ",
+      "Поддержка русскоязычного гида в экскурсионные дни",
+      "Локальная поддержка GoVietStay до поездки и во время путешествия",
     ],
-    priceVnd: "From 17,900,000 VND / 2 guests",
-    priceUsd: "From 689 USD / 2 guests",
+    priceVnd: "от 17,900,000 VND / 2 гостя",
+    priceUsd: "примерно от 689 USD / 2 гостя",
     whatsappText:
-      "Здравствуйте, Ms. Anna. Меня интересует пакет Central Vietnam Signature Journey 4D3N. Подскажите, пожалуйста, точный маршрут и цену.",
+      "Здравствуйте, Ms. Anna. Меня интересует фирменное путешествие по Центральному Вьетнаму 4 дня / 3 ночи. Подскажите, пожалуйста, точный маршрут и цену.",
   },
 ];
 
@@ -556,7 +556,7 @@ function SignaturePackageCard({ pkg }: { pkg: SignaturePackage }) {
   return (
     <details className="group rounded-[1.6rem] md:rounded-[2rem] border border-[#06251b]/10 bg-white shadow-lg overflow-hidden open:shadow-2xl open:border-[#0b6b4f]/35 transition">
       <summary className="list-none cursor-pointer select-none">
-        <div className="relative h-[430px] sm:h-[400px] md:h-[460px] lg:h-[520px]">
+        <div className="relative h-[500px] sm:h-[520px] md:h-[560px] lg:h-[620px]">
           <Image src={pkg.image} alt={pkg.title} fill className="object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#06251b] via-[#06251b]/78 to-[#06251b]/5" />
 
@@ -569,11 +569,11 @@ function SignaturePackageCard({ pkg }: { pkg: SignaturePackage }) {
             </span>
           </div>
 
-          <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5 md:p-6 text-white">
-            <div className="mb-3 inline-flex rounded-full bg-white/12 backdrop-blur px-3 py-1.5 text-[11px] font-extrabold border border-white/15">
+          <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5 md:p-6 pt-24 sm:pt-28 md:pt-32 lg:pt-36 text-white">
+            <div className="mb-4 inline-flex rounded-full bg-white/12 backdrop-blur px-3 py-1.5 text-[11px] font-extrabold border border-white/15">
               Tap to open itinerary
             </div>
-            <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-3xl xl:text-4xl font-extrabold leading-[1.08] drop-shadow">
+            <h3 className="text-[2rem] sm:text-[2.35rem] md:text-[2.7rem] lg:text-[2.45rem] xl:text-[2.8rem] font-extrabold leading-[1.04] drop-shadow max-w-[92%]">
               {pkg.title}
             </h3>
             <p className="mt-3 text-sm sm:text-base font-extrabold text-yellow-300 leading-snug">
@@ -646,11 +646,11 @@ function SignaturePackageCard({ pkg }: { pkg: SignaturePackage }) {
         </div>
 
         <div className="mt-6 rounded-3xl bg-[#06251b] text-white p-4 sm:p-5">
-          <div className="text-[11px] uppercase tracking-[2.5px] text-yellow-300 font-extrabold">Price guide</div>
+          <div className="text-[11px] uppercase tracking-[2.5px] text-yellow-300 font-extrabold">Ориентир по цене</div>
           <div className="mt-2 text-xl md:text-2xl font-extrabold leading-tight">{pkg.priceVnd}</div>
           <div className="mt-1 text-sm md:text-base text-white/80 font-bold">{pkg.priceUsd}</div>
           <p className="mt-2 text-xs text-white/65 leading-relaxed">
-            Final price depends on date, hotel location, group size, tickets, meals, optional experiences and guide availability. Use the fixed WhatsApp bar below for the exact itinerary and partner rates.
+            Финальная цена зависит от даты, отеля, размера группы, выбранных билетов, питания, дополнительных опций и доступности русскоговорящего гида. Для точного маршрута и цены используйте единую WhatsApp-панель внизу страницы.
           </p>
         </div>
       </div>
@@ -669,10 +669,10 @@ function RussianAudienceAnnaPartnerSection() {
 
           <div className="relative z-10">
             <p className="text-yellow-300 uppercase tracking-[3.5px] text-[11px] md:text-sm font-extrabold">
-              Russian-speaking travelers
+              Для русскоговорящих путешественников
             </p>
             <h2 className="mt-4 text-3xl md:text-5xl font-extrabold leading-tight">
-              For Russian-speaking travelers from Russia, Kazakhstan, Uzbekistan, Mongolia…
+              For Для русскоговорящих путешественников from Russia, Kazakhstan, Uzbekistan, Mongolia…
             </h2>
             <p className="mt-5 text-base md:text-lg text-white/78 leading-relaxed">
               GoVietStay помогает русскоговорящим гостям в Центральном Вьетнаме: Дананг, Хойан и Хюэ. Мы подбираем private-туры, трансферы, билеты и multi-day packages с локальной координацией и поддержкой на русском.
@@ -680,10 +680,10 @@ function RussianAudienceAnnaPartnerSection() {
 
             <div className="mt-6 grid gap-3 sm:grid-cols-2">
               {[
-                "Russia / Казахстан / Uzbekistan / Mongolia",
+                "Россия / Казахстан / Узбекистан / Монголия",
                 "Da Nang • Hoi An • Hue",
-                "Private tours & multi-day packages",
-                "Russian-speaking support",
+                "Private-туры и пакеты на несколько дней",
+                "Поддержка на русском языке",
               ].map((item) => (
                 <div key={item} className="rounded-2xl bg-white/10 border border-white/10 px-4 py-3 text-sm md:text-base font-bold text-white/90">
                   ✓ {item}
@@ -701,7 +701,7 @@ function RussianAudienceAnnaPartnerSection() {
               </div>
               <div>
                 <p className="text-green-800 uppercase tracking-[3px] text-[11px] md:text-xs font-extrabold">
-                  Russian-speaking support
+                  Поддержка на русском языке
                 </p>
                 <h3 className="mt-2 text-2xl md:text-3xl font-extrabold">Ms. Anna</h3>
                 <p className="mt-2 text-[#06251b]/72 leading-relaxed text-sm md:text-base">
@@ -711,22 +711,22 @@ function RussianAudienceAnnaPartnerSection() {
             </div>
 
             <div className="mt-5 rounded-2xl bg-white/70 border border-[#06251b]/10 px-4 py-3 text-sm md:text-base font-bold text-[#06251b]">
-              WhatsApp: {ANNA_PHONE_DISPLAY} • Use the fixed contact bar below.
+              WhatsApp: {ANNA_PHONE_DISPLAY} • Для связи используйте единую панель внизу страницы.
             </div>
           </div>
 
           <div className="rounded-[2rem] md:rounded-[2.5rem] bg-yellow-300 border border-yellow-500/30 p-5 sm:p-7 md:p-8 shadow-sm">
             <p className="text-[#06251b] uppercase tracking-[3px] text-[11px] md:text-xs font-extrabold">
-              For travel partners & agencies
+              Для туристических партнёров и агентств
             </p>
             <h3 className="mt-2 text-2xl md:text-3xl font-extrabold leading-tight">
-              Нужны B2B rates / net price для партнёров?
+              Нужны B2B-тарифы / net price для партнёров?
             </h3>
             <p className="mt-3 text-[#06251b]/75 leading-relaxed text-sm md:text-base">
-              Если вы travel agency, consultant, KOL или partner по рынкам Russia, Kazakhstan, Uzbekistan, Mongolia и CIS — напишите Anna, чтобы получить лучшую цену для агентства и прямую локальную поддержку GoVietStay во Вьетнаме.
+              Если вы туристическое агентство, консультант, KOL или партнёр по рынкам России, Казахстана, Узбекистана, Монголии и стран СНГ — напишите Anna, чтобы получить лучшую цену для агентства и прямую локальную поддержку GoVietStay во Вьетнаме.
             </p>
             <div className="mt-5 rounded-2xl bg-white/45 border border-[#06251b]/10 px-4 py-3 text-sm md:text-base font-extrabold text-[#06251b]">
-              Для B2B rates / net price используйте единую WhatsApp-панель внизу страницы.
+              Для B2B-тарифы / net price используйте единую WhatsApp-панель внизу страницы.
             </div>
           </div>
         </div>
@@ -1285,12 +1285,12 @@ export default function RussianPage() {
 
       {/* SINGLE FIXED RU CONTACT BAR */}
       <a
-        href={annaWa("Здравствуйте, Ms. Anna. Нужна помощь по GoVietStay: private tour / 3D2N или 4D3N package / airport transfer / B2B partner rates.")}
+        href={annaWa("Здравствуйте, Ms. Anna. Нужна помощь по GoVietStay: private tour / 3D2N или 4D3N package / airport transfer / B2B партнёрских тарифов.")}
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-4 left-4 right-4 z-50 flex items-center justify-center rounded-full bg-green-500 px-5 py-4 text-sm sm:text-base text-white font-extrabold shadow-2xl hover:bg-green-600 transition md:left-1/2 md:right-auto md:w-[min(560px,calc(100%-2rem))] md:-translate-x-1/2"
       >
-        🇷🇺 WhatsApp Anna • Tours / Packages / B2B rates
+        🇷🇺 WhatsApp Anna • Туры / Пакеты / B2B-тарифы
       </a>
     </main>
   );
