@@ -29,6 +29,186 @@ const ANNA_PHONE_LINK = "84787062460";
 const annaWa = (text: string) =>
   `https://wa.me/${ANNA_PHONE_LINK}?text=${encodeURIComponent(text)}`;
 
+
+type SignaturePackage = {
+  id: string;
+  title: string;
+  image: string;
+  route: string;
+  duration: string;
+  badge: string;
+  intro: string;
+  bestFor: string[];
+  days: { title: string; items: string[] }[];
+  includes: string[];
+  priceVnd: string;
+  priceUsd: string;
+  whatsappText: string;
+};
+
+const signaturePackages: SignaturePackage[] = [
+  {
+    id: "golden-bridge-hoian",
+    title: "Golden Bridge & Hoi An Escape",
+    image: "/tour/bana.jpg",
+    route: "Дананг • Ba Na Hills • Golden Bridge • Хойан",
+    duration: "3D2N",
+    badge: "ICONIC FIRST TRIP",
+    intro:
+      "Короткое private-путешествие для первого визита: спокойный прилёт в Дананг, Ba Na Hills с Золотым мостом и атмосферный вечерний Хойан с поддержкой на русском.",
+    bestFor: ["Пары", "Семьи", "Первый визит", "Главные highlights без суеты"],
+    days: [
+      {
+        title: "Day 1 — Arrival in Da Nang",
+        items: [
+          "Private airport transfer в Дананге",
+          "Поддержка при заселении и первая локальная ориентация",
+          "Опционально: пляж, Han River, seafood dinner или лёгкая вечерняя прогулка",
+        ],
+      },
+      {
+        title: "Day 2 — Ba Na Hills & Golden Bridge",
+        items: [
+          "Private car and driver",
+          "Ba Na Hills, Golden Bridge, cable car, French Village",
+          "Фото-время и гибкий темп для семьи / пары",
+          "Russian-speaking guide support during the tour day",
+        ],
+      },
+      {
+        title: "Day 3 — Hoi An Ancient Town",
+        items: [
+          "Private transfer to Hoi An",
+          "Ancient Town walking experience, lantern streets and riverside atmosphere",
+          "Local food / café suggestions",
+          "Optional Hoai River lantern boat, return to Da Nang or airport drop-off depending on flight schedule",
+        ],
+      },
+    ],
+    includes: [
+      "Private airport transfer",
+      "Private transportation for sightseeing days",
+      "Ba Na Hills arrangement",
+      "Hoi An private experience",
+      "Russian-speaking guide support for tour days",
+      "GoVietStay local assistance before and during the trip",
+    ],
+    priceVnd: "From 11,900,000 VND / 2 guests",
+    priceUsd: "From 458 USD / 2 guests",
+    whatsappText:
+      "Здравствуйте, Ms. Anna. Меня интересует пакет Golden Bridge & Hoi An Escape 3D2N. Подскажите, пожалуйста, точный маршрут и цену.",
+  },
+  {
+    id: "local-soul-danang-hoian",
+    title: "Local Soul of Da Nang & Hoi An",
+    image: "/tour/coconut.jpg",
+    route: "Дананг • Son Tra • Marble Mountains • Coconut Forest • Хойан",
+    duration: "3D2N",
+    badge: "LOCAL & SOFT PACE",
+    intro:
+      "Более мягкий и локальный private-маршрут для гостей, которые хотят увидеть Дананг и Хойан без перегруза: виды, культура, еда, кокосовый лес и вечерние фонари.",
+    bestFor: ["Пары", "Семьи", "Мягкий темп", "Local experience"],
+    days: [
+      {
+        title: "Day 1 — Arrival in Da Nang",
+        items: [
+          "Private airport transfer",
+          "Hotel check-in support",
+          "Relaxed local orientation with Russian-speaking support",
+        ],
+      },
+      {
+        title: "Day 2 — Da Nang Local Discovery",
+        items: [
+          "Linh Ung Pagoda / Son Tra Peninsula",
+          "Marble Mountains and scenic coastal route",
+          "Local coffee stop or seafood / Central Vietnamese food suggestion",
+          "Russian-speaking guide support during the tour day",
+        ],
+      },
+      {
+        title: "Day 3 — Coconut Forest & Hoi An Sunset",
+        items: [
+          "Coconut Forest Basket Boat experience",
+          "Hoi An Ancient Town walking route",
+          "Lantern streets, local food, riverside cafés",
+          "Optional Hoai River lantern boat and return to Da Nang",
+        ],
+      },
+    ],
+    includes: [
+      "Private airport transfer",
+      "Private transportation for sightseeing days",
+      "Da Nang local discovery route",
+      "Coconut Forest / Hoi An experience",
+      "Russian-speaking guide support for tour days",
+      "GoVietStay travel coordination before and during the trip",
+    ],
+    priceVnd: "From 10,700,000 VND / 2 guests",
+    priceUsd: "From 412 USD / 2 guests",
+    whatsappText:
+      "Здравствуйте, Ms. Anna. Меня интересует пакет Local Soul of Da Nang & Hoi An 3D2N. Подскажите, пожалуйста, детали и цену.",
+  },
+  {
+    id: "central-vietnam-signature",
+    title: "Central Vietnam Signature Journey",
+    image: "/tour/hue.jpg",
+    route: "Дананг • Ba Na Hills • Хойан • Хюэ",
+    duration: "4D3N",
+    badge: "FLAGSHIP JOURNEY",
+    intro:
+      "Полное private-путешествие GoVietStay для первого знакомства с Центральным Вьетнамом: iconic highlights, культурное наследие, local atmosphere и русскоязычная поддержка.",
+    bestFor: ["Первый визит", "Пары и семьи", "Дананг + Хойан + Хюэ", "Полный маршрут"],
+    days: [
+      {
+        title: "Day 1 — Arrival in Da Nang",
+        items: [
+          "Private airport transfer",
+          "Hotel check-in support and relaxed welcome",
+          "Optional evening: beach, Han River, local dinner or city view",
+        ],
+      },
+      {
+        title: "Day 2 — Ba Na Hills & Golden Bridge",
+        items: [
+          "Private car and driver",
+          "Ba Na Hills, Golden Bridge, cable car, French Village",
+          "Flexible pacing and Russian-speaking guide support",
+        ],
+      },
+      {
+        title: "Day 3 — Hoi An Ancient Town & Local Experiences",
+        items: [
+          "Optional Coconut Forest Basket Boat",
+          "Hoi An Ancient Town, lantern streets and riverside atmosphere",
+          "Local food / café suggestions and optional Hoai River lantern boat",
+        ],
+      },
+      {
+        title: "Day 4 — Hue Imperial Heritage Day",
+        items: [
+          "Private day trip to Hue",
+          "Imperial City, cultural route and local food suggestions",
+          "Russian-speaking guide support and flexible return / onward travel arrangement",
+        ],
+      },
+    ],
+    includes: [
+      "Private airport transfer",
+      "Private car and driver for sightseeing days",
+      "Ba Na Hills arrangement",
+      "Hoi An private experience",
+      "Hue private day journey",
+      "Russian-speaking guide support for tour days",
+      "GoVietStay local assistance before and during the trip",
+    ],
+    priceVnd: "From 17,900,000 VND / 2 guests",
+    priceUsd: "From 689 USD / 2 guests",
+    whatsappText:
+      "Здравствуйте, Ms. Anna. Меня интересует пакет Central Vietnam Signature Journey 4D3N. Подскажите, пожалуйста, точный маршрут и цену.",
+  },
+];
+
 const ruTours: RuTour[] = [
   {
     id: "bana",
@@ -324,7 +504,7 @@ function TourDetailCard({ tour }: { tour: RuTour }) {
 
           <div className="rounded-3xl bg-[#06251b] text-white p-5">
             <div className="text-xs uppercase tracking-[3px] text-yellow-300 font-extrabold">
-              Связаться с Ms. Anna
+              Русскоязычная поддержка
             </div>
             <h4 className="mt-3 text-2xl font-extrabold">Нужна консультация на русском?</h4>
             <p className="mt-3 text-white/80 text-sm leading-relaxed">
@@ -333,16 +513,9 @@ function TourDetailCard({ tour }: { tour: RuTour }) {
 
             <div className="mt-5 text-lg font-extrabold">{ANNA_PHONE_DISPLAY}</div>
 
-            <a
-              href={annaWa(
-                `Здравствуйте, Ms. Anna. Меня интересует тур "${tour.shortTitle}". Подскажите, пожалуйста, детали и возможен ли русский гид?`
-              )}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-5 inline-flex w-full justify-center rounded-full bg-green-500 px-5 py-3 font-extrabold text-white hover:bg-green-600 transition md:w-auto"
-            >
-              Написать по этому туру
-            </a>
+            <div className="mt-5 rounded-2xl bg-white/10 px-4 py-3 text-sm font-bold text-white/80">
+              Для уточнения деталей используйте единую WhatsApp-панель внизу страницы.
+            </div>
           </div>
         </div>
 
@@ -375,6 +548,220 @@ function TourDetailCard({ tour }: { tour: RuTour }) {
         </div>
       </div>
     </div>
+  );
+}
+
+
+function SignaturePackageCard({ pkg }: { pkg: SignaturePackage }) {
+  return (
+    <details className="group rounded-[1.6rem] md:rounded-[2rem] border border-[#06251b]/10 bg-white shadow-lg overflow-hidden open:shadow-2xl open:border-[#0b6b4f]/35 transition">
+      <summary className="list-none cursor-pointer select-none">
+        <div className="relative h-[430px] sm:h-[400px] md:h-[460px] lg:h-[520px]">
+          <Image src={pkg.image} alt={pkg.title} fill className="object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#06251b] via-[#06251b]/78 to-[#06251b]/5" />
+
+          <div className="absolute left-4 right-4 top-4 flex flex-wrap items-center gap-2">
+            <span className="rounded-full bg-yellow-300 px-3 py-1.5 text-[10px] font-extrabold text-[#06251b] shadow">
+              {pkg.badge}
+            </span>
+            <span className="rounded-full bg-white/15 backdrop-blur px-3 py-1.5 text-[10px] font-extrabold text-yellow-200 border border-white/15">
+              {pkg.duration}
+            </span>
+          </div>
+
+          <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5 md:p-6 text-white">
+            <div className="mb-3 inline-flex rounded-full bg-white/12 backdrop-blur px-3 py-1.5 text-[11px] font-extrabold border border-white/15">
+              Tap to open itinerary
+            </div>
+            <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-3xl xl:text-4xl font-extrabold leading-[1.08] drop-shadow">
+              {pkg.title}
+            </h3>
+            <p className="mt-3 text-sm sm:text-base font-extrabold text-yellow-300 leading-snug">
+              {pkg.route}
+            </p>
+            <p className="mt-4 text-sm sm:text-base text-white/88 leading-relaxed line-clamp-4 md:line-clamp-none">
+              {pkg.intro}
+            </p>
+
+            <div className="mt-5 rounded-2xl bg-white/10 backdrop-blur border border-white/15 p-4">
+              <div className="text-[11px] uppercase tracking-[2.5px] text-yellow-200 font-extrabold">
+                From price
+              </div>
+              <div className="mt-1 text-xl sm:text-2xl font-extrabold leading-tight">
+                {pkg.priceVnd}
+              </div>
+              <div className="mt-1 text-sm sm:text-base font-bold text-white/85">
+                {pkg.priceUsd}
+              </div>
+            </div>
+          </div>
+        </div>
+      </summary>
+
+      <div className="bg-[#f7f1df] p-4 sm:p-5 md:p-6">
+        <div>
+          <h4 className="text-lg font-extrabold">Best for</h4>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {pkg.bestFor.map((item) => (
+              <span key={item} className="rounded-full bg-white px-3 py-2 text-xs font-bold border border-[#06251b]/10">
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-6 space-y-3">
+          {pkg.days.map((day, index) => (
+            <div key={day.title} className="relative rounded-3xl bg-white border border-[#06251b]/10 p-4 sm:p-5">
+              <div className="flex items-start gap-3">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#0b6b4f] text-sm font-extrabold text-white">
+                  {index + 1}
+                </div>
+                <div className="min-w-0">
+                  <h4 className="font-extrabold text-[#0b6b4f] leading-snug">{day.title}</h4>
+                  <ul className="mt-3 space-y-2">
+                    {day.items.map((item) => (
+                      <li key={item} className="flex gap-2 text-sm leading-relaxed text-[#06251b]/76">
+                        <span className="mt-0.5 text-green-700 font-extrabold">✓</span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-6 rounded-3xl bg-white border border-[#06251b]/10 p-4 sm:p-5">
+          <h4 className="font-extrabold">Package includes</h4>
+          <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+            {pkg.includes.map((item) => (
+              <li key={item} className="flex gap-2 text-sm leading-relaxed text-[#06251b]/76">
+                <span className="text-green-700 font-extrabold">✓</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="mt-6 rounded-3xl bg-[#06251b] text-white p-4 sm:p-5">
+          <div className="text-[11px] uppercase tracking-[2.5px] text-yellow-300 font-extrabold">Price guide</div>
+          <div className="mt-2 text-xl md:text-2xl font-extrabold leading-tight">{pkg.priceVnd}</div>
+          <div className="mt-1 text-sm md:text-base text-white/80 font-bold">{pkg.priceUsd}</div>
+          <p className="mt-2 text-xs text-white/65 leading-relaxed">
+            Final price depends on date, hotel location, group size, tickets, meals, optional experiences and guide availability. Use the fixed WhatsApp bar below for the exact itinerary and partner rates.
+          </p>
+        </div>
+      </div>
+    </details>
+  );
+}
+
+
+function RussianAudienceAnnaPartnerSection() {
+  return (
+    <section className="px-4 md:px-8 lg:px-12 py-10 md:py-16 bg-white">
+      <div className="max-w-7xl mx-auto grid gap-5 lg:grid-cols-[1.05fr_0.95fr] items-stretch">
+        <div className="rounded-[2rem] md:rounded-[2.5rem] bg-[#06251b] text-white p-5 sm:p-7 md:p-9 overflow-hidden relative">
+          <div className="absolute -right-16 -top-16 h-44 w-44 rounded-full bg-yellow-300/15 blur-2xl" />
+          <div className="absolute -left-14 -bottom-14 h-40 w-40 rounded-full bg-green-400/15 blur-2xl" />
+
+          <div className="relative z-10">
+            <p className="text-yellow-300 uppercase tracking-[3.5px] text-[11px] md:text-sm font-extrabold">
+              Russian-speaking travelers
+            </p>
+            <h2 className="mt-4 text-3xl md:text-5xl font-extrabold leading-tight">
+              For Russian-speaking travelers from Russia, Kazakhstan, Uzbekistan, Mongolia…
+            </h2>
+            <p className="mt-5 text-base md:text-lg text-white/78 leading-relaxed">
+              GoVietStay помогает русскоговорящим гостям в Центральном Вьетнаме: Дананг, Хойан и Хюэ. Мы подбираем private-туры, трансферы, билеты и multi-day packages с локальной координацией и поддержкой на русском.
+            </p>
+
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              {[
+                "Russia / Казахстан / Uzbekistan / Mongolia",
+                "Da Nang • Hoi An • Hue",
+                "Private tours & multi-day packages",
+                "Russian-speaking support",
+              ].map((item) => (
+                <div key={item} className="rounded-2xl bg-white/10 border border-white/10 px-4 py-3 text-sm md:text-base font-bold text-white/90">
+                  ✓ {item}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="grid gap-5">
+          <div className="rounded-[2rem] md:rounded-[2.5rem] bg-[#f7f1df] border border-[#06251b]/10 p-5 sm:p-7 md:p-8 shadow-sm">
+            <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
+              <div className="h-16 w-16 shrink-0 rounded-full bg-[#0b6b4f] text-white flex items-center justify-center text-2xl font-extrabold shadow-lg">
+                A
+              </div>
+              <div>
+                <p className="text-green-800 uppercase tracking-[3px] text-[11px] md:text-xs font-extrabold">
+                  Russian-speaking support
+                </p>
+                <h3 className="mt-2 text-2xl md:text-3xl font-extrabold">Ms. Anna</h3>
+                <p className="mt-2 text-[#06251b]/72 leading-relaxed text-sm md:text-base">
+                  Anna помогает гостям на русском: консультация до поездки, подбор маршрута, airport transfer, private tours, билеты, рекомендации и поддержка во время пребывания.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-5 rounded-2xl bg-white/70 border border-[#06251b]/10 px-4 py-3 text-sm md:text-base font-bold text-[#06251b]">
+              WhatsApp: {ANNA_PHONE_DISPLAY} • Use the fixed contact bar below.
+            </div>
+          </div>
+
+          <div className="rounded-[2rem] md:rounded-[2.5rem] bg-yellow-300 border border-yellow-500/30 p-5 sm:p-7 md:p-8 shadow-sm">
+            <p className="text-[#06251b] uppercase tracking-[3px] text-[11px] md:text-xs font-extrabold">
+              For travel partners & agencies
+            </p>
+            <h3 className="mt-2 text-2xl md:text-3xl font-extrabold leading-tight">
+              Нужны B2B rates / net price для партнёров?
+            </h3>
+            <p className="mt-3 text-[#06251b]/75 leading-relaxed text-sm md:text-base">
+              Если вы travel agency, consultant, KOL или partner по рынкам Russia, Kazakhstan, Uzbekistan, Mongolia и CIS — напишите Anna, чтобы получить лучшую цену для агентства и прямую локальную поддержку GoVietStay во Вьетнаме.
+            </p>
+            <div className="mt-5 rounded-2xl bg-white/45 border border-[#06251b]/10 px-4 py-3 text-sm md:text-base font-extrabold text-[#06251b]">
+              Для B2B rates / net price используйте единую WhatsApp-панель внизу страницы.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SignaturePackagesSection() {
+  return (
+    <section id="signature-packages" className="px-4 md:px-8 lg:px-12 py-12 md:py-20 bg-white">
+      <div className="max-w-7xl mx-auto">
+        <div className="max-w-4xl">
+          <p className="text-green-800 uppercase tracking-[4px] text-xs md:text-sm font-extrabold">
+            Signature Central Vietnam Packages
+          </p>
+          <h2 className="mt-4 text-3xl md:text-5xl font-extrabold leading-tight">
+            Эксклюзивные private-пакеты 3D2N / 4D3N для русскоговорящих гостей
+          </h2>
+          <p className="mt-5 text-base md:text-lg text-[#06251b]/75 leading-relaxed">
+            Это не обычные однодневные туры. GoVietStay собирает цельные маршруты по Данангу,
+            Хойану и Хюэ с private transport, локальной координацией и русскоязычной поддержкой.
+          </p>
+          <div className="mt-5 rounded-3xl bg-[#f7f1df] border border-[#06251b]/10 p-4 md:p-5 text-sm md:text-base text-[#06251b]/75 leading-relaxed">
+            Нажмите на пакет, чтобы открыть программу по дням, включённые услуги и ориентировочную стоимость. Финальная цена зависит от даты, отеля, состава группы, выбранных билетов, питания, дополнительных опций и доступности русскоговорящего гида.
+          </div>
+        </div>
+
+        <div className="mt-8 grid gap-5 md:gap-6 lg:grid-cols-3 items-start">
+          {signaturePackages.map((pkg) => (
+            <SignaturePackageCard key={pkg.id} pkg={pkg} />
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -443,21 +830,10 @@ export default function RussianPage() {
               </h1>
 
               <p className="mt-4 text-base md:text-xl text-white/88 leading-relaxed max-w-2xl drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
-                Ms. Anna поможет выбрать тур, private формат, трансфер и удобный маршрут для семьи или компании.
+                Ms. Anna поможет гостям из Russia, Kazakhstan, Uzbekistan, Mongolia и других CIS markets выбрать тур, private формат, трансфер и удобный маршрут.
               </p>
 
               <div className="mt-5 flex flex-col sm:flex-row gap-3">
-                <a
-                  href={annaWa(
-                    "Здравствуйте, Ms. Anna. Я хочу узнать о русскоязычных турах GoVietStay в Дананге / Хойане / Хюэ."
-                  )}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-full bg-green-500 hover:bg-green-600 px-6 py-4 text-center text-base font-extrabold text-white transition shadow-lg"
-                >
-                  🇷🇺 WhatsApp Ms. Anna
-                </a>
-
                 <a
                   href="#ru-tours"
                   className="rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-6 py-4 text-center text-base font-bold text-white hover:bg-white hover:text-[#06251b] transition"
@@ -527,14 +903,9 @@ export default function RussianPage() {
                   <div className="mt-2 text-2xl font-extrabold">Ms. Anna</div>
                   <div className="mt-1 text-white/80">WhatsApp: {ANNA_PHONE_DISPLAY}</div>
 
-                  <a
-                    href={annaWa("Здравствуйте, Ms. Anna. Нужна помощь с туром / трансфером в Дананге, Хойане или Хюэ.")}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-4 inline-flex rounded-full bg-white px-5 py-3 font-extrabold text-[#06251b] hover:bg-yellow-300 transition"
-                  >
-                    Написать Ms. Anna
-                  </a>
+                  <div className="mt-4 rounded-2xl bg-white/10 px-4 py-3 text-sm font-bold text-white/85">
+                    Для связи используйте одну WhatsApp-панель внизу страницы.
+                  </div>
                 </div>
               </div>
             </div>
@@ -547,6 +918,8 @@ export default function RussianPage() {
           </div>
         </div>
       </section>
+
+      <RussianAudienceAnnaPartnerSection />
 
       {/* WHY THIS PAGE */}
       <section className="px-4 md:px-8 lg:px-12 py-12 md:py-16 bg-white">
@@ -632,6 +1005,8 @@ export default function RussianPage() {
           </div>
         </div>
       </section>
+
+      <SignaturePackagesSection />
 
       {/* TOUR SELECTOR - MOBILE FIRST */}
       <section id="ru-tours" className="px-4 md:px-8 lg:px-12 py-12 md:py-16 bg-[#f7f1df]">
@@ -780,14 +1155,9 @@ export default function RussianPage() {
                 </p>
               </div>
 
-              <a
-                href={annaWa("Здравствуйте, Ms. Anna. Хочу узнать больше о других турах GoVietStay: приключения, hidden gems, luxury experiences, private routes.")}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-7 inline-flex w-full justify-center rounded-full bg-green-500 px-7 py-4 font-extrabold text-white hover:bg-green-600 transition sm:w-auto"
-              >
-                Получить подборку у Ms. Anna
-              </a>
+              <div className="mt-7 rounded-2xl bg-white/10 border border-white/10 px-5 py-4 text-sm md:text-base font-bold text-white/80">
+                Для подборки маршрута и скрытых мест используйте единую WhatsApp-панель внизу страницы.
+              </div>
             </div>
           </div>
         </div>
@@ -867,17 +1237,12 @@ export default function RussianPage() {
           </div>
 
           <div className="w-full lg:w-auto rounded-[2rem] bg-[#0b6b4f] p-5 text-center shadow-2xl">
-            <div className="text-sm text-yellow-300 font-extrabold">Ms. Anna WhatsApp</div>
+            <div className="text-sm text-yellow-300 font-extrabold">Единый контакт RU page</div>
             <div className="mt-2 text-2xl font-extrabold">{ANNA_PHONE_DISPLAY}</div>
-            <a
-              href={annaWa("Здравствуйте, Ms. Anna. Меня интересует тур GoVietStay с русской поддержкой.")}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-5 inline-flex w-full justify-center rounded-full bg-green-500 px-7 py-4 font-extrabold text-white hover:bg-green-600 transition lg:w-auto"
-            >
-              Написать Ms. Anna
-            </a>
-            <div className="mt-4 text-white/70">GoVietStay.com</div>
+            <div className="mt-4 text-white/75 text-sm leading-relaxed">
+              Нажмите нижнюю WhatsApp-панель, чтобы написать по турам, package или B2B rates.
+            </div>
+            <div className="mt-4 text-white/70">GoVietStay.com/ru</div>
           </div>
         </div>
       </section>
@@ -918,14 +1283,14 @@ export default function RussianPage() {
         </div>
       </footer>
 
-      {/* MOBILE STICKY RU WHATSAPP */}
+      {/* SINGLE FIXED RU CONTACT BAR */}
       <a
-        href={annaWa("Здравствуйте, Ms. Anna. Нужна помощь с туром в Дананге, Хойане или Хюэ.")}
+        href={annaWa("Здравствуйте, Ms. Anna. Нужна помощь по GoVietStay: private tour / 3D2N или 4D3N package / airport transfer / B2B partner rates.")}
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-4 left-4 right-4 z-50 flex items-center justify-center rounded-full bg-green-500 px-5 py-4 text-white font-extrabold shadow-2xl hover:bg-green-600 transition md:left-auto md:right-5 md:w-auto"
+        className="fixed bottom-4 left-4 right-4 z-50 flex items-center justify-center rounded-full bg-green-500 px-5 py-4 text-sm sm:text-base text-white font-extrabold shadow-2xl hover:bg-green-600 transition md:left-1/2 md:right-auto md:w-[min(560px,calc(100%-2rem))] md:-translate-x-1/2"
       >
-        🇷🇺 WhatsApp Ms. Anna
+        🇷🇺 WhatsApp Anna • Tours / Packages / B2B rates
       </a>
     </main>
   );
