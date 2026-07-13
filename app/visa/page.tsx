@@ -188,6 +188,32 @@ export default function VisaPage() {
         </div>
       </section>
 
+
+      <section className="relative z-10 mx-auto -mt-7 max-w-6xl px-5 md:-mt-10 md:px-8">
+        <div className="grid gap-6 rounded-[2rem] border border-[#d9ad3d]/35 bg-[#fff9e8] p-6 shadow-[0_24px_70px_rgba(6,37,27,0.10)] md:grid-cols-[1fr_auto] md:items-center md:p-8">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.24em] text-[#0b6b4f]">
+              Before You Apply
+            </p>
+            <h2 className="mt-3 text-2xl font-black text-[#06251b] md:text-3xl">
+              Check Your Eligibility First — Free of Charge
+            </h2>
+            <p className="mt-3 max-w-3xl leading-7 text-[#06251b]/65">
+              Send us your nationality and expected travel date. GoVietStay will confirm eligibility,
+              estimated processing time and the most suitable service before you make any payment.
+            </p>
+          </div>
+          <a
+            href={WA_GENERAL}
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-full bg-[#0b6b4f] px-7 py-4 text-center font-black text-white shadow-lg shadow-[#0b6b4f]/15 transition hover:-translate-y-0.5 hover:bg-[#06432f]"
+          >
+            Free Eligibility Check
+          </a>
+        </div>
+      </section>
+
       <section id="prices" className="relative mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-24">
         <div className="grid gap-10 lg:grid-cols-[.75fr_1.25fr] lg:items-end">
           <div>
@@ -292,15 +318,65 @@ export default function VisaPage() {
           </div>
 
           <div className="rounded-[2rem] bg-[#06251b] p-7 text-white shadow-sm md:p-9">
-            <p className="text-sm font-black uppercase tracking-[0.25em] text-[#f4d77a]">Important Information</p>
-            <h2 className="mt-4 text-3xl font-black md:text-4xl">Before You Apply</h2>
-            <ul className="mt-7 space-y-4 text-white/68">
-              <li>✓ Approval is decided by the competent Vietnamese authority.</li>
-              <li>✓ Processing estimates are based on working days and valid application details.</li>
-              <li>✓ Some Middle Eastern and African nationalities may not be accepted by the current processing partner.</li>
-              <li>✓ South Africa, Algeria, Tunisia and Morocco can be checked individually.</li>
-              <li>✓ Contact GoVietStay before payment for final eligibility and timing confirmation.</li>
-            </ul>
+            <p className="text-sm font-black uppercase tracking-[0.25em] text-[#f4d77a]">Important Information & Terms</p>
+            <h2 className="mt-4 text-3xl font-black md:text-4xl">Please Read Before Payment</h2>
+
+            <div className="mt-7 space-y-5 text-white/72">
+              <div>
+                <h3 className="font-black text-white">Processing Time</h3>
+                <p className="mt-1 leading-6">
+                  Standard e-Visa processing is approximately 4–5 working days. Urgent processing follows
+                  the selected service and official working hours. All timeframes are estimates and may change.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-black text-white">Visa Approval</h3>
+                <p className="mt-1 leading-6">
+                  GoVietStay provides application assistance only. Final approval, refusal or additional
+                  document requests are decided solely by the competent Vietnamese authority.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-black text-white">Applicant Information</h3>
+                <p className="mt-1 leading-6">
+                  Applicants are responsible for providing complete and accurate passport and travel details.
+                  Incorrect or incomplete information may cause delays, extra charges or rejection.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-black text-white">Nationality Eligibility</h3>
+                <p className="mt-1 leading-6">
+                  Eligibility varies by nationality. Some Middle Eastern and African nationalities may not be
+                  accepted by the current processing partner. South Africa, Algeria, Tunisia and Morocco can be
+                  checked individually.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-black text-white">Fees & Refunds</h3>
+                <p className="mt-1 leading-6">
+                  Displayed prices include GoVietStay service and support fees unless otherwise stated.
+                  Government fees and completed processing services are generally non-refundable once submitted.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-black text-white">Policy Changes</h3>
+                <p className="mt-1 leading-6">
+                  Visa rules, fees and processing requirements may change without prior notice. GoVietStay will
+                  apply the latest available requirements when checking your case.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-7 rounded-2xl border border-[#f4d77a]/25 bg-white/5 p-4">
+              <p className="font-bold text-[#f4d77a]">
+                Please contact GoVietStay before payment for a free eligibility and timing check.
+              </p>
+            </div>
           </div>
         </div>
       </section>
