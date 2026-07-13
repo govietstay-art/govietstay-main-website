@@ -2320,6 +2320,7 @@ export default function Home() {
             <nav className="hidden md:flex gap-8 text-white/90 font-medium">
               <a href="/secret">Secret Local</a>
               <a href="/local-food">Local Food</a>
+              <a href="/visa">Visa Service</a>
               <a href="#experiences">Experiences</a>
               <a href="#travelers">International Travelers</a>
               <a href="#local-tips">Local Knowledge</a>
