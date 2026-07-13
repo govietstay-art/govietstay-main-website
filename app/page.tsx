@@ -4217,13 +4217,14 @@ export default function Home() {
             <div className="text-xl">🏝️</div>
             <div>Tour</div>
           </a>
-          <button
-            onClick={() => setDaoOpen(true)}
-            className="rounded-2xl bg-white/8 px-1.5 py-2 text-center active:scale-95 transition"
+          <a
+            href="/visa"
+            className="rounded-2xl bg-yellow-400 px-1.5 py-2 text-center text-[#06251b] active:scale-95 transition"
+            aria-label="Vietnam Visa Service"
           >
-            <div className="text-xl">🤖</div>
-            <div>Đào</div>
-          </button>
+            <div className="text-xl">🛂</div>
+            <div>Visa</div>
+          </a>
           <a
             href="https://wa.me/84937762607"
             target="_blank"
@@ -4236,24 +4237,28 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ĐÀO FLOATING LOCAL TRAVEL ASSISTANT */}
-      <div className="hidden md:block fixed bottom-6 right-6 z-40">
+      {/* ĐÀO FLOATING 24/7 SUPPORT — OUTSIDE MOBILE BOTTOM NAV */}
+      <div className="fixed bottom-[92px] right-4 z-[60] md:bottom-6 md:right-6">
         <button
           onClick={() => setDaoOpen(true)}
-          aria-label="Ask Đào Local Travel Assistant"
-          className="dao-floating-button group flex items-center gap-3 rounded-full bg-[#0b6b4f] p-2 md:px-4 md:py-3 shadow-2xl border border-white/10 hover:scale-105 transition-all duration-300"
+          aria-label="Ask Đào — GoVietStay 24/7 Local Travel Assistant"
+          className="dao-floating-button group flex items-center gap-3 rounded-full border border-white/15 bg-[#0b6b4f] p-2 shadow-2xl transition-all duration-300 hover:scale-105 md:px-4 md:py-3"
         >
-          <div className="dao-floating-avatar relative flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-full bg-yellow-400 text-2xl shadow-lg">
+          <div className="dao-floating-avatar relative flex h-14 w-14 items-center justify-center rounded-full bg-yellow-400 text-2xl shadow-lg md:h-14 md:w-14">
             <span className="relative z-10">👩🏻</span>
-            <span className="dao-online-dot absolute right-0 top-0 z-20 h-3.5 w-3.5 rounded-full bg-green-500 border-2 border-white shadow-md" />
+            <span className="dao-online-dot absolute right-0 top-0 z-20 h-4 w-4 rounded-full border-2 border-white bg-green-500 shadow-md" />
           </div>
 
-          <div className="hidden md:block pr-2 text-left">
-            <div className="font-bold text-white leading-tight">Đào</div>
+          <div className="hidden pr-2 text-left sm:block">
+            <div className="font-bold leading-tight text-white">Đào</div>
             <div className="text-xs text-white/75">
-              Online • Local Travel Assistant
+              Online now • Support 24/7
             </div>
           </div>
+
+          <span className="absolute -top-2 right-0 rounded-full bg-red-500 px-2 py-0.5 text-[9px] font-black uppercase tracking-wide text-white shadow-lg sm:hidden">
+            24/7
+          </span>
         </button>
       </div>
 
