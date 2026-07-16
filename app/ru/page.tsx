@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type FormEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -43,169 +43,95 @@ type SignaturePackage = {
   includes: string[];
   priceVnd: string;
   priceUsd: string;
-  whatsappText: string;
+  saving: string;
+};
+
+type BookingForm = {
+  fullName: string;
+  whatsapp: string;
+  email: string;
+  hotel: string;
+  travelDate: string;
+  adults: number;
+  children: number;
+  russianGuide: "Да" | "Нет" | "Нужна консультация";
+  request: string;
 };
 
 const signaturePackages: SignaturePackage[] = [
   {
-    id: "golden-bridge-hoian",
-    title: "Golden Bridge & Hoi An Escape",
-    image: "/tour/bana.jpg",
-    route: "Дананг • Ba Na Hills • Golden Bridge • Хойан",
-    duration: "3D2N",
-    badge: "ICONIC FIRST TRIP",
-    intro:
-      "Короткое private-путешествие для первого визита: спокойный прилёт в Дананг, Ba Na Hills с Золотым мостом и атмосферный вечерний Хойан с поддержкой на русском.",
-    bestFor: ["Пары", "Семьи", "Первый визит", "Главные highlights без суеты"],
+    id: "combo-1-classic-danang",
+    title: "Классический Дананг",
+    image: "/tour/combo-1-ru.png",
+    route: "Ba Na Hills • Золотой мост • Кокосовый лес • Хойан",
+    duration: "2 дня / 1 ночь",
+    badge: "BEST SELLER",
+    intro: "Классический маршрут для первого знакомства с Данангом и Хойаном: знаменитый Золотой мост, лодки-корзины и вечерняя атмосфера древнего города.",
+    bestFor: ["Первый визит", "Семьи", "Пары", "Небольшие группы"],
     days: [
-      {
-        title: "Day 1 — Arrival in Da Nang",
-        items: [
-          "Private airport transfer в Дананге",
-          "Поддержка при заселении и первая локальная ориентация",
-          "Опционально: пляж, Han River, seafood dinner или лёгкая вечерняя прогулка",
-        ],
-      },
-      {
-        title: "Day 2 — Ba Na Hills & Golden Bridge",
-        items: [
-          "Private car and driver",
-          "Ba Na Hills, Golden Bridge, cable car, French Village",
-          "Фото-время и гибкий темп для семьи / пары",
-          "Russian-speaking guide support during the tour day",
-        ],
-      },
-      {
-        title: "Day 3 — Hoi An Ancient Town",
-        items: [
-          "Private transfer to Hoi An",
-          "Ancient Town walking experience, lantern streets and riverside atmosphere",
-          "Local food / café suggestions",
-          "Optional Hoai River lantern boat, return to Da Nang or airport drop-off depending on flight schedule",
-        ],
-      },
+      { title: "День 1 — Ba Na Hills и Золотой мост", items: ["Канатная дорога", "Золотой мост", "Французская деревня", "Панорамные виды и свободное время"] },
+      { title: "День 2 — Кокосовый лес и древний город Хойан", items: ["Прогулка на лодке-корзине", "Древний город Хойан", "Японский крытый мост", "Улица фонарей и рекомендации по ужину"] },
     ],
-    includes: [
-      "Private airport transfer",
-      "Private transportation for sightseeing days",
-      "Ba Na Hills arrangement",
-      "Hoi An private experience",
-      "Russian-speaking guide support for tour days",
-      "GoVietStay local assistance before and during the trip",
-    ],
-    priceVnd: "From 11,900,000 VND / 2 guests",
-    priceUsd: "From 458 USD / 2 guests",
-    whatsappText:
-      "Здравствуйте, Ms. Anna. Меня интересует пакет Golden Bridge & Hoi An Escape 3D2N. Подскажите, пожалуйста, точный маршрут и цену.",
+    includes: ["Индивидуальный трансфер", "Встреча и высадка у отеля", "Все входные билеты по программе", "Англоговорящий гид", "Локальные рекомендации GoVietStay"],
+    priceVnd: "2,660,000 VND / человек",
+    priceUsd: "≈ 102.31 USD / человек",
+    saving: "Экономия 140,000 VND",
   },
   {
-    id: "local-soul-danang-hoian",
-    title: "Local Soul of Da Nang & Hoi An",
-    image: "/tour/coconut.jpg",
-    route: "Дананг • Son Tra • Marble Mountains • Coconut Forest • Хойан",
-    duration: "3D2N",
-    badge: "LOCAL & SOFT PACE",
-    intro:
-      "Более мягкий и локальный private-маршрут для гостей, которые хотят увидеть Дананг и Хойан без перегруза: виды, культура, еда, кокосовый лес и вечерние фонари.",
-    bestFor: ["Пары", "Семьи", "Мягкий темп", "Local experience"],
+    id: "combo-2-sea-heritage",
+    title: "Море и наследие",
+    image: "/tour/combo-2-ru.png",
+    route: "Остров Чам • Снорклинг • Кокосовый лес • Хойан",
+    duration: "2 дня / 1 ночь",
+    badge: "ЛЕТНИЙ ХИТ",
+    intro: "Два совершенно разных впечатления за два дня: море и снорклинг на острове Чам, затем местная культура, лодки-корзины и вечерний Хойан.",
+    bestFor: ["Летний отдых", "Молодёжь", "Семьи", "Пары"],
     days: [
-      {
-        title: "Day 1 — Arrival in Da Nang",
-        items: [
-          "Private airport transfer",
-          "Hotel check-in support",
-          "Relaxed local orientation with Russian-speaking support",
-        ],
-      },
-      {
-        title: "Day 2 — Da Nang Local Discovery",
-        items: [
-          "Linh Ung Pagoda / Son Tra Peninsula",
-          "Marble Mountains and scenic coastal route",
-          "Local coffee stop or seafood / Central Vietnamese food suggestion",
-          "Russian-speaking guide support during the tour day",
-        ],
-      },
-      {
-        title: "Day 3 — Coconut Forest & Hoi An Sunset",
-        items: [
-          "Coconut Forest Basket Boat experience",
-          "Hoi An Ancient Town walking route",
-          "Lantern streets, local food, riverside cafés",
-          "Optional Hoai River lantern boat and return to Da Nang",
-        ],
-      },
+      { title: "День 1 — Остров Чам и снорклинг", items: ["Скоростной катер", "Снорклинг", "Морской отдых", "Обед и поддержка по погоде"] },
+      { title: "День 2 — Кокосовый лес и Хойан", items: ["Лодки-корзины", "Кокосовый лес", "Древний город Хойан", "Вечерняя прогулка среди фонарей"] },
     ],
-    includes: [
-      "Private airport transfer",
-      "Private transportation for sightseeing days",
-      "Da Nang local discovery route",
-      "Coconut Forest / Hoi An experience",
-      "Russian-speaking guide support for tour days",
-      "GoVietStay travel coordination before and during the trip",
-    ],
-    priceVnd: "From 10,700,000 VND / 2 guests",
-    priceUsd: "From 412 USD / 2 guests",
-    whatsappText:
-      "Здравствуйте, Ms. Anna. Меня интересует пакет Local Soul of Da Nang & Hoi An 3D2N. Подскажите, пожалуйста, детали и цену.",
+    includes: ["Трансфер по программе", "Входные билеты и активности", "Обед в течение 2 дней", "Билет на лодку-корзину", "Минеральная вода", "Поддержка 24/7"],
+    priceVnd: "2,090,000 VND / человек",
+    priceUsd: "≈ 80.38 USD / человек",
+    saving: "Экономия 110,000 VND",
   },
   {
-    id: "central-vietnam-signature",
-    title: "Central Vietnam Signature Journey",
-    image: "/tour/hue.jpg",
-    route: "Дананг • Ba Na Hills • Хойан • Хюэ",
-    duration: "4D3N",
-    badge: "FLAGSHIP JOURNEY",
-    intro:
-      "Полное private-путешествие GoVietStay для первого знакомства с Центральным Вьетнамом: iconic highlights, культурное наследие, local atmosphere и русскоязычная поддержка.",
-    bestFor: ["Первый визит", "Пары и семьи", "Дананг + Хойан + Хюэ", "Полный маршрут"],
+    id: "combo-3-top-central-vietnam",
+    title: "ТОП-3 Центрального Вьетнама",
+    image: "/tour/combo-3-ru.png",
+    route: "Ba Na Hills • Остров Чам • Кокосовый лес • Хойан",
+    duration: "3 дня / 2 ночи",
+    badge: "САМЫЙ ПОПУЛЯРНЫЙ",
+    intro: "Три главных впечатления Центрального Вьетнама в одном маршруте: горы, море, древний город и настоящая местная атмосфера.",
+    bestFor: ["Первый визит", "Семьи", "Пары", "Гости на 4–6 дней"],
     days: [
-      {
-        title: "Day 1 — Arrival in Da Nang",
-        items: [
-          "Private airport transfer",
-          "Hotel check-in support and relaxed welcome",
-          "Optional evening: beach, Han River, local dinner or city view",
-        ],
-      },
-      {
-        title: "Day 2 — Ba Na Hills & Golden Bridge",
-        items: [
-          "Private car and driver",
-          "Ba Na Hills, Golden Bridge, cable car, French Village",
-          "Flexible pacing and Russian-speaking guide support",
-        ],
-      },
-      {
-        title: "Day 3 — Hoi An Ancient Town & Local Experiences",
-        items: [
-          "Optional Coconut Forest Basket Boat",
-          "Hoi An Ancient Town, lantern streets and riverside atmosphere",
-          "Local food / café suggestions and optional Hoai River lantern boat",
-        ],
-      },
-      {
-        title: "Day 4 — Hue Imperial Heritage Day",
-        items: [
-          "Private day trip to Hue",
-          "Imperial City, cultural route and local food suggestions",
-          "Russian-speaking guide support and flexible return / onward travel arrangement",
-        ],
-      },
+      { title: "День 1 — Ba Na Hills и Золотой мост", items: ["Канатная дорога", "Золотой мост", "Панорамные виды", "Французская деревня"] },
+      { title: "День 2 — Остров Чам и снорклинг", items: ["Скоростной катер", "Снорклинг", "Островной отдых", "Обед"] },
+      { title: "День 3 — Кокосовый лес и Хойан", items: ["Лодка-корзина", "Кокосовый лес", "Древний город", "Улица фонарей"] },
     ],
-    includes: [
-      "Private airport transfer",
-      "Private car and driver for sightseeing days",
-      "Ba Na Hills arrangement",
-      "Hoi An private experience",
-      "Hue private day journey",
-      "Russian-speaking guide support for tour days",
-      "GoVietStay local assistance before and during the trip",
+    includes: ["Индивидуальный трансфер", "Все входные билеты и активности", "Обед в течение 3 дней", "Билет на лодку-корзину", "Минеральная вода", "Поддержка WhatsApp / Telegram"],
+    priceVnd: "3,500,000 VND / человек",
+    priceUsd: "≈ 134.62 USD / человек",
+    saving: "Экономия 250,000 VND",
+  },
+  {
+    id: "combo-4-cultural-journey",
+    title: "Культурное путешествие по Центральному Вьетнаму",
+    image: "/tour/combo-4-ru.png",
+    route: "Ba Na Hills • Хойан • Кокосовый лес • Императорский город Хюэ",
+    duration: "3 дня / 2 ночи",
+    badge: "BEST CULTURAL JOURNEY",
+    intro: "Три дня для гостей, которые хотят увидеть природу, древний город и императорское наследие Центрального Вьетнама без самостоятельного планирования.",
+    bestFor: ["Любители истории", "Пожилые путешественники", "Семьи", "Гости на 4–6 дней"],
+    days: [
+      { title: "День 1 — Ba Na Hills и Золотой мост", items: ["Канатная дорога", "Золотой мост", "Французская деревня", "Панорамные виды"] },
+      { title: "День 2 — Кокосовый лес и древний Хойан", items: ["Лодка-корзина", "Кокосовый лес", "Древний город", "Вечерняя атмосфера Хойана"] },
+      { title: "День 3 — Императорский город Хюэ", items: ["Императорская цитадель", "Исторические памятники", "Культура династии Нгуен", "Локальные рекомендации"] },
     ],
-    priceVnd: "From 17,900,000 VND / 2 guests",
-    priceUsd: "From 689 USD / 2 guests",
-    whatsappText:
-      "Здравствуйте, Ms. Anna. Меня интересует пакет Central Vietnam Signature Journey 4D3N. Подскажите, пожалуйста, точный маршрут и цену.",
+    includes: ["Индивидуальный трансфер", "Все входные билеты и активности", "Обед в течение 3 дней", "Билет на лодку-корзину", "Минеральная вода", "Поддержка 24/7"],
+    priceVnd: "3,995,000 VND / человек",
+    priceUsd: "≈ 153.65 USD / человек",
+    saving: "Экономия 255,000 VND",
   },
 ];
 
@@ -552,112 +478,144 @@ function TourDetailCard({ tour }: { tour: RuTour }) {
 }
 
 
-function SignaturePackageCard({ pkg }: { pkg: SignaturePackage }) {
+function SignaturePackageCard({
+  pkg,
+  onBook,
+}: {
+  pkg: SignaturePackage;
+  onBook: (pkg: SignaturePackage) => void;
+}) {
   return (
-    <details className="group rounded-[1.6rem] md:rounded-[2rem] border border-[#06251b]/10 bg-white shadow-lg overflow-hidden open:shadow-2xl open:border-[#0b6b4f]/35 transition">
-      <summary className="list-none cursor-pointer select-none">
-        <div className="relative h-[430px] sm:h-[400px] md:h-[460px] lg:h-[520px]">
-          <Image src={pkg.image} alt={pkg.title} fill className="object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#06251b] via-[#06251b]/78 to-[#06251b]/5" />
-
-          <div className="absolute left-4 right-4 top-4 flex flex-wrap items-center gap-2">
-            <span className="rounded-full bg-yellow-300 px-3 py-1.5 text-[10px] font-extrabold text-[#06251b] shadow">
-              {pkg.badge}
-            </span>
-            <span className="rounded-full bg-white/15 backdrop-blur px-3 py-1.5 text-[10px] font-extrabold text-yellow-200 border border-white/15">
-              {pkg.duration}
-            </span>
-          </div>
-
-          <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5 md:p-6 text-white">
-            <div className="mb-3 inline-flex rounded-full bg-white/12 backdrop-blur px-3 py-1.5 text-[11px] font-extrabold border border-white/15">
-              Tap to open itinerary
-            </div>
-            <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-3xl xl:text-4xl font-extrabold leading-[1.08] drop-shadow">
-              {pkg.title}
-            </h3>
-            <p className="mt-3 text-sm sm:text-base font-extrabold text-yellow-300 leading-snug">
-              {pkg.route}
-            </p>
-            <p className="mt-4 text-sm sm:text-base text-white/88 leading-relaxed line-clamp-4 md:line-clamp-none">
-              {pkg.intro}
-            </p>
-
-            <div className="mt-5 rounded-2xl bg-white/10 backdrop-blur border border-white/15 p-4">
-              <div className="text-[11px] uppercase tracking-[2.5px] text-yellow-200 font-extrabold">
-                From price
-              </div>
-              <div className="mt-1 text-xl sm:text-2xl font-extrabold leading-tight">
-                {pkg.priceVnd}
-              </div>
-              <div className="mt-1 text-sm sm:text-base font-bold text-white/85">
-                {pkg.priceUsd}
-              </div>
-            </div>
-          </div>
-        </div>
-      </summary>
-
-      <div className="bg-[#f7f1df] p-4 sm:p-5 md:p-6">
-        <div>
-          <h4 className="text-lg font-extrabold">Best for</h4>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {pkg.bestFor.map((item) => (
-              <span key={item} className="rounded-full bg-white px-3 py-2 text-xs font-bold border border-[#06251b]/10">
-                {item}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-6 space-y-3">
-          {pkg.days.map((day, index) => (
-            <div key={day.title} className="relative rounded-3xl bg-white border border-[#06251b]/10 p-4 sm:p-5">
-              <div className="flex items-start gap-3">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#0b6b4f] text-sm font-extrabold text-white">
-                  {index + 1}
-                </div>
-                <div className="min-w-0">
-                  <h4 className="font-extrabold text-[#0b6b4f] leading-snug">{day.title}</h4>
-                  <ul className="mt-3 space-y-2">
-                    {day.items.map((item) => (
-                      <li key={item} className="flex gap-2 text-sm leading-relaxed text-[#06251b]/76">
-                        <span className="mt-0.5 text-green-700 font-extrabold">✓</span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-6 rounded-3xl bg-white border border-[#06251b]/10 p-4 sm:p-5">
-          <h4 className="font-extrabold">Package includes</h4>
-          <ul className="mt-3 grid gap-2 sm:grid-cols-2">
-            {pkg.includes.map((item) => (
-              <li key={item} className="flex gap-2 text-sm leading-relaxed text-[#06251b]/76">
-                <span className="text-green-700 font-extrabold">✓</span>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="mt-6 rounded-3xl bg-[#06251b] text-white p-4 sm:p-5">
-          <div className="text-[11px] uppercase tracking-[2.5px] text-yellow-300 font-extrabold">Price guide</div>
-          <div className="mt-2 text-xl md:text-2xl font-extrabold leading-tight">{pkg.priceVnd}</div>
-          <div className="mt-1 text-sm md:text-base text-white/80 font-bold">{pkg.priceUsd}</div>
-          <p className="mt-2 text-xs text-white/65 leading-relaxed">
-            Final price depends on date, hotel location, group size, tickets, meals, optional experiences and guide availability. Use the fixed WhatsApp bar below for the exact itinerary and partner rates.
-          </p>
+    <article className="overflow-hidden rounded-[1.7rem] border border-[#06251b]/10 bg-white shadow-lg transition hover:-translate-y-1 hover:shadow-2xl">
+      <div className="relative aspect-[2/3] w-full bg-[#efe7d4]">
+        <Image src={pkg.image} alt={pkg.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
+        <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/65 to-transparent" />
+        <div className="absolute left-3 top-3 rounded-full bg-yellow-300 px-3 py-1.5 text-[10px] font-extrabold text-[#06251b] shadow-lg">
+          {pkg.badge}
         </div>
       </div>
-    </details>
+
+      <div className="p-4 sm:p-5">
+        <div className="flex flex-wrap items-center gap-2 text-[11px] font-extrabold">
+          <span className="rounded-full bg-[#ecf8f3] px-3 py-1.5 text-[#0b6b4f]">{pkg.duration}</span>
+          <span className="rounded-full bg-[#f7f1df] px-3 py-1.5 text-[#06251b]/75">Цена за 1 человека</span>
+        </div>
+        <h3 className="mt-3 text-xl sm:text-2xl font-extrabold leading-tight">{pkg.title}</h3>
+        <p className="mt-2 text-sm font-bold text-[#0b6b4f] leading-relaxed">{pkg.route}</p>
+        <p className="mt-3 text-sm text-[#06251b]/72 leading-relaxed">{pkg.intro}</p>
+
+        <details className="mt-4 rounded-2xl border border-[#06251b]/10 bg-[#f7f1df] p-4">
+          <summary className="cursor-pointer list-none font-extrabold text-[#0b6b4f]">Посмотреть программу по дням</summary>
+          <div className="mt-4 space-y-4">
+            {pkg.days.map((day) => (
+              <div key={day.title}>
+                <h4 className="font-extrabold">{day.title}</h4>
+                <ul className="mt-2 space-y-1.5">
+                  {day.items.map((item) => <li key={item} className="flex gap-2 text-sm text-[#06251b]/72"><span className="text-green-700">✓</span><span>{item}</span></li>)}
+                </ul>
+              </div>
+            ))}
+            <div>
+              <h4 className="font-extrabold">Что включено</h4>
+              <ul className="mt-2 space-y-1.5">
+                {pkg.includes.map((item) => <li key={item} className="flex gap-2 text-sm text-[#06251b]/72"><span className="text-green-700">✓</span><span>{item}</span></li>)}
+              </ul>
+            </div>
+          </div>
+        </details>
+
+        <div className="mt-4 rounded-2xl bg-[#06251b] p-4 text-white">
+          <div className="text-[10px] uppercase tracking-[2px] text-yellow-300 font-extrabold">Цена комбо-тура</div>
+          <div className="mt-1 text-xl font-extrabold">{pkg.priceVnd}</div>
+          <div className="text-sm text-white/75">{pkg.priceUsd}</div>
+          <div className="mt-2 text-xs font-bold text-yellow-300">{pkg.saving}</div>
+        </div>
+
+        <div className="mt-4 grid grid-cols-2 gap-3">
+          <button onClick={() => onBook(pkg)} className="rounded-full bg-[#ff5a0a] px-4 py-3.5 text-sm font-extrabold text-white shadow-lg transition hover:bg-[#e94f00]">
+            Забронировать
+          </button>
+          <a href={annaWa(`Здравствуйте, Анна. Меня интересует ${pkg.title}. Подскажите, пожалуйста, детали и доступность.`)} target="_blank" rel="noopener noreferrer" className="rounded-full border-2 border-[#0b6b4f] px-4 py-3.5 text-center text-sm font-extrabold text-[#0b6b4f] transition hover:bg-[#0b6b4f] hover:text-white">
+            Спросить Анну
+          </a>
+        </div>
+      </div>
+    </article>
   );
 }
 
+function BookingModal({
+  pkg,
+  onClose,
+}: {
+  pkg: SignaturePackage | null;
+  onClose: () => void;
+}) {
+  const [form, setForm] = useState<BookingForm>({
+    fullName: "",
+    whatsapp: "",
+    email: "",
+    hotel: "",
+    travelDate: "",
+    adults: 1,
+    children: 0,
+    russianGuide: "Нужна консультация",
+    request: "",
+  });
+
+  if (!pkg) return null;
+
+  const sendToAnna = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const message = [
+      "Здравствуйте, Анна!",
+      "",
+      "Хочу забронировать комбо-тур GoVietStay.",
+      `Тур: ${pkg.title}`,
+      `Дата: ${form.travelDate || "не указана"}`,
+      `Взрослые: ${form.adults}`,
+      `Дети: ${form.children}`,
+      `Русскоговорящий гид: ${form.russianGuide}`,
+      `Имя: ${form.fullName}`,
+      `WhatsApp гостя: ${form.whatsapp}`,
+      `Email: ${form.email || "не указан"}`,
+      `Отель: ${form.hotel || "не указан"}`,
+      `Пожелания: ${form.request || "нет"}`,
+      "",
+      "Пожалуйста, подтвердите доступность и финальную стоимость.",
+    ].join("\n");
+    window.open(annaWa(message), "_blank", "noopener,noreferrer");
+  };
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 p-0 backdrop-blur-sm sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-label="Форма бронирования">
+      <div className="max-h-[94vh] w-full overflow-y-auto rounded-t-[2rem] bg-[#f7f1df] shadow-2xl sm:max-w-2xl sm:rounded-[2rem]">
+        <div className="sticky top-0 z-10 flex items-start justify-between gap-4 bg-[#06251b] p-5 text-white sm:p-6">
+          <div>
+            <p className="text-[10px] font-extrabold uppercase tracking-[3px] text-yellow-300">Бронирование через WhatsApp</p>
+            <h3 className="mt-2 text-2xl font-extrabold">{pkg.title}</h3>
+            <p className="mt-1 text-sm text-white/70">Заполните форму — готовая заявка откроется в WhatsApp Анны.</p>
+          </div>
+          <button onClick={onClose} className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white/10 text-xl" aria-label="Закрыть">×</button>
+        </div>
+
+        <form onSubmit={sendToAnna} className="grid gap-4 p-4 sm:grid-cols-2 sm:p-6">
+          <label className="sm:col-span-2"><span className="text-sm font-extrabold">Имя и фамилия *</span><input required value={form.fullName} onChange={(e) => setForm({ ...form, fullName: e.target.value })} className="mt-2 w-full rounded-2xl border border-[#06251b]/15 bg-white px-4 py-3.5 outline-none focus:border-[#0b6b4f]" placeholder="Например: Анна Иванова" /></label>
+          <label><span className="text-sm font-extrabold">WhatsApp *</span><input required type="tel" value={form.whatsapp} onChange={(e) => setForm({ ...form, whatsapp: e.target.value })} className="mt-2 w-full rounded-2xl border border-[#06251b]/15 bg-white px-4 py-3.5 outline-none focus:border-[#0b6b4f]" placeholder="+7..." /></label>
+          <label><span className="text-sm font-extrabold">Дата поездки *</span><input required type="date" value={form.travelDate} onChange={(e) => setForm({ ...form, travelDate: e.target.value })} className="mt-2 w-full rounded-2xl border border-[#06251b]/15 bg-white px-4 py-3.5 outline-none focus:border-[#0b6b4f]" /></label>
+          <label><span className="text-sm font-extrabold">Взрослые *</span><input required min={1} type="number" value={form.adults} onChange={(e) => setForm({ ...form, adults: Number(e.target.value) })} className="mt-2 w-full rounded-2xl border border-[#06251b]/15 bg-white px-4 py-3.5 outline-none focus:border-[#0b6b4f]" /></label>
+          <label><span className="text-sm font-extrabold">Дети</span><input min={0} type="number" value={form.children} onChange={(e) => setForm({ ...form, children: Number(e.target.value) })} className="mt-2 w-full rounded-2xl border border-[#06251b]/15 bg-white px-4 py-3.5 outline-none focus:border-[#0b6b4f]" /></label>
+          <label><span className="text-sm font-extrabold">Русскоговорящий гид</span><select value={form.russianGuide} onChange={(e) => setForm({ ...form, russianGuide: e.target.value as BookingForm["russianGuide"] })} className="mt-2 w-full rounded-2xl border border-[#06251b]/15 bg-white px-4 py-3.5 outline-none focus:border-[#0b6b4f]"><option>Нужна консультация</option><option>Да</option><option>Нет</option></select></label>
+          <label><span className="text-sm font-extrabold">Отель</span><input value={form.hotel} onChange={(e) => setForm({ ...form, hotel: e.target.value })} className="mt-2 w-full rounded-2xl border border-[#06251b]/15 bg-white px-4 py-3.5 outline-none focus:border-[#0b6b4f]" placeholder="Название отеля" /></label>
+          <label className="sm:col-span-2"><span className="text-sm font-extrabold">Email</span><input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="mt-2 w-full rounded-2xl border border-[#06251b]/15 bg-white px-4 py-3.5 outline-none focus:border-[#0b6b4f]" placeholder="email@example.com" /></label>
+          <label className="sm:col-span-2"><span className="text-sm font-extrabold">Особые пожелания</span><textarea rows={3} value={form.request} onChange={(e) => setForm({ ...form, request: e.target.value })} className="mt-2 w-full rounded-2xl border border-[#06251b]/15 bg-white px-4 py-3.5 outline-none focus:border-[#0b6b4f]" placeholder="Детское кресло, питание, темп поездки..." /></label>
+          <div className="sm:col-span-2 rounded-2xl bg-white p-4 text-xs leading-relaxed text-[#06251b]/65">Нажимая кнопку, вы переходите в WhatsApp. Проверьте сообщение и нажмите «Отправить», чтобы Анна получила заявку.</div>
+          <button type="submit" className="sm:col-span-2 rounded-full bg-green-500 px-6 py-4 text-base font-extrabold text-white shadow-xl transition hover:bg-green-600">Отправить заявку Анне в WhatsApp</button>
+        </form>
+      </div>
+    </div>
+  );
+}
 
 function RussianAudienceAnnaPartnerSection() {
   return (
@@ -735,7 +693,7 @@ function RussianAudienceAnnaPartnerSection() {
   );
 }
 
-function SignaturePackagesSection() {
+function SignaturePackagesSection({ onBook }: { onBook: (pkg: SignaturePackage) => void }) {
   return (
     <section id="signature-packages" className="px-4 md:px-8 lg:px-12 py-12 md:py-20 bg-white">
       <div className="max-w-7xl mx-auto">
@@ -744,20 +702,19 @@ function SignaturePackagesSection() {
             Signature Central Vietnam Packages
           </p>
           <h2 className="mt-4 text-3xl md:text-5xl font-extrabold leading-tight">
-            Эксклюзивные private-пакеты 3D2N / 4D3N для русскоговорящих гостей
+            4 готовых комбо-тура для русскоговорящих гостей
           </h2>
           <p className="mt-5 text-base md:text-lg text-[#06251b]/75 leading-relaxed">
-            Это не обычные однодневные туры. GoVietStay собирает цельные маршруты по Данангу,
-            Хойану и Хюэ с private transport, локальной координацией и русскоязычной поддержкой.
+            Выберите готовый маршрут на 2 или 3 дня. Все цены указаны за одного человека для тура с англоговорящим гидом. Русскоговорящий гид предоставляется по запросу после консультации с Анной.
           </p>
           <div className="mt-5 rounded-3xl bg-[#f7f1df] border border-[#06251b]/10 p-4 md:p-5 text-sm md:text-base text-[#06251b]/75 leading-relaxed">
-            Нажмите на пакет, чтобы открыть программу по дням, включённые услуги и ориентировочную стоимость. Финальная цена зависит от даты, отеля, состава группы, выбранных билетов, питания, дополнительных опций и доступности русскоговорящего гида.
+            Откройте программу, сравните маршруты и нажмите «Забронировать». На мобильном телефоне форма открывается во весь экран и сразу готовит подробную заявку для WhatsApp Анны.
           </div>
         </div>
 
-        <div className="mt-8 grid gap-5 md:gap-6 lg:grid-cols-3 items-start">
+        <div className="mt-8 grid gap-5 md:grid-cols-2 xl:gap-7 items-start">
           {signaturePackages.map((pkg) => (
-            <SignaturePackageCard key={pkg.id} pkg={pkg} />
+            <SignaturePackageCard key={pkg.id} pkg={pkg} onBook={onBook} />
           ))}
         </div>
       </div>
@@ -767,6 +724,7 @@ function SignaturePackagesSection() {
 
 export default function RussianPage() {
   const [activeTourId, setActiveTourId] = useState<string>(ruTours[0].id);
+  const [bookingPackage, setBookingPackage] = useState<SignaturePackage | null>(null);
 
   const activeTour = useMemo(
     () => ruTours.find((tour) => tour.id === activeTourId) ?? ruTours[0],
@@ -1006,7 +964,7 @@ export default function RussianPage() {
         </div>
       </section>
 
-      <SignaturePackagesSection />
+      <SignaturePackagesSection onBook={setBookingPackage} />
 
       {/* TOUR SELECTOR - MOBILE FIRST */}
       <section id="ru-tours" className="px-4 md:px-8 lg:px-12 py-12 md:py-16 bg-[#f7f1df]">
@@ -1292,6 +1250,8 @@ export default function RussianPage() {
       >
         🇷🇺 WhatsApp Anna • Tours / Packages / B2B rates
       </a>
+
+      <BookingModal pkg={bookingPackage} onClose={() => setBookingPackage(null)} />
     </main>
   );
 }
