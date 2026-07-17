@@ -2650,8 +2650,8 @@ export default function Home() {
           </div>
         </header>
 
-        <div className="relative z-10 min-h-screen flex items-center px-6 md:px-20 pt-28">
-          <div className="max-w-3xl">
+        <div className="relative z-10 min-h-screen flex w-full min-w-0 items-center px-6 pt-28 md:px-20">
+          <div className="w-full min-w-0 max-w-3xl">
             <p className="uppercase tracking-[4px] text-yellow-400 mb-5 text-xs md:text-sm font-semibold">
               Explore Vietnam
             </p>
@@ -2661,14 +2661,14 @@ export default function Home() {
               <span className="block whitespace-nowrap">Hue • Phu Quoc</span>
             </h1>
 
-            <p className="mt-7 text-base sm:text-lg md:text-2xl text-white/90 max-w-3xl leading-relaxed">
+            <p className="mt-6 w-full max-w-full break-words text-[15px] leading-6 text-white/90 sm:mt-7 sm:text-lg sm:leading-relaxed md:max-w-3xl md:text-2xl">
               Private tours in Da Nang, Hoi An, Hue and Phu Quoc. Discover the
               Golden Bridge, Cham Island, ancient towns, island experiences and
               trusted local travel support with WhatsApp assistance 24/7.
             </p>
 
-            <div className="mt-4 md:mt-6 -mx-1 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              <div className="flex w-max min-w-full gap-2 text-[11px] text-white/85 md:w-auto md:min-w-0 md:flex-wrap md:text-sm">
+            <div className="mt-4 w-full min-w-0 max-w-full overflow-x-auto overscroll-x-contain pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mt-6">
+              <div className="flex w-max max-w-none gap-2 pr-6 text-[11px] text-white/85 md:w-auto md:max-w-full md:flex-wrap md:pr-0 md:text-sm">
                 {[
                   "Da Nang Tours",
                   "Hoi An Tours",
@@ -2686,26 +2686,26 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="mt-9 flex flex-wrap gap-4">
+            <div className="mt-7 grid w-full min-w-0 grid-cols-2 gap-3 sm:mt-9 sm:flex sm:flex-wrap sm:gap-4">
               <a
                 href="https://wa.me/84937762607"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-full bg-green-600 px-7 py-4 font-semibold hover:bg-green-700 transition text-center"
+                className="min-w-0 rounded-full bg-green-600 px-4 py-3.5 text-center text-sm font-semibold transition hover:bg-green-700 sm:px-7 sm:py-4 sm:text-base"
               >
                 Plan on WhatsApp
               </a>
 
               <button
                 onClick={() => setDaoOpen(true)}
-                className="rounded-full border border-white/60 px-7 py-4 font-semibold hover:bg-white hover:text-black transition text-center"
+                className="min-w-0 rounded-full border border-white/60 px-4 py-3.5 text-center text-sm font-semibold transition hover:bg-white hover:text-black sm:px-7 sm:py-4 sm:text-base"
               >
                 Ask Đào
               </button>
 
               <a
                 href="#experiences"
-                className="rounded-full bg-yellow-400 px-7 py-4 font-semibold text-black hover:bg-yellow-500 transition text-center"
+                className="col-span-2 min-w-0 rounded-full bg-yellow-400 px-4 py-3.5 text-center text-sm font-semibold text-black transition hover:bg-yellow-500 sm:col-span-1 sm:px-7 sm:py-4 sm:text-base"
               >
                 Explore Vietnam
               </a>
