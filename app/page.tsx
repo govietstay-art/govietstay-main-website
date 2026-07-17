@@ -2667,21 +2667,23 @@ export default function Home() {
               trusted local travel support with WhatsApp assistance 24/7.
             </p>
 
-            <div className="mt-6 hidden md:flex flex-wrap gap-2 text-xs md:text-sm text-white/85">
-              {[
-                "Da Nang Tours",
-                "Hoi An Tours",
-                "Hue Tours",
-                "Phu Quoc Tours",
-                "Private Tours Vietnam",
-              ].map((keyword) => (
-                <span
-                  key={keyword}
-                  className="rounded-full border border-white/25 bg-black/25 px-3 py-2 backdrop-blur-sm"
-                >
-                  {keyword}
-                </span>
-              ))}
+            <div className="mt-4 md:mt-6 -mx-1 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <div className="flex w-max min-w-full gap-2 text-[11px] text-white/85 md:w-auto md:min-w-0 md:flex-wrap md:text-sm">
+                {[
+                  "Da Nang Tours",
+                  "Hoi An Tours",
+                  "Hue Tours",
+                  "Phu Quoc Tours",
+                  "Private Tours Vietnam",
+                ].map((keyword) => (
+                  <span
+                    key={keyword}
+                    className="shrink-0 whitespace-nowrap rounded-full border border-white/25 bg-black/30 px-3 py-1.5 backdrop-blur-sm md:px-3 md:py-2"
+                  >
+                    {keyword}
+                  </span>
+                ))}
+              </div>
             </div>
 
             <div className="mt-9 flex flex-wrap gap-4">
