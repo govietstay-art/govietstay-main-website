@@ -31,6 +31,7 @@ const buildWhatsAppLink = (message: string) =>
 type Tour = {
   title: string;
   image: string;
+  gallery?: string[];
   duration: string;
   category: string;
   price: {
@@ -1689,6 +1690,320 @@ const tours: Tour[] = [
   },
 ];
 
+const phuQuocTours: Tour[] = [
+  {
+    title: "Phu Quoc Island Discovery Tour",
+    image: "/tour/phuquoc/tour-01-1.jpg",
+    gallery: ["/tour/phuquoc/tour-01-1.jpg", "/tour/phuquoc/tour-01-2.jpg", "/tour/phuquoc/tour-01-3.jpg"],
+    duration: "08:30 - 15:00",
+    category: "Sightseeing • Local Culture • Easy Day Tour",
+    price: {
+      adult: 520000,
+      child: 260000,
+      note: "Reference price: 20 USD/adult and 10 USD/child. Includes shuttle bus, guide, lunch, water, entrance fees and travel insurance. Final availability and price will be reconfirmed before booking.",
+    },
+    description:
+      "Discover Dinh Cau, Phu Quoc Ridgeback dogs, pearl farming and local specialties on an easy island sightseeing route.",
+    overview:
+      "A relaxed introduction to Phu Quoc for first-time visitors who prefer sightseeing, local products and a comfortable daytime schedule instead of a sea activity.",
+    highlights: [
+      "Dinh Cau landmark",
+      "Phu Quoc Ridgeback Dog Farm and racing show",
+      "Pearl Farm",
+      "Dong Tam Snake Farm",
+      "Silk Center and local specialty village",
+    ],
+    itinerary: [
+      "08:30 - 09:00: Hotel pickup.",
+      "Visit Dinh Cau.",
+      "Visit the Phu Quoc Ridgeback Dog Farm and watch the dog racing show.",
+      "Visit the Pearl Farm.",
+      "Enjoy lunch at a local restaurant.",
+      "Visit Dong Tam Snake Farm, the Silk Center and a local specialty village.",
+      "15:00: Return to the hotel.",
+    ],
+    included: ["Shuttle bus", "Tour guide", "Lunch", "One bottle of water", "Entrance fees", "Travel insurance"],
+    notIncluded: ["Personal expenses", "Additional drinks", "Optional shopping"],
+    childPolicy: ["Reference child price: 10 USD.", "Please share child age and height for exact confirmation."],
+    bestFor: ["First-time visitors", "Families", "Easy sightseeing", "Guests who do not want a sea tour"],
+    localTips: ["Wear light clothing and comfortable shoes.", "Shopping stops are optional; guests are not required to purchase.", "Final route may be adjusted according to operating conditions."],
+  },
+  {
+    title: "North Phu Quoc Snorkeling & Fishing by Wooden Boat",
+    image: "/tour/phuquoc/tour-02-1.jpg",
+    gallery: ["/tour/phuquoc/tour-02-1.jpg", "/tour/phuquoc/tour-02-2.jpg", "/tour/phuquoc/tour-02-3.jpg"],
+    duration: "Morning 09:00 / Afternoon 12:30",
+    category: "North Island • Wooden Boat • Snorkeling",
+    price: {
+      adult: 1300000,
+      child: 910000,
+      note: "Reference price: 50 USD/adult and 35 USD/child. This base tour does not include a tour guide. Private Russian or Mongolian guide service is available at an additional charge.",
+    },
+    description:
+      "Fish like a local, snorkel at a beautiful northern coral reef and enjoy a relaxed wooden-boat journey with a local meal.",
+    overview:
+      "A slower-paced northern sea experience combining fishing, snorkeling and a wooden boat atmosphere. Suitable for travelers who prefer a calmer alternative to speedboat tours.",
+    highlights: ["Hon Bang Island", "Local fishing experience", "Northern coral reef snorkeling", "Freshwater shower", "Phu Quoc meal"],
+    itinerary: [
+      "09:00: Hotel pickup. Afternoon option starts at 12:30.",
+      "Arrive at Sunset Story for safety briefing and life jacket fitting.",
+      "Relax and fish near Hon Bang Island.",
+      "Snorkel at a northern Phu Quoc coral reef.",
+      "Return for a freshwater shower and enjoy a local meal.",
+      "Transfer back to the hotel.",
+    ],
+    included: ["Shuttle bus", "Lunch or dinner", "One bottle of water", "Wooden boat", "Fishing and snorkeling equipment", "Travel insurance"],
+    notIncluded: ["Tour guide in the base package", "Underwater photos unless requested", "Personal expenses", "Additional drinks"],
+    childPolicy: ["Reference child price: 35 USD.", "Child participation depends on age, health and sea conditions."],
+    bestFor: ["Snorkeling beginners", "Couples", "Small groups", "Travelers who prefer wooden boats"],
+    localTips: ["Bring swimwear, towel, sunscreen and dry clothes.", "Sea conditions may change the snorkeling location.", "Ask GoVietStay in advance if a Russian or Mongolian guide is required."],
+  },
+  {
+    title: "North Phu Quoc Sunset Chill by Wooden Boat",
+    image: "/tour/phuquoc/tour-03-1.jpg",
+    gallery: ["/tour/phuquoc/tour-03-1.jpg", "/tour/phuquoc/tour-03-2.jpg", "/tour/phuquoc/tour-03-3.jpg"],
+    duration: "16:00 - 18:30",
+    category: "Sunset • Wooden Boat • Fishing • DJ Music",
+    price: {
+      adult: 650000,
+      child: 390000,
+      note: "Reference price: 25 USD/adult and 15 USD/child. Private guide service is available at an additional charge.",
+    },
+    description:
+      "Cruise along Bai Dai Beach at sunset, try fishing and enjoy a cold beer, tropical fruits and music on board.",
+    overview:
+      "A short and easy sunset experience for couples, friends and travelers who want a relaxed evening on the water without committing to a full-day tour.",
+    highlights: ["Bai Dai sunset cruise", "Fishing experience", "Cold beer and tropical fruits", "DJ music", "Short evening schedule"],
+    itinerary: [
+      "16:00: Hotel pickup and transfer to the beach.",
+      "16:30: Board the wooden boat and begin the sunset journey.",
+      "Cruise along Bai Dai Beach and try fishing.",
+      "Enjoy one cold beer, tropical fruits and music.",
+      "18:30: Return to the beach and transfer back to the hotel.",
+    ],
+    included: ["Shuttle bus", "One beer and fruits", "One bottle of water", "Boat tour", "Fishing equipment", "Travel insurance"],
+    notIncluded: ["Private guide unless added", "Dinner", "Personal expenses", "Additional drinks"],
+    childPolicy: ["Reference child price: 15 USD.", "Children must be supervised by an adult."],
+    bestFor: ["Couples", "Friends", "Sunset lovers", "Short evening activity"],
+    localTips: ["Sunset visibility depends on weather.", "Bring a light jacket during windy evenings.", "This tour is designed for relaxation rather than intensive fishing."],
+  },
+  {
+    title: "Phu Quoc Sunset Cruise & Night Squid Fishing",
+    image: "/tour/phuquoc/tour-04-1.jpg",
+    gallery: ["/tour/phuquoc/tour-04-1.jpg", "/tour/phuquoc/tour-04-2.jpg", "/tour/phuquoc/tour-04-3.jpg"],
+    duration: "16:00 - 21:00",
+    category: "Sunset • Squid Fishing • Dinner On Board",
+    price: {
+      adult: 1040000,
+      child: 650000,
+      note: "Reference price: 40 USD/adult and 25 USD/child. Includes guide and dinner. Private language guide service may require an additional charge.",
+    },
+    description:
+      "Watch the sunset at sea, try night squid fishing and enjoy dinner on board during a classic Phu Quoc evening cruise.",
+    overview:
+      "A popular evening activity combining sunset views, hands-on squid fishing and a simple onboard dinner. A good choice for families and guests looking for a traditional island-night experience.",
+    highlights: ["Sunset at sea", "Night squid fishing", "Fresh squid cooking on request", "Dinner on board", "Evening hotel transfer"],
+    itinerary: [
+      "16:00: Hotel pickup.",
+      "17:00: Board the tourist boat.",
+      "Enjoy sunset views at sea.",
+      "Try squid fishing; freshly caught squid may be cooked on request.",
+      "Enjoy dinner on board.",
+      "21:00: Return to the hotel.",
+    ],
+    included: ["Shuttle bus", "Tourist boat", "Tour guide", "Dinner", "One bottle of water", "Life jacket and squid fishing gear", "Travel insurance"],
+    notIncluded: ["Personal expenses", "Additional drinks", "Private language guide surcharge when applicable"],
+    childPolicy: ["Reference child price: 25 USD.", "Children must wear life jackets and remain with an adult."],
+    bestFor: ["Families", "Couples", "First-time visitors", "Evening activity seekers"],
+    localTips: ["Squid catch is not guaranteed because it depends on nature and season.", "Bring a light jacket and motion-sickness medication if needed.", "Tour timing can change with sea conditions."],
+  },
+  {
+    title: "Phu Quoc 3 Islands Speedboat & Snorkeling",
+    image: "/tour/phuquoc/tour-05-1.jpg",
+    gallery: ["/tour/phuquoc/tour-05-1.jpg", "/tour/phuquoc/tour-05-2.jpg", "/tour/phuquoc/tour-05-3.jpg"],
+    duration: "07:00 - 16:00",
+    category: "Best Value • Speedboat • Snorkeling • Island Hopping",
+    price: {
+      adult: 1040000,
+      child: null,
+      note: "Reference price: 40 USD/guest. Sea Walking is optional and self-funded. Island order may change according to weather and sea conditions.",
+    },
+    description:
+      "Explore Phu Quoc's southern islands by premium speedboat with snorkeling, swimming, flycam photos and lunch.",
+    overview:
+      "A strong-value island-hopping tour for first-time Phu Quoc visitors. The day combines speedboat travel, snorkeling, swimming, island relaxation, lunch and aerial photography.",
+    highlights: ["Southern island speedboat route", "Mong Tay Island", "Gam Ghi or Buom Island snorkeling", "May Rut Island", "Flycam photography"],
+    itinerary: [
+      "07:00 - 07:30: Hotel pickup and meeting at the Pearl Farm.",
+      "09:30: Board the speedboat and begin the southern island route.",
+      "Optional Sea Walking at your own expense.",
+      "Swimming, flycam photos and lunch at Mong Tay Island.",
+      "Snorkeling at Gam Ghi Island or Buom Island.",
+      "Swimming and snorkeling at May Rut Island.",
+      "16:00: Return to the hotel.",
+    ],
+    included: ["Shuttle bus", "Premium speedboat", "Tour guide", "Lunch", "Flycam photography", "One bottle of water", "Travel insurance"],
+    notIncluded: ["Sea Walking", "Personal expenses", "Additional drinks", "Other water sports"],
+    childPolicy: ["Please share child age and height for current operator pricing.", "Young children must be confirmed before booking."],
+    bestFor: ["First-time visitors", "Friends", "Couples", "Snorkeling", "Island hopping"],
+    localTips: ["Bring swimwear, towel, sunscreen and dry clothes.", "The island order can change due to weather.", "This is one of the easiest Phu Quoc sea tours to sell and understand."],
+  },
+  {
+    title: "4 Islands, Hon Thom Cable Car & Aquatopia",
+    image: "/tour/phuquoc/tour-06-1.jpg",
+    gallery: ["/tour/phuquoc/tour-06-1.jpg", "/tour/phuquoc/tour-06-2.jpg", "/tour/phuquoc/tour-06-3.jpg"],
+    duration: "07:00 - 17:30",
+    category: "Most Popular • 4 Islands • Cable Car • Water Park",
+    price: {
+      adult: 1690000,
+      child: null,
+      note: "Reference price: 65 USD/guest. Includes speedboat, Hon Thom cable car, lunch and Aquatopia. Sea Walking is optional and self-funded.",
+    },
+    description:
+      "Combine southern island hopping, snorkeling, Hon Thom Cable Car, lunch, Aquatopia Water Park and Kiss Bridge in one full day.",
+    overview:
+      "The most complete Phu Quoc day in this collection. It combines the island experience travelers expect with the famous sea-crossing cable car and Aquatopia Water Park.",
+    highlights: ["Four-island speedboat route", "Snorkeling and swimming", "Hon Thom Cable Car", "Aquatopia Water Park", "Kiss Bridge"],
+    itinerary: [
+      "07:00 - 07:30: Hotel pickup and meeting at the Pearl Farm.",
+      "09:30: Begin the southern island speedboat route.",
+      "Optional Sea Walking at your own expense.",
+      "Swimming, flycam photos and lunch at Mong Tay Island.",
+      "Snorkeling at Gam Ghi or Buom Island and swimming at May Rut Island.",
+      "Ride the Hon Thom sea-crossing cable car.",
+      "Enjoy buffet or set-menu lunch and Aquatopia Water Park.",
+      "16:30: Visit Kiss Bridge.",
+      "17:30: Return to the hotel.",
+    ],
+    included: ["Shuttle bus", "Premium speedboat", "Hon Thom Cable Car ticket", "Tour guide", "Lunch", "Flycam photography", "Water", "Travel insurance"],
+    notIncluded: ["Sea Walking", "Personal expenses", "Additional drinks", "Optional water sports"],
+    childPolicy: ["Please share child age and height for current operator pricing.", "Cable car and water park child policy follows operator rules."],
+    bestFor: ["First-time Phu Quoc visitors", "Families", "Groups", "Guests wanting one complete day"],
+    localTips: ["This is a long full-day program; wear comfortable clothes.", "Bring swimwear, towel and dry clothes.", "The route may change according to sea and weather conditions."],
+  },
+  {
+    title: "Hon Thom Cable Car, Kiss Bridge & Kiss of the Sea",
+    image: "/tour/phuquoc/tour-07-1.jpg",
+    gallery: ["/tour/phuquoc/tour-07-1.jpg", "/tour/phuquoc/tour-07-2.jpg", "/tour/phuquoc/tour-07-3.jpg"],
+    duration: "12:00 - 21:30",
+    category: "Romantic Sunset • Cable Car • Water Park • Evening Show",
+    price: {
+      adult: 2470000,
+      child: 2080000,
+      note: "Reference price: 95 USD/adult and 80 USD/child. Dinner at Vuifest Night Market is self-funded.",
+    },
+    description:
+      "Enjoy Hon Thom Cable Car and Water Park, sunset at Kiss Bridge, Vuifest Night Market and the Kiss of the Sea show.",
+    overview:
+      "An afternoon-to-night experience combining family entertainment, sunset scenery and one of southern Phu Quoc's headline evening shows.",
+    highlights: ["Hon Thom Cable Car", "Hon Thom Water Park", "Sunset Town", "Kiss Bridge", "Kiss of the Sea show"],
+    itinerary: [
+      "12:00: Pickup and transfer toward Hon Thom Cable Car Station.",
+      "12:30: Visit the Pearl Farm.",
+      "13:30 - 14:00: Ride the Hon Thom Cable Car.",
+      "14:00 - 17:00: Enjoy the water park, pools and beach.",
+      "17:00 - 17:30: Transfer to Sunset Town.",
+      "17:30 - 19:30: Visit Kiss Bridge and enjoy sunset time.",
+      "19:30 - 21:00: Free time and self-funded dinner at Vuifest Night Market.",
+      "21:00 - 21:30: Watch Kiss of the Sea and return to the hotel.",
+    ],
+    included: ["Shuttle bus", "Cable car ticket", "Kiss Bridge ticket", "Kiss of the Sea ticket", "One bottle of water", "Travel insurance"],
+    notIncluded: ["Dinner", "Personal expenses", "Additional drinks", "Optional water park services"],
+    childPolicy: ["Reference child price: 80 USD.", "Final child policy follows attraction height rules."],
+    bestFor: ["Couples", "Families", "Sunset lovers", "Guests who prefer attractions over snorkeling"],
+    localTips: ["Bring swimwear and dry clothes for the water park.", "Dinner is not included, so plan extra spending at the night market.", "Show operation may depend on schedule and weather."],
+  },
+  {
+    title: "Private North Phu Quoc Sailing & Snorkeling",
+    image: "/tour/phuquoc/tour-08-1.jpg",
+    gallery: ["/tour/phuquoc/tour-08-1.jpg", "/tour/phuquoc/tour-08-2.jpg", "/tour/phuquoc/tour-08-3.jpg"],
+    duration: "Morning sailing journey",
+    category: "Private Experience • Sailing • Turtle Island • West Coast",
+    price: {
+      adult: 3250000,
+      child: null,
+      note: "Reference price: 125 USD/guest. Includes English/French-speaking guide, snorkeling equipment, refreshments and transportation.",
+    },
+    description:
+      "Sail the west coast from Ganh Dau to Cua Can, visit floating fish farms and snorkel around Turtle Island.",
+    overview:
+      "A quieter premium sailing experience on Phu Quoc's west coast, designed for travelers who value scenery, smaller-scale exploration and a more relaxed pace.",
+    highlights: ["Ganh Dau to Cua Can sailing route", "Floating fish farms", "Turtle Island snorkeling", "Small rock islet swimming", "Vung Bau Beach views"],
+    itinerary: [
+      "Depart from Ganh Dau and sail toward Cua Can along approximately 15 km of coastline.",
+      "Visit floating fish farms.",
+      "Enjoy approximately one hour of snorkeling at Turtle Island.",
+      "Swim at a small rock islet.",
+      "Pass Vung Bau Beach.",
+      "Arrive at Cua Can Beach around 13:00.",
+    ],
+    included: ["Sailing", "Snorkeling gear", "English/French-speaking guide", "Coconut juice", "Fruit", "Drinking water", "Cold cuts and bread", "Transportation"],
+    notIncluded: ["Personal expenses", "Additional drinks", "Russian or Mongolian guide unless arranged"],
+    childPolicy: ["Child participation must be confirmed based on age and sea conditions.", "No separate child price was provided in the reference material."],
+    bestFor: ["Couples", "Small private groups", "Sailing lovers", "Premium travelers"],
+    localTips: ["Confirm whether the sailing is private or shared for the selected date.", "Bring reef-safe sunscreen and a towel.", "Route timing depends on wind and sea conditions."],
+  },
+  {
+    title: "Nemo Luxury Yacht - Sunrise or Sunset Voyage",
+    image: "/tour/phuquoc/tour-09-1.jpg",
+    gallery: ["/tour/phuquoc/tour-09-1.jpg", "/tour/phuquoc/tour-09-2.jpg", "/tour/phuquoc/tour-09-3.jpg"],
+    duration: "08:00 - 14:15 / 14:00 - 20:30",
+    category: "Premium Choice • Luxury Yacht • BBQ • Water Activities",
+    price: {
+      adult: 2340000,
+      child: null,
+      note: "Reference price: 90 USD/guest. Choose the daytime voyage or sunset option. Final route and fireworks schedule will be reconfirmed.",
+    },
+    description:
+      "Enjoy a luxury yacht with snorkeling, SUP, water slide and BBQ, choosing either a daytime island voyage or sunset and fireworks experience.",
+    overview:
+      "A premium yacht experience with two schedule options. The daytime voyage focuses on water activities and island scenery, while the sunset option adds Kiss Bridge, BBQ dinner and fireworks when operating.",
+    highlights: ["Luxury yacht", "Snorkeling and SUP", "Water slide", "BBQ meal", "Sunrise/daytime or sunset option"],
+    itinerary: [
+      "Day option: 08:00 pickup, 09:00 departure, Hon Gam Ghi water activities, Hon May Rut Trong and BBQ lunch, return around 14:15.",
+      "Sunset option: 14:00 pickup, 15:00 departure, Hon Dam water activities, Kiss Bridge sunset and BBQ dinner.",
+      "Watch the fireworks show when operating.",
+      "Return to the marina and transfer back to the hotel.",
+    ],
+    included: ["Shuttle bus", "Luxury yacht", "Tour guide", "BBQ lunch or dinner according to option", "One bottle of water", "Travel insurance"],
+    notIncluded: ["Personal expenses", "Additional drinks", "Services not listed", "Fireworks when not operating"],
+    childPolicy: ["Please share child age for the current yacht policy.", "No separate child price was provided in the reference material."],
+    bestFor: ["Premium travelers", "Couples", "Celebrations", "Groups of friends", "Content creators"],
+    localTips: ["Choose the daytime option for more water activity time.", "Choose the sunset option for atmosphere and evening photos.", "Fireworks and route details must be reconfirmed for the travel date."],
+  },
+  {
+    title: "Kayaking, Rach Vem, Ham Rong Beach & Grand World",
+    image: "/tour/phuquoc/tour-10-1.jpg",
+    gallery: ["/tour/phuquoc/tour-10-1.jpg", "/tour/phuquoc/tour-10-2.jpg", "/tour/phuquoc/tour-10-3.jpg"],
+    duration: "08:30 - 16:00",
+    category: "North Island Adventure • Kayaking • Beach • Grand World",
+    price: {
+      adult: 1092000,
+      child: 702000,
+      note: "Reference price with lunch: 42 USD/adult and 27 USD/child. Without lunch: 31 USD/adult and 16 USD/child. Base price applies to groups of 4; fewer than 4 guests have a 10 USD/pax surcharge.",
+    },
+    description:
+      "Kayak on Cua Can River, visit Rach Vem, swim at Ham Rong Beach and finish with free time at Grand World.",
+    overview:
+      "A varied north-island day combining river activity, local countryside, beach relaxation and a modern entertainment destination. Good for travelers who want more than a standard sightseeing loop.",
+    highlights: ["Cua Can River kayaking", "Local honey farm", "Rach Vem Village", "Ham Rong Beach", "Grand World"],
+    itinerary: [
+      "08:30: Hotel pickup.",
+      "Kayak on Cua Can River.",
+      "Visit a local honey farm and Silk Factory.",
+      "Visit Rach Vem Village for lunch and relaxation.",
+      "Transfer by speedboat to Ham Rong Beach for swimming and photos.",
+      "Visit Grand World; attraction tickets are self-funded and return may be by VinBus.",
+      "16:00: Return to the hotel.",
+    ],
+    included: ["Shuttle bus", "Kayak", "Speedboat to Ham Rong", "Lunch when selected", "Mineral water", "Energy drink", "Travel insurance"],
+    notIncluded: ["Grand World attraction tickets", "Lunch on the no-lunch package", "Personal expenses", "Group-size surcharge when fewer than 4 guests"],
+    childPolicy: ["With lunch reference: 27 USD/child.", "Without lunch reference: 16 USD/child.", "Please share child age for exact confirmation."],
+    bestFor: ["Active travelers", "Families with older children", "North-island explorers", "Travelers wanting variety"],
+    localTips: ["The listed base price assumes at least 4 guests.", "Bring swimwear, towel, sunscreen and waterproof protection.", "Grand World paid attractions are not included."],
+  },
+];
+
 const journeyTours = [
   {
     number: "1",
@@ -1827,6 +2142,12 @@ const JOURNEY_STORAGE_KEY = "govietstay-my-vietnam-journey-v1";
 
 export default function Home() {
   const [selectedTour, setSelectedTour] = useState<Tour | null>(null);
+  const [galleryIndex, setGalleryIndex] = useState(0);
+
+  useEffect(() => {
+    setGalleryIndex(0);
+  }, [selectedTour]);
+  const [showAllPhuQuocTours, setShowAllPhuQuocTours] = useState(false);
   const [bookingOpen, setBookingOpen] = useState(false);
   const [ticketBookingOpen, setTicketBookingOpen] = useState(false);
   const [bookingForm, setBookingForm] = useState<BookingForm>(emptyBookingForm);
@@ -2098,7 +2419,7 @@ export default function Home() {
 
   useEffect(() => {
     document.title =
-      "GoVietStay | Da Nang Tours • Hoi An Tours • Hue Tours • Private Tours Vietnam";
+      "GoVietStay | Vietnam Private Tours • Da Nang • Hoi An • Hue • Phu Quoc";
 
     fetch("/api/happy-travelers")
       .then((res) => res.json())
@@ -2332,21 +2653,18 @@ export default function Home() {
         <div className="relative z-10 min-h-screen flex items-center px-6 md:px-20 pt-28">
           <div className="max-w-3xl">
             <p className="uppercase tracking-[4px] text-yellow-400 mb-5 text-xs md:text-sm font-semibold">
-              Discover Central Vietnam
+              Explore Vietnam
             </p>
 
-            <h1 className="text-white font-bold leading-[1.05] text-5xl md:text-7xl lg:text-8xl">
-              Da Nang
-              <br />
-              Hoi An
-              <br />
-              Hue
+            <h1 className="text-white font-bold tracking-[-0.04em] leading-[1.02] text-[clamp(2.35rem,10vw,3.6rem)] sm:text-6xl md:text-7xl lg:text-8xl">
+              <span className="block whitespace-nowrap">Da Nang • Hoi An</span>
+              <span className="block whitespace-nowrap">Hue • Phu Quoc</span>
             </h1>
 
-            <p className="mt-7 text-lg md:text-2xl text-white/90 max-w-2xl leading-relaxed">
-              Private Tours in Da Nang, Hoi An & Hue. Golden Bridge Tour, Ba Na
-              Hills Tour, Cham Island Tour, Da Nang Airport Transfer and Local
-              Travel Support with WhatsApp Travel Assistant 24/7.
+            <p className="mt-7 text-base sm:text-lg md:text-2xl text-white/90 max-w-3xl leading-relaxed">
+              Private tours in Da Nang, Hoi An, Hue and Phu Quoc. Discover the
+              Golden Bridge, Cham Island, ancient towns, island experiences and
+              trusted local travel support with WhatsApp assistance 24/7.
             </p>
 
             <div className="mt-6 hidden md:flex flex-wrap gap-2 text-xs md:text-sm text-white/85">
@@ -2354,11 +2672,8 @@ export default function Home() {
                 "Da Nang Tours",
                 "Hoi An Tours",
                 "Hue Tours",
+                "Phu Quoc Tours",
                 "Private Tours Vietnam",
-                "Golden Bridge Tour",
-                "Ba Na Hills Tour",
-                "Cham Island Tour",
-                "Da Nang Airport Transfer",
               ].map((keyword) => (
                 <span
                   key={keyword}
@@ -3289,65 +3604,199 @@ export default function Home() {
           </p>
 
           <h2 className="mt-4 text-4xl md:text-6xl font-bold">
-            Da Nang Tours, Hoi An Tours & Hue Tours
+            Explore Vietnam Your Way
           </h2>
 
-          <p className="mt-6 text-white/70 max-w-2xl text-lg">
-            Handpicked Private Tours Vietnam experiences including Golden Bridge
-            Tour, Ba Na Hills Tour, Cham Island Tour, Hoi An Tours, Hue Tours
-            and Da Nang Airport Transfer — designed for travelers who want
-            comfort, trust and authentic Local Travel Support.
+          <p className="mt-6 text-white/70 max-w-3xl text-lg">
+            Handpicked tours in Da Nang, Hoi An, Hue and Phu Quoc — designed
+            for travelers who want comfort, trust and authentic Local Travel
+            Support.
           </p>
 
-          <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-4 md:gap-6">
-            {tours.map((tour) => (
-              <div
-                key={tour.title}
-                onClick={() => setSelectedTour(tour)}
-                className="cursor-pointer w-full rounded-3xl bg-white/10 border border-white/10 p-5 md:p-6 hover:bg-white/15 hover:-translate-y-1 transition duration-300"
-              >
-                <div className="relative mb-5 md:mb-6 h-56 md:h-60 w-full overflow-hidden rounded-2xl bg-black/20">
-                  <Image
-                    src={tour.image}
-                    alt={tour.title}
-                    fill
-                    sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
-                    quality={95}
-                    className="object-cover object-center transition duration-500 hover:scale-105"
-                  />
-                </div>
+          <div className="mt-12 flex flex-wrap gap-3">
+            <a
+              href="#central-vietnam-tours"
+              className="rounded-full bg-yellow-400 px-5 py-3 text-sm font-bold text-[#06251b] hover:bg-yellow-300 transition"
+            >
+              Central Vietnam Tours
+            </a>
+            <a
+              href="#phu-quoc-tours"
+              className="rounded-full border border-white/25 px-5 py-3 text-sm font-semibold text-white hover:border-yellow-400 hover:text-yellow-400 transition"
+            >
+              Phu Quoc Tours
+            </a>
+          </div>
 
-                <h3 className="text-xl md:text-2xl font-bold leading-tight">
-                  {tour.title}
+          <div id="central-vietnam-tours" className="mt-16 scroll-mt-28">
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <p className="text-white/50 uppercase tracking-[3px] text-xs font-semibold">
+                  Da Nang • Hoi An • Hue
+                </p>
+                <h3 className="mt-3 text-3xl md:text-4xl font-bold">
+                  Central Vietnam Tours
                 </h3>
-
-                <div className="mt-2 text-xs text-yellow-400 uppercase tracking-wider">
-                  {tour.category}
-                </div>
-
-                <p className="mt-3 text-white/65">{tour.description}</p>
-
-                <div className="mt-5 text-sm text-white/80">
-                  {tour.price.adult ? (
-                    <>
-                      From{" "}
-                      <span className="text-yellow-400 font-bold">
-                        {formatVND(tour.price.adult)}
-                      </span>{" "}
-                      / {formatUSD(tour.price.adult)}
-                    </>
-                  ) : (
-                    <span className="text-yellow-400 font-bold">
-                      Contact for custom price
-                    </span>
-                  )}
-                </div>
-
-                <button className="mt-6 text-yellow-400 font-semibold">
-                  View details / Book Now →
-                </button>
               </div>
-            ))}
+              <p className="max-w-xl text-sm md:text-base text-white/60">
+                All current tours, prices, booking details and existing functions
+                are preserved exactly as before.
+              </p>
+            </div>
+
+            <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+              {tours.map((tour) => (
+                <div
+                  key={tour.title}
+                  onClick={() => setSelectedTour(tour)}
+                  className="cursor-pointer w-full rounded-3xl bg-white/10 border border-white/10 p-5 md:p-6 hover:bg-white/15 hover:-translate-y-1 transition duration-300"
+                >
+                  <div className="relative mb-5 md:mb-6 h-56 md:h-60 w-full overflow-hidden rounded-2xl bg-black/20">
+                    <Image
+                      src={tour.image}
+                      alt={tour.title}
+                      fill
+                      sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
+                      quality={95}
+                      className="object-cover object-center transition duration-500 hover:scale-105"
+                    />
+                  </div>
+
+                  <h3 className="text-xl md:text-2xl font-bold leading-tight">
+                    {tour.title}
+                  </h3>
+
+                  <div className="mt-2 text-xs text-yellow-400 uppercase tracking-wider">
+                    {tour.category}
+                  </div>
+
+                  <p className="mt-3 text-white/65">{tour.description}</p>
+
+                  <div className="mt-5 text-sm text-white/80">
+                    {tour.price.adult ? (
+                      <>
+                        From{" "}
+                        <span className="text-yellow-400 font-bold">
+                          {formatVND(tour.price.adult)}
+                        </span>{" "}
+                        / {formatUSD(tour.price.adult)}
+                      </>
+                    ) : (
+                      <span className="text-yellow-400 font-bold">
+                        Contact for custom price
+                      </span>
+                    )}
+                  </div>
+
+                  <button className="mt-6 text-yellow-400 font-semibold">
+                    View details / Book Now →
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div
+            id="phu-quoc-tours"
+            className="mt-24 scroll-mt-28 rounded-[2rem] border border-yellow-400/20 bg-gradient-to-b from-[#0b2c21] to-[#071f17] p-5 md:p-10"
+          >
+            <div className="flex flex-wrap items-end justify-between gap-5">
+              <div>
+                <p className="text-yellow-400 uppercase tracking-[4px] text-sm font-semibold">
+                  Phu Quoc Island Experiences
+                </p>
+                <h3 className="mt-4 text-3xl md:text-5xl font-bold">
+                  Discover Phu Quoc
+                </h3>
+                <p className="mt-4 max-w-2xl text-white/65 text-base md:text-lg">
+                  Island hopping, snorkeling, sunset cruises, cable car,
+                  water parks and premium yacht experiences — organized so
+                  guests can compare comfortably without information overload.
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-sm text-white/70">
+                <span className="block text-2xl font-bold text-yellow-400">10</span>
+                Phu Quoc experiences
+              </div>
+            </div>
+
+            <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+              {(showAllPhuQuocTours
+                ? phuQuocTours
+                : [phuQuocTours[5], phuQuocTours[4], phuQuocTours[8]]
+              ).map((tour) => (
+                <div
+                  key={tour.title}
+                  onClick={() => setSelectedTour(tour)}
+                  className="group cursor-pointer w-full rounded-3xl bg-white/10 border border-white/10 p-5 md:p-6 hover:bg-white/15 hover:-translate-y-1 transition duration-300"
+                >
+                  <div className="relative mb-5 md:mb-6 h-56 md:h-60 w-full overflow-hidden rounded-2xl bg-black/20">
+                    <Image
+                      src={tour.image}
+                      alt={tour.title}
+                      fill
+                      sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
+                      quality={90}
+                      className="object-cover object-top transition duration-500 group-hover:scale-105"
+                    />
+                  </div>
+
+                  <div className="mb-3 flex items-center justify-between gap-3">
+                    <span className="rounded-full bg-yellow-400/15 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-yellow-400">
+                      Phu Quoc
+                    </span>
+                    <span className="text-xs text-white/50">{tour.duration}</span>
+                  </div>
+
+                  <h4 className="text-xl md:text-2xl font-bold leading-tight">
+                    {tour.title}
+                  </h4>
+
+                  <div className="mt-2 text-xs text-yellow-400 uppercase tracking-wider">
+                    {tour.category}
+                  </div>
+
+                  <p className="mt-3 text-white/65">{tour.description}</p>
+
+                  <div className="mt-5 text-sm text-white/80">
+                    {tour.price.adult ? (
+                      <>
+                        From{" "}
+                        <span className="text-yellow-400 font-bold">
+                          {formatVND(tour.price.adult)}
+                        </span>{" "}
+                        / {formatUSD(tour.price.adult)}
+                      </>
+                    ) : (
+                      <span className="text-yellow-400 font-bold">
+                        Contact for current price
+                      </span>
+                    )}
+                  </div>
+
+                  <button className="mt-6 text-yellow-400 font-semibold">
+                    View details / Book Now →
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-10 flex flex-col items-center gap-3 text-center">
+              <button
+                type="button"
+                onClick={() => setShowAllPhuQuocTours((current) => !current)}
+                className="rounded-full bg-yellow-400 px-7 py-4 font-bold text-[#06251b] hover:bg-yellow-300 transition"
+              >
+                {showAllPhuQuocTours
+                  ? "Show Only 3 Featured Phu Quoc Tours"
+                  : "Explore All 10 Phu Quoc Tours"}
+              </button>
+              <p className="text-xs text-white/45">
+                Tour routes and sea activities may change according to weather,
+                sea conditions and operator schedules.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -4884,15 +5333,63 @@ export default function Home() {
             className="gvs-panel bg-[#f7f1df] text-[#06251b] rounded-t-3xl md:rounded-3xl max-w-6xl w-full max-h-[92svh] md:max-h-[90vh] overflow-y-auto overscroll-contain shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="relative h-72 md:h-[500px] w-full overflow-hidden rounded-t-3xl bg-black">
-              <Image
-                src={selectedTour.image}
-                alt={selectedTour.title}
-                fill
-                quality={95}
-                sizes="100vw"
-                className="object-cover object-center"
-              />
+            <div className="relative w-full overflow-hidden rounded-t-3xl bg-black">
+              <div className="relative h-56 sm:h-72 md:h-[420px] w-full">
+                <Image
+                  src={(selectedTour.gallery?.length ? selectedTour.gallery : [selectedTour.image])[galleryIndex] || selectedTour.image}
+                  alt={`${selectedTour.title} - photo ${galleryIndex + 1}`}
+                  fill
+                  quality={90}
+                  sizes="100vw"
+                  className="object-cover object-center"
+                  priority
+                />
+
+                {(selectedTour.gallery?.length || 1) > 1 && (
+                  <>
+                    <button
+                      type="button"
+                      aria-label="Previous photo"
+                      onClick={() => {
+                        const count = selectedTour.gallery?.length || 1;
+                        setGalleryIndex((current) => (current - 1 + count) % count);
+                      }}
+                      className="absolute left-3 top-1/2 -translate-y-1/2 grid h-11 w-11 place-items-center rounded-full bg-black/55 text-2xl text-white backdrop-blur hover:bg-black/75"
+                    >
+                      ‹
+                    </button>
+                    <button
+                      type="button"
+                      aria-label="Next photo"
+                      onClick={() => {
+                        const count = selectedTour.gallery?.length || 1;
+                        setGalleryIndex((current) => (current + 1) % count);
+                      }}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 grid h-11 w-11 place-items-center rounded-full bg-black/55 text-2xl text-white backdrop-blur hover:bg-black/75"
+                    >
+                      ›
+                    </button>
+                  </>
+                )}
+              </div>
+
+              {(selectedTour.gallery?.length || 1) > 1 && (
+                <div className="flex gap-2 overflow-x-auto bg-[#06251b] p-3">
+                  {(selectedTour.gallery || [selectedTour.image]).map((photo, index) => (
+                    <button
+                      key={photo}
+                      type="button"
+                      onClick={() => setGalleryIndex(index)}
+                      className={`relative h-16 min-w-24 overflow-hidden rounded-xl border-2 transition ${
+                        galleryIndex === index ? "border-yellow-400 opacity-100" : "border-transparent opacity-65 hover:opacity-100"
+                      }`}
+                      aria-label={`View photo ${index + 1}`}
+                    >
+                      <Image src={photo} alt="" fill sizes="96px" className="object-cover" />
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="p-5 md:p-10">
