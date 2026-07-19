@@ -19,6 +19,7 @@ export type TourLanding = {
   whyBook?: string[];
   faqs?: { question: string; answer: string }[];
   packing?: string[];
+  reviews?: { name: string; quote: string; context?: string; image: string }[];
 };
 
 const en: Record<string, TourLanding> = {
@@ -107,6 +108,24 @@ const ru: Record<string, TourLanding> = {
       { question: "Где забирают гостей?", answer: "Стандартный трансфер доступен из определённых районов Дананга и Хойана. Отправьте название отеля — мы подтвердим точное время и возможную доплату до оплаты." },
       { question: "Есть ли русскоязычный гид?", answer: "На стандартной групповой экскурсии обычно работает англоязычный гид. Русскоязычное сопровождение предоставляется по запросу и подтверждается отдельно." },
       { question: "Можно заказать вегетарианское питание?", answer: "Сообщите о питании и аллергиях до подтверждения. Мы проверим доступный вариант меню у оператора." },
+    ],
+    reviews: [
+      {
+        name: "Наталья",
+        quote: "Добрый вечер, всё прошло замечательно 💯 Отдельное спасибо Анне 🌸",
+        image: "/tour/cham-island/reviews/natalia-whatsapp.jpg",
+      },
+      {
+        name: "Екатерина",
+        quote: "Да, всё прошло хорошо.",
+        context: "После поездки гостье понадобилась помощь с поиском ближайшей аптеки — GoVietStay продолжил поддержку в WhatsApp.",
+        image: "/tour/cham-island/reviews/ekaterina-whatsapp.jpg",
+      },
+      {
+        name: "Гость GoVietStay",
+        quote: "Всё было отлично. Спасибо вам большое за такую хорошую экскурсию.",
+        image: "/tour/cham-island/reviews/guest-whatsapp.jpg",
+      },
     ],
   },
 };
