@@ -9,9 +9,10 @@ const money = (value: number) => new Intl.NumberFormat("en-US").format(value) + 
 export default function TourLandingPage({ tour, locale }: { tour: TourLanding; locale: Locale }) {
   const isRu = locale === "ru";
   const isRuCham = isRu && tour.slug === "cham-island";
-  const [booking, setBooking] = useState({ date: "", adults: "2", children: "0", childDetails: "", hotel: "", language: isRu ? "Русский" : "English" });
+  const [booking, setBooking] = useState({ date: "", adults: "2", children: "0", childDetails: "", hotel: "", language: isRu ? "Русский" : "English", addOn: "none" });
+  const selectedAddOn = tour.addOns?.find(item => item.id === booking.addOn);
   const message = isRu
-    ? `Здравствуйте, GoVietStay! Я хочу проверить места на экскурсию «${tour.title}».\n\nДата: ${booking.date || "не указана"}\nВзрослые: ${booking.adults || "не указано"}\nДети: ${booking.children || "0"}\nВозраст/рост детей: ${booking.childDetails || "нет"}\nОтель: ${booking.hotel || "не указан"}\nЯзык поддержки: ${booking.language}\nИсточник: TikTok / страница GoVietStay\n\nПожалуйста, подтвердите наличие мест, трансфер, погоду и точную стоимость до оплаты.`
+    ? `Здравствуйте, GoVietStay! Я хочу проверить места на экскурсию «${tour.title}».\n\nДата: ${booking.date || "не указана"}\nВзрослые: ${booking.adults || "не указано"}\nДети: ${booking.children || "0"}\nВозраст/рост детей: ${booking.childDetails || "нет"}\nОтель: ${booking.hotel || "не указан"}\nДополнительная активность: ${selectedAddOn ? `${selectedAddOn.title} (+${money(selectedAddOn.price)} за участника)` : "не выбрана"}\nЯзык поддержки: ${booking.language}\nИсточник: TikTok / страница GoVietStay\n\nПожалуйста, подтвердите наличие мест, трансфер, погоду, возможность участия и точную стоимость до оплаты.`
     : `Hello GoVietStay, I would like to check ${tour.title}.\n\nDate: ${booking.date || "not provided"}\nAdults: ${booking.adults || "not provided"}\nChildren: ${booking.children || "0"}\nChild age/height: ${booking.childDetails || "none"}\nHotel: ${booking.hotel || "not provided"}\nSupport language: ${booking.language}\n\nPlease confirm availability, pickup, weather and the exact total before payment.`;
   const whatsapp = `https://wa.me/${PHONE}?text=${encodeURIComponent(message)}`;
   const labels = isRu ? {
@@ -57,7 +58,7 @@ export default function TourLandingPage({ tour, locale }: { tour: TourLanding; l
             <p className="mt-2">{labels.child}: <strong>{money(tour.childPrice)}</strong></p>
             <p className="mt-4 text-sm leading-relaxed text-[#06251b]/60">{tour.priceNote}</p>
             {!isRuCham && <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="mt-6 block rounded-full bg-[#20a65a] px-5 py-4 text-center font-bold text-white shadow-lg transition hover:bg-[#168849]">{labels.availability}</a>}
-            {isRuCham && <BookingFields booking={booking} setBooking={setBooking} />}
+            {isRuCham && <BookingFields booking={booking} setBooking={setBooking} addOns={tour.addOns || []} />}
             <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="mt-6 block rounded-full bg-[#20a65a] px-5 py-4 text-center font-bold text-white shadow-lg transition hover:bg-[#168849]">{labels.availability}</a>
             <p className="mt-3 text-center text-xs text-[#06251b]/55">{isRu ? "Проверка мест бесплатна. Бронирование подтверждается только после ответа GoVietStay." : "Availability check is free. Booking is confirmed only after GoVietStay replies."}</p>
             <div className="mt-6 border-t border-[#06251b]/10 pt-5"><h2 className="font-bold">{labels.trust}</h2><p className="mt-2 text-sm leading-relaxed text-[#06251b]/65">{labels.trustText}</p><p className="mt-4 text-sm font-semibold">GoVietStay.com<br />WhatsApp: +84 937 762 607</p></div>
@@ -72,9 +73,9 @@ export default function TourLandingPage({ tour, locale }: { tour: TourLanding; l
   );
 }
 
-type BookingState = { date: string; adults: string; children: string; childDetails: string; hotel: string; language: string };
+type BookingState = { date: string; adults: string; children: string; childDetails: string; hotel: string; language: string; addOn: string };
 
-function BookingFields({ booking, setBooking }: { booking: BookingState; setBooking: (value: BookingState) => void }) {
+function BookingFields({ booking, setBooking, addOns }: { booking: BookingState; setBooking: (value: BookingState) => void; addOns: NonNullable<TourLanding["addOns"]> }) {
   const field = (name: keyof BookingState, value: string) => setBooking({ ...booking, [name]: value });
   return <div className="mt-6 space-y-3 border-t border-[#06251b]/10 pt-5">
     <h2 className="font-bold">Проверьте вашу дату</h2>
@@ -85,6 +86,7 @@ function BookingFields({ booking, setBooking }: { booking: BookingState; setBook
     </div>
     <label className="block text-sm font-semibold">Возраст и рост детей<input value={booking.childDetails} onChange={e => field("childDetails", e.target.value)} placeholder="Например: 6 лет, 118 см" className="mt-1 w-full rounded-xl border border-[#06251b]/15 bg-[#f7f1df]/50 px-3 py-3 font-normal" /></label>
     <label className="block text-sm font-semibold">Название отеля<input value={booking.hotel} onChange={e => field("hotel", e.target.value)} placeholder="Отель в Дананге или Хойане" className="mt-1 w-full rounded-xl border border-[#06251b]/15 bg-[#f7f1df]/50 px-3 py-3 font-normal" /></label>
+    <label className="block text-sm font-semibold">Дополнительная активность<select value={booking.addOn} onChange={e => field("addOn", e.target.value)} className="mt-1 w-full rounded-xl border border-[#06251b]/15 bg-[#f7f1df]/50 px-3 py-3 font-normal"><option value="none">Без дополнительной активности</option>{addOns.map(item => <option key={item.id} value={item.id}>{item.title} (+{money(item.price)})</option>)}</select></label>
   </div>;
 }
 
@@ -98,6 +100,13 @@ function RuChamConversionSections({ tour }: { tour: TourLanding }) {
         <figure className="overflow-hidden rounded-3xl bg-[#06251b] text-white"><img src="/tour/cham-island/guest-pickup.jpg" alt="Гости GoVietStay перед трансфером на остров Чам" className="aspect-[4/3] w-full object-cover object-center" /><figcaption className="p-4 font-semibold">Встреча гостей и трансфер</figcaption></figure>
         <figure className="overflow-hidden rounded-3xl bg-[#06251b] text-white"><img src="/tour/cham-island/guest-on-island.jpg" alt="Гости GoVietStay на пляже острова Чам" className="aspect-[4/3] w-full object-cover object-center" /><figcaption className="p-4 font-semibold">Настоящий день на острове Чам</figcaption></figure>
       </div>
+    </section>
+    <section className="rounded-[2rem] border-2 border-amber-400/60 bg-amber-50 p-6 md:p-8">
+      <p className="text-sm font-semibold uppercase tracking-[.2em] text-amber-800">Дополнительные подводные активности</p>
+      <h2 className="mt-3 text-3xl font-bold">Добавьте Sea Walk или дайвинг с инструктором</h2>
+      <p className="mt-3 max-w-3xl leading-relaxed text-[#06251b]/65">Каждая активность оплачивается дополнительно к стандартной экскурсии. Бронируйте заранее: ежедневное количество мест ограничено.</p>
+      <div className="mt-6 grid gap-5 md:grid-cols-2">{(tour.addOns || []).map(item => <article key={item.id} className="rounded-3xl bg-white p-6 shadow-sm"><h3 className="text-xl font-bold">{item.title}</h3><p className="mt-3 text-3xl font-bold text-green-800">+ {money(item.price)}</p><p className="text-sm font-semibold text-[#06251b]/55">за участника · дополнительно к цене тура</p><p className="mt-4 leading-relaxed text-[#06251b]/70">{item.description}</p><DotList items={item.notes} /></article>)}</div>
+      <div className="mt-6 rounded-2xl bg-[#06251b] p-5 text-white"><p className="font-bold">Важно для безопасности</p><p className="mt-2 text-sm leading-relaxed text-white/75">Участие подтверждается только после проверки возраста и состояния здоровья. Погода, состояние моря и решение оператора или инструктора имеют приоритет. Сообщите заранее о беременности, заболеваниях сердца, высоком давлении, астме, недавних операциях и других медицинских состояниях.</p></div>
     </section>
     <section className="rounded-[2rem] border border-[#06251b]/10 bg-white/70 p-6 md:p-8">
       <div className="flex flex-wrap items-end justify-between gap-4">
