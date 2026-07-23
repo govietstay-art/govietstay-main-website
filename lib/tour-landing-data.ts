@@ -57,6 +57,63 @@ const en: Record<string, TourLanding> = {
     included: ["Hotel pickup and drop-off", "English-speaking guide", "Round-trip speedboat", "Entrance tickets", "Snorkeling equipment", "Seafood lunch and water"],
     excluded: ["Personal expenses", "Additional beverages", "Optional sea activities not listed"],
     policies: ["Tour operation depends on official weather and sea-safety approval.", "Share every child's age and height before booking.", "Pickup surcharge may apply outside the standard area.", "If weather prevents operation, rescheduling or refund handling follows the written booking confirmation."],
+    whyBook: [
+      "English-language support before and during your trip",
+      "Weather and sea conditions checked before departure",
+      "Clear confirmation of your pickup time and location",
+      "Exact total confirmed before payment",
+      "Live GoVietStay WhatsApp support if plans change",
+      "Help with individual requests, children and dietary needs",
+    ],
+    packing: [
+      "Swimsuit, towel and a change of clothes",
+      "Sunscreen and a hat",
+      "A small waterproof bag",
+      "Personal medication and motion-sickness medicine if needed",
+    ],
+    faqs: [
+      { question: "Can I join if I cannot swim?", answer: "Yes. Tell us in advance and follow the guide’s instructions. Snorkeling is optional, so you may relax on the beach instead." },
+      { question: "Is the tour suitable for children?", answer: "Yes, but you must provide each child’s age and height before booking. Participation also depends on the weather and sea conditions." },
+      { question: "What happens if the sea is rough?", answer: "Safety is more important than the schedule. If the official operator cancels the departure, GoVietStay will offer rescheduling or handle a refund according to your written booking confirmation." },
+      { question: "Where are guests picked up?", answer: "Standard pickup is available from selected areas of Da Nang and Hoi An. Send us your hotel name and we will confirm the exact time and any surcharge before payment." },
+      { question: "Which language does the guide speak?", answer: "The standard joined tour normally has an English-speaking guide. Other language support may be arranged on request and is confirmed separately." },
+      { question: "Is vegetarian food available?", answer: "Tell us about dietary requirements and allergies before confirmation. We will check the available menu with the operator." },
+      { question: "Can I add Sea Walk or scuba diving on the day?", answer: "Do not rely on last-minute availability. Sea Walk and scuba diving have limited places and require advance confirmation. Share the chosen activity, travel date, participant ages and important health information before payment." },
+    ],
+    reviews: [
+      {
+        name: "Natalia",
+        quote: "Good evening, everything was wonderful 💯 Special thanks to Anna 🌸",
+        image: "/tour/cham-island/reviews/natalia-whatsapp.jpg",
+      },
+      {
+        name: "Ekaterina",
+        quote: "Yes, everything went well.",
+        context: "After the trip, the guest needed help finding a nearby pharmacy, and GoVietStay continued supporting her on WhatsApp.",
+        image: "/tour/cham-island/reviews/ekaterina-whatsapp.jpg",
+      },
+      {
+        name: "GoVietStay guest",
+        quote: "Everything was excellent. Thank you very much for such a good tour.",
+        image: "/tour/cham-island/reviews/guest-whatsapp.jpg",
+      },
+    ],
+    addOns: [
+      {
+        id: "sea-walk",
+        title: "Sea Walk — underwater helmet walk",
+        price: 900000,
+        description: "Walk on the seabed wearing a special helmet with support from the operator’s team. Diving experience is normally not required.",
+        notes: ["Added to the standard tour price", "Advance booking required", "Very limited availability", "Participants complete a health questionnaire"],
+      },
+      {
+        id: "scuba",
+        title: "Scuba diving with an instructor",
+        price: 900000,
+        description: "A tank dive with an instructor after a mandatory briefing and participation check.",
+        notes: ["Added to the standard tour price", "Advance booking required", "Very limited availability", "Participation depends on health, weather and the instructor’s decision"],
+      },
+    ],
   },
 };
 
