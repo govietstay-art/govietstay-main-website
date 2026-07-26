@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useMemo, useState, type FormEvent } from "react";
 import Image from "next/image";
@@ -281,10 +281,10 @@ const ruTours: RuTour[] = [
     duration: "На весь день",
     intro:
       "Классический маршрут в Хюэ: цитадель, история императорской династии и одна из самых культурных экскурсий Центрального Вьетнама.",
-    groupPriceAdult: "от 1,450,000 VND (~$56)",
-    groupPriceChild: "от 1,250,000 VND (~$48)",
-    ruPriceAdult: "от 1,950,000 VND (~$75)",
-    ruPriceChild: "от 1,750,000 VND (~$67)",
+    groupPriceAdult: "от 2,700,000 VND (~$104)",
+    groupPriceChild: "от 2,400,000 VND (~$92)",
+    ruPriceAdult: "от 3,200,000 VND (~$123)",
+    ruPriceChild: "от 2,800,000 VND (~$108)",
     upgradeNote:
       "Для 4 гостей и больше стоит рассматривать более комфортный private формат из-за длинной дороги и насыщенного дня.",
     highlights: [
@@ -1255,4 +1255,3 @@ export default function RussianPage() {
     </main>
   );
 }
-
