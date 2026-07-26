@@ -9,7 +9,7 @@ type Tour = {
   title: string;
   category: string;
   duration: string;
-  image: string;
+  images: string[];
   adult: string;
   child: string;
   description: string;
@@ -21,17 +21,31 @@ type Tour = {
 
 const PHONE = "84937762607";
 
+function TourImage({ sources, alt }: { sources: string[]; alt: string }) {
+  const [sourceIndex, setSourceIndex] = useState(0);
+
+  return (
+    <img
+      src={sources[sourceIndex]}
+      alt={alt}
+      onError={() => {
+        if (sourceIndex < sources.length - 1) setSourceIndex(sourceIndex + 1);
+      }}
+    />
+  );
+}
+
 const content = {
   en: {
     navTours: "All tours",
     navCheck: "Check availability",
-    eyebrow: "Three ways to discover Vietnam’s Pearl Island",
+    eyebrow: "Ten ways to discover Vietnam’s Pearl Island",
     title: "Choose your",
     titleAccent: "Phu Quoc day.",
-    lead: "Compare an easy island discovery, a northern wooden-boat adventure and the complete four-island cable-car experience.",
+    lead: "Compare 10 original GoVietStay Phu Quoc experiences—from easy sightseeing and sunset cruises to island hopping, sailing, luxury yacht and northern adventures.",
     chips: ["Clear reference prices", "Local WhatsApp support", "EN & RU assistance"],
     collectionLabel: "GoVietStay Phu Quoc collection",
-    collectionTitle: "One island. Three different travel styles.",
+    collectionTitle: "One island. Ten different travel styles.",
     collectionText: "Select the experience that fits your pace. Each card opens its complete program without leaving this page.",
     from: "Adult",
     child: "Child",
@@ -66,13 +80,13 @@ const content = {
   ru: {
     navTours: "Все экскурсии",
     navCheck: "Проверить места",
-    eyebrow: "Три способа открыть Жемчужный остров Вьетнама",
+    eyebrow: "Десять способов открыть Жемчужный остров Вьетнама",
     title: "Выберите свой",
     titleAccent: "день на Фукуоке.",
-    lead: "Сравните обзорную экскурсию по острову, путешествие на деревянной лодке на севере и насыщенную программу «4 острова + канатная дорога».",
+    lead: "Сравните 10 оригинальных программ GoVietStay на Фукуоке: обзорные экскурсии, закатные круизы, острова, парусную лодку, яхту и приключения на севере.",
     chips: ["Понятные ориентировочные цены", "Поддержка в WhatsApp", "Поддержка EN & RU"],
     collectionLabel: "Коллекция GoVietStay на Фукуоке",
-    collectionTitle: "Один остров. Три формата отдыха.",
+    collectionTitle: "Один остров. Десять форматов отдыха.",
     collectionText: "Выберите подходящий темп. Полная программа каждой экскурсии открывается прямо на этой странице.",
     from: "Взрослый",
     child: "Ребёнок",
@@ -113,7 +127,7 @@ const tours: Record<Language, Tour[]> = {
       title: "Phu Quoc Island Discovery Tour",
       category: "Sightseeing · Local culture · Easy day",
       duration: "08:30–15:00",
-      image: "/tour/phuquoc/phuquoc-01.png",
+      images: ["/tour/phuquoc/tour-01-1.jpg", "/tour/phuquoc/tour-01-2.jpg", "/tour/phuquoc/phuquoc-01.png"],
       adult: "520,000 VND",
       child: "260,000 VND",
       description: "A relaxed introduction to Dinh Cau, Phu Quoc Ridgeback dogs, pearl farming and local specialties—ideal for guests who prefer sightseeing to a sea tour.",
@@ -127,7 +141,7 @@ const tours: Record<Language, Tour[]> = {
       title: "North Phu Quoc Snorkeling & Fishing",
       category: "Wooden boat · Fishing · Beginner snorkeling",
       duration: "09:00 or 12:30",
-      image: "/tour/phuquoc/phuquoc-02.png",
+      images: ["/tour/phuquoc/tour-02-1.jpg", "/tour/phuquoc/tour-02-2.jpg", "/tour/phuquoc/phuquoc-02.png"],
       adult: "1,300,000 VND",
       child: "910,000 VND",
       description: "Fish near Hon Bang Island, snorkel at a northern coral reef and enjoy a slower-paced wooden-boat journey with a local meal.",
@@ -137,11 +151,53 @@ const tours: Record<Language, Tour[]> = {
       notes: ["Reference price: 50 USD/adult and 35 USD/child.", "The base package has no tour guide. A private Russian- or Mongolian-speaking guide is available at extra cost.", "Child participation and the snorkeling location depend on age, health and sea conditions."],
     },
     {
+      id: "north-sunset-chill",
+      title: "North Phu Quoc Sunset Chill by Wooden Boat",
+      category: "Sunset · Wooden boat · Fishing · DJ music",
+      duration: "16:00–18:30",
+      images: ["/tour/phuquoc/tour-03-1.jpg", "/tour/phuquoc/phuquoc-03.png"],
+      adult: "650,000 VND",
+      child: "390,000 VND",
+      description: "Cruise along Bai Dai Beach at sunset, try fishing and enjoy a cold beer, tropical fruits and music on board.",
+      itinerary: ["16:00: Hotel pickup and transfer to the beach.", "16:30: Board the wooden boat.", "Cruise along Bai Dai Beach and try fishing.", "Enjoy one cold beer, tropical fruits and music.", "18:30: Return and transfer to the hotel."],
+      included: ["Shuttle bus", "One beer and fruits", "One bottle of water", "Boat tour", "Fishing equipment", "Travel insurance"],
+      excluded: ["Private guide unless added", "Dinner", "Personal expenses", "Additional drinks"],
+      notes: ["Reference price: 25 USD/adult and 15 USD/child.", "Private guide service is available at extra cost.", "Sunset visibility depends on weather."],
+    },
+    {
+      id: "sunset-squid-fishing",
+      title: "Phu Quoc Sunset Cruise & Night Squid Fishing",
+      category: "Sunset · Squid fishing · Dinner on board",
+      duration: "16:00–21:00",
+      images: ["/tour/phuquoc/tour-04-1.jpg", "/tour/phuquoc/phuquoc-04.png"],
+      adult: "1,040,000 VND",
+      child: "650,000 VND",
+      description: "Watch the sunset at sea, try night squid fishing and enjoy dinner on board during a classic Phu Quoc evening cruise.",
+      itinerary: ["16:00: Hotel pickup.", "17:00: Board the tourist boat.", "Enjoy sunset views at sea.", "Try squid fishing; freshly caught squid may be cooked on request.", "Enjoy dinner on board.", "21:00: Return to the hotel."],
+      included: ["Shuttle bus", "Tourist boat", "Tour guide", "Dinner", "One bottle of water", "Life jacket and fishing gear", "Travel insurance"],
+      excluded: ["Personal expenses", "Additional drinks", "Private language-guide surcharge when applicable"],
+      notes: ["Reference price: 40 USD/adult and 25 USD/child.", "Squid catch is not guaranteed.", "Timing may change with sea conditions."],
+    },
+    {
+      id: "three-islands",
+      title: "Phu Quoc 3 Islands Speedboat & Snorkeling",
+      category: "Best value · Speedboat · Snorkeling · Island hopping",
+      duration: "07:00–16:00",
+      images: ["/tour/phuquoc/tour-05-1.jpg", "/tour/phuquoc/phuquoc-05.png"],
+      adult: "1,040,000 VND",
+      child: "Confirm before booking",
+      description: "Explore the southern islands by premium speedboat with snorkeling, swimming, flycam photos and lunch.",
+      itinerary: ["07:00–07:30: Hotel pickup and meeting at the Pearl Farm.", "09:30: Begin the southern-island speedboat route.", "Optional Sea Walking at your own expense.", "Swimming, flycam photos and lunch at Mong Tay Island.", "Snorkeling at Gam Ghi or Buom Island.", "Swimming at May Rut Island.", "16:00: Return to the hotel."],
+      included: ["Shuttle bus", "Premium speedboat", "Tour guide", "Lunch", "Flycam photography", "Water", "Travel insurance"],
+      excluded: ["Sea Walking", "Personal expenses", "Additional drinks", "Other water sports"],
+      notes: ["Reference price: 40 USD/guest.", "Share each child’s age and height for current pricing.", "Island order may change with weather and sea conditions."],
+    },
+    {
       id: "four-islands",
       title: "4 Islands, Hon Thom Cable Car & Aquatopia",
       category: "Most popular · Islands · Cable car · Water park",
       duration: "07:00–17:30",
-      image: "/tour/phuquoc/phuquoc-06.png",
+      images: ["/tour/phuquoc/tour-05-1.jpg", "/tour/phuquoc/tour-06-1.jpg", "/tour/phuquoc/phuquoc-06.png", "/tour/phuquoc/phuquoc-05.png"],
       adult: "1,690,000 VND",
       child: "Confirm before booking",
       description: "The complete first-time Phu Quoc day: southern islands, snorkeling, Hon Thom Cable Car, lunch, Aquatopia Water Park and Kiss Bridge.",
@@ -150,6 +206,62 @@ const tours: Record<Language, Tour[]> = {
       excluded: ["Sea Walking", "Personal expenses", "Additional drinks", "Optional water sports"],
       notes: ["Reference price: 65 USD/guest.", "Share every child’s age and height for current operator pricing.", "The island order and activities may change according to sea, weather and operator conditions."],
     },
+    {
+      id: "hon-thom-kiss",
+      title: "Hon Thom Cable Car, Kiss Bridge & Kiss of the Sea",
+      category: "Romantic sunset · Cable car · Water park · Evening show",
+      duration: "12:00–21:30",
+      images: ["/tour/phuquoc/tour-07-1.jpg", "/tour/phuquoc/phuquoc-07.png"],
+      adult: "2,470,000 VND",
+      child: "2,080,000 VND",
+      description: "Enjoy Hon Thom Cable Car and Water Park, sunset at Kiss Bridge, Vuifest Night Market and the Kiss of the Sea show.",
+      itinerary: ["12:00: Pickup.", "12:30: Pearl Farm.", "13:30–14:00: Hon Thom Cable Car.", "14:00–17:00: Water park, pools and beach.", "17:30–19:30: Kiss Bridge and sunset.", "19:30–21:00: Free time and self-funded dinner at Vuifest Night Market.", "21:00–21:30: Kiss of the Sea and return."],
+      included: ["Shuttle bus", "Cable car ticket", "Kiss Bridge ticket", "Kiss of the Sea ticket", "Water", "Travel insurance"],
+      excluded: ["Dinner", "Personal expenses", "Additional drinks", "Optional water-park services"],
+      notes: ["Reference price: 95 USD/adult and 80 USD/child.", "Dinner at Vuifest Night Market is self-funded.", "Show operation may depend on schedule and weather."],
+    },
+    {
+      id: "private-sailing",
+      title: "Private North Phu Quoc Sailing & Snorkeling",
+      category: "Private experience · Sailing · Turtle Island · West coast",
+      duration: "Morning sailing journey",
+      images: ["/tour/phuquoc/tour-08-1.jpg", "/tour/phuquoc/phuquoc-08.png"],
+      adult: "3,250,000 VND",
+      child: "Confirm before booking",
+      description: "Sail the west coast from Ganh Dau to Cua Can, visit floating fish farms and snorkel around Turtle Island.",
+      itinerary: ["Sail from Ganh Dau toward Cua Can along about 15 km of coastline.", "Visit floating fish farms.", "Snorkel for approximately one hour at Turtle Island.", "Swim at a small rock islet.", "Pass Vung Bau Beach.", "Arrive at Cua Can Beach around 13:00."],
+      included: ["Sailing", "Snorkeling gear", "English/French-speaking guide", "Coconut juice", "Fruit", "Water", "Cold cuts and bread", "Transportation"],
+      excluded: ["Personal expenses", "Additional drinks", "Russian or Mongolian guide unless arranged"],
+      notes: ["Reference price: 125 USD/guest.", "No separate child price was provided in the source file.", "Timing depends on wind and sea conditions."],
+    },
+    {
+      id: "nemo-yacht",
+      title: "Nemo Luxury Yacht — Sunrise or Sunset Voyage",
+      category: "Premium choice · Luxury yacht · BBQ · Water activities",
+      duration: "08:00–14:15 / 14:00–20:30",
+      images: ["/tour/phuquoc/tour-09-1.jpg", "/tour/phuquoc/phuquoc-09.png"],
+      adult: "2,340,000 VND",
+      child: "Confirm before booking",
+      description: "Enjoy a luxury yacht with snorkeling, SUP, water slide and BBQ, choosing either a daytime island voyage or sunset experience.",
+      itinerary: ["Day option: 08:00 pickup, 09:00 departure, Hon Gam Ghi activities, Hon May Rut Trong and BBQ lunch, return around 14:15.", "Sunset option: 14:00 pickup, 15:00 departure, Hon Dam activities, Kiss Bridge sunset and BBQ dinner.", "Watch the fireworks show when operating.", "Return to the marina and hotel."],
+      included: ["Shuttle bus", "Luxury yacht", "Tour guide", "BBQ lunch or dinner according to option", "Water", "Travel insurance"],
+      excluded: ["Personal expenses", "Additional drinks", "Services not listed", "Fireworks when not operating"],
+      notes: ["Reference price: 90 USD/guest.", "No separate child price was provided in the source file.", "Final route and fireworks schedule are reconfirmed."],
+    },
+    {
+      id: "kayak-rach-vem",
+      title: "Kayaking, Rach Vem, Ham Rong Beach & Grand World",
+      category: "North island · Kayaking · Beach · Grand World",
+      duration: "08:30–16:00",
+      images: ["/tour/phuquoc/tour-10-1.jpg", "/tour/phuquoc/phuquoc-10.png"],
+      adult: "1,092,000 VND",
+      child: "702,000 VND",
+      description: "Kayak on Cua Can River, visit Rach Vem, swim at Ham Rong Beach and finish with free time at Grand World.",
+      itinerary: ["08:30: Hotel pickup.", "Kayak on Cua Can River.", "Visit a honey farm and Silk Factory.", "Visit Rach Vem Village for lunch and relaxation.", "Take a speedboat to Ham Rong Beach.", "Visit Grand World; paid tickets are self-funded.", "16:00: Return."],
+      included: ["Shuttle bus", "Kayak", "Speedboat to Ham Rong", "Lunch when selected", "Mineral water", "Energy drink", "Travel insurance"],
+      excluded: ["Grand World attraction tickets", "Lunch on the no-lunch package", "Personal expenses", "Surcharge for groups under 4"],
+      notes: ["With lunch: 42 USD/adult and 27 USD/child; without lunch: 31 USD/adult and 16 USD/child.", "Base price applies to groups of 4.", "Fewer than 4 guests: 10 USD/person surcharge."],
+    },
   ],
   ru: [
     {
@@ -157,7 +269,7 @@ const tours: Record<Language, Tour[]> = {
       title: "Обзорная экскурсия по острову Фукуок",
       category: "Достопримечательности · Культура · Спокойный день",
       duration: "08:30–15:00",
-      image: "/tour/phuquoc/phuquoc-01.png",
+      images: ["/tour/phuquoc/tour-01-1.jpg", "/tour/phuquoc/tour-01-2.jpg", "/tour/phuquoc/phuquoc-01.png"],
       adult: "520 000 VND",
       child: "260 000 VND",
       description: "Спокойное знакомство с храмом Динь Кау, фукуокскими риджбеками, жемчужной фермой и местными продуктами — без морской прогулки.",
@@ -171,7 +283,7 @@ const tours: Record<Language, Tour[]> = {
       title: "Снорклинг и рыбалка на севере Фукуока",
       category: "Деревянная лодка · Рыбалка · Снорклинг",
       duration: "09:00 или 12:30",
-      image: "/tour/phuquoc/phuquoc-02.png",
+      images: ["/tour/phuquoc/tour-02-1.jpg", "/tour/phuquoc/tour-02-2.jpg", "/tour/phuquoc/phuquoc-02.png"],
       adult: "1 300 000 VND",
       child: "910 000 VND",
       description: "Рыбалка у острова Хон Банг, снорклинг у северного рифа и неспешное путешествие на деревянной лодке с местным обедом.",
@@ -181,11 +293,53 @@ const tours: Record<Language, Tour[]> = {
       notes: ["Ориентировочная цена: 50 USD/взрослый и 35 USD/ребёнок.", "В базовый пакет гид не включён. Частный русскоговорящий или монголоязычный гид доступен за дополнительную плату.", "Участие детей и место снорклинга зависят от возраста, здоровья и состояния моря."],
     },
     {
+      id: "north-sunset-chill",
+      title: "Закат на севере Фукуока на деревянной лодке",
+      category: "Закат · Деревянная лодка · Рыбалка · DJ",
+      duration: "16:00–18:30",
+      images: ["/tour/phuquoc/tour-03-1.jpg", "/tour/phuquoc/phuquoc-03.png"],
+      adult: "650 000 VND",
+      child: "390 000 VND",
+      description: "Закат у пляжа Бай Дай, рыбалка, холодное пиво, тропические фрукты и музыка на борту.",
+      itinerary: ["16:00: Встреча в отеле.", "16:30: Посадка на деревянную лодку.", "Прогулка вдоль Бай Дай и рыбалка.", "Пиво, тропические фрукты и музыка.", "18:30: Возвращение в отель."],
+      included: ["Трансфер", "Одно пиво и фрукты", "Вода", "Лодка", "Снасти", "Страховка"],
+      excluded: ["Частный гид без доплаты", "Ужин", "Личные расходы", "Дополнительные напитки"],
+      notes: ["Ориентировочная цена: 25 USD/взрослый и 15 USD/ребёнок.", "Частный гид предоставляется за доплату.", "Видимость заката зависит от погоды."],
+    },
+    {
+      id: "sunset-squid-fishing",
+      title: "Закатный круиз и ночная ловля кальмаров",
+      category: "Закат · Ловля кальмаров · Ужин на борту",
+      duration: "16:00–21:00",
+      images: ["/tour/phuquoc/tour-04-1.jpg", "/tour/phuquoc/phuquoc-04.png"],
+      adult: "1 040 000 VND",
+      child: "650 000 VND",
+      description: "Закат в море, ночная ловля кальмаров и ужин на борту во время классического вечернего круиза.",
+      itinerary: ["16:00: Встреча в отеле.", "17:00: Посадка на судно.", "Закат в море.", "Ловля кальмаров; улов могут приготовить по просьбе.", "Ужин на борту.", "21:00: Возвращение."],
+      included: ["Трансфер", "Туристическое судно", "Гид", "Ужин", "Вода", "Спасательный жилет и снасти", "Страховка"],
+      excluded: ["Личные расходы", "Дополнительные напитки", "Доплата за частного языкового гида"],
+      notes: ["Ориентировочная цена: 40 USD/взрослый и 25 USD/ребёнок.", "Улов кальмаров не гарантируется.", "Время зависит от состояния моря."],
+    },
+    {
+      id: "three-islands",
+      title: "3 острова Фукуока: катер и снорклинг",
+      category: "Выгодный выбор · Катер · Снорклинг · Острова",
+      duration: "07:00–16:00",
+      images: ["/tour/phuquoc/tour-05-1.jpg", "/tour/phuquoc/phuquoc-05.png"],
+      adult: "1 040 000 VND",
+      child: "Уточняется до бронирования",
+      description: "Южные острова на скоростном катере: снорклинг, купание, съёмка с дрона и обед.",
+      itinerary: ["07:00–07:30: Встреча в отеле и сбор у жемчужной фермы.", "09:30: Начало маршрута.", "Sea Walking по желанию и за доплату.", "Купание, дрон и обед на Монг Тай.", "Снорклинг у Гам Ги или Буом.", "Купание у Май Рут.", "16:00: Возвращение."],
+      included: ["Трансфер", "Скоростной катер", "Гид", "Обед", "Съёмка с дрона", "Вода", "Страховка"],
+      excluded: ["Sea Walking", "Личные расходы", "Дополнительные напитки", "Другие водные развлечения"],
+      notes: ["Ориентировочная цена: 40 USD/гость.", "Для детского тарифа сообщите возраст и рост.", "Порядок островов зависит от погоды и моря."],
+    },
+    {
       id: "four-islands",
       title: "4 острова, канатная дорога Хон Тхом и Aquatopia",
       category: "Хит · Острова · Канатная дорога · Аквапарк",
       duration: "07:00–17:30",
-      image: "/tour/phuquoc/phuquoc-06.png",
+      images: ["/tour/phuquoc/tour-05-1.jpg", "/tour/phuquoc/tour-06-1.jpg", "/tour/phuquoc/phuquoc-06.png", "/tour/phuquoc/phuquoc-05.png"],
       adult: "1 690 000 VND",
       child: "Уточняется до бронирования",
       description: "Полный день для первого знакомства с Фукуоком: южные острова, снорклинг, канатная дорога Хон Тхом, обед, Aquatopia и Мост Поцелуев.",
@@ -193,6 +347,62 @@ const tours: Record<Language, Tour[]> = {
       included: ["Трансфер", "Скоростной катер", "Билет на канатную дорогу Хон Тхом", "Экскурсовод", "Обед", "Съёмка с дрона", "Вода", "Туристическая страховка"],
       excluded: ["Sea Walking", "Личные расходы", "Дополнительные напитки", "Дополнительные водные развлечения"],
       notes: ["Ориентировочная цена: 65 USD/гость.", "Для расчёта детского тарифа сообщите возраст и рост каждого ребёнка.", "Порядок островов и активности могут меняться из-за моря, погоды и условий оператора."],
+    },
+    {
+      id: "hon-thom-kiss",
+      title: "Хон Тхом, Мост Поцелуев и шоу Kiss of the Sea",
+      category: "Романтический закат · Канатная дорога · Аквапарк · Шоу",
+      duration: "12:00–21:30",
+      images: ["/tour/phuquoc/tour-07-1.jpg", "/tour/phuquoc/phuquoc-07.png"],
+      adult: "2 470 000 VND",
+      child: "2 080 000 VND",
+      description: "Канатная дорога и аквапарк Хон Тхом, закат у Моста Поцелуев, Vuifest и шоу Kiss of the Sea.",
+      itinerary: ["12:00: Встреча.", "12:30: Жемчужная ферма.", "13:30–14:00: Канатная дорога.", "14:00–17:00: Аквапарк, бассейны и пляж.", "17:30–19:30: Мост Поцелуев и закат.", "19:30–21:00: Свободное время и ужин за свой счёт.", "21:00–21:30: Шоу и возвращение."],
+      included: ["Трансфер", "Канатная дорога", "Мост Поцелуев", "Kiss of the Sea", "Вода", "Страховка"],
+      excluded: ["Ужин", "Личные расходы", "Дополнительные напитки", "Дополнительные услуги аквапарка"],
+      notes: ["Ориентировочная цена: 95 USD/взрослый и 80 USD/ребёнок.", "Ужин на Vuifest оплачивается отдельно.", "Проведение шоу зависит от расписания и погоды."],
+    },
+    {
+      id: "private-sailing",
+      title: "Частный парусный тур и снорклинг на севере",
+      category: "Частный тур · Парусная лодка · Черепаший остров · Запад",
+      duration: "Утренняя прогулка",
+      images: ["/tour/phuquoc/tour-08-1.jpg", "/tour/phuquoc/phuquoc-08.png"],
+      adult: "3 250 000 VND",
+      child: "Уточняется до бронирования",
+      description: "Парусный маршрут от Гань Дау до Куа Кан, плавучие рыбные фермы и снорклинг у Черепашьего острова.",
+      itinerary: ["Переход от Гань Дау к Куа Кан вдоль примерно 15 км побережья.", "Плавучие рыбные фермы.", "Около часа снорклинга у Черепашьего острова.", "Купание у небольшого скального островка.", "Пляж Вунг Бау.", "Прибытие в Куа Кан около 13:00."],
+      included: ["Парусная прогулка", "Снаряжение", "Англо-/франкоговорящий гид", "Кокос", "Фрукты", "Вода", "Закуски и хлеб", "Транспорт"],
+      excluded: ["Личные расходы", "Дополнительные напитки", "Русско- или монголоязычный гид без предварительного заказа"],
+      notes: ["Ориентировочная цена: 125 USD/гость.", "Отдельная детская цена в исходном файле не указана.", "Время зависит от ветра и моря."],
+    },
+    {
+      id: "nemo-yacht",
+      title: "Роскошная яхта Nemo — дневной или закатный рейс",
+      category: "Премиум · Яхта · BBQ · Водные развлечения",
+      duration: "08:00–14:15 / 14:00–20:30",
+      images: ["/tour/phuquoc/tour-09-1.jpg", "/tour/phuquoc/phuquoc-09.png"],
+      adult: "2 340 000 VND",
+      child: "Уточняется до бронирования",
+      description: "Яхта со снорклингом, SUP, водной горкой и BBQ: дневной или закатный вариант.",
+      itinerary: ["Дневной вариант: 08:00 трансфер, 09:00 выход, активности у Хон Гам Ги, Хон Май Рут Чонг и BBQ, возвращение около 14:15.", "Закатный вариант: 14:00 трансфер, 15:00 выход, Хон Дам, закат у Моста Поцелуев и BBQ.", "Фейерверк — если проводится.", "Возвращение в марину и отель."],
+      included: ["Трансфер", "Яхта", "Гид", "BBQ-обед или ужин", "Вода", "Страховка"],
+      excluded: ["Личные расходы", "Дополнительные напитки", "Неуказанные услуги", "Фейерверк, если не проводится"],
+      notes: ["Ориентировочная цена: 90 USD/гость.", "Отдельная детская цена в исходном файле не указана.", "Маршрут и фейерверк подтверждаются на дату поездки."],
+    },
+    {
+      id: "kayak-rach-vem",
+      title: "Каякинг, Рать Вем, пляж Хам Ронг и Grand World",
+      category: "Север острова · Каякинг · Пляж · Grand World",
+      duration: "08:30–16:00",
+      images: ["/tour/phuquoc/tour-10-1.jpg", "/tour/phuquoc/phuquoc-10.png"],
+      adult: "1 092 000 VND",
+      child: "702 000 VND",
+      description: "Каякинг по реке Куа Кан, Рать Вем, купание на Хам Ронг и свободное время в Grand World.",
+      itinerary: ["08:30: Встреча в отеле.", "Каякинг по реке Куа Кан.", "Медовая ферма и шёлковая фабрика.", "Рать Вем: обед и отдых.", "Катер до пляжа Хам Ронг.", "Grand World; платные билеты за свой счёт.", "16:00: Возвращение."],
+      included: ["Трансфер", "Каяк", "Катер до Хам Ронг", "Обед в выбранном пакете", "Вода", "Энергетик", "Страховка"],
+      excluded: ["Билеты Grand World", "Обед в пакете без обеда", "Личные расходы", "Доплата при группе менее 4"],
+      notes: ["С обедом: 42 USD/взрослый и 27 USD/ребёнок; без обеда: 31 USD/взрослый и 16 USD/ребёнок.", "Базовая цена действует для группы от 4 человек.", "При группе менее 4 — доплата 10 USD/человек."],
     },
   ],
 };
@@ -221,9 +431,9 @@ export default function PhuQuocLandingPage({ language }: { language: Language })
             <div className="pqChips">{t.chips.map(x=><span key={x}>{x}</span>)}</div>
           </div>
           <div className="pqHeroImages" aria-label="Phu Quoc tour collection">
-            <figure className="pqImageMain"><img src="/tour/phuquoc/phuquoc-06.png" alt={items[2].title}/><figcaption>4 Islands · Hon Thom</figcaption></figure>
-            <figure><img src="/tour/phuquoc/phuquoc-01.png" alt={items[0].title}/></figure>
-            <figure><img src="/tour/phuquoc/phuquoc-02.png" alt={items[1].title}/></figure>
+            <figure className="pqImageMain"><TourImage sources={items[5].images} alt={items[5].title}/><figcaption>4 Islands · Hon Thom</figcaption></figure>
+            <figure><TourImage sources={items[0].images} alt={items[0].title}/></figure>
+            <figure><TourImage sources={items[8].images} alt={items[8].title}/></figure>
           </div>
         </div>
       </section>
@@ -239,7 +449,7 @@ export default function PhuQuocLandingPage({ language }: { language: Language })
           const tourMessage = encodeURIComponent(`${t.hello}\n\n${tour.title}`);
           return <article className={`pqTour ${open ? "isOpen" : ""}`} id={tour.id} key={tour.id}>
             <div className="pqTourTop">
-              <img src={tour.image} alt={tour.title}/>
+              <TourImage sources={tour.images} alt={tour.title}/>
               <div className="pqTourSummary">
                 <div className="pqTourNumber">0{index + 1}</div>
                 <p className="pqCategory">{tour.category}</p>
