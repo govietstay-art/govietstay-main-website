@@ -169,16 +169,6 @@ export default function Home() {
         <div className="excluded"><p className="label">Не включено</p><h2>Оплачивается отдельно</h2><ul>{excluded.map(x => <li key={x}><span>—</span>{x}</li>)}</ul></div>
       </section>
 
-      <section className="section cancellation-policy">
-        <p className="label">Условия отмены</p>
-        <h2>Понятные условия до бронирования</h2>
-        <ul>
-          <li>Отмена не позднее чем за 24 часа до отправления — бесплатно.</li>
-          <li>При отмене за 12–24 часа до отправления взимается 50% полной стоимости бронирования.</li>
-          <li>При отмене менее чем за 12 часов, отмене непосредственно перед отправлением или неявке взимается 100% полной стоимости бронирования.</li>
-        </ul>
-      </section>
-
       <section className="section price-booking" id="booking">
         <div className="price-copy">
           <p className="label">Ориентировочная цена групповой экскурсии</p>

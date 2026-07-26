@@ -20,17 +20,6 @@ export default function TourLandingPage({ tour, locale }: { tour: TourLanding; l
   } : {
     price: "From", adult: "Adult", child: "Child", availability: "Check availability on WhatsApp", highlights: "Highlights", itinerary: "Itinerary", included: "Included", excluded: "Not included", policies: "Important booking terms", trust: "GoVietStay local support", trustText: "We check availability, weather, pickup and the exact total before payment. Sending a request does not automatically confirm a booking.", back: "All tours",
   };
-  const cancellationTerms = isRu
-    ? [
-        "Отмена не позднее чем за 24 часа до отправления — бесплатно.",
-        "При отмене за 12–24 часа до отправления взимается 50% полной стоимости бронирования.",
-        "При отмене менее чем за 12 часов, отмене непосредственно перед отправлением или неявке взимается 100% полной стоимости бронирования.",
-      ]
-    : [
-        "Cancellation at least 24 hours before departure is free of charge.",
-        "Cancellation 12–24 hours before departure is charged at 50% of the total booking price.",
-        "Cancellation less than 12 hours before departure, last-minute cancellation or no-show is charged at 100% of the total booking price.",
-      ];
 
   return (
     <main className="min-h-screen bg-[#f7f1df] text-[#06251b] pb-28">
@@ -59,7 +48,7 @@ export default function TourLandingPage({ tour, locale }: { tour: TourLanding; l
           <Card title={labels.highlights}><CheckList items={tour.highlights} /></Card>
           <Card title={labels.itinerary}><ol className="space-y-4">{tour.itinerary.map((item, i) => <li key={item} className="flex gap-4"><span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-green-800 text-sm font-bold text-white">{i + 1}</span><span className="pt-1 leading-relaxed text-[#06251b]/75">{item}</span></li>)}</ol></Card>
           <div className="grid gap-6 sm:grid-cols-2"><Card title={labels.included}><CheckList items={tour.included} /></Card><Card title={labels.excluded}><DotList items={tour.excluded} /></Card></div>
-          <Card title={labels.policies}><DotList items={[...tour.policies, ...cancellationTerms]} /></Card>
+          <Card title={labels.policies}><DotList items={tour.policies} /></Card>
         </div>
 
         <aside className="md:sticky md:top-6 md:self-start">
