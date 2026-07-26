@@ -315,10 +315,10 @@ const ruTours: RuTour[] = [
     duration: "Полдня",
     intro:
       "Красивый и лёгкий маршрут по Данангу: статуя Lady Buddha, виды с Son Tra и Мраморные горы.",
-    groupPriceAdult: "от 1,350,000 VND (~$52)",
-    groupPriceChild: "от 1,150,000 VND (~$44)",
-    ruPriceAdult: "от 1,900,000 VND (~$73)",
-    ruPriceChild: "от 1,600,000 VND (~$62)",
+    groupPriceAdult: "от 850,000 VND (~$33)",
+    groupPriceChild: "от 650,000 VND (~$25)",
+    ruPriceAdult: "от 1,350,000 VND (~$52)",
+    ruPriceChild: "от 1,150,000 VND (~$44)",
     upgradeNote:
       "Если вас 4+, можно собрать более удобный private маршрут с гибким темпом и остановками.",
     highlights: [
@@ -1255,4 +1255,5 @@ export default function RussianPage() {
     </main>
   );
 }
+
 
