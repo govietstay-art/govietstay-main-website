@@ -148,9 +148,9 @@ export default function HoiAnLandingPage({ language }: { language: Language }) {
       <div className="heroGlow" />
       <header><a className="brand" href="#top"><b>G</b><span>GoVietStay</span></a><a className="navCta" href="#booking">{t.nav}</a></header>
       <div className="heroVisuals" aria-label={language === "ru" ? "Фотографии гостей GoVietStay" : "GoVietStay guest photos"}>
-        <img className="heroMainPhoto" src="/tour/hoi-an-coconut-forest/gallery/basket-boat-guests.png" alt={language === "ru" ? "Гости на лодке-корзине в кокосовом лесу" : "Guests enjoying a basket boat in the coconut forest"} />
-        <img className="heroOldTownPhoto" src="/tour/hoi-an-coconut-forest/gallery/hoi-an-ancient-house.png" alt={language === "ru" ? "Гость в старинном доме Хойана" : "Guest visiting a Hoi An ancient house"} />
-        <img className="heroLanternPhoto" src="/tour/hoi-an-coconut-forest/gallery/lantern-boat-guests.png" alt={language === "ru" ? "Гости на лодке с фонариками в Хойане" : "Guests on a lantern boat in Hoi An"} />
+        <img className="heroMainPhoto" src="/tour/hoi-an-coconut-forest/gallery/basket-boat-guests.webp" alt={language === "ru" ? "Гости на лодке-корзине в кокосовом лесу" : "Guests enjoying a basket boat in the coconut forest"} />
+        <img className="heroOldTownPhoto" src="/tour/hoi-an-coconut-forest/gallery/hoi-an-ancient-house.webp" alt={language === "ru" ? "Гость в старинном доме Хойана" : "Guest visiting a Hoi An ancient house"} />
+        <img className="heroLanternPhoto" src="/tour/hoi-an-coconut-forest/gallery/lantern-boat-guests.webp" alt={language === "ru" ? "Гости на лодке с фонариками в Хойане" : "Guests on a lantern boat in Hoi An"} />
       </div>
       <div className="heroCopy"><p className="eyebrow">{t.eyebrow}</p><h1>{t.titleA}<br/><em>{t.titleB}</em></h1><p className="lead">{t.lead}</p><div className="chips">{t.chips.map(x=><span key={x}>{x}</span>)}</div></div>
     </section>

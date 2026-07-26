@@ -35,6 +35,12 @@ const content = {
     ],
     warningTitle: "Important information before booking",
     warning: "Hoi An is often very crowded in the evening, especially on weekends, public holidays, festival nights and in peak season. GoVietStay cannot guarantee visitor numbers, traffic, waiting times, weather, river conditions or the operation of local activities. Timing and order may be adjusted according to actual conditions. Guests should follow the guide and return to the agreed meeting point on time.",
+    cancellationTitle: "Cancellation policy",
+    cancellationTerms: [
+      "Cancellation at least 24 hours before departure is free of charge.",
+      "Cancellation 12–24 hours before departure is charged at 50% of the total booking price.",
+      "Cancellation less than 12 hours before departure, last-minute cancellation or no-show is charged at 100% of the total booking price.",
+    ],
     included: "Included",
     includedList: ["Hotel pickup and return in the confirmed area", "English-speaking guide", "Basket boat experience", "Hoi An entrance ticket when required", "Confirmed local dinner", "Hoai River boat ride and lantern", "Bottled water", "VAT"],
     excluded: "Not included",
@@ -87,6 +93,12 @@ const content = {
     ],
     warningTitle: "Важная информация перед бронированием",
     warning: "Вечером в Хойане часто бывает многолюдно, особенно в выходные, праздничные дни, во время фестивалей и в высокий сезон. GoVietStay не может гарантировать количество посетителей, дорожную ситуацию, время ожидания, погоду, состояние реки или работу местных развлечений. Время и порядок программы могут быть изменены с учётом фактической ситуации. Гости должны соблюдать инструкции гида и вовремя возвращаться к месту встречи.",
+    cancellationTitle: "Условия отмены",
+    cancellationTerms: [
+      "Отмена не позднее чем за 24 часа до отправления — бесплатно.",
+      "При отмене за 12–24 часа до отправления взимается 50% полной стоимости бронирования.",
+      "При отмене менее чем за 12 часов, отмене непосредственно перед отправлением или неявке взимается 100% полной стоимости бронирования.",
+    ],
     included: "Включено",
     includedList: ["Трансфер из отеля и обратно", "Англоговорящий гид", "Прогулка на лодке-корзине", "Билет в Старый город, если требуется", "Подтверждённый местный ужин", "Прогулка по реке Хоай и фонарик", "Бутилированная вода", "НДС"],
     excluded: "Не включено",
@@ -136,9 +148,9 @@ export default function HoiAnLandingPage({ language }: { language: Language }) {
       <div className="heroGlow" />
       <header><a className="brand" href="#top"><b>G</b><span>GoVietStay</span></a><a className="navCta" href="#booking">{t.nav}</a></header>
       <div className="heroVisuals" aria-label={language === "ru" ? "Фотографии гостей GoVietStay" : "GoVietStay guest photos"}>
-        <img className="heroMainPhoto" src="/tour/hoi-an-coconut-forest/gallery/basket-boat-guests.webp" alt={language === "ru" ? "Гости на лодке-корзине в кокосовом лесу" : "Guests enjoying a basket boat in the coconut forest"} />
-        <img className="heroOldTownPhoto" src="/tour/hoi-an-coconut-forest/gallery/hoi-an-ancient-house.webp" alt={language === "ru" ? "Гость в старинном доме Хойана" : "Guest visiting a Hoi An ancient house"} />
-        <img className="heroLanternPhoto" src="/tour/hoi-an-coconut-forest/gallery/lantern-boat-guests.webp" alt={language === "ru" ? "Гости на лодке с фонариками в Хойане" : "Guests on a lantern boat in Hoi An"} />
+        <img className="heroMainPhoto" src="/tour/hoi-an-coconut-forest/gallery/basket-boat-guests.png" alt={language === "ru" ? "Гости на лодке-корзине в кокосовом лесу" : "Guests enjoying a basket boat in the coconut forest"} />
+        <img className="heroOldTownPhoto" src="/tour/hoi-an-coconut-forest/gallery/hoi-an-ancient-house.png" alt={language === "ru" ? "Гость в старинном доме Хойана" : "Guest visiting a Hoi An ancient house"} />
+        <img className="heroLanternPhoto" src="/tour/hoi-an-coconut-forest/gallery/lantern-boat-guests.png" alt={language === "ru" ? "Гости на лодке с фонариками в Хойане" : "Guests on a lantern boat in Hoi An"} />
       </div>
       <div className="heroCopy"><p className="eyebrow">{t.eyebrow}</p><h1>{t.titleA}<br/><em>{t.titleB}</em></h1><p className="lead">{t.lead}</p><div className="chips">{t.chips.map(x=><span key={x}>{x}</span>)}</div></div>
     </section>
@@ -149,6 +161,7 @@ export default function HoiAnLandingPage({ language }: { language: Language }) {
     <section className="section schedule"><p className="label">{t.itineraryLabel}</p><h2>{t.itineraryTitle}</h2><div className="timeline">{t.itinerary.map((x,i)=><article key={x[0]}><time>{x[0]}</time><i>{i+1}</i><div><h3>{x[1]}</h3><p>{x[2]}</p></div></article>)}</div></section>
 
     <section className="warning"><div>!</div><section><h3>{t.warningTitle}</h3><p>{t.warning}</p></section></section>
+    <section className="cancellationPolicy"><div>↺</div><section><h3>{t.cancellationTitle}</h3><ul>{t.cancellationTerms.map(x=><li key={x}>{x}</li>)}</ul></section></section>
 
     <section className="splitLists"><div className="included"><p className="label">{t.included}</p><h2>{t.included}</h2><ul>{t.includedList.map(x=><li key={x}>✓ <span>{x}</span></li>)}</ul></div><div className="excluded"><p className="label">{t.excluded}</p><h2>{t.excluded}</h2><ul>{t.excludedList.map(x=><li key={x}>— <span>{x}</span></li>)}</ul></div></section>
 

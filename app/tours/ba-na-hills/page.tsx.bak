@@ -170,6 +170,16 @@ I understand that Ba Na Hills can be very crowded and that visitor numbers, queu
         <div className="excluded"><p className="label">Not included</p><h2>Please plan separately</h2><ul>{excluded.map(x => <li key={x}><span>—</span>{x}</li>)}</ul></div>
       </section>
 
+      <section className="section cancellation-policy">
+        <p className="label">Cancellation policy</p>
+        <h2>Clear terms before you book</h2>
+        <ul>
+          <li>Cancellation at least 24 hours before departure is free of charge.</li>
+          <li>Cancellation 12–24 hours before departure is charged at 50% of the total booking price.</li>
+          <li>Cancellation less than 12 hours before departure, last-minute cancellation or no-show is charged at 100% of the total booking price.</li>
+        </ul>
+      </section>
+
       <section className="section price-booking" id="booking">
         <div className="price-copy">
           <p className="label">Joined-tour reference price</p>
