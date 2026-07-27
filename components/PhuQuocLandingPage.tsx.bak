@@ -413,7 +413,7 @@ export default function PhuQuocLandingPage({ language }: { language: Language })
   const [openTour, setOpenTour] = useState(items[0].id);
   const message = useMemo(() => encodeURIComponent(t.hello), [t.hello]);
   const whatsapp = `https://wa.me/${PHONE}?text=${message}`;
-  const allTours = language === "ru" ? "/ru/tours" : "/tours";
+  const allTours = language === "ru" ? "/ru" : "/";
   const otherLanguage = language === "ru" ? "/tours/phu-quoc" : "/ru/tours/phu-quoc";
 
   return (

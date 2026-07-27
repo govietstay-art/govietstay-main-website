@@ -18,8 +18,28 @@ type Tour = {
   excluded: string[];
   notes: string[];
 };
+type BookingForm = {
+  name: string;
+  whatsapp: string;
+  date: string;
+  adults: string;
+  children: string;
+  hotel: string;
+  pickup: string;
+  request: string;
+};
 
 const PHONE = "84937762607";
+const emptyBooking: BookingForm = {
+  name: "",
+  whatsapp: "",
+  date: "",
+  adults: "1",
+  children: "",
+  hotel: "",
+  pickup: "",
+  request: "",
+};
 
 function TourImage({ sources, alt }: { sources: string[]; alt: string }) {
   const [sourceIndex, setSourceIndex] = useState(0);
@@ -56,6 +76,36 @@ const content = {
     excluded: "Not included",
     notes: "Please note",
     ask: "Ask about this tour",
+    book: "Book Now",
+    highSeasonTitle: "Phu Quoc high season: December 2026 – March 2027",
+    highSeasonText: "Tour seats, boats, cable-car packages and private guides can sell out during this period. Please submit your booking request early so GoVietStay can secure your preferred date and reconfirm availability before payment.",
+    highSeasonButton: "Choose a tour & book early",
+    formEyebrow: "Advance booking request",
+    formTitle: "Book your Phu Quoc tour",
+    formText: "Complete this short form. WhatsApp will open with your selected tour and booking details ready to send to GoVietStay.",
+    fields: {
+      name: "Full name *",
+      whatsapp: "WhatsApp / Phone *",
+      date: "Tour date *",
+      adults: "Adults *",
+      children: "Children and ages",
+      hotel: "Hotel name",
+      pickup: "Pickup location",
+      request: "Special request",
+    },
+    placeholders: {
+      name: "Your full name",
+      whatsapp: "+84 / +7 / +82 ...",
+      date: "",
+      adults: "",
+      children: "Example: 1 child, 8 years old",
+      hotel: "Your hotel in Phu Quoc",
+      pickup: "Hotel, address or airport",
+      request: "Preferred language, dietary needs, mobility support...",
+    },
+    send: "Send Booking Request",
+    formClose: "Close",
+    required: "Please enter your name, WhatsApp number and tour date.",
     compareLabel: "Choose with confidence",
     compareTitle: "Which Phu Quoc experience is right for you?",
     compare: [
@@ -97,6 +147,36 @@ const content = {
     excluded: "Не включено",
     notes: "Важная информация",
     ask: "Узнать об этой экскурсии",
+    book: "Забронировать",
+    highSeasonTitle: "Высокий сезон на Фукуоке: декабрь 2026 — март 2027",
+    highSeasonText: "В этот период места на экскурсии, катера, пакеты с канатной дорогой и частные гиды могут быть полностью забронированы. Отправьте заявку заранее, чтобы GoVietStay проверил и подтвердил выбранную дату до оплаты.",
+    highSeasonButton: "Выбрать экскурсию и забронировать",
+    formEyebrow: "Заявка на раннее бронирование",
+    formTitle: "Забронировать экскурсию на Фукуоке",
+    formText: "Заполните короткую форму. WhatsApp откроется с выбранной экскурсией и всеми данными, готовыми к отправке в GoVietStay.",
+    fields: {
+      name: "Имя и фамилия *",
+      whatsapp: "WhatsApp / телефон *",
+      date: "Дата экскурсии *",
+      adults: "Взрослые *",
+      children: "Дети и возраст",
+      hotel: "Название отеля",
+      pickup: "Место встречи",
+      request: "Особые пожелания",
+    },
+    placeholders: {
+      name: "Ваше имя и фамилия",
+      whatsapp: "+7 / +84 / +82 ...",
+      date: "",
+      adults: "",
+      children: "Например: 1 ребёнок, 8 лет",
+      hotel: "Ваш отель на Фукуоке",
+      pickup: "Отель, адрес или аэропорт",
+      request: "Язык гида, питание, помощь с передвижением...",
+    },
+    send: "Отправить заявку",
+    formClose: "Закрыть",
+    required: "Укажите имя, номер WhatsApp и дату экскурсии.",
     compareLabel: "Выбирайте уверенно",
     compareTitle: "Какой формат Фукуока подходит именно вам?",
     compare: [
@@ -411,10 +491,27 @@ export default function PhuQuocLandingPage({ language }: { language: Language })
   const t = content[language];
   const items = tours[language];
   const [openTour, setOpenTour] = useState(items[0].id);
+  const [bookingTour, setBookingTour] = useState<Tour | null>(null);
+  const [booking, setBooking] = useState<BookingForm>(emptyBooking);
   const message = useMemo(() => encodeURIComponent(t.hello), [t.hello]);
   const whatsapp = `https://wa.me/${PHONE}?text=${message}`;
   const allTours = language === "ru" ? "/ru" : "/";
   const otherLanguage = language === "ru" ? "/tours/phu-quoc" : "/ru/tours/phu-quoc";
+  const openBooking = (tour: Tour) => {
+    setBookingTour(tour);
+    setBooking(emptyBooking);
+  };
+  const sendBooking = () => {
+    if (!bookingTour) return;
+    if (!booking.name.trim() || !booking.whatsapp.trim() || !booking.date) {
+      window.alert(t.required);
+      return;
+    }
+    const message = language === "ru"
+      ? `ЗАЯВКА НА БРОНИРОВАНИЕ — ФУКУОК\n\nЭкскурсия: ${bookingTour.title}\nДата: ${booking.date}\nВзрослые: ${booking.adults || "0"}\nДети: ${booking.children || "Нет"}\nИмя: ${booking.name}\nWhatsApp / телефон: ${booking.whatsapp}\nОтель: ${booking.hotel || "Не указан"}\nМесто встречи: ${booking.pickup || "Не указано"}\nПожелания: ${booking.request || "Нет"}\n\nПожалуйста, подтвердите наличие мест и актуальную стоимость.`
+      : `PHU QUOC BOOKING REQUEST\n\nTour: ${bookingTour.title}\nTour date: ${booking.date}\nAdults: ${booking.adults || "0"}\nChildren: ${booking.children || "None"}\nGuest name: ${booking.name}\nWhatsApp / Phone: ${booking.whatsapp}\nHotel: ${booking.hotel || "Not provided"}\nPickup location: ${booking.pickup || "Not provided"}\nSpecial request: ${booking.request || "None"}\n\nPlease confirm availability and the latest price.`;
+    window.open(`https://wa.me/${PHONE}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+  };
 
   return (
     <main>
@@ -443,7 +540,16 @@ export default function PhuQuocLandingPage({ language }: { language: Language })
         <p>{t.collectionText}</p>
       </section>
 
-      <section className="pqTourList">
+      <section className="pqHighSeason">
+        <div>
+          <p className="pqLabel">{language === "ru" ? "Бронируйте заранее" : "Advance booking recommended"}</p>
+          <h2>{t.highSeasonTitle}</h2>
+          <p>{t.highSeasonText}</p>
+        </div>
+        <a href="#tour-list">{t.highSeasonButton}</a>
+      </section>
+
+      <section className="pqTourList" id="tour-list">
         {items.map((tour, index) => {
           const open = openTour === tour.id;
           const tourMessage = encodeURIComponent(`${t.hello}\n\n${tour.title}`);
@@ -462,7 +568,10 @@ export default function PhuQuocLandingPage({ language }: { language: Language })
             {open && <div className="pqTourDetails">
               <div className="pqProgram"><h4>{t.itinerary}</h4><ol>{tour.itinerary.map((x,i)=><li key={x}><b>{i+1}</b><span>{x}</span></li>)}</ol></div>
               <div className="pqDetailColumns"><section><h4>{t.included}</h4><ul>{tour.included.map(x=><li key={x}>✓ <span>{x}</span></li>)}</ul></section><section><h4>{t.excluded}</h4><ul>{tour.excluded.map(x=><li key={x}>— <span>{x}</span></li>)}</ul></section><section className="pqNotes"><h4>{t.notes}</h4><ul>{tour.notes.map(x=><li key={x}>• <span>{x}</span></li>)}</ul></section></div>
-              <a className="pqTourAsk" href={`https://wa.me/${PHONE}?text=${tourMessage}`} target="_blank" rel="noreferrer">{t.ask} →</a>
+              <div className="pqTourActions">
+                <button type="button" className="pqBookNow" onClick={()=>openBooking(tour)}>{t.book}</button>
+                <a className="pqTourAsk" href={`https://wa.me/${PHONE}?text=${tourMessage}`} target="_blank" rel="noreferrer">{t.ask} →</a>
+              </div>
             </div>}
           </article>;
         })}
@@ -477,6 +586,33 @@ export default function PhuQuocLandingPage({ language }: { language: Language })
 
       <section className="pqSupport"><p className="pqLabel">GoVietStay · Phu Quoc</p><h2>{t.supportTitle}</h2><p>{t.supportText}</p><div><a href={whatsapp} target="_blank" rel="noreferrer">{t.supportButton}</a><a className="pqSecondary" href={allTours}>{t.otherTours}</a></div></section>
       <footer><strong>GoVietStay</strong><span>Trusted Local Support</span><a href="https://GoVietStay.com">GoVietStay.com</a><span>WhatsApp: +84 937 762 607</span></footer>
+
+      {bookingTour && <div className="pqBookingOverlay" role="dialog" aria-modal="true" aria-labelledby="pq-booking-title" onClick={()=>setBookingTour(null)}>
+        <div className="pqBookingModal" onClick={(event)=>event.stopPropagation()}>
+          <button type="button" className="pqBookingX" onClick={()=>setBookingTour(null)} aria-label={t.formClose}>×</button>
+          <p className="pqLabel">{t.formEyebrow}</p>
+          <h2 id="pq-booking-title">{t.formTitle}</h2>
+          <p>{t.formText}</p>
+          <div className="pqSelectedTour"><span>{language === "ru" ? "Выбрано" : "Selected tour"}</span><strong>{bookingTour.title}</strong></div>
+          <div className="pqBookingGrid">
+            {(["name", "whatsapp", "date", "adults", "children", "hotel", "pickup"] as const).map((field)=><label key={field}>
+              <span>{t.fields[field]}</span>
+              <input
+                type={field === "date" ? "date" : field === "adults" ? "number" : "text"}
+                min={field === "adults" ? "1" : undefined}
+                value={booking[field]}
+                placeholder={field === "date" || field === "adults" ? undefined : t.placeholders[field]}
+                onChange={(event)=>setBooking(current=>({...current, [field]: event.target.value}))}
+              />
+            </label>)}
+            <label className="pqFullField"><span>{t.fields.request}</span><textarea rows={4} value={booking.request} placeholder={t.placeholders.request} onChange={(event)=>setBooking(current=>({...current, request: event.target.value}))}/></label>
+          </div>
+          <div className="pqBookingButtons">
+            <button type="button" className="pqBookNow" onClick={sendBooking}>{t.send}</button>
+            <button type="button" className="pqCancelBooking" onClick={()=>setBookingTour(null)}>{t.formClose}</button>
+          </div>
+        </div>
+      </div>}
     </main>
   );
 }
