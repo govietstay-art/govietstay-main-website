@@ -290,8 +290,8 @@ const nhaTrangPackages: SignaturePackage[] = [
       "Завтрак и ужин",
       "Личные расходы",
     ],
-    priceVnd: "3,900,000 VND / человек",
-    priceUsd: "150 USD / человек",
+    priceVnd: "3,172,000 VND / человек",
+    priceUsd: "122 USD / человек",
     saving: "Минимум 4 туриста",
     priceLabel: "Цена тура из Нячанга",
     bookingSource: "Тур из Нячанга",
@@ -344,8 +344,8 @@ const nhaTrangPackages: SignaturePackage[] = [
       "Личные расходы",
       "Доплата за одноместный номер",
     ],
-    priceVnd: "5,850,000 VND / человек",
-    priceUsd: "225 USD / человек",
+    priceVnd: "4,264,000 VND / человек",
+    priceUsd: "164 USD / человек",
     saving: "Минимум 4 туриста",
     priceLabel: "Цена пакета из Нячанга",
     bookingSource: "Пакет из Нячанга",
@@ -397,8 +397,8 @@ const nhaTrangPackages: SignaturePackage[] = [
       "Личные расходы",
       "Доплата за одноместный номер",
     ],
-    priceVnd: "5,850,000 VND / человек",
-    priceUsd: "225 USD / человек",
+    priceVnd: "4,446,000 VND / человек",
+    priceUsd: "171 USD / человек",
     saving: "Минимум 4 туриста",
     priceLabel: "Цена пакета из Нячанга",
     bookingSource: "Пакет из Нячанга",
@@ -460,8 +460,8 @@ const nhaTrangPackages: SignaturePackage[] = [
       "Личные расходы",
       "Доплата за одноместный номер",
     ],
-    priceVnd: "7,930,000 VND / человек",
-    priceUsd: "305 USD / человек",
+    priceVnd: "5,486,000 VND / человек",
+    priceUsd: "211 USD / человек",
     saving: "Минимум 4 туриста",
     priceLabel: "Цена пакета из Нячанга",
     bookingSource: "Пакет из Нячанга",
@@ -1350,6 +1350,67 @@ function NhaTrangPackagesSection({
   );
 }
 
+function GuestExperienceVideoSection() {
+  return (
+    <section className="bg-[#06251b] px-4 py-12 text-white md:px-8 md:py-20 lg:px-12">
+      <div className="mx-auto grid max-w-7xl items-center gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:gap-14">
+        <div className="mx-auto w-full max-w-[390px]">
+          <div className="overflow-hidden rounded-[2rem] border border-white/15 bg-black shadow-2xl">
+            <video
+              className="aspect-[9/16] w-full bg-black object-cover"
+              controls
+              playsInline
+              preload="metadata"
+              poster="/hero-hoian-new.png"
+              aria-label="Видео GoVietStay о путешествиях по Вьетнаму"
+            >
+              <source src="/1729838138424853060.mp4" type="video/mp4" />
+              Ваш браузер не поддерживает воспроизведение видео.
+            </video>
+          </div>
+          <p className="mt-3 text-center text-xs text-white/55">
+            Нажмите ▶, чтобы посмотреть видео со звуком
+          </p>
+        </div>
+
+        <div className="max-w-2xl">
+          <p className="text-xs font-extrabold uppercase tracking-[4px] text-yellow-300 md:text-sm">
+            GoVietStay • настоящий Вьетнам
+          </p>
+          <h2 className="mt-4 text-3xl font-extrabold leading-tight md:text-5xl">
+            Посмотрите, какие впечатления ждут вас во Вьетнаме
+          </h2>
+          <p className="mt-5 text-base leading-relaxed text-white/75 md:text-lg">
+            Реальные места, яркие моменты и маршруты, которые мы организуем для
+            русскоговорящих гостей в Дананге, Хойане, Хюэ и на Фукуоке.
+          </p>
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            {[
+              "Проверенные экскурсии",
+              "Поддержка на русском",
+              "Маршрут под ваш отдых",
+              "Помощь до и во время поездки",
+            ].map((item) => (
+              <div
+                key={item}
+                className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 font-bold text-white/90"
+              >
+                ✓ {item}
+              </div>
+            ))}
+          </div>
+          <a
+            href="#ru-tours"
+            className="mt-7 inline-flex rounded-full bg-yellow-300 px-6 py-4 text-center font-extrabold text-[#06251b] shadow-xl transition hover:bg-yellow-200"
+          >
+            Выбрать экскурсию
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function RussianPage() {
   const [activeTourId, setActiveTourId] = useState<string>(ruTours[0].id);
   const [bookingPackage, setBookingPackage] = useState<SignaturePackage | null>(
@@ -1534,6 +1595,8 @@ export default function RussianPage() {
           </div>
         </div>
       </section>
+
+      <GuestExperienceVideoSection />
 
       <RussianAudienceAnnaPartnerSection />
 
