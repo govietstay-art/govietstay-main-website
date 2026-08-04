@@ -23,11 +23,16 @@ type RuTour = {
   details: string[];
 };
 
-const ANNA_PHONE_DISPLAY = "+84 78 706 2460";
-const ANNA_PHONE_LINK = "84787062460";
+const CONTACT_PHONE_DISPLAY = "+84 937 762 607";
+const CONTACT_PHONE_LINK = "84937762607";
+const ANNA_VU_PHONE_DISPLAY = "+84 78 706 2460";
+const ANNA_VU_PHONE_LINK = "84787062460";
 
-const annaWa = (text: string) =>
-  `https://wa.me/${ANNA_PHONE_LINK}?text=${encodeURIComponent(text)}`;
+const contactWa = (text: string) =>
+  `https://wa.me/${CONTACT_PHONE_LINK}?text=${encodeURIComponent(text)}`;
+
+const annaVuWa = (text: string) =>
+  `https://wa.me/${ANNA_VU_PHONE_LINK}?text=${encodeURIComponent(text)}`;
 
 type SignaturePackage = {
   id: string;
@@ -66,7 +71,7 @@ const signaturePackages: SignaturePackage[] = [
     title: "Классический Дананг",
     image: "/tour/combo-1-ru.png",
     route: "Ba Na Hills • Золотой мост • Кокосовый лес • Хойан",
-    duration: "2 дня / 1 ночь",
+    duration: "2 экскурсионных дня",
     badge: "BEST SELLER",
     intro:
       "Классический маршрут для первого знакомства с Данангом и Хойаном: знаменитый Золотой мост, лодки-корзины и вечерняя атмосфера древнего города.",
@@ -107,7 +112,7 @@ const signaturePackages: SignaturePackage[] = [
     title: "Море и наследие",
     image: "/tour/combo-2-ru.png",
     route: "Остров Чам • Снорклинг • Кокосовый лес • Хойан",
-    duration: "2 дня / 1 ночь",
+    duration: "2 экскурсионных дня",
     badge: "ЛЕТНИЙ ХИТ",
     intro:
       "Два совершенно разных впечатления за два дня: море и снорклинг на острове Чам, затем местная культура, лодки-корзины и вечерний Хойан.",
@@ -149,7 +154,7 @@ const signaturePackages: SignaturePackage[] = [
     title: "ТОП-3 Центрального Вьетнама",
     image: "/tour/combo-3-ru.png",
     route: "Ba Na Hills • Остров Чам • Кокосовый лес • Хойан",
-    duration: "3 дня / 2 ночи",
+    duration: "3 экскурсионных дня",
     badge: "САМЫЙ ПОПУЛЯРНЫЙ",
     intro:
       "Три главных впечатления Центрального Вьетнама в одном маршруте: горы, море, древний город и настоящая местная атмосфера.",
@@ -195,7 +200,7 @@ const signaturePackages: SignaturePackage[] = [
     title: "Культурное путешествие по Центральному Вьетнаму",
     image: "/tour/combo-4-ru.png",
     route: "Ba Na Hills • Хойан • Кокосовый лес • Императорский город Хюэ",
-    duration: "3 дня / 2 ночи",
+    duration: "3 экскурсионных дня",
     badge: "BEST CULTURAL JOURNEY",
     intro:
       "Три дня для гостей, которые хотят увидеть природу, древний город и императорское наследие Центрального Вьетнама без самостоятельного планирования.",
@@ -805,12 +810,12 @@ function TourDetailCard({ tour }: { tour: RuTour }) {
               Нужна консультация на русском?
             </h4>
             <p className="mt-3 text-white/80 text-sm leading-relaxed">
-              Напишите Ms. Anna — она поможет понять, какой тур лучше, нужен ли
-              русскоговорящий гид и стоит ли вам делать private формат.
+              Напишите в GoVietStay — мы поможем выбрать формат тура и уточним
+              наличие русскоговорящего гида.
             </p>
 
             <div className="mt-5 text-lg font-extrabold">
-              {ANNA_PHONE_DISPLAY}
+              {CONTACT_PHONE_DISPLAY}
             </div>
 
             <div className="mt-5 rounded-2xl bg-white/10 px-4 py-3 text-sm font-bold text-white/80">
@@ -973,14 +978,14 @@ function SignaturePackageCard({
             Забронировать
           </button>
           <a
-            href={annaWa(
-              `Здравствуйте, Анна. Меня интересует ${pkg.bookingSource || "комбо-тур"}: ${pkg.title}. Подскажите, пожалуйста, детали и доступность.`,
+            href={contactWa(
+              `Здравствуйте! Меня интересует ${pkg.bookingSource || "комбо-тур"}: ${pkg.title}. Подскажите, пожалуйста, детали и доступность.`,
             )}
             target="_blank"
             rel="noopener noreferrer"
             className="rounded-full border-2 border-[#0b6b4f] px-4 py-3.5 text-center text-sm font-extrabold text-[#0b6b4f] transition hover:bg-[#0b6b4f] hover:text-white"
           >
-            Спросить Анну
+            Написать в WhatsApp
           </a>
         </div>
       </div>
@@ -1009,10 +1014,10 @@ function BookingModal({
 
   if (!pkg) return null;
 
-  const sendToAnna = (event: FormEvent<HTMLFormElement>) => {
+  const sendToWhatsApp = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const message = [
-      "Здравствуйте, Анна!",
+      "Здравствуйте!",
       "",
       `Хочу забронировать ${pkg.bookingSource || "комбо-тур GoVietStay"}.`,
       `Тур: ${pkg.title}`,
@@ -1028,7 +1033,7 @@ function BookingModal({
       "",
       "Пожалуйста, подтвердите доступность и финальную стоимость.",
     ].join("\n");
-    window.open(annaWa(message), "_blank", "noopener,noreferrer");
+    window.open(contactWa(message), "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -1046,7 +1051,7 @@ function BookingModal({
             </p>
             <h3 className="mt-2 text-2xl font-extrabold">{pkg.title}</h3>
             <p className="mt-1 text-sm text-white/70">
-              Заполните форму — готовая заявка откроется в WhatsApp Анны.
+              Заполните форму — готовая заявка откроется в WhatsApp GoVietStay.
             </p>
           </div>
           <button
@@ -1059,7 +1064,7 @@ function BookingModal({
         </div>
 
         <form
-          onSubmit={sendToAnna}
+          onSubmit={sendToWhatsApp}
           className="grid gap-4 p-4 sm:grid-cols-2 sm:p-6"
         >
           <label className="sm:col-span-2">
@@ -1166,13 +1171,13 @@ function BookingModal({
           </label>
           <div className="sm:col-span-2 rounded-2xl bg-white p-4 text-xs leading-relaxed text-[#06251b]/65">
             Нажимая кнопку, вы переходите в WhatsApp. Проверьте сообщение и
-            нажмите «Отправить», чтобы Анна получила заявку.
+            нажмите «Отправить», чтобы GoVietStay получил заявку.
           </div>
           <button
             type="submit"
             className="sm:col-span-2 rounded-full bg-green-500 px-6 py-4 text-base font-extrabold text-white shadow-xl transition hover:bg-green-600"
           >
-            Отправить заявку Анне в WhatsApp
+            Отправить заявку в WhatsApp
           </button>
         </form>
       </div>
@@ -1243,7 +1248,7 @@ function RussianAudienceAnnaPartnerSection() {
             </div>
 
             <div className="mt-5 rounded-2xl bg-white/70 border border-[#06251b]/10 px-4 py-3 text-sm md:text-base font-bold text-[#06251b]">
-              WhatsApp: {ANNA_PHONE_DISPLAY} • Use the fixed contact bar below.
+              WhatsApp: {CONTACT_PHONE_DISPLAY}
             </div>
           </div>
 
@@ -1284,7 +1289,7 @@ function SignaturePackagesSection({
       <div className="max-w-7xl mx-auto">
         <div className="max-w-4xl">
           <p className="text-green-800 uppercase tracking-[4px] text-xs md:text-sm font-extrabold">
-            Signature Central Vietnam Packages
+            Готовые маршруты по Центральному Вьетнаму
           </p>
           <h2 className="mt-4 text-3xl md:text-5xl font-extrabold leading-tight">
             4 готовых комбо-тура для русскоговорящих гостей
@@ -1292,12 +1297,12 @@ function SignaturePackagesSection({
           <p className="mt-5 text-base md:text-lg text-[#06251b]/75 leading-relaxed">
             Выберите готовый маршрут на 2 или 3 дня. Все цены указаны за одного
             человека для тура с англоговорящим гидом. Русскоговорящий гид
-            предоставляется по запросу после консультации с Анной.
+            предоставляется по запросу после подтверждения наличия и цены.
           </p>
           <div className="mt-5 rounded-3xl bg-[#f7f1df] border border-[#06251b]/10 p-4 md:p-5 text-sm md:text-base text-[#06251b]/75 leading-relaxed">
             Откройте программу, сравните маршруты и нажмите «Забронировать». На
             мобильном телефоне форма открывается во весь экран и сразу готовит
-            подробную заявку для WhatsApp Анны.
+            подробную заявку для WhatsApp GoVietStay.
           </div>
         </div>
 
@@ -1411,7 +1416,7 @@ function GuestExperienceVideoSection() {
   );
 }
 
-export default function RussianPage() {
+function LegacyRussianPage() {
   const [activeTourId, setActiveTourId] = useState<string>(ruTours[0].id);
   const [bookingPackage, setBookingPackage] = useState<SignaturePackage | null>(
     null,
@@ -1527,7 +1532,7 @@ export default function RussianPage() {
                   <div>
                     <div className="text-2xl font-extrabold">Ms. Anna</div>
                     <div className="mt-1 text-white/85">
-                      WhatsApp: {ANNA_PHONE_DISPLAY}
+                      WhatsApp: {CONTACT_PHONE_DISPLAY}
                     </div>
                   </div>
                   <span className="rounded-full bg-white/12 px-3 py-2 text-xs font-bold">
@@ -1576,7 +1581,7 @@ export default function RussianPage() {
                   </div>
                   <div className="mt-2 text-2xl font-extrabold">Ms. Anna</div>
                   <div className="mt-1 text-white/80">
-                    WhatsApp: {ANNA_PHONE_DISPLAY}
+                    WhatsApp: {CONTACT_PHONE_DISPLAY}
                   </div>
 
                   <div className="mt-4 rounded-2xl bg-white/10 px-4 py-3 text-sm font-bold text-white/85">
@@ -1956,7 +1961,7 @@ export default function RussianPage() {
               Единый контакт RU page
             </div>
             <div className="mt-2 text-2xl font-extrabold">
-              {ANNA_PHONE_DISPLAY}
+              {CONTACT_PHONE_DISPLAY}
             </div>
             <div className="mt-4 text-white/75 text-sm leading-relaxed">
               Нажмите нижнюю WhatsApp-панель, чтобы написать по турам, package
@@ -1987,7 +1992,7 @@ export default function RussianPage() {
             <p className="mt-4 text-white/75 leading-relaxed">
               Ms. Anna
               <br />
-              WhatsApp: {ANNA_PHONE_DISPLAY}
+              WhatsApp: {CONTACT_PHONE_DISPLAY}
               <br />
               Цены можно уточнить в VND и USD.
             </p>
@@ -2008,7 +2013,7 @@ export default function RussianPage() {
 
       {/* SINGLE FIXED RU CONTACT BAR */}
       <a
-        href={annaWa(
+        href={contactWa(
           "Здравствуйте, Ms. Anna. Нужна помощь по GoVietStay: private tour / 3D2N или 4D3N package / airport transfer / B2B partner rates.",
         )}
         target="_blank"
@@ -2022,6 +2027,380 @@ export default function RussianPage() {
         pkg={bookingPackage}
         onClose={() => setBookingPackage(null)}
       />
+    </main>
+  );
+}
+
+function CoreToursSection() {
+  const [activeTourId, setActiveTourId] = useState<string>(ruTours[0].id);
+  const activeTour =
+    ruTours.find((tour) => tour.id === activeTourId) ?? ruTours[0];
+
+  return (
+    <section id="ru-tours" className="bg-white px-4 py-12 md:px-8 md:py-20 lg:px-12">
+      <div className="mx-auto max-w-7xl">
+        <p className="text-xs font-extrabold uppercase tracking-[4px] text-green-800 md:text-sm">
+          Популярные экскурсии
+        </p>
+        <h2 className="mt-4 max-w-4xl text-3xl font-extrabold leading-tight md:text-5xl">
+          Выберите тур в Дананге, Хойане или Хюэ
+        </h2>
+        <p className="mt-5 max-w-3xl text-base leading-relaxed text-[#06251b]/70 md:text-lg">
+          Нажмите на тур, чтобы увидеть цены, программу, что входит и кому
+          подходит маршрут. Русскоговорящий гид — по запросу и после
+          подтверждения наличия.
+        </p>
+
+        <div className="mt-9 grid items-start gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="space-y-3">
+            {ruTours.map((tour) => {
+              const active = activeTour.id === tour.id;
+              return (
+                <div key={tour.id}>
+                  <button
+                    type="button"
+                    onClick={() => setActiveTourId(tour.id)}
+                    className={`w-full overflow-hidden rounded-[1.5rem] border bg-white text-left shadow-sm transition ${
+                      active
+                        ? "border-[#0b6b4f] shadow-lg"
+                        : "border-[#06251b]/10 hover:border-[#0b6b4f]/40"
+                    }`}
+                  >
+                    <div className="grid grid-cols-[94px_1fr] md:grid-cols-[132px_1fr]">
+                      <div className="relative min-h-[116px]">
+                        <Image
+                          src={tour.image}
+                          alt={tour.shortTitle}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      <div className="p-4">
+                        <p className="text-[10px] font-extrabold uppercase tracking-[2px] text-green-800 md:text-xs">
+                          {tour.badge}
+                        </p>
+                        <h3 className="mt-2 text-sm font-extrabold leading-snug md:text-lg">
+                          {tour.title}
+                        </h3>
+                        <div className="mt-3 flex flex-wrap gap-2 text-[11px] font-bold md:text-sm">
+                          <span className="rounded-full bg-[#f3ead4] px-3 py-1.5">
+                            {tour.duration}
+                          </span>
+                          {tour.groupPriceAdult && (
+                            <span className="rounded-full bg-[#ecf8f3] px-3 py-1.5 text-[#0b6b4f]">
+                              {tour.groupPriceAdult}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+                  {active && (
+                    <div className="mt-3 lg:hidden">
+                      <TourDetailCard tour={tour} />
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+          <div className="sticky top-5 hidden lg:block">
+            <TourDetailCard tour={activeTour} />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default function RussianPage() {
+  const [bookingPackage, setBookingPackage] = useState<SignaturePackage | null>(
+    null,
+  );
+
+  return (
+    <main className="bg-[#f7f1df] text-[#06251b] pb-24 md:pb-0">
+      <section className="relative overflow-hidden bg-[#04140f]">
+        <div className="absolute inset-0">
+          <Image
+            src="/hero-hoian-new.png"
+            alt="Туры GoVietStay для русскоговорящих гостей во Вьетнаме"
+            fill
+            priority
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#04140f]/65 via-[#04140f]/62 to-[#04140f]/92 lg:bg-gradient-to-r lg:from-[#04140f]/92 lg:via-[#04140f]/72 lg:to-[#04140f]/40" />
+        </div>
+
+        <div className="relative mx-auto flex min-h-[680px] max-w-7xl flex-col px-4 pb-12 pt-5 md:px-8 md:pb-16 lg:px-12">
+          <div className="flex items-center justify-between gap-3">
+            <Link href="/" className="flex items-center gap-3 text-white">
+              <Image
+                src="/logo.png"
+                alt="GoVietStay"
+                width={48}
+                height={48}
+                className="rounded-full"
+              />
+              <div>
+                <div className="font-extrabold">GoVietStay</div>
+                <div className="text-[11px] text-white/65">Trusted Local Support</div>
+              </div>
+            </Link>
+            <div className="flex items-center gap-2">
+              <Link
+                href="/"
+                className="rounded-full border border-white/20 bg-white/10 px-3 py-2 text-xs font-bold text-white"
+              >
+                EN
+              </Link>
+              <span className="rounded-full bg-yellow-300 px-3 py-2 text-xs font-extrabold">
+                🇷🇺 RU
+              </span>
+            </div>
+          </div>
+
+          <div className="my-auto max-w-3xl py-12 text-white">
+            <p className="inline-flex rounded-full border border-yellow-300/40 bg-black/20 px-4 py-2 text-xs font-extrabold uppercase tracking-[3px] text-yellow-300 backdrop-blur md:text-sm">
+              Экскурсии и поддержка на русском
+            </p>
+            <h1 className="mt-5 text-4xl font-extrabold leading-[1.08] drop-shadow-xl md:text-6xl">
+              Путешествуйте по Вьетнаму спокойно и без лишних вопросов
+            </h1>
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/85 md:text-xl">
+              Проверенные туры в Дананге, Хойане, Хюэ и на Фукуоке, а также
+              готовые поездки из Нячанга. Понятная программа, честная цена и
+              помощь GoVietStay до и во время поездки.
+            </p>
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+              <a
+                href="#choose-route"
+                className="rounded-full bg-yellow-300 px-6 py-4 text-center font-extrabold text-[#06251b] shadow-xl"
+              >
+                Выбрать маршрут
+              </a>
+              <a
+                href={contactWa(
+                  "Здравствуйте! Помогите выбрать экскурсию GoVietStay. Дата поездки: … Количество гостей: … Отель: …",
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-full border border-white/30 bg-white/10 px-6 py-4 text-center font-extrabold text-white backdrop-blur"
+              >
+                Написать в WhatsApp
+              </a>
+            </div>
+            <div className="mt-7 grid grid-cols-2 gap-3 text-xs font-bold md:grid-cols-4 md:text-sm">
+              {["Поддержка на русском", "Цены до бронирования", "Гид по запросу", "Помощь 24/7"].map(
+                (item) => (
+                  <div
+                    key={item}
+                    className="rounded-2xl border border-white/10 bg-white/10 px-3 py-3 backdrop-blur"
+                  >
+                    ✓ {item}
+                  </div>
+                ),
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="choose-route" className="px-4 py-12 md:px-8 md:py-16 lg:px-12">
+        <div className="mx-auto max-w-7xl">
+          <div className="max-w-3xl">
+            <p className="text-xs font-extrabold uppercase tracking-[4px] text-green-800 md:text-sm">
+              С чего начать
+            </p>
+            <h2 className="mt-4 text-3xl font-extrabold md:text-5xl">
+              Выберите подходящий раздел
+            </h2>
+          </div>
+          <div className="mt-8 grid gap-4 md:grid-cols-3">
+            {[
+              {
+                href: "#signature-packages",
+                title: "Комбо-туры по Центральному Вьетнаму",
+                text: "Готовые маршруты на 2–3 экскурсионных дня без проживания.",
+              },
+              {
+                href: "#nha-trang-packages",
+                title: "Поездки из Нячанга",
+                text: "VIP-автобус, отель в многодневных пакетах и экскурсии в Дананге.",
+              },
+              {
+                href: "#ru-tours",
+                title: "Отдельные экскурсии",
+                text: "Бана Хиллс, остров Чам, Хойан, Хюэ и другие маршруты.",
+              },
+            ].map((item, index) => (
+              <a
+                key={item.title}
+                href={item.href}
+                className="rounded-[2rem] border border-[#06251b]/10 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+              >
+                <span className="grid h-10 w-10 place-items-center rounded-full bg-[#0b6b4f] font-extrabold text-white">
+                  {index + 1}
+                </span>
+                <h3 className="mt-5 text-xl font-extrabold">{item.title}</h3>
+                <p className="mt-3 leading-relaxed text-[#06251b]/65">{item.text}</p>
+                <p className="mt-5 font-extrabold text-green-800">Открыть →</p>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <GuestExperienceVideoSection />
+      <SignaturePackagesSection onBook={setBookingPackage} />
+      <NhaTrangPackagesSection onBook={setBookingPackage} />
+      <CoreToursSection />
+
+      <section className="px-4 py-12 md:px-8 md:py-20 lg:px-12">
+        <div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-2">
+          <div className="rounded-[2rem] bg-white p-6 shadow-sm md:p-8">
+            <p className="text-xs font-extrabold uppercase tracking-[3px] text-green-800">
+              Почему GoVietStay
+            </p>
+            <h2 className="mt-4 text-3xl font-extrabold md:text-4xl">
+              Всё важное известно заранее
+            </h2>
+            <div className="mt-6 space-y-3">
+              {[
+                "Понятная программа и цена до подтверждения",
+                "Поддержка на русском в WhatsApp и Telegram",
+                "Русскоговорящий гид по запросу и при наличии",
+                "Проверенные транспортные и экскурсионные партнёры",
+                "Помощь с погодой, трансфером и изменениями маршрута",
+              ].map((item) => (
+                <div key={item} className="flex gap-3 rounded-2xl bg-[#f7f1df] p-4 font-bold">
+                  <span className="text-green-700">✓</span>
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-[2rem] bg-[#06251b] p-6 text-white shadow-xl md:p-8">
+            <p className="text-xs font-extrabold uppercase tracking-[3px] text-yellow-300">
+              Как забронировать
+            </p>
+            <h2 className="mt-4 text-3xl font-extrabold md:text-4xl">
+              Три простых шага
+            </h2>
+            <div className="mt-6 space-y-4">
+              {[
+                "Напишите дату, отель и количество взрослых и детей.",
+                "Мы подтвердим программу, язык гида, цену и наличие мест.",
+                "После вашего подтверждения организуем поездку и остаёмся на связи.",
+              ].map((item, index) => (
+                <div key={item} className="flex gap-4 rounded-2xl bg-white/10 p-4">
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-yellow-300 font-extrabold text-[#06251b]">
+                    {index + 1}
+                  </span>
+                  <p className="font-bold text-white/90">{item}</p>
+                </div>
+              ))}
+            </div>
+            <div className="mt-6 rounded-2xl border border-white/10 bg-white/10 p-4 text-sm leading-relaxed text-white/75">
+              Морские экскурсии зависят от погоды и состояния моря. Итоговая
+              программа и наличие русскоговорящего гида подтверждаются до оплаты.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#04140f] px-4 py-14 text-white md:px-8 lg:px-12">
+        <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-7 rounded-[2rem] border border-yellow-300/25 bg-white/5 p-6 md:p-10 lg:flex-row lg:items-center">
+          <div className="max-w-2xl">
+            <p className="text-xs font-extrabold uppercase tracking-[4px] text-yellow-300">
+              Поддержка GoVietStay
+            </p>
+            <h2 className="mt-4 text-3xl font-extrabold md:text-5xl">
+              Поможем выбрать маршрут на русском языке
+            </h2>
+            <p className="mt-4 text-white/70">
+              WhatsApp: {CONTACT_PHONE_DISPLAY} • Telegram: @GoVietStay
+            </p>
+            <a
+              href={annaVuWa(
+                "Здравствуйте, Анна Ву! Нужна консультация по турам GoVietStay.",
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-5 block max-w-xl rounded-2xl border border-white/15 bg-white/10 p-4 transition hover:bg-white/15"
+            >
+              <span className="block text-sm font-extrabold text-yellow-300">
+                Нужна личная консультация на русском языке?
+              </span>
+              <span className="mt-1 block text-sm leading-relaxed text-white/75">
+                Свяжитесь с русскоговорящим менеджером по продажам Анной Ву:
+                WhatsApp {ANNA_VU_PHONE_DISPLAY}
+              </span>
+            </a>
+          </div>
+          <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+            <a
+              href={contactWa(
+                "Здравствуйте! Нужна помощь с выбором тура GoVietStay во Вьетнаме.",
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full bg-green-500 px-6 py-4 text-center font-extrabold text-white shadow-xl"
+            >
+              WhatsApp
+            </a>
+            <a
+              href="https://t.me/GoVietStay"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full bg-sky-500 px-6 py-4 text-center font-extrabold text-white shadow-xl"
+            >
+              Telegram
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <footer className="border-t border-white/10 bg-[#02140f] px-4 py-10 text-white md:px-8 lg:px-12">
+        <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-3">
+          <div>
+            <h3 className="text-2xl font-extrabold">GoVietStay</h3>
+            <p className="mt-3 leading-relaxed text-white/60">
+              Экскурсии, трансферы и локальная поддержка во Вьетнаме.
+            </p>
+          </div>
+          <div>
+            <h4 className="font-extrabold">Направления</h4>
+            <p className="mt-3 leading-relaxed text-white/60">
+              Дананг • Хойан • Хюэ • Нячанг • Фукуок
+            </p>
+          </div>
+          <div>
+            <h4 className="font-extrabold">Связаться</h4>
+            <p className="mt-3 leading-relaxed text-white/60">
+              WhatsApp: {CONTACT_PHONE_DISPLAY}
+              <br />
+              Telegram: @GoVietStay
+              <br />
+              GoVietStay.com
+            </p>
+          </div>
+        </div>
+      </footer>
+
+      <a
+        href={contactWa(
+          "Здравствуйте! Помогите выбрать экскурсию GoVietStay. Дата: … Гостей: … Отель: …",
+        )}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-3 right-3 z-50 rounded-full bg-green-500 px-5 py-3.5 text-sm font-extrabold text-white shadow-2xl transition hover:bg-green-600 md:bottom-5 md:right-5"
+      >
+        WhatsApp • Написать
+      </a>
+
+      <BookingModal pkg={bookingPackage} onClose={() => setBookingPackage(null)} />
     </main>
   );
 }
