@@ -23,6 +23,186 @@ type RuTour = {
   details: string[];
 };
 
+type PhuQuocTour = {
+  id: string;
+  title: string;
+  category: string;
+  duration: string;
+  image: string;
+  adult: string;
+  child: string;
+  summary: string;
+  included: string;
+  note: string;
+  itinerary: string[];
+  includedItems: string[];
+  excluded: string[];
+  notes: string[];
+};
+
+const phuQuocTours: PhuQuocTour[] = [
+  {
+    id: "pq-island-discovery",
+    title: "Обзорная экскурсия по острову Фукуок",
+    category: "Культура и достопримечательности",
+    duration: "08:30–15:00",
+    image: "/tour/phuquoc/tour-01-1.jpg",
+    adult: "520 000 VND",
+    child: "260 000 VND",
+    summary: "Динь Кау, питомник фукуокских риджбеков, жемчужная ферма, местный обед и знакомство с островом без морской прогулки.",
+    included: "Трансфер, гид, обед, вода, входные билеты и страховка.",
+    note: "Ориентир: 20 USD / взрослый, 10 USD / ребёнок.",
+    itinerary: ["08:30–09:00: Встреча в отеле.", "Посещение Динь Кау.", "Питомник фукуокских риджбеков и шоу собачьих бегов.", "Посещение жемчужной фермы.", "Обед в местном ресторане.", "Змеиная ферма Dong Tam, шёлковый центр и деревня местных специалитетов.", "15:00: Возвращение в отель."],
+    includedItems: ["Трансфер", "Экскурсовод", "Обед", "Одна бутылка воды", "Входные билеты", "Туристическая страховка"],
+    excluded: ["Личные расходы", "Дополнительные напитки", "Покупки по желанию"],
+    notes: ["Ориентировочная цена: 20 USD/взрослый и 10 USD/ребёнок.", "Остановки для покупок необязательны — приобретать товары не требуется.", "Маршрут, цена и наличие мест подтверждаются до бронирования."],
+  },
+  {
+    id: "pq-north-snorkeling",
+    title: "Снорклинг и рыбалка на севере Фукуока",
+    category: "Деревянная лодка и северный риф",
+    duration: "09:00 или 12:30",
+    image: "/tour/phuquoc/tour-02-1.jpg",
+    adult: "1 300 000 VND",
+    child: "910 000 VND",
+    summary: "Рыбалка у Хон Банг, снорклинг у северного рифа, пресный душ и местная еда на спокойной деревянной лодке.",
+    included: "Трансфер, лодка, питание, вода, снаряжение и страховка.",
+    note: "Гид не входит в базовый пакет; русскоговорящий гид — за доплату.",
+    itinerary: ["Встреча в отеле; дневной вариант начинается в 12:30.", "Инструктаж и подбор спасательного жилета в Sunset Story.", "Рыбалка возле острова Хон Банг.", "Снорклинг у северного кораллового рифа.", "Пресный душ и местная еда.", "Возвращение в отель."],
+    includedItems: ["Трансфер", "Обед или ужин", "Одна бутылка воды", "Деревянная лодка", "Снаряжение для рыбалки и снорклинга", "Туристическая страховка"],
+    excluded: ["Экскурсовод в базовом пакете", "Подводные фотографии без предварительного запроса", "Личные расходы", "Дополнительные напитки"],
+    notes: ["Ориентировочная цена: 50 USD/взрослый и 35 USD/ребёнок.", "В базовый пакет гид не включён. Частный русскоговорящий или монголоязычный гид доступен за дополнительную плату.", "Участие детей и место снорклинга зависят от возраста, здоровья и состояния моря."],
+  },
+  {
+    id: "pq-north-sunset",
+    title: "Закат на севере Фукуока на деревянной лодке",
+    category: "Закат, рыбалка и музыка",
+    duration: "16:00–18:30",
+    image: "/tour/phuquoc/tour-03-1.jpg",
+    adult: "650 000 VND",
+    child: "390 000 VND",
+    summary: "Прогулка вдоль Бай Дай, рыбалка, холодное пиво, тропические фрукты и музыка на борту.",
+    included: "Трансфер, лодка, снасти, вода, одно пиво, фрукты и страховка.",
+    note: "Ужин и частный гид не включены; видимость заката зависит от погоды.",
+    itinerary: ["16:00: Встреча в отеле.", "16:30: Посадка на деревянную лодку.", "Прогулка вдоль Бай Дай и рыбалка.", "Пиво, тропические фрукты и музыка.", "18:30: Возвращение в отель."],
+    includedItems: ["Трансфер", "Одно пиво и фрукты", "Вода", "Лодка", "Снасти", "Страховка"],
+    excluded: ["Частный гид без доплаты", "Ужин", "Личные расходы", "Дополнительные напитки"],
+    notes: ["Ориентировочная цена: 25 USD/взрослый и 15 USD/ребёнок.", "Частный гид предоставляется за доплату.", "Видимость заката зависит от погоды."],
+  },
+  {
+    id: "pq-squid-fishing",
+    title: "Закатный круиз и ночная ловля кальмаров",
+    category: "Вечерний круиз с ужином",
+    duration: "16:00–21:00",
+    image: "/tour/phuquoc/tour-04-1.jpg",
+    adult: "1 040 000 VND",
+    child: "650 000 VND",
+    summary: "Закат в море, ловля кальмаров и ужин на борту во время классического вечернего круиза.",
+    included: "Трансфер, судно, гид, ужин, вода, снасти, жилет и страховка.",
+    note: "Улов не гарантируется; время маршрута зависит от состояния моря.",
+    itinerary: ["16:00: Встреча в отеле.", "17:00: Посадка на судно.", "Закат в море.", "Ловля кальмаров; улов могут приготовить по просьбе.", "Ужин на борту.", "21:00: Возвращение."],
+    includedItems: ["Трансфер", "Туристическое судно", "Гид", "Ужин", "Вода", "Спасательный жилет и снасти", "Страховка"],
+    excluded: ["Личные расходы", "Дополнительные напитки", "Доплата за частного языкового гида"],
+    notes: ["Ориентировочная цена: 40 USD/взрослый и 25 USD/ребёнок.", "Улов кальмаров не гарантируется.", "Время зависит от состояния моря."],
+  },
+  {
+    id: "pq-three-islands",
+    title: "3 острова Фукуока: катер и снорклинг",
+    category: "Популярный морской маршрут",
+    duration: "07:00–16:00",
+    image: "/tour/phuquoc/tour-05-1.jpg",
+    adult: "1 040 000 VND",
+    child: "По возрасту и росту",
+    summary: "Южные острова, купание, снорклинг, съёмка с дрона и обед на маршруте.",
+    included: "Трансфер, катер, гид, обед, дрон, вода и страховка.",
+    note: "Sea Walking оплачивается отдельно; порядок островов может меняться.",
+    itinerary: ["07:00–07:30: Встреча в отеле и сбор у жемчужной фермы.", "09:30: Начало маршрута.", "Sea Walking по желанию и за доплату.", "Купание, дрон и обед на Монг Тай.", "Снорклинг у Гам Ги или Буом.", "Купание у Май Рут.", "16:00: Возвращение."],
+    includedItems: ["Трансфер", "Скоростной катер", "Гид", "Обед", "Съёмка с дрона", "Вода", "Страховка"],
+    excluded: ["Sea Walking", "Личные расходы", "Дополнительные напитки", "Другие водные развлечения"],
+    notes: ["Ориентировочная цена: 40 USD/гость.", "Для детского тарифа сообщите возраст и рост.", "Порядок островов зависит от погоды и моря."],
+  },
+  {
+    id: "pq-four-islands",
+    title: "4 острова, Хон Тхом и Aquatopia",
+    category: "Острова, канатная дорога и аквапарк",
+    duration: "07:00–17:30",
+    image: "/tour/phuquoc/tour-06-1.jpg",
+    adult: "1 690 000 VND",
+    child: "По возрасту и росту",
+    summary: "Южные острова и снорклинг, канатная дорога Хон Тхом, обед, Aquatopia и Мост Поцелуев.",
+    included: "Трансфер, катер, канатная дорога, гид, обед, дрон, вода и страховка.",
+    note: "Sea Walking не включён; программа зависит от погоды и условий оператора.",
+    itinerary: ["07:00–07:30: Встреча в отеле и сбор у жемчужной фермы.", "09:30: Начало маршрута по южным островам на скоростном катере.", "Sea Walking по желанию и за дополнительную плату.", "Купание, съёмка с дрона и обед на острове Монг Тай.", "Снорклинг у Гам Ги или Буом и купание у Май Рут.", "Поездка по морской канатной дороге Хон Тхом.", "Обед и аквапарк Aquatopia.", "16:30: Мост Поцелуев.", "17:30: Возвращение в отель."],
+    includedItems: ["Трансфер", "Скоростной катер", "Билет на канатную дорогу Хон Тхом", "Экскурсовод", "Обед", "Съёмка с дрона", "Вода", "Туристическая страховка"],
+    excluded: ["Sea Walking", "Личные расходы", "Дополнительные напитки", "Дополнительные водные развлечения"],
+    notes: ["Ориентировочная цена: 65 USD/гость.", "Для расчёта детского тарифа сообщите возраст и рост каждого ребёнка.", "Порядок островов и активности могут меняться из-за моря, погоды и условий оператора."],
+  },
+  {
+    id: "pq-hon-thom-kiss",
+    title: "Хон Тхом, Мост Поцелуев и Kiss of the Sea",
+    category: "Канатная дорога, закат и шоу",
+    duration: "12:00–21:30",
+    image: "/tour/phuquoc/tour-07-1.jpg",
+    adult: "2 470 000 VND",
+    child: "2 080 000 VND",
+    summary: "Канатная дорога, Aquatopia, закат у Моста Поцелуев, Vuifest и вечернее шоу Kiss of the Sea.",
+    included: "Трансфер, канатная дорога, Мост Поцелуев, шоу, вода и страховка.",
+    note: "Ужин оплачивается отдельно; проведение шоу подтверждается на дату.",
+    itinerary: ["12:00: Встреча.", "12:30: Жемчужная ферма.", "13:30–14:00: Канатная дорога.", "14:00–17:00: Аквапарк, бассейны и пляж.", "17:30–19:30: Мост Поцелуев и закат.", "19:30–21:00: Свободное время и ужин за свой счёт.", "21:00–21:30: Шоу и возвращение."],
+    includedItems: ["Трансфер", "Канатная дорога", "Мост Поцелуев", "Kiss of the Sea", "Вода", "Страховка"],
+    excluded: ["Ужин", "Личные расходы", "Дополнительные напитки", "Дополнительные услуги аквапарка"],
+    notes: ["Ориентировочная цена: 95 USD/взрослый и 80 USD/ребёнок.", "Ужин на Vuifest оплачивается отдельно.", "Проведение шоу зависит от расписания и погоды."],
+  },
+  {
+    id: "pq-private-sailing",
+    title: "Частный парусный тур и снорклинг на севере",
+    category: "Спокойный частный маршрут",
+    duration: "Утренняя прогулка",
+    image: "/tour/phuquoc/tour-08-1.jpg",
+    adult: "3 250 000 VND",
+    child: "Уточняется",
+    summary: "Парусный маршрут Гань Дау — Куа Кан, плавучие фермы, снорклинг у Черепашьего острова и пляж Вунг Бау.",
+    included: "Лодка, снаряжение, англо-/франкоговорящий гид, напитки, закуски и транспорт.",
+    note: "Русскоговорящий гид заказывается отдельно; маршрут зависит от ветра и моря.",
+    itinerary: ["Переход от Гань Дау к Куа Кан вдоль примерно 15 км побережья.", "Плавучие рыбные фермы.", "Около часа снорклинга у Черепашьего острова.", "Купание у небольшого скального островка.", "Пляж Вунг Бау.", "Прибытие в Куа Кан около 13:00."],
+    includedItems: ["Парусная прогулка", "Снаряжение", "Англо-/франкоговорящий гид", "Кокос", "Фрукты", "Вода", "Закуски и хлеб", "Транспорт"],
+    excluded: ["Личные расходы", "Дополнительные напитки", "Русско- или монголоязычный гид без предварительного заказа"],
+    notes: ["Ориентировочная цена: 125 USD/гость.", "Отдельная детская цена в исходном файле не указана.", "Время зависит от ветра и моря."],
+  },
+  {
+    id: "pq-nemo-yacht",
+    title: "Роскошная яхта Nemo — дневной или закатный рейс",
+    category: "Премиум-яхта и BBQ",
+    duration: "08:00–14:15 / 14:00–20:30",
+    image: "/tour/phuquoc/tour-09-1.jpg",
+    adult: "2 340 000 VND",
+    child: "Уточняется",
+    summary: "Яхта со снорклингом, SUP, водной горкой и BBQ: дневной или закатный вариант.",
+    included: "Трансфер, яхта, гид, BBQ, вода и страховка.",
+    note: "Детский тариф, маршрут и возможный фейерверк подтверждаются на дату.",
+    itinerary: ["Дневной вариант: 08:00 трансфер, 09:00 выход, активности у Хон Гам Ги, Хон Май Рут Чонг и BBQ, возвращение около 14:15.", "Закатный вариант: 14:00 трансфер, 15:00 выход, Хон Дам, закат у Моста Поцелуев и BBQ.", "Фейерверк — если проводится.", "Возвращение в марину и отель."],
+    includedItems: ["Трансфер", "Яхта", "Гид", "BBQ-обед или ужин", "Вода", "Страховка"],
+    excluded: ["Личные расходы", "Дополнительные напитки", "Неуказанные услуги", "Фейерверк, если не проводится"],
+    notes: ["Ориентировочная цена: 90 USD/гость.", "Отдельная детская цена в исходном файле не указана.", "Маршрут и фейерверк подтверждаются на дату поездки."],
+  },
+  {
+    id: "pq-kayak-rach-vem",
+    title: "Каякинг, Рать Вем, Хам Ронг и Grand World",
+    category: "Активный север острова",
+    duration: "08:30–16:00",
+    image: "/tour/phuquoc/tour-10-1.jpg",
+    adult: "1 092 000 VND",
+    child: "702 000 VND",
+    summary: "Каякинг по Куа Кан, Рать Вем, катер до пляжа Хам Ронг и свободное время в Grand World.",
+    included: "Трансфер, каяк, катер, выбранное питание, вода, энергетик и страховка.",
+    note: "Цена с обедом для группы от 4; при меньшей группе доплата 10 USD / человек.",
+    itinerary: ["08:30: Встреча в отеле.", "Каякинг по реке Куа Кан.", "Медовая ферма и шёлковая фабрика.", "Рать Вем: обед и отдых.", "Катер до пляжа Хам Ронг.", "Grand World; платные билеты за свой счёт.", "16:00: Возвращение."],
+    includedItems: ["Трансфер", "Каяк", "Катер до Хам Ронг", "Обед в выбранном пакете", "Вода", "Энергетик", "Страховка"],
+    excluded: ["Билеты Grand World", "Обед в пакете без обеда", "Личные расходы", "Доплата при группе менее 4"],
+    notes: ["С обедом: 42 USD/взрослый и 27 USD/ребёнок; без обеда: 31 USD/взрослый и 16 USD/ребёнок.", "Базовая цена действует для группы от 4 человек.", "При группе менее 4 — доплата 10 USD/человек."],
+  },
+];
+
 const CONTACT_PHONE_DISPLAY = "+84 937 762 607";
 const CONTACT_PHONE_LINK = "84937762607";
 const ANNA_VU_PHONE_DISPLAY = "+84 78 706 2460";
@@ -69,7 +249,7 @@ const signaturePackages: SignaturePackage[] = [
   {
     id: "combo-1-classic-danang",
     title: "Классический Дананг",
-    image: "/tour/combo-1-ru.png",
+    image: "/tour/combo-1-ru-v2.png",
     route: "Ba Na Hills • Золотой мост • Кокосовый лес • Хойан",
     duration: "2 экскурсионных дня",
     badge: "BEST SELLER",
@@ -110,7 +290,7 @@ const signaturePackages: SignaturePackage[] = [
   {
     id: "combo-2-sea-heritage",
     title: "Море и наследие",
-    image: "/tour/combo-2-ru.png",
+    image: "/tour/combo-2-ru-v2.png",
     route: "Остров Чам • Снорклинг • Кокосовый лес • Хойан",
     duration: "2 экскурсионных дня",
     badge: "ЛЕТНИЙ ХИТ",
@@ -152,7 +332,7 @@ const signaturePackages: SignaturePackage[] = [
   {
     id: "combo-3-top-central-vietnam",
     title: "ТОП-3 Центрального Вьетнама",
-    image: "/tour/combo-3-ru.png",
+    image: "/tour/combo-3-ru-v2.png",
     route: "Ba Na Hills • Остров Чам • Кокосовый лес • Хойан",
     duration: "3 экскурсионных дня",
     badge: "САМЫЙ ПОПУЛЯРНЫЙ",
@@ -198,7 +378,7 @@ const signaturePackages: SignaturePackage[] = [
   {
     id: "combo-4-cultural-journey",
     title: "Культурное путешествие по Центральному Вьетнаму",
-    image: "/tour/combo-4-ru.png",
+    image: "/tour/combo-4-ru-v2.png",
     route: "Ba Na Hills • Хойан • Кокосовый лес • Императорский город Хюэ",
     duration: "3 экскурсионных дня",
     badge: "BEST CULTURAL JOURNEY",
@@ -257,7 +437,7 @@ const nhaTrangPackages: SignaturePackage[] = [
   {
     id: "nha-trang-ba-na-1-day",
     title: "Бана Хиллс из Нячанга — 1 день",
-    image: "/tour/nha-trang/ba-na-1-day-ru.png",
+    image: "/tour/nha-trang/ba-na-1-day-ru-v2.png",
     route: "Нячанг • Дананг • Бана Хиллс • Нячанг",
     duration: "1 день",
     badge: "ИЗ НЯЧАНГА",
@@ -304,7 +484,7 @@ const nhaTrangPackages: SignaturePackage[] = [
   {
     id: "nha-trang-ba-na-cham-2d1n",
     title: "Бана Хиллс и острова Чам",
-    image: "/tour/nha-trang/ba-na-cham-2d1n-ru.png",
+    image: "/tour/nha-trang/ba-na-cham-2d1n-ru-v2.png",
     route: "Нячанг • Бана Хиллс • Острова Чам • Нячанг",
     duration: "2 дня / 1 ночь",
     badge: "ГОРЫ + МОРЕ",
@@ -358,7 +538,7 @@ const nhaTrangPackages: SignaturePackage[] = [
   {
     id: "nha-trang-ba-na-hoi-an-2d1n",
     title: "Бана Хиллс, Кокосовый лес и Хойан",
-    image: "/tour/nha-trang/ba-na-hoi-an-2d1n-ru.png",
+    image: "/tour/nha-trang/ba-na-hoi-an-2d1n-ru-v2.png",
     route: "Нячанг • Бана Хиллс • Кокосовый лес • Хойан • Нячанг",
     duration: "2 дня / 1 ночь",
     badge: "КЛАССИКА ЦЕНТРА",
@@ -411,7 +591,7 @@ const nhaTrangPackages: SignaturePackage[] = [
   {
     id: "nha-trang-ba-na-cham-hoi-an-3d2n",
     title: "Бана Хиллс, острова Чам и Хойан",
-    image: "/tour/nha-trang/ba-na-cham-hoi-an-3d2n-ru.png",
+    image: "/tour/nha-trang/ba-na-cham-hoi-an-3d2n-ru-v2.png",
     route: "Нячанг • Бана Хиллс • Острова Чам • Кокосовый лес • Хойан",
     duration: "3 дня / 2 ночи",
     badge: "ПОЛНЫЙ МАРШРУТ",
@@ -2031,6 +2211,170 @@ function LegacyRussianPage() {
   );
 }
 
+function PhuQuocTourDetail({ tour }: { tour: PhuQuocTour }) {
+  return (
+    <article className="overflow-hidden rounded-[2rem] bg-white text-[#06251b] shadow-2xl">
+      <div className="relative aspect-[16/9]">
+        <Image src={tour.image} alt={tour.title} fill className="object-cover" />
+      </div>
+      <div className="p-5 md:p-7">
+        <p className="text-xs font-extrabold uppercase tracking-[2px] text-green-800">
+          {tour.category}
+        </p>
+        <h3 className="mt-2 text-2xl font-extrabold leading-tight md:text-3xl">
+          {tour.title}
+        </h3>
+        <p className="mt-4 leading-relaxed text-[#06251b]/70">{tour.summary}</p>
+        <div className="mt-5 grid gap-2 sm:grid-cols-3">
+          <div className="rounded-2xl bg-[#f3ead4] p-3">
+            <p className="text-[10px] font-bold uppercase text-[#06251b]/55">Время</p>
+            <p className="mt-1 font-extrabold">{tour.duration}</p>
+          </div>
+          <div className="rounded-2xl bg-[#ecf8f3] p-3">
+            <p className="text-[10px] font-bold uppercase text-[#06251b]/55">Взрослый</p>
+            <p className="mt-1 font-extrabold text-green-800">{tour.adult}</p>
+          </div>
+          <div className="rounded-2xl bg-[#f7f1df] p-3">
+            <p className="text-[10px] font-bold uppercase text-[#06251b]/55">Ребёнок</p>
+            <p className="mt-1 font-extrabold">{tour.child}</p>
+          </div>
+        </div>
+        <section className="mt-6 rounded-2xl border border-[#06251b]/10 p-4 md:p-5">
+          <h4 className="font-extrabold">Программа тура</h4>
+          <ol className="mt-3 space-y-2 text-sm leading-relaxed text-[#06251b]/75">
+            {tour.itinerary.map((item, index) => (
+              <li key={item} className="grid grid-cols-[26px_1fr] gap-2">
+                <span className="grid h-6 w-6 place-items-center rounded-full bg-[#0b6b4f] text-[11px] font-extrabold text-white">
+                  {index + 1}
+                </span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ol>
+        </section>
+        <div className="mt-3 grid gap-3 md:grid-cols-2">
+          <section className="rounded-2xl bg-[#ecf8f3] p-4 md:p-5">
+            <h4 className="font-extrabold text-green-800">✓ Что включено</h4>
+            <ul className="mt-3 space-y-1.5 text-sm leading-relaxed">
+              {tour.includedItems.map((item) => <li key={item}>• {item}</li>)}
+            </ul>
+          </section>
+          <section className="rounded-2xl bg-[#f7f1df] p-4 md:p-5">
+            <h4 className="font-extrabold">× Что не включено</h4>
+            <ul className="mt-3 space-y-1.5 text-sm leading-relaxed">
+              {tour.excluded.map((item) => <li key={item}>• {item}</li>)}
+            </ul>
+          </section>
+        </div>
+        <section className="mt-3 rounded-2xl bg-amber-50 p-4 text-sm leading-relaxed text-[#06251b]/75 md:p-5">
+          <h4 className="font-extrabold text-[#06251b]">Важно перед бронированием</h4>
+          <ul className="mt-2 space-y-1.5">
+            {tour.notes.map((item) => <li key={item}>• {item}</li>)}
+          </ul>
+        </section>
+        <div className="mt-4 rounded-2xl border border-[#06251b]/10 p-4 text-sm leading-relaxed text-[#06251b]/70">
+          Сообщите дату, отель, количество взрослых, возраст и рост детей, а
+          также нужен ли русскоговорящий гид. GoVietStay подтвердит точную зону
+          трансфера, наличие мест и итоговую стоимость до оплаты.
+        </div>
+        <a
+          href={contactWa(
+            `Здравствуйте! Хочу проверить тур на Фукуоке: ${tour.title}. Дата: … Взрослые: … Дети и возраст/рост: … Отель: … Нужен русскоговорящий гид: да/нет.`,
+          )}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-5 block rounded-full bg-[#ff5a16] px-5 py-4 text-center font-extrabold text-white transition hover:bg-[#e7490b]"
+        >
+          Проверить места и итоговую цену
+        </a>
+      </div>
+    </article>
+  );
+}
+
+function PhuQuocToursSection() {
+  const [activeTourId, setActiveTourId] = useState(phuQuocTours[0].id);
+  const activeTour =
+    phuQuocTours.find((tour) => tour.id === activeTourId) ?? phuQuocTours[0];
+
+  return (
+    <section
+      id="phu-quoc-tours"
+      className="bg-[#06251b] px-4 py-12 text-white md:px-8 md:py-20 lg:px-12"
+    >
+      <div className="mx-auto max-w-7xl">
+        <p className="text-xs font-extrabold uppercase tracking-[4px] text-yellow-300 md:text-sm">
+          Фукуок · зимний сезон 2026–2027
+        </p>
+        <h2 className="mt-4 max-w-5xl text-3xl font-extrabold leading-tight md:text-5xl">
+          10 туров на Фукуоке — от первого знакомства до премиум-яхты
+        </h2>
+        <p className="mt-5 max-w-4xl text-base leading-relaxed text-white/75 md:text-lg">
+          Одна коллекция для разных стилей отдыха: остров, море, закаты,
+          снорклинг, канатная дорога, шоу и частные прогулки. Особенно актуально
+          с декабря 2026 по март 2027 года; на высокий сезон рекомендуем
+          бронировать заранее.
+        </p>
+        <div className="mt-6 rounded-3xl border border-yellow-300/30 bg-white/10 p-4 text-sm leading-relaxed text-white/80 md:p-5 md:text-base">
+          Цены указаны за одного гостя как ориентир. Наличие мест, зона трансфера,
+          детский тариф, язык гида и итоговая стоимость подтверждаются до оплаты.
+          Морские маршруты могут меняться из-за погоды, состояния моря и правил
+          оператора.
+        </div>
+        <div className="mt-7 grid grid-cols-2 gap-2 text-xs font-bold sm:grid-cols-3 lg:grid-cols-5">
+          {[
+            "Первый визит: тур 1",
+            "Море и острова: 2, 5, 6",
+            "Закат и вечер: 3, 4, 7",
+            "Премиум: 8, 9",
+            "Активный север: 10",
+          ].map((item) => (
+            <div key={item} className="rounded-2xl border border-white/10 bg-white/10 p-3 text-white/80">
+              {item}
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-9 grid items-start gap-7 lg:grid-cols-[0.82fr_1.18fr]">
+          <div className="flex gap-2 overflow-x-auto pb-2 lg:grid lg:overflow-visible lg:pb-0">
+            {phuQuocTours.map((tour, index) => {
+              const active = activeTour.id === tour.id;
+              return (
+                <button
+                  key={tour.id}
+                  type="button"
+                  onClick={() => setActiveTourId(tour.id)}
+                  className={`grid min-h-[94px] min-w-[265px] grid-cols-[78px_1fr] overflow-hidden rounded-2xl border text-left transition lg:min-w-0 ${
+                    active
+                      ? "border-yellow-300 bg-white text-[#06251b] shadow-xl"
+                      : "border-white/10 bg-white/10 text-white hover:border-white/35"
+                  }`}
+                >
+                  <div className="relative h-full min-h-[94px]">
+                    <Image src={tour.image} alt="" fill className="object-cover" />
+                  </div>
+                  <div className="p-3">
+                    <p className={`text-[10px] font-extrabold uppercase tracking-[1.5px] ${active ? "text-green-800" : "text-yellow-300"}`}>
+                      Тур {index + 1} · {tour.duration}
+                    </p>
+                    <h3 className="mt-1 text-sm font-extrabold leading-snug">{tour.title}</h3>
+                    <p className={`mt-1 text-xs font-bold ${active ? "text-green-800" : "text-white/65"}`}>
+                      от {tour.adult}
+                    </p>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+          <div className="lg:sticky lg:top-5">
+            <PhuQuocTourDetail tour={activeTour} />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function CoreToursSection() {
   const [activeTourId, setActiveTourId] = useState<string>(ruTours[0].id);
   const activeTour =
@@ -2216,7 +2560,7 @@ export default function RussianPage() {
               Выберите подходящий раздел
             </h2>
           </div>
-          <div className="mt-8 grid gap-4 md:grid-cols-3">
+          <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {[
               {
                 href: "#signature-packages",
@@ -2227,6 +2571,11 @@ export default function RussianPage() {
                 href: "#nha-trang-packages",
                 title: "Поездки из Нячанга",
                 text: "VIP-автобус, отель в многодневных пакетах и экскурсии в Дананге.",
+              },
+              {
+                href: "#phu-quoc-tours",
+                title: "10 туров на Фукуоке",
+                text: "Море, острова, закаты, снорклинг, шоу и премиум-прогулки.",
               },
               {
                 href: "#ru-tours",
@@ -2254,6 +2603,7 @@ export default function RussianPage() {
       <GuestExperienceVideoSection />
       <SignaturePackagesSection onBook={setBookingPackage} />
       <NhaTrangPackagesSection onBook={setBookingPackage} />
+      <PhuQuocToursSection />
       <CoreToursSection />
 
       <section className="px-4 py-12 md:px-8 md:py-20 lg:px-12">
