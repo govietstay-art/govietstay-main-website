@@ -1,0 +1,24 @@
+GOOGLE SHEET TU DONG - TUY CHON
+===============================
+
+He thong Level 2 van hoat dong ngay qua WhatsApp neu chua lam buoc nay.
+Cau hinh Google Sheet giup moi don dang ky va booking tu dong luu vao Sheet.
+
+1. Tao mot Google Sheet moi.
+2. Mo Extensions > Apps Script.
+3. Xoa code cu va dan noi dung file:
+   PARTNER_GOOGLE_APPS_SCRIPT_Code.gs
+4. Bam Deploy > New deployment.
+5. Type: Web app.
+6. Execute as: Me.
+7. Who has access: Anyone.
+8. Copy Web app URL.
+9. Mo file .env.local trong website va them:
+
+   GOVIETSTAY_PARTNER_WEBHOOK_URL=URL_WEB_APP_CUA_ANH
+
+10. Khoi dong lai: npm run dev
+
+Google Sheet se tu tao 2 tab:
+- Applications
+- Bookings

@@ -3,8 +3,8 @@ import { Suspense } from "react";
 import PartnerChamHub from "../../../../components/PartnerChamHub";
 
 export const metadata: Metadata = {
-  title: "Cham Island Partner Workspace | GoVietStay",
-  description: "Внутреннее рабочее место партнёра GoVietStay: ссылка, скрипты консультации, FAQ, Media Kit и Booking Form.",
+  title: "Cham Island Partner Hub | GoVietStay",
+  description: "Инструменты партнёра GoVietStay: персональная ссылка, сценарий консультации и стандартная форма бронирования Cham Island.",
   robots: { index: false, follow: false },
 };
 
