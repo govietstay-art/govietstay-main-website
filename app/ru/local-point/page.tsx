@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import LocalPointLandingPage from "../../../components/LocalPointLandingPage";
+import "./local-point.css";
+import LocalPointClient from "./LocalPointClient";
 
 export const metadata: Metadata = {
-  title: "GoVietStay Local Point | Путешествие по Вьетнаму",
-  description:
-    "Экскурсии, трансферы, подарки и местная поддержка GoVietStay на русском языке.",
+  title: "GoVietStay Local Point | Вьетнам на русском",
+  description: "GoVietStay Local Point — AI-маршруты, подарки и русскоязычная поддержка во Вьетнаме.",
 };
 
 export default function LocalPointPage() {
-  return <LocalPointLandingPage />;
+  return <LocalPointClient />;
 }
