@@ -1,16 +1,35 @@
-GOVIETSTAY LOCAL POINT - BO CAI TIENG NGA
-=========================================
+GOVIETSTAY LOCAL POINT - BO CAI TIENG NGA DA SUA LOI VERCEL
+===========================================================
 
-1. Giai nen file ZIP.
-2. Copy file CAI-DAT-LOCAL-POINT.bat va thu muc _LOCAL_POINT_FILES
-   vao THU MUC GOC cua website GoVietStay (noi co package.json).
-3. Bam dup CAI-DAT-LOCAL-POINT.bat.
-4. Cho den khi man hinh bao DA CAI DAT THANH CONG.
-5. Deploy website nhu binh thuong.
+NEU ANH DA CAI BAN CU VA VERCEL DANG BAO LOI:
 
-Duong dan sau khi deploy:
+1. Giai nen file ZIP nay.
+2. Copy 3 file trong thu muc bo cai vao THU MUC GOC website
+   (noi co package.json):
+     - SUA-LOI-DEPLOY-NGAY.bat
+     - CAI-DAT-LOCAL-POINT.bat
+     - LOCAL-POINT-PAYLOAD.zip
+3. Bam dup SUA-LOI-DEPLOY-NGAY.bat.
+4. Cho den khi man hinh bao DA SUA LOI XONG.
+5. Chay:
+     git add -A
+     git commit -m "Fix Local Point deployment"
+     git push origin main
+
+NEU CHUA TUNG CAI LOCAL POINT:
+
+1. Copy 3 file tren vao thu muc goc website.
+2. Bam dup CAI-DAT-LOCAL-POINT.bat.
+3. Chay 3 lenh Git duoc hien tren man hinh.
+
+DUONG DAN SAU KHI DEPLOY:
 https://GoVietStay.com/ru/local-point
 
-Bo cai chi them/cap nhat 6 file cua Local Point va 2 thu vien can thiet.
-No khong xoa file khac. Neu file Local Point da ton tai, bo cai se sao luu
-truoc khi cap nhat.
+BAN NAY DA SUA 2 NGUYEN NHAN:
+- Ma nguon cai dat duoc nen trong LOCAL-POINT-PAYLOAD.zip, nen Vercel
+  khong con quet nham ban sao tam _LOCAL_POINT_FILES.
+- Hai thu vien lucide-react va @svg-maps/vietnam luon duoc ghi vao
+  package.json va package-lock.json truoc khi deploy.
+
+Bo sua loi chi xoa dung thu muc tam _LOCAL_POINT_FILES cua bo cai cu.
+Trang that trong components, app va public duoc giu nguyen.
