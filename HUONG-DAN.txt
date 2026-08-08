@@ -1,0 +1,16 @@
+GOVIETSTAY LOCAL POINT - BO CAI TIENG NGA
+=========================================
+
+1. Giai nen file ZIP.
+2. Copy file CAI-DAT-LOCAL-POINT.bat va thu muc _LOCAL_POINT_FILES
+   vao THU MUC GOC cua website GoVietStay (noi co package.json).
+3. Bam dup CAI-DAT-LOCAL-POINT.bat.
+4. Cho den khi man hinh bao DA CAI DAT THANH CONG.
+5. Deploy website nhu binh thuong.
+
+Duong dan sau khi deploy:
+https://GoVietStay.com/ru/local-point
+
+Bo cai chi them/cap nhat 6 file cua Local Point va 2 thu vien can thiet.
+No khong xoa file khac. Neu file Local Point da ton tai, bo cai se sao luu
+truoc khi cap nhat.

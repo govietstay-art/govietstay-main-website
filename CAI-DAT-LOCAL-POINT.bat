@@ -1,76 +1,96 @@
 @echo off
 setlocal EnableExtensions
 chcp 65001 >nul
+title Cai dat GoVietStay Local Point RU
 
-title Cai dat GoVietStay Local Point
-cd /d "%~dp0"
-
-echo ==================================================
-echo    CAI DAT GOVIETSTAY LOCAL POINT - RU
-echo ==================================================
+echo ======================================================
+echo       CAI DAT GOVIETSTAY LOCAL POINT - TIENG NGA
+echo ======================================================
 echo.
 
-if not exist "package.json" (
-  echo [LOI] Hay copy TOAN BO noi dung goi nay vao thu muc goc:
-  echo Documents\GitHub\govietstay-main-website
-  echo Sau do chay lai file nay.
+set "INSTALLER_DIR=%~dp0"
+set "PAYLOAD=%INSTALLER_DIR%_LOCAL_POINT_FILES"
+set "TARGET=%CD%"
+
+if exist "%INSTALLER_DIR%package.json" set "TARGET=%INSTALLER_DIR%"
+if not exist "%TARGET%package.json" if exist "%INSTALLER_DIR%..\package.json" set "TARGET=%INSTALLER_DIR%.."
+
+if not exist "%TARGET%package.json" (
+  echo KHONG TIM THAY package.json CUA WEBSITE.
+  echo.
+  echo Hay copy file CAI-DAT-LOCAL-POINT.bat va thu muc
+  echo _LOCAL_POINT_FILES vao thu muc goc cua website,
+  echo sau do chay lai file nay.
   echo.
   pause
   exit /b 1
 )
 
-set "BACKUP_NAME=_backup_local_point_%RANDOM%_%RANDOM%"
-set "NEED_BACKUP=0"
-if exist "components\LocalPointLandingPage.tsx" set "NEED_BACKUP=1"
-if exist "components\LocalPointLandingPage.css" set "NEED_BACKUP=1"
-if exist "app\ru\local-point\page.tsx" set "NEED_BACKUP=1"
-if exist "public\local-point\govietstay-logo.jpg" set "NEED_BACKUP=1"
-if exist "public\local-point\hero-3d.png" set "NEED_BACKUP=1"
-
-if "%NEED_BACKUP%"=="1" (
-  mkdir "%BACKUP_NAME%\components" 2>nul
-  mkdir "%BACKUP_NAME%\app\ru\local-point" 2>nul
-  mkdir "%BACKUP_NAME%\public\local-point" 2>nul
-  if exist "components\LocalPointLandingPage.tsx" copy /y "components\LocalPointLandingPage.tsx" "%BACKUP_NAME%\components\" >nul
-  if exist "components\LocalPointLandingPage.css" copy /y "components\LocalPointLandingPage.css" "%BACKUP_NAME%\components\" >nul
-  if exist "app\ru\local-point\page.tsx" copy /y "app\ru\local-point\page.tsx" "%BACKUP_NAME%\app\ru\local-point\" >nul
-  if exist "public\local-point\govietstay-logo.jpg" copy /y "public\local-point\govietstay-logo.jpg" "%BACKUP_NAME%\public\local-point\" >nul
-  if exist "public\local-point\hero-3d.png" copy /y "public\local-point\hero-3d.png" "%BACKUP_NAME%\public\local-point\" >nul
-  echo Da sao luu ban Local Point cu vao: %BACKUP_NAME%
+if not exist "%PAYLOAD%\components\LocalPointLandingPage.tsx" (
+  echo THIEU THU MUC _LOCAL_POINT_FILES.
+  echo Hay giai nen day du file ZIP roi chay lai.
+  echo.
+  pause
+  exit /b 1
 )
 
-if not exist "components" mkdir "components"
-if not exist "app\ru\local-point" mkdir "app\ru\local-point"
-if not exist "public\local-point" mkdir "public\local-point"
+for /f %%I in ('powershell -NoProfile -Command "Get-Date -Format yyyyMMdd-HHmmss"') do set "STAMP=%%I"
+set "BACKUP=%TARGET%\BACKUP-LOCAL-POINT-%STAMP%"
 
-if not exist "_local_point_payload\components\LocalPointLandingPage.tsx" goto missing_payload
-if not exist "_local_point_payload\components\LocalPointLandingPage.css" goto missing_payload
-if not exist "_local_point_payload\app\ru\local-point\page.tsx" goto missing_payload
-if not exist "_local_point_payload\public\local-point\govietstay-logo.jpg" goto missing_payload
-if not exist "_local_point_payload\public\local-point\hero-3d.png" goto missing_payload
+echo Website: %TARGET%
+echo.
+echo Dang sao luu cac file Local Point cu neu co...
+powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+  "$payload=[IO.Path]::GetFullPath('%PAYLOAD%'); $target=[IO.Path]::GetFullPath('%TARGET%'); $backup=[IO.Path]::GetFullPath('%BACKUP%'); Get-ChildItem -LiteralPath $payload -File -Recurse ^| ForEach-Object { $rel=$_.FullName.Substring($payload.Length).TrimStart('\'); $dest=Join-Path $target $rel; if(Test-Path -LiteralPath $dest){ $save=Join-Path $backup $rel; New-Item -ItemType Directory -Force -Path (Split-Path $save) ^| Out-Null; Copy-Item -LiteralPath $dest -Destination $save -Force } }"
 
-copy /y "_local_point_payload\components\LocalPointLandingPage.tsx" "components\LocalPointLandingPage.tsx" >nul
-copy /y "_local_point_payload\components\LocalPointLandingPage.css" "components\LocalPointLandingPage.css" >nul
-copy /y "_local_point_payload\app\ru\local-point\page.tsx" "app\ru\local-point\page.tsx" >nul
-copy /y "_local_point_payload\public\local-point\govietstay-logo.jpg" "public\local-point\govietstay-logo.jpg" >nul
-copy /y "_local_point_payload\public\local-point\hero-3d.png" "public\local-point\hero-3d.png" >nul
+echo Dang copy trang Local Point tieng Nga...
+robocopy "%PAYLOAD%" "%TARGET%" /E /COPY:DAT /R:2 /W:1 /NFL /NDL /NJH /NJS >nul
+if errorlevel 8 (
+  echo COPY THAT BAI. KHONG CO FILE NAO BI XOA.
+  echo.
+  pause
+  exit /b 1
+)
+
+pushd "%TARGET%"
+if not exist "node_modules\lucide-react\package.json" goto install_dependencies
+if not exist "node_modules\@svg-maps\vietnam\package.json" goto install_dependencies
+goto dependencies_ready
+
+:install_dependencies
+echo Dang bo sung 2 thu vien can thiet...
+call npm install lucide-react@^1.30.0 @svg-maps/vietnam@^2.0.0 --save
+if errorlevel 1 (
+  echo.
+  echo DA COPY FILE NHUNG CHUA CAI DUOC THU VIEN.
+  echo Khi co Internet, chay lenh:
+  echo npm install lucide-react@^1.30.0 @svg-maps/vietnam@^2.0.0 --save
+  popd
+  pause
+  exit /b 1
+)
+
+:dependencies_ready
+popd
 
 echo.
-echo ==================================================
-echo    DA CAI DAT THANH CONG 5 FILE MOI
-echo    KHONG XOA HOAC GHI DE CAC TRANG KHAC
-echo ==================================================
+echo ======================================================
+echo      DA CAI DAT THANH CONG LOCAL POINT TIENG NGA
+echo ======================================================
 echo.
-echo Kiem tra tai: http://localhost:3000/ru/local-point
-echo Sau khi dua len web: https://GoVietStay.com/ru/local-point
+echo Da them hoac cap nhat:
+echo   components\LocalPointLandingPage.tsx
+echo   components\LocalPointLandingPage.css
+echo   app\ru\local-point\page.tsx
+echo   public\local-point\govietstay-logo.jpg
+echo   public\local-point\local-point-tropical-clean-v3.png
+echo   public\local-point\local-point-mobile-clean-v3.png
+echo.
+echo Duong dan sau khi deploy: /ru/local-point
+echo KHONG XOA FILE KHAC CUA WEBSITE.
+echo File Local Point cu neu co da duoc sao luu tai:
+echo %BACKUP%
+echo ======================================================
 echo.
 pause
-exit /b 0
-
-:missing_payload
-echo.
-echo [LOI] Goi cai dat bi thieu file trong _local_point_payload.
-echo Hay giai nen lai day du file ZIP roi thu lai.
-echo.
-pause
-exit /b 1
+endlocal
