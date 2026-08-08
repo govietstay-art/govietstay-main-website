@@ -285,15 +285,19 @@
 .localPointRoot .giftRules b { color: var(--sun); }
 .localPointRoot .giftResult { margin-top: 28px; padding: 16px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 14px; max-width: 560px; border: 1px solid rgba(255,214,125,.35); border-radius: 17px; background: linear-gradient(135deg,rgba(255,195,75,.15),rgba(255,255,255,.055)); box-shadow: 0 18px 42px rgba(0,0,0,.22); animation: resultReveal .5s ease; position: relative; }
 .localPointRoot .giftResult > span { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 17px; color: #123b32; background: linear-gradient(145deg,#ffe8a9,#f3a21d); box-shadow: inset 5px 5px 9px rgba(255,255,255,.35),inset -6px -6px 10px rgba(147,67,0,.17); font-size: 21px; }
-.localPointRoot .giftResult div { display: grid; gap: 4px; }.localPointRoot .giftResult small { color: #7fa69b; font-size: 7px; letter-spacing: 1.3px; font-weight: 900; }.localPointRoot .giftResult b { font: 700 15px Georgia,serif; }.localPointRoot .giftResult p { margin: 0; color: #8fb1a7; font-size: 9px; }.localPointRoot .giftResult code { color: var(--sun); font-size: 10px; }
-.localPointRoot .giftResult button { border: 0; border-radius: 100px; padding: 12px 14px; color: var(--deep); background: #fff; font-size: 8px; font-weight: 900; cursor: pointer; }
+.localPointRoot .giftInfo { display: grid; gap: 4px; }.localPointRoot .giftResult small { color: #7fa69b; font-size: 7px; letter-spacing: 1.3px; font-weight: 900; }.localPointRoot .giftResult b { font: 700 15px Georgia,serif; }.localPointRoot .giftResult p { margin: 0; color: #8fb1a7; font-size: 9px; }.localPointRoot .giftResult code { color: var(--sun); font-size: 10px; }
+.localPointRoot .giftClaimActions { display: grid; gap: 7px; min-width: 180px; }
+.localPointRoot .giftResult button { border: 0; border-radius: 100px; padding: 12px 14px; font-size: 8px; font-weight: 900; cursor: pointer; }
+.localPointRoot .giftClaimPrimary { color: #042b24; background: #69e3b1; box-shadow: 0 9px 22px rgba(42,211,151,.2); }
+.localPointRoot .giftClaimSecondary { color: #fff; background: rgba(255,255,255,.09); outline: 1px solid rgba(255,255,255,.15); }
+.localPointRoot .giftClaimSteps { grid-column: 1/-1; display: grid; grid-template-columns: repeat(3,1fr); gap: 7px; margin: 2px 0 0; padding: 0; list-style: none; }
+.localPointRoot .giftClaimSteps li { display: flex; align-items: center; gap: 7px; padding: 8px 9px; border-radius: 10px; color: #a9c3bc; background: rgba(0,0,0,.13); font-size: 7px; font-weight: 800; }
+.localPointRoot .giftClaimSteps li b { flex: 0 0 auto; display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; color: #052d26; background: var(--sun); font: 900 7px Arial,sans-serif; }
 .localPointRoot .wheelStage { min-height: 620px; position: relative; display: grid; place-items: center; perspective: 1100px; }
 .localPointRoot .wheelStage::before { content: ""; position: absolute; width: 430px; height: 110px; bottom: 52px; border-radius: 50%; background: rgba(0,0,0,.55); filter: blur(34px); transform: rotateX(70deg); }
-.localPointRoot .wheelOuter { width: 450px; height: 450px; position: relative; display: grid; place-items: center; border-radius: 50%; background: linear-gradient(145deg,#f9cd73,#8e4c0b); box-shadow: inset 10px 11px 18px rgba(255,255,255,.5),inset -13px -15px 23px rgba(80,30,0,.38),0 40px 80px rgba(0,0,0,.48); transform: rotateX(7deg) rotateY(-5deg); touch-action: none; cursor: grab; user-select: none; }
-.localPointRoot .wheelOuter.isDragging { cursor: grabbing; filter: brightness(1.07); }
+.localPointRoot .wheelOuter { width: 450px; height: 450px; position: relative; display: grid; place-items: center; border-radius: 50%; background: linear-gradient(145deg,#f9cd73,#8e4c0b); box-shadow: inset 10px 11px 18px rgba(255,255,255,.5),inset -13px -15px 23px rgba(80,30,0,.38),0 40px 80px rgba(0,0,0,.48); transform: rotateX(7deg) rotateY(-5deg); touch-action: pan-y; user-select: none; }
 .localPointRoot .wheelOuter::before { content: ""; position: absolute; inset: 18px; border-radius: 50%; background: #042e27; box-shadow: inset 0 0 0 2px rgba(255,255,255,.24),inset 0 0 35px rgba(0,0,0,.48); }
 .localPointRoot .prizeWheel { width: 380px; height: 380px; position: relative; z-index: 2; border-radius: 50%; overflow: hidden; border: 5px solid #f6d17c; background: conic-gradient(from -30deg,#ffb52f 0 60deg,#38c59a 60deg 120deg,#6f96ed 120deg 180deg,#f47670 180deg 240deg,#dec368 240deg 300deg,#1d8670 300deg 360deg); box-shadow: inset 0 0 0 4px rgba(255,255,255,.25),inset 0 0 45px rgba(0,0,0,.24),0 20px 45px rgba(0,0,0,.3); transition: transform 4.2s cubic-bezier(.12,.7,.08,1); }
-.localPointRoot .prizeWheel.isDragging { transition: none; }
 .localPointRoot .prizeWheel::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle,transparent 0 52%,rgba(0,0,0,.13) 74%,rgba(255,255,255,.2) 100%); pointer-events: none; }
 .localPointRoot .prizeWheel::before { content: ""; position: absolute; inset: 0; z-index: 1; background: repeating-conic-gradient(from -30deg,rgba(255,255,255,.68) 0 1px,transparent 1px 60deg); }
 .localPointRoot .wheelLabel { position: absolute; z-index: 3; left: 50%; top: 50%; width: 74px; margin-left: -37px; margin-top: -28px; display: grid; justify-items: center; gap: 4px; color: white; text-shadow: 0 2px 5px rgba(0,0,0,.3); }
@@ -548,7 +552,7 @@
   .localPointRoot .wheelPointer { top: 22px; transform: scale(.78); }.localPointRoot .wheelLights i { width: 6px; height: 6px; margin: -3px; animation: none; transform: rotate(calc(var(--i) * 20deg)) translateY(-153px); }
   .localPointRoot .floatingGift { width: 48px; height: 48px; border-radius: 15px; font-size: 17px; }.localPointRoot .giftBoxOne { left: -1%; top: 18%; }.localPointRoot .giftBoxTwo { right: -1%; bottom: 16%; }
   .localPointRoot .wheelNote { bottom: 0; font-size: 5px; }.localPointRoot .giftDust { display: none; }
-  .localPointRoot .giftResult { order: 3; margin: 20px auto 0; padding: 12px; grid-template-columns: auto 1fr; text-align: left; }.localPointRoot .giftResult > span { width: 45px; height: 45px; }.localPointRoot .giftResult button { grid-column: 1/-1; width: 100%; }
+  .localPointRoot .giftResult { order: 3; margin: 20px auto 0; padding: 12px; grid-template-columns: auto 1fr; text-align: left; }.localPointRoot .giftResult > span { width: 45px; height: 45px; }.localPointRoot .giftClaimActions { grid-column: 1/-1; width: 100%; }.localPointRoot .giftResult button { width: 100%; }.localPointRoot .giftClaimSteps { grid-template-columns: 1fr; width: 100%; }
 
   .localPointRoot .mobileAdventure {
     display: flex;

@@ -1,6 +1,6 @@
 "use client";
 
-import { CSSProperties, MouseEvent, PointerEvent as ReactPointerEvent, useEffect, useRef, useState } from "react";
+import { CSSProperties, MouseEvent, useEffect, useRef, useState } from "react";
 import vietnamMap from "@svg-maps/vietnam";
 import {
   AudioLines,
@@ -372,7 +372,6 @@ export default function LocalPointLandingPage() {
   const [exchangeRates, setExchangeRates] = useState<ExchangeRatesState>(fallbackExchangeRates);
   const [wheelRotation, setWheelRotation] = useState(0);
   const [spinning, setSpinning] = useState(false);
-  const [draggingWheel, setDraggingWheel] = useState(false);
   const [giftIndex, setGiftIndex] = useState<number | null>(null);
   const [giftCode, setGiftCode] = useState("");
   const [aiOpen, setAiOpen] = useState(false);
@@ -381,9 +380,7 @@ export default function LocalPointLandingPage() {
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
     { from: "ai", text: "Здравствуйте! Я Kaka — цифровой проводник GoVietStay. Помогу выбрать маршрут, активировать подарок или подключить местную команду." },
   ]);
-  const wheelRef = useRef<HTMLDivElement | null>(null);
   const guidePanelRef = useRef<HTMLElement | null>(null);
-  const dragRef = useRef<{ startAngle: number; startRotation: number; lastRotation: number } | null>(null);
 
   useEffect(() => {
     const source = new URLSearchParams(window.location.search).get("ref");
@@ -493,13 +490,7 @@ export default function LocalPointLandingPage() {
     event.currentTarget.style.setProperty("--spot-y", `${Math.max(0, Math.min(100, (y + 1) * 50))}%`);
   };
 
-  const getPointerAngle = (event: ReactPointerEvent<HTMLDivElement>) => {
-    const rect = wheelRef.current?.getBoundingClientRect();
-    if (!rect) return 0;
-    return Math.atan2(event.clientY - (rect.top + rect.height / 2), event.clientX - (rect.left + rect.width / 2)) * 180 / Math.PI;
-  };
-
-  const spinWheel = (gestureBoost = 0) => {
+  const spinWheel = () => {
     if (spinning || giftIndex !== null) return;
     const random = new Uint32Array(1);
     window.crypto.getRandomValues(random);
@@ -508,9 +499,8 @@ export default function LocalPointLandingPage() {
     const normalized = ((current % 360) + 360) % 360;
     const landingAngle = (360 - (selected * 60 + 30)) % 360;
     const correction = (landingAngle - normalized + 360) % 360;
-    const rotation = current + (6 + Math.min(3, Math.floor(Math.abs(gestureBoost) / 55))) * 360 + correction;
+    const rotation = current + 6 * 360 + correction;
     setSpinning(true);
-    setDraggingWheel(false);
     setWheelRotation(rotation);
     if ("vibrate" in navigator) navigator.vibrate(18);
     window.setTimeout(() => {
@@ -523,30 +513,7 @@ export default function LocalPointLandingPage() {
     }, 4300);
   };
 
-  const startWheelDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (spinning || giftIndex !== null) return;
-    event.currentTarget.setPointerCapture(event.pointerId);
-    dragRef.current = { startAngle: getPointerAngle(event), startRotation: wheelRotation, lastRotation: wheelRotation };
-    setDraggingWheel(true);
-  };
-
-  const moveWheelDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (!dragRef.current || spinning || giftIndex !== null) return;
-    const delta = getPointerAngle(event) - dragRef.current.startAngle;
-    const next = dragRef.current.startRotation + delta;
-    dragRef.current.lastRotation = next;
-    setWheelRotation(next);
-  };
-
-  const endWheelDrag = () => {
-    if (!dragRef.current) return;
-    const boost = dragRef.current.lastRotation - dragRef.current.startRotation;
-    dragRef.current = null;
-    setDraggingWheel(false);
-    if (Math.abs(boost) > 8) spinWheel(boost);
-  };
-
-  const claimGift = () => {
+  const claimGiftWithAi = () => {
     if (giftIndex === null) return;
     setChatMessages((current) => [
       ...current,
@@ -554,6 +521,23 @@ export default function LocalPointLandingPage() {
       { from: "ai", text: `Ваш цифровой паспорт найден: ${gifts[giftIndex].title}. Код ${giftCode} сохранён. Я помогу проверить условия и передать запрос местной команде без повторного ввода данных.` },
     ]);
     setAiOpen(true);
+  };
+
+  const claimGiftInWhatsApp = () => {
+    if (giftIndex === null) return;
+    const message = [
+      "Здравствуйте, GoVietStay!",
+      "Я хочу получить подарок Local Point.",
+      `Подарок: ${gifts[giftIndex].title}`,
+      `Код: ${giftCode}`,
+      `Источник: ${ref}`,
+      "",
+      "Имя:",
+      "Дата приезда / город:",
+      "",
+      "Пожалуйста, подтвердите подарок и условия получения.",
+    ].join("\n");
+    window.open(`https://wa.me/84937762607?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
   };
 
   const askAssistant = (choice: AssistantChoice) => {
@@ -581,7 +565,7 @@ export default function LocalPointLandingPage() {
   const activeService = guideOpen ? services.find((service) => service.key === guideOpen) ?? null : null;
 
   return (
-    <main className="localPointRoot" data-release="local-point-v24">
+    <main className="localPointRoot" data-release="local-point-v25">
       <section className="mobileAdventure" aria-label="Путешествие с GoVietStay">
         <div className="adventureAurora auroraOne" />
         <div className="adventureAurora auroraTwo" />
@@ -695,8 +679,16 @@ export default function LocalPointLandingPage() {
             <div className="giftResult" aria-live="polite">
               <div className="confetti" aria-hidden="true">{Array.from({length:18}).map((_,i)=><i key={i} style={{"--i":i} as React.CSSProperties}/>)}</div>
               <span>{gifts[giftIndex].icon}</span>
-              <div><small>ДОБАВЛЕНО В ВАШ ПАСПОРТ</small><b>{gifts[giftIndex].title}</b><p>{gifts[giftIndex].value}</p><code>{giftCode}</code></div>
-              <button onClick={claimGift}>АКТИВИРОВАТЬ С KAKA AI ↗</button>
+              <div className="giftInfo"><small>ПОДАРОК СОХРАНЁН — ПОКАЖИТЕ КОД</small><b>{gifts[giftIndex].title}</b><p>{gifts[giftIndex].value}</p><code>{giftCode}</code></div>
+              <div className="giftClaimActions">
+                <button className="giftClaimPrimary" onClick={claimGiftInWhatsApp}>ПОЛУЧИТЬ В WHATSAPP ↗</button>
+                <button className="giftClaimSecondary" onClick={claimGiftWithAi}>СПРОСИТЬ KAKA AI</button>
+              </div>
+              <ol className="giftClaimSteps" aria-label="Как получить подарок">
+                <li><b>1</b><span>Сохраните код</span></li>
+                <li><b>2</b><span>Отправьте в WhatsApp</span></li>
+                <li><b>3</b><span>Получите подтверждение</span></li>
+              </ol>
             </div>
           )}
         </div>
@@ -705,18 +697,18 @@ export default function LocalPointLandingPage() {
           <div className="floatingGift giftBoxOne">✦</div>
           <div className="floatingGift giftBoxTwo">?</div>
           <div className="wheelPointer"><i/></div>
-          <div className={`wheelOuter ${draggingWheel ? "isDragging" : ""}`} ref={wheelRef} onPointerDown={startWheelDrag} onPointerMove={moveWheelDrag} onPointerUp={endWheelDrag} onPointerCancel={endWheelDrag}>
+          <div className="wheelOuter">
             <div className="wheelLights">{Array.from({length:18}).map((_,i)=><i key={i} style={{"--i":i} as React.CSSProperties}/>)}</div>
-            <div className={`prizeWheel ${spinning ? "isSpinning" : ""} ${draggingWheel ? "isDragging" : ""}`} style={{transform:`rotate(${wheelRotation}deg)`}}>
+            <div className={`prizeWheel ${spinning ? "isSpinning" : ""}`} style={{transform:`rotate(${wheelRotation}deg)`}}>
               {gifts.map((gift,index)=>(
                 <div className={`wheelLabel wheelLabel${index + 1}`} key={gift.short}><span>{gift.icon}</span><b>{gift.short}</b></div>
               ))}
             </div>
-            <button className="spinButton" onPointerDown={(event)=>event.stopPropagation()} onClick={() => spinWheel()} disabled={spinning || giftIndex !== null} aria-label="Вращать колесо подарков">
+            <button className="spinButton" onClick={spinWheel} disabled={spinning || giftIndex !== null} aria-label="Вращать колесо подарков">
               <span>{spinning ? "…" : giftIndex !== null ? "✓" : "СТАРТ"}</span><small>{spinning ? "ЖДИТЕ" : giftIndex !== null ? "ГОТОВО" : "КРУТИТЬ"}</small>
             </button>
           </div>
-          <p className="wheelGesture">↻ ПРОВЕДИТЕ ПО КОЛЕСУ ИЛИ НАЖМИТЕ «СТАРТ»</p>
+          <p className="wheelGesture">НАЖМИТЕ «СТАРТ», ЧТОБЫ ВРАЩАТЬ КОЛЕСО</p>
           <p className="wheelNote">{giftIndex === null ? "ОДИН ШАНС ДЛЯ ОДНОЙ ТУРИСТИЧЕСКОЙ ГРУППЫ" : "ПОДАРОК СОХРАНЁН В ВАШЕМ ПАСПОРТЕ"}</p>
         </div>
       </section>
@@ -790,7 +782,7 @@ export default function LocalPointLandingPage() {
         <div className="socialSignature">
           <img src="/local-point/govietstay-logo.jpg" alt="Официальный логотип GoVietStay"/>
           <div><b>GoVietStay</b><span>Надёжная местная поддержка • Вьетнам</span></div>
-          <p>Дананг • Хойан • Хюэ • Фукуок • Хо Трам<br/><small>LOCAL POINT V24 • {ref}</small></p>
+          <p>Дананг • Хойан • Хюэ • Фукуок • Хо Трам<br/><small>LOCAL POINT V25 • {ref}</small></p>
         </div>
       </section>
 
