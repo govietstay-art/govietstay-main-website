@@ -394,7 +394,7 @@ export default function LocalPointLandingPage() {
         if (parsed.index >= 0 && parsed.index < gifts.length) {
           setGiftIndex(parsed.index);
           setGiftCode(parsed.code);
-          setWheelRotation(2160 + (360 - (parsed.index * 60 + 30)));
+          setWheelRotation((360 - (parsed.index * 60 + 30)) % 360);
         }
       } catch { /* ignore an invalid local value */ }
     }
@@ -565,7 +565,7 @@ export default function LocalPointLandingPage() {
   const activeService = guideOpen ? services.find((service) => service.key === guideOpen) ?? null : null;
 
   return (
-    <main className="localPointRoot" data-release="local-point-v25">
+    <main className="localPointRoot" data-release="local-point-v26">
       <section className="mobileAdventure" aria-label="Путешествие с GoVietStay">
         <div className="adventureAurora auroraOne" />
         <div className="adventureAurora auroraTwo" />
@@ -782,7 +782,7 @@ export default function LocalPointLandingPage() {
         <div className="socialSignature">
           <img src="/local-point/govietstay-logo.jpg" alt="Официальный логотип GoVietStay"/>
           <div><b>GoVietStay</b><span>Надёжная местная поддержка • Вьетнам</span></div>
-          <p>Дананг • Хойан • Хюэ • Фукуок • Хо Трам<br/><small>LOCAL POINT V25 • {ref}</small></p>
+          <p>Дананг • Хойан • Хюэ • Фукуок • Хо Трам<br/><small>LOCAL POINT V26 • {ref}</small></p>
         </div>
       </section>
 
