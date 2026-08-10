@@ -255,6 +255,15 @@ type VietnamMapLocation = { id: string; path: string; name?: string };
 const KAKA_AI_URL = "https://aistudio.instagram.com/ai/1057504343330006/?utm_source=mshare";
 const RUSSIAN_MUSIC_VIDEO_ID = "4wKXhKwuqrQ";
 const RUSSIAN_MUSIC_URL = `https://www.youtube.com/watch?v=${RUSSIAN_MUSIC_VIDEO_ID}`;
+const PARTNER_REF_STORAGE_KEY = "gvs-local-point-partner-v1";
+const LOCAL_PASS_STORAGE_KEY = "gvs-local-pass-v2";
+
+const normalizePartnerRef = (value: string | null | undefined) =>
+  (value ?? "")
+    .trim()
+    .replace(/[^a-zA-Z0-9-_]/g, "")
+    .slice(0, 32)
+    .toUpperCase();
 
 const vietnamMapLocations = vietnamMap.locations as VietnamMapLocation[];
 const mapLocations = vietnamMapLocations.filter((location) => !["hoangsa", "truongsa"].includes(location.id));
@@ -383,21 +392,28 @@ export default function LocalPointLandingPage() {
   const guidePanelRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    const source = new URLSearchParams(window.location.search).get("ref");
-    // Hydrate the point code and the device-local pass after the browser is ready.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (source) setRef(source.replace(/[^a-zA-Z0-9-_]/g, "").slice(0, 32));
-    const savedGift = window.localStorage.getItem("gvs-local-pass-v2");
+    const sourceFromUrl = normalizePartnerRef(new URLSearchParams(window.location.search).get("ref"));
+    const savedSource = normalizePartnerRef(window.localStorage.getItem(PARTNER_REF_STORAGE_KEY));
+    let resolvedSource = sourceFromUrl || savedSource || "LOCAL-POINT";
+
+    const savedGift = window.localStorage.getItem(LOCAL_PASS_STORAGE_KEY);
     if (savedGift) {
       try {
-        const parsed = JSON.parse(savedGift) as { index: number; code: string };
+        const parsed = JSON.parse(savedGift) as { index: number; code: string; source?: string };
         if (parsed.index >= 0 && parsed.index < gifts.length) {
           setGiftIndex(parsed.index);
           setGiftCode(parsed.code);
           setWheelRotation((360 - (parsed.index * 60 + 30)) % 360);
+          const savedGiftSource = normalizePartnerRef(parsed.source);
+          // A saved prize always remains attributed to the partner who introduced that guest.
+          if (savedGiftSource) resolvedSource = savedGiftSource;
         }
       } catch { /* ignore an invalid local value */ }
     }
+    // Remember the partner even if the guest returns later without the QR query string.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setRef(resolvedSource);
+    if (resolvedSource !== "LOCAL-POINT") window.localStorage.setItem(PARTNER_REF_STORAGE_KEY, resolvedSource);
   }, []);
 
   useEffect(() => {
@@ -509,7 +525,7 @@ export default function LocalPointLandingPage() {
       setGiftCode(code);
       setSpinning(false);
       if ("vibrate" in navigator) navigator.vibrate([35, 35, 90]);
-      window.localStorage.setItem("gvs-local-pass-v2", JSON.stringify({ index: selected, code }));
+      window.localStorage.setItem(LOCAL_PASS_STORAGE_KEY, JSON.stringify({ index: selected, code, source: ref }));
     }, 4300);
   };
 
@@ -530,7 +546,7 @@ export default function LocalPointLandingPage() {
       "Я хочу получить подарок Local Point.",
       `Подарок: ${gifts[giftIndex].title}`,
       `Код: ${giftCode}`,
-      `Источник: ${ref}`,
+      `Код партнёра: ${ref}`,
       "",
       "Имя:",
       "Дата приезда / город:",
@@ -557,15 +573,24 @@ export default function LocalPointLandingPage() {
 
   const openHumanSupport = () => {
     const giftLine = giftIndex !== null ? `\nПодарок: ${gifts[giftIndex].title}\nКод: ${giftCode}` : "";
-    const message = `Здравствуйте, GoVietStay! Я пришёл из Local Point ${ref}.${giftLine}\nМне нужна помощь специалиста.`;
+    const message = `Здравствуйте, GoVietStay!\nКод партнёра: ${ref}.${giftLine}\nМне нужна помощь специалиста.`;
     window.open(`https://wa.me/84937762607?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+  };
+
+  const withPartnerRef = (href: string) => {
+    if (!href.startsWith("https://wa.me/84937762607")) return href;
+    const url = new URL(href);
+    const existingMessage = url.searchParams.get("text")?.trim();
+    const message = [existingMessage, `Код партнёра: ${ref}`].filter(Boolean).join("\n");
+    url.searchParams.set("text", message);
+    return url.toString();
   };
 
   const activeGuide = guideOpen ? serviceGuides[guideOpen] : null;
   const activeService = guideOpen ? services.find((service) => service.key === guideOpen) ?? null : null;
 
   return (
-    <main className="localPointRoot" data-release="local-point-v26">
+    <main className="localPointRoot" data-release="local-point-v27">
       <section className="mobileAdventure" aria-label="Путешествие с GoVietStay">
         <div className="adventureAurora auroraOne" />
         <div className="adventureAurora auroraTwo" />
@@ -762,7 +787,7 @@ export default function LocalPointLandingPage() {
             return (
               <a
                 className={link.featured ? "contactCard isFeatured" : "contactCard"}
-                href={link.href}
+                href={withPartnerRef(link.href)}
                 target="_blank"
                 rel="noreferrer"
                 key={link.name}
@@ -782,7 +807,7 @@ export default function LocalPointLandingPage() {
         <div className="socialSignature">
           <img src="/local-point/govietstay-logo.jpg" alt="Официальный логотип GoVietStay"/>
           <div><b>GoVietStay</b><span>Надёжная местная поддержка • Вьетнам</span></div>
-          <p>Дананг • Хойан • Хюэ • Фукуок • Хо Трам<br/><small>LOCAL POINT V26 • {ref}</small></p>
+          <p>Дананг • Хойан • Хюэ • Фукуок • Хо Трам<br/><small>LOCAL POINT V27 • {ref}</small></p>
         </div>
       </section>
 
@@ -846,7 +871,7 @@ export default function LocalPointLandingPage() {
                 </section>
 
                 <footer className="knowledgeActions">
-                  <a href={activeGuide.ctaHref} target="_blank" rel="noreferrer">{activeGuide.ctaLabel}<b>↗</b></a>
+                  <a href={withPartnerRef(activeGuide.ctaHref)} target="_blank" rel="noreferrer">{activeGuide.ctaLabel}<b>↗</b></a>
                   <button type="button" onClick={() => setGuideOpen(null)}>Вернуться к карточкам</button>
                 </footer>
               </div>
