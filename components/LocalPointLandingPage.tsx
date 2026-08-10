@@ -252,7 +252,7 @@ type AssistantChoice = typeof assistantChoices[number]["id"];
 type ChatMessage = { from: "ai" | "guest"; text: string };
 type VietnamMapLocation = { id: string; path: string; name?: string };
 
-const KAKA_AI_URL = "https://aistudio.instagram.com/ai/1057504343330006/?utm_source=mshare";
+const KAI_AI_URL = "https://aistudio.instagram.com/ai/1057504343330006/?utm_source=mshare";
 const RUSSIAN_MUSIC_VIDEO_ID = "4wKXhKwuqrQ";
 const RUSSIAN_MUSIC_URL = `https://www.youtube.com/watch?v=${RUSSIAN_MUSIC_VIDEO_ID}`;
 const PARTNER_REF_STORAGE_KEY = "gvs-local-point-partner-v1";
@@ -360,7 +360,7 @@ const contactLinks: Array<{
   accent: string;
   featured?: boolean;
 }> = [
-  { icon: "guide", badge: "AI", name: "Kaka AI", detail: "Ваш AI-проводник", href: KAKA_AI_URL, accent: "#ffc85b", featured: true },
+  { icon: "guide", badge: "AI", name: "Kai AI", detail: "Ваш ИИ-проводник", href: KAI_AI_URL, accent: "#ffc85b", featured: true },
   { icon: "chat", badge: "WA", name: "WhatsApp", detail: "+84 937 762 607", href: "https://wa.me/84937762607", accent: "#58e5aa", featured: true },
   { icon: "camera", badge: "IG", name: "Instagram", detail: "@govietstay", href: "https://www.instagram.com/govietstay/", accent: "#ff85ad" },
   { icon: "send", badge: "TG", name: "Telegram", detail: "@GoVietStay", href: "https://t.me/GoVietStay", accent: "#70cfff" },
@@ -387,7 +387,7 @@ export default function LocalPointLandingPage() {
   const [musicOpen, setMusicOpen] = useState(false);
   const [guideOpen, setGuideOpen] = useState<ServiceKey | null>(null);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
-    { from: "ai", text: "Здравствуйте! Я Kaka — цифровой проводник GoVietStay. Помогу выбрать маршрут, активировать подарок или подключить местную команду." },
+    { from: "ai", text: "Здравствуйте! Я Kai — цифровой проводник GoVietStay. Помогу выбрать маршрут, активировать подарок или подключить местную команду." },
   ]);
   const guidePanelRef = useRef<HTMLElement | null>(null);
 
@@ -559,9 +559,9 @@ export default function LocalPointLandingPage() {
   const askAssistant = (choice: AssistantChoice) => {
     const selected = assistantChoices.find((item) => item.id === choice)!;
     const responses: Record<AssistantChoice, string> = {
-      plan: "Соберу маршрут без перегрузки. Напишите в Instagram AI даты, город проживания и кто путешествует — Kaka продолжит с уже понятной задачей.",
+      plan: "Соберу маршрут без перегрузки. Напишите в Instagram AI даты, город проживания и кто путешествует — Kai продолжит с уже понятной задачей.",
       tour: "Начнём с главного: выберите карточку ниже. Каждая открывает отдельный практический гид — с советами, проверками и ошибками, которых лучше избежать.",
-      gift: giftIndex === null ? "Сначала запустите колесо подарков выше. Один смартфон и одна туристическая группа получают один шанс." : `Ваш подарок: ${gifts[giftIndex].title}. Код ${giftCode}. Для финального подтверждения подключу Kaka AI или местную команду.`,
+      gift: giftIndex === null ? "Сначала запустите колесо подарков выше. Один смартфон и одна туристическая группа получают один шанс." : `Ваш подарок: ${gifts[giftIndex].title}. Код ${giftCode}. Для финального подтверждения подключу Kai AI или местную команду.`,
       human: "Живой специалист GoVietStay доступен 24/7. Перейдите в WhatsApp — код Local Point будет добавлен автоматически.",
     };
     setChatMessages((current) => [...current, { from: "guest", text: selected.label }, { from: "ai", text: responses[choice] }]);
@@ -590,7 +590,7 @@ export default function LocalPointLandingPage() {
   const activeService = guideOpen ? services.find((service) => service.key === guideOpen) ?? null : null;
 
   return (
-    <main className="localPointRoot" data-release="local-point-v27">
+    <main className="localPointRoot" data-release="local-point-v28">
       <section className="mobileAdventure" aria-label="Путешествие с GoVietStay">
         <div className="adventureAurora auroraOne" />
         <div className="adventureAurora auroraTwo" />
@@ -661,7 +661,7 @@ export default function LocalPointLandingPage() {
             <img src="/local-point/govietstay-logo.jpg" alt="Официальный логотип GoVietStay" />
             <span><b>GoVietStay</b><small>НАДЁЖНАЯ МЕСТНАЯ ПОДДЕРЖКА</small></span>
           </a>
-          <button className="live" onClick={() => setAiOpen(true)}><i /> Kaka AI • НА СВЯЗИ</button>
+          <button className="live" onClick={() => setAiOpen(true)}><i /> Kai AI • НА СВЯЗИ</button>
         </nav>
 
         <div className="heroGrid" id="top">
@@ -673,13 +673,13 @@ export default function LocalPointLandingPage() {
               Открыть мой паспорт <span>↓</span>
             </button>
             <div className="microTrust">
-              <span><b>Kaka AI</b> умный первый шаг</span><i/><span><b>Подарки</b> реальная польза</span><i/><span><b>24/7</b> живая команда</span>
+              <span><b>Kai AI</b> умный первый шаг</span><i/><span><b>Подарки</b> реальная польза</span><i/><span><b>24/7</b> живая команда</span>
             </div>
           </div>
 
           <div className="heroVisual heroNatureOverlay" aria-label="Путешествия, технологии и природа GoVietStay" onMouseMove={moveScene} onMouseLeave={(e) => {e.currentTarget.style.setProperty("--mx","0");e.currentTarget.style.setProperty("--my","0");e.currentTarget.style.setProperty("--spot-x","52%");e.currentTarget.style.setProperty("--spot-y","42%")}}>
             <Vietnam3DMap id="desktop-map" />
-            <div className="floatingCard guideCard"><span className="avatar">K</span><div><small>МЕСТНЫЕ ЗНАНИЯ</small><b>Kaka AI уже на связи</b></div><i /></div>
+            <div className="floatingCard guideCard"><span className="avatar">K</span><div><small>МЕСТНЫЕ ЗНАНИЯ</small><b>Kai AI уже на связи</b></div><i /></div>
           </div>
         </div>
 
@@ -707,7 +707,7 @@ export default function LocalPointLandingPage() {
               <div className="giftInfo"><small>ПОДАРОК СОХРАНЁН — ПОКАЖИТЕ КОД</small><b>{gifts[giftIndex].title}</b><p>{gifts[giftIndex].value}</p><code>{giftCode}</code></div>
               <div className="giftClaimActions">
                 <button className="giftClaimPrimary" onClick={claimGiftInWhatsApp}>ПОЛУЧИТЬ В WHATSAPP ↗</button>
-                <button className="giftClaimSecondary" onClick={claimGiftWithAi}>СПРОСИТЬ KAKA AI</button>
+                <button className="giftClaimSecondary" onClick={claimGiftWithAi}>СПРОСИТЬ KAI AI</button>
               </div>
               <ol className="giftClaimSteps" aria-label="Как получить подарок">
                 <li><b>1</b><span>Сохраните код</span></li>
@@ -777,7 +777,7 @@ export default function LocalPointLandingPage() {
           <p><span>04</span> ВСЕ КАНАЛЫ СВЯЗИ</p>
           <h2>Все каналы.<br/><em>Один Local Point.</em></h2>
           <div className="socialIntroCopy">
-            <p>Выберите привычный способ связи. Kaka AI помогает мгновенно, а местная команда GoVietStay остаётся рядом 24/7.</p>
+            <p>Выберите привычный способ связи. Kai AI помогает мгновенно, а местная команда GoVietStay остаётся рядом 24/7.</p>
             <span><i/> НА СВЯЗИ • ВЬЕТНАМ</span>
           </div>
         </div>
@@ -807,12 +807,12 @@ export default function LocalPointLandingPage() {
         <div className="socialSignature">
           <img src="/local-point/govietstay-logo.jpg" alt="Официальный логотип GoVietStay"/>
           <div><b>GoVietStay</b><span>Надёжная местная поддержка • Вьетнам</span></div>
-          <p>Дананг • Хойан • Хюэ • Фукуок • Хо Трам<br/><small>LOCAL POINT V27 • {ref}</small></p>
+          <p>Дананг • Хойан • Хюэ • Фукуок • Хо Трам<br/><small>LOCAL POINT V28 • {ref}</small></p>
         </div>
       </section>
 
-      <button className="aiLauncher" onClick={() => setAiOpen(true)} aria-label="Открыть Kaka AI">
-        <span className="aiLauncherOrb">K</span><span><b>Kaka AI</b><small>цифровой проводник</small></span><i>↗</i>
+      <button className="aiLauncher" onClick={() => setAiOpen(true)} aria-label="Открыть Kai AI">
+        <span className="aiLauncherOrb">K</span><span><b>Kai AI</b><small>цифровой проводник</small></span><i>↗</i>
       </button>
 
       <button
@@ -901,10 +901,10 @@ export default function LocalPointLandingPage() {
 
       {aiOpen && (
         <div className="aiBackdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setAiOpen(false); }}>
-          <section className="aiPanel" role="dialog" aria-modal="true" aria-labelledby="kaka-ai-title">
+          <section className="aiPanel" role="dialog" aria-modal="true" aria-labelledby="kai-ai-title">
             <header>
-              <div className="aiIdentity"><span>K</span><div><b id="kaka-ai-title">Kaka AI</b><small><i/> МЕСТНЫЙ ПОМОЩНИК • НА СВЯЗИ</small></div></div>
-              <button onClick={() => setAiOpen(false)} aria-label="Закрыть Kaka AI">×</button>
+              <div className="aiIdentity"><span>K</span><div><b id="kai-ai-title">Kai AI</b><small><i/> МЕСТНЫЙ ПОМОЩНИК • НА СВЯЗИ</small></div></div>
+              <button onClick={() => setAiOpen(false)} aria-label="Закрыть Kai AI">×</button>
             </header>
             <div className="aiContext"><span>LOCAL POINT</span><b>{ref}</b><i>{giftIndex !== null ? `ПАСПОРТ • ${giftCode}` : "ПАСПОРТ • ГОТОВ"}</i></div>
             <div className="aiMessages" aria-live="polite">
@@ -914,10 +914,10 @@ export default function LocalPointLandingPage() {
               {assistantChoices.map((choice)=><button key={choice.id} onClick={() => askAssistant(choice.id)}><span>{choice.icon}</span>{choice.label}</button>)}
             </div>
             <div className="aiHandoff">
-              <a href={KAKA_AI_URL} target="_blank" rel="noreferrer"><span>◎</span><b>Продолжить с Kaka AI</b><i>↗</i></a>
+              <a href={KAI_AI_URL} target="_blank" rel="noreferrer"><span>◎</span><b>Продолжить с Kai AI</b><i>↗</i></a>
               <button onClick={openHumanSupport}><span>◌</span><b>Живой специалист 24/7</b><i>↗</i></button>
             </div>
-            <p className="aiDisclosure">Kaka AI помогает с первым шагом. Бронирования и подарки подтверждает команда GoVietStay.</p>
+            <p className="aiDisclosure">Kai AI помогает с первым шагом. Бронирования и подарки подтверждает команда GoVietStay.</p>
           </section>
         </div>
       )}
