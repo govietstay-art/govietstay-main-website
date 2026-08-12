@@ -23,8 +23,8 @@
 .hero { position: relative; min-height: 870px; overflow: hidden; background-image: linear-gradient(90deg, rgba(1,17,15,.96) 0%, rgba(2,19,17,.78) 46%, rgba(2,15,14,.35) 74%, rgba(2,15,14,.58) 100%), url('/vlad/hoi-an-night-hero.png'); background-position: center; background-size: cover; color: var(--white); }
 .site-header { position: relative; z-index: 3; padding-top: 22px; }
 .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
-.brand { display: flex; align-items: center; gap: 11px; color: var(--white); }
-.brand-mark { width: 48px; height: 48px; display: grid; place-items: center; border: 2px solid rgba(255,213,31,.8); border-radius: 50%; background: rgba(255,255,255,.92); color: #315d35; font-family: Georgia, serif; font-size: 10px; font-weight: 900; }
+.brand { display: flex; align-items: center; gap: 11px; color: var(--white); text-decoration: none; }
+.brand-logo { width: 52px; height: 52px; flex: 0 0 auto; border: 2px solid rgba(255,213,31,.9); border-radius: 50%; background: #fff; object-fit: cover; }
 .brand strong, .brand small { display: block; }
 .brand strong { font-size: 17px; letter-spacing: .01em; }
 .brand small { margin-top: 3px; color: rgba(255,255,255,.72); font-size: 10px; }
@@ -87,6 +87,14 @@
 .floating-whatsapp span { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 50%; background: var(--white); color: #05853d; font-size: 9px; font-weight: 900; }
 .floating-whatsapp strong { font-size: 12px; }
 
+.pin-backdrop { position: fixed; inset: 0; z-index: 55; display: grid; place-items: center; background: rgba(1,12,11,.86); padding: 20px; }
+.pin-modal { position: relative; width: min(410px,100%); border: 1px solid #2c3c38; border-radius: 20px; background: #f7f5ed; padding: 34px; color: var(--ink); box-shadow: 0 30px 90px rgba(0,0,0,.45); }
+.pin-logo { width: 76px; height: 76px; display: block; margin: 0 0 18px; border-radius: 50%; object-fit: cover; }
+.pin-modal h2 { margin: 0; color: var(--dark); font-size: 34px; line-height: 1; }
+.pin-modal > p:not(.section-kicker) { margin: 10px 0 20px; color: var(--muted); font-size: 12px; }
+.pin-modal form { display: grid; gap: 13px; }
+.pin-error { border-radius: 8px; background: #ffe4df; color: #a22a1e; padding: 9px 11px; font-size: 10px; font-weight: 800; }
+
 .modal-backdrop { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; overflow: auto; background: rgba(1,12,11,.84); padding: 22px; }
 .booking-modal { position: relative; width: min(1120px,100%); max-height: calc(100vh - 44px); overflow: auto; border: 1px solid #2c3c38; border-radius: 20px; background: #f7f5ed; padding: 30px; box-shadow: 0 30px 90px rgba(0,0,0,.45); }
 .modal-close { position: absolute; top: 16px; right: 17px; width: 38px; height: 38px; border: 1px solid var(--line); border-radius: 50%; background: var(--white); color: var(--ink); font-size: 22px; cursor: pointer; }
@@ -138,8 +146,9 @@
 @media (max-width: 680px) {
   .container { width: min(100% - 28px,1190px); }
   .site-header { padding-top: 15px; }
-  .brand small, .local-point-link, .staff-entry { display: none; }
-  .brand-mark { width: 40px; height: 40px; }
+  .brand small, .local-point-link { display: none; }
+  .staff-entry { padding: 6px; font-size: 9px; }
+  .brand-logo { width: 44px; height: 44px; }
   .hero { min-height: 920px; background-position: 60% center; }
   .hero-content { padding-top: 48px; }
   .hero-kicker { font-size: 9px; }

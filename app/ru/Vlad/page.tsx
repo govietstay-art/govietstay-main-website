@@ -1,5 +1,7 @@
 "use client";
 
+// govietstay-vlad-v3-manager-pin-logo
+
 import { FormEvent, useMemo, useState } from "react";
 import styles from "./VladPage.module.css";
 
@@ -161,14 +163,17 @@ const formatVnd = (value: number) => `${new Intl.NumberFormat("vi-VN").format(Ma
 
 function Logo() {
   return (
-    <div className={cx("brand")} aria-label="GoVietStay">
-      <span className={cx("brand-mark")}>GVS</span>
+    <a className={cx("brand")} href="/ru" aria-label="GoVietStay">
+      <img className={cx("brand-logo")} src="/vlad/govietstay-logo.jpg" alt="Логотип GoVietStay" />
       <span><strong>GoVietStay</strong><small>Надёжная местная поддержка</small></span>
-    </div>
+    </a>
   );
 }
 
 export default function VladOfficialPage() {
+  const [pinOpen, setPinOpen] = useState(false);
+  const [pin, setPin] = useState("");
+  const [pinError, setPinError] = useState("");
   const [bookingOpen, setBookingOpen] = useState(false);
   const [bookingResult, setBookingResult] = useState("");
   const [copied, setCopied] = useState(false);
@@ -233,6 +238,22 @@ export default function VladOfficialPage() {
     setBookingOpen(true);
   }
 
+  function openManagerAccess() {
+    setPin("");
+    setPinError("");
+    setPinOpen(true);
+  }
+
+  function submitPin(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (pin === "8888") {
+      setPinOpen(false);
+      openBooking();
+      return;
+    }
+    setPinError("Неверный PIN. Попробуйте ещё раз.");
+  }
+
   function submitBooking(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -275,7 +296,7 @@ export default function VladOfficialPage() {
               <a className={cx("local-point-link")} href="https://govietstay.com/ru/local-point" target="_blank" rel="noreferrer">Local Point</a>
               <span className={cx("language muted-language")}>EN</span>
               <span className={cx("language active-language")}>RU</span>
-              <button className={cx("staff-entry")} type="button" onClick={openBooking}>🔒 Сотрудник</button>
+              <button className={cx("staff-entry")} type="button" onClick={openManagerAccess}>🔒 Менеджер</button>
             </div>
           </div>
         </header>
@@ -335,7 +356,7 @@ export default function VladOfficialPage() {
           <div>
             <p className={cx("section-kicker")}>ОФИЦИАЛЬНЫЙ ПРЕДСТАВИТЕЛЬ</p>
             <h2>Вы общаетесь с Владом от имени GoVietStay</h2>
-            <p>Код сотрудника <strong>GVS-RU-VLAD-01</strong> подтверждён GoVietStay. Влад консультирует и оформляет запрос, а окончательную цену и booking подтверждает GoVietStay.</p>
+            <p>Код менеджера <strong>GVS-RU-VLAD-01</strong> подтверждён GoVietStay. Влад консультирует и оформляет запрос, а окончательную цену и booking подтверждает GoVietStay.</p>
           </div>
           <div className={cx("safety-card")}>
             <strong>Защита клиента</strong>
@@ -347,12 +368,31 @@ export default function VladOfficialPage() {
 
       <a className={cx("floating-whatsapp")} href={managerWhatsApp} target="_blank" rel="noreferrer"><span>WA</span><strong>WhatsApp • Влад ✓</strong></a>
 
+      {pinOpen && (
+        <div className={cx("pin-backdrop")} role="presentation" onMouseDown={() => setPinOpen(false)}>
+          <section className={cx("pin-modal")} role="dialog" aria-modal="true" aria-labelledby="pin-title" onMouseDown={(event) => event.stopPropagation()}>
+            <button className={cx("modal-close")} type="button" aria-label="Закрыть" onClick={() => setPinOpen(false)}>×</button>
+            <img className={cx("pin-logo")} src="/vlad/govietstay-logo.jpg" alt="GoVietStay" />
+            <p className={cx("section-kicker")}>ДОСТУП ДЛЯ МЕНЕДЖЕРА</p>
+            <h2 id="pin-title">Введите PIN</h2>
+            <p>Внутренний инструмент бронирования GoVietStay.</p>
+            <form onSubmit={submitPin}>
+              <label>PIN менеджера
+                <input autoFocus type="password" inputMode="numeric" maxLength={4} value={pin} onChange={(event) => { setPin(event.target.value); setPinError(""); }} placeholder="••••" />
+              </label>
+              {pinError && <span className={cx("pin-error")}>{pinError}</span>}
+              <button className={cx("button yellow full")} type="submit">Открыть booking</button>
+            </form>
+          </section>
+        </div>
+      )}
+
       {bookingOpen && (
         <div className={cx("modal-backdrop")} role="presentation" onMouseDown={() => setBookingOpen(false)}>
           <section className={cx("booking-modal")} role="dialog" aria-modal="true" aria-labelledby="booking-title" onMouseDown={(event) => event.stopPropagation()}>
             <button className={cx("modal-close")} type="button" aria-label="Закрыть" onClick={() => setBookingOpen(false)}>×</button>
             <div className={cx("modal-heading")}>
-              <p className={cx("section-kicker")}>🔒 ВНУТРЕННИЙ ИНСТРУМЕНТ СОТРУДНИКА</p>
+              <p className={cx("section-kicker")}>🔒 ВНУТРЕННИЙ ИНСТРУМЕНТ МЕНЕДЖЕРА</p>
               <h2 id="booking-title">Новый booking</h2>
               <p>Этот инструмент помогает Владу подготовить единый запрос для проверки и подтверждения GoVietStay.</p>
             </div>
