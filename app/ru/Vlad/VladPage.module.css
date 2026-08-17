@@ -129,6 +129,10 @@
 .rate-details summary { padding: 11px 12px; color: #586562; font-size: 9px; font-weight: 800; cursor: pointer; }
 .rate-details .rate-grid { padding: 0 10px 10px; }
 .manual-total { margin-top: 3px; }
+.manual-price-box { border: 1px solid #e1bd1f; border-radius: 11px; background: #fffbee; padding: 11px; }
+.manual-price-box p { margin: 9px 0 0; color: #6f5a00; font-size: 11px; }
+.manual-price-box p strong { color: var(--dark); font-size: 13px; }
+.manual-price-box small { display: block; margin-top: 5px; color: var(--muted); font-size: 9px; }
 .compact-grid { margin-top: 12px; }
 .optional-details { border: 1px dashed #c9d1cd; border-radius: 12px; background: rgba(255,255,255,.55); }
 .optional-details summary { padding: 13px 16px; color: var(--dark); font-size: 10px; font-weight: 900; cursor: pointer; list-style: none; }

@@ -270,7 +270,6 @@ function MoneyField({ label, value, onChange, className = "" }: { label: string;
       <input
         type="text"
         inputMode="numeric"
-        pattern="[0-9]*"
         value={formatNumberInput(value)}
         placeholder="0"
         onFocus={(event) => event.currentTarget.select()}
@@ -308,7 +307,7 @@ export default function VladOfficialPage() {
   const [childRate, setChildRate] = useState(tours[0].variants[0].child);
   const [infantRate, setInfantRate] = useState(tours[0].variants[0].infant);
   const [packageFee, setPackageFee] = useState(tours[0].variants[0].fee);
-  const [manualTotal, setManualTotal] = useState(0);
+  const [manualPaxRate, setManualPaxRate] = useState(0);
   const [extraFee, setExtraFee] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [deposit, setDeposit] = useState(0);
@@ -319,8 +318,10 @@ export default function VladOfficialPage() {
     [currentTour, variantId],
   );
   const visibleTours = tours.filter((tour) => tour.region === region);
+  const payingPax = adults + children;
   const automaticSubtotal = adults * adultRate + children * childRate + infants * infantRate + packageFee;
-  const total = Math.max(0, (priceMode === "manual" ? manualTotal : automaticSubtotal) + extraFee - discount);
+  const manualSubtotal = manualPaxRate * payingPax;
+  const total = Math.max(0, (priceMode === "manual" ? manualSubtotal : automaticSubtotal) + extraFee - discount);
   const balance = Math.max(0, total - deposit);
 
   function applyTour(nextTour: Tour) {
@@ -332,7 +333,7 @@ export default function VladOfficialPage() {
     setChildRate(variant.child);
     setInfantRate(variant.infant);
     setPackageFee(variant.fee);
-    setManualTotal(0);
+    setManualPaxRate(0);
   }
 
   function changeRegion(nextRegion: string) {
@@ -349,7 +350,7 @@ export default function VladOfficialPage() {
     setChildRate(variant.child);
     setInfantRate(variant.infant);
     setPackageFee(variant.fee);
-    setManualTotal(0);
+    setManualPaxRate(0);
   }
 
   function openBooking() {
@@ -414,6 +415,8 @@ export default function VladOfficialPage() {
       `📍 Region / Регион:\n${regionEnglish} / ${region}`,
       "",
       `👥 Number of Guests / Количество гостей:\nAdults / Взрослые: ${adults} • Children / Дети: ${children} • Infants / Младенцы: ${infants} • Total / Всего: ${guestCount}`,
+      "",
+      `💳 Price Calculation / Расчёт цены:\n${priceMode === "manual" ? `${formatVnd(manualPaxRate)} × ${payingPax} pax = ${formatVnd(manualSubtotal)}` : "Automatic by guest category / Автоматически по категориям гостей"}`,
       "",
       `💰 Total Tour Price / Полная стоимость тура:\n${formatVnd(total)}`,
       "",
@@ -617,7 +620,7 @@ export default function VladOfficialPage() {
                     <label className={cx("mode-select")}>Способ расчёта
                       <select value={priceMode} onChange={(event) => setPriceMode(event.target.value as PriceMode)}>
                         <option value="auto">Автоматически: количество × тариф</option>
-                        <option value="manual">Ввести общую цену вручную</option>
+                        <option value="manual">Ввести цену за 1 pax</option>
                       </select>
                     </label>
 
@@ -638,7 +641,11 @@ export default function VladOfficialPage() {
                         </div>
                       </details>
                     ) : (
-                      <MoneyField label="Общая цена за всю группу, VND" value={manualTotal} onChange={setManualTotal} className={cx("manual-total")} />
+                      <div className={cx("manual-price-box")}>
+                        <MoneyField label="Цена за 1 pax, VND" value={manualPaxRate} onChange={setManualPaxRate} className={cx("manual-total")} />
+                        <p>{formatVnd(manualPaxRate)} × {payingPax} pax = <strong>{formatVnd(manualSubtotal)}</strong></p>
+                        {infants > 0 && <small>Младенцы не включены в платные pax.</small>}
+                      </div>
                     )}
 
                     <div className={cx("form-grid three compact-grid")}>
@@ -665,12 +672,12 @@ export default function VladOfficialPage() {
                 </div>
 
                 <aside className={cx("booking-summary")}>
-                  <span className={cx("summary-status")}>{priceMode === "manual" ? "Общая цена вручную" : "Автоматический расчёт"}</span>
+                  <span className={cx("summary-status")}>{priceMode === "manual" ? "Цена 1 pax × количество pax" : "Автоматический расчёт"}</span>
                   <div className={cx("summary-detail")}>
                     <h3>{currentTour.name}</h3>
                     <p>{currentVariant.label}</p>
                     <div className={cx("summary-line")}><span>Гости</span><strong>{adults + children + infants}</strong></div>
-                    <div className={cx("summary-line")}><span>Цена / пакет</span><strong>{formatVnd(priceMode === "manual" ? manualTotal : automaticSubtotal)}</strong></div>
+                    <div className={cx("summary-line")}><span>{priceMode === "manual" ? "Цена 1 pax" : "Цена / пакет"}</span><strong>{formatVnd(priceMode === "manual" ? manualPaxRate : automaticSubtotal)}</strong></div>
                     <div className={cx("summary-line")}><span>Доплата</span><strong>{formatVnd(extraFee)}</strong></div>
                     <div className={cx("summary-line")}><span>Скидка</span><strong>− {formatVnd(discount)}</strong></div>
                   </div>

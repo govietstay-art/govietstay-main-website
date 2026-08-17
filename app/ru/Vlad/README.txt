@@ -8,7 +8,7 @@ Phien ban V4:
 - PIN cong cu booking: 8888.
 - Logo chinh thuc GoVietStay.
 - Booking mobile nhanh: so khach luon hien thi, nut +/- va o tien khong bi ket so 0.
-- Gia thu cong la gia cho ca nhom, khong nhan lai theo so khach.
+- Chi can nhap gia 1 pax; he thong tu nhan voi so pax va tinh tong.
 - Gui thang noi dung EN/RU den WhatsApp David +84 93 776 2607.
 - Nut Copy booking duoc giu lai lam phuong an du phong.
 
