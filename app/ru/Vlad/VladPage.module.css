@@ -114,22 +114,41 @@
 .page textarea { resize: vertical; }
 .rate-note { margin: 9px 0 0; border-left: 2px solid var(--yellow); background: #fff9da; padding: 7px 9px; color: #715d0d; font-size: 9px; }
 .mode-select { margin-bottom: 12px; }
+.guest-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 9px; }
+.guest-counter { border: 1px solid var(--line); border-radius: 10px; background: #fbfcfa; padding: 10px; }
+.guest-counter > strong { display: block; margin-bottom: 7px; font-size: 10px; }
+.counter-controls { display: grid; grid-template-columns: 38px minmax(36px,1fr) 38px; gap: 5px; }
+.counter-controls button { min-height: 42px; border: 1px solid #c8d1cd; border-radius: 8px; background: var(--white); color: var(--dark); font-size: 20px; font-weight: 900; cursor: pointer; }
+.counter-controls input { min-width: 0; min-height: 42px; padding: 7px 4px; text-align: center; font-size: 16px; font-weight: 900; }
+.guest-total { margin: 8px 0 12px; color: var(--muted); font-size: 10px; text-align: right; }
+.guest-total strong { color: var(--dark); font-size: 13px; }
 .rate-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
-.rate-grid > div { display: grid; grid-template-columns: 64px 1fr; gap: 6px; border: 1px solid var(--line); border-radius: 10px; background: #fbfcfa; padding: 10px; }
-.rate-grid strong { grid-column: 1 / -1; font-size: 10px; }
-.rate-grid input { min-width: 0; padding: 8px; }
-.rate-grid small { grid-column: 1 / -1; color: #8b7000; font-size: 9px; font-weight: 800; }
+.rate-grid label { border: 1px solid var(--line); border-radius: 10px; background: #fbfcfa; padding: 10px; }
+.rate-grid input { min-width: 0; padding: 9px; }
+.rate-details { margin-top: 3px; border-radius: 10px; background: #f7f9f7; }
+.rate-details summary { padding: 11px 12px; color: #586562; font-size: 9px; font-weight: 800; cursor: pointer; }
+.rate-details .rate-grid { padding: 0 10px 10px; }
+.manual-total { margin-top: 3px; }
 .compact-grid { margin-top: 12px; }
+.optional-details { border: 1px dashed #c9d1cd; border-radius: 12px; background: rgba(255,255,255,.55); }
+.optional-details summary { padding: 13px 16px; color: var(--dark); font-size: 10px; font-weight: 900; cursor: pointer; list-style: none; }
+.optional-details summary::-webkit-details-marker { display: none; }
+.optional-details[open] summary { border-bottom: 1px solid var(--line); }
+.optional-details .form-grid { padding: 14px 16px 16px; }
 
 .booking-summary { position: sticky; top: 0; align-self: start; border-radius: 14px; background: var(--dark); color: var(--white); padding: 20px; }
 .summary-status, .pending-status { width: fit-content; display: block; border-radius: 999px; background: rgba(255,213,31,.13); color: var(--yellow); padding: 7px 10px; font-size: 9px; font-weight: 900; }
 .booking-summary h3 { margin: 18px 0 5px; font-size: 20px; }
-.booking-summary > p { color: rgba(255,255,255,.62); font-size: 10px; line-height: 1.5; }
+.booking-summary > p, .summary-detail > p { color: rgba(255,255,255,.62); font-size: 10px; line-height: 1.5; }
 .summary-line, .summary-total, .summary-balance { display: flex; justify-content: space-between; gap: 14px; border-top: 1px solid rgba(255,255,255,.12); padding-block: 10px; font-size: 10px; }
 .summary-line span, .summary-balance span { color: rgba(255,255,255,.58); }
 .summary-total { margin-top: 8px; color: var(--yellow); font-size: 13px; font-weight: 900; }
 .summary-balance { margin-bottom: 12px; }
 .summary-warning { border-left: 2px solid var(--yellow); padding-left: 9px; }
+.booking-error { border-radius: 9px; background: #59241d; color: #ffe4df !important; padding: 9px 10px; font-weight: 800; }
+.whatsapp-ready { border-radius: 9px; background: rgba(4,200,90,.14); color: #98f7c2 !important; padding: 9px 10px; font-weight: 800; }
+.whatsapp-submit { min-height: 52px; }
+.copy-fallback { width: 100%; margin-top: 8px; border: 1px solid rgba(255,255,255,.24); border-radius: 999px; background: transparent; color: var(--white); padding: 10px 14px; font-size: 10px; font-weight: 800; cursor: pointer; }
 
 .booking-result { margin-top: 22px; }
 .booking-result pre { overflow: auto; max-height: 430px; margin: 15px 0; border: 1px solid var(--line); border-radius: 12px; background: var(--white); padding: 18px; color: var(--ink); font-family: var(--font-geist-mono), monospace; font-size: 11px; line-height: 1.65; white-space: pre-wrap; }
@@ -161,7 +180,27 @@
   .local-point-offer small { grid-column: 2 / -1; }
   .direction-cards, .form-grid.two, .form-grid.three, .rate-grid { grid-template-columns: 1fr; }
   .page label.wide { grid-column: auto; }
-  .booking-modal { padding: 24px 16px; }
+  .modal-backdrop { place-items: stretch; padding: 0; }
+  .booking-modal { width: 100%; max-height: 100dvh; border: 0; border-radius: 0; padding: 20px 14px 0; }
   .modal-heading { padding-right: 40px; }
+  .modal-heading h2 { font-size: 30px; }
+  .booking-layout { margin-top: 16px; padding-top: 14px; }
+  .booking-fields { padding-bottom: 178px; }
+  .page fieldset { padding: 14px; }
+  .page input, .page select, .page textarea { min-height: 48px; font-size: 16px; }
+  .guest-grid { gap: 6px; }
+  .guest-counter { padding: 8px 6px; }
+  .guest-counter > strong { font-size: 9px; text-align: center; }
+  .counter-controls { grid-template-columns: 34px minmax(32px,1fr) 34px; gap: 3px; }
+  .counter-controls button, .counter-controls input { min-height: 44px; }
+  .booking-summary { position: fixed; inset: auto 0 0; z-index: 60; display: grid; grid-template-columns: 1fr 1fr; gap: 5px 12px; border-radius: 16px 16px 0 0; padding: 11px 14px calc(11px + env(safe-area-inset-bottom)); box-shadow: 0 -12px 30px rgba(0,0,0,.24); }
+  .booking-summary .summary-status, .booking-summary .summary-detail, .booking-summary .summary-warning { display: none; }
+  .summary-total, .summary-balance { margin: 0; border: 0; padding: 2px 0; }
+  .summary-total { font-size: 12px; }
+  .summary-balance { font-size: 10px; }
+  .booking-error, .whatsapp-ready, .whatsapp-submit, .copy-fallback { grid-column: 1 / -1; }
+  .booking-error, .whatsapp-ready { margin: 0 !important; }
+  .whatsapp-submit { min-height: 50px; }
+  .copy-fallback { margin-top: 2px; padding: 7px 10px; }
   .floating-whatsapp { right: 12px; bottom: 12px; }
 }

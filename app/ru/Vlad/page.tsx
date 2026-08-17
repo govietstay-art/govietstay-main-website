@@ -1,6 +1,6 @@
 "use client";
 
-// govietstay-vlad-v3-manager-pin-logo
+// govietstay-vlad-v4-fast-mobile-booking
 
 import { FormEvent, useMemo, useState } from "react";
 import styles from "./VladPage.module.css";
@@ -155,11 +155,130 @@ const tours: Tour[] = [
 ];
 
 const regions = Array.from(new Set(tours.map((tour) => tour.region)));
+const regionNamesEnglish: Record<string, string> = {
+  "Дананг и Хойан": "Da Nang & Hoi An",
+  "Хюэ": "Hue",
+  "Фукуок": "Phu Quoc",
+  "Нячанг и Камрань": "Nha Trang & Cam Ranh",
+  "Трансферы": "Transfers",
+};
+
+const tourNamesEnglish: Record<string, string> = {
+  "cham-island": "Cham Island",
+  "ba-na-hills": "Ba Na Hills & Golden Bridge",
+  "hoi-an-coconut": "Hoi An & Coconut Village",
+  "marble-sontra": "Marble Mountains & Son Tra Peninsula",
+  "hai-van": "Hai Van Pass & Lang Co",
+  "food-tour": "Da Nang Food Tour",
+  "han-cruise": "Han River Cruise",
+  "hue-city": "Hue Imperial City",
+  "phu-quoc-south": "South Phu Quoc & Cable Car",
+  "phu-quoc-north": "North Phu Quoc",
+  "phu-quoc-islands": "3–4 Islands by Speedboat",
+  "phu-quoc-vin": "VinWonders & Safari Phu Quoc",
+  "nha-trang-city": "Nha Trang City Tour",
+  "nha-trang-islands": "Nha Trang Island Tour",
+  "vinwonders-nha-trang": "VinWonders Nha Trang",
+  "transfer-danang": "Da Nang Airport ↔ Hotel",
+  "transfer-hoian": "Da Nang ↔ Hoi An Transfer",
+  "transfer-hue": "Da Nang ↔ Hue Transfer",
+};
+
+const variantNamesEnglish: Record<string, string> = {
+  "cham-group-en": "Group tour • English guide",
+  "cham-private-en": "Private tour • English guide",
+  "cham-ru": "Group tour • Russian-speaking guide",
+  "bana-standard": "Standard group tour",
+  "bana-ru": "Tour with Russian-speaking guide",
+  "bana-custom": "Private/custom quote",
+  "hoian-standard": "Standard group tour",
+  "hoian-ru": "Tour with Russian-speaking guide",
+  "hoian-private": "Private/custom quote",
+  "marble-custom": "Custom quote",
+  "haivan-custom": "Custom quote",
+  "food-custom": "Custom quote",
+  "han-custom": "Ticket/custom quote",
+  "hue-standard": "Standard group tour",
+  "hue-ru": "Tour with Russian-speaking guide",
+  "hue-private": "Private/custom quote",
+  "pqs-custom": "Manual quote",
+  "pqn-custom": "Manual quote",
+  "pqi-custom": "Manual quote",
+  "pqv-custom": "Ticket/package • manual quote",
+  "ntc-custom": "Custom quote",
+  "nti-custom": "Custom quote",
+  "ntv-custom": "Ticket/transfer • manual quote",
+  "dad-transfer": "Price per vehicle",
+  "hoian-transfer": "Price per vehicle",
+  "hue-transfer": "Price per vehicle",
+};
+
 const managerWhatsApp =
   "https://wa.me/84769541635?text=" +
   encodeURIComponent("Здравствуйте, Влад! Я перешёл по вашей официальной ссылке GoVietStay и хочу получить консультацию.");
 
 const formatVnd = (value: number) => `${new Intl.NumberFormat("vi-VN").format(Math.max(0, value))} VND`;
+const formatNumberInput = (value: number) => value > 0 ? new Intl.NumberFormat("vi-VN").format(value) : "";
+const parseNumericInput = (value: string) => Number(value.replace(/\D/g, "")) || 0;
+
+function formatTourDate(value: FormDataEntryValue | null) {
+  const date = String(value || "");
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date);
+  return match ? `${match[3]}.${match[2]}.${match[1]}` : date || "—";
+}
+
+function createBookingId() {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Asia/Ho_Chi_Minh",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  }).formatToParts(new Date());
+  const read = (type: string) => parts.find((part) => part.type === type)?.value ?? "00";
+  return `GVS-VLAD-${read("year")}${read("month")}${read("day")}-${read("hour")}${read("minute")}`;
+}
+
+function GuestCounter({ label, value, onChange }: { label: string; value: number; onChange: (value: number) => void }) {
+  return (
+    <div className={cx("guest-counter")}>
+      <strong>{label}</strong>
+      <div className={cx("counter-controls")}>
+        <button type="button" aria-label={`Уменьшить: ${label}`} onClick={() => onChange(Math.max(0, value - 1))}>−</button>
+        <input
+          aria-label={label}
+          type="text"
+          inputMode="numeric"
+          pattern="[0-9]*"
+          value={value > 0 ? String(value) : ""}
+          placeholder="0"
+          onFocus={(event) => event.currentTarget.select()}
+          onChange={(event) => onChange(Math.min(99, parseNumericInput(event.target.value)))}
+        />
+        <button type="button" aria-label={`Увеличить: ${label}`} onClick={() => onChange(Math.min(99, value + 1))}>+</button>
+      </div>
+    </div>
+  );
+}
+
+function MoneyField({ label, value, onChange, className = "" }: { label: string; value: number; onChange: (value: number) => void; className?: string }) {
+  return (
+    <label className={className}>
+      {label}
+      <input
+        type="text"
+        inputMode="numeric"
+        pattern="[0-9]*"
+        value={formatNumberInput(value)}
+        placeholder="0"
+        onFocus={(event) => event.currentTarget.select()}
+        onChange={(event) => onChange(parseNumericInput(event.target.value))}
+      />
+    </label>
+  );
+}
 
 function Logo() {
   return (
@@ -176,12 +295,13 @@ export default function VladOfficialPage() {
   const [pinError, setPinError] = useState("");
   const [bookingOpen, setBookingOpen] = useState(false);
   const [bookingResult, setBookingResult] = useState("");
+  const [bookingError, setBookingError] = useState("");
   const [copied, setCopied] = useState(false);
   const [region, setRegion] = useState(tours[0].region);
   const [tourId, setTourId] = useState(tours[0].id);
   const [variantId, setVariantId] = useState(tours[0].variants[0].id);
   const [priceMode, setPriceMode] = useState<PriceMode>("auto");
-  const [adults, setAdults] = useState(2);
+  const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
   const [infants, setInfants] = useState(0);
   const [adultRate, setAdultRate] = useState(tours[0].variants[0].adult);
@@ -234,6 +354,7 @@ export default function VladOfficialPage() {
 
   function openBooking() {
     setBookingResult("");
+    setBookingError("");
     setCopied(false);
     setBookingOpen(true);
   }
@@ -257,28 +378,83 @@ export default function VladOfficialPage() {
   function submitBooking(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const guestCount = adults + children + infants;
+    if (guestCount < 1) {
+      setBookingError("Укажите хотя бы одного гостя / Please enter at least 1 guest.");
+      return;
+    }
+    if (total <= 0) {
+      setBookingError("Укажите стоимость тура / Please enter the tour price.");
+      return;
+    }
+    if (deposit > total) {
+      setBookingError("Депозит не может быть больше общей суммы / Deposit cannot exceed the total price.");
+      return;
+    }
+
+    const bookingId = createBookingId();
+    const regionEnglish = regionNamesEnglish[region] ?? region;
+    const tourEnglish = tourNamesEnglish[currentTour.id] ?? currentTour.name;
+    const variantEnglish = variantNamesEnglish[currentVariant.id] ?? currentVariant.label;
+    const localPoint = String(data.get("localPoint") || "No / Нет");
+    const language = String(data.get("language") || "Russian / Русский");
+    const note = String(data.get("note") || "—");
     const lines = [
-      "ЗАПРОС НА БРОНИРОВАНИЕ • ОЖИДАЕТ ПОДТВЕРЖДЕНИЯ",
-      "Менеджер: Влад • GVS-RU-VLAD-01",
-      `Регион: ${region}`,
-      `Тур: ${currentTour.name}`,
-      `Пакет: ${currentVariant.label}`,
-      `Дата: ${data.get("date") || "не указана"}`,
-      `Гость: ${data.get("guest") || "не указан"}`,
-      `WhatsApp: ${data.get("phone") || "не указан"}`,
-      `Отель: ${data.get("hotel") || "не указан"}`,
-      `Группа: ${adults} взрослых • ${children} детей • ${infants} младенцев`,
-      `Расчёт: ${priceMode === "auto" ? "автоматически по тарифам" : "итоговая цена вручную"}`,
-      `Доплата: ${formatVnd(extraFee)} • Скидка: ${formatVnd(discount)}`,
-      `ИТОГО: ${formatVnd(total)}`,
-      `Депозит: ${formatVnd(deposit)}`,
-      `Остаток: ${formatVnd(balance)}`,
-      `Local Point: ${data.get("localPoint") || "нет"}`,
-      `Примечание: ${data.get("note") || "—"}`,
+      "🟢 GOVIETSTAY — BOOKING REQUEST / ЗАПРОС НА БРОНИРОВАНИЕ",
+      "Trusted Local Support | Da Nang • Hoi An • Hue",
       "",
-      "David, пожалуйста, проверьте цену и подтвердите booking.",
+      `🔖 Booking ID / Номер бронирования:\n${bookingId}`,
+      "",
+      `📅 Tour Date / Дата тура:\n${formatTourDate(data.get("date"))}`,
+      "",
+      `🏝️ Tour Name / Название тура:\n${tourEnglish} / ${currentTour.name}`,
+      "",
+      `📦 Package / Пакет:\n${variantEnglish} / ${currentVariant.label}`,
+      "",
+      `📍 Region / Регион:\n${regionEnglish} / ${region}`,
+      "",
+      `👥 Number of Guests / Количество гостей:\nAdults / Взрослые: ${adults} • Children / Дети: ${children} • Infants / Младенцы: ${infants} • Total / Всего: ${guestCount}`,
+      "",
+      `💰 Total Tour Price / Полная стоимость тура:\n${formatVnd(total)}`,
+      "",
+      `💵 Deposit Received / Полученный депозит:\n${formatVnd(deposit)}`,
+      "",
+      `💵 Remaining Payment to Tour Guide / Остаток оплаты гиду:\n${formatVnd(balance)}`,
+      "",
+      `➕ Surcharge / Доплата: ${formatVnd(extraFee)}\n➖ Discount / Скидка: ${formatVnd(discount)}`,
+      "",
+      `⏰ Pick-up Time / Время выезда:\n${data.get("pickupTime") || "—"}`,
+      "",
+      `👤 Guest Name / Имя гостя:\n${data.get("guest") || "—"}`,
+      "",
+      `📞 Contact Number / WhatsApp:\n${data.get("phone") || "—"}`,
+      "",
+      `🏨 Pick-up Location or Hotel / Место встречи или отель:\n${data.get("hotel") || "—"}`,
+      "",
+      `🗣️ Service Language / Язык обслуживания:\n${language}`,
+      "",
+      `🎁 Local Point:\n${localPoint}`,
+      "",
+      `📝 Notes / Примечания:\n${note}`,
+      "",
+      "👤 Booking Consultant / Консультант: Vladislav • GVS-RU-VLAD-01",
+      "📌 Status / Статус: Pending confirmation from David / Ожидает подтверждения Дэвида",
+      "",
+      "Thank you for choosing GoVietStay 💚 / Спасибо за выбор GoVietStay!",
+      "WhatsApp: +84 93 776 2607",
+      "Website: GoVietStay.com",
     ];
-    setBookingResult(lines.join("\n"));
+    const message = lines.join("\n");
+    const whatsAppUrl = `https://wa.me/84937762607?text=${encodeURIComponent(message)}`;
+    setBookingError("");
+    setCopied(false);
+    setBookingResult(message);
+
+    if (window.matchMedia("(max-width: 920px)").matches) {
+      window.location.href = whatsAppUrl;
+    } else {
+      window.open(whatsAppUrl, "_blank", "noopener,noreferrer");
+    }
   }
 
   async function copyBooking() {
@@ -393,20 +569,21 @@ export default function VladOfficialPage() {
             <button className={cx("modal-close")} type="button" aria-label="Закрыть" onClick={() => setBookingOpen(false)}>×</button>
             <div className={cx("modal-heading")}>
               <p className={cx("section-kicker")}>🔒 ВНУТРЕННИЙ ИНСТРУМЕНТ МЕНЕДЖЕРА</p>
-              <h2 id="booking-title">Новый booking</h2>
-              <p>Этот инструмент помогает Владу подготовить единый запрос для проверки и подтверждения GoVietStay.</p>
+              <h2 id="booking-title">Быстрый booking</h2>
+              <p>Заполните основные данные и отправьте готовый запрос David прямо в WhatsApp.</p>
             </div>
 
-            {!bookingResult ? (
+            {(
               <form className={cx("booking-layout")} onSubmit={submitBooking}>
                 <div className={cx("booking-fields")}>
                   <fieldset>
                     <legend>1. Клиент</legend>
                     <div className={cx("form-grid two")}>
-                      <label>Имя гостя<input name="guest" placeholder="Например: Aleksandra" required /></label>
-                      <label>WhatsApp<input name="phone" placeholder="+7 ..." required /></label>
-                      <label>Дата тура<input name="date" type="date" /></label>
-                      <label>Отель / адрес<input name="hotel" placeholder="Название и адрес" /></label>
+                      <label>Имя гостя<input name="guest" autoComplete="name" placeholder="Например: Aleksandra" required /></label>
+                      <label>WhatsApp<input name="phone" type="tel" inputMode="tel" autoComplete="tel" placeholder="+7 ..." required /></label>
+                      <label>Дата тура<input name="date" type="date" required /></label>
+                      <label>Время выезда<input name="pickupTime" type="time" required /></label>
+                      <label className={cx("wide")}>Отель / место встречи<input name="hotel" autoComplete="street-address" placeholder="Название отеля или адрес" required /></label>
                     </div>
                   </fieldset>
 
@@ -424,6 +601,13 @@ export default function VladOfficialPage() {
                       <label className={cx("wide")}>Пакет / язык
                         <select value={variantId} onChange={(event) => changeVariant(event.target.value)}>{currentTour.variants.map((variant) => <option value={variant.id} key={variant.id}>{variant.label}</option>)}</select>
                       </label>
+                      <label className={cx("wide")}>Язык обслуживания
+                        <select name="language">
+                          <option value="Russian / Русский">Русский</option>
+                          <option value="English / Английский">English</option>
+                          <option value="No guide / Без гида">Без гида</option>
+                        </select>
+                      </label>
                     </div>
                     {currentVariant.note && <p className={cx("rate-note")}>{currentVariant.note}</p>}
                   </fieldset>
@@ -437,60 +621,69 @@ export default function VladOfficialPage() {
                       </select>
                     </label>
 
+                    <div className={cx("guest-grid")}>
+                      <GuestCounter label="Взрослые" value={adults} onChange={setAdults} />
+                      <GuestCounter label="Дети" value={children} onChange={setChildren} />
+                      <GuestCounter label="Младенцы" value={infants} onChange={setInfants} />
+                    </div>
+                    <p className={cx("guest-total")}>Всего гостей: <strong>{adults + children + infants}</strong></p>
+
                     {priceMode === "auto" ? (
-                      <div className={cx("rate-grid")}>
-                        <div><strong>Взрослые</strong><input aria-label="Количество взрослых" type="number" min="0" value={adults} onChange={(event) => setAdults(Number(event.target.value))} /><input aria-label="Тариф взрослого" type="number" min="0" value={adultRate} onChange={(event) => setAdultRate(Number(event.target.value))} /><small>{formatVnd(adults * adultRate)}</small></div>
-                        <div><strong>Дети</strong><input aria-label="Количество детей" type="number" min="0" value={children} onChange={(event) => setChildren(Number(event.target.value))} /><input aria-label="Тариф ребёнка" type="number" min="0" value={childRate} onChange={(event) => setChildRate(Number(event.target.value))} /><small>{formatVnd(children * childRate)}</small></div>
-                        <div><strong>Младенцы</strong><input aria-label="Количество младенцев" type="number" min="0" value={infants} onChange={(event) => setInfants(Number(event.target.value))} /><input aria-label="Тариф младенца" type="number" min="0" value={infantRate} onChange={(event) => setInfantRate(Number(event.target.value))} /><small>{formatVnd(infants * infantRate)}</small></div>
-                      </div>
+                      <details className={cx("rate-details")}>
+                        <summary>Изменить тарифы (необязательно)</summary>
+                        <div className={cx("rate-grid")}>
+                          <MoneyField label={`Тариф взрослого • ${formatVnd(adults * adultRate)}`} value={adultRate} onChange={setAdultRate} />
+                          <MoneyField label={`Тариф ребёнка • ${formatVnd(children * childRate)}`} value={childRate} onChange={setChildRate} />
+                          <MoneyField label={`Тариф младенца • ${formatVnd(infants * infantRate)}`} value={infantRate} onChange={setInfantRate} />
+                        </div>
+                      </details>
                     ) : (
-                      <label>Общая цена, VND<input type="number" min="0" value={manualTotal} onChange={(event) => setManualTotal(Number(event.target.value))} /></label>
+                      <MoneyField label="Общая цена за всю группу, VND" value={manualTotal} onChange={setManualTotal} className={cx("manual-total")} />
                     )}
 
                     <div className={cx("form-grid three compact-grid")}>
-                      <label>Доплата<input type="number" min="0" value={extraFee} onChange={(event) => setExtraFee(Number(event.target.value))} /></label>
-                      <label>Скидка<input type="number" min="0" value={discount} onChange={(event) => setDiscount(Number(event.target.value))} /></label>
-                      <label>Депозит<input type="number" min="0" value={deposit} onChange={(event) => setDeposit(Number(event.target.value))} /></label>
+                      <MoneyField label="Доплата" value={extraFee} onChange={setExtraFee} />
+                      <MoneyField label="Скидка" value={discount} onChange={setDiscount} />
+                      <MoneyField label="Депозит" value={deposit} onChange={setDeposit} />
                     </div>
                   </fieldset>
 
-                  <fieldset>
-                    <legend>4. Дополнительные данные</legend>
+                  <details className={cx("optional-details")}>
+                    <summary>＋ Дополнительные данные (необязательно)</summary>
                     <div className={cx("form-grid two")}>
                       <label>Local Point
-                        <select name="localPoint"><option>Нет</option><option>eSIM 30 дней</option><option>Lucky Wheel</option><option>Подарок партнёра</option></select>
+                        <select name="localPoint">
+                          <option value="No / Нет">Нет</option>
+                          <option value="30-day eSIM / eSIM на 30 дней">eSIM 30 дней</option>
+                          <option value="Lucky Wheel / Колесо подарков">Lucky Wheel</option>
+                          <option value="Partner gift / Подарок партнёра">Подарок партнёра</option>
+                        </select>
                       </label>
-                      <label>Язык поддержки<select name="language"><option>Русский</option><option>English</option><option>Без гида</option></select></label>
-                      <label className={cx("wide")}>Примечание<textarea name="note" rows={3} placeholder="Возраст и рост детей, время посадки, особые пожелания" /></label>
+                      <label>Примечание<textarea name="note" rows={3} placeholder="Возраст/рост детей или особые пожелания" /></label>
                     </div>
-                  </fieldset>
+                  </details>
                 </div>
 
                 <aside className={cx("booking-summary")}>
-                  <span className={cx("summary-status")}>Автоматический расчёт</span>
-                  <h3>{currentTour.name}</h3>
-                  <p>{currentVariant.label}</p>
-                  <div className={cx("summary-line")}><span>Гости</span><strong>{adults + children + infants}</strong></div>
-                  <div className={cx("summary-line")}><span>Цена / пакет</span><strong>{formatVnd(priceMode === "manual" ? manualTotal : automaticSubtotal)}</strong></div>
-                  <div className={cx("summary-line")}><span>Доплата</span><strong>{formatVnd(extraFee)}</strong></div>
-                  <div className={cx("summary-line")}><span>Скидка</span><strong>− {formatVnd(discount)}</strong></div>
+                  <span className={cx("summary-status")}>{priceMode === "manual" ? "Общая цена вручную" : "Автоматический расчёт"}</span>
+                  <div className={cx("summary-detail")}>
+                    <h3>{currentTour.name}</h3>
+                    <p>{currentVariant.label}</p>
+                    <div className={cx("summary-line")}><span>Гости</span><strong>{adults + children + infants}</strong></div>
+                    <div className={cx("summary-line")}><span>Цена / пакет</span><strong>{formatVnd(priceMode === "manual" ? manualTotal : automaticSubtotal)}</strong></div>
+                    <div className={cx("summary-line")}><span>Доплата</span><strong>{formatVnd(extraFee)}</strong></div>
+                    <div className={cx("summary-line")}><span>Скидка</span><strong>− {formatVnd(discount)}</strong></div>
+                  </div>
                   <div className={cx("summary-total")}><span>ИТОГО</span><strong>{formatVnd(total)}</strong></div>
-                  <div className={cx("summary-line")}><span>Депозит</span><strong>{formatVnd(deposit)}</strong></div>
+                  <div className={cx("summary-detail")}><div className={cx("summary-line")}><span>Депозит</span><strong>{formatVnd(deposit)}</strong></div></div>
                   <div className={cx("summary-balance")}><span>Остаток</span><strong>{formatVnd(balance)}</strong></div>
                   <p className={cx("summary-warning")}>Перед отправкой проверьте тариф, детские условия и дополнительные услуги по актуальному прайсу GoVietStay.</p>
-                  <button className={cx("button yellow full")} type="submit">Создать запрос для David</button>
+                  {bookingError && <p className={cx("booking-error")}>{bookingError}</p>}
+                  {bookingResult && <p className={cx("whatsapp-ready")}>✓ WhatsApp открыт. Проверьте сообщение и нажмите Send.</p>}
+                  <button className={cx("button yellow full whatsapp-submit")} type="submit">Отправить David в WhatsApp</button>
+                  {bookingResult && <button className={cx("copy-fallback")} type="button" onClick={copyBooking}>{copied ? "✓ Скопировано" : "Скопировать booking"}</button>}
                 </aside>
               </form>
-            ) : (
-              <div className={cx("booking-result")}>
-                <span className={cx("pending-status")}>Ожидает подтверждения David</span>
-                <pre>{bookingResult}</pre>
-                <p>После проверки цены David присвоит официальный код. Только этот код подтверждает booking для клиента.</p>
-                <div className={cx("result-actions")}>
-                  <button className={cx("button yellow")} type="button" onClick={copyBooking}>{copied ? "Скопировано" : "Скопировать для David"}</button>
-                  <button className={cx("button dark-outline")} type="button" onClick={() => setBookingResult("")}>Изменить</button>
-                </div>
-              </div>
             )}
           </section>
         </div>
