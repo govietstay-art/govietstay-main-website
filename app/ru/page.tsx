@@ -6,6 +6,7 @@ import Link from "next/link";
 
 type RuTour = {
   id: string;
+  landingHref?: string;
   title: string;
   shortTitle: string;
   image: string;
@@ -656,6 +657,7 @@ const nhaTrangPackages: SignaturePackage[] = [
 const ruTours: RuTour[] = [
   {
     id: "bana",
+    landingHref: "/ru/tours/ba-na-hills",
     title: "БА НА ХИЛЛЗ • ЗОЛОТОЙ МОСТ • КАНАТНАЯ ДОРОГА",
     shortTitle: "Ba Na Hills",
     image: "/tour/bana.jpg",
@@ -695,6 +697,7 @@ const ruTours: RuTour[] = [
   },
   {
     id: "cham",
+    landingHref: "/ru/tours/cham-island",
     title: "ОСТРОВ ЧАМ • СКОРОСТНОЙ КАТЕР • МОРЕ И СНОРКЛИНГ",
     shortTitle: "Cham Island",
     image: "/tour/cham.jpg",
@@ -729,6 +732,7 @@ const ruTours: RuTour[] = [
   },
   {
     id: "coconut",
+    landingHref: "/ru/tours/hoi-an-coconut-forest",
     title: "ХОЙАН • КОРЗИННАЯ ЛОДКА • КОКОСОВЫЙ ЛЕС",
     shortTitle: "Hoi An Basket Boat",
     image: "/tour/coconut.jpg",
@@ -1038,6 +1042,15 @@ function TourDetailCard({ tour }: { tour: RuTour }) {
             </div>
           </div>
         </div>
+
+        {tour.landingHref && (
+          <Link
+            href={tour.landingHref}
+            className="mt-6 inline-flex rounded-full border-2 border-[#0b6b4f] px-5 py-3 text-sm font-extrabold text-[#0b6b4f] transition hover:bg-[#0b6b4f] hover:text-white"
+          >
+            Открыть полную программу экскурсии →
+          </Link>
+        )}
       </div>
     </div>
   );
@@ -2315,6 +2328,12 @@ function PhuQuocToursSection() {
           с декабря 2026 по март 2027 года; на высокий сезон рекомендуем
           бронировать заранее.
         </p>
+        <Link
+          href="/ru/tours/phu-quoc"
+          className="mt-5 inline-flex rounded-full border border-yellow-300/50 px-5 py-3 text-sm font-extrabold text-yellow-300 transition hover:bg-yellow-300 hover:text-[#06251b]"
+        >
+          Открыть отдельную страницу туров на Фукуоке →
+        </Link>
         <div className="mt-6 rounded-3xl border border-yellow-300/30 bg-white/10 p-4 text-sm leading-relaxed text-white/80 md:p-5 md:text-base">
           Цены указаны за одного гостя как ориентир. Наличие мест, зона трансфера,
           детский тариф, язык гида и итоговая стоимость подтверждаются до оплаты.
@@ -2439,6 +2458,14 @@ function CoreToursSection() {
                       </div>
                     </div>
                   </button>
+                  {tour.landingHref && (
+                    <Link
+                      href={tour.landingHref}
+                      className="mt-2 inline-flex px-3 py-2 text-sm font-extrabold text-[#0b6b4f] transition hover:underline"
+                    >
+                      Полная программа {tour.shortTitle} →
+                    </Link>
+                  )}
                   {active && (
                     <div className="mt-3 lg:hidden">
                       <TourDetailCard tour={tour} />
@@ -2597,6 +2624,23 @@ export default function RussianPage() {
               </a>
             ))}
           </div>
+          <nav
+            aria-label="Полезные материалы для поездки"
+            className="mt-6 flex flex-wrap gap-3"
+          >
+            <Link
+              href="/ru/aktualno"
+              className="rounded-full border border-[#0b6b4f]/20 bg-white px-5 py-3 text-sm font-extrabold text-[#0b6b4f] shadow-sm"
+            >
+              Актуально во Вьетнаме →
+            </Link>
+            <Link
+              href="/ru/local-point"
+              className="rounded-full border border-[#0b6b4f]/20 bg-white px-5 py-3 text-sm font-extrabold text-[#0b6b4f] shadow-sm"
+            >
+              Local Point и поддержка →
+            </Link>
+          </nav>
         </div>
       </section>
 

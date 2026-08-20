@@ -2,15 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Vietnam Visa Assistance | GoVietStay",
+  title: "Vietnam Visa Assistance",
   description:
     "Vietnam e-Visa assistance, urgent visa processing and airport fast-track support with GoVietStay.",
-  alternates: { canonical: "https://govietstay.com/visa" },
+  alternates: { canonical: "https://www.govietstay.com/visa" },
   openGraph: {
     title: "Vietnam Visa Assistance | GoVietStay",
     description:
       "Trusted local support for Vietnam e-Visas, urgent processing and airport fast track.",
-    url: "https://govietstay.com/visa",
+    url: "https://www.govietstay.com/visa",
     siteName: "GoVietStay",
     type: "website",
   },

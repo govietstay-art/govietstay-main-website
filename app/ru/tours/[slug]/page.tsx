@@ -10,8 +10,22 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const tour = getTour(slug, "ru");
   if (!tour) return {};
-  const url = `https://govietstay.com/ru/tours/${slug}`;
-  return { title: `${tour.title} | GoVietStay`, description: tour.promise, alternates: { canonical: url, languages: { en: `https://govietstay.com/tours/${slug}`, ru: url } }, openGraph: { title: tour.title, description: tour.promise, url, locale: "ru_RU", images: [{ url: tour.image }] } };
+  const url = `https://www.govietstay.com/ru/tours/${slug}`;
+  return {
+    title: tour.title,
+    description: tour.promise,
+    alternates: {
+      canonical: url,
+      languages: { ru: url },
+    },
+    openGraph: {
+      title: `${tour.title} | GoVietStay`,
+      description: tour.promise,
+      url,
+      locale: "ru_RU",
+      images: [{ url: tour.image }],
+    },
+  };
 }
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
@@ -19,4 +33,3 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   if (!tour) notFound();
   return <TourLandingPage tour={tour} locale="ru" />;
 }
-

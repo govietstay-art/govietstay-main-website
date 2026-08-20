@@ -472,7 +472,7 @@ export default function VladOfficialPage() {
           <div className={cx("container header-inner")}>
             <Logo />
             <div className={cx("header-actions")}>
-              <a className={cx("local-point-link")} href="https://govietstay.com/ru/local-point" target="_blank" rel="noreferrer">Local Point</a>
+              <a className={cx("local-point-link")} href="https://www.govietstay.com/ru/local-point" target="_blank" rel="noreferrer">Local Point</a>
               <span className={cx("language muted-language")}>EN</span>
               <span className={cx("language active-language")}>RU</span>
               <button className={cx("staff-entry")} type="button" onClick={openManagerAccess}>🔒 Менеджер</button>
@@ -507,7 +507,7 @@ export default function VladOfficialPage() {
             <div>✓ Поддержка 24/7</div>
           </div>
 
-          <a className={cx("local-point-offer")} href="https://govietstay.com/ru/local-point" target="_blank" rel="noreferrer">
+          <a className={cx("local-point-offer")} href="https://www.govietstay.com/ru/local-point" target="_blank" rel="noreferrer">
             <span>🎁</span><strong>Local Point</strong><small>eSIM, подарки и помощь в первый день во Вьетнаме</small><b>Открыть →</b>
           </a>
         </div>
@@ -520,11 +520,11 @@ export default function VladOfficialPage() {
             <h2>Выберите маршрут, а Влад поможет подобрать подходящий формат</h2>
           </div>
           <div className={cx("direction-cards official-directions")}>
-            <a href="https://govietstay.com/ru" target="_blank" rel="noreferrer"><span>01</span><strong>Дананг и Хойан</strong><p>Ba Na Hills, Золотой мост, Хойан, кокосовая деревня и городской гастротур.</p></a>
-            <a href="https://govietstay.com/ru/tours/cham-island" target="_blank" rel="noreferrer"><span>02</span><strong>Острова Чам</strong><p>Скоростной катер, снорклинг, пляж и обед с отправлением из Дананга и Хойана.</p></a>
-            <a href="https://govietstay.com/ru/tours/phu-quoc" target="_blank" rel="noreferrer"><span>03</span><strong>Фукуок</strong><p>Южный и Северный остров, морские маршруты, VinWonders и Safari.</p></a>
-            <a href="https://govietstay.com/ru" target="_blank" rel="noreferrer"><span>04</span><strong>Императорский Хюэ</strong><p>Цитадель, история династии Нгуен и местная кухня.</p></a>
-            <a href="https://govietstay.com/ru" target="_blank" rel="noreferrer"><span>05</span><strong>Нячанг и Камрань</strong><p>Городские и островные экскурсии, трансферы и поддержка на русском языке.</p></a>
+            <a href="https://www.govietstay.com/ru" target="_blank" rel="noreferrer"><span>01</span><strong>Дананг и Хойан</strong><p>Ba Na Hills, Золотой мост, Хойан, кокосовая деревня и городской гастротур.</p></a>
+            <a href="https://www.govietstay.com/ru/tours/cham-island" target="_blank" rel="noreferrer"><span>02</span><strong>Острова Чам</strong><p>Скоростной катер, снорклинг, пляж и обед с отправлением из Дананга и Хойана.</p></a>
+            <a href="https://www.govietstay.com/ru/tours/phu-quoc" target="_blank" rel="noreferrer"><span>03</span><strong>Фукуок</strong><p>Южный и Северный остров, морские маршруты, VinWonders и Safari.</p></a>
+            <a href="https://www.govietstay.com/ru" target="_blank" rel="noreferrer"><span>04</span><strong>Императорский Хюэ</strong><p>Цитадель, история династии Нгуен и местная кухня.</p></a>
+            <a href="https://www.govietstay.com/ru" target="_blank" rel="noreferrer"><span>05</span><strong>Нячанг и Камрань</strong><p>Городские и островные экскурсии, трансферы и поддержка на русском языке.</p></a>
             <a href={managerWhatsApp} target="_blank" rel="noreferrer"><span>06</span><strong>Индивидуальный маршрут</strong><p>Напишите Владу даты, состав группы и пожелания — он подготовит варианты.</p></a>
           </div>
         </div>

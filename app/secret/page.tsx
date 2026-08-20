@@ -1,5 +1,22 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { secretGems } from "./data";
+
+export const metadata: Metadata = {
+  title: "Secret Local Places in Da Nang",
+  description:
+    "Explore hidden beaches, mountain villages, wildlife viewpoints and local places around Da Nang with practical tips.",
+  alternates: {
+    canonical: "https://www.govietstay.com/secret",
+  },
+  openGraph: {
+    title: "Secret Local Places in Da Nang | GoVietStay",
+    description:
+      "Ten hidden places around Da Nang with maps, local tips and responsible travel missions.",
+    url: "https://www.govietstay.com/secret",
+    images: [{ url: "/secret/hoabac.png", alt: "Hidden places near Da Nang" }],
+  },
+};
 
 export default function SecretExplorerHome() {
   return (

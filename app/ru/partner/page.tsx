@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import PartnerLandingPage from "../../../components/PartnerLandingPage";
 
 export const metadata: Metadata = {
-  title: "Партнёрская программа GoVietStay | Дополнительный доход во Вьетнаме",
+  title: "Партнёрская программа — дополнительный доход во Вьетнаме",
   description: "Консультируйте русскоязычных туристов, оформляйте бронирования и получайте 150 000 VND за каждого взрослого гостя Cham Island.",
   alternates: { canonical: "https://www.govietstay.com/ru/partner" },
   openGraph: {

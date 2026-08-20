@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Влад | Официальный менеджер GoVietStay",
+  title: "Влад — официальный менеджер",
   description:
     "Официальная страница Влада — русскоязычного менеджера GoVietStay во Вьетнаме.",
   alternates: {
     canonical: "https://www.govietstay.com/ru/Vlad",
   },
+  robots: { index: false, follow: false },
 };
 
 export default function VladLayout({ children }: Readonly<{ children: React.ReactNode }>) {

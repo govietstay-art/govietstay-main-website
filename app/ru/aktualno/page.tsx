@@ -5,7 +5,7 @@ import { aktualnoArticles } from "../../../lib/aktualnoArticles";
 const canonical = "https://www.govietstay.com/ru/aktualno";
 
 export const metadata: Metadata = {
-  title: "Актуально во Вьетнаме — Дананг, Хойан и Хюэ | GoVietStay",
+  title: "Актуально во Вьетнаме — Дананг, Хойан и Хюэ",
   description: "Живые обновления, советы местной команды, реальные истории и маршруты по Данангу, Хойану и Хюэ для русскоговорящих гостей.",
   alternates: { canonical },
   keywords: [

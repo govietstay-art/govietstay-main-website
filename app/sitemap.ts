@@ -1,32 +1,153 @@
-import { MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
+import { aktualnoArticles } from "../lib/aktualnoArticles";
+import { secretGems } from "./secret/data";
+
+const BASE_URL = "https://www.govietstay.com";
+const SITE_UPDATED = new Date("2026-08-20T00:00:00.000Z");
+
+const languageAlternates = (englishPath: string, russianPath: string) => ({
+  languages: {
+    en: `${BASE_URL}${englishPath}`,
+    ru: `${BASE_URL}${russianPath}`,
+    "x-default": `${BASE_URL}${englishPath}`,
+  },
+});
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://www.govietstay.com";
-
-  return [
+  const corePages: MetadataRoute.Sitemap = [
     {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/tour`,
-      lastModified: new Date(),
+      url: BASE_URL,
+      lastModified: SITE_UPDATED,
       changeFrequency: "weekly",
       priority: 0.9,
+      alternates: languageAlternates("", "/ru"),
     },
     {
-      url: `${baseUrl}/secret`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
+      url: `${BASE_URL}/ru`,
+      lastModified: SITE_UPDATED,
+      changeFrequency: "daily",
+      priority: 1,
+      alternates: languageAlternates("", "/ru"),
     },
     {
-      url: `${baseUrl}/local-food`,
-      lastModified: new Date(),
+      url: `${BASE_URL}/ru/tours/ba-na-hills`,
+      lastModified: SITE_UPDATED,
       changeFrequency: "weekly",
-      priority: 0.8,
+      priority: 0.95,
+      alternates: languageAlternates(
+        "/tours/ba-na-hills",
+        "/ru/tours/ba-na-hills",
+      ),
+    },
+    {
+      url: `${BASE_URL}/ru/tours/cham-island`,
+      lastModified: SITE_UPDATED,
+      changeFrequency: "weekly",
+      priority: 0.95,
+    },
+    {
+      url: `${BASE_URL}/ru/tours/hoi-an-coconut-forest`,
+      lastModified: SITE_UPDATED,
+      changeFrequency: "weekly",
+      priority: 0.9,
+      alternates: languageAlternates(
+        "/tours/hoi-an-coconut-forest",
+        "/ru/tours/hoi-an-coconut-forest",
+      ),
+    },
+    {
+      url: `${BASE_URL}/ru/tours/phu-quoc`,
+      lastModified: SITE_UPDATED,
+      changeFrequency: "weekly",
+      priority: 0.9,
+      alternates: languageAlternates(
+        "/tours/phu-quoc",
+        "/ru/tours/phu-quoc",
+      ),
+    },
+    {
+      url: `${BASE_URL}/ru/aktualno`,
+      lastModified: SITE_UPDATED,
+      changeFrequency: "daily",
+      priority: 0.85,
+    },
+    {
+      url: `${BASE_URL}/ru/local-point`,
+      lastModified: SITE_UPDATED,
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/ru/partner`,
+      lastModified: SITE_UPDATED,
+      changeFrequency: "monthly",
+      priority: 0.35,
+    },
+    {
+      url: `${BASE_URL}/tours/ba-na-hills`,
+      lastModified: SITE_UPDATED,
+      changeFrequency: "weekly",
+      priority: 0.75,
+      alternates: languageAlternates(
+        "/tours/ba-na-hills",
+        "/ru/tours/ba-na-hills",
+      ),
+    },
+    {
+      url: `${BASE_URL}/tours/hoi-an-coconut-forest`,
+      lastModified: SITE_UPDATED,
+      changeFrequency: "weekly",
+      priority: 0.7,
+      alternates: languageAlternates(
+        "/tours/hoi-an-coconut-forest",
+        "/ru/tours/hoi-an-coconut-forest",
+      ),
+    },
+    {
+      url: `${BASE_URL}/tours/phu-quoc`,
+      lastModified: SITE_UPDATED,
+      changeFrequency: "weekly",
+      priority: 0.7,
+      alternates: languageAlternates(
+        "/tours/phu-quoc",
+        "/ru/tours/phu-quoc",
+      ),
+    },
+    {
+      url: `${BASE_URL}/visa`,
+      lastModified: SITE_UPDATED,
+      changeFrequency: "monthly",
+      priority: 0.55,
+    },
+    {
+      url: `${BASE_URL}/secret`,
+      lastModified: SITE_UPDATED,
+      changeFrequency: "monthly",
+      priority: 0.45,
+    },
+    {
+      url: `${BASE_URL}/local-food`,
+      lastModified: SITE_UPDATED,
+      changeFrequency: "monthly",
+      priority: 0.35,
     },
   ];
+
+  const aktualnoPages: MetadataRoute.Sitemap = aktualnoArticles.map(
+    (article) => ({
+      url: `${BASE_URL}/ru/aktualno/${article.slug}`,
+      lastModified: new Date(article.modified),
+      changeFrequency: article.category === "today" ? "daily" : "monthly",
+      priority: article.featured ? 0.82 : 0.72,
+    }),
+  );
+
+  const secretPages: MetadataRoute.Sitemap = secretGems.map((gem) => ({
+    url: `${BASE_URL}/secret/${gem.slug}`,
+    lastModified: SITE_UPDATED,
+    changeFrequency: "monthly",
+    priority: 0.35,
+  }));
+
+  return [...corePages, ...aktualnoPages, ...secretPages];
 }
