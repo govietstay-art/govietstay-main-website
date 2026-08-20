@@ -78,7 +78,7 @@ export const aktualnoArticles: AktualnoArticle[] = [
       { question: "Что происходит при отмене из-за погоды?", answer: "GoVietStay связывается с вами и помогает перенести поездку или подобрать сухопутную альтернативу." },
     ],
     relatedTourLabel: "Посмотреть тур на остров Чам",
-    relatedTourUrl: "https://www.govietstay.com/ru#cham-island",
+    relatedTourUrl: "https://www.govietstay.com/ru/tours/cham-island",
   },
   {
     slug: "bana-hills-in-rain",
@@ -115,7 +115,7 @@ export const aktualnoArticles: AktualnoArticle[] = [
       { heading: "Совет местной команды", paragraphs: ["Не оценивайте погоду на горе только по виду из окна отеля. Перед выездом мы проверяем актуальную обстановку и помогаем выбрать разумный формат поездки."] },
     ],
     relatedTourLabel: "Программа Бана Хиллс",
-    relatedTourUrl: "https://www.govietstay.com/ru#ba-na-hills",
+    relatedTourUrl: "https://www.govietstay.com/ru/tours/ba-na-hills",
   },
   {
     slug: "russian-or-english-guide",
@@ -137,7 +137,7 @@ export const aktualnoArticles: AktualnoArticle[] = [
       { heading: "Что происходит, если возникает языковой вопрос", paragraphs: ["Команда остаётся на связи в WhatsApp. Если объяснение на английском недостаточно, менеджер помогает уточнить вопрос на русском языке."] },
     ],
     relatedTourLabel: "Сравнить экскурсии",
-    relatedTourUrl: "https://www.govietstay.com/ru#tours",
+    relatedTourUrl: "https://www.govietstay.com/ru/danang",
   },
   {
     slug: "tour-or-combo",
@@ -181,7 +181,7 @@ export const aktualnoArticles: AktualnoArticle[] = [
       { heading: "Ещё одно путешествие — через кухню", paragraphs: ["Местная еда — часть истории Центрального Вьетнама. Поэтому маршрут можно дополнить блюдами Хойана и превратить обычный ужин в знакомство с культурой региона."] },
     ],
     relatedTourLabel: "Посмотреть маршрут Хойана",
-    relatedTourUrl: "https://www.govietstay.com/ru#hoi-an",
+    relatedTourUrl: "https://www.govietstay.com/ru/hoi-an",
   },
   {
     slug: "support-for-kazakhstan-guests",
@@ -202,8 +202,8 @@ export const aktualnoArticles: AktualnoArticle[] = [
       { heading: "Во время путешествия", paragraphs: ["GoVietStay остаётся на связи в WhatsApp. Если меняется время встречи, погода или гостям нужна помощь с переводом, вопрос решается через одну точку контакта."] },
       { heading: "После возвращения", paragraphs: ["Мы спрашиваем о реальном опыте, а не только о том, прошла ли оплата. Такая обратная связь помогает улучшать маршруты и даёт следующим гостям честную картину поездки."] },
     ],
-    relatedTourLabel: "Получить программу на русском",
-    relatedTourUrl: "https://wa.me/84937762607?text=Здравствуйте%2C%20я%20хочу%20получить%20программу%20на%20русском%20языке.",
+    relatedTourLabel: "Проверить правила въезда",
+    relatedTourUrl: "https://www.govietstay.com/ru/visa-vietnam",
   },
 ];
 

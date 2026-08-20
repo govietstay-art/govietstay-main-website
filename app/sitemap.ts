@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { aktualnoArticles } from "../lib/aktualnoArticles";
+import { russianSeoLandings } from "../lib/russian-seo-landings";
 import { secretGems } from "./secret/data";
 
 const BASE_URL = "https://www.govietstay.com";
@@ -125,12 +126,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.45,
     },
-    {
-      url: `${BASE_URL}/local-food`,
-      lastModified: SITE_UPDATED,
-      changeFrequency: "monthly",
-      priority: 0.35,
-    },
   ];
 
   const aktualnoPages: MetadataRoute.Sitemap = aktualnoArticles.map(
@@ -142,6 +137,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }),
   );
 
+  const russianLandingPages: MetadataRoute.Sitemap = russianSeoLandings.map(
+    (landing) => ({
+      url: `${BASE_URL}/ru/${landing.slug}`,
+      lastModified: SITE_UPDATED,
+      changeFrequency: "weekly",
+      priority: landing.slug === "danang" || landing.slug === "hoi-an" ? 0.9 : 0.82,
+    }),
+  );
+
   const secretPages: MetadataRoute.Sitemap = secretGems.map((gem) => ({
     url: `${BASE_URL}/secret/${gem.slug}`,
     lastModified: SITE_UPDATED,
@@ -149,5 +153,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.35,
   }));
 
-  return [...corePages, ...aktualnoPages, ...secretPages];
+  return [
+    ...corePages,
+    ...russianLandingPages,
+    ...aktualnoPages,
+    ...secretPages,
+  ];
 }

@@ -3,6 +3,7 @@
 import { useMemo, useState, type FormEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import JsonLd from "../../components/JsonLd";
 
 type RuTour = {
   id: string;
@@ -771,6 +772,7 @@ const ruTours: RuTour[] = [
   },
   {
     id: "memories",
+    landingHref: "/ru/hoi-an",
     title: "HOI AN MEMORIES SHOW • ВЕЧЕРНЕЕ ШОУ В ХОЙАНЕ",
     shortTitle: "Hoi An Memories Show",
     image: "/tour/hoianmemories.jpg",
@@ -809,6 +811,7 @@ const ruTours: RuTour[] = [
   },
   {
     id: "hue",
+    landingHref: "/ru/hue",
     title: "ХЮЭ • ИМПЕРАТОРСКИЙ ГОРОД • ГРОБНИЦЫ",
     shortTitle: "Hue Imperial City",
     image: "/tour/hue.jpg",
@@ -848,6 +851,7 @@ const ruTours: RuTour[] = [
   },
   {
     id: "marble",
+    landingHref: "/ru/danang",
     title: "ПАГОДА ЛИНЬ УНГ • МРАМОРНЫЕ ГОРЫ",
     shortTitle: "Linh Ung & Marble Mountains",
     image: "/tour/marble.jpg",
@@ -2491,6 +2495,34 @@ export default function RussianPage() {
 
   return (
     <main className="bg-[#f7f1df] text-[#06251b] pb-24 md:pb-0">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "@id": "https://www.govietstay.com/ru#webpage",
+          url: "https://www.govietstay.com/ru",
+          name: "Экскурсии во Вьетнаме с поддержкой на русском",
+          description:
+            "Туры в Дананге, Хойане, Хюэ и на Фукуоке с понятной программой, подтверждённой ценой и поддержкой GoVietStay на русском языке.",
+          inLanguage: "ru",
+          about: { "@id": "https://www.govietstay.com/#organization" },
+          mainEntity: {
+            "@type": "ItemList",
+            itemListElement: [
+              ["Дананг", "/ru/danang"],
+              ["Хойан", "/ru/hoi-an"],
+              ["Хюэ", "/ru/hue"],
+              ["Трансфер в Дананге", "/ru/transfer-danang"],
+              ["Виза во Вьетнам", "/ru/visa-vietnam"],
+            ].map(([name, path], index) => ({
+              "@type": "ListItem",
+              position: index + 1,
+              name,
+              url: `https://www.govietstay.com${path}`,
+            })),
+          },
+        }}
+      />
       <section className="relative overflow-hidden bg-[#04140f]">
         <div className="absolute inset-0">
           <Image
@@ -2640,6 +2672,21 @@ export default function RussianPage() {
             >
               Local Point и поддержка →
             </Link>
+            {[
+              ["Экскурсии в Дананге", "/ru/danang"],
+              ["Что посмотреть в Хойане", "/ru/hoi-an"],
+              ["Экскурсия в Хюэ", "/ru/hue"],
+              ["Трансфер из аэропорта", "/ru/transfer-danang"],
+              ["Виза во Вьетнам", "/ru/visa-vietnam"],
+            ].map(([label, href]) => (
+              <Link
+                key={href}
+                href={href}
+                className="rounded-full border border-[#0b6b4f]/20 bg-white px-5 py-3 text-sm font-extrabold text-[#0b6b4f] shadow-sm"
+              >
+                {label} →
+              </Link>
+            ))}
           </nav>
         </div>
       </section>
@@ -2766,9 +2813,14 @@ export default function RussianPage() {
           </div>
           <div>
             <h4 className="font-extrabold">Направления</h4>
-            <p className="mt-3 leading-relaxed text-white/60">
-              Дананг • Хойан • Хюэ • Нячанг • Фукуок
-            </p>
+            <nav className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-white/60" aria-label="Направления GoVietStay">
+              <Link href="/ru/danang">Дананг</Link>
+              <Link href="/ru/hoi-an">Хойан</Link>
+              <Link href="/ru/hue">Хюэ</Link>
+              <Link href="/ru/tours/phu-quoc">Фукуок</Link>
+              <Link href="/ru/transfer-danang">Трансфер</Link>
+              <Link href="/ru/visa-vietnam">Виза</Link>
+            </nav>
           </div>
           <div>
             <h4 className="font-extrabold">Связаться</h4>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import JsonLd from "../../../components/JsonLd";
 import LocalPointLandingPage from "../../../components/LocalPointLandingPage";
 import "../../../components/LocalPointLandingPage.css";
 
@@ -18,5 +19,31 @@ export const metadata: Metadata = {
 };
 
 export default function RussianLocalPointPage() {
-  return <LocalPointLandingPage />;
+  return (
+    <>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: "GoVietStay на русском", item: "https://www.govietstay.com/ru" },
+                { "@type": "ListItem", position: 2, name: "Local Point", item: "https://www.govietstay.com/ru/local-point" },
+              ],
+            },
+            {
+              "@type": "WebPage",
+              name: "GoVietStay Local Point",
+              description: metadata.description,
+              url: "https://www.govietstay.com/ru/local-point",
+              inLanguage: "ru",
+              about: { "@id": "https://www.govietstay.com/#organization" },
+            },
+          ],
+        }}
+      />
+      <LocalPointLandingPage />
+    </>
+  );
 }

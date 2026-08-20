@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AktualnoFooter, AktualnoHeader } from "../../../../components/AktualnoPage";
+import JsonLd from "../../../../components/JsonLd";
 import { aktualnoArticles, getAktualnoArticle } from "../../../../lib/aktualnoArticles";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -62,11 +63,21 @@ export default async function AktualnoArticlePage({ params }: Props) {
     "@type": "FAQPage",
     mainEntity: article.faq.map((item) => ({ "@type": "Question", name: item.question, acceptedAnswer: { "@type": "Answer", text: item.answer } })),
   } : null;
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "GoVietStay на русском", item: "https://www.govietstay.com/ru" },
+      { "@type": "ListItem", position: 2, name: "Актуально", item: BASE },
+      { "@type": "ListItem", position: 3, name: article.title, item: canonical },
+    ],
+  };
 
   return (
     <div className="aktualno-page">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
-      {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
+      <JsonLd data={articleSchema} />
+      <JsonLd data={breadcrumbSchema} />
+      {faqSchema && <JsonLd data={faqSchema} />}
       <AktualnoHeader />
       <main>
         <article>

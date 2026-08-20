@@ -146,7 +146,7 @@ export default function HoiAnLandingPage({ language }: { language: Language }) {
   return <main id="top">
     <section className="hero">
       <div className="heroGlow" />
-      <header><a className="brand" href="#top"><b>G</b><span>GoVietStay</span></a><a className="navCta" href="#booking">{t.nav}</a></header>
+      <header><a className="brand" href={language === "ru" ? "/ru" : "/"}><b>G</b><span>GoVietStay</span></a><a className="navCta" href="#booking">{t.nav}</a></header>
       <div className="heroVisuals" aria-label={language === "ru" ? "Фотографии гостей GoVietStay" : "GoVietStay guest photos"}>
         <img className="heroMainPhoto" src="/tour/hoi-an-coconut-forest/gallery/basket-boat-guests.webp" alt={language === "ru" ? "Гости на лодке-корзине в кокосовом лесу" : "Guests enjoying a basket boat in the coconut forest"} />
         <img className="heroOldTownPhoto" src="/tour/hoi-an-coconut-forest/gallery/hoi-an-ancient-house.webp" alt={language === "ru" ? "Гость в старинном доме Хойана" : "Guest visiting a Hoi An ancient house"} />

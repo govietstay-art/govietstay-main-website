@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import AktualnoPage from "../../../components/AktualnoPage";
+import JsonLd from "../../../components/JsonLd";
 import { aktualnoArticles } from "../../../lib/aktualnoArticles";
 
 const canonical = "https://www.govietstay.com/ru/aktualno";
@@ -57,7 +58,7 @@ export default function Page() {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <JsonLd data={schema} />
       <AktualnoPage articles={aktualnoArticles} />
     </>
   );

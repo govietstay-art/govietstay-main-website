@@ -34,7 +34,7 @@ type ExchangeRatesState = {
 };
 
 const GOVIETSTAY_RU = "https://GoVietStay.com/ru";
-const EXPERIENCE_URL = `${GOVIETSTAY_RU}#experiences`;
+const EXPERIENCE_URL = `${GOVIETSTAY_RU}/danang`;
 
 const services: Array<{key: ServiceKey; no: string; title: string; subtitle: string; accent: string; guideLabel: string; tags: string[]}> = [
   { key: "tour", no: "01", title: "Экскурсии", subtitle: "Проверенные экскурсии и готовые маршруты по Вьетнаму.", accent: "#ffad29", guideLabel: "ГИД ПО ЭКСКУРСИЯМ", tags: ["ПОГОДА", "ТЕМП", "МАРШРУТ"] },
@@ -221,10 +221,10 @@ function ExchangeRatePanel({ rates, compact = false }: { rates: ExchangeRatesSta
 }
 
 const destinations: Array<{label: string; href: string}> = [
-  { label: "ДАНАНГ", href: EXPERIENCE_URL },
-  { label: "ХОЙАН", href: EXPERIENCE_URL },
-  { label: "ХЮЭ", href: EXPERIENCE_URL },
-  { label: "ФУКУОК", href: EXPERIENCE_URL },
+  { label: "ДАНАНГ", href: `${GOVIETSTAY_RU}/danang` },
+  { label: "ХОЙАН", href: `${GOVIETSTAY_RU}/hoi-an` },
+  { label: "ХЮЭ", href: `${GOVIETSTAY_RU}/hue` },
+  { label: "ФУКУОК", href: `${GOVIETSTAY_RU}/tours/phu-quoc` },
   { label: "ХО ТРАМ", href: EXPERIENCE_URL },
 ];
 

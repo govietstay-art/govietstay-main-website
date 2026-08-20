@@ -40,7 +40,7 @@ export default function TourLandingPage({ tour, locale }: { tour: TourLanding; l
         <div className="relative mx-auto flex min-h-[78svh] max-w-6xl flex-col justify-between px-5 py-6 md:px-10 md:py-10">
           <div className="flex items-center justify-between text-white">
             <a href={isRu ? "/ru" : "/"} className="font-bold tracking-tight">GoVietStay</a>
-            <a href={isRu ? "/ru/tours" : "/tours"} className="rounded-full border border-white/40 px-4 py-2 text-sm backdrop-blur">← {labels.back}</a>
+            <a href={isRu ? "/ru/danang" : "/"} className="rounded-full border border-white/40 px-4 py-2 text-sm backdrop-blur">← {labels.back}</a>
           </div>
           <div className="max-w-4xl pb-5 text-white">
             <p className="mb-3 text-sm font-semibold uppercase tracking-[.22em] text-amber-300">{tour.eyebrow}</p>

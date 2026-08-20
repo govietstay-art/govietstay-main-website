@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 
 const PHONE = "84937762607";
@@ -104,7 +105,7 @@ export default function Home() {
         <div className="hero-shade" />
         <div className="hero-inner">
           <header>
-            <a className="logo" href="#top"><span>G</span><strong>GoVietStay</strong></a>
+            <Link className="logo" href="/ru"><span>G</span><strong>GoVietStay</strong></Link>
             <a className="header-book" href="#booking">Проверить места</a>
           </header>
           <div className="hero-copy" id="top">
@@ -241,7 +242,7 @@ export default function Home() {
         <a href={whatsapp} target="_blank" rel="noreferrer">Написать GoVietStay</a>
       </section>
 
-      <footer><strong>GoVietStay</strong><span>Надёжная местная поддержка</span><a href="https://GoVietStay.com">GoVietStay.com</a><span>WhatsApp: +84 937 762 607</span></footer>
+      <footer><strong>GoVietStay</strong><span>Надёжная местная поддержка</span><Link href="/ru/danang">Экскурсии в Дананге</Link><Link href="/ru">GoVietStay.com</Link><span>WhatsApp: +84 937 762 607</span></footer>
       <a className="mobile-book" href={whatsapp} target="_blank" rel="noreferrer"><span>{option === "morning" ? "Утро" : "День и вечер"}</span>Бронировать в WhatsApp</a>
     </main>
   );
