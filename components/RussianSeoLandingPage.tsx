@@ -202,7 +202,6 @@ export default function RussianSeoLandingPage({
           <Link href="/ru/hoi-an">Хойан</Link>
           <Link href="/ru/hue">Хюэ</Link>
           <Link href="/ru/transfer-danang">Трансфер</Link>
-          <Link href="/ru/visa-vietnam">Виза</Link>
         </div>
       </footer>
     </main>

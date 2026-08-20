@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { aktualnoArticles } from "../lib/aktualnoArticles";
-import { russianSeoLandings } from "../lib/russian-seo-landings";
+import { russianSeoIndexableLandings } from "../lib/russian-seo-landings";
 import { secretGems } from "./secret/data";
 
 const BASE_URL = "https://www.govietstay.com";
@@ -137,7 +137,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }),
   );
 
-  const russianLandingPages: MetadataRoute.Sitemap = russianSeoLandings.map(
+  const russianLandingPages: MetadataRoute.Sitemap = russianSeoIndexableLandings.map(
     (landing) => ({
       url: `${BASE_URL}/ru/${landing.slug}`,
       lastModified: SITE_UPDATED,

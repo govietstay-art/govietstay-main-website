@@ -34,7 +34,6 @@ travelers to useful pages.
 | 1 | https://www.govietstay.com/ru/hoi-an | Hoi An planning | что посмотреть в Хойане; маршрут по Хойану; Хойан из Дананга |
 | 2 | https://www.govietstay.com/ru/hue | Hue day trip | экскурсия в Хюэ; императорский Хюэ; Хюэ из Дананга |
 | 2 | https://www.govietstay.com/ru/transfer-danang | Transfer | трансфер из аэропорта Дананга; машина Дананг — Хойан |
-| 2 | https://www.govietstay.com/ru/visa-vietnam | Entry preparation | правила въезда во Вьетнам; виза во Вьетнам; официальный e-visa |
 | 2 | https://www.govietstay.com/ru/tours/phu-quoc | Phu Quoc tours | экскурсии на Фукуоке; туры по Фукуоку |
 | 3 | https://www.govietstay.com/ru/aktualno | Fresh local updates | актуально во Вьетнаме; советы местной команды |
 
@@ -53,7 +52,7 @@ for social profiles and posts where analytics attribution matters.
 | Yandex Zen profile | https://www.govietstay.com/ru?utm_source=dzen&utm_medium=social&utm_campaign=ru_discovery |
 | Hotel/partner page | https://www.govietstay.com/ru/danang?utm_source=partner&utm_medium=referral&utm_campaign=ru_danang |
 | Airport transfer post | https://www.govietstay.com/ru/transfer-danang?utm_source=partner&utm_medium=referral&utm_campaign=ru_transfer |
-| Kazakhstan community | https://www.govietstay.com/ru/visa-vietnam?utm_source=community_kz&utm_medium=referral&utm_campaign=ru_entry |
+| Kazakhstan community | https://www.govietstay.com/ru/aktualno/support-for-kazakhstan-guests?utm_source=community_kz&utm_medium=referral&utm_campaign=ru_support |
 
 ## 30-day execution board
 
@@ -71,7 +70,7 @@ for social profiles and posts where analytics attribution matters.
 
 | Action | Target | Deliverable | Status |
 |---|---|---|---|
-| Publish: “Первый день в Дананге: спокойный план после перелёта” | `/ru/danang` | Article with airport, rest, city route and next-day options | Planned |
+| Publish: “Первый день в Дананге: спокойный план после перелёта” | `/ru/aktualno/first-day-in-danang-after-flight` | Article with airport, rest, city route and next-day options | Ready to publish |
 | Publish: “Дананг — Хойан: такси, трансфер или экскурсия” | `/ru/transfer-danang` | Honest comparison and baggage/child-seat checklist | Planned |
 | Share each article in one relevant Russian travel community | Qualified travelers | Short answer first; link only when it adds detail | Planned |
 | Offer one co-authored hotel guest guide | Partner accommodation | “Что важно русскоговорящему гостю в Дананге” | Planned |
@@ -89,7 +88,7 @@ for social profiles and posts where analytics attribution matters.
 
 | Action | Target | Deliverable | Status |
 |---|---|---|---|
-| Update entry article from official sources | `/ru/visa-vietnam` | Date-stamped Russia/Kazakhstan checklist | Planned |
+| Publish a real Kazakhstan family support story | `/ru/aktualno/support-for-kazakhstan-guests` | First-hand service story with permission | Planned |
 | Publish: “Вьетнам для семьи из Казахстана: 7 проверок до вылета” | Kazakhstan audience | Entry, transfer, children, currency, support | Planned |
 | Ask two Kazakhstan travel communities for a resource mention | Russian-speaking travelers | Useful checklist, no spam posting | Planned |
 | Review Search Console and analytics | All Russian pages | Queries, impressions, CTR, countries, external links | Planned |

@@ -146,7 +146,7 @@ export const russianSeoLandings: RussianSeoLanding[] = [
     relatedLinks: [
       { href: "/ru/hoi-an", label: "Хойан", text: "Как спланировать старый город и Кокосовый лес" },
       { href: "/ru/transfer-danang", label: "Трансфер", text: "Аэропорт, отель и поездки между городами" },
-      { href: "/ru/aktualno", label: "Актуально", text: "Погода, маршруты и советы местной команды" },
+      { href: "/ru/aktualno/first-day-in-danang-after-flight", label: "Первый день", text: "Спокойный план после перелёта" },
     ],
     whatsappText:
       "Здравствуйте! Помогите выбрать экскурсию из Дананга. Дата поездки: ___. Взрослых: ___. Детей и их возраст/рост: ___. Отель: ___.",
@@ -612,7 +612,11 @@ export const russianSeoLandings: RussianSeoLanding[] = [
   },
 ];
 
-export const russianSeoLandingSlugs = russianSeoLandings.map(
+export const russianSeoIndexableLandings = russianSeoLandings.filter(
+  (landing) => landing.slug !== "visa-vietnam",
+);
+
+export const russianSeoLandingSlugs = russianSeoIndexableLandings.map(
   (landing) => landing.slug,
 );
 

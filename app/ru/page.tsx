@@ -2513,7 +2513,6 @@ export default function RussianPage() {
               ["Хойан", "/ru/hoi-an"],
               ["Хюэ", "/ru/hue"],
               ["Трансфер в Дананге", "/ru/transfer-danang"],
-              ["Виза во Вьетнам", "/ru/visa-vietnam"],
             ].map(([name, path], index) => ({
               "@type": "ListItem",
               position: index + 1,
@@ -2677,7 +2676,6 @@ export default function RussianPage() {
               ["Что посмотреть в Хойане", "/ru/hoi-an"],
               ["Экскурсия в Хюэ", "/ru/hue"],
               ["Трансфер из аэропорта", "/ru/transfer-danang"],
-              ["Виза во Вьетнам", "/ru/visa-vietnam"],
             ].map(([label, href]) => (
               <Link
                 key={href}
@@ -2819,7 +2817,6 @@ export default function RussianPage() {
               <Link href="/ru/hue">Хюэ</Link>
               <Link href="/ru/tours/phu-quoc">Фукуок</Link>
               <Link href="/ru/transfer-danang">Трансфер</Link>
-              <Link href="/ru/visa-vietnam">Виза</Link>
             </nav>
           </div>
           <div>
