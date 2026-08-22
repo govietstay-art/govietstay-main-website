@@ -4,7 +4,7 @@ import { russianSeoIndexableLandings } from "../lib/russian-seo-landings";
 import { secretGems } from "./secret/data";
 
 const BASE_URL = "https://www.govietstay.com";
-const SITE_UPDATED = new Date("2026-08-20T00:00:00.000Z");
+const SITE_UPDATED = new Date("2026-08-22T00:00:00.000Z");
 
 const languageAlternates = (englishPath: string, russianPath: string) => ({
   languages: {

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import JsonLd from "../../components/JsonLd";
+import RussianInternalLinks from "../../components/RussianInternalLinks";
 
 const canonical = "https://www.govietstay.com/ru";
 
@@ -43,6 +44,13 @@ export const metadata: Metadata = {
       },
     ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Экскурсии во Вьетнаме с поддержкой на русском",
+    description:
+      "Туры в Дананге, Хойане, Хюэ и на Фукуоке с поддержкой GoVietStay на русском языке.",
+    images: ["https://www.govietstay.com/hero-hoian-new.png"],
+  },
 };
 
 export default function RussianLayout({
@@ -60,10 +68,12 @@ export default function RussianLayout({
           logo: "https://www.govietstay.com/logo.png",
           image: "https://www.govietstay.com/hero-hoian-new.png",
           telephone: "+84 937 762 607",
-          areaServed: {
-            "@type": "Country",
-            name: "Vietnam",
-          },
+          areaServed: [
+            { "@type": "City", name: "Da Nang" },
+            { "@type": "City", name: "Hoi An" },
+            { "@type": "City", name: "Hue" },
+            { "@type": "Place", name: "Phu Quoc" },
+          ],
           availableLanguage: ["ru", "en", "vi"],
           contactPoint: {
             "@type": "ContactPoint",
@@ -78,6 +88,7 @@ export default function RussianLayout({
         }}
       />
       {children}
+      <RussianInternalLinks />
     </div>
   );
 }
