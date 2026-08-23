@@ -7,7 +7,7 @@ const WHATSAPP_TEXT = encodeURIComponent(
 
 // KakaoTalk 링크를 받으면 아래 빈 문자열만 실제 링크로 교체하면 됩니다.
 // 예: https://open.kakao.com/o/xxxxxxx 또는 https://pf.kakao.com/_xxxx/chat
-const KAKAO_URL = "";
+const KAKAO_URL = "https://invite.kakao.com/tc/dr58xzejiG";
 const kakaoReady = KAKAO_URL.startsWith("http");
 
 const realGuestPhotos = [
