@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="480" viewBox="0 0 760 480" role="img" aria-labelledby="title desc">
+  <title id="title">GoVietStay 30 minute massage voucher</title>
+  <desc id="desc">Free 30 minute foot or body massage voucher for confirmed Cham Island tour guests.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f7fffa"/><stop offset="1" stop-color="#d8f6e7"/></linearGradient>
+    <filter id="s" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="18" stdDeviation="22" flood-opacity=".18"/></filter>
+  </defs>
+  <rect x="26" y="26" width="708" height="428" rx="34" fill="url(#bg)" filter="url(#s)"/>
+  <rect x="58" y="58" width="644" height="364" rx="26" fill="#fff" stroke="#0a7a4a" stroke-width="3" stroke-dasharray="10 9"/>
+  <circle cx="625" cy="116" r="50" fill="#fee500"/>
+  <text x="625" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" font-weight="900" fill="#332c00">FREE</text>
+  <text x="95" y="112" font-family="Arial, sans-serif" font-size="26" font-weight="900" fill="#0a7a4a">GOVIETSTAY</text>
+  <text x="95" y="176" font-family="Arial, Apple SD Gothic Neo, sans-serif" font-size="42" font-weight="900" fill="#13241c">30분 무료 마사지 바우처</text>
+  <text x="95" y="229" font-family="Arial, Apple SD Gothic Neo, sans-serif" font-size="25" font-weight="700" fill="#486057">발 마사지 30분 또는 바디 마사지 30분</text>
+  <line x1="95" y1="272" x2="665" y2="272" stroke="#dce8e1" stroke-width="2"/>
+  <text x="95" y="318" font-family="Arial, Apple SD Gothic Neo, sans-serif" font-size="22" font-weight="700" fill="#13241c">📍 다낭 선짜 야시장</text>
+  <text x="95" y="360" font-family="Arial, Apple SD Gothic Neo, sans-serif" font-size="20" fill="#5e6b65">참섬 투어 예약 확정 고객 · 1인 1장</text>
+  <text x="95" y="397" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#0a7a4a">Trusted Local Support · Da Nang</text>
+</svg>
