@@ -2637,6 +2637,11 @@ export default function Home() {
             >
               🇷🇺 Русский
             </a>
+            <a
+              href="/ko"
+              className="rounded-full border border-yellow-400/70 bg-black/40 px-3 py-2 text-xs font-bold text-white shadow-sm backdrop-blur transition hover:bg-yellow-400 hover:text-black md:px-4 md:text-sm"
+              aria-label="Russian language page"
+            >한국어</a>
 
             <nav className="hidden md:flex gap-8 text-white/90 font-medium">
               <a href="/secret">Secret Local</a>
