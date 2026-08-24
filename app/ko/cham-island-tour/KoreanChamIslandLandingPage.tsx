@@ -166,13 +166,18 @@ export default function KoreanChamIslandLandingPage() {
 
           <div className={styles.heroVisual}>
             <div className={styles.photoFrame}>
-              <img
+              <video
                 className={styles.heroRealPhoto}
-                src={realGuestPhotos[4]}
-                alt="GoVietStay와 함께 여행한 실제 여행객"
-                width="900"
-                height="900"
-              />
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                poster="/tour/cham-island/guest-on-island.jpg"
+                aria-label="Cham Island snorkeling video by GoVietStay"
+              >
+                <source src="/ko/cham-island-tour/cham-island-promo.mp4" type="video/mp4" />
+              </video>
               <div className={styles.photoShade} />
               <div className={styles.photoCaption}>
                 <span className={styles.cameraDot}>●</span>
