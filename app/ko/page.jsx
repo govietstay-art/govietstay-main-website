@@ -80,8 +80,14 @@ const services = [
     desc: '스피드보트로 참섬에 들어가 바다, 스노클링, 섬 점심을 하루에 즐기는 다낭 대표 해양 일정.',
     price: '950,000 VND부터',
     gift: '30분 마사지 + 한강 크루즈 혜택 대상',
+    details: {
+      duration: '오전 출발 · 오후 복귀 (호텔 위치와 당일 운항에 따라 확정)',
+      route: '다낭 호텔 픽업 상담 → 호이안 인근 선착장 → 스피드보트 → 참섬 → 스노클링 2회 → 섬에서 점심 → 다낭 복귀',
+      included: '스피드보트 이동 · 스노클링 체험 · 섬 점심 · 현지 일정 지원',
+      note: '해상 상태와 관계 당국의 운항 승인에 따라 일정이 변경될 수 있습니다. 식사는 배 위가 아니라 섬에서 진행합니다.',
+    },
     href: '/ko/cham-island-tour',
-    cta: '참섬 자세히 보기',
+    cta: '참섬 전체 정보 보기',
   },
   {
     icon: '🌉',
@@ -90,8 +96,14 @@ const services = [
     desc: '케이블카, 골든브릿지, 프랑스마을까지. 다낭에 처음 온 가족과 커플이 가장 많이 찾는 하루 코스.',
     price: '1,550,000 VND부터',
     gift: '마사지 혜택 확인 · 한강 크루즈 증정 제외',
+    details: {
+      duration: '다낭 출발 기준 하루 일정',
+      route: '다낭 출발 → 케이블카 → 골든브릿지 → 프랑스마을 및 주요 구역 → 자유시간 → 다낭 복귀',
+      included: '차량·가이드·입장권·뷔페 포함 여부는 선택한 패키지에 따라 달라지므로 예약 전에 정확히 안내합니다.',
+      note: '바나힐 투어는 한강 크루즈 티켓 증정 대상에서 제외됩니다. 혼잡도에 따라 출발 시간이 조정될 수 있습니다.',
+    },
     href: WA,
-    cta: '바나힐 문의',
+    cta: '바나힐 예약 문의',
     external: true,
   },
   {
@@ -101,8 +113,14 @@ const services = [
     desc: '낮에는 바구니배, 저녁에는 호이안 올드타운과 등불 거리. 한 번에 분위기가 완전히 바뀌는 일정.',
     price: '1,250,000 VND부터',
     gift: '한강 크루즈 티켓 1매 혜택 대상',
+    details: {
+      duration: '예시 14:00경 출발 · 20:00경 복귀',
+      route: '다낭 픽업 → 코코넛숲 바구니배 45–60분 → 호이안 올드타운 → 일본교 주변 산책 → 저녁식사 → 등불 보트 → 다낭 복귀',
+      included: '바구니배 · 올드타운 산책 · 저녁식사 · 등불 보트를 한 번에 즐기는 오후/저녁 일정입니다.',
+      note: '호텔 위치와 당일 교통 상황에 따라 픽업·귀환 시간이 달라질 수 있으며 최종 시간은 예약 후 안내합니다.',
+    },
     href: WA,
-    cta: '호이안 문의',
+    cta: '호이안 예약 문의',
     external: true,
   },
   {
@@ -112,8 +130,14 @@ const services = [
     desc: '응우옌 왕조의 유산과 중부 베트남의 역사를 하루에 만나는 문화 여행. 부모님과 함께라면 특히 추천.',
     price: '1,450,000 VND부터',
     gift: '한강 크루즈 티켓 1매 혜택 대상',
+    details: {
+      duration: '다낭 출발 기준 하루 일정',
+      route: '다낭 출발 → 후에 이동 → 응우옌 왕조 왕궁과 주요 역사 유산 중심 탐방 → 다낭 복귀',
+      included: '문화·역사 중심 일정이며 방문지, 식사, 가이드 구성은 선택 패키지별로 예약 전에 확인합니다.',
+      note: '부모님 동반이나 소그룹은 이동 강도에 맞춰 단독 일정 상담도 가능합니다.',
+    },
     href: WA,
-    cta: '후에 문의',
+    cta: '후에 예약 문의',
     external: true,
   },
   {
@@ -123,6 +147,12 @@ const services = [
     desc: '도착 시간과 호텔만 알려주세요. 공항에서 호텔까지 이동을 미리 준비해 여행 첫날의 변수를 줄입니다.',
     price: '차량 · 구간별 확인',
     gift: '투어와 함께 예약 시 동선 상담',
+    details: {
+      duration: '항공편 도착/출발 시간 기준',
+      route: '다낭 국제공항 ↔ 다낭·호이안 호텔 및 요청 구간',
+      included: '인원, 짐, 목적지에 맞는 차량을 확인하고 예약 전에 구간별 비용을 안내합니다.',
+      note: '항공편명 · 도착시간 · 인원 · 호텔명을 보내주시면 픽업 가능 여부를 빠르게 확인할 수 있습니다.',
+    },
     href: WA,
     cta: '공항픽업 문의',
     external: true,
@@ -134,6 +164,12 @@ const services = [
     desc: '관광지 티켓, SIM/eSIM, 가족·커플·소그룹 일정까지. 필요한 것만 골라 현지팀에 한 번에 문의하세요.',
     price: '필요한 서비스만 선택',
     gift: '예약 전 조건과 비용 먼저 안내',
+    details: {
+      duration: '필요한 서비스만 선택',
+      route: '관광지 티켓 · SIM/eSIM · 가족/커플 일정 상담 · 현지 여행 지원',
+      included: '필요 없는 상품을 묶지 않고 여행자에게 필요한 항목만 골라 안내합니다.',
+      note: '티켓과 통신 상품은 이용일, 기종, 운영 조건에 따라 가격과 이용 조건이 달라질 수 있습니다.',
+    },
     href: WA,
     cta: '맞춤 상담',
     external: true,
@@ -298,6 +334,15 @@ export default function KoreanTravelHub() {
               <p className="serviceDesc">{item.desc}</p>
               <div className="priceLine"><b>{item.price}</b></div>
               <div className="giftLine">🎁 {item.gift}</div>
+              <details className="tourDetails">
+                <summary>상세 일정 먼저 보기 <span>＋</span></summary>
+                <div className="tourDetailsBody">
+                  <div className="detailItem"><b>소요시간</b><p>{item.details.duration}</p></div>
+                  <div className="detailItem"><b>예상 일정</b><p>{item.details.route}</p></div>
+                  <div className="detailItem"><b>구성 안내</b><p>{item.details.included}</p></div>
+                  <div className="detailItem note"><b>예약 전 확인</b><p>{item.details.note}</p></div>
+                </div>
+              </details>
               <a
                 className="cardLink"
                 href={item.href}
@@ -430,7 +475,7 @@ export default function KoreanTravelHub() {
         .heroDeal{background:rgba(255,255,255,.95);color:var(--ink);border-radius:24px;padding:28px;box-shadow:0 25px 80px rgba(0,0,0,.28);backdrop-filter:blur(10px)}.dealLabel{font-size:10px;font-weight:950;letter-spacing:.16em;color:var(--green);margin:0 0 6px}.heroDeal h2{font-size:24px;line-height:1.3;letter-spacing:-.035em;margin:0 0 22px}.dealRow{display:grid;grid-template-columns:46px 1fr auto;gap:12px;align-items:center;padding:16px 0;border-top:1px solid var(--line)}.dealIcon{width:46px;height:46px;border-radius:14px;background:var(--mint);display:flex;align-items:center;justify-content:center;font-size:22px}.dealRow b{font-size:14px}.dealRow p{font-size:11px;color:var(--muted);margin:3px 0 0}.dealRow strong{font-size:12px;background:#102019;color:#cfff65;border-radius:999px;padding:6px 9px}.dealNote{font-size:10px;color:#778079;line-height:1.55;margin:14px 0 0}
         .quickAnswers{max-width:1180px;margin:-36px auto 0;position:relative;z-index:4;padding:0 24px;display:grid;grid-template-columns:repeat(4,1fr)}.quickAnswers div{background:#fff;padding:22px 22px;border:1px solid var(--line);border-right:0;box-shadow:0 12px 35px rgba(18,34,26,.07)}.quickAnswers div:first-child{border-radius:18px 0 0 18px}.quickAnswers div:last-child{border-right:1px solid var(--line);border-radius:0 18px 18px 0}.quickAnswers small{display:block;color:#78817c;font-size:11px;margin-bottom:4px}.quickAnswers b{font-size:14px;letter-spacing:-.02em}
         .section{max-width:1180px;margin:auto;padding:110px 24px}.sectionHead{display:grid;grid-template-columns:1fr 380px;gap:40px;align-items:end;margin-bottom:38px}.sectionHead h2{font-size:42px;line-height:1.15;letter-spacing:-.045em;margin:0}.sectionHead>p{color:var(--muted);font-size:14px;margin:0;line-height:1.75}
-        .serviceGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.serviceCard{border:1px solid var(--line);border-radius:24px;padding:26px;min-height:340px;display:flex;flex-direction:column;background:#fff;transition:.25s transform,.25s box-shadow}.serviceCard:hover{transform:translateY(-5px);box-shadow:0 22px 60px rgba(13,40,27,.09)}.serviceCard.featured{background:linear-gradient(145deg,#e8f8ef 0%,#f6fff8 100%);border-color:#cbe8d8}.serviceTop{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}.serviceIcon{font-size:30px}.serviceEyebrow{font-size:9px;font-weight:950;letter-spacing:.13em;color:var(--green)}.serviceCard h3{font-size:23px;line-height:1.28;letter-spacing:-.035em;margin:0 0 12px}.serviceDesc{font-size:13px;color:var(--muted);margin:0 0 18px}.priceLine{font-size:17px;margin-top:auto;padding-top:12px}.giftLine{margin-top:10px;background:var(--cream);border-radius:12px;padding:9px 11px;font-size:11px;font-weight:750;color:#39423c}.cardLink{margin-top:18px;display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:1px solid var(--line);font-size:13px;font-weight:900;color:var(--green)!important}.cardLink span{font-size:19px}
+        .serviceGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.serviceCard{border:1px solid var(--line);border-radius:24px;padding:26px;min-height:340px;display:flex;flex-direction:column;background:#fff;transition:.25s transform,.25s box-shadow}.serviceCard:hover{transform:translateY(-5px);box-shadow:0 22px 60px rgba(13,40,27,.09)}.serviceCard.featured{background:linear-gradient(145deg,#e8f8ef 0%,#f6fff8 100%);border-color:#cbe8d8}.serviceTop{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}.serviceIcon{font-size:30px}.serviceEyebrow{font-size:9px;font-weight:950;letter-spacing:.13em;color:var(--green)}.serviceCard h3{font-size:23px;line-height:1.28;letter-spacing:-.035em;margin:0 0 12px}.serviceDesc{font-size:13px;color:var(--muted);margin:0 0 18px}.priceLine{font-size:17px;margin-top:auto;padding-top:12px}.giftLine{margin-top:10px;background:var(--cream);border-radius:12px;padding:9px 11px;font-size:11px;font-weight:750;color:#39423c}.tourDetails{margin-top:12px;border:1px solid #e3e9e5;border-radius:14px;background:rgba(255,255,255,.76);overflow:hidden}.tourDetails summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 13px;font-size:12px;font-weight:900;color:#245c48}.tourDetails summary::-webkit-details-marker{display:none}.tourDetails summary span{font-size:17px;transition:.2s transform}.tourDetails[open] summary span{transform:rotate(45deg)}.tourDetailsBody{padding:0 13px 7px}.detailItem{border-top:1px dashed #dfe5e1;padding:10px 0}.detailItem b{display:block;font-size:10px;letter-spacing:.04em;color:#77817b;margin-bottom:3px}.detailItem p{margin:0;font-size:11px;line-height:1.65;color:#39423d}.detailItem.note p{color:#6a5140}.cardLink{margin-top:16px;display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:1px solid var(--line);font-size:13px;font-weight:900;color:var(--green)!important}.cardLink span{font-size:19px}
         .realSection{background:var(--dark);color:#fff;padding:110px 24px}.realGrid{max-width:1180px;margin:auto;display:grid;grid-template-columns:.86fr 1.14fr;gap:70px;align-items:center}.realCopy h2{font-size:44px;line-height:1.15;letter-spacing:-.05em;margin:0 0 24px}.realCopy>p:not(.eyebrow){color:#c9d6cf;font-size:16px;line-height:1.8}.supportPills{display:flex;gap:8px;flex-wrap:wrap;margin:28px 0}.supportPills span{font-size:11px;font-weight:800;border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:8px 11px;color:#e8f2ed}.lightBtn{background:#fff;color:#102019!important}.photoMosaic{display:grid;grid-template-columns:1.2fr .8fr;grid-template-rows:220px 220px;gap:12px}.photoMosaic figure{margin:0;border-radius:22px;overflow:hidden;background:#203329}.photoMosaic figure img{width:100%;height:100%;object-fit:cover}.photoLarge{grid-row:1/3}.photoMosaic figure:last-child img{object-position:center top}
         .seoSection{padding-bottom:100px}.guideGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.guideGrid article{padding:24px 22px;border-radius:20px;background:var(--cream);min-height:230px}.guideGrid article span{font-size:11px;color:var(--green);font-weight:950}.guideGrid h3{font-size:18px;line-height:1.35;margin:30px 0 10px;letter-spacing:-.03em}.guideGrid p{font-size:12px;color:var(--muted);margin:0}.keywordBox{margin-top:30px;padding:26px;border:1px solid var(--line);border-radius:20px}.keywordBox>b{font-size:13px}.keywordCloud{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.keywordCloud span{font-size:11px;padding:8px 10px;border-radius:999px;background:#f3f6f4;color:#53605a}.blogCta{margin-top:30px;padding:34px;background:#eaf8ef;border-radius:24px;display:flex;justify-content:space-between;gap:30px;align-items:center}.blogCta small{font-size:9px;font-weight:950;letter-spacing:.15em;color:var(--green)}.blogCta h3{font-size:24px;letter-spacing:-.035em;margin:5px 0}.blogCta p{font-size:12px;color:var(--muted);margin:0}.blogCta a{min-width:max-content;background:var(--green);color:#fff!important;border-radius:999px;padding:13px 18px;font-weight:900;font-size:12px}
         .stepsSection{background:#0b6f52;color:#fff;padding:90px 24px}.stepsInner{max-width:1050px;margin:auto;text-align:center}.stepsInner>.eyebrow{color:#cfff65}.stepsInner h2{font-size:46px;line-height:1.15;letter-spacing:-.05em;margin:0 0 46px}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;text-align:left}.steps div{border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:24px;background:rgba(255,255,255,.06)}.steps span{font-size:10px;color:#cfff65;font-weight:950}.steps b{display:block;font-size:18px;margin:25px 0 5px}.steps p{font-size:12px;color:#d8eee3;margin:0}.centerButtons{display:flex;justify-content:center;gap:10px;margin-top:34px}.whiteBtn{background:#fff;color:#0b6f52!important}.outlineWhiteBtn{color:#fff!important;border:1px solid rgba(255,255,255,.5)}
