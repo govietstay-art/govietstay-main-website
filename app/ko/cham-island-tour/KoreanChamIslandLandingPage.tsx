@@ -118,7 +118,7 @@ export default function KoreanChamIslandLandingPage() {
         <div className={styles.heroInner}>
           <div className={styles.heroCopy}>
             <div className={styles.brandRow}>
-              <span className={styles.brandDot}>G</span>
+              <img className={styles.brandLogo} src="/logo.png" alt="GoVietStay" />
               <span>GoVietStay · Trusted Local Support</span>
               <span className={styles.livePill}><i /> DA NANG LOCAL TEAM</span>
             </div>
