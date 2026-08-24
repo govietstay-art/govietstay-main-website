@@ -11,12 +11,9 @@ const KAKAO_URL = "https://invite.kakao.com/tc/dr58xzejiG";
 const kakaoReady = KAKAO_URL.startsWith("http");
 
 const realGuestPhotos = [
-  "/happy-travelers/02462467f09771c928865.jpg",
-  "/happy-travelers/02e412c4c634476a1e258.jpg",
-  "/happy-travelers/069ebea8-ccc5-4d79-9db3-9f9f8d52e490.jpg",
-  "/happy-travelers/18245dc712389366ca296.jpg",
-  "/happy-travelers/2aOboQdyC7qu1jqWmUYWAj5mtfXgsCc0yJpIzbv6.jpg",
-  "/happy-travelers/2aOboQdyDmGiI6D5nUtB6GtbAErALMJqnGPZgyeW.jpg",
+  "/tour/cham-island/guest-on-island.jpg",
+  "/tour/cham-island/guest-pickup.jpg",
+  "/tour/cham.jpg",
 ];
 
 const faqItems = [
