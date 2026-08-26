@@ -13,7 +13,7 @@ import styles from "./VietnamHub.module.css";
 export const metadata: Metadata = {
   title: { absolute: "GoVietStay Việt Nam | Tour Đà Nẵng, Hội An, Huế & Phú Quốc 2026" },
   description:
-    "Tour, combo, xe riêng và cẩm nang cho khách Việt. Ảnh khách thật, Google Reviews thật, Zalo, deposit VietQR và tour riêng gia đình.",
+    "Tour, combo, xe riêng và kinh nghiệm du lịch cho khách Việt tại Đà Nẵng, Hội An, Huế và Phú Quốc. Giá từ rõ ràng, ảnh khách thật, Google Reviews và hỗ trợ Zalo.",
   alternates: {
     canonical: "https://www.govietstay.com/vi",
     languages: { "vi-VN": "https://www.govietstay.com/vi" },
@@ -23,7 +23,6 @@ export const metadata: Metadata = {
 
 type PriceConfig = { sellPrice: number; verified: boolean };
 const priceMap = vietnamBusinessConfig.prices as unknown as Record<string, PriceConfig>;
-
 const bySlug = (slug: string) => vietnamSeoPages.find((page) => page.slug === slug);
 const groups = {
   product: vietnamSeoPages.filter((page) => page.type === "product"),
@@ -34,11 +33,9 @@ const groups = {
 
 function priceLabel(slug: string) {
   const page = bySlug(slug);
-  if (!page?.priceKey) return "Nhận báo giá";
+  if (!page?.priceKey) return "Hỏi giá nhanh";
   const price = priceMap[page.priceKey];
-  return price?.sellPrice
-    ? `Từ ${new Intl.NumberFormat("vi-VN").format(price.sellPrice)}đ`
-    : "Nhận báo giá";
+  return price?.sellPrice ? `Từ ${new Intl.NumberFormat("vi-VN").format(price.sellPrice)}đ` : "Hỏi giá nhanh";
 }
 
 export default function VietnamHub() {
@@ -57,20 +54,20 @@ export default function VietnamHub() {
       <div className={styles.top}>
         <span>GOVIETSTAY VIỆT NAM</span>
         <b>Đà Nẵng · Hội An · Huế · Phú Quốc</b>
-        <a href={vietnamBusinessConfig.googleReviewsUrl} target="_blank" rel="noreferrer">Google Reviews thật ↗</a>
+        <a href={vietnamBusinessConfig.googleReviewsUrl} target="_blank" rel="noreferrer">Xem Google Reviews ↗</a>
       </div>
 
       <header className={styles.nav}>
         <a className={styles.brand} href="/">
           <img src="/govietstay-logo.jpg" alt="GoVietStay" />
-          <span><b>GoVietStay</b><small>VIỆT NAM LOCAL ADVANTAGE</small></span>
+          <span><b>GoVietStay</b><small>DU LỊCH & HỖ TRỢ TẠI ĐỊA PHƯƠNG</small></span>
         </a>
         <nav>
-          <a href="#tour-ban-chay">Tour bán chạy</a>
+          <a href="#tour-ban-chay">Tour nổi bật</a>
           <a href="#combo">Combo</a>
-          <a href="#private">Tour riêng</a>
-          <a href="#review">Khách thật</a>
-          <a className={styles.zalo} href={vietnamBusinessConfig.zaloUrl} target="_blank" rel="noreferrer">Hỏi Zalo</a>
+          <a href="#private">Đi riêng gia đình</a>
+          <a href="#review">Khách đã đi</a>
+          <a className={styles.zalo} href={vietnamBusinessConfig.zaloUrl} target="_blank" rel="noreferrer">Nhắn Zalo</a>
         </nav>
       </header>
 
@@ -79,20 +76,20 @@ export default function VietnamHub() {
           <img src={vietnamHubHero.main} alt="Bà Nà Hills - GoVietStay" fetchPriority="high" />
           <div className={styles.heroShade} />
           <div className={styles.heroCopy}>
-            <p>GIÁ RÕ · REVIEW THẬT · CÓ NGƯỜI ĐỊA PHƯƠNG HỖ TRỢ</p>
-            <h1>Đi Việt Nam theo cách <em>dễ quyết định hơn.</em></h1>
+            <p>GIÁ TỪ RÕ RÀNG · ẢNH KHÁCH THẬT · CÓ NGƯỜI HỖ TRỢ TẠI ĐIỂM ĐẾN</p>
+            <h1>Đi chơi cho thoải mái. <em>Việc lặt vặt để GoVietStay lo.</em></h1>
             <h2>
-              Đừng mất hàng giờ mở tab so tour. Xem ảnh thật, quyền lợi, combo, điều kiện và cách giữ chỗ ngay trên một hệ thống.
+              Không cần mở cả chục tab để so từng tour. Xem giá từ, ảnh thật, combo và điều kiện trước; cần hỏi gì thì nhắn Zalo luôn.
             </h2>
             <div className={styles.heroActions}>
-              <a href="#tour-ban-chay">Xem tour bán chạy</a>
+              <a href="#tour-ban-chay">Xem tour nổi bật</a>
               <a href="#combo">🔥 Xem combo</a>
-              <a href={vietnamBusinessConfig.googleReviewsUrl} target="_blank" rel="noreferrer">⭐ Google Reviews</a>
+              <a href={vietnamBusinessConfig.googleReviewsUrl} target="_blank" rel="noreferrer">⭐ Xem đánh giá</a>
             </div>
             <div className={styles.heroProof}>
-              <span>✓ Giá khóa sau xác nhận</span>
-              <span>✓ Deposit VietQR</span>
-              <span>✓ Private không ghép khách</span>
+              <span>✓ Báo rõ giá trước khi chốt</span>
+              <span>✓ Có đặt cọc VietQR</span>
+              <span>✓ Tour riêng không ghép khách</span>
             </div>
           </div>
         </div>
@@ -100,30 +97,30 @@ export default function VietnamHub() {
         <div className={styles.heroMosaic}>
           <a href="/vi/tour-cu-lao-cham" className={styles.visualTile}>
             <img src={vietnamHubHero.cham} alt="Khách thật tại Cù Lao Chàm" />
-            <span><small>BIỂN</small><b>Cù Lao Chàm</b></span>
+            <span><small>ĐI BIỂN</small><b>Cù Lao Chàm</b></span>
           </a>
           <a href="/vi/tour-hoi-an-rung-dua" className={styles.visualTile}>
             <img src={vietnamHubHero.hoiAn} alt="Khách đi thuyền đèn lồng Hội An" />
-            <span><small>BUỔI TỐI</small><b>Hội An</b></span>
+            <span><small>CHIỀU & TỐI</small><b>Hội An</b></span>
           </a>
           <a href="/vi/tour-3-dao-phu-quoc" className={`${styles.visualTile} ${styles.visualWide}`}>
             <img src={vietnamHubHero.phuQuoc} alt="Tour đảo Phú Quốc" />
-            <span><small>ĐẢO NGỌC</small><b>Phú Quốc</b></span>
+            <span><small>BIỂN ĐẢO</small><b>Phú Quốc</b></span>
           </a>
         </div>
       </section>
 
       <section className={styles.quickIntent}>
-        <a href="/vi/du-lich-da-nang-tu-tuc"><b>Đà Nẵng tự túc</b><span>Lịch trình · chi phí →</span></a>
-        <a href="/vi/combo-da-nang-3-tour"><b>Combo Đà Nẵng</b><span>Giảm việc phải tìm 3 lần →</span></a>
-        <a href="/vi/tour-rieng-da-nang-gia-dinh"><b>Gia đình đi riêng</b><span>Không ghép khách →</span></a>
-        <a href="/vi/du-lich-phu-quoc-tu-tuc"><b>Phú Quốc</b><span>Tour đảo · resort · xe →</span></a>
+        <a href="/vi/du-lich-da-nang-tu-tuc"><b>Tự túc Đà Nẵng</b><span>Xem lịch trình & chi phí →</span></a>
+        <a href="/vi/combo-da-nang-3-tour"><b>Combo Đà Nẵng</b><span>Gom tour cho đỡ mất công →</span></a>
+        <a href="/vi/tour-rieng-da-nang-gia-dinh"><b>Gia đình đi riêng</b><span>Không ghép khách khác →</span></a>
+        <a href="/vi/du-lich-phu-quoc-tu-tuc"><b>Đi Phú Quốc</b><span>Tour đảo · resort · xe →</span></a>
       </section>
 
       <section className={styles.section} id="tour-ban-chay">
         <div className={styles.sectionHead}>
-          <div><p>01 · CHỌN NHANH</p><h2>Những trải nghiệm khách Việt dễ bắt đầu nhất.</h2></div>
-          <span>Ảnh đang dùng là ảnh tour/khách thật đã có trong hệ thống GoVietStay. Giá chỉ hiển thị khi chi phí đã được xác minh.</span>
+          <div><p>01 · TOUR NỔI BẬT</p><h2>Những tour khách Việt thường hỏi nhiều nhất.</h2></div>
+          <span>Giá bên dưới là mức “từ”. Ngày đi, số khách và quyền lợi cụ thể sẽ được xác nhận lại trước khi bạn đặt cọc.</span>
         </div>
         <div className={styles.productGrid}>
           {vietnamFeaturedProducts.map((item) => {
@@ -139,7 +136,7 @@ export default function VietnamHub() {
                   <small>{page.destination}</small>
                   <h3>{page.h1}</h3>
                   <p>{item.benefit}</p>
-                  <div><strong>{priceLabel(item.slug)}</strong><b>Xem tour →</b></div>
+                  <div><strong>{priceLabel(item.slug)}</strong><b>Xem chi tiết →</b></div>
                 </div>
               </a>
             );
@@ -149,10 +146,10 @@ export default function VietnamHub() {
 
       <section className={styles.comboZone} id="combo">
         <div className={styles.comboIntro}>
-          <p>02 · VŨ KHÍ CHO KHÁCH VIỆT</p>
-          <h2>Combo không phải để nhồi thêm dịch vụ.</h2>
-          <span>Combo tốt là khi bạn thực sự cần nhiều phần và tổng quyết định trở nên đơn giản hơn.</span>
-          <a href="/vi/combo-da-nang-3-tour">Xem cách GoVietStay tính combo →</a>
+          <p>02 · ĐI NHIỀU THÌ XEM COMBO</p>
+          <h2>Đã đi vài tour thì gom lại cho đỡ mất công.</h2>
+          <span>Combo phù hợp khi bạn thật sự muốn đi nhiều điểm. Mình gom chung để dễ xếp lịch, dễ theo dõi và thường có tổng giá tốt hơn mua từng phần riêng.</span>
+          <a href="/vi/combo-da-nang-3-tour">Xem combo Đà Nẵng 3 tour →</a>
         </div>
         <div className={styles.comboCards}>
           {vietnamComboVisuals.map((combo) => (
@@ -172,50 +169,50 @@ export default function VietnamHub() {
       <section className={styles.privateZone} id="private">
         <div className={styles.privatePhoto}>
           <img src="/happy-travelers/02462467f09771c928865.jpg" alt="Khách thật GoVietStay" loading="lazy" />
-          <div><small>PRIVATE FAMILY</small><b>Chuyến đi phải thích nghi với gia đình.</b></div>
+          <div><small>TOUR RIÊNG GIA ĐÌNH</small><b>Nhà mình đi thế nào thì lịch được sắp như thế.</b></div>
         </div>
         <div className={styles.privateCopy}>
-          <p>03 · RIÊNG TƯ THEO ĐÚNG NGHĨA</p>
-          <h2>Không cần chọn tour trước. Hãy nói gia đình bạn gồm ai.</h2>
+          <p>03 · KHÔNG GHÉP KHÁCH KHÁC</p>
+          <h2>Chưa cần chọn tour. Cứ nói cho GoVietStay biết nhà mình đi mấy người.</h2>
           <div className={styles.questions}>
             {[
-              ["01","Bao nhiêu người?"],
+              ["01","Đi bao nhiêu người?"],
               ["02","Ngày nào?"],
-              ["03","Có trẻ em / người lớn tuổi?"],
-              ["04","Thích ăn, biển, ảnh hay lịch sử?"],
-              ["05","Điều gì tuyệt đối không muốn?"],
+              ["03","Có bé nhỏ hoặc người lớn tuổi không?"],
+              ["04","Thích biển, ăn uống, chụp hình hay lịch sử?"],
+              ["05","Có điều gì cả nhà không thích?"],
             ].map(([n,q]) => <div key={n}><b>{n}</b><span>{q}</span></div>)}
           </div>
-          <p className={styles.privateNote}>Nếu booking được xác nhận là private: không ghép khách lạ. Giờ nghỉ, nhịp độ và điểm bỏ qua được thiết kế theo nhóm trong phạm vi vận hành thực tế.</p>
+          <p className={styles.privateNote}>Nếu đã chốt tour riêng thì không ghép khách lạ. Giờ đi, giờ nghỉ và số điểm sẽ được sắp theo gia đình trong phạm vi giờ mở cửa, vé và điều kiện thực tế.</p>
           <div className={styles.privateActions}>
-            <a href="/vi/tour-rieng-da-nang-gia-dinh">Thiết kế tour riêng</a>
-            <a href={vietnamBusinessConfig.zaloUrl} target="_blank" rel="noreferrer">Gửi 5 thông tin qua Zalo</a>
+            <a href="/vi/tour-rieng-da-nang-gia-dinh">Xem tour riêng gia đình</a>
+            <a href={vietnamBusinessConfig.zaloUrl} target="_blank" rel="noreferrer">Nhắn nhu cầu qua Zalo</a>
           </div>
         </div>
       </section>
 
       <section className={styles.reviewZone} id="review">
         <div className={styles.sectionHead}>
-          <div><p>04 · BẰNG CHỨNG TRƯỚC QUẢNG CÁO</p><h2>Đừng chỉ nghe GoVietStay nói.</h2></div>
-          <span>Xem khách thật và ảnh chụp review thật đang có trong thư viện của GoVietStay, rồi tự quyết định.</span>
+          <div><p>04 · KHÁCH ĐÃ ĐI NÓI GÌ?</p><h2>Anh/chị cứ xem review trước rồi hãy đặt.</h2></div>
+          <span>Đây là ảnh khách thật và ảnh chụp review đang có trong hệ thống GoVietStay. Không cần chỉ nghe lời quảng cáo từ chính chúng tôi.</span>
         </div>
 
         <div className={styles.realGuestStrip}>
           {vietnamRealGuests.map((src, i) => (
-            <div key={src}><img src={src} alt={`Khách thật GoVietStay ${i+1}`} loading="lazy" /></div>
+            <div key={src}><img src={src} alt={`Khách GoVietStay ${i+1}`} loading="lazy" /></div>
           ))}
         </div>
 
         <div className={styles.reviewGrid}>
           <div className={styles.reviewCallout}>
             <small>GOOGLE REVIEWS</small>
-            <h3>Review thật quan trọng hơn một lời hứa đẹp.</h3>
-            <p>Không cần tin headline của chúng tôi. Mở Google Maps, đọc các đánh giá thật và xem cách GoVietStay trả lời khách.</p>
-            <a href={vietnamBusinessConfig.googleReviewsUrl} target="_blank" rel="noreferrer">Mở Google Reviews thật ↗</a>
+            <h3>Muốn biết dịch vụ ra sao, xem khách cũ là nhanh nhất.</h3>
+            <p>Mở Google Maps, đọc các đánh giá gần đây và xem GoVietStay xử lý phản hồi của khách như thế nào.</p>
+            <a href={vietnamBusinessConfig.googleReviewsUrl} target="_blank" rel="noreferrer">Mở Google Reviews ↗</a>
           </div>
           {vietnamReviewScreenshots.map((src) => (
             <a href={vietnamBusinessConfig.googleReviewsUrl} target="_blank" rel="noreferrer" className={styles.reviewShot} key={src}>
-              <img src={src} alt="Ảnh chụp Google Review thật của GoVietStay" loading="lazy" />
+              <img src={src} alt="Ảnh chụp Google Review của GoVietStay" loading="lazy" />
             </a>
           ))}
         </div>
@@ -224,40 +221,40 @@ export default function VietnamHub() {
       <section className={styles.phuQuoc}>
         <div className={styles.phuImage}><img src="/tour/phuquoc/tour-06-3.jpg" alt="Phú Quốc GoVietStay" loading="lazy" /></div>
         <div className={styles.phuCopy}>
-          <p>05 · PHÚ QUỐC LÀ TRỤ CỘT, KHÔNG PHẢI PHẦN PHỤ</p>
-          <h2>Đảo rộng. Chọn đúng khu ở trước khi chọn danh sách điểm.</h2>
-          <p>GoVietStay tách rõ tour đảo, transfer, xe riêng và combo theo thời gian thật của khách — để giảm zig-zag và thời gian ngồi xe.</p>
+          <p>05 · PHÚ QUỐC</p>
+          <h2>Phú Quốc rộng, ở sai khu là mỗi ngày mất khá nhiều thời gian đi xe.</h2>
+          <p>Vì vậy GoVietStay sẽ hỏi resort trước rồi mới gợi ý tour đảo, xe riêng hay combo. Đi đúng khu sẽ nhẹ hơn nhiều.</p>
           <div>
-            <a href="/vi/tour-3-dao-phu-quoc">3 đảo</a>
+            <a href="/vi/tour-3-dao-phu-quoc">Tour 3 đảo</a>
             <a href="/vi/tour-4-dao-phu-quoc-cap-treo">4 đảo + Hòn Thơm</a>
             <a href="/vi/combo-phu-quoc-4n3d">Combo 4N3Đ</a>
-            <a href="/vi/tour-rieng-phu-quoc-gia-dinh">Private family</a>
+            <a href="/vi/tour-rieng-phu-quoc-gia-dinh">Gia đình đi riêng</a>
           </div>
         </div>
       </section>
 
       <section className={styles.how}>
         <div className={styles.sectionHead}>
-          <div><p>06 · ÍT BƯỚC HƠN</p><h2>Từ Google đến booking chỉ nên có 3 quyết định.</h2></div>
+          <div><p>06 · ĐẶT TOUR KHÔNG CẦN RẮC RỐI</p><h2>Chỉ cần ba bước là đủ.</h2></div>
         </div>
         <div className={styles.howGrid}>
-          <div><b>01</b><h3>Chọn kiểu chuyến đi</h3><p>Tour lẻ, combo hay private family.</p></div>
-          <div><b>02</b><h3>Xác nhận giá & điều kiện</h3><p>Ngày, số người, trẻ em, quyền lợi và điều khoản trước khi trả tiền.</p></div>
-          <div><b>03</b><h3>Giữ chỗ</h3><p>VietQR/deposit khi đủ điều kiện; GoVietStay kiểm tra tiền rồi xác nhận booking.</p></div>
+          <div><b>01</b><h3>Chọn tour, combo hoặc đi riêng</h3><p>Nếu chưa biết chọn gì, cứ gửi ngày và số người trước.</p></div>
+          <div><b>02</b><h3>GoVietStay xác nhận giá</h3><p>Kiểm tra ngày đi, trẻ em, phần bao gồm và điều kiện trước khi thu cọc.</p></div>
+          <div><b>03</b><h3>Giữ chỗ</h3><p>Booking đủ điều kiện có thể đặt cọc bằng VietQR; sau khi kiểm tra tiền, GoVietStay gửi xác nhận.</p></div>
         </div>
       </section>
 
       <section className={styles.directory}>
         <div className={styles.sectionHead}>
-          <div><p>07 · PHỦ TOÀN HÀNH TRÌNH TÌM KIẾM</p><h2>Tour, combo, private và cẩm nang.</h2></div>
-          <span>Phần này giữ hệ thống internal link mạnh cho SEO nhưng được trình bày gọn, không biến homepage thành một bức tường chữ.</span>
+          <div><p>07 · TÌM NHANH THEO NHU CẦU</p><h2>Tour, combo, đi riêng và kinh nghiệm tự túc.</h2></div>
+          <span>Nếu đang tìm trên Google một câu hỏi cụ thể, phần dưới sẽ giúp đi thẳng đến đúng trang thay vì đọc hết cả website.</span>
         </div>
         <div className={styles.directoryGrid}>
           {[
             ["Tour & xe", groups.product],
             ["Combo", groups.combo],
             ["Tour riêng", groups.private],
-            ["Cẩm nang", groups.guide],
+            ["Kinh nghiệm", groups.guide],
           ].map(([label, items]) => (
             <div key={label as string}>
               <h3>{label as string}</h3>
@@ -273,19 +270,19 @@ export default function VietnamHub() {
         <section className={styles.facebook}>
           <div>
             <small>FACEBOOK HỒ TRÀM TRAVEL</small>
-            <h2>Deal, review và câu chuyện chuyến đi không chỉ sống trên Google.</h2>
-            <p>Facebook là kênh tạo nhu cầu; website là nơi khách kiểm tra giá, điều kiện và quyết định.</p>
+            <h2>Muốn xem thêm deal và câu chuyện chuyến đi, ghé Facebook Hồ Tràm Travel.</h2>
+            <p>Facebook để xem nội dung và cập nhật; website để kiểm tra tour, giá và điều kiện trước khi đặt.</p>
           </div>
-          <a href={vietnamBusinessConfig.facebookHoTramUrl} target="_blank" rel="noreferrer">Theo dõi Hồ Tràm Travel ↗</a>
+          <a href={vietnamBusinessConfig.facebookHoTramUrl} target="_blank" rel="noreferrer">Mở Facebook ↗</a>
         </section>
       ) : null}
 
       <section className={styles.final}>
-        <img src="/tour/cham-island/guest-pickup.jpg" alt="GoVietStay đón khách thật" loading="lazy" />
+        <img src="/tour/cham-island/guest-pickup.jpg" alt="GoVietStay đón khách" loading="lazy" />
         <div>
-          <p>GOVIETSTAY · TRUSTED LOCAL SUPPORT</p>
-          <h2>Bạn cho ngày đi và số người. Chúng tôi giúp phần còn lại dễ quyết định.</h2>
-          <a href={vietnamBusinessConfig.zaloUrl} target="_blank" rel="noreferrer">Bắt đầu trên Zalo</a>
+          <p>GOVIETSTAY · HỖ TRỢ TẠI ĐỊA PHƯƠNG</p>
+          <h2>Bạn gửi ngày đi và số người. Phần còn lại mình cùng sắp cho gọn.</h2>
+          <a href={vietnamBusinessConfig.zaloUrl} target="_blank" rel="noreferrer">Nhắn Zalo cho GoVietStay</a>
         </div>
       </section>
 

@@ -11,6 +11,7 @@ export type VietnamSeoPage = {
   focus: string;
   updated: string;
 };
+
 export const vietnamSeoPages: VietnamSeoPage[] = [
   {
     "slug": "tour-ba-na-hills",
@@ -19,10 +20,10 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": "bana",
     "depositPercent": 20,
     "title": "Tour Bà Nà Hills 2026 từ Đà Nẵng | GoVietStay",
-    "h1": "Tour Bà Nà Hills: biết rõ mình trả gì trước khi đặt",
-    "description": "Không cần tự ghép vé, xe và giờ đón. Cho GoVietStay ngày đi, số người và khách sạn; chúng tôi xác nhận tổng chi phí trước.",
-    "hero": "Không cần tự ghép vé, xe và giờ đón. Cho GoVietStay ngày đi, số người và khách sạn; chúng tôi xác nhận tổng chi phí trước.",
-    "focus": "Bà Nà Hills, trẻ em theo chiều cao, tour ghép hoặc riêng gia đình",
+    "h1": "Tour Bà Nà Hills từ Đà Nẵng: đi gọn một ngày, biết rõ chi phí trước",
+    "description": "Nếu không muốn tự lo vé, xe và giờ đón, đây là cách đơn giản nhất. Chỉ cần gửi ngày đi, số người và khách sạn, GoVietStay sẽ kiểm tra rồi báo lại rõ ràng.",
+    "hero": "Nếu không muốn tự lo vé, xe và giờ đón, đây là cách đơn giản nhất. Chỉ cần gửi ngày đi, số người và khách sạn, GoVietStay sẽ kiểm tra rồi báo lại rõ ràng.",
+    "focus": "Bà Nà Hills, trẻ em theo chiều cao, tour ghép, tour riêng gia đình",
     "updated": "2026-08-26"
   },
   {
@@ -32,10 +33,10 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": "cham",
     "depositPercent": 20,
     "title": "Tour Cù Lao Chàm 2026 | Cano, snorkeling | GoVietStay",
-    "h1": "Cù Lao Chàm: một ngày biển đáng đi khi điều kiện phù hợp",
-    "description": "Đi biển đẹp nhất khi lịch có thể linh hoạt theo gió, sóng và vận hành thực tế.",
-    "hero": "Đi biển đẹp nhất khi lịch có thể linh hoạt theo gió, sóng và vận hành thực tế.",
-    "focus": "Cano, snorkeling, thời tiết, gia đình, private",
+    "h1": "Tour Cù Lao Chàm: một ngày đi biển, cano và snorkeling",
+    "description": "Cù Lao Chàm đẹp nhất khi biển êm. GoVietStay sẽ kiểm tra tình hình sát ngày để bạn đỡ phải đoán xem tour có chạy hay không.",
+    "hero": "Cù Lao Chàm đẹp nhất khi biển êm. GoVietStay sẽ kiểm tra tình hình sát ngày để bạn đỡ phải đoán xem tour có chạy hay không.",
+    "focus": "Cano, snorkeling, thời tiết, gia đình, tour riêng",
     "updated": "2026-08-26"
   },
   {
@@ -45,9 +46,9 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": "hoian",
     "depositPercent": 20,
     "title": "Tour Hội An Rừng Dừa 2026 | GoVietStay",
-    "h1": "Hội An + Rừng Dừa: đi buổi chiều để chuyến đi có nhịp đẹp hơn",
-    "description": "Rừng Dừa trước, phố cổ lúc hoàng hôn và đèn lồng sau. Không cần chạy checklist.",
-    "hero": "Rừng Dừa trước, phố cổ lúc hoàng hôn và đèn lồng sau. Không cần chạy checklist.",
+    "h1": "Tour Hội An + Rừng Dừa: đi buổi chiều, tối ngắm phố đèn lồng",
+    "description": "Đi Rừng Dừa trước rồi vào phố cổ lúc trời dịu nắng là lịch khá dễ chịu. Bạn vừa có trải nghiệm thuyền thúng, vừa có thời gian đi bộ Hội An vào buổi tối.",
+    "hero": "Đi Rừng Dừa trước rồi vào phố cổ lúc trời dịu nắng là lịch khá dễ chịu. Bạn vừa có trải nghiệm thuyền thúng, vừa có thời gian đi bộ Hội An vào buổi tối.",
     "focus": "Rừng Dừa, thuyền thúng, Hội An buổi tối, gia đình",
     "updated": "2026-08-26"
   },
@@ -58,9 +59,9 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": "hue",
     "depositPercent": 20,
     "title": "Tour Huế từ Đà Nẵng 2026 | GoVietStay",
-    "h1": "Huế từ Đà Nẵng: một ngày di sản cần đủ thời gian",
-    "description": "Huế không nên là một ngày chạy điểm. Chọn ít hơn nhưng hiểu và tận hưởng nhiều hơn.",
-    "hero": "Huế không nên là một ngày chạy điểm. Chọn ít hơn nhưng hiểu và tận hưởng nhiều hơn.",
+    "h1": "Tour Huế từ Đà Nẵng: một ngày vừa đủ để cảm nhận cố đô",
+    "description": "Huế không hợp kiểu chạy thật nhiều điểm. Lịch nên vừa sức, có thời gian xem Đại Nội, ăn trưa và nghỉ một chút trước khi về Đà Nẵng.",
+    "hero": "Huế không hợp kiểu chạy thật nhiều điểm. Lịch nên vừa sức, có thời gian xem Đại Nội, ăn trưa và nghỉ một chút trước khi về Đà Nẵng.",
     "focus": "Đại Nội, di sản, xe riêng, gia đình",
     "updated": "2026-08-26"
   },
@@ -71,10 +72,10 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": null,
     "depositPercent": 0,
     "title": "Đón sân bay Đà Nẵng 2026 | GoVietStay",
-    "h1": "Đón sân bay Đà Nẵng: đúng xe, đúng hành lý, đúng điểm đến",
-    "description": "Gửi chuyến bay, số người, số vali và khách sạn. GoVietStay chọn xe theo nhu cầu thật.",
-    "hero": "Gửi chuyến bay, số người, số vali và khách sạn. GoVietStay chọn xe theo nhu cầu thật.",
-    "focus": "DAD, khách sạn, Hội An, transfer 0% deposit",
+    "h1": "Đón sân bay Đà Nẵng: gửi chuyến bay, GoVietStay lo xe",
+    "description": "Chỉ cần gửi số chuyến bay, số người, số vali và tên khách sạn. GoVietStay sẽ chọn loại xe phù hợp để bạn không phải lo xe chật hay thiếu chỗ hành lý.",
+    "hero": "Chỉ cần gửi số chuyến bay, số người, số vali và tên khách sạn. GoVietStay sẽ chọn loại xe phù hợp để bạn không phải lo xe chật hay thiếu chỗ hành lý.",
+    "focus": "Sân bay Đà Nẵng, khách sạn, Hội An, xe riêng",
     "updated": "2026-08-26"
   },
   {
@@ -84,10 +85,10 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": null,
     "depositPercent": 0,
     "title": "Thuê xe Đà Nẵng Hội An 2026 | GoVietStay",
-    "h1": "Đà Nẵng ↔ Hội An bằng xe riêng: linh hoạt khi bạn cần",
-    "description": "Đi một chiều, khứ hồi hay thêm điểm dừng? Xe riêng phục vụ lịch của gia đình, không ngược lại.",
-    "hero": "Đi một chiều, khứ hồi hay thêm điểm dừng? Xe riêng phục vụ lịch của gia đình, không ngược lại.",
-    "focus": "xe riêng, hành lý, gia đình, không ghép khách",
+    "h1": "Thuê xe Đà Nẵng – Hội An: đi giờ nào, dừng đâu, mình thống nhất trước",
+    "description": "Nếu đi cùng gia đình, có nhiều hành lý hoặc muốn ghé thêm một điểm trên đường, xe riêng sẽ thoải mái hơn. Bạn gửi lịch, GoVietStay báo xe và giá trước.",
+    "hero": "Nếu đi cùng gia đình, có nhiều hành lý hoặc muốn ghé thêm một điểm trên đường, xe riêng sẽ thoải mái hơn. Bạn gửi lịch, GoVietStay báo xe và giá trước.",
+    "focus": "Xe riêng, hành lý, gia đình, không ghép khách",
     "updated": "2026-08-26"
   },
   {
@@ -97,9 +98,9 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": "pq3",
     "depositPercent": 20,
     "title": "Tour 3 đảo Phú Quốc 2026 | GoVietStay",
-    "h1": "Tour 3 đảo Phú Quốc: dành cả ngày cho biển thay vì chạy điểm",
-    "description": "Nếu mục tiêu là biển, hãy dành đúng một ngày cho cano và snorkeling, giữ lịch linh hoạt theo điều kiện.",
-    "hero": "Nếu mục tiêu là biển, hãy dành đúng một ngày cho cano và snorkeling, giữ lịch linh hoạt theo điều kiện.",
+    "h1": "Tour 3 đảo Phú Quốc: dành một ngày trọn vẹn cho biển",
+    "description": "Nếu đã chọn đi tour đảo thì nên dành hẳn một ngày cho cano, snorkeling và nghỉ trên biển. Lịch thực tế sẽ được điều chỉnh theo điều kiện trong ngày.",
+    "hero": "Nếu đã chọn đi tour đảo thì nên dành hẳn một ngày cho cano, snorkeling và nghỉ trên biển. Lịch thực tế sẽ được điều chỉnh theo điều kiện trong ngày.",
     "focus": "3 đảo, cano, snorkeling, gia đình",
     "updated": "2026-08-26"
   },
@@ -110,9 +111,9 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": "pq4",
     "depositPercent": 20,
     "title": "Tour 4 đảo Phú Quốc + cáp treo 2026 | GoVietStay",
-    "h1": "4 đảo + cáp treo Hòn Thơm: gộp đúng trải nghiệm, không gộp cho thật nhiều",
-    "description": "Một ngày lớn chỉ đáng tiền khi quyền lợi, vé và thời gian ăn khớp nhau.",
-    "hero": "Một ngày lớn chỉ đáng tiền khi quyền lợi, vé và thời gian ăn khớp nhau.",
+    "h1": "Tour 4 đảo Phú Quốc + cáp treo Hòn Thơm: xem kỹ quyền lợi trước khi đặt",
+    "description": "Gói này có khá nhiều hạng mục nên điều quan trọng là biết vé cáp treo, cano, ăn uống và điểm đón đã gồm những gì. GoVietStay sẽ xác nhận lại trước khi nhận cọc.",
+    "hero": "Gói này có khá nhiều hạng mục nên điều quan trọng là biết vé cáp treo, cano, ăn uống và điểm đón đã gồm những gì. GoVietStay sẽ xác nhận lại trước khi nhận cọc.",
     "focus": "4 đảo, Hòn Thơm, cáp treo, quyền lợi rõ",
     "updated": "2026-08-26"
   },
@@ -123,10 +124,10 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": null,
     "depositPercent": 0,
     "title": "Đón sân bay Phú Quốc 2026 | GoVietStay",
-    "h1": "Đón sân bay Phú Quốc: chọn xe theo resort và hành lý",
-    "description": "Phú Quốc dài. Gửi đúng resort để biết trước thời gian, loại xe và chi phí.",
-    "hero": "Phú Quốc dài. Gửi đúng resort để biết trước thời gian, loại xe và chi phí.",
-    "focus": "PQC, resort, transfer riêng, 0% deposit",
+    "h1": "Đón sân bay Phú Quốc: báo đúng resort để chọn xe và tính giá",
+    "description": "Phú Quốc khá rộng, resort ở nam đảo, trung tâm hay bắc đảo sẽ có quãng đường khác nhau. Gửi đúng tên resort là cách nhanh nhất để có giá chính xác.",
+    "hero": "Phú Quốc khá rộng, resort ở nam đảo, trung tâm hay bắc đảo sẽ có quãng đường khác nhau. Gửi đúng tên resort là cách nhanh nhất để có giá chính xác.",
+    "focus": "Sân bay Phú Quốc, resort, xe riêng, không cần cọc với transfer tiêu chuẩn",
     "updated": "2026-08-26"
   },
   {
@@ -136,10 +137,10 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": null,
     "depositPercent": 0,
     "title": "Thuê xe Phú Quốc 2026 | GoVietStay",
-    "h1": "Thuê xe Phú Quốc: đi theo lịch của bạn, không chạy theo xe tour",
-    "description": "Nam đảo, bắc đảo hay đi ăn theo danh sách của bạn — gom tuyến để bớt thời gian ngồi xe.",
-    "hero": "Nam đảo, bắc đảo hay đi ăn theo danh sách của bạn — gom tuyến để bớt thời gian ngồi xe.",
-    "focus": "xe riêng, resort, nam đảo, bắc đảo",
+    "h1": "Thuê xe Phú Quốc: đi theo lịch của gia đình, không chạy vòng cả đảo",
+    "description": "Bạn muốn đi nam đảo, bắc đảo hay chỉ đi ăn và ngắm hoàng hôn? GoVietStay sẽ gom điểm theo khu vực để bớt thời gian ngồi xe.",
+    "hero": "Bạn muốn đi nam đảo, bắc đảo hay chỉ đi ăn và ngắm hoàng hôn? GoVietStay sẽ gom điểm theo khu vực để bớt thời gian ngồi xe.",
+    "focus": "Xe riêng, resort, nam đảo, bắc đảo",
     "updated": "2026-08-26"
   },
   {
@@ -149,10 +150,10 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": "comboDN3",
     "depositPercent": 20,
     "title": "Combo Đà Nẵng 3 tour 2026 | GoVietStay",
-    "h1": "Combo Đà Nẵng 3 tour: mua một lần, giảm việc phải tìm ba lần",
-    "description": "Bà Nà + Hội An/Rừng Dừa + Cù Lao Chàm trong một booking, một đầu mối Zalo.",
-    "hero": "Bà Nà + Hội An/Rừng Dừa + Cù Lao Chàm trong một booking, một đầu mối Zalo.",
-    "focus": "Bà Nà, Hội An, Cù Lao Chàm, tiết kiệm tổng",
+    "h1": "Combo Đà Nẵng 3 tour: Bà Nà + Hội An + Cù Lao Chàm",
+    "description": "Nếu đã xác định đi cả ba điểm, gom chung một booking sẽ đỡ phải hỏi giá và sắp lịch nhiều lần. GoVietStay cũng dễ hỗ trợ đổi thứ tự khi thời tiết thay đổi.",
+    "hero": "Nếu đã xác định đi cả ba điểm, gom chung một booking sẽ đỡ phải hỏi giá và sắp lịch nhiều lần. GoVietStay cũng dễ hỗ trợ đổi thứ tự khi thời tiết thay đổi.",
+    "focus": "Bà Nà, Hội An, Cù Lao Chàm, combo tiết kiệm",
     "updated": "2026-08-26"
   },
   {
@@ -162,10 +163,10 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": null,
     "depositPercent": 20,
     "title": "Combo Đà Nẵng 3N2Đ 2026 | GoVietStay",
-    "h1": "Combo Đà Nẵng 3N2Đ: bạn lo vé máy bay, chúng tôi lo phần còn lại",
-    "description": "Land combo giúp bạn tự săn vé máy bay nhưng vẫn có một lịch trình thống nhất sau khi hạ cánh.",
-    "hero": "Land combo giúp bạn tự săn vé máy bay nhưng vẫn có một lịch trình thống nhất sau khi hạ cánh.",
-    "focus": "land combo, sân bay, tour, khách sạn tùy chọn",
+    "h1": "Combo Đà Nẵng 3N2Đ: bạn lo vé máy bay, phần ở Đà Nẵng để GoVietStay lo",
+    "description": "Bạn có thể tự săn vé máy bay, còn xe sân bay, khách sạn và tour thì ghép theo nhu cầu. Cách này linh hoạt hơn một gói cố định từ đầu đến cuối.",
+    "hero": "Bạn có thể tự săn vé máy bay, còn xe sân bay, khách sạn và tour thì ghép theo nhu cầu. Cách này linh hoạt hơn một gói cố định từ đầu đến cuối.",
+    "focus": "Land combo, sân bay, tour, khách sạn tùy chọn",
     "updated": "2026-08-26"
   },
   {
@@ -175,10 +176,10 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": null,
     "depositPercent": 20,
     "title": "Combo Đà Nẵng 4N3Đ 2026 | GoVietStay",
-    "h1": "Đà Nẵng 4N3Đ: đủ thời gian để đi đẹp mà không phải chạy",
-    "description": "Một lịch tốt không phải lịch có nhiều điểm nhất; là lịch bạn vẫn còn năng lượng để tận hưởng.",
-    "hero": "Một lịch tốt không phải lịch có nhiều điểm nhất; là lịch bạn vẫn còn năng lượng để tận hưởng.",
-    "focus": "Bà Nà, Hội An, biển, family",
+    "h1": "Combo Đà Nẵng 4N3Đ: đủ thời gian đi chơi mà không cần chạy quá nhiều",
+    "description": "Bốn ngày ba đêm đủ để đi Bà Nà, Hội An và thêm một trải nghiệm nữa. Quan trọng là chừa khoảng nghỉ để cả chuyến đi không biến thành chạy từ điểm này sang điểm khác.",
+    "hero": "Bốn ngày ba đêm đủ để đi Bà Nà, Hội An và thêm một trải nghiệm nữa. Quan trọng là chừa khoảng nghỉ để cả chuyến đi không biến thành chạy từ điểm này sang điểm khác.",
+    "focus": "Bà Nà, Hội An, biển, gia đình",
     "updated": "2026-08-26"
   },
   {
@@ -188,10 +189,10 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": null,
     "depositPercent": 20,
     "title": "Combo Đà Nẵng gia đình 2026 | GoVietStay",
-    "h1": "Combo Đà Nẵng cho gia đình: ưu tiên sức khỏe, riêng tư và thời gian bên nhau",
-    "description": "Hãy cho biết ai đang đi cùng bạn; lịch trình phải thích nghi với gia đình, không ngược lại.",
-    "hero": "Hãy cho biết ai đang đi cùng bạn; lịch trình phải thích nghi với gia đình, không ngược lại.",
-    "focus": "trẻ nhỏ, người lớn tuổi, private, nghỉ hợp lý",
+    "h1": "Combo Đà Nẵng cho gia đình: đi vừa sức, ưu tiên thời gian bên nhau",
+    "description": "Nhà có trẻ nhỏ hay bố mẹ lớn tuổi thì lịch nên khác nhóm bạn trẻ. Hãy cho GoVietStay biết ai đi cùng để chọn giờ, xe và số điểm phù hợp.",
+    "hero": "Nhà có trẻ nhỏ hay bố mẹ lớn tuổi thì lịch nên khác nhóm bạn trẻ. Hãy cho GoVietStay biết ai đi cùng để chọn giờ, xe và số điểm phù hợp.",
+    "focus": "Trẻ nhỏ, người lớn tuổi, tour riêng, lịch nhẹ",
     "updated": "2026-08-26"
   },
   {
@@ -201,10 +202,10 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": null,
     "depositPercent": 20,
     "title": "Combo Phú Quốc 3N2Đ 2026 | GoVietStay",
-    "h1": "Phú Quốc 3N2Đ: chọn một trọng tâm thay vì cố đi hết đảo",
-    "description": "Ba ngày ngắn. Chọn biển, nghỉ dưỡng hoặc vui chơi làm trọng tâm.",
-    "hero": "Ba ngày ngắn. Chọn biển, nghỉ dưỡng hoặc vui chơi làm trọng tâm.",
-    "focus": "land combo, resort, tour đảo, transfer",
+    "h1": "Combo Phú Quốc 3N2Đ: ít ngày thì chọn đúng thứ mình thích nhất",
+    "description": "Ba ngày hai đêm khá ngắn. Nếu thích biển thì dành một ngày cho biển; nếu thích nghỉ dưỡng thì đừng cố nhồi quá nhiều điểm tham quan.",
+    "hero": "Ba ngày hai đêm khá ngắn. Nếu thích biển thì dành một ngày cho biển; nếu thích nghỉ dưỡng thì đừng cố nhồi quá nhiều điểm tham quan.",
+    "focus": "Land combo, resort, tour đảo, xe sân bay",
     "updated": "2026-08-26"
   },
   {
@@ -214,10 +215,10 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": null,
     "depositPercent": 20,
     "title": "Combo Phú Quốc 4N3Đ 2026 | GoVietStay",
-    "h1": "Phú Quốc 4N3Đ: đủ chỗ cho biển, resort và một ngày khám phá",
-    "description": "Bốn ngày cho phép có một ngày biển, một ngày khám phá và vẫn còn thời gian nghỉ dưỡng.",
-    "hero": "Bốn ngày cho phép có một ngày biển, một ngày khám phá và vẫn còn thời gian nghỉ dưỡng.",
-    "focus": "resort, tour đảo, Hòn Thơm, family",
+    "h1": "Combo Phú Quốc 4N3Đ: có biển, có nghỉ, vẫn đủ thời gian khám phá",
+    "description": "Bốn ngày ba đêm là khoảng thời gian khá đẹp cho Phú Quốc. Có thể dành một ngày đi đảo, một ngày vui chơi hoặc khám phá và vẫn còn thời gian ở resort.",
+    "hero": "Bốn ngày ba đêm là khoảng thời gian khá đẹp cho Phú Quốc. Có thể dành một ngày đi đảo, một ngày vui chơi hoặc khám phá và vẫn còn thời gian ở resort.",
+    "focus": "Resort, tour đảo, Hòn Thơm, gia đình",
     "updated": "2026-08-26"
   },
   {
@@ -227,10 +228,10 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": null,
     "depositPercent": 20,
     "title": "Combo Phú Quốc gia đình 2026 | GoVietStay",
-    "h1": "Phú Quốc cho gia đình: một chuyến đi riêng tư, không phải lịch trình đại trà",
-    "description": "Bắt đầu bằng tuổi, sở thích và khu resort; sau đó mới chọn trải nghiệm.",
-    "hero": "Bắt đầu bằng tuổi, sở thích và khu resort; sau đó mới chọn trải nghiệm.",
-    "focus": "gia đình 3 thế hệ, private, trẻ em, resort",
+    "h1": "Combo Phú Quốc cho gia đình: chọn lịch theo tuổi và khu resort",
+    "description": "Gia đình ở khu nào, có bé nhỏ hay người lớn tuổi không và thích biển hay vui chơi sẽ quyết định lịch đi. GoVietStay hỏi những điều này trước rồi mới ghép dịch vụ.",
+    "hero": "Gia đình ở khu nào, có bé nhỏ hay người lớn tuổi không và thích biển hay vui chơi sẽ quyết định lịch đi. GoVietStay hỏi những điều này trước rồi mới ghép dịch vụ.",
+    "focus": "Gia đình nhiều thế hệ, tour riêng, trẻ em, resort",
     "updated": "2026-08-26"
   },
   {
@@ -240,10 +241,10 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": null,
     "depositPercent": 20,
     "title": "Tour riêng Đà Nẵng gia đình 2026 | GoVietStay",
-    "h1": "Tour riêng Đà Nẵng: chuyến đi chỉ dành cho gia đình bạn",
-    "description": "Chỉ cần cho số người, ngày đi, độ tuổi, sở thích và điều không muốn. Lịch trình được thiết kế quanh gia đình.",
-    "hero": "Chỉ cần cho số người, ngày đi, độ tuổi, sở thích và điều không muốn. Lịch trình được thiết kế quanh gia đình.",
-    "focus": "không ghép khách, riêng tư, nhịp độ, sở thích",
+    "h1": "Tour riêng Đà Nẵng cho gia đình: chỉ có người nhà mình",
+    "description": "Bạn cho GoVietStay biết số người, ngày đi, độ tuổi, sở thích và điều không muốn. Từ đó mới lên lịch, thay vì lấy một tour mẫu rồi bắt cả nhà đi theo.",
+    "hero": "Bạn cho GoVietStay biết số người, ngày đi, độ tuổi, sở thích và điều không muốn. Từ đó mới lên lịch, thay vì lấy một tour mẫu rồi bắt cả nhà đi theo.",
+    "focus": "Không ghép khách, riêng tư, giờ đi linh hoạt, sở thích",
     "updated": "2026-08-26"
   },
   {
@@ -253,10 +254,10 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": null,
     "depositPercent": 20,
     "title": "Tour riêng Hội An 2026 | GoVietStay",
-    "h1": "Hội An riêng tư: dành thời gian cho điều bạn thật sự thích",
-    "description": "Muốn chụp ảnh lâu, bỏ Rừng Dừa, ăn món riêng hay về sớm? Tour riêng cho phép bạn chọn.",
-    "hero": "Muốn chụp ảnh lâu, bỏ Rừng Dừa, ăn món riêng hay về sớm? Tour riêng cho phép bạn chọn.",
-    "focus": "không ghép khách, ảnh, ẩm thực, lịch riêng",
+    "h1": "Tour riêng Hội An: muốn đi chậm, chụp lâu hay về sớm đều dễ sắp xếp hơn",
+    "description": "Có người thích Rừng Dừa, có người chỉ muốn phố cổ và ăn tối. Tour riêng giúp bạn bỏ bớt những phần không hợp với nhóm mình.",
+    "hero": "Có người thích Rừng Dừa, có người chỉ muốn phố cổ và ăn tối. Tour riêng giúp bạn bỏ bớt những phần không hợp với nhóm mình.",
+    "focus": "Không ghép khách, chụp ảnh, ẩm thực, lịch riêng",
     "updated": "2026-08-26"
   },
   {
@@ -266,10 +267,10 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": null,
     "depositPercent": 20,
     "title": "Tour riêng Huế từ Đà Nẵng 2026 | GoVietStay",
-    "h1": "Huế riêng: bớt chạy điểm, thêm thời gian để hiểu",
-    "description": "Gia đình thích lịch sử thì dành thời gian cho lịch sử; thích cảnh và ẩm thực thì lịch phải khác.",
-    "hero": "Gia đình thích lịch sử thì dành thời gian cho lịch sử; thích cảnh và ẩm thực thì lịch phải khác.",
-    "focus": "xe riêng, guide tùy chọn, gia đình, di sản",
+    "h1": "Tour riêng Huế: đi theo sức của gia đình, không phải theo giờ của cả đoàn",
+    "description": "Nếu nhà có người lớn tuổi hoặc muốn tìm hiểu lịch sử kỹ hơn, tour riêng sẽ dễ sắp giờ nghỉ và thời gian ở mỗi điểm hơn.",
+    "hero": "Nếu nhà có người lớn tuổi hoặc muốn tìm hiểu lịch sử kỹ hơn, tour riêng sẽ dễ sắp giờ nghỉ và thời gian ở mỗi điểm hơn.",
+    "focus": "Xe riêng, hướng dẫn viên tùy chọn, gia đình, di sản",
     "updated": "2026-08-26"
   },
   {
@@ -279,10 +280,10 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": null,
     "depositPercent": 20,
     "title": "Tour riêng Phú Quốc gia đình 2026 | GoVietStay",
-    "h1": "Phú Quốc riêng cho gia đình: đảo của bạn, nhịp của bạn",
-    "description": "Cano riêng, xe riêng hay chỉ cần một phần private — chọn mức riêng tư theo nhu cầu và ngân sách.",
-    "hero": "Cano riêng, xe riêng hay chỉ cần một phần private — chọn mức riêng tư theo nhu cầu và ngân sách.",
-    "focus": "cano riêng, xe riêng, không ghép khách, family",
+    "h1": "Tour riêng Phú Quốc cho gia đình: cần riêng phần nào thì làm riêng phần đó",
+    "description": "Không phải lúc nào cũng cần cano riêng và xe riêng cả ngày. GoVietStay sẽ dựa vào số người, ngân sách và nhu cầu để chọn mức riêng tư vừa đủ.",
+    "hero": "Không phải lúc nào cũng cần cano riêng và xe riêng cả ngày. GoVietStay sẽ dựa vào số người, ngân sách và nhu cầu để chọn mức riêng tư vừa đủ.",
+    "focus": "Cano riêng, xe riêng, không ghép khách, gia đình",
     "updated": "2026-08-26"
   },
   {
@@ -292,10 +293,10 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": null,
     "depositPercent": 0,
     "title": "Du lịch Đà Nẵng tự túc 2026 | GoVietStay",
-    "h1": "Du lịch Đà Nẵng tự túc: tự do nhưng không cần tự lo mọi thứ",
-    "description": "Bạn tự đặt vé máy bay và khách sạn; GoVietStay chỉ xuất hiện ở phần giúp tiết kiệm thời gian hoặc tránh mua sai.",
-    "hero": "Bạn tự đặt vé máy bay và khách sạn; GoVietStay chỉ xuất hiện ở phần giúp tiết kiệm thời gian hoặc tránh mua sai.",
-    "focus": "lịch trình, khu ở, tour, xe, local support",
+    "h1": "Du lịch Đà Nẵng tự túc: tự đặt phần dễ, nhờ local hỗ trợ phần mất thời gian",
+    "description": "Vé máy bay và khách sạn bạn hoàn toàn có thể tự đặt. Những phần như xe sân bay, Bà Nà hay tour biển thì dùng dịch vụ khi thấy tiện hơn.",
+    "hero": "Vé máy bay và khách sạn bạn hoàn toàn có thể tự đặt. Những phần như xe sân bay, Bà Nà hay tour biển thì dùng dịch vụ khi thấy tiện hơn.",
+    "focus": "Lịch trình, khu ở, tour, xe, hỗ trợ địa phương",
     "updated": "2026-08-26"
   },
   {
@@ -305,10 +306,10 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": null,
     "depositPercent": 0,
     "title": "Lịch trình Đà Nẵng 4 ngày 3 đêm 2026 | GoVietStay",
-    "h1": "Đà Nẵng 4N3Đ: lịch đủ đẹp nhưng vẫn còn thời gian thở",
-    "description": "Ngày đến nhẹ, một ngày lớn, một chiều Hội An và ngày cuối linh hoạt là cấu trúc khó sai.",
-    "hero": "Ngày đến nhẹ, một ngày lớn, một chiều Hội An và ngày cuối linh hoạt là cấu trúc khó sai.",
-    "focus": "Bà Nà, Hội An, beach, sân bay",
+    "h1": "Lịch trình Đà Nẵng 4N3Đ: đi đủ đẹp mà vẫn có thời gian nghỉ",
+    "description": "Ngày đầu đi nhẹ, một ngày dành cho Bà Nà, một chiều tối ở Hội An và ngày cuối linh hoạt là lịch khá dễ áp dụng cho lần đầu đến Đà Nẵng.",
+    "hero": "Ngày đầu đi nhẹ, một ngày dành cho Bà Nà, một chiều tối ở Hội An và ngày cuối linh hoạt là lịch khá dễ áp dụng cho lần đầu đến Đà Nẵng.",
+    "focus": "Bà Nà, Hội An, biển, sân bay",
     "updated": "2026-08-26"
   },
   {
@@ -318,10 +319,10 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": null,
     "depositPercent": 0,
     "title": "Chi phí du lịch Đà Nẵng 2026 | GoVietStay",
-    "h1": "Chi phí Đà Nẵng: tính theo chuyến đi của bạn, không theo một con số trên mạng",
-    "description": "Tách khách sạn, trải nghiệm, xe và ăn uống; sau đó mới quyết định phần nào đáng nâng cấp.",
-    "hero": "Tách khách sạn, trải nghiệm, xe và ăn uống; sau đó mới quyết định phần nào đáng nâng cấp.",
-    "focus": "ngân sách, combo, giá tour, family",
+    "h1": "Chi phí du lịch Đà Nẵng: chia từng khoản sẽ dễ tính hơn",
+    "description": "Đừng cố tìm một con số chung cho tất cả. Hãy tách vé máy bay, khách sạn, tour, xe và ăn uống, rồi mới xem phần nào cần tiết kiệm và phần nào đáng chi thêm.",
+    "hero": "Đừng cố tìm một con số chung cho tất cả. Hãy tách vé máy bay, khách sạn, tour, xe và ăn uống, rồi mới xem phần nào cần tiết kiệm và phần nào đáng chi thêm.",
+    "focus": "Ngân sách, combo, giá tour, gia đình",
     "updated": "2026-08-26"
   },
   {
@@ -331,10 +332,10 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": "bana",
     "depositPercent": 0,
     "title": "Giá vé Bà Nà Hills 2026 | GoVietStay",
-    "h1": "Giá Bà Nà Hills: đừng so giá trước khi biết mình đang so gói nào",
-    "description": "Vé lẻ, tour, buffet, trẻ em và đối tượng khách có thể là những mức giá khác nhau.",
-    "hero": "Vé lẻ, tour, buffet, trẻ em và đối tượng khách có thể là những mức giá khác nhau.",
-    "focus": "giá vé, buffet, trẻ em, tour",
+    "h1": "Giá Bà Nà Hills: xem đúng loại vé rồi mới so giá",
+    "description": "Vé lẻ, gói buffet, tour có xe và giá trẻ em là những thứ khác nhau. Muốn so cho đúng thì phải xem cùng một quyền lợi.",
+    "hero": "Vé lẻ, gói buffet, tour có xe và giá trẻ em là những thứ khác nhau. Muốn so cho đúng thì phải xem cùng một quyền lợi.",
+    "focus": "Giá vé, buffet, trẻ em, tour",
     "updated": "2026-08-26"
   },
   {
@@ -344,10 +345,10 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": null,
     "depositPercent": 0,
     "title": "Đà Nẵng cho gia đình có trẻ em 2026 | GoVietStay",
-    "h1": "Đà Nẵng với trẻ em: chuyến đi tốt là chuyến đi cả nhà còn vui vào cuối ngày",
-    "description": "Đừng thiết kế lịch cho người lớn rồi bắt trẻ em theo. Bắt đầu bằng giờ ngủ, khả năng đi bộ và sở thích.",
-    "hero": "Đừng thiết kế lịch cho người lớn rồi bắt trẻ em theo. Bắt đầu bằng giờ ngủ, khả năng đi bộ và sở thích.",
-    "focus": "trẻ em, Bà Nà, Hội An, private family",
+    "h1": "Đà Nẵng với trẻ em: đừng xếp lịch kín từ sáng đến tối",
+    "description": "Nhà có trẻ nhỏ thì một hoạt động lớn mỗi ngày thường là vừa. Chừa thời gian ăn, ngủ và chơi tự do sẽ giúp cả bố mẹ lẫn bé đỡ mệt.",
+    "hero": "Nhà có trẻ nhỏ thì một hoạt động lớn mỗi ngày thường là vừa. Chừa thời gian ăn, ngủ và chơi tự do sẽ giúp cả bố mẹ lẫn bé đỡ mệt.",
+    "focus": "Trẻ em, Bà Nà, Hội An, tour riêng gia đình",
     "updated": "2026-08-26"
   },
   {
@@ -357,10 +358,10 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": null,
     "depositPercent": 0,
     "title": "Du lịch Phú Quốc tự túc 2026 | GoVietStay",
-    "h1": "Phú Quốc tự túc: chọn đúng khu ở trước khi chọn danh sách điểm",
-    "description": "Phú Quốc rộng. Một resort đẹp nhưng sai khu có thể khiến bạn mất hàng giờ di chuyển.",
-    "hero": "Phú Quốc rộng. Một resort đẹp nhưng sai khu có thể khiến bạn mất hàng giờ di chuyển.",
-    "focus": "khu ở, tour đảo, transfer, ngân sách",
+    "h1": "Du lịch Phú Quốc tự túc: chọn khu ở trước, rồi mới xếp điểm đi",
+    "description": "Phú Quốc rộng hơn nhiều người nghĩ. Chọn resort đúng khu sẽ giúp tiết kiệm khá nhiều thời gian và tiền xe trong cả chuyến.",
+    "hero": "Phú Quốc rộng hơn nhiều người nghĩ. Chọn resort đúng khu sẽ giúp tiết kiệm khá nhiều thời gian và tiền xe trong cả chuyến.",
+    "focus": "Khu ở, tour đảo, xe sân bay, ngân sách",
     "updated": "2026-08-26"
   },
   {
@@ -370,10 +371,10 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": null,
     "depositPercent": 0,
     "title": "Lịch trình Phú Quốc 4 ngày 3 đêm 2026 | GoVietStay",
-    "h1": "Phú Quốc 4N3Đ: một ngày biển, một ngày khám phá, phần còn lại để nghỉ",
-    "description": "Đừng dùng 4N3Đ để đi hết đảo; dùng nó để có một chuyến đi cân bằng.",
-    "hero": "Đừng dùng 4N3Đ để đi hết đảo; dùng nó để có một chuyến đi cân bằng.",
-    "focus": "tour đảo, resort, Hòn Thơm, airport",
+    "h1": "Lịch trình Phú Quốc 4N3Đ: một ngày biển, một ngày khám phá, còn lại để nghỉ",
+    "description": "Đừng cố đi hết Phú Quốc trong bốn ngày. Chọn vài trải nghiệm chính rồi dành thời gian tận hưởng resort, bãi biển và ăn uống sẽ dễ chịu hơn.",
+    "hero": "Đừng cố đi hết Phú Quốc trong bốn ngày. Chọn vài trải nghiệm chính rồi dành thời gian tận hưởng resort, bãi biển và ăn uống sẽ dễ chịu hơn.",
+    "focus": "Tour đảo, resort, Hòn Thơm, sân bay",
     "updated": "2026-08-26"
   },
   {
@@ -383,10 +384,10 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": null,
     "depositPercent": 0,
     "title": "Chi phí du lịch Phú Quốc 2026 | GoVietStay",
-    "h1": "Chi phí Phú Quốc: khu ở và kiểu trải nghiệm quyết định ngân sách",
-    "description": "Hai gia đình ở cùng số đêm có thể chênh ngân sách lớn vì resort và số ngày đi tour.",
-    "hero": "Hai gia đình ở cùng số đêm có thể chênh ngân sách lớn vì resort và số ngày đi tour.",
-    "focus": "resort, tour đảo, xe, combo",
+    "h1": "Chi phí Phú Quốc: resort và số ngày đi tour ảnh hưởng nhiều nhất",
+    "description": "Hai nhóm đi cùng số ngày vẫn có thể chênh ngân sách khá xa. Khu resort, loại xe và số ngày đi tour thường là ba khoản tạo khác biệt lớn.",
+    "hero": "Hai nhóm đi cùng số ngày vẫn có thể chênh ngân sách khá xa. Khu resort, loại xe và số ngày đi tour thường là ba khoản tạo khác biệt lớn.",
+    "focus": "Resort, tour đảo, xe, combo",
     "updated": "2026-08-26"
   },
   {
@@ -396,13 +397,14 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "priceKey": null,
     "depositPercent": 0,
     "title": "Phú Quốc mùa nào đẹp 2026 | GoVietStay",
-    "h1": "Phú Quốc mùa nào đẹp? Hãy hỏi: bạn muốn làm gì ở Phú Quốc?",
-    "description": "Một chuyến nghỉ resort và một chuyến snorkeling không cần cùng điều kiện thời tiết.",
-    "hero": "Một chuyến nghỉ resort và một chuyến snorkeling không cần cùng điều kiện thời tiết.",
-    "focus": "thời tiết, biển, snorkeling, tour đảo",
+    "h1": "Phú Quốc mùa nào đẹp? Còn tùy bạn muốn nghỉ dưỡng hay đi biển",
+    "description": "Nếu ưu tiên snorkeling và cano, điều kiện biển quan trọng hơn. Nếu chủ yếu nghỉ resort, bạn có thể linh hoạt thời gian hơn.",
+    "hero": "Nếu ưu tiên snorkeling và cano, điều kiện biển quan trọng hơn. Nếu chủ yếu nghỉ resort, bạn có thể linh hoạt thời gian hơn.",
+    "focus": "Thời tiết, biển, snorkeling, tour đảo",
     "updated": "2026-08-26"
   }
 ];
+
 export const getVietnamSeoPage=(slug:string)=>vietnamSeoPages.find(p=>p.slug===slug);
 export const getVietnamRelated=(page:VietnamSeoPage)=>[
   ...vietnamSeoPages.filter(p=>p.slug!==page.slug&&p.destination.split(" · ")[0]===page.destination.split(" · ")[0]),
