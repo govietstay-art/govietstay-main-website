@@ -15,3 +15,119 @@
 @media(max-width:800px){.hero{height:700px}.hero h1{font-size:clamp(57px,16vw,82px)}.hero-shade{background:linear-gradient(90deg,rgba(2,25,19,.9),rgba(3,31,23,.42)),linear-gradient(0deg,rgba(3,31,23,.82),transparent 60%)}.alert{padding:22px;margin-top:-25px}.intro,.faq,.price-booking{grid-template-columns:1fr;gap:35px}.section{padding:75px 0}.options{grid-template-columns:1fr}.timeline article{grid-template-columns:100px 32px 1fr;gap:11px}.included-grid{grid-template-columns:1fr}.included-grid>div{padding:65px 7vw}.price-booking{gap:45px}.section-head{align-items:flex-start;flex-direction:column}.prices{grid-template-columns:1fr}.reviews-head{align-items:flex-start;flex-direction:column}.review-grid{grid-template-columns:1fr}.faq{gap:40px}footer{flex-direction:column;gap:10px;padding-bottom:95px}.mobile-book{display:flex;position:fixed;z-index:30;bottom:12px;left:12px;right:12px;background:#20a65a;color:#fff;border-radius:999px;padding:14px 20px;justify-content:space-between;font-weight:900;box-shadow:0 12px 30px rgba(0,0,0,.25)}.mobile-book span{font-size:11px;font-weight:600;opacity:.85}}
 @media(max-width:500px){.hero{height:670px}.header-book{display:none}.hero-copy{padding-bottom:52px}.lead{font-size:16px}.alert{width:94vw;gap:14px}.alert-icon{width:36px;height:36px}.option{padding:27px}.option h3{font-size:34px}.timeline article{grid-template-columns:82px 28px 1fr}.timeline time{font-size:12px}.timeline i{width:28px;height:28px}.form-card{padding:24px}.form-row{grid-template-columns:1fr 1fr}}
 .cancellation-policy{background:#edf8f3;border:2px solid #8bc8b3;border-radius:24px;padding:34px!important;margin-top:80px}.cancellation-policy h2{font-size:clamp(32px,4vw,50px)}.cancellation-policy ul{margin:24px 0 0;padding-left:22px;color:#43675b;line-height:1.7}.cancellation-policy li+li{margin-top:8px}
+
+/* GVS_EN_PRIMARY_MOBILE_V1 */
+html,body{max-width:100%;overflow-x:hidden}
+.logo{min-width:0}
+.logo img{
+  display:block;
+  height:48px;
+  width:auto;
+  max-width:180px;
+  object-fit:contain;
+  border-radius:10px;
+  background:#fff;
+  padding:3px 6px;
+  box-shadow:0 6px 18px rgba(0,0,0,.12)
+}
+.logo strong{font-size:18px;white-space:nowrap}
+
+@media(max-width:800px){
+  .hero{height:620px;min-height:620px}
+  .hero>img{object-position:58% center}
+  .hero-inner{width:92vw}
+  .hero header{height:74px}
+  .logo{gap:8px}
+  .logo img{height:42px;max-width:150px;border-radius:9px}
+  .logo strong{font-size:15px}
+  .hero-copy{padding-bottom:46px}
+  .hero h1{
+    font-size:clamp(46px,12.6vw,64px);
+    line-height:.94;
+    letter-spacing:-.045em;
+    margin:14px 0 18px
+  }
+  .eyebrow,.label{font-size:10px;letter-spacing:.14em}
+  .lead{font-size:15px;line-height:1.55;max-width:92vw}
+  .chips{margin-top:18px;gap:7px}
+  .chips span{padding:8px 10px;font-size:10px}
+  .alert{
+    width:92vw;
+    margin-top:-20px;
+    padding:18px;
+    gap:13px;
+    border-radius:16px
+  }
+  .alert strong{font-size:15px;line-height:1.35}
+  .alert p{font-size:12px;line-height:1.55}
+  .section{width:92vw;padding:60px 0}
+  .section h2,.included-grid h2,.final h2{line-height:1.05}
+  .intro{gap:22px}
+  .intro>p{font-size:15px;line-height:1.65}
+  .options{width:92vw;gap:14px;margin-bottom:6px}
+  .option{padding:24px;border-radius:20px}
+  .option h3{font-size:32px;margin:20px 0 4px}
+  .option ul{margin:18px 0;gap:9px;font-size:14px}
+  .section-head{gap:14px;margin-bottom:34px}
+  .section-head>span{font-size:21px}
+  .timeline{margin-left:0}
+  .timeline article{
+    grid-template-columns:72px 28px minmax(0,1fr);
+    gap:10px;
+    min-height:108px
+  }
+  .timeline time{font-size:11px;line-height:1.25}
+  .timeline i{width:28px;height:28px;font-size:11px}
+  .timeline i:after{top:32px;bottom:-76px}
+  .timeline h3{font-size:17px}
+  .timeline p{font-size:13px;line-height:1.5}
+  .schedule-note{padding:15px 16px;font-size:12px}
+  .included-grid>div{padding:56px 6vw}
+  .included-grid li{font-size:14px}
+  .cancellation-policy{width:92vw;margin-top:45px;padding:24px!important;border-radius:18px}
+  .price-booking{gap:30px}
+  .prices{margin:28px 0 20px}
+  .prices>div{padding:20px}
+  .prices strong{font-size:34px}
+  .form-card{padding:22px;border-radius:20px}
+  .form-card input{min-height:48px;font-size:16px}
+  .form-card>a{min-height:50px;display:flex;align-items:center;justify-content:center}
+  .reviews-inner{padding-top:60px;padding-bottom:60px}
+  .reviews-head{gap:18px;margin-bottom:28px}
+  .review-card{padding:21px;min-height:auto}
+  .review-card blockquote{font-size:19px;line-height:1.45}
+  .faq{gap:24px}
+  .faq details{padding:18px 0}
+  .faq summary{font-size:14px;line-height:1.4}
+  .final{padding:70px 6vw 92px}
+  .final h2{font-size:clamp(38px,10vw,54px)}
+  footer{padding-bottom:105px}
+  .mobile-book{
+    left:10px;
+    right:10px;
+    bottom:max(10px,env(safe-area-inset-bottom));
+    min-height:54px;
+    padding:12px 16px;
+    align-items:center;
+    gap:12px;
+    border-radius:18px
+  }
+}
+
+@media(max-width:430px){
+  .hero{height:590px;min-height:590px}
+  .hero header{height:68px}
+  .logo img{height:38px;max-width:132px}
+  .logo strong{font-size:14px}
+  .hero h1{font-size:clamp(42px,12vw,52px)}
+  .lead{font-size:14px}
+  .chips{display:grid;grid-template-columns:1fr 1fr;max-width:100%}
+  .chips span{text-align:center;white-space:normal}
+  .alert-icon{width:34px;height:34px;font-size:18px}
+  .option{padding:21px}
+  .option h3{font-size:29px}
+  .timeline article{grid-template-columns:66px 26px minmax(0,1fr);gap:8px}
+  .timeline i{width:26px;height:26px}
+  .form-row{grid-template-columns:1fr}
+  .mobile-book span{max-width:42%;line-height:1.15}
+}

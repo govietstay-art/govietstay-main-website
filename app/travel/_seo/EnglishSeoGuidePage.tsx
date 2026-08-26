@@ -27,7 +27,7 @@ export default function EnglishSeoGuidePage({
     publisher: {
       "@type": "Organization",
       name: "GoVietStay",
-      logo: { "@type": "ImageObject", url: "https://www.govietstay.com/logo.png" },
+      logo: { "@type": "ImageObject", url: "https://www.govietstay.com/govietstay-logo.jpg" },
     },
   };
 
@@ -59,7 +59,7 @@ export default function EnglishSeoGuidePage({
 
       <header className={styles.nav}>
         <a href="/" className={styles.brand}>
-          <img src="/logo.png" alt="GoVietStay" />
+          <img src="/govietstay-logo.jpg" alt="GoVietStay" />
           <span><b>GoVietStay</b><small>VIETNAM TRAVEL GUIDES</small></span>
         </a>
         <nav>
@@ -159,6 +159,17 @@ export default function EnglishSeoGuidePage({
           </a>
         </div>
       </section>
-    </main>
+    
+      <a
+        className={styles.mobileCta}
+        href={WA}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Ask GoVietStay on WhatsApp"
+      >
+        <span>Need local help?</span>
+        <b>WhatsApp GoVietStay</b>
+      </a>
+</main>
   );
 }

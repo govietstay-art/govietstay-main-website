@@ -105,7 +105,7 @@ I understand that Ba Na Hills can be very crowded and that visitor numbers, queu
         <div className="hero-shade" />
         <div className="hero-inner">
           <header>
-            <a className="logo" href="#top"><span>G</span><strong>GoVietStay</strong></a>
+            <a className="logo" href="/" aria-label="GoVietStay home"><img src="/govietstay-logo.jpg" alt="GoVietStay official logo" /><strong>GoVietStay</strong></a>
             <a className="header-book" href="#booking">Check availability</a>
           </header>
           <div className="hero-copy" id="top">

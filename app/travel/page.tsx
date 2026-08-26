@@ -53,7 +53,7 @@ export default function EnglishTravelHub() {
 
       <header className={styles.nav}>
         <a href="/" className={styles.brand}>
-          <img src="/logo.png" alt="GoVietStay" />
+          <img src="/govietstay-logo.jpg" alt="GoVietStay" />
           <span><b>GoVietStay</b><small>VIETNAM TRAVEL GUIDES</small></span>
         </a>
         <nav>
@@ -128,6 +128,17 @@ export default function EnglishTravelHub() {
         <span>Dates + guests + hotel are enough to start.</span>
         <a href={WA} target="_blank" rel="noopener noreferrer">Plan on WhatsApp</a>
       </section>
-    </main>
+    
+      <a
+        className={styles.mobileCta}
+        href={WA}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Ask GoVietStay on WhatsApp"
+      >
+        <span>Local English support</span>
+        <b>WhatsApp GoVietStay</b>
+      </a>
+</main>
   );
 }
