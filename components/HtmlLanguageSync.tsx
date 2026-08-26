@@ -14,7 +14,15 @@ export default function HtmlLanguageSync() {
           ? "ru-KZ"
           : pathname === "/vi" || pathname.startsWith("/vi/")
             ? "vi"
-            : "en";
+            : pathname === "/cn" || pathname.startsWith("/cn/")
+              ? "zh-CN"
+              : pathname === "/tw" || pathname.startsWith("/tw/")
+                ? "zh-TW"
+                : pathname === "/ko" || pathname.startsWith("/ko/")
+                  ? "ko-KR"
+                  : pathname === "/in" || pathname.startsWith("/in/")
+                    ? "en-IN"
+                    : "en";
   }, [pathname]);
 
   return null;

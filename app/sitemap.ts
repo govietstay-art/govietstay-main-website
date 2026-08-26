@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { chinaSeoPages } from "../lib/chinaSeoPages";
 import { kazakhstanSeoPages } from "../lib/kazakhstanSeoPages";
 import { vietnamSeoPages } from "../lib/vietnamSeoPages";
 import { englishSeoGuides } from "../lib/englishSeoGuides";
@@ -54,6 +55,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
           "x-default": `${BASE_URL}/ko/cham-island-tour`,
         },
       },
+    },
+    {
+      url: `${BASE_URL}/cn`,
+      lastModified: new Date("2026-08-26T00:00:00.000Z"),
+      changeFrequency: "daily",
+      priority: 1,
+      alternates: { languages: { "zh-CN": `${BASE_URL}/cn`, "zh-TW": `${BASE_URL}/tw` } },
     },
     {
       url: `${BASE_URL}/kz`,
@@ -236,6 +244,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     alternates: { languages: { "zh-TW": `${BASE_URL}/tw/${guide.slug}` } },
   }));
 
+  const chinaPages: MetadataRoute.Sitemap = chinaSeoPages.map((page) => ({
+    url: `${BASE_URL}/cn/${page.slug}`,
+    lastModified: new Date(page.updated),
+    changeFrequency: page.type === "product" || page.type === "arrival" ? "weekly" : "monthly",
+    priority: page.type === "product" || page.type === "arrival" ? 0.94 : 0.88,
+    alternates: { languages: { "zh-CN": `${BASE_URL}/cn/${page.slug}` } },
+  }));
+
   const kazakhstanPages: MetadataRoute.Sitemap = kazakhstanSeoPages.map((page) => ({
     url: `${BASE_URL}/kz/${page.slug}`, lastModified: new Date(page.updated),
     changeFrequency: page.type === "product" || page.type === "arrival" ? "weekly" : "monthly",
@@ -294,6 +310,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...corePages,
     ...vietnamGuidePages,
+    ...chinaPages,
     ...kazakhstanPages,
     ...englishGuidePages,
     ...taiwanGuidePages,
