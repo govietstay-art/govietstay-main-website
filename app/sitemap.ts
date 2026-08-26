@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { taiwanSeoGuides } from "../lib/taiwanSeoGuides";
 import { indiaSeoGuides } from "../lib/indiaSeoGuides";
 import { koreanSeoGuides } from "../lib/koreanSeoGuides";
 import { aktualnoArticles } from "../lib/aktualnoArticles";
@@ -50,6 +51,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
           "x-default": `${BASE_URL}/ko/cham-island-tour`,
         },
       },
+    },
+    {
+      url: `${BASE_URL}/tw`,
+      lastModified: new Date("2026-08-26T00:00:00.000Z"),
+      changeFrequency: "daily",
+      priority: 1,
+      alternates: { languages: { "zh-TW": `${BASE_URL}/tw` } },
     },
     {
       url: `${BASE_URL}/in`,
@@ -194,6 +202,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   }));
 
+  const taiwanGuidePages: MetadataRoute.Sitemap = taiwanSeoGuides.map((guide) => ({
+    url: `${BASE_URL}/tw/${guide.slug}`,
+    lastModified: new Date(guide.updated),
+    changeFrequency: "monthly",
+    priority: 0.84,
+    alternates: { languages: { "zh-TW": `${BASE_URL}/tw/${guide.slug}` } },
+  }));
+
   const aktualnoPages: MetadataRoute.Sitemap = aktualnoArticles.map(
     (article) => ({
       url: `${BASE_URL}/ru/aktualno/${article.slug}`,
@@ -221,6 +237,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     ...corePages,
+    ...taiwanGuidePages,
     ...indiaGuidePages,
     ...koreanGuidePages,
     ...russianLandingPages,
