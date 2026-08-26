@@ -18,18 +18,20 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.govietstay.com"),
 
   title: {
-    default: "GoVietStay | Vietnam Tours & Trusted Local Support",
+    default: "GoVietStay | Da Nang Tours, Hoi An, Hue & Phu Quoc Travel",
     template: "%s | GoVietStay",
   },
 
   description:
-    "Private tours, local guides and WhatsApp support 24/7 in Da Nang, Hoi An, Hue and Phu Quoc.",
+    "Plan Da Nang, Hoi An, Hue and Phu Quoc with local tours, airport transfers, private cars, tickets and 24/7 WhatsApp support from GoVietStay.",
 
   applicationName: "GoVietStay",
 
   keywords: [
     "GoVietStay",
     "Da Nang Tours",
+    "Da Nang Travel Guide",
+    "Things to Do in Da Nang",
     "Hoi An Tours",
     "Hue Tours",
     "Phu Quoc Tours",
@@ -49,9 +51,9 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: "GoVietStay | Vietnam Tours & Trusted Local Support",
+    title: "GoVietStay | Da Nang Tours, Hoi An, Hue & Phu Quoc Travel",
     description:
-      "Private tours, local guides and WhatsApp support 24/7 in Da Nang, Hoi An, Hue and Phu Quoc.",
+      "Plan Da Nang, Hoi An, Hue and Phu Quoc with local tours, airport transfers, private cars, tickets and 24/7 WhatsApp support from GoVietStay.",
     url: "https://www.govietstay.com",
     siteName: "GoVietStay",
     locale: "en_US",
@@ -62,7 +64,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "GoVietStay | Vietnam Tours & Trusted Local Support",
     description:
-      "Private tours, local guides and WhatsApp support 24/7 in Da Nang, Hoi An, Hue and Phu Quoc.",
+      "Plan Da Nang, Hoi An, Hue and Phu Quoc with local tours, airport transfers, private cars, tickets and 24/7 WhatsApp support from GoVietStay.",
   },
 };
 
@@ -113,7 +115,7 @@ export default async function RootLayout({
                   "@type": "ContactPoint",
                   telephone: "+84937762607",
                   contactType: "customer service",
-                  availableLanguage: ["ru", "en", "vi"],
+                  availableLanguage: ["en", "ru", "vi", "ko", "zh-TW"],
                 },
               },
               {
@@ -122,7 +124,7 @@ export default async function RootLayout({
                 name: "GoVietStay",
                 alternateName: "GoVietStay.com",
                 url: "https://www.govietstay.com",
-                inLanguage: ["en", "ru"],
+                inLanguage: ["en", "ru", "ko", "zh-TW"],
                 publisher: { "@id": "https://www.govietstay.com/#organization" },
               },
             ]),

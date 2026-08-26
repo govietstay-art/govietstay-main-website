@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { englishSeoGuides } from "../lib/englishSeoGuides";
 import { taiwanSeoGuides } from "../lib/taiwanSeoGuides";
 import { indiaSeoGuides } from "../lib/indiaSeoGuides";
 import { koreanSeoGuides } from "../lib/koreanSeoGuides";
@@ -49,6 +50,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
           "ko-KR": `${BASE_URL}/ko/cham-island-tour`,
           ru: `${BASE_URL}/ru/tours/cham-island`,
           "x-default": `${BASE_URL}/ko/cham-island-tour`,
+        },
+      },
+    },
+    {
+      url: `${BASE_URL}/travel`,
+      lastModified: new Date("2026-08-26T00:00:00.000Z"),
+      changeFrequency: "weekly",
+      priority: 0.92,
+      alternates: {
+        languages: {
+          en: `${BASE_URL}/travel`,
         },
       },
     },
@@ -210,6 +222,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     alternates: { languages: { "zh-TW": `${BASE_URL}/tw/${guide.slug}` } },
   }));
 
+  const englishGuidePages: MetadataRoute.Sitemap = englishSeoGuides.map((guide) => ({
+    url: `${BASE_URL}/travel/${guide.slug}`,
+    lastModified: new Date(guide.updated),
+    changeFrequency: "monthly",
+    priority:
+      guide.slug === "da-nang-travel-guide" ||
+      guide.slug === "things-to-do-in-da-nang"
+        ? 0.9
+        : 0.84,
+    alternates: {
+      languages: {
+        en: `${BASE_URL}/travel/${guide.slug}`,
+      },
+    },
+  }));
+
   const aktualnoPages: MetadataRoute.Sitemap = aktualnoArticles.map(
     (article) => ({
       url: `${BASE_URL}/ru/aktualno/${article.slug}`,
@@ -237,6 +265,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     ...corePages,
+    ...englishGuidePages,
     ...taiwanGuidePages,
     ...indiaGuidePages,
     ...koreanGuidePages,

@@ -5632,6 +5632,19 @@ export default function Home() {
           </div>
         </div>
       )}
-    </main>
+    
+      <section id="english-seo-guides" className="bg-[#f7f1df] px-4 md:px-20 py-16 md:py-20 text-[#06251b]">
+        <div className="max-w-7xl mx-auto">
+          <p className="text-green-800 uppercase tracking-[4px] text-xs font-semibold">English Travel Intelligence</p>
+          <div className="mt-4 grid lg:grid-cols-[1fr_auto] gap-6 items-end">
+            <div>
+              <h2 className="text-4xl md:text-5xl font-bold">Plan Vietnam before you book it.</h2>
+              <p className="mt-4 max-w-3xl text-[#06251b]/70">Explore practical English guides for Da Nang, Hoi An, Hue and Phu Quoc.</p>
+            </div>
+            <a href="/travel" className="inline-flex rounded-full bg-[#0b6b4f] px-6 py-3 font-semibold text-white">Open English Travel Guides</a>
+          </div>
+        </div>
+      </section>
+</main>
   );
 }
