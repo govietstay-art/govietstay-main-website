@@ -1,0 +1,40 @@
+
+.gva-shell{min-height:100vh;background:#f4f7fb;color:#172033;font-family:Arial,Helvetica,sans-serif}
+.gva-login{min-height:100vh;display:grid;place-items:center;padding:24px;background:linear-gradient(135deg,#0c1c37,#152b50)}
+.gva-login-card{width:min(460px,100%);background:white;border-radius:22px;padding:32px;box-shadow:0 24px 80px rgba(0,0,0,.25)}
+.gva-brand{font-size:25px;font-weight:900;color:#15365f;margin:0 0 6px}
+.gva-sub{color:#718097;font-size:14px;line-height:1.5;margin-bottom:22px}
+.gva-field{display:flex;flex-direction:column;gap:6px;margin:12px 0}
+.gva-field label{font-size:12px;font-weight:800;color:#5d6c82;text-transform:uppercase}
+.gva-input,.gva-select{border:1px solid #d8e0eb;border-radius:10px;padding:11px 12px;font-size:14px;background:white;color:#172033}
+.gva-btn{border:0;border-radius:10px;padding:11px 15px;font-weight:800;cursor:pointer;background:#1657a6;color:#fff}
+.gva-btn.secondary{background:#e9eff7;color:#19375d}.gva-btn.danger{background:#a52a2a}.gva-btn:disabled{opacity:.55;cursor:not-allowed}
+.gva-msg{margin:12px 0;padding:10px 12px;border-radius:10px;background:#eef6ff;color:#214f82;font-size:13px}
+.gva-msg.err{background:#fff0f0;color:#8b1f1f}
+.gva-layout{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+.gva-side{background:#10213e;color:#fff;padding:22px 16px;position:sticky;top:0;height:100vh}
+.gva-side .logo{font-size:20px;font-weight:900;margin-bottom:4px}.gva-side .small{font-size:12px;color:#aebbd0;margin-bottom:25px}
+.gva-nav button{width:100%;text-align:left;margin:5px 0;background:transparent;border:0;color:#dbe5f5;padding:11px 12px;border-radius:9px;font-weight:700;cursor:pointer}
+.gva-nav button.active,.gva-nav button:hover{background:#1d3f70;color:white}
+.gva-main{padding:24px 28px;min-width:0}
+.gva-top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}
+.gva-title h1{font-size:25px;margin:0}.gva-title p{margin:5px 0 0;color:#738197;font-size:13px}
+.gva-top-actions{display:flex;gap:8px;align-items:center}
+.gva-kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:18px 0}
+.gva-card{background:#fff;border:1px solid #e4e9f1;border-radius:14px;padding:16px;box-shadow:0 3px 12px rgba(30,58,95,.04)}
+.gva-kpi .label{font-size:12px;color:#7b879a;font-weight:800;text-transform:uppercase}.gva-kpi .value{font-size:25px;font-weight:900;margin-top:8px;color:#172c4b}.gva-kpi .hint{font-size:11px;color:#98a3b4;margin-top:5px}
+.gva-grid2{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.gva-card h3{margin:0 0 13px;font-size:16px}
+.gva-table-wrap{overflow:auto}.gva-table{width:100%;border-collapse:collapse;font-size:13px}.gva-table th{text-align:left;color:#718096;font-size:11px;text-transform:uppercase;border-bottom:1px solid #e7ebf1;padding:9px}.gva-table td{padding:10px 9px;border-bottom:1px solid #eef1f5;vertical-align:top}
+.gva-pill{display:inline-block;padding:4px 7px;border-radius:999px;background:#eef4fb;color:#295687;font-weight:800;font-size:11px}
+.gva-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.gva-form-grid .wide{grid-column:1/-1}
+.gva-section-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+.gva-section-head h2{margin:0;font-size:20px}
+.gva-modal-bg{position:fixed;inset:0;background:rgba(10,22,40,.55);display:grid;place-items:center;padding:20px;z-index:50}
+.gva-modal{background:white;border-radius:16px;width:min(720px,100%);max-height:90vh;overflow:auto;padding:22px}
+.gva-modal-head{display:flex;justify-content:space-between;align-items:center}.gva-modal-head h3{margin:0}
+.gva-close{border:0;background:#edf1f6;border-radius:8px;padding:7px 10px;cursor:pointer}
+.gva-empty{padding:25px;text-align:center;color:#8894a6;font-size:13px}
+.gva-mini{font-size:12px;color:#76849a}
+@media(max-width:1050px){.gva-kpis{grid-template-columns:repeat(3,1fr)}.gva-layout{grid-template-columns:190px 1fr}}
+@media(max-width:760px){.gva-layout{display:block}.gva-side{height:auto;position:relative}.gva-nav{display:flex;overflow:auto}.gva-nav button{min-width:120px}.gva-main{padding:16px}.gva-kpis{grid-template-columns:repeat(2,1fr)}.gva-grid2{grid-template-columns:1fr}.gva-form-grid{grid-template-columns:1fr}.gva-form-grid .wide{grid-column:auto}.gva-top{align-items:flex-start;flex-direction:column}}
