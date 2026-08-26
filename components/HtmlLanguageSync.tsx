@@ -8,7 +8,11 @@ export default function HtmlLanguageSync() {
 
   useEffect(() => {
     document.documentElement.lang =
-      pathname === "/ru" || pathname.startsWith("/ru/") ? "ru" : "en";
+      pathname === "/ru" || pathname.startsWith("/ru/")
+        ? "ru"
+        : pathname === "/vi" || pathname.startsWith("/vi/")
+          ? "vi"
+          : "en";
   }, [pathname]);
 
   return null;

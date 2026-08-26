@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { vietnamSeoPages } from "../lib/vietnamSeoPages";
 import { englishSeoGuides } from "../lib/englishSeoGuides";
 import { taiwanSeoGuides } from "../lib/taiwanSeoGuides";
 import { indiaSeoGuides } from "../lib/indiaSeoGuides";
@@ -52,6 +53,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
           "x-default": `${BASE_URL}/ko/cham-island-tour`,
         },
       },
+    },
+    {
+      url: `${BASE_URL}/vi`,
+      lastModified: new Date("2026-08-26T00:00:00.000Z"),
+      changeFrequency: "daily", priority: 1,
+      alternates: { languages: { "vi-VN": `${BASE_URL}/vi` } },
     },
     {
       url: `${BASE_URL}/travel`,
@@ -222,6 +229,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     alternates: { languages: { "zh-TW": `${BASE_URL}/tw/${guide.slug}` } },
   }));
 
+  const vietnamGuidePages: MetadataRoute.Sitemap = vietnamSeoPages.map((page) => ({
+    url: `${BASE_URL}/vi/${page.slug}`, lastModified: new Date(page.updated),
+    changeFrequency: page.type === "guide" ? "monthly" : "weekly",
+    priority: page.type === "product" || page.type === "combo" ? 0.93 : 0.86,
+    alternates: { languages: { "vi-VN": `${BASE_URL}/vi/${page.slug}` } },
+  }));
+
   const englishGuidePages: MetadataRoute.Sitemap = englishSeoGuides.map((guide) => ({
     url: `${BASE_URL}/travel/${guide.slug}`,
     lastModified: new Date(guide.updated),
@@ -265,6 +279,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     ...corePages,
+    ...vietnamGuidePages,
     ...englishGuidePages,
     ...taiwanGuidePages,
     ...indiaGuidePages,
