@@ -36,9 +36,9 @@ function priceLabel(slug: string) {
   const page = bySlug(slug);
   if (!page?.priceKey) return "Nhận báo giá";
   const price = priceMap[page.priceKey];
-  return price?.verified
+  return price?.sellPrice
     ? `Từ ${new Intl.NumberFormat("vi-VN").format(price.sellPrice)}đ`
-    : "Kiểm tra giá hôm nay";
+    : "Nhận báo giá";
 }
 
 export default function VietnamHub() {

@@ -17,9 +17,9 @@ const typeCopy = {
 function priceLabel(page: VietnamSeoPage) {
   if (!page.priceKey) return page.depositPercent === 0 ? "0% cọc với transfer tiêu chuẩn" : "Báo giá theo nhóm";
   const price = priceMap[page.priceKey];
-  return price?.verified
+  return price?.sellPrice
     ? `Từ ${new Intl.NumberFormat("vi-VN").format(price.sellPrice)}đ`
-    : "Kiểm tra giá hôm nay";
+    : "Nhận báo giá";
 }
 
 export default function VietnamPage({
