@@ -10,9 +10,11 @@ export default function HtmlLanguageSync() {
     document.documentElement.lang =
       pathname === "/ru" || pathname.startsWith("/ru/")
         ? "ru"
-        : pathname === "/vi" || pathname.startsWith("/vi/")
-          ? "vi"
-          : "en";
+        : pathname === "/kz" || pathname.startsWith("/kz/")
+          ? "ru-KZ"
+          : pathname === "/vi" || pathname.startsWith("/vi/")
+            ? "vi"
+            : "en";
   }, [pathname]);
 
   return null;
