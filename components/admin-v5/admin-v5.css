@@ -38,3 +38,7 @@
 .gva-mini{font-size:12px;color:#76849a}
 @media(max-width:1050px){.gva-kpis{grid-template-columns:repeat(3,1fr)}.gva-layout{grid-template-columns:190px 1fr}}
 @media(max-width:760px){.gva-layout{display:block}.gva-side{height:auto;position:relative}.gva-nav{display:flex;overflow:auto}.gva-nav button{min-width:120px}.gva-main{padding:16px}.gva-kpis{grid-template-columns:repeat(2,1fr)}.gva-grid2{grid-template-columns:1fr}.gva-form-grid{grid-template-columns:1fr}.gva-form-grid .wide{grid-column:auto}.gva-top{align-items:flex-start;flex-direction:column}}
+
+.gva-analytics-note{background:#eef6ff;border:1px solid #d9e9fb;color:#315a86;border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:13px;line-height:1.5}
+.gva-analytics-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+@media(max-width:900px){.gva-analytics-grid{grid-template-columns:1fr}}

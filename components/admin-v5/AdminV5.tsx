@@ -31,10 +31,13 @@ export default function AdminV5() {
   const [bootstrap,setBootstrap]=useState("");
   const [msg,setMsg]=useState("");
   const [err,setErr]=useState("");
-  const [tab,setTab]=useState<"dashboard"|"leads"|"bookings">("dashboard");
+  const [tab,setTab]=useState<"dashboard"|"analytics"|"leads"|"bookings">("dashboard");
   const [days,setDays]=useState(7);
   const [metrics,setMetrics]=useState<any>(null);
   const [breakdown,setBreakdown]=useState<any[]>([]);
+  const [analytics,setAnalytics]=useState<Record<string,any[]>>({
+    country:[], city:[], source:[], device:[], browser:[], os:[], locale:[], landing:[]
+  });
   const [tours,setTours]=useState<Tour[]>([]);
   const [partners,setPartners]=useState<Partner[]>([]);
   const [contacts,setContacts]=useState<Contact[]>([]);
@@ -77,7 +80,12 @@ export default function AdminV5() {
   async function loadAll() {
     setErr("");
     try {
-      const [m,b,t,p,c,l,bo]=await Promise.all([
+      const dims = ["country","city","source","device","browser","os","locale","landing"];
+      const dimPromises = dims.map(dimension =>
+        supabase.rpc("admin_analytics_dimension",{p_days:days,p_dimension:dimension})
+      );
+
+      const results = await Promise.all([
         supabase.rpc("admin_dashboard_metrics",{p_days:days}),
         supabase.rpc("admin_tracking_breakdown",{p_days:days}),
         supabase.from("tours").select("id,name,destination,adult_price_vnd,active").eq("active",true).order("name"),
@@ -85,10 +93,22 @@ export default function AdminV5() {
         supabase.from("contacts").select("id,full_name,whatsapp,country,preferred_language").order("created_at",{ascending:false}).limit(300),
         supabase.from("leads").select("id,contact_id,interested_tour_id,partner_id,status,source,message,created_at").order("created_at",{ascending:false}).limit(100),
         supabase.from("bookings").select("id,booking_code,contact_id,tour_id,partner_id,status,payment_status,tour_date,pax,net_revenue_vnd,source,created_at").order("created_at",{ascending:false}).limit(100),
+        ...dimPromises
       ]);
-      for(const r of [m,b,t,p,c,l,bo]) if(r.error) throw r.error;
-      setMetrics(m.data); setBreakdown((b.data||[]) as any); setTours((t.data||[]) as any); setPartners((p.data||[]) as any);
-      setContacts((c.data||[]) as any); setLeads((l.data||[]) as any); setBookings((bo.data||[]) as any);
+
+      for(const r of results) if(r.error) throw r.error;
+      const [m,b,t,p,c,l,bo,...dimResults] = results;
+      setMetrics(m.data);
+      setBreakdown((b.data||[]) as any);
+      setTours((t.data||[]) as any);
+      setPartners((p.data||[]) as any);
+      setContacts((c.data||[]) as any);
+      setLeads((l.data||[]) as any);
+      setBookings((bo.data||[]) as any);
+
+      const nextAnalytics:Record<string,any[]> = {};
+      dims.forEach((dimension,i)=> nextAnalytics[dimension] = (dimResults[i].data||[]) as any[]);
+      setAnalytics(nextAnalytics);
     } catch(e:any) { setErr(e.message||"Không tải được dữ liệu"); }
   }
 
@@ -170,7 +190,7 @@ export default function AdminV5() {
   if(loading) return <div className="gva-login"><div className="gva-login-card">Đang mở GoVietStay Admin…</div></div>;
 
   if(!session) return <div className="gva-login"><form className="gva-login-card" onSubmit={authSubmit}>
-    <div className="gva-brand">GoVietStay Admin V5</div>
+    <div className="gva-brand">GoVietStay Admin V6</div>
     <div className="gva-sub">Login bảo mật bằng Supabase Auth. Dashboard chỉ hiển thị dữ liệu thật.</div>
     {err&&<div className="gva-msg err">{err}</div>}{msg&&<div className="gva-msg">{msg}</div>}
     <div className="gva-field"><label>Email</label><input className="gva-input" type="email" value={email} onChange={e=>setEmail(e.target.value)} required /></div>
@@ -191,22 +211,23 @@ export default function AdminV5() {
   </div></div>;
 
   if(!(staff.role==="owner"||staff.role==="admin")) return <div className="gva-login"><div className="gva-login-card">
-    <div className="gva-brand">Chưa có quyền Admin</div><div className="gva-sub">Tài khoản này có role {staff.role}. V5 hiện chỉ mở cho Owner/Admin.</div>
+    <div className="gva-brand">Chưa có quyền Admin</div><div className="gva-sub">Tài khoản này có role {staff.role}. V6 hiện chỉ mở cho Owner/Admin.</div>
     <button className="gva-btn" onClick={logout}>Đăng xuất</button>
   </div></div>;
 
   return <div className="gva-shell"><div className="gva-layout">
     <aside className="gva-side">
-      <div className="logo">GoVietStay</div><div className="small">Admin V5 · Supabase Live</div>
+      <div className="logo">GoVietStay</div><div className="small">Admin V6 · Analytics Live</div>
       <div className="gva-nav">
         <button className={tab==="dashboard"?"active":""} onClick={()=>setTab("dashboard")}>Tổng quan</button>
+        <button className={tab==="analytics"?"active":""} onClick={()=>setTab("analytics")}>Analytics</button>
         <button className={tab==="leads"?"active":""} onClick={()=>setTab("leads")}>Leads</button>
         <button className={tab==="bookings"?"active":""} onClick={()=>setTab("bookings")}>Bookings</button>
       </div>
     </aside>
     <main className="gva-main">
       <div className="gva-top">
-        <div className="gva-title"><h1>{tab==="dashboard"?"Dashboard thật":tab==="leads"?"Quản lý Leads":"Quản lý Bookings"}</h1><p>{staff.display_name} · {staff.role} · dữ liệu từ Supabase</p></div>
+        <div className="gva-title"><h1>{tab==="dashboard"?"Dashboard thật":tab==="analytics"?"Analytics khách truy cập":tab==="leads"?"Quản lý Leads":"Quản lý Bookings"}</h1><p>{staff.display_name} · {staff.role} · dữ liệu từ Supabase</p></div>
         <div className="gva-top-actions">
           <select className="gva-select" value={days} onChange={e=>setDays(Number(e.target.value))}><option value={1}>Hôm nay</option><option value={7}>7 ngày</option><option value={30}>30 ngày</option></select>
           <button className="gva-btn secondary" onClick={loadAll}>Làm mới</button><button className="gva-btn secondary" onClick={logout}>Đăng xuất</button>
@@ -226,6 +247,9 @@ export default function AdminV5() {
           <KPI label="Partner visits" value={metrics?.partner_visits||0} hint="?ref= partner"/>
           <KPI label="Partner WA" value={metrics?.partner_whatsapp_clicks||0} hint="Partner → WhatsApp"/>
           <KPI label="Conversion" value={(metrics?.conversion_rate||0)+"%"} hint="Booking / WhatsApp"/>
+          <KPI label="New visitors" value={metrics?.new_visitors||0} hint="Lần đầu"/>
+          <KPI label="Returning" value={metrics?.returning_visitors||0} hint="Quay lại"/>
+          <KPI label="Countries" value={metrics?.countries_tracked||0} hint="Có geo từ V6"/>
         </div>
         <div className="gva-grid2">
           <div className="gva-card"><h3>Trang đang tạo traffic</h3><div className="gva-table-wrap"><table className="gva-table"><thead><tr><th>Path</th><th>Views</th><th>WA</th><th>Partner</th></tr></thead><tbody>
@@ -235,6 +259,23 @@ export default function AdminV5() {
             {bookings.slice(0,8).map(b=><tr key={b.id}><td>{contactMap[b.contact_id||""]?.full_name||"—"}</td><td>{tourMap[b.tour_id||""]?.name||"—"}</td><td>{b.pax}</td><td>{money(b.net_revenue_vnd)}</td></tr>)}
             {!bookings.length&&<tr><td colSpan={4}><div className="gva-empty">Chưa có booking thật.</div></td></tr>}
           </tbody></table></div></div>
+        </div>
+      </>}
+
+
+      {tab==="analytics"&&<>
+        <div className="gva-analytics-note">
+          Dữ liệu quốc gia/thành phố bắt đầu thu từ thời điểm V6 được deploy. Dữ liệu cũ vẫn giữ source/device/landing nếu có, nhưng không thể suy ngược quốc gia vì hệ thống không lưu IP.
+        </div>
+        <div className="gva-analytics-grid">
+          <AnalyticsCard title="Quốc gia" rows={analytics.country} labelTitle="Country" />
+          <AnalyticsCard title="Nguồn traffic" rows={analytics.source} labelTitle="Source" />
+          <AnalyticsCard title="Thiết bị" rows={analytics.device} labelTitle="Device" />
+          <AnalyticsCard title="Thành phố" rows={analytics.city} labelTitle="City" />
+          <AnalyticsCard title="Landing pages" rows={analytics.landing} labelTitle="Landing" />
+          <AnalyticsCard title="Browser" rows={analytics.browser} labelTitle="Browser" />
+          <AnalyticsCard title="Hệ điều hành" rows={analytics.os} labelTitle="OS" />
+          <AnalyticsCard title="Ngôn ngữ" rows={analytics.locale} labelTitle="Locale" />
         </div>
       </>}
 
@@ -257,6 +298,27 @@ export default function AdminV5() {
     {modal==="lead"&&<LeadModal tours={tours} partners={partners} onClose={()=>setModal(null)} onSubmit={addLead} saving={saving}/>}
     {modal==="booking"&&<BookingModal tours={tours} partners={partners} onClose={()=>setModal(null)} onSubmit={addBooking} saving={saving}/>}
   </div></div>
+}
+
+
+function AnalyticsCard({title,rows,labelTitle}:any){
+  return <div className="gva-card">
+    <h3>{title}</h3>
+    <div className="gva-table-wrap">
+      <table className="gva-table">
+        <thead><tr><th>{labelTitle}</th><th>Visitors</th><th>Views</th><th>WA</th></tr></thead>
+        <tbody>
+          {(rows||[]).slice(0,12).map((r:any)=><tr key={String(r.label)}>
+            <td><b>{r.label||"Unknown"}</b></td>
+            <td>{r.visitors||0}</td>
+            <td>{r.page_views||0}</td>
+            <td>{r.whatsapp_clicks||0}</td>
+          </tr>)}
+          {!(rows||[]).length&&<tr><td colSpan={4}><div className="gva-empty">Chưa có dữ liệu trong kỳ.</div></td></tr>}
+        </tbody>
+      </table>
+    </div>
+  </div>
 }
 
 function KPI({label,value,hint}:any){return <div className="gva-card gva-kpi"><div className="label">{label}</div><div className="value">{value}</div><div className="hint">{hint}</div></div>}
