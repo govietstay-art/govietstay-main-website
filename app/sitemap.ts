@@ -24,6 +24,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: languageAlternates("", "/ru"),
     },
     {
+      url: `${BASE_URL}/ko`,
+      lastModified: new Date("2026-08-26T00:00:00.000Z"),
+      changeFrequency: "daily",
+      priority: 1,
+      alternates: {
+        languages: {
+          "ko-KR": `${BASE_URL}/ko`,
+          ru: `${BASE_URL}/ru`,
+          "x-default": BASE_URL,
+        },
+      },
+    },
+    {
+      url: `${BASE_URL}/ko/cham-island-tour`,
+      lastModified: new Date("2026-08-26T00:00:00.000Z"),
+      changeFrequency: "weekly",
+      priority: 0.95,
+      alternates: {
+        languages: {
+          "ko-KR": `${BASE_URL}/ko/cham-island-tour`,
+          ru: `${BASE_URL}/ru/tours/cham-island`,
+          "x-default": `${BASE_URL}/ko/cham-island-tour`,
+        },
+      },
+    },
+    {
       url: `${BASE_URL}/ru`,
       lastModified: SITE_UPDATED,
       changeFrequency: "daily",

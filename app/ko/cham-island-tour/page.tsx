@@ -22,7 +22,14 @@ export const metadata: Metadata = {
     "Cham Island tour Da Nang",
     "GoVietStay",
   ],
-  alternates: { canonical: canonicalUrl },
+  alternates: {
+    canonical: canonicalUrl,
+    languages: {
+      "ko-KR": canonicalUrl,
+      ru: "https://www.govietstay.com/ru/tours/cham-island",
+      "x-default": canonicalUrl,
+    },
+  },
   openGraph: {
     type: "website",
     locale: "ko_KR",
