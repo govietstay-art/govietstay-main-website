@@ -176,6 +176,59 @@ const services = [
   },
 ];
 
+const seoGuides = [
+  {
+    "slug": "danang-free-travel",
+    "title": "다낭 자유여행, 처음부터 동선만 잘 잡으면 훨씬 편합니다",
+    "eyebrow": "DA NANG FREE TRAVEL · 2026"
+  },
+  {
+    "slug": "danang-family-travel",
+    "title": "다낭 가족여행은 ‘많이 보기’보다 ‘덜 지치게 보기’가 중요합니다",
+    "eyebrow": "FAMILY TRAVEL · DA NANG 2026"
+  },
+  {
+    "slug": "cham-island-packing",
+    "title": "참섬 투어 준비물, 이것만 챙기면 당일이 훨씬 편합니다",
+    "eyebrow": "CHAM ISLAND CHECKLIST · 2026"
+  },
+  {
+    "slug": "danang-airport-pickup",
+    "title": "다낭 공항픽업, 도착시간·인원·호텔만 알면 준비가 쉬워집니다",
+    "eyebrow": "AIRPORT PICKUP · DA NANG 2026"
+  },
+  {
+    "slug": "danang-massage-guide",
+    "title": "다낭 마사지, 유명한 곳보다 ‘내 일정에 맞는 곳’을 고르세요",
+    "eyebrow": "DA NANG MASSAGE GUIDE · 2026"
+  },
+  {
+    "slug": "ba-na-hills-golden-bridge",
+    "title": "바나힐·골든브릿지, 사진만 보고 가면 놓치기 쉬운 것들",
+    "eyebrow": "BA NA HILLS · GOLDEN BRIDGE 2026"
+  },
+  {
+    "slug": "hoi-an-basket-boat",
+    "title": "호이안 바구니배는 ‘오후→야경’으로 묶을 때 가장 효율적입니다",
+    "eyebrow": "HOI AN · COCONUT FOREST 2026"
+  },
+  {
+    "slug": "danang-3n4d-itinerary",
+    "title": "다낭 3박4일, 욕심내지 않고도 핵심은 충분히 볼 수 있습니다",
+    "eyebrow": "3 NIGHTS · 4 DAYS · DA NANG"
+  },
+  {
+    "slug": "danang-with-kids",
+    "title": "다낭 아이와 여행, 장소보다 ‘하루 리듬’을 먼저 정하세요",
+    "eyebrow": "DA NANG WITH KIDS · 2026"
+  },
+  {
+    "slug": "korean-travel-support",
+    "title": "다낭에서 한국어로 묻고, 현지팀에게 바로 확인하세요",
+    "eyebrow": "KOREAN MESSAGE SUPPORT · GOVIETSTAY"
+  }
+];
+
 const faq = [
   ['한국어로 문의해도 되나요?', '네. 한국어 메시지로 문의하실 수 있습니다. GoVietStay 현지팀이 일정, 픽업, 준비물과 예약 정보를 최대한 명확하게 안내합니다. 한국인 가이드 포함 여부는 각 투어별로 별도 확인합니다.'],
   ['다낭에서 어떤 투어를 가장 많이 선택하나요?', '처음 방문이라면 바나힐·골든브릿지, 호이안·코코넛숲, 참섬 스노클링을 많이 비교합니다. 여행 날짜와 동행 유형을 알려주시면 무리하지 않는 순서로 추천드립니다.'],
@@ -418,6 +471,23 @@ export default function KoreanTravelHub() {
         <div className="blogCta">
           <div><small>NAVER BLOG · EVERYDAY LOCAL GUIDE</small><h3>오늘 다낭에서 필요한 정보부터 읽어보세요.</h3><p>참섬 준비물, 다낭 일정, 가족여행 팁 등 한국 여행객을 위한 현지 가이드를 계속 업데이트합니다.</p></div>
           <a href="https://blog.naver.com/govietstay" target="_blank" rel="noopener noreferrer">네이버 블로그 보기 ↗</a>
+        </div>
+      </section>
+
+      <section className="section" id="seo-guides">
+        <div className="sectionHead">
+          <div><p className="eyebrow dark">2026 KOREAN TRAVEL GUIDES</p><h2>한국 여행객이 실제로 검색하는<br />다낭 가이드 10개</h2></div>
+          <p>일정, 가족여행, 공항픽업, 바나힐, 호이안, 참섬 준비물까지. 광고보다 먼저 필요한 답을 읽어보세요.</p>
+        </div>
+        <div className="serviceGrid">
+          {seoGuides.map((guide) => (
+            <a className="serviceCard" href={"/ko/" + guide.slug} key={guide.slug}>
+              <div className="serviceTop"><span className="serviceIcon">📘</span><span className="serviceEyebrow">{guide.eyebrow}</span></div>
+              <h3>{guide.title}</h3>
+              <p className="serviceDesc">GoVietStay 다낭 현지팀이 한국 여행객의 검색 질문에 맞춰 정리한 2026 실전 가이드.</p>
+              <div className="cardLink">가이드 읽기 <span>→</span></div>
+            </a>
+          ))}
         </div>
       </section>
 

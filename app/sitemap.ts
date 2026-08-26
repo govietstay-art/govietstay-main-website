@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { koreanSeoGuides } from "../lib/koreanSeoGuides";
 import { aktualnoArticles } from "../lib/aktualnoArticles";
 import { russianSeoIndexableLandings } from "../lib/russian-seo-landings";
 import { secretGems } from "./secret/data";
@@ -154,6 +155,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
+  const koreanGuidePages: MetadataRoute.Sitemap = koreanSeoGuides.map((guide) => ({
+    url: `${BASE_URL}/ko/${guide.slug}`,
+    lastModified: new Date(guide.updated),
+    changeFrequency: "monthly",
+    priority: 0.82,
+    alternates: {
+      languages: {
+        "ko-KR": `${BASE_URL}/ko/${guide.slug}`,
+      },
+    },
+  }));
+
   const aktualnoPages: MetadataRoute.Sitemap = aktualnoArticles.map(
     (article) => ({
       url: `${BASE_URL}/ru/aktualno/${article.slug}`,
@@ -181,6 +194,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     ...corePages,
+    ...koreanGuidePages,
     ...russianLandingPages,
     ...aktualnoPages,
     ...secretPages,
