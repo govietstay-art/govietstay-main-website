@@ -2,3 +2,99 @@
 /* Keep VietnamConversion beautiful and conversion-first */
 :global(.gpay){margin-top:12px}:global(.gprice){background:#06251b;color:#fff;border-radius:19px 19px 0 0;padding:20px;display:flex;justify-content:space-between;gap:18px;align-items:center}:global(.gprice small){font-size:7px;color:#ffc943}:global(.gprice h2){font-size:24px;margin:5px 0}:global(.gprice span){font-size:9px;color:#d3e0da}:global(.gprice>b){font-size:10px}:global(.gcols){display:grid;grid-template-columns:1fr 1fr;border:1px solid #dce7e0;border-top:0;border-radius:0 0 19px 19px;overflow:hidden}:global(.gform),:global(.gqr){padding:21px}:global(.gqr){background:#f8f3e5}:global(.gform h3),:global(.gqr h3){font-size:18px}:global(.gform label){display:block;font-size:9px;font-weight:900;margin-top:10px}:global(.gform>div){display:grid;grid-template-columns:1fr 1fr;gap:8px}:global(.gform input),:global(.gform textarea){width:100%;margin-top:5px;border:1px solid #cbd8d0;border-radius:10px;padding:11px;font:inherit;font-size:12px;background:#fff}:global(.gform textarea){min-height:92px}:global(.gform>a),:global(.gqr>a){display:flex;justify-content:center;background:#096b4d;color:#fff!important;padding:12px;border-radius:999px;margin-top:13px;font-size:9px;font-weight:900}:global(.gqr>small){color:#096b4d;font-weight:950}:global(.gqr p){font-size:10px;line-height:1.55;color:#617069}:global(.gamount){background:#fff;border-radius:13px;padding:14px;font-size:9px}:global(.gamount b){display:block;font-size:26px;color:#096b4d;margin-top:4px}:global(.gcheck){display:flex;gap:7px;font-size:9px;line-height:1.4;margin-top:11px}:global(.gcheck input){width:16px;height:16px}:global(.gqr button){width:100%;border:0;border-radius:999px;background:#096b4d;color:#fff;padding:12px;font-weight:900;margin-top:11px}:global(.gqr button:disabled){opacity:.4}:global(.gqr img){display:block;width:min(235px,100%);margin:10px auto;border-radius:11px}:global(.gqr>strong){display:block;text-align:center;font-size:9px}:global(.gcode){font-size:9px;margin-top:10px}
 @media(max-width:850px){.nav nav a:not(.zalo){display:none}.heroInner{grid-template-columns:1fr;padding:70px 18px}.gallery{padding:0 18px}.scan{padding:0 18px}.private{margin-top:55px;padding:0 18px;grid-template-columns:1fr}.privateImage{border-radius:22px 22px 0 0;min-height:390px}.privateCopy{border-radius:0 0 22px 22px}.layout{grid-template-columns:1fr;padding:55px 18px}.sticky{position:static}.related>div{grid-template-columns:1fr 1fr}.mobile{display:grid;grid-template-columns:repeat(3,1fr);position:fixed;z-index:90;left:10px;right:10px;bottom:max(10px,env(safe-area-inset-bottom));background:#fff;border:1px solid var(--line);border-radius:17px;box-shadow:0 14px 40px rgba(0,0,0,.2);overflow:hidden}.mobile a{padding:14px 5px;text-align:center;font-size:9px;font-weight:900}.mobile a+a{border-left:1px solid var(--line)}}@media(max-width:540px){.nav{height:61px;padding:0 14px}.brand img{height:37px}.brand span small{display:none}.hero{min-height:610px}.heroInner{padding:56px 16px 48px;gap:23px}.heroCopy h1{font-size:35px}.heroCopy h2{font-size:13px}.heroActions{display:grid;grid-template-columns:1fr 1fr}.heroActions a{text-align:center;padding:10px 7px}.decisionCard{padding:18px}.gallery{margin:-22px auto 0;padding:0 10px;display:flex;overflow-x:auto;scroll-snap-type:x mandatory}.gallery>div{flex:0 0 78%;height:190px;scroll-snap-align:start}.scan{margin-top:40px;padding:0 16px;grid-template-columns:1fr}.private{padding:0 16px}.privateImage{min-height:340px}.privateCopy{padding:23px}.privateCopy h2{font-size:28px}.privateCopy>div{grid-template-columns:1fr}.layout{padding:42px 16px}.explainer{grid-template-columns:1fr}.story h2,.socialProof h2,.bookingTitle h2,.terms h2,.faq h2{font-size:24px}.socialProof{grid-template-columns:1fr}.reviewShots{display:flex;overflow-x:auto}.reviewShots a{flex:0 0 78%}.terms{padding:18px}.related{padding:45px 16px 95px}.related>div{display:flex;overflow-x:auto;scroll-snap-type:x mandatory}.related a{flex:0 0 78%;min-height:245px;scroll-snap-align:start}:global(.gprice){display:block;padding:17px}:global(.gprice>b){display:block;margin-top:8px}:global(.gcols){grid-template-columns:1fr}:global(.gform),:global(.gqr){padding:18px}:global(.gform input),:global(.gform textarea){font-size:16px}.page{padding-bottom:74px}}
+
+/* === GVS MOBILE READABILITY v7 : VI LANDING === */
+.page{
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",Arial,sans-serif;
+  font-size:16px;
+  line-height:1.6;
+}
+.brand small{font-size:11px}
+.nav nav{font-size:14px}
+.heroCopy>p,.privateCopy>p,.explainer p,.story>p:first-child,.socialProof>div>p,.bookingTitle>p,.terms>p,.faq>p,.related>p{font-size:12px;letter-spacing:.1em}
+.heroCopy h1{font-size:clamp(42px,4.5vw,53px);line-height:1.08}
+.heroCopy h2{font-size:17px;line-height:1.65}
+.chips span{font-size:13px;line-height:1.35}
+.heroActions a{font-size:14px;min-height:44px;display:grid;place-items:center}
+.decisionCard small{font-size:11px}
+.decisionCard h3{font-size:24px}
+.decisionCard>p{font-size:15px;line-height:1.58}
+.decisionCard>strong{font-size:24px}
+.decisionCard>div{font-size:14px;line-height:1.45}
+.gallery>div span{font-size:11px}
+.scan small{font-size:11px}
+.scan b{font-size:19px}
+.scan p{font-size:15px;line-height:1.6;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+.privateCopy span{font-size:15px;line-height:1.45}
+.privateCopy .note{font-size:15px;line-height:1.62}
+.privateCopy>a{font-size:14px}
+.explainer h2{font-size:24px}
+.explainer ul{font-size:15px;line-height:1.7}
+.story h2,.socialProof h2,.bookingTitle h2,.terms h2,.faq h2{font-size:31px}
+.story>p:not(:first-child){font-size:16px;line-height:1.75}
+.story blockquote{font-size:20px;line-height:1.5}
+.socialProof>div>span{font-size:15px;line-height:1.65}
+.socialProof>div>a{font-size:14px}
+.terms summary,.faq summary{font-size:15px;line-height:1.45;padding:16px 0}
+.terms details p,.faq details p{font-size:15px;line-height:1.7}
+.sticky>small{font-size:11px}
+.sticky h3{font-size:21px}
+.sticky ol{font-size:14px;line-height:1.65}
+.sticky>a{font-size:14px}
+.related small{font-size:11px}
+.related b{font-size:15px;line-height:1.45}
+.related span{font-size:13px}
+.mobile a{font-size:14px}
+
+/* booking / VietQR */
+:global(.gprice small){font-size:11px}
+:global(.gprice h2){font-size:26px}
+:global(.gprice span){font-size:14px;line-height:1.55}
+:global(.gprice>b){font-size:13px}
+:global(.gform h3),:global(.gqr h3){font-size:21px}
+:global(.gform label){font-size:14px;line-height:1.45}
+:global(.gform input),:global(.gform textarea){font-size:16px;line-height:1.5}
+:global(.gform>a),:global(.gqr>a){font-size:14px;min-height:46px;align-items:center}
+:global(.gqr>small){font-size:11px}
+:global(.gqr p){font-size:15px;line-height:1.6}
+:global(.gamount){font-size:14px}
+:global(.gamount b){font-size:28px}
+:global(.gcheck){font-size:14px;line-height:1.5}
+:global(.gqr button){font-size:14px;min-height:46px}
+:global(.gqr>strong){font-size:14px;line-height:1.45}
+:global(.gcode){font-size:14px}
+
+@media(max-width:540px){
+  .hero{min-height:660px}
+  .heroInner{padding:56px 16px 44px}
+  .heroCopy>p{font-size:11px;line-height:1.4}
+  .heroCopy h1{font-size:37px;line-height:1.1}
+  .heroCopy h2{font-size:16px;line-height:1.58;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;overflow:hidden}
+  .chips{gap:6px}
+  .chips span{font-size:12px;padding:7px 9px}
+  .decisionCard{padding:19px}
+  .decisionCard>p{font-size:15px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+  .decisionCard>div{font-size:14px}
+  .gallery>div span{font-size:11px}
+  .scan{gap:9px}
+  .scan>div{padding:18px}
+  .scan p{font-size:15px;-webkit-line-clamp:2}
+  .privateCopy span,.privateCopy .note{font-size:15px}
+  .explainer h2{font-size:22px}
+  .explainer ul{font-size:15px}
+  .story h2,.socialProof h2,.bookingTitle h2,.terms h2,.faq h2{font-size:25px}
+  .story>p:not(:first-child){font-size:16px}
+  .socialProof>div>span{font-size:15px}
+  .terms summary,.faq summary{font-size:15px}
+  .terms details p,.faq details p{font-size:15px}
+  .layout>aside{display:none}
+  .related b{font-size:15px}
+  :global(.gprice){padding:18px}
+  :global(.gprice h2){font-size:25px}
+  :global(.gprice span){font-size:14px}
+  :global(.gform),:global(.gqr){padding:19px}
+  :global(.gform h3),:global(.gqr h3){font-size:20px}
+  :global(.gform label){font-size:14px}
+  :global(.gqr p),:global(.gcheck),:global(.gqr>strong),:global(.gcode){font-size:14px}
+  .mobile a{font-size:14px;min-height:48px;display:grid;place-items:center}
+}
