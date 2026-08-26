@@ -31,7 +31,7 @@ export default function AdminV5() {
   const [bootstrap,setBootstrap]=useState("");
   const [msg,setMsg]=useState("");
   const [err,setErr]=useState("");
-  const [tab,setTab]=useState<"dashboard"|"analytics"|"leads"|"bookings">("dashboard");
+  const [tab,setTab]=useState<"dashboard"|"analytics"|"seo"|"leads"|"bookings">("dashboard");
   const [days,setDays]=useState(7);
   const [metrics,setMetrics]=useState<any>(null);
   const [breakdown,setBreakdown]=useState<any[]>([]);
@@ -43,6 +43,13 @@ export default function AdminV5() {
   const [contacts,setContacts]=useState<Contact[]>([]);
   const [leads,setLeads]=useState<Lead[]>([]);
   const [bookings,setBookings]=useState<Booking[]>([]);
+  const [seoOverview,setSeoOverview]=useState<any>(null);
+  const [seoPages,setSeoPages]=useState<any[]>([]);
+  const [seoQueries,setSeoQueries]=useState<any[]>([]);
+  const [seoCountries,setSeoCountries]=useState<any[]>([]);
+  const [seoOpportunities,setSeoOpportunities]=useState<any[]>([]);
+  const [seoLastSync,setSeoLastSync]=useState<any>(null);
+  const [syncingSeo,setSyncingSeo]=useState(false);
   const [modal,setModal]=useState<null|"lead"|"booking">(null);
   const [saving,setSaving]=useState(false);
 
@@ -84,6 +91,14 @@ export default function AdminV5() {
       const dimPromises = dims.map(dimension =>
         supabase.rpc("admin_analytics_dimension",{p_days:days,p_dimension:dimension})
       );
+      const seoPromises = [
+        supabase.rpc("admin_seo_overview",{p_days:days}),
+        supabase.rpc("admin_seo_pages",{p_days:days,p_limit:50}),
+        supabase.rpc("admin_seo_queries",{p_days:days,p_limit:100}),
+        supabase.rpc("admin_seo_countries",{p_days:days,p_limit:50}),
+        supabase.rpc("admin_seo_opportunities",{p_days:days,p_limit:50}),
+        supabase.from("search_console_sync_runs").select("id,started_at,completed_at,start_date,end_date,rows_received,rows_upserted,status,error_message").order("started_at",{ascending:false}).limit(1).maybeSingle()
+      ];
 
       const results = await Promise.all([
         supabase.rpc("admin_dashboard_metrics",{p_days:days}),
@@ -93,11 +108,12 @@ export default function AdminV5() {
         supabase.from("contacts").select("id,full_name,whatsapp,country,preferred_language").order("created_at",{ascending:false}).limit(300),
         supabase.from("leads").select("id,contact_id,interested_tour_id,partner_id,status,source,message,created_at").order("created_at",{ascending:false}).limit(100),
         supabase.from("bookings").select("id,booking_code,contact_id,tour_id,partner_id,status,payment_status,tour_date,pax,net_revenue_vnd,source,created_at").order("created_at",{ascending:false}).limit(100),
-        ...dimPromises
+        ...dimPromises,
+        ...seoPromises
       ]);
 
       for(const r of results) if(r.error) throw r.error;
-      const [m,b,t,p,c,l,bo,...dimResults] = results;
+      const [m,b,t,p,c,l,bo,...rest] = results;
       setMetrics(m.data);
       setBreakdown((b.data||[]) as any);
       setTours((t.data||[]) as any);
@@ -106,10 +122,44 @@ export default function AdminV5() {
       setLeads((l.data||[]) as any);
       setBookings((bo.data||[]) as any);
 
+      const dimResults = rest.slice(0,dims.length);
+      const seoResults = rest.slice(dims.length);
       const nextAnalytics:Record<string,any[]> = {};
       dims.forEach((dimension,i)=> nextAnalytics[dimension] = (dimResults[i].data||[]) as any[]);
       setAnalytics(nextAnalytics);
+
+      setSeoOverview(seoResults[0].data||null);
+      setSeoPages((seoResults[1].data||[]) as any[]);
+      setSeoQueries((seoResults[2].data||[]) as any[]);
+      setSeoCountries((seoResults[3].data||[]) as any[]);
+      setSeoOpportunities((seoResults[4].data||[]) as any[]);
+      setSeoLastSync(seoResults[5].data||null);
     } catch(e:any) { setErr(e.message||"Không tải được dữ liệu"); }
+  }
+
+  async function syncSearchConsole() {
+    setSyncingSeo(true); setErr(""); setMsg("");
+    try {
+      const {data:{session:currentSession}} = await supabase.auth.getSession();
+      if(!currentSession?.access_token) throw new Error("Phiên đăng nhập đã hết hạn. Hãy đăng nhập lại.");
+      const initialDays = seoLastSync?.status==="success" ? 14 : 90;
+      const response = await fetch("/api/admin/search-console/sync",{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json",
+          Authorization:"Bearer "+currentSession.access_token
+        },
+        body:JSON.stringify({days:initialDays})
+      });
+      const data = await response.json().catch(()=>({}));
+      if(!response.ok) throw new Error(data?.error||"Không đồng bộ được Search Console.");
+      setMsg(`Search Console đã đồng bộ ${data.rows_upserted||0} dòng (${data.start_date} → ${data.end_date}).`);
+      await loadAll();
+    } catch(e:any) {
+      setErr(e.message||"Không đồng bộ được Search Console");
+    } finally {
+      setSyncingSeo(false);
+    }
   }
 
   async function authSubmit(e:any) {
@@ -190,7 +240,7 @@ export default function AdminV5() {
   if(loading) return <div className="gva-login"><div className="gva-login-card">Đang mở GoVietStay Admin…</div></div>;
 
   if(!session) return <div className="gva-login"><form className="gva-login-card" onSubmit={authSubmit}>
-    <div className="gva-brand">GoVietStay Admin V6</div>
+    <div className="gva-brand">GoVietStay Admin V7</div>
     <div className="gva-sub">Login bảo mật bằng Supabase Auth. Dashboard chỉ hiển thị dữ liệu thật.</div>
     {err&&<div className="gva-msg err">{err}</div>}{msg&&<div className="gva-msg">{msg}</div>}
     <div className="gva-field"><label>Email</label><input className="gva-input" type="email" value={email} onChange={e=>setEmail(e.target.value)} required /></div>
@@ -211,25 +261,26 @@ export default function AdminV5() {
   </div></div>;
 
   if(!(staff.role==="owner"||staff.role==="admin")) return <div className="gva-login"><div className="gva-login-card">
-    <div className="gva-brand">Chưa có quyền Admin</div><div className="gva-sub">Tài khoản này có role {staff.role}. V6 hiện chỉ mở cho Owner/Admin.</div>
+    <div className="gva-brand">Chưa có quyền Admin</div><div className="gva-sub">Tài khoản này có role {staff.role}. V7 hiện chỉ mở cho Owner/Admin.</div>
     <button className="gva-btn" onClick={logout}>Đăng xuất</button>
   </div></div>;
 
   return <div className="gva-shell"><div className="gva-layout">
     <aside className="gva-side">
-      <div className="logo">GoVietStay</div><div className="small">Admin V6 · Analytics Live</div>
+      <div className="logo">GoVietStay</div><div className="small">Admin V7 · SEO Intelligence</div>
       <div className="gva-nav">
         <button className={tab==="dashboard"?"active":""} onClick={()=>setTab("dashboard")}>Tổng quan</button>
         <button className={tab==="analytics"?"active":""} onClick={()=>setTab("analytics")}>Analytics</button>
+        <button className={tab==="seo"?"active":""} onClick={()=>setTab("seo")}>SEO Intelligence</button>
         <button className={tab==="leads"?"active":""} onClick={()=>setTab("leads")}>Leads</button>
         <button className={tab==="bookings"?"active":""} onClick={()=>setTab("bookings")}>Bookings</button>
       </div>
     </aside>
     <main className="gva-main">
       <div className="gva-top">
-        <div className="gva-title"><h1>{tab==="dashboard"?"Dashboard thật":tab==="analytics"?"Analytics khách truy cập":tab==="leads"?"Quản lý Leads":"Quản lý Bookings"}</h1><p>{staff.display_name} · {staff.role} · dữ liệu từ Supabase</p></div>
+        <div className="gva-title"><h1>{tab==="dashboard"?"Dashboard thật":tab==="analytics"?"Analytics khách truy cập":tab==="seo"?"SEO Intelligence":tab==="leads"?"Quản lý Leads":"Quản lý Bookings"}</h1><p>{staff.display_name} · {staff.role} · dữ liệu từ Supabase</p></div>
         <div className="gva-top-actions">
-          <select className="gva-select" value={days} onChange={e=>setDays(Number(e.target.value))}><option value={1}>Hôm nay</option><option value={7}>7 ngày</option><option value={30}>30 ngày</option></select>
+          <select className="gva-select" value={days} onChange={e=>setDays(Number(e.target.value))}><option value={1}>Hôm nay</option><option value={7}>7 ngày</option><option value={28}>28 ngày</option><option value={30}>30 ngày</option><option value={90}>90 ngày</option></select>
           <button className="gva-btn secondary" onClick={loadAll}>Làm mới</button><button className="gva-btn secondary" onClick={logout}>Đăng xuất</button>
         </div>
       </div>
@@ -279,6 +330,89 @@ export default function AdminV5() {
         </div>
       </>}
 
+
+      {tab==="seo"&&<>
+        <div className="gva-section-head">
+          <div>
+            <h2>Google Search Console → Landing Page → WhatsApp</h2>
+            <div className="gva-mini">
+              {seoLastSync?.completed_at
+                ? <>Lần đồng bộ gần nhất: <b>{d(seoLastSync.completed_at)}</b> · {seoLastSync.rows_upserted||0} dòng</>
+                : <>Chưa đồng bộ Search Console lần đầu.</>}
+            </div>
+          </div>
+          <button className="gva-btn" onClick={syncSearchConsole} disabled={syncingSeo}>
+            {syncingSeo?"Đang lấy dữ liệu Google…":seoLastSync?"Cập nhật Search Console":"Đồng bộ Search Console lần đầu"}
+          </button>
+        </div>
+
+        <div className="gva-analytics-note">
+          Search Console thường chậm khoảng 2–3 ngày. V7 ghép dữ liệu Google Search với tracking website để ưu tiên đúng landing page đang có cơ hội SEO.
+        </div>
+
+        <div className="gva-kpis">
+          <KPI label="Google Clicks" value={seoOverview?.clicks||0} hint="Search Console"/>
+          <KPI label="Impressions" value={seoOverview?.impressions||0} hint="Google Search"/>
+          <KPI label="CTR" value={(seoOverview?.ctr||0)+"%"} hint="Clicks / Impressions"/>
+          <KPI label="Avg Position" value={Number(seoOverview?.avg_position||0).toFixed(1)} hint="Vị trí trung bình"/>
+          <KPI label="Queries" value={seoOverview?.queries||0} hint="Từ khóa Google"/>
+          <KPI label="SEO Pages" value={seoOverview?.pages||0} hint="Landing pages có dữ liệu"/>
+        </div>
+
+        <div className="gva-card gva-seo-opportunity">
+          <div className="gva-section-head"><h2>Cơ hội SEO ưu tiên</h2><div className="gva-mini">Impression cao + vị trí 4–20 + CTR còn thấp</div></div>
+          <div className="gva-table-wrap"><table className="gva-table">
+            <thead><tr><th>Query</th><th>Landing page</th><th>Imp.</th><th>Clicks</th><th>CTR</th><th>Pos.</th><th>Score</th></tr></thead>
+            <tbody>
+              {seoOpportunities.slice(0,20).map((r:any,i:number)=><tr key={r.query+"|"+r.page+"|"+i}>
+                <td><b>{r.query}</b></td>
+                <td title={r.page}>{shortPage(r.page)}</td>
+                <td>{r.impressions}</td><td>{r.clicks}</td><td>{Number(r.ctr||0).toFixed(1)}%</td>
+                <td><span className="gva-pill">{Number(r.position||0).toFixed(1)}</span></td>
+                <td><b>{Number(r.opportunity_score||0).toFixed(0)}</b></td>
+              </tr>)}
+              {!seoOpportunities.length&&<tr><td colSpan={7}><div className="gva-empty">Chưa có dữ liệu. Bấm “Đồng bộ Search Console”.</div></td></tr>}
+            </tbody>
+          </table></div>
+        </div>
+
+        <div className="gva-grid2 gva-seo-grid">
+          <div className="gva-card"><h3>Landing pages trên Google</h3><div className="gva-table-wrap"><table className="gva-table">
+            <thead><tr><th>Page</th><th>Clicks</th><th>Imp.</th><th>CTR</th><th>Pos.</th><th>Visitors</th><th>WA</th></tr></thead>
+            <tbody>
+              {seoPages.slice(0,25).map((r:any,i:number)=><tr key={r.page+"|"+i}>
+                <td title={r.page}><b>{shortPage(r.page)}</b></td><td>{r.clicks}</td><td>{r.impressions}</td>
+                <td>{Number(r.ctr||0).toFixed(1)}%</td><td>{Number(r.position||0).toFixed(1)}</td>
+                <td>{r.visitors||0}</td><td><b>{r.whatsapp_clicks||0}</b></td>
+              </tr>)}
+              {!seoPages.length&&<tr><td colSpan={7}><div className="gva-empty">Chưa có dữ liệu Search Console.</div></td></tr>}
+            </tbody>
+          </table></div></div>
+
+          <div className="gva-card"><h3>Top Google Queries</h3><div className="gva-table-wrap"><table className="gva-table">
+            <thead><tr><th>Query</th><th>Clicks</th><th>Imp.</th><th>CTR</th><th>Pos.</th></tr></thead>
+            <tbody>
+              {seoQueries.slice(0,30).map((r:any,i:number)=><tr key={r.query+"|"+i}>
+                <td><b>{r.query}</b></td><td>{r.clicks}</td><td>{r.impressions}</td>
+                <td>{Number(r.ctr||0).toFixed(1)}%</td><td>{Number(r.position||0).toFixed(1)}</td>
+              </tr>)}
+              {!seoQueries.length&&<tr><td colSpan={5}><div className="gva-empty">Chưa có query từ Google.</div></td></tr>}
+            </tbody>
+          </table></div></div>
+        </div>
+
+        <div className="gva-card" style={{marginTop:15}}><h3>Google Search theo quốc gia</h3><div className="gva-table-wrap"><table className="gva-table">
+          <thead><tr><th>Country</th><th>Clicks</th><th>Impressions</th><th>CTR</th><th>Position</th></tr></thead>
+          <tbody>
+            {seoCountries.slice(0,30).map((r:any,i:number)=><tr key={r.country+"|"+i}>
+              <td><b>{countryLabel(r.country)}</b></td><td>{r.clicks}</td><td>{r.impressions}</td>
+              <td>{Number(r.ctr||0).toFixed(1)}%</td><td>{Number(r.position||0).toFixed(1)}</td>
+            </tr>)}
+            {!seoCountries.length&&<tr><td colSpan={5}><div className="gva-empty">Chưa có dữ liệu quốc gia từ Search Console.</div></td></tr>}
+          </tbody>
+        </table></div></div>
+      </>}
+
       {tab==="leads"&&<>
         <div className="gva-section-head"><h2>Leads</h2><button className="gva-btn" onClick={()=>setModal("lead")}>+ Tạo Lead</button></div>
         <div className="gva-card"><div className="gva-table-wrap"><table className="gva-table"><thead><tr><th>Ngày</th><th>Khách</th><th>WhatsApp</th><th>Nguồn</th><th>Tour</th><th>Partner</th><th>Status</th></tr></thead><tbody>
@@ -300,6 +434,25 @@ export default function AdminV5() {
   </div></div>
 }
 
+
+
+function shortPage(value:any){
+  try{
+    const u=new URL(String(value||""));
+    return (u.pathname||"/")+(u.search||"");
+  }catch{
+    return String(value||"—").replace(/^https?:\/\/[^/]+/,"")||"/";
+  }
+}
+function countryLabel(value:any){
+  const c=String(value||"").toLowerCase();
+  const names:Record<string,string>={
+    kor:"South Korea (KR)",rus:"Russia (RU)",kaz:"Kazakhstan (KZ)",vnm:"Vietnam (VN)",
+    mng:"Mongolia (MN)",uzb:"Uzbekistan (UZ)",usa:"United States (US)",gbr:"United Kingdom (GB)",
+    aus:"Australia (AU)",can:"Canada (CA)",ind:"India (IN)",jpn:"Japan (JP)",chn:"China (CN)"
+  };
+  return names[c]||String(value||"Unknown").toUpperCase();
+}
 
 function AnalyticsCard({title,rows,labelTitle}:any){
   return <div className="gva-card">

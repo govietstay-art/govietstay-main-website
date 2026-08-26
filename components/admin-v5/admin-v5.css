@@ -42,3 +42,8 @@
 .gva-analytics-note{background:#eef6ff;border:1px solid #d9e9fb;color:#315a86;border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:13px;line-height:1.5}
 .gva-analytics-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
 @media(max-width:900px){.gva-analytics-grid{grid-template-columns:1fr}}
+
+.gva-seo-grid{margin-top:15px}
+.gva-seo-opportunity{margin-bottom:15px;border-left:4px solid #1657a6}
+.gva-seo-opportunity .gva-section-head{margin-bottom:8px}
+@media(max-width:1250px){.gva-seo-grid{grid-template-columns:1fr}}
