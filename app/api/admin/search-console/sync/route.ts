@@ -15,9 +15,51 @@ function b64url(value: string | Buffer) {
 }
 function isoDate(d: Date) { return d.toISOString().slice(0,10); }
 function normalizePrivateKey(value: string) {
-  let v = value.trim();
-  if (v.startsWith('"') && v.endsWith('"')) v = v.slice(1, -1);
-  return v.replace(/\\n/g,"\n");
+  let v = String(value || "").trim();
+
+  // Accept a complete service-account JSON object if it was pasted by mistake.
+  if (v.startsWith("{")) {
+    try {
+      const parsed = JSON.parse(v);
+      if (parsed && typeof parsed.private_key === "string") v = parsed.private_key;
+    } catch {}
+  }
+
+  // Accept the whole JSON line: "private_key": "-----BEGIN ...\\n..."
+  if (!v.includes("-----BEGIN PRIVATE KEY-----")) {
+    const lineMatch = v.match(/private_key["']?\s*:\s*"([^"]+)"/i);
+    if (lineMatch?.[1]) v = lineMatch[1];
+  }
+
+  // If extra JSON text surrounds the PEM, extract only the PEM block.
+  const beginMarker = "-----BEGIN PRIVATE KEY-----";
+  const endMarker = "-----END PRIVATE KEY-----";
+  const begin = v.indexOf(beginMarker);
+  const end = v.indexOf(endMarker);
+  if (begin >= 0 && end >= begin) {
+    v = v.slice(begin, end + endMarker.length);
+  }
+
+  // Convert JSON escaped newlines to real PEM newlines.
+  v = v
+    .replace(/^["']+|["',;]+$/g, "")
+    .replace(/\\r\\n/g, "\n")
+    .replace(/\\n/g, "\n")
+    .replace(/\\r/g, "\n")
+    .replace(/\r\n/g, "\n")
+    .trim();
+
+  // Normalize whitespace around PEM boundaries.
+  v = v
+    .replace(/-----BEGIN PRIVATE KEY-----\s*/, "-----BEGIN PRIVATE KEY-----\n")
+    .replace(/\s*-----END PRIVATE KEY-----/, "\n-----END PRIVATE KEY-----");
+
+  if (!v.startsWith(beginMarker) || !v.endsWith(endMarker)) {
+    throw new Error(
+      "GSC_PRIVATE_KEY không đúng định dạng PEM. Hãy copy giá trị private_key trong file JSON, gồm cả BEGIN/END PRIVATE KEY."
+    );
+  }
+  return v;
 }
 async function verifyAdmin(token: string) {
   const userRes = await fetch(`${SUPABASE_URL}/auth/v1/user`,{
@@ -53,7 +95,12 @@ async function googleAccessToken() {
   const signer = createSign("RSA-SHA256");
   signer.update(unsigned);
   signer.end();
-  const signature = signer.sign(normalizePrivateKey(rawKey));
+  let signature: Buffer;
+  try {
+    signature = signer.sign(normalizePrivateKey(rawKey));
+  } catch (e:any) {
+    throw new Error("Không đọc được GSC_PRIVATE_KEY trên Vercel: " + String(e?.message || e));
+  }
   const assertion = `${unsigned}.${b64url(signature)}`;
 
   const tokenRes = await fetch("https://oauth2.googleapis.com/token",{
