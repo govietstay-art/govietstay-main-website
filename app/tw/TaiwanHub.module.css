@@ -1,1 +1,65 @@
 .page{--ink:#111611;--green:#086b50;--dark:#071b14;--lime:#dfff62;--soft:#f5f7f4;--line:#e1e7e2;--muted:#68716c;background:#fff;color:var(--ink);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",Arial,sans-serif;line-height:1.7}.page *{box-sizing:border-box}.page a{text-decoration:none;color:inherit}.topStrip{height:34px;background:#071b14;color:#e3f7e9;display:flex;align-items:center;justify-content:center;gap:10px;font-size:10px;font-weight:900;letter-spacing:.08em}.topStrip span{color:#74d4a6}.nav{height:78px;max-width:1180px;margin:auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:10px}.brand img{width:42px;height:42px;object-fit:contain}.brand span{display:flex;flex-direction:column;line-height:1.1}.brand b{font-size:18px}.brand small{font-size:8px;letter-spacing:.15em;color:#748079;margin-top:5px}.nav nav{display:flex;align-items:center;gap:18px;font-size:11px;font-weight:850}.cta{background:#142019;color:#fff!important;padding:10px 16px;border-radius:999px}.hero{background:radial-gradient(circle at 83% 17%,#14503c,transparent 34%),linear-gradient(135deg,#071b14,#0d2d22);color:#fff}.heroInner{max-width:1180px;margin:auto;padding:103px 24px 90px;display:grid;grid-template-columns:1.25fr .75fr;gap:64px;align-items:end}.eyebrow,.darkEye{font-size:10px;font-weight:950;letter-spacing:.15em;color:#89ddb3;margin:0 0 14px}.darkEye{color:var(--green)}.hero h1{font-size:58px;line-height:1.08;letter-spacing:-.055em;margin:0}.hero h1 span{color:var(--lime)}.lead{font-size:17px;color:#d9e7df;max-width:700px;margin:21px 0 27px}.buttons{display:flex;gap:10px;flex-wrap:wrap}.primary,.ghost{padding:13px 20px;border-radius:999px;font-size:12px;font-weight:950}.primary{background:var(--lime);color:#142015!important}.ghost{border:1px solid rgba(255,255,255,.4);color:#fff!important}.trust{display:flex;gap:13px;flex-wrap:wrap;font-size:10px;color:#d3e1d9;font-weight:800;margin-top:23px}.answer{background:#fff;color:var(--ink);border-radius:22px;padding:26px;box-shadow:0 25px 70px rgba(0,0,0,.25)}.answer>small{font-size:9px;color:var(--green);font-weight:950;letter-spacing:.12em}.answer h2{font-size:24px;margin:7px 0 15px}.answer div{border-top:1px solid var(--line);padding:11px 0;display:flex;gap:10px;align-items:center;font-size:12px;font-weight:850}.answer div b{width:28px;height:28px;border-radius:50%;background:#e5f5eb;color:var(--green);display:flex;align-items:center;justify-content:center}.answer p{font-size:10px;color:var(--muted);margin:10px 0 0}.statbar{max-width:1180px;margin:-25px auto 0;padding:0 24px;display:grid;grid-template-columns:repeat(4,1fr);position:relative;z-index:2}.statbar div{background:#fff;border:1px solid var(--line);padding:17px}.statbar div:first-child{border-radius:14px 0 0 14px}.statbar div:last-child{border-radius:0 14px 14px 0}.statbar small{display:block;font-size:8px;color:#7a837e;letter-spacing:.1em;font-weight:900}.statbar b{font-size:11px}.section{max-width:1180px;margin:auto;padding:98px 24px}.sectionHead{display:grid;grid-template-columns:1fr 380px;gap:40px;align-items:end;margin-bottom:33px}.sectionHead h2{font-size:39px;line-height:1.2;letter-spacing:-.045em;margin:0}.sectionHead>p{font-size:13px;color:var(--muted)}.essentialGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.card{border:1px solid var(--line);border-radius:20px;padding:22px;min-height:270px;display:flex;flex-direction:column;transition:.2s}.card:hover,.guide:hover{transform:translateY(-4px);box-shadow:0 20px 55px rgba(16,36,26,.09)}.card>div{display:flex;justify-content:space-between;align-items:center}.card div span{font-size:26px}.card div small{font-size:8px;color:var(--green);font-weight:950}.card h3{font-size:20px;line-height:1.4;margin:20px 0 9px}.card p{font-size:12px;color:var(--muted)}.card b{font-size:11px;color:var(--green);margin-top:auto}.dark{background:#081d15;color:#fff;padding:90px 24px}.darkInner{max-width:1180px;margin:auto;display:grid;grid-template-columns:.75fr 1.25fr;gap:62px}.darkInner h2{font-size:39px;line-height:1.22;letter-spacing:-.045em;margin:0}.reasons{display:grid;grid-template-columns:1fr 1fr;gap:12px}.reasons article{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:20px}.reasons b{color:var(--lime);font-size:10px}.reasons h3{font-size:16px;margin:7px 0}.reasons p{font-size:11px;color:#cadbd1;margin:0}.guides{display:grid;grid-template-columns:1fr 1fr;gap:13px}.guide{border:1px solid var(--line);border-radius:18px;padding:21px;display:grid;grid-template-columns:38px 1fr;gap:12px;transition:.2s}.guide>span{font-size:11px;color:var(--green);font-weight:950}.guide small{font-size:8px;letter-spacing:.1em;color:#7b857f;font-weight:900}.guide h3{font-size:18px;line-height:1.42;margin:6px 0}.guide p{font-size:11px;color:var(--muted);margin:0 0 8px}.guide b{font-size:10px;color:var(--green)}.final{text-align:center;background:#e7f5ec;padding:84px 24px}.final>p{font-size:9px;color:var(--green);letter-spacing:.16em;font-weight:950}.final h2{font-size:38px;line-height:1.25;letter-spacing:-.04em;margin:10px 0}.final>span{display:block;font-size:13px;color:var(--muted);margin-bottom:20px}.final a{display:inline-flex;background:#142019;color:#fff;padding:12px 21px;border-radius:999px;font-size:11px;font-weight:950}.footer{max-width:1180px;margin:auto;padding:27px 24px;display:flex;gap:20px;flex-wrap:wrap;font-size:9px;color:#68736c}.footer a{font-weight:900;color:var(--green)}@media(max-width:900px){.nav nav a:not(.cta){display:none}.heroInner,.darkInner{grid-template-columns:1fr}.hero h1{font-size:43px}.statbar,.essentialGrid{grid-template-columns:1fr 1fr}.sectionHead{grid-template-columns:1fr}.guides{grid-template-columns:1fr}}@media(max-width:560px){.heroInner{padding:64px 20px}.hero h1{font-size:35px}.statbar,.essentialGrid,.reasons{grid-template-columns:1fr}.statbar{padding:0 20px}.statbar div:first-child,.statbar div:last-child{border-radius:0}.section{padding:68px 20px}.sectionHead h2,.darkInner h2,.final h2{font-size:30px}.dark{padding:68px 20px}}
+
+/* === GVS MOBILE READABILITY v8 : TAIWAN HUB === */
+.page{
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  font-size:17px;
+  line-height:1.75;
+}
+.topStrip{font-size:12px}
+.brand small{font-size:11px}
+.nav nav{font-size:14px}
+.eyebrow,.darkEye{font-size:12px;letter-spacing:.1em}
+.hero h1{font-size:clamp(44px,5vw,60px);line-height:1.12}
+.lead{font-size:18px;line-height:1.7}
+.primary,.ghost{font-size:14px}
+.trust{font-size:13px;line-height:1.5}
+.answer>small{font-size:11px}
+.answer h2{font-size:25px}
+.answer div{font-size:15px}
+.answer p{font-size:14px;line-height:1.6}
+.statbar small{font-size:11px}
+.statbar b{font-size:15px}
+.sectionHead h2{font-size:clamp(32px,3.4vw,41px)}
+.sectionHead>p{font-size:16px;line-height:1.7}
+.card div small{font-size:11px}
+.card h3{font-size:21px}
+.card p{font-size:16px;line-height:1.7;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+.card b{font-size:14px}
+.darkInner h2{font-size:clamp(32px,3.4vw,41px)}
+.reasons b{font-size:12px}
+.reasons h3{font-size:18px}
+.reasons p{font-size:15px;line-height:1.7}
+.guide>span{font-size:13px}
+.guide small{font-size:11px}
+.guide h3{font-size:19px}
+.guide p{font-size:15px;line-height:1.65;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+.guide b{font-size:13px}
+.final>p{font-size:11px}
+.final h2{font-size:clamp(31px,3.2vw,39px)}
+.final>span{font-size:16px}
+.final a{font-size:14px}
+.footer{font-size:13px}
+
+@media(max-width:560px){
+  .topStrip{height:auto;padding:7px 10px;font-size:11px;line-height:1.4;text-align:center}
+  .heroInner{padding:62px 20px 56px}
+  .eyebrow{font-size:11px}
+  .hero h1{font-size:38px;line-height:1.16}
+  .lead{font-size:17px;line-height:1.7;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;overflow:hidden}
+  .primary,.ghost{font-size:14px;min-height:45px;display:grid;place-items:center}
+  .trust{font-size:13px}
+  .answer p{font-size:15px}
+  .statbar small{font-size:11px}
+  .statbar b{font-size:15px}
+  .section{padding:60px 18px}
+  .sectionHead h2,.darkInner h2,.final h2{font-size:30px;line-height:1.3}
+  .sectionHead>p{font-size:16px}
+  .card{min-height:0}
+  .card h3{font-size:21px}
+  .card p{font-size:16px;-webkit-line-clamp:2}
+  .reasons p{font-size:15px}
+  .guide p{font-size:15px;-webkit-line-clamp:2}
+  .final>span{font-size:16px}
+  .footer{font-size:13px}
+}
