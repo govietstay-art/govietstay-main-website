@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { indiaSeoGuides } from "../lib/indiaSeoGuides";
 import { koreanSeoGuides } from "../lib/koreanSeoGuides";
 import { aktualnoArticles } from "../lib/aktualnoArticles";
 import { russianSeoIndexableLandings } from "../lib/russian-seo-landings";
@@ -47,6 +48,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
           "ko-KR": `${BASE_URL}/ko/cham-island-tour`,
           ru: `${BASE_URL}/ru/tours/cham-island`,
           "x-default": `${BASE_URL}/ko/cham-island-tour`,
+        },
+      },
+    },
+    {
+      url: `${BASE_URL}/in`,
+      lastModified: new Date("2026-08-26T00:00:00.000Z"),
+      changeFrequency: "daily",
+      priority: 1,
+      alternates: {
+        languages: {
+          "en-IN": `${BASE_URL}/in`,
+          "ko-KR": `${BASE_URL}/ko`,
+          ru: `${BASE_URL}/ru`,
+          "x-default": BASE_URL,
         },
       },
     },
@@ -167,6 +182,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   }));
 
+  const indiaGuidePages: MetadataRoute.Sitemap = indiaSeoGuides.map((guide) => ({
+    url: `${BASE_URL}/in/${guide.slug}`,
+    lastModified: new Date(guide.updated),
+    changeFrequency: "monthly",
+    priority: 0.84,
+    alternates: {
+      languages: {
+        "en-IN": `${BASE_URL}/in/${guide.slug}`,
+      },
+    },
+  }));
+
   const aktualnoPages: MetadataRoute.Sitemap = aktualnoArticles.map(
     (article) => ({
       url: `${BASE_URL}/ru/aktualno/${article.slug}`,
@@ -194,6 +221,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     ...corePages,
+    ...indiaGuidePages,
     ...koreanGuidePages,
     ...russianLandingPages,
     ...aktualnoPages,
