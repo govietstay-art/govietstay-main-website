@@ -1,12 +1,12 @@
 /**
- * GoVietStay Unified Tracking V6
+ * GoVietStay Unified Tracking V8
  * Server-side geo + source + device/browser/OS + WhatsApp + partner attribution.
  * No IP, customer name, phone or WhatsApp message is stored by analytics.
  */
 (function(){
 "use strict";
 var ATTR="gvs_partner_attribution_v2",COOKIE="gvs_partner_ref",VISITOR="gvs_visitor_id_v1",SESSION="gvs_session_id_v1";
-var FIRST="gvs_first_seen_v1",LANDING="gvs_session_landing_v1",DAYS=90,lastUrl="";
+var FIRST="gvs_first_seen_v1",LANDING="gvs_session_landing_v1",UTM="gvs_utm_session_v1",DAYS=90,lastUrl="";
 var PARTNERS={DUYTINH01:{code:"DUYTINH01",name:"Duy Tịnh Rooftop – Dragon Bridge",city:"Da Nang",privilege:"Скидка 5% на услуги GoVietStay"}};
 
 function s(v,n){return String(v==null?"":v).trim().slice(0,n||500)}
@@ -43,12 +43,46 @@ function saveAttr(r){
 }
 function activeRef(){var d=loadAttr();return d?ref(d.lastRef):""}
 function params(){
- try{var p=new URLSearchParams(location.search);return{ref:ref(p.get("ref")),utm_source:s(p.get("utm_source"),200),utm_medium:s(p.get("utm_medium"),200),utm_campaign:s(p.get("utm_campaign"),200)}}
- catch(e){return{ref:"",utm_source:"",utm_medium:"",utm_campaign:""}}
+ var empty={ref:"",utm_source:"",utm_medium:"",utm_campaign:"",utm_content:"",utm_term:""};
+ try{
+   var p=new URLSearchParams(location.search),q={
+     ref:ref(p.get("ref")),
+     utm_source:s(p.get("utm_source"),200),
+     utm_medium:s(p.get("utm_medium"),200),
+     utm_campaign:s(p.get("utm_campaign"),200),
+     utm_content:s(p.get("utm_content"),200),
+     utm_term:s(p.get("utm_term"),200)
+   };
+   var has=q.utm_source||q.utm_medium||q.utm_campaign||q.utm_content||q.utm_term;
+   if(has){
+     try{sessionStorage.setItem(UTM,JSON.stringify({utm_source:q.utm_source,utm_medium:q.utm_medium,utm_campaign:q.utm_campaign,utm_content:q.utm_content,utm_term:q.utm_term}))}catch(e){}
+     return q
+   }
+   try{
+     var raw=sessionStorage.getItem(UTM);
+     if(raw){
+       var o=JSON.parse(raw)||{};
+       q.utm_source=s(o.utm_source,200);
+       q.utm_medium=s(o.utm_medium,200);
+       q.utm_campaign=s(o.utm_campaign,200);
+       q.utm_content=s(o.utm_content,200);
+       q.utm_term=s(o.utm_term,200)
+     }
+   }catch(e){}
+   return q
+ }catch(e){return empty}
 }
 function pageUrl(){
- try{var u=new URL(location.href),p=params(),q=new URLSearchParams();if(p.ref)q.set("ref",p.ref);if(p.utm_source)q.set("utm_source",p.utm_source);if(p.utm_medium)q.set("utm_medium",p.utm_medium);if(p.utm_campaign)q.set("utm_campaign",p.utm_campaign);return u.origin+u.pathname+(q.toString()?"?"+q.toString():"")}
- catch(e){return s(location.pathname,500)}
+ try{
+   var u=new URL(location.href),p=params(),q=new URLSearchParams();
+   if(p.ref)q.set("ref",p.ref);
+   if(p.utm_source)q.set("utm_source",p.utm_source);
+   if(p.utm_medium)q.set("utm_medium",p.utm_medium);
+   if(p.utm_campaign)q.set("utm_campaign",p.utm_campaign);
+   if(p.utm_content)q.set("utm_content",p.utm_content);
+   if(p.utm_term)q.set("utm_term",p.utm_term);
+   return u.origin+u.pathname+(q.toString()?"?"+q.toString():"")
+ }catch(e){return s(location.pathname,500)}
 }
 function referrer(){try{if(!document.referrer)return "";var u=new URL(document.referrer);return s(u.origin+u.pathname,1500)}catch(e){return ""}}
 function device(){var w=innerWidth||0;return w<768?"mobile":w<1100?"tablet":"desktop"}
@@ -94,10 +128,11 @@ function payload(name,extra){
    event_name:s(name,80),session_id:session(),visitor_id:visitor(),ref_code:r||null,
    path:s(location.pathname||"/",500),page_url:s(pageUrl(),1500),referrer:referrer()||null,
    utm_source:q.utm_source||null,utm_medium:q.utm_medium||null,utm_campaign:q.utm_campaign||null,
+   utm_content:q.utm_content||null,utm_term:q.utm_term||null,
    locale:s(document.documentElement.lang||navigator.language||"",30)||null,
    device_type:device(),browser:browser(),os:os(),traffic_source:source(),
    landing_path:landing(),is_returning:returning(),
-   metadata:Object.assign({title:s(document.title,300),source:"govietstay_tracking_v6"},extra&&extra.metadata?extra.metadata:{})
+   metadata:Object.assign({title:s(document.title,300),source:"govietstay_tracking_v8"},extra&&extra.metadata?extra.metadata:{})
  }
 }
 function send(name,extra){

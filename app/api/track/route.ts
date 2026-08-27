@@ -38,6 +38,10 @@ export async function POST(request: NextRequest) {
       utm_source: clean(body?.utm_source,200)||null,
       utm_medium: clean(body?.utm_medium,200)||null,
       utm_campaign: clean(body?.utm_campaign,200)||null,
+
+      utm_content: clean(body?.utm_content,200)||null,
+
+      utm_term: clean(body?.utm_term,200)||null,
       locale: clean(body?.locale,30)||null,
       device_type: clean(body?.device_type,40)||null,
       browser: clean(body?.browser,80)||null,
@@ -52,7 +56,7 @@ export async function POST(request: NextRequest) {
       timezone: clean(request.headers.get("x-vercel-ip-timezone"),100)||null,
       metadata: {
         ...(body?.metadata && typeof body.metadata==="object" ? body.metadata : {}),
-        tracking_version:"v6"
+        tracking_version:"v8"
       }
     };
 

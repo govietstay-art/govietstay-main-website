@@ -1,9 +1,11 @@
 "use client";
 // GVS_MARKETING_FUNNEL_V7
+// GVS_MARKETING_LINK_GENERATOR_V8
 
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import "./admin-v5.css";
+import MarketingTools from "./MarketingTools";
 
 const SUPABASE_URL = "https://vscffgnxaexestnayvae.supabase.co";
 const SUPABASE_KEY = "sb_publishable_BI1rIhiGB5cEUyJbnKGI5w_kCMI--oV";
@@ -468,6 +470,7 @@ export default function AdminV5() {
 
 
 
+              <MarketingTools supabase={supabase} days={days}/>
       </>}
 
 
