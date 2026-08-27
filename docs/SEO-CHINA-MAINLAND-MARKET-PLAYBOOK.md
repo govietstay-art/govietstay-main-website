@@ -104,3 +104,27 @@ Do not imply that this automatically authorizes travel onward into mainland Viet
 - Confirm Mandarin guide pool
 - Confirm Alipay/Weixin Pay merchant acquiring route
 - Collect first 20 Chinese-language reviews
+
+
+## China v2 image policy
+- Images are selected from assets already used by the main GoVietStay homepage / homepage tour data.
+- Ba Na: /tour/bana.jpg
+- Hoi An / Coconut: /tour/coconut.jpg
+- Cham Island: /tour/cham.jpg
+- Hue: /tour/hue.jpg
+- Phu Quoc 3 islands: /tour/phuquoc/tour-05-*.jpg
+- Phu Quoc 4 islands + Hon Thom: /tour/phuquoc/tour-06-*.jpg
+- Sunset / south Phu Quoc: /tour/phuquoc/tour-07-*.jpg
+- Social proof strip: /travelers/* images used by the homepage.
+- No AI-generated images.
+- Do not reuse Russia-landing-specific image selections.
+
+
+## China v3 WeChat contact reliability
+- Exact WeChat ID: GovietStation
+- Show the ID beside the contact QR on /cn and all 30 China landing pages.
+- Primary mobile action: one-tap copy of GovietStation.
+- Secondary action: attempt to open WeChat using weixin://.
+- Do not promise that a browser can deep-link directly to a personal WeChat contact by ID.
+- Fallback instruction: copy ID -> open WeChat -> search WeChat ID -> add friend.
+- Existing QR remains a contact QR, not a payment QR.

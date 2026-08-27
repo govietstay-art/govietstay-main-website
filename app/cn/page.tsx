@@ -3,6 +3,7 @@ import {chinaSeoPages} from "../../lib/chinaSeoPages";
 import {chinaMarketConfig} from "../../lib/chinaMarketConfig";
 import {chinaHubVisuals,chinaGuestPhotos,getChinaVisual} from "../../lib/chinaVisuals";
 import styles from "./ChinaHub.module.css";
+import WeChatContact from "./_components/WeChatContact";
 
 export const metadata:Metadata={
   title:{absolute:"中国游客越南自由行 2026 | 岘港·会安·富国岛 | GoVietStay"},
@@ -53,7 +54,9 @@ export default function ChinaHub(){
         <h2>先加好友，再慢慢决定。</h2>
         <img src={chinaMarketConfig.wechatQr} alt="Go Viet Station 微信二维码"/>
         <b>{chinaMarketConfig.wechatName}</b>
+        <strong>WeChat ID: {chinaMarketConfig.wechatId}</strong>
         <p>手机打开此页时：长按保存二维码 → 打开微信扫一扫 → 从相册识别。</p>
+        <WeChatContact/>
         <span>这是联系二维码，不是付款码。</span>
       </aside>
     </section>
@@ -108,8 +111,8 @@ export default function ChinaHub(){
     </section>
 
     <section className={styles.wechatFinal}>
-      <img src="/tour/cham-island/guest-pickup.jpg" alt="GoVietStay 当地支持" loading="lazy"/>
-      <div><p>WECHAT · 微信</p><h2>已经订好机票酒店？把日期、人数和酒店发来就够了。</h2><span>先咨询，不需要一上来就付款。</span><a href="#wechat">查看微信二维码</a></div>
+      <img src="/tour/cham.jpg" alt="GoVietStay 当地支持" loading="lazy"/>
+      <div><p>WECHAT · 微信</p><h2>已经订好机票酒店？把日期、人数和酒店发来就够了。</h2><span>微信号：<b>GovietStation</b>。先咨询，不需要一上来就付款。</span><a href="#wechat">复制微信号 / 查看二维码</a></div>
     </section>
 
     <div className={styles.mobile}><a href="#wechat">💬 微信</a><a href="/cn/ba-na-hills-golden-bridge">🔥 岘港</a><a href="/cn/phu-quoc-free-travel">🏝 富国岛</a></div>

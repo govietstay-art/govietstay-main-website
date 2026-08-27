@@ -2,6 +2,7 @@ import type {ChinaSeoPage} from "../../../lib/chinaSeoPages";
 import {chinaMarketConfig} from "../../../lib/chinaMarketConfig";
 import {getChinaVisual} from "../../../lib/chinaVisuals";
 import styles from "./ChinaPage.module.css";
+import WeChatContact from "../_components/WeChatContact";
 
 function PriceBox({page}:{page:ChinaSeoPage}){
   if(!page.priceKey)return <div className={styles.quote}><small>微信询价</small><h3>先发日期、人数和酒店</h3><p>我们先确认路线和真实条件，再报价。不需要一打开页面就付款。</p><a href="#wechat">查看微信二维码</a></div>;
@@ -35,7 +36,7 @@ export default function ChinaPage({page,related}:{page:ChinaSeoPage;related:Chin
 
     <section className={styles.scan}>{page.bullets.map((x,i)=><div key={x}><small>0{i+1}</small><b>{x}</b></div>)}</section>
 
-    {privateLike?<section className={styles.private}><div><img src="/happy-travelers/02462467f09771c928865.jpg" alt="GoVietStay 私人家庭团" loading="lazy"/></div><div><p>PRIVATE · FAMILY</p><h2>先告诉我们谁一起走，再排路线。</h2><span>日期 · 人数 · 孩子年龄 · 酒店 · 喜欢什么 · 不喜欢什么</span><p>私人团确认后不拼陌生客；但景区、缆车或公共设施本身不等于“包场”。</p><a href="#wechat">微信做私人方案</a></div></section>:null}
+    {privateLike?<section className={styles.private}><div><img src="/travelers/germany.jpg" alt="GoVietStay 私人家庭团" loading="lazy"/></div><div><p>PRIVATE · FAMILY</p><h2>先告诉我们谁一起走，再排路线。</h2><span>日期 · 人数 · 孩子年龄 · 酒店 · 喜欢什么 · 不喜欢什么</span><p>私人团确认后不拼陌生客；但景区、缆车或公共设施本身不等于“包场”。</p><a href="#wechat">微信做私人方案</a></div></section>:null}
 
     <div className={styles.layout}><article>
       <section className={styles.story}><p>01 · 先看这个</p><h2>{page.h1}</h2><p>{page.desc}</p></section>
@@ -49,7 +50,7 @@ export default function ChinaPage({page,related}:{page:ChinaSeoPage;related:Chin
       <section className={styles.faq}><p>05 · 常见问题</p><h2>先把最容易误会的地方说清楚</h2>{page.faqs.map(([q,a])=><details key={q}><summary>{q}<span>＋</span></summary><p>{a}</p></details>)}</section>
     </article>
 
-    <aside><div className={styles.sticky} id="wechat"><small>WECHAT · 微信</small><h3>Go Viet Station</h3><img src={chinaMarketConfig.wechatQr} alt="Go Viet Station 微信二维码"/><p>手机：长按保存二维码，在微信扫一扫里从相册识别。</p><b>联系二维码 · 不是付款码</b><a href="/cn">返回中国首页</a></div></aside>
+    <aside><div className={styles.sticky} id="wechat"><small>WECHAT · 微信</small><h3>Go Viet Station</h3><strong>WeChat ID: {chinaMarketConfig.wechatId}</strong><img src={chinaMarketConfig.wechatQr} alt="Go Viet Station 微信二维码"/><p>手机：长按保存二维码，在微信扫一扫里从相册识别。</p><WeChatContact compact/><b>联系二维码 · 不是付款码</b><a href="/cn">返回中国首页</a></div></aside>
     </div>
 
     <section className={styles.related}><p>你可能还在看</p><h2>相关页面</h2><div>{related.map(x=>{const v=getChinaVisual(x.slug,x.destination);return <a href={`/cn/${x.slug}`} key={x.slug}><img src={v.hero} alt={x.h1} loading="lazy"/><div><small>{x.destination}</small><b>{x.h1}</b><span>打开 →</span></div></a>})}</div></section>

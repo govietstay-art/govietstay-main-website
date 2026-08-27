@@ -8,6 +8,8 @@ export type ChinaPrice = {
 export const chinaMarketConfig = {
   wechatQr:"/china/wechat-go-viet-station.png",
   wechatName:"Go Viet Station",
+  wechatId:"GovietStation",
+  wechatOpen:"weixin://",
   brand:"GoVietStay",
   pricingMode:"trial-confirm-before-payment",
   prices:{
