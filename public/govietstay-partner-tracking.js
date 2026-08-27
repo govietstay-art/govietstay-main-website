@@ -1,12 +1,12 @@
 /**
- * GoVietStay Unified Tracking V8
+ * GoVietStay Unified Tracking V9
  * Server-side geo + source + device/browser/OS + WhatsApp + partner attribution.
  * No IP, customer name, phone or WhatsApp message is stored by analytics.
  */
 (function(){
 "use strict";
 var ATTR="gvs_partner_attribution_v2",COOKIE="gvs_partner_ref",VISITOR="gvs_visitor_id_v1",SESSION="gvs_session_id_v1";
-var FIRST="gvs_first_seen_v1",LANDING="gvs_session_landing_v1",UTM="gvs_utm_session_v1",DAYS=90,lastUrl="";
+var FIRST="gvs_first_seen_v1",LANDING="gvs_session_landing_v1",UTM="gvs_utm_session_v1",MARKETING_COOKIE="gvs_marketing_attribution_v1",DAYS=90,lastUrl="";
 var PARTNERS={DUYTINH01:{code:"DUYTINH01",name:"Duy Tịnh Rooftop – Dragon Bridge",city:"Da Nang",privilege:"Скидка 5% на услуги GoVietStay"}};
 
 function s(v,n){return String(v==null?"":v).trim().slice(0,n||500)}
@@ -42,6 +42,24 @@ function saveAttr(r){
  try{localStorage.setItem(ATTR,JSON.stringify(d))}catch(e){}setCookie(r);return d
 }
 function activeRef(){var d=loadAttr();return d?ref(d.lastRef):""}
+function marketingCookie(){
+ try{
+   var a=document.cookie.split("; ");
+   for(var i=0;i<a.length;i++){
+     if(a[i].indexOf(MARKETING_COOKIE+"=")===0){
+       var v=a[i].substring(MARKETING_COOKIE.length+1).split("|");
+       return{
+         utm_source:s(v[0],200),
+         utm_medium:s(v[1],200),
+         utm_campaign:s(v[2],200),
+         utm_content:s(v[3],200),
+         utm_term:""
+       }
+     }
+   }
+ }catch(e){}
+ return null
+}
 function params(){
  var empty={ref:"",utm_source:"",utm_medium:"",utm_campaign:"",utm_content:"",utm_term:""};
  try{
@@ -69,6 +87,17 @@ function params(){
        q.utm_term=s(o.utm_term,200)
      }
    }catch(e){}
+   if(!q.utm_source){
+     var mc=marketingCookie();
+     if(mc){
+       q.utm_source=mc.utm_source;
+       q.utm_medium=mc.utm_medium;
+       q.utm_campaign=mc.utm_campaign;
+       q.utm_content=mc.utm_content;
+       q.utm_term=mc.utm_term;
+       try{sessionStorage.setItem(UTM,JSON.stringify(mc))}catch(e){}
+     }
+   }
    return q
  }catch(e){return empty}
 }
@@ -132,7 +161,7 @@ function payload(name,extra){
    locale:s(document.documentElement.lang||navigator.language||"",30)||null,
    device_type:device(),browser:browser(),os:os(),traffic_source:source(),
    landing_path:landing(),is_returning:returning(),
-   metadata:Object.assign({title:s(document.title,300),source:"govietstay_tracking_v8"},extra&&extra.metadata?extra.metadata:{})
+   metadata:Object.assign({title:s(document.title,300),source:"govietstay_tracking_v9"},extra&&extra.metadata?extra.metadata:{})
  }
 }
 function send(name,extra){
