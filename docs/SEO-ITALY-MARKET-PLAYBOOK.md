@@ -62,3 +62,16 @@ Locale: it-IT.
 - no fake reviews
 - no fake scarcity
 - no automatic payment before final confirmation
+
+
+## Italy v2 image policy
+- Images are selected from assets already used by the main GoVietStay homepage / homepage tour data.
+- Ba Na: /tour/bana.jpg
+- Hoi An / Coconut: /tour/coconut.jpg
+- Cham Island: /tour/cham.jpg
+- Hue: /tour/hue.jpg
+- Phu Quoc 3 islands: /tour/phuquoc/tour-05-*.jpg
+- Phu Quoc 4 islands + Hon Thom: /tour/phuquoc/tour-06-*.jpg
+- Social-proof strip: /travelers/* images used by the homepage.
+- No AI-generated images.
+- Do not reuse Russia-landing-specific visual selection.

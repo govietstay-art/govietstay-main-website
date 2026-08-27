@@ -24,7 +24,7 @@ export default function ItalyPage({page,related}:{page:ItalySeoPage;related:Ital
     <section className={styles.gallery}>{visual.gallery.map((src,i)=><figure key={src}><img src={src} alt={`${visual.label} ${i+1}`} loading="lazy"/>{i===0?<figcaption>Foto reali GoVietStay</figcaption>:null}</figure>)}</section>
     <section className={styles.scan}>{page.bullets.map((x,i)=><div key={x}><small>0{i+1}</small><b>{x}</b></div>)}</section>
 
-    {privateLike?<section className={styles.private}><div><img src="/happy-travelers/02462467f09771c928865.jpg" alt="Tour privato GoVietStay" loading="lazy"/></div><div><p>PRIVATE · SU MISURA</p><h2>Il tuo gruppo non deve adattarsi al tour. È il tour che deve adattarsi al gruppo.</h2><span>Data · persone · bambini/senior · hotel · lingua guida · interessi · cose da evitare</span><p>{italyMarketConfig.guideRule}</p><a href={italyMarketConfig.whatsapp} target="_blank" rel="noreferrer">Costruiamo il giorno</a></div></section>:null}
+    {privateLike?<section className={styles.private}><div><img src="/travelers/germany.jpg" alt="Tour privato GoVietStay" loading="lazy"/></div><div><p>PRIVATE · SU MISURA</p><h2>Il tuo gruppo non deve adattarsi al tour. È il tour che deve adattarsi al gruppo.</h2><span>Data · persone · bambini/senior · hotel · lingua guida · interessi · cose da evitare</span><p>{italyMarketConfig.guideRule}</p><a href={italyMarketConfig.whatsapp} target="_blank" rel="noreferrer">Costruiamo il giorno</a></div></section>:null}
 
     <div className={styles.layout}><article>
       <section className={styles.story}><p>01 · COSA CI GUADAGNI TU</p><h2>{page.wiifm}</h2><p>{page.desc}</p></section>

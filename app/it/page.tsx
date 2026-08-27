@@ -50,7 +50,7 @@ export default function ItalyHub(){
     </section>
 
     <section className={styles.privateZone} id="privato">
-      <div className={styles.privatePhoto}><img src="/happy-travelers/02462467f09771c928865.jpg" alt="Viaggio privato GoVietStay" loading="lazy"/></div>
+      <div className={styles.privatePhoto}><img src="/travelers/germany.jpg" alt="Viaggio privato GoVietStay" loading="lazy"/></div>
       <div className={styles.privateCopy}><p>01 · IL PRODOTTO PRINCIPALE</p><h2>Privato non significa lusso. Significa che il tuo tempo appartiene a te.</h2><span>Il tour standard resta disponibile allo stesso prezzo English. Il privato lo scegli solo quando ti porta un vantaggio reale.</span>
         <div>{["Coppia","Famiglia","Piccolo gruppo","Guida richiesta","Orario flessibile","Niente shopping inutile"].map((x,i)=><b key={x}><i>0{i+1}</i>{x}</b>)}</div>
         <a href="/it/tour-privato-da-nang">Tour privato Da Nang →</a><a href="/it/tour-su-misura-vietnam-centrale">Tour su misura →</a>
@@ -84,7 +84,7 @@ export default function ItalyHub(){
 
     <section className={styles.intent}><div className={styles.head}><div><p>07 · 30 INTENTI DI RICERCA</p><h2>URL e contenuti scritti per come cerca un italiano, non tradotti da un sito inglese.</h2></div></div><div className={styles.intentGrid}>{italySeoPages.map(p=><a href={`/it/${p.slug}`} key={p.slug}><small>{p.destination}</small><h3>{p.h1}</h3><p>{p.wiifm}</p><b>Apri →</b></a>)}</div></section>
 
-    <section className={styles.final}><img src="/tour/cham-island/guest-pickup.jpg" alt="Supporto locale GoVietStay" loading="lazy"/><div><p>IL TUO TEAM LOCALE IN VIETNAM</p><h2>Hai già volo e hotel? Mandaci data, persone e hotel. Da lì possiamo iniziare.</h2><a href={italyMarketConfig.whatsapp} target="_blank" rel="noreferrer">Scrivi su WhatsApp</a></div></section>
+    <section className={styles.final}><img src="/tour/cham.jpg" alt="Supporto locale GoVietStay" loading="lazy"/><div><p>IL TUO TEAM LOCALE IN VIETNAM</p><h2>Hai già volo e hotel? Mandaci data, persone e hotel. Da lì possiamo iniziare.</h2><a href={italyMarketConfig.whatsapp} target="_blank" rel="noreferrer">Scrivi su WhatsApp</a></div></section>
     <div className={styles.mobile}><a href={italyMarketConfig.whatsapp} target="_blank" rel="noreferrer">💬 WhatsApp</a><a href="/it/tour-privato-da-nang">★ Privato</a><a href="/it/phu-quoc-fai-da-te">🏝 Phu Quoc</a></div>
   </main>
 }
