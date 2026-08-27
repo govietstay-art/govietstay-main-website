@@ -1,0 +1,11 @@
+import {israelMarketConfig as C} from "../../../lib/israelMarketConfig";
+import {getIsraelVisual} from "../../../lib/israelVisuals";
+import s from "../Israel.module.css";
+export default function IsraelPage({p}:{p:any}){const v=getIsraelVisual(p.slug,p.destination);const std=p.priceKey?C.standard[p.priceKey as keyof typeof C.standard]:null;const pr=p.privateKey?C.private[p.privateKey as keyof typeof C.private]:null;return <main className={s.page} dir="rtl">
+<header><a href="/il"><img src="/govietstay-logo.jpg" alt="GoVietStay"/></a><nav><a href="/il">בית</a><a href="/il/private-vietnam-trip">פרטי</a><a className={s.wa} href={C.whatsapp}>WhatsApp</a></nav></header>
+<section className={s.detailHero}><img src={v.hero} alt={p.h1}/><div><small>{p.destination}</small><h1>{p.h1}</h1><p>{p.desc}</p><blockquote>{p.wiifm}</blockquote></div></section>
+<section className={s.gallery}>{v.gallery.map((x:string)=><img key={x} src={x} alt={p.destination}/>)}</section>
+<section className={s.detail}><article><small>מה יוצא לכם מזה?</small><h2>{p.wiifm}</h2><p>{p.desc}</p><h2>לפני שמזמינים</h2>{p.bullets.map((x:string)=><p key={x}>✓ {x}</p>)}
+<h2 id="price">מחיר</h2>{std?<div className={s.price}><small>מחיר סטנדרטי</small><h3 dir="ltr">≈ ₪{std.ils}</h3><b dir="ltr">{std.vnd.toLocaleString()} VND</b><p>אותו מחיר כמו English/public.</p></div>:null}{pr?<div className={s.price}><small>נקודת פתיחה לפרטי*</small><h3 dir="ltr">≈ ₪{pr.ils} / group</h3><b dir="ltr">{pr.vnd.toLocaleString()} VND</b><p>בסיס לתכנון בלבד; שפה, שעות, כרטיסים וקבוצה משפיעים על המחיר הסופי.</p></div>:null}{!std&&!pr?<div className={s.price}><h3>הצעה לפי הקבוצה</h3><p>שלחו תאריך, אנשים, מלון ושפת מדריך רצויה.</p></div>:null}<p>{C.disclaimer}</p><a className={s.wa} href={C.whatsapp}>אישור מחיר ב-WhatsApp</a>
+<h2>מדריך בשפה שאתם צריכים</h2><p>{C.guide}</p></article><aside><img src={v.gallery[1]} alt={p.destination}/><h3>כבר יש טיסה + מלון?</h3><p>תאריך · אנשים · מלון · תחומי עניין · שפת מדריך</p><a className={s.wa} href={C.whatsapp}>WhatsApp</a></aside></section>
+</main>}

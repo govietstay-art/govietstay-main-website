@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { israelSeoPages } from "../lib/israelSeoPages";
 import { italySeoPages } from "../lib/italySeoPages";
 import { philippinesSeoPages } from "../lib/philippinesSeoPages";
 import { chinaSeoPages } from "../lib/chinaSeoPages";
@@ -71,6 +72,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "daily",
       priority: 1,
       alternates: { languages: { "it-IT": `${BASE_URL}/it`, en: `${BASE_URL}/travel` } },
+    },
+    {
+      url: `${BASE_URL}/il`,
+      lastModified: new Date("2026-08-27T00:00:00.000Z"),
+      changeFrequency: "daily", priority: 1,
+      alternates: { languages: { "he-IL": `${BASE_URL}/il` } },
     },
     {
       url: `${BASE_URL}/cn`,
@@ -276,6 +283,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     alternates: { languages: { "it-IT": `${BASE_URL}/it/${page.slug}` } },
   }));
 
+  const israelPages: MetadataRoute.Sitemap = israelSeoPages.map((page) => ({
+    url: `${BASE_URL}/il/${page.slug}`, lastModified: new Date(page.updated),
+    changeFrequency: page.type === "product" || page.type === "private" ? "weekly" : "monthly",
+    priority: page.type === "private" ? 0.95 : page.type === "product" ? 0.92 : 0.86,
+    alternates: { languages: { "he-IL": `${BASE_URL}/il/${page.slug}` } },
+  }));
+
   const chinaPages: MetadataRoute.Sitemap = chinaSeoPages.map((page) => ({
     url: `${BASE_URL}/cn/${page.slug}`,
     lastModified: new Date(page.updated),
@@ -342,6 +356,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...corePages,
     ...vietnamGuidePages,
+    ...israelPages,
     ...italyPages,
     ...philippinesPages,
     ...chinaPages,
