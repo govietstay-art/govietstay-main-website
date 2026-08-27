@@ -1,4 +1,5 @@
 "use client";
+// GVS_MARKETING_FUNNEL_V7
 
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
@@ -31,10 +32,12 @@ export default function AdminV5() {
   const [bootstrap,setBootstrap]=useState("");
   const [msg,setMsg]=useState("");
   const [err,setErr]=useState("");
-  const [tab,setTab]=useState<"dashboard"|"analytics"|"seo"|"leads"|"bookings">("dashboard");
+  const [tab,setTab]=useState<"dashboard"|"analytics"|"marketing"|"seo"|"leads"|"bookings">("dashboard");
   const [days,setDays]=useState(7);
   const [metrics,setMetrics]=useState<any>(null);
   const [breakdown,setBreakdown]=useState<any[]>([]);
+
+  const [marketing,setMarketing]=useState<any[]>([]);
   const [analytics,setAnalytics]=useState<Record<string,any[]>>({
     country:[], city:[], source:[], device:[], browser:[], os:[], locale:[], landing:[]
   });
@@ -103,6 +106,8 @@ export default function AdminV5() {
       const results = await Promise.all([
         supabase.rpc("admin_dashboard_metrics",{p_days:days}),
         supabase.rpc("admin_tracking_breakdown",{p_days:days}),
+
+        supabase.rpc("admin_marketing_funnel",{p_days:days}),
         supabase.from("tours").select("id,name,destination,adult_price_vnd,active").eq("active",true).order("name"),
         supabase.from("partners").select("id,name,ref_code,active").eq("active",true).order("name"),
         supabase.from("contacts").select("id,full_name,whatsapp,country,preferred_language").order("created_at",{ascending:false}).limit(300),
@@ -113,9 +118,11 @@ export default function AdminV5() {
       ]);
 
       for(const r of results) if(r.error) throw r.error;
-      const [m,b,t,p,c,l,bo,...rest] = results;
+      const [m,b,mk,t,p,c,l,bo,...rest] = results;
       setMetrics(m.data);
       setBreakdown((b.data||[]) as any);
+
+      setMarketing((mk.data||[]) as any);
       setTours((t.data||[]) as any);
       setPartners((p.data||[]) as any);
       setContacts((c.data||[]) as any);
@@ -271,6 +278,8 @@ export default function AdminV5() {
       <div className="gva-nav">
         <button className={tab==="dashboard"?"active":""} onClick={()=>setTab("dashboard")}>Tổng quan</button>
         <button className={tab==="analytics"?"active":""} onClick={()=>setTab("analytics")}>Analytics</button>
+
+        <button className={tab==="marketing"?"active":""} onClick={()=>setTab("marketing")}>Marketing</button>
         <button className={tab==="seo"?"active":""} onClick={()=>setTab("seo")}>SEO Intelligence</button>
         <button className={tab==="leads"?"active":""} onClick={()=>setTab("leads")}>Leads</button>
         <button className={tab==="bookings"?"active":""} onClick={()=>setTab("bookings")}>Bookings</button>
@@ -278,7 +287,7 @@ export default function AdminV5() {
     </aside>
     <main className="gva-main">
       <div className="gva-top">
-        <div className="gva-title"><h1>{tab==="dashboard"?"Dashboard thật":tab==="analytics"?"Analytics khách truy cập":tab==="seo"?"SEO Intelligence":tab==="leads"?"Quản lý Leads":"Quản lý Bookings"}</h1><p>{staff.display_name} · {staff.role} · dữ liệu từ Supabase</p></div>
+        <div className="gva-title"><h1>{adminPageTitle(tab)}</h1><p>{staff.display_name} · {staff.role} · dữ liệu từ Supabase</p></div>
         <div className="gva-top-actions">
           <select className="gva-select" value={days} onChange={e=>setDays(Number(e.target.value))}><option value={1}>Hôm nay</option><option value={7}>7 ngày</option><option value={28}>28 ngày</option><option value={30}>30 ngày</option><option value={90}>90 ngày</option></select>
           <button className="gva-btn secondary" onClick={loadAll}>Làm mới</button><button className="gva-btn secondary" onClick={logout}>Đăng xuất</button>
@@ -329,6 +338,139 @@ export default function AdminV5() {
           <AnalyticsCard title="Ngôn ngữ" rows={analytics.locale} labelTitle="Locale" />
         </div>
       </>}
+
+
+      {tab==="marketing"&&<>
+
+
+
+        <div className="gva-analytics-note">
+
+
+
+          Theo dõi hiệu quả từng nguồn: Threads, Instagram, X, Facebook, Google Maps, TikTok, Telegram, Zalo, Google, ChatGPT, Partner, Referral và Direct.
+
+
+
+        </div>
+
+
+
+        <div className="gva-card">
+
+
+
+          <div className="gva-section-head">
+
+
+
+            <div>
+
+
+
+              <h2>Marketing Funnel</h2>
+
+
+
+              <div className="gva-mini">Visitors → Views → WhatsApp → Leads → Bookings → Pax → Revenue</div>
+
+
+
+            </div>
+
+
+
+          </div>
+
+
+
+          <div className="gva-table-wrap">
+
+
+
+            <table className="gva-table">
+
+
+
+              <thead>
+
+
+
+                <tr><th>Channel</th><th>Visitors</th><th>Views</th><th>WA</th><th>Leads</th><th>Booking</th><th>Pax</th><th>Revenue</th></tr>
+
+
+
+              </thead>
+
+
+
+              <tbody>
+
+
+
+                {marketing.map((r:any)=><tr key={r.channel}>
+
+
+
+                  <td><b>{r.display_name}</b></td>
+
+
+
+                  <td>{r.visitors||0}</td>
+
+
+
+                  <td>{r.views||0}</td>
+
+
+
+                  <td><b>{r.whatsapp_clicks||0}</b></td>
+
+
+
+                  <td>{r.leads||0}</td>
+
+
+
+                  <td>{r.bookings||0}</td>
+
+
+
+                  <td>{r.pax||0}</td>
+
+
+
+                  <td>{money(r.revenue_vnd||0)}</td>
+
+
+
+                </tr>)}
+
+
+
+                {!marketing.length&&<tr><td colSpan={8}><div className="gva-empty">Chưa có dữ liệu marketing trong kỳ.</div></td></tr>}
+
+
+
+              </tbody>
+
+
+
+            </table>
+
+
+
+          </div>
+
+
+
+        </div>
+
+
+
+      </>}
+
+
 
 
       {tab==="seo"&&<>
@@ -435,6 +577,10 @@ export default function AdminV5() {
 }
 
 
+
+function adminPageTitle(tab:any){
+  return tab==="dashboard"?"Dashboard thật":tab==="analytics"?"Analytics khách truy cập":tab==="marketing"?"Marketing Funnel":tab==="seo"?"SEO Intelligence":tab==="leads"?"Quản lý Leads":"Quản lý Bookings";
+}
 
 function shortPage(value:any){
   try{
