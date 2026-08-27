@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { italySeoPages } from "../lib/italySeoPages";
 import { philippinesSeoPages } from "../lib/philippinesSeoPages";
 import { chinaSeoPages } from "../lib/chinaSeoPages";
 import { kazakhstanSeoPages } from "../lib/kazakhstanSeoPages";
@@ -63,6 +64,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "daily",
       priority: 1,
       alternates: { languages: { "en-PH": `${BASE_URL}/ph`, en: `${BASE_URL}/travel` } },
+    },
+    {
+      url: `${BASE_URL}/it`,
+      lastModified: new Date("2026-08-27T00:00:00.000Z"),
+      changeFrequency: "daily",
+      priority: 1,
+      alternates: { languages: { "it-IT": `${BASE_URL}/it`, en: `${BASE_URL}/travel` } },
     },
     {
       url: `${BASE_URL}/cn`,
@@ -260,6 +268,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     alternates: { languages: { "en-PH": `${BASE_URL}/ph/${page.slug}` } },
   }));
 
+  const italyPages: MetadataRoute.Sitemap = italySeoPages.map((page) => ({
+    url: `${BASE_URL}/it/${page.slug}`,
+    lastModified: new Date(page.updated),
+    changeFrequency: page.type === "product" || page.type === "private" ? "weekly" : "monthly",
+    priority: page.type === "private" ? 0.95 : page.type === "product" ? 0.92 : 0.86,
+    alternates: { languages: { "it-IT": `${BASE_URL}/it/${page.slug}` } },
+  }));
+
   const chinaPages: MetadataRoute.Sitemap = chinaSeoPages.map((page) => ({
     url: `${BASE_URL}/cn/${page.slug}`,
     lastModified: new Date(page.updated),
@@ -326,6 +342,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...corePages,
     ...vietnamGuidePages,
+    ...italyPages,
     ...philippinesPages,
     ...chinaPages,
     ...kazakhstanPages,

@@ -24,6 +24,8 @@ export default function HtmlLanguageSync() {
                     ? "en-IN"
                     : pathname === "/ph" || pathname.startsWith("/ph/")
                       ? "en-PH"
+                      : pathname === "/it" || pathname.startsWith("/it/")
+                      ? "it-IT"
                       : "en";
   }, [pathname]);
 
