@@ -22,7 +22,9 @@ export default function HtmlLanguageSync() {
                   ? "ko-KR"
                   : pathname === "/in" || pathname.startsWith("/in/")
                     ? "en-IN"
-                    : "en";
+                    : pathname === "/ph" || pathname.startsWith("/ph/")
+                      ? "en-PH"
+                      : "en";
   }, [pathname]);
 
   return null;
