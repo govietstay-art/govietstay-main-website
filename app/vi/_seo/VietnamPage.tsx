@@ -51,6 +51,20 @@ export default function VietnamPage({
 
   const privateLike = page.type === "private" || page.slug.includes("gia-dinh");
 
+  const practicalAdvice = page.slug.includes("cu-lao") || page.slug.includes("cham")
+    ? "Cù Lao Chàm phụ thuộc khá nhiều vào tình hình biển. Trước ngày đi, GoVietStay sẽ kiểm tra lại điều kiện vận hành thay vì hứa chắc một lịch cố định từ quá sớm."
+    : page.slug.includes("ba-na") || page.slug.includes("bana")
+      ? "Bà Nà thường đông hơn vào cuối tuần và ngày lễ. Nếu nhóm ưu tiên chụp ảnh thoải mái, nên hỏi trước về giờ đi hoặc phương án tour riêng phù hợp."
+      : page.slug.includes("hoi-an") || page.slug.includes("rung-dua")
+        ? "Lịch Hội An thường dễ chịu hơn khi đi Rừng Dừa trước, sau đó vào phố cổ lúc nắng đã dịu và ở lại đến khi đèn lồng lên."
+        : page.slug.includes("hue")
+          ? "Huế là lịch đi trong ngày khá dài từ Đà Nẵng, nên đừng cố nhồi quá nhiều điểm. Có thời gian nghỉ và ăn uống tử tế thì chuyến đi sẽ dễ chịu hơn."
+          : page.slug.includes("phu-quoc")
+            ? "Phú Quốc rộng, vì vậy tên resort và khu vực lưu trú ảnh hưởng trực tiếp đến lịch xe. Gửi đúng nơi ở giúp GoVietStay tư vấn sát hơn và bớt thời gian chạy vòng."
+            : page.slug.includes("san-bay") || page.slug.includes("thue-xe")
+              ? "Với xe riêng, tên khách sạn, số người, số vali và giờ đi quan trọng hơn một mức giá quảng cáo chung. Gửi đủ thông tin thì báo giá mới sát thực tế."
+              : "Mỗi nhóm khách có một nhịp đi khác nhau. GoVietStay sẽ dựa vào ngày đi, số người và điều bạn ưu tiên để xác nhận phương án phù hợp hơn.";
+
   return (
     <main className={styles.page}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
@@ -161,6 +175,7 @@ export default function VietnamPage({
             <p>03 · GỢI Ý TỪ GOVIETSTAY</p>
             <h2>{page.h1}</h2>
             <p>{page.description}</p>
+            <p>{practicalAdvice}</p>
             <blockquote>“Không cần mua nhiều. Chỉ cần chọn đúng thứ hợp với chuyến đi của mình.”</blockquote>
           </section>
 

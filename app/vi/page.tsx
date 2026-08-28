@@ -1,3 +1,4 @@
+// GVS-VI-UPGRADE-V1
 import type { Metadata } from "next";
 import { vietnamSeoPages } from "../../lib/vietnamSeoPages";
 import { vietnamBusinessConfig } from "../../lib/vietnamBusinessConfig";
@@ -66,6 +67,7 @@ export default function VietnamHub() {
           <a href="#tour-ban-chay">Tour nổi bật</a>
           <a href="#combo">Combo</a>
           <a href="#private">Đi riêng gia đình</a>
+          <a href="#why">Vì sao GoVietStay</a>
           <a href="#review">Khách đã đi</a>
           <a className={styles.zalo} href={vietnamBusinessConfig.zaloUrl} target="_blank" rel="noreferrer">Nhắn Zalo</a>
         </nav>
@@ -115,6 +117,31 @@ export default function VietnamHub() {
         <a href="/vi/combo-da-nang-3-tour"><b>Combo Đà Nẵng</b><span>Gom tour cho đỡ mất công →</span></a>
         <a href="/vi/tour-rieng-da-nang-gia-dinh"><b>Gia đình đi riêng</b><span>Không ghép khách khác →</span></a>
         <a href="/vi/du-lich-phu-quoc-tu-tuc"><b>Đi Phú Quốc</b><span>Tour đảo · resort · xe →</span></a>
+      </section>
+
+      <section className={styles.why} id="why">
+        <div className={styles.whyIntro}>
+          <p>GOVIETSTAY KHÁC Ở ĐÂU?</p>
+          <h2>Không phải cứ nhiều tour là khách sẽ dễ chọn.</h2>
+          <span>Điều khách cần trước khi đặt thường đơn giản hơn: biết mình đang mua gì, lịch có hợp với người đi không và khi có thay đổi thì hỏi ai.</span>
+        </div>
+        <div className={styles.whyGrid}>
+          <article>
+            <b>01</b>
+            <h3>Nói rõ trước khi nhận cọc</h3>
+            <p>Giá từ, phần bao gồm, giờ đón và điều kiện thực tế được tách riêng để bạn dễ kiểm tra.</p>
+          </article>
+          <article>
+            <b>02</b>
+            <h3>Sắp theo người đi</h3>
+            <p>Gia đình có trẻ nhỏ, người lớn tuổi hoặc nhóm bạn không nhất thiết phải đi cùng một lịch trình.</p>
+          </article>
+          <article>
+            <b>03</b>
+            <h3>Có người hỗ trợ tại điểm đến</h3>
+            <p>Thời tiết, tình hình biển, giờ đón hay thay đổi trong ngày đều có thể hỏi trực tiếp thay vì tự đoán.</p>
+          </article>
+        </div>
       </section>
 
       <section className={styles.section} id="tour-ban-chay">

@@ -93,3 +93,15 @@
   .directory{display:none}
   .mobile a{font-size:14px;min-height:48px;display:grid;place-items:center}
 }
+/* === VI HOMEPAGE POSITIONING v1 === */
+.why{max-width:1180px;margin:75px auto 0;padding:0 24px;display:grid;grid-template-columns:.8fr 1.2fr;gap:48px;align-items:start}
+.whyIntro p{font-size:8px;font-weight:950;letter-spacing:.16em;color:var(--green)}
+.whyIntro h2{font-size:35px;line-height:1.13;letter-spacing:-.04em;margin:9px 0 13px}
+.whyIntro span{display:block;color:var(--muted);font-size:12px;line-height:1.7}
+.whyGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.whyGrid article{background:var(--cream);border-radius:17px;padding:21px;min-height:205px}
+.whyGrid article>b{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--green);color:#fff;font-size:9px}
+.whyGrid h3{font-size:18px;line-height:1.25;margin:17px 0 8px}
+.whyGrid p{font-size:11px;line-height:1.6;color:var(--muted)}
+@media(max-width:980px){.why{grid-template-columns:1fr;gap:20px;margin-top:60px}.whyGrid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.why{padding:0 16px;margin-top:48px;display:block}.whyIntro h2{font-size:30px}.whyIntro span{font-size:15px;line-height:1.65}.whyGrid{display:flex;overflow-x:auto;gap:9px;margin-top:18px}.whyGrid article{flex:0 0 82%;min-height:190px}.whyGrid h3{font-size:20px}.whyGrid p{font-size:15px;line-height:1.6}}
