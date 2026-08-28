@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 // GVS_MARKETING_FUNNEL_V7
 // GVS_MARKETING_LINK_GENERATOR_V8
 
@@ -232,7 +232,7 @@ export default function AdminV5() {
       const revenue=Math.max(0,Number(String(vals.revenue||"0").replace(/[^0-9]/g,"")));
       const {error}=await supabase.from("bookings").insert({
         booking_code:code(), contact_id:contactId, tour_id:vals.tour_id||null, partner_id:vals.partner_id||null,
-        staff_id:staff?.id, tour_date:vals.tour_date||null, adults, children, gross_revenue_vnd:revenue,
+        staff_id:staff?.id, tour_date:vals.tour_date||null, adults, children, gross_revenue_vnd:revenue, guide_language:vals.guide_language||null,
         discount_vnd:0, deposit_required_vnd:0, status:"confirmed", payment_status:"unpaid",
         hotel:vals.hotel||null, notes:vals.notes||null, source:vals.source||"manual", ref_code:partner?.ref_code||null
       });
@@ -639,9 +639,10 @@ function BookingModal({tours,partners,onClose,onSubmit,saving}:any){return <div 
   <F label="Quốc gia"><input name="country" className="gva-input" /></F><F label="Ngôn ngữ"><select name="preferred_language" className="gva-select"><option value="">—</option><option value="ru">Russian</option><option value="ko">Korean</option><option value="en">English</option></select></F>
   <F label="Tour"><select name="tour_id" className="gva-select" required><option value="">Chọn tour</option>{tours.map((x:any)=><option value={x.id} key={x.id}>{x.name}</option>)}</select></F><F label="Ngày đi"><input name="tour_date" type="date" className="gva-input" required /></F>
   <F label="Adults"><input name="adults" type="number" min="0" defaultValue="1" className="gva-input" /></F><F label="Children"><input name="children" type="number" min="0" defaultValue="0" className="gva-input" /></F>
-  <F label="Revenue VND"><input name="revenue" inputMode="numeric" className="gva-input" placeholder="1900000" required /></F><F label="Nguồn"><select name="source" className="gva-select"><option>whatsapp</option><option>website</option><option>google_maps</option><option>partner_qr</option><option>desk</option><option>direct</option></select></F>
+  <F label="Revenue VND"><input name="revenue" inputMode="numeric" className="gva-input" placeholder="1900000" required /></F><F label="Guide language"><select name="guide_language" className="gva-select" required><option value="">Chọn guide</option><option value="en">English Guide</option><option value="ru">Russian Guide</option></select></F><F label="Nguồn"><select name="source" className="gva-select"><option>whatsapp</option><option>website</option><option>google_maps</option><option>partner_qr</option><option>desk</option><option>direct</option></select></F>
   <F label="Partner"><select name="partner_id" className="gva-select"><option value="">Không có</option>{partners.map((x:any)=><option value={x.id} key={x.id}>{x.name} · {x.ref_code}</option>)}</select></F><F label="Khách sạn"><input name="hotel" className="gva-input" /></F>
   <F label="Ghi chú" wide><textarea name="notes" className="gva-input" rows={3} /></F>
 </div><div style={{display:"flex",gap:8,justifyContent:"flex-end",marginTop:16}}><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button className="gva-btn" disabled={saving}>{saving?"Đang lưu…":"Lưu Booking"}</button></div></form></div>}
 
 function F({label,children,wide}:any){return <div className={"gva-field "+(wide?"wide":"")}><label>{label}</label>{children}</div>}
+
