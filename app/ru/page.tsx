@@ -2741,9 +2741,9 @@ export default function RussianPage() {
                 text: "Готовые маршруты на 2–3 экскурсионных дня без проживания.",
               },
               {
-                href: "#nha-trang-packages",
-                title: "Поездки из Нячанга",
-                text: "VIP-автобус, отель в многодневных пакетах и экскурсии в Дананге.",
+                href: "#ru-tours",
+                title: "Экскурсии в Дананге",
+                text: "Ba Na Hills, остров Чам, Хойан, Хюэ и другие маршруты на выбор.",
               },
               {
                 href: "#phu-quoc-tours",
@@ -2751,9 +2751,9 @@ export default function RussianPage() {
                 text: "Море, острова, закаты, снорклинг, шоу и премиум-прогулки.",
               },
               {
-                href: "#ru-tours",
-                title: "Отдельные экскурсии",
-                text: "Бана Хиллс, остров Чам, Хойан, Хюэ и другие маршруты.",
+                href: "#nha-trang-packages",
+                title: "Поездки из Нячанга",
+                text: "VIP-автобус, отель в многодневных пакетах и экскурсии в Дананге.",
               },
             ].map((item, index) => (
               <a
@@ -2806,9 +2806,9 @@ export default function RussianPage() {
 
       <GuestExperienceVideoSection />
       <SignaturePackagesSection onBook={setBookingPackage} />
-      <NhaTrangPackagesSection onBook={setBookingPackage} />
-      <PhuQuocToursSection />
       <CoreToursSection />
+      <PhuQuocToursSection />
+      <NhaTrangPackagesSection onBook={setBookingPackage} />
 
       <section className="px-4 py-12 md:px-8 md:py-20 lg:px-12">
         <div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-2">
