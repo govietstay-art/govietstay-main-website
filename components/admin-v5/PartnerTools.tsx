@@ -1,6 +1,7 @@
-﻿"use client";
+"use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import QRCode from "qrcode";
 
 type PartnerRow = {
   partner_id:string; partner_name:string; ref_code:string; partner_type:string; contact_name:string|null; contact:string|null;
@@ -19,6 +20,37 @@ function suggestRef(name:string){
   return base+"01";
 }
 
+function PartnerQR({row,onOpen}:{row:PartnerRow;onOpen:(row:PartnerRow,src:string)=>void}){
+  const [src,setSrc]=useState("");
+  const [failed,setFailed]=useState(false);
+
+  useEffect(()=>{
+    let alive=true;
+    setSrc(""); setFailed(false);
+    if(!row.landing_url) return ()=>{alive=false};
+    QRCode.toDataURL(row.landing_url,{
+      width:220,
+      margin:2,
+      errorCorrectionLevel:"H",
+      color:{dark:"#000000",light:"#FFFFFF"}
+    }).then(v=>{if(alive)setSrc(v)}).catch(()=>{if(alive)setFailed(true)});
+    return ()=>{alive=false};
+  },[row.landing_url]);
+
+  if(!row.landing_url) return <span className="gva-mini">Chưa có link</span>;
+  if(failed) return <span className="gva-mini">QR lỗi</span>;
+  if(!src) return <span className="gva-mini">Đang tạo…</span>;
+
+  return (
+    <button type="button" onClick={()=>onOpen(row,src)}
+      title={"Xem QR "+row.ref_code}
+      style={{border:"1px solid #dbe5f1",background:"#fff",padding:4,borderRadius:10,cursor:"pointer"}}>
+      <img src={src} alt={"QR "+row.ref_code} width={62} height={62}
+        style={{display:"block",width:62,height:62}}/>
+    </button>
+  );
+}
+
 export default function PartnerTools({supabase,days}:any){
   const [rows,setRows]=useState<PartnerRow[]>([]);
   const [loading,setLoading]=useState(false);
@@ -28,6 +60,7 @@ export default function PartnerTools({supabase,days}:any){
   const [copied,setCopied]=useState("");
   const [name,setName]=useState("");
   const [ref,setRef]=useState("");
+  const [qrModal,setQrModal]=useState<{row:PartnerRow;src:string}|null>(null);
 
   async function loadRows(){
     setLoading(true);setError("");
@@ -43,6 +76,16 @@ export default function PartnerTools({supabase,days}:any){
   async function copy(v:string,k:string){
     try{await navigator.clipboard.writeText(v);setCopied(k);setTimeout(()=>setCopied(""),1600)}
     catch{setError("Không copy được")}
+  }
+
+  function downloadQr(){
+    if(!qrModal)return;
+    const a=document.createElement("a");
+    a.href=qrModal.src;
+    a.download=`GVS_${qrModal.row.ref_code}_QR.png`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
   }
 
   async function createPartner(e:any){
@@ -121,14 +164,14 @@ export default function PartnerTools({supabase,days}:any){
 
     <div className="gva-card">
       <div className="gva-section-head">
-        <div><h2>Partner Control Center</h2><div className="gva-mini">Theo dõi vận hành + điều khoản + trạng thái chấp thuận của từng đối tác.</div></div>
+        <div><h2>Partner Control Center</h2><div className="gva-mini">Theo dõi vận hành + điều khoản + trạng thái chấp thuận của từng đối tác. QR được tạo trực tiếp từ sales link của từng partner.</div></div>
         <button type="button" className="gva-btn secondary" onClick={loadRows}>{loading?"Đang tải…":"Cập nhật"}</button>
       </div>
       <div className="gva-table-wrap">
         <table className="gva-table">
           <thead><tr>
             <th>Partner</th><th>Terms</th><th>Traffic</th><th>Lead</th><th>Booking</th><th>PAX tháng</th>
-            <th>Basic</th><th>Commission</th><th>Total</th><th>Portal</th>
+            <th>Basic</th><th>Commission</th><th>Total</th><th>QR</th><th>Portal</th>
           </tr></thead>
           <tbody>
           {rows.map(r=><tr key={r.partner_id}>
@@ -140,16 +183,47 @@ export default function PartnerTools({supabase,days}:any){
             <td>{r.visits||0}<div className="gva-mini">{r.whatsapp_clicks||0} WA</div></td>
             <td>{r.leads||0}</td><td><b>{r.bookings||0}</b></td><td><b>{r.month_pax||0}</b></td>
             <td>{money(r.base_salary_vnd)}</td><td>{money(r.tour_commission_vnd)}</td><td><b>{money(r.total_earning_vnd)}</b></td>
+            <td><PartnerQR row={r} onOpen={(row,src)=>setQrModal({row,src})}/></td>
             <td>
               <button className="gva-btn secondary" type="button" onClick={()=>window.open(dashboardUrl(r),"_blank","noopener,noreferrer")}>Mở portal</button>
-              <button className="gva-btn secondary" style={{marginTop:6}} type="button" onClick={()=>copy(dashboardUrl(r),"d"+r.partner_id)}>{copied==="d"+r.partner_id?"Đã copy ✓":"Copy link"}</button>
+              <button className="gva-btn secondary" style={{marginTop:6}} type="button" onClick={()=>copy(dashboardUrl(r),"d"+r.partner_id)}>{copied==="d"+r.partner_id?"Đã copy ✓":"Copy portal"}</button>
+              {r.landing_url&&<button className="gva-btn secondary" style={{marginTop:6}} type="button" onClick={()=>copy(r.landing_url!,"s"+r.partner_id)}>{copied==="s"+r.partner_id?"Đã copy ✓":"Copy sales link"}</button>}
             </td>
           </tr>)}
-          {!rows.length&&!loading&&<tr><td colSpan={10}><div className="gva-empty">Chưa có partner.</div></td></tr>}
+          {!rows.length&&!loading&&<tr><td colSpan={11}><div className="gva-empty">Chưa có partner.</div></td></tr>}
           </tbody>
         </table>
       </div>
     </div>
+
+    {qrModal&&<div
+      onClick={()=>setQrModal(null)}
+      style={{position:"fixed",inset:0,zIndex:9999,background:"rgba(8,23,45,.58)",display:"flex",alignItems:"center",justifyContent:"center",padding:18}}>
+      <div onClick={e=>e.stopPropagation()}
+        style={{width:"min(520px,96vw)",background:"#fff",borderRadius:18,padding:22,boxShadow:"0 20px 60px rgba(0,0,0,.25)"}}>
+        <div style={{display:"flex",justifyContent:"space-between",gap:12,alignItems:"flex-start"}}>
+          <div>
+            <h2 style={{margin:"0 0 4px"}}>{qrModal.row.partner_name}</h2>
+            <div className="gva-mini">Partner Code: <b>{qrModal.row.ref_code}</b></div>
+          </div>
+          <button type="button" className="gva-btn secondary" onClick={()=>setQrModal(null)}>Đóng</button>
+        </div>
+
+        <div style={{display:"flex",justifyContent:"center",padding:"20px 0 14px"}}>
+          <img src={qrModal.src} alt={"QR "+qrModal.row.ref_code} width={300} height={300}
+            style={{display:"block",width:"min(300px,72vw)",height:"auto",border:"1px solid #e5ebf3",borderRadius:12}}/>
+        </div>
+
+        <div className="gva-mini" style={{wordBreak:"break-all",padding:"10px 12px",background:"#f6f8fb",borderRadius:10}}>
+          {qrModal.row.landing_url}
+        </div>
+
+        <div style={{display:"flex",flexWrap:"wrap",gap:8,marginTop:14}}>
+          <button type="button" className="gva-btn" onClick={downloadQr}>Tải QR PNG</button>
+          {qrModal.row.landing_url&&<button type="button" className="gva-btn secondary" onClick={()=>copy(qrModal.row.landing_url!,"modal-sales")}>{copied==="modal-sales"?"Đã copy ✓":"Copy sales link"}</button>}
+          {qrModal.row.landing_url&&<button type="button" className="gva-btn secondary" onClick={()=>window.open(qrModal.row.landing_url!,"_blank","noopener,noreferrer")}>Mở landing page</button>}
+        </div>
+      </div>
+    </div>}
   </>;
 }
-
