@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
+import PartnerBookingTools from "../../components/partner/PartnerBookingTools";
 
 const SUPABASE_URL="https://vscffgnxaexestnayvae.supabase.co";
 const SUPABASE_KEY="sb_publishable_BI1rIhiGB5cEUyJbnKGI5w_kCMI--oV";
@@ -119,6 +120,8 @@ export default function PartnerDashboard(){
           </div>
         </Box>
 
+        <PartnerBookingTools supabase={supabase} token={token} partner={p} onCreated={load}/>
+
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(185px,1fr))",gap:12,marginTop:14}}>
           <Metric label="Переходы" value={m.visits||0}/><Metric label="WhatsApp" value={m.whatsapp_clicks||0}/>
           <Metric label="Заявки" value={m.leads||0}/><Metric label="Бронирования" value={m.bookings||0}/>
@@ -199,4 +202,5 @@ function Box({children}:{children:React.ReactNode}){return <div style={{marginTo
 function Metric({label,value}:{label:string;value:any}){return <div style={{background:"#fff",borderRadius:16,padding:"18px 20px",boxShadow:"0 5px 20px rgba(22,40,65,.06)"}}><div style={{fontSize:13,color:"#718096"}}>{label}</div><div style={{fontSize:24,fontWeight:850,marginTop:7}}>{value}</div></div>}
 function Th({children}:{children:React.ReactNode}){return <th style={{textAlign:"left",padding:"10px 8px",borderBottom:"1px solid #dfe6ef",fontSize:13,color:"#607086"}}>{children}</th>}
 function Td({children,colSpan}:{children:React.ReactNode,colSpan?:number}){return <td colSpan={colSpan} style={{padding:"11px 8px",borderBottom:"1px solid #eef2f6"}}>{children}</td>}
+
 
