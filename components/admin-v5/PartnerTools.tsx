@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useMemo, useState } from "react";
 
@@ -47,12 +47,13 @@ export default function PartnerTools({supabase,days}:any){
 
   async function createPartner(e:any){
     e.preventDefault();
+    const form=e.currentTarget as HTMLFormElement;
     setSaving(true);setError("");setMsg("");
-    const f=new FormData(e.currentTarget);
+    const f=new FormData(form);
     try{
       const partnerName=String(f.get("name")||"").trim();
       const code=cleanRef(f.get("ref_code"));
-      const discountPct=Math.max(0,Math.min(100,Number(f.get("discount")||5)));
+      const discountPct=Math.max(0,Math.min(100,Number(f.get("discount")||0)));
       const {data,error}=await supabase.rpc("admin_create_partner",{
         p_name:partnerName,
         p_ref_code:code,
@@ -67,8 +68,8 @@ export default function PartnerTools({supabase,days}:any){
       });
       if(error)throw error;
       setMsg("Đã tạo đối tác "+code+". Hệ thống đã sinh link tracking + portal riêng.");
+      form.reset();
       setName("");setRef("");
-      e.currentTarget.reset();
       await loadRows();
     }catch(e:any){setError(e?.message||"Không tạo được partner.")}
     finally{setSaving(false)}
@@ -111,7 +112,7 @@ export default function PartnerTools({supabase,days}:any){
           </div>
           <div className="gva-field"><label>Thị trường</label><input className="gva-input" name="market" defaultValue="Russian-speaking travelers"/></div>
           <div className="gva-field"><label>Landing page</label><input className="gva-input" name="landing" defaultValue="/ru"/></div>
-          <div className="gva-field"><label>Ưu đãi khách (%)</label><input className="gva-input" name="discount" type="number" min="0" max="100" step="0.1" defaultValue="5"/></div>
+          <div className="gva-field"><label>Ưu đãi khách (%)</label><input className="gva-input" name="discount" type="number" min="0" max="100" step="0.1" defaultValue="0"/><div className="gva-mini" style={{marginTop:5}}>Mặc định 0%. Chỉ nhập khi GoVietStay duyệt ưu đãi riêng cho partner.</div></div>
           <div className="gva-field"><label>Ngày bắt đầu</label><input className="gva-input" name="start_date" type="date"/></div>
         </div>
         <button className="gva-btn" style={{marginTop:12}} disabled={saving}>{saving?"Đang tạo…":"Tạo mã + Portal đối tác"}</button>
@@ -151,3 +152,4 @@ export default function PartnerTools({supabase,days}:any){
     </div>
   </>;
 }
+
