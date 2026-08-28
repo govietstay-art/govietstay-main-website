@@ -25,6 +25,7 @@ export async function POST(request: Request) {
       city: clean(body.city, 100),
       contact: clean(body.contact, 120),
       social: clean(body.social, 250),
+      monthlyTours: clean(body.monthlyTours, 80),
       experience: clean(body.experience, 1200),
       audience: clean(body.audience, 1200),
       source: clean(body.source, 100),
@@ -38,7 +39,7 @@ export async function POST(request: Request) {
       synced = response.ok;
     }
     return NextResponse.json({ ok: true, partnerCode: record.partnerCode, synced });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ ok: false, error: "Invalid request" }, { status: 400 });
   }
 }
