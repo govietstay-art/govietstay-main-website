@@ -216,6 +216,29 @@ const contactWa = (text: string) =>
 const annaVuWa = (text: string) =>
   `https://wa.me/${ANNA_VU_PHONE_LINK}?text=${encodeURIComponent(text)}`;
 
+// GVS-RU-TRUST-V1
+const GOOGLE_REVIEWS_URL =
+  "https://maps.app.goo.gl/znWBmL8zPKEJqnoW6?g_st=ic";
+
+const russianTrustReviews = [
+  {
+    name: "Гость GoVietStay",
+    quote:
+      "Искренняя благодарность туристической компании, особенно Анне и Дэвиду, которые всё очень понятно объяснили. Они уделили нам время от всего сердца, как родным.",
+    detail: "Отзыв на русском языке · Google Reviews",
+    tour: "Ba Na Hills · Золотой мост",
+    image: "/tour/ba-na-hills/reviews/russian-family-google.png",
+  },
+  {
+    name: "Dariga Baitleuova",
+    quote:
+      "Прекрасный незабываемый отдых Хойан 👍💯 Спасибо Анне, Дэвид! За вкусный ужин, не ожидали 🥰 Это было вау! Всем предлагаю!",
+    detail: "Русскоязычный отзыв · Google Reviews",
+    tour: "Хойан · Ba Na Hills",
+    image: "/tour/ba-na-hills/reviews/dariga-google.png",
+  },
+] as const;
+
 type SignaturePackage = {
   id: string;
   title: string;
@@ -2488,6 +2511,96 @@ function CoreToursSection() {
   );
 }
 
+function RussianTrustSection() {
+  return (
+    <section
+      id="ru-trust"
+      className="border-y border-[#06251b]/10 bg-white px-4 py-12 md:px-8 md:py-16 lg:px-12"
+    >
+      <div className="mx-auto max-w-7xl">
+        <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+          <div>
+            <p className="text-xs font-extrabold uppercase tracking-[4px] text-green-800 md:text-sm">
+              Сначала — опыт гостей
+            </p>
+            <h2 className="mt-4 text-3xl font-extrabold leading-tight md:text-5xl">
+              Посмотрите, как прошла поездка у других гостей
+            </h2>
+            <p className="mt-4 max-w-xl leading-relaxed text-[#06251b]/70">
+              Перед бронированием можно открыть оригинал каждого отзыва в Google
+              Maps. Мы не прячем важные детали: программа, язык гида, погода и
+              итоговая цена подтверждаются до оплаты.
+            </p>
+            <a
+              href={GOOGLE_REVIEWS_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex rounded-full border-2 border-[#0b6b4f] px-5 py-3 text-sm font-extrabold text-[#0b6b4f] transition hover:bg-[#0b6b4f] hover:text-white"
+            >
+              Все отзывы в Google ↗
+            </a>
+            <a
+              href={contactWa(
+                "Здравствуйте! Я посмотрел(а) отзывы GoVietStay. Помогите выбрать подходящий тур. Дата: … Гостей: … Отель: …",
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ml-2 mt-6 inline-flex rounded-full bg-[#20a65a] px-5 py-3 text-sm font-extrabold text-white shadow-lg transition hover:bg-[#168849]"
+            >
+              Подобрать тур в WhatsApp
+            </a>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            {russianTrustReviews.map((review) => (
+              <article
+                key={review.name}
+                className="overflow-hidden rounded-[1.75rem] border border-[#06251b]/10 bg-[#f7f1df] shadow-sm"
+              >
+                <a
+                  href={GOOGLE_REVIEWS_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Открыть отзыв ${review.name} в Google Maps`}
+                  className="relative block aspect-[4/3] bg-[#eee8d8]"
+                >
+                  <Image
+                    src={review.image}
+                    alt={`Скриншот отзыва ${review.name} в Google Maps`}
+                    fill
+                    sizes="(min-width: 768px) 30vw, 92vw"
+                    className="object-contain"
+                  />
+                </a>
+                <div className="p-5">
+                  <div className="flex items-center justify-between gap-3">
+                    <strong className="text-sm">{review.name}</strong>
+                    <span className="text-sm tracking-[2px] text-amber-500">★★★★★</span>
+                  </div>
+                  <p className="mt-3 text-[15px] leading-relaxed text-[#06251b]/80">
+                    “{review.quote}”
+                  </p>
+                  <p className="mt-4 text-xs font-bold uppercase tracking-[1.5px] text-[#06251b]/50">
+                    {review.tour} · {review.detail}
+                  </p>
+                  <a
+                    href={GOOGLE_REVIEWS_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 inline-flex text-sm font-extrabold text-green-800"
+                  >
+                    Проверить оригинал в Google ↗
+                  </a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function RussianPage() {
   const [bookingPackage, setBookingPackage] = useState<SignaturePackage | null>(
     null,
@@ -2607,6 +2720,8 @@ export default function RussianPage() {
           </div>
         </div>
       </section>
+
+      <RussianTrustSection />
 
       <section id="choose-route" className="px-4 py-12 md:px-8 md:py-16 lg:px-12">
         <div className="mx-auto max-w-7xl">
