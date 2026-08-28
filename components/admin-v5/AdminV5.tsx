@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import "./admin-v5.css";
 import MarketingTools from "./MarketingTools";
+import PartnerTools from "./PartnerTools";
 
 const SUPABASE_URL = "https://vscffgnxaexestnayvae.supabase.co";
 const SUPABASE_KEY = "sb_publishable_BI1rIhiGB5cEUyJbnKGI5w_kCMI--oV";
@@ -34,7 +35,7 @@ export default function AdminV5() {
   const [bootstrap,setBootstrap]=useState("");
   const [msg,setMsg]=useState("");
   const [err,setErr]=useState("");
-  const [tab,setTab]=useState<"dashboard"|"analytics"|"marketing"|"seo"|"leads"|"bookings">("dashboard");
+  const [tab,setTab]=useState<"dashboard"|"analytics"|"marketing"|"partners"|"seo"|"leads"|"bookings">("dashboard");
   const [days,setDays]=useState(7);
   const [metrics,setMetrics]=useState<any>(null);
   const [breakdown,setBreakdown]=useState<any[]>([]);
@@ -282,6 +283,7 @@ export default function AdminV5() {
         <button className={tab==="analytics"?"active":""} onClick={()=>setTab("analytics")}>Analytics</button>
 
         <button className={tab==="marketing"?"active":""} onClick={()=>setTab("marketing")}>Marketing</button>
+        <button className={tab==="partners"?"active":""} onClick={()=>setTab("partners")}>Partners / QR</button>
         <button className={tab==="seo"?"active":""} onClick={()=>setTab("seo")}>SEO Intelligence</button>
         <button className={tab==="leads"?"active":""} onClick={()=>setTab("leads")}>Leads</button>
         <button className={tab==="bookings"?"active":""} onClick={()=>setTab("bookings")}>Bookings</button>
@@ -476,6 +478,8 @@ export default function AdminV5() {
 
 
 
+      {tab==="partners"&&<PartnerTools supabase={supabase} days={days}/>}
+
       {tab==="seo"&&<>
         <div className="gva-section-head">
           <div>
@@ -582,7 +586,7 @@ export default function AdminV5() {
 
 
 function adminPageTitle(tab:any){
-  return tab==="dashboard"?"Dashboard thật":tab==="analytics"?"Analytics khách truy cập":tab==="marketing"?"Marketing Funnel":tab==="seo"?"SEO Intelligence":tab==="leads"?"Quản lý Leads":"Quản lý Bookings";
+  return tab==="dashboard"?"Dashboard thật":tab==="analytics"?"Analytics khách truy cập":tab==="marketing"?"Marketing Funnel":tab==="partners"?"Partners / QR":tab==="seo"?"SEO Intelligence":tab==="leads"?"Quản lý Leads":"Quản lý Bookings";
 }
 
 function shortPage(value:any){
@@ -645,4 +649,5 @@ function BookingModal({tours,partners,onClose,onSubmit,saving}:any){return <div 
 </div><div style={{display:"flex",gap:8,justifyContent:"flex-end",marginTop:16}}><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button className="gva-btn" disabled={saving}>{saving?"Đang lưu…":"Lưu Booking"}</button></div></form></div>}
 
 function F({label,children,wide}:any){return <div className={"gva-field "+(wide?"wide":"")}><label>{label}</label>{children}</div>}
+
 
