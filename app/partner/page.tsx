@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
@@ -47,6 +47,7 @@ const terms = [
 ];
 
 export default function PartnerDashboard(){
+  useEffect(()=>{ document.documentElement.lang="ru"; document.body.classList.add("notranslate"); const m=document.createElement("meta"); m.name="google"; m.content="notranslate"; document.head.appendChild(m); return()=>{m.remove()}; },[]);
   const [token,setToken]=useState("");
   const [days,setDays]=useState(30);
   const [data,setData]=useState<any>(null);
@@ -78,7 +79,7 @@ export default function PartnerDashboard(){
 
   const m=data?.metrics||{},p=data?.partner||{},t=data?.terms||{},breakdown=Array.isArray(m.commission_breakdown)?m.commission_breakdown:[];
 
-  return <main style={{minHeight:"100vh",background:"#f4f7fb",padding:"24px 14px 50px",fontFamily:"Arial,sans-serif",color:"#172033"}}>
+  return <main translate="no" className="notranslate" style={{minHeight:"100vh",background:"#f4f7fb",padding:"24px 14px 50px",fontFamily:"Arial,sans-serif",color:"#172033"}}>
     <div style={{maxWidth:1120,margin:"0 auto"}}>
       <header style={{background:"#0f2747",color:"#fff",borderRadius:22,padding:"24px 28px",display:"flex",gap:18,alignItems:"center",boxShadow:"0 12px 28px rgba(15,39,71,.15)"}}>
         <img src="/govietstay-logo.jpg" alt="GoVietStay" style={{width:72,height:72,borderRadius:16,objectFit:"cover",background:"#fff"}}/>
@@ -198,3 +199,4 @@ function Box({children}:{children:React.ReactNode}){return <div style={{marginTo
 function Metric({label,value}:{label:string;value:any}){return <div style={{background:"#fff",borderRadius:16,padding:"18px 20px",boxShadow:"0 5px 20px rgba(22,40,65,.06)"}}><div style={{fontSize:13,color:"#718096"}}>{label}</div><div style={{fontSize:24,fontWeight:850,marginTop:7}}>{value}</div></div>}
 function Th({children}:{children:React.ReactNode}){return <th style={{textAlign:"left",padding:"10px 8px",borderBottom:"1px solid #dfe6ef",fontSize:13,color:"#607086"}}>{children}</th>}
 function Td({children,colSpan}:{children:React.ReactNode,colSpan?:number}){return <td colSpan={colSpan} style={{padding:"11px 8px",borderBottom:"1px solid #eef2f6"}}>{children}</td>}
+
