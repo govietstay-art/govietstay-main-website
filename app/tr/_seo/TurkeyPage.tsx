@@ -1,43 +1,225 @@
-import type {TurkeySeoPage} from "../../../lib/turkeySeoPages";
-import {turkeyMarketConfig} from "../../../lib/turkeyMarketConfig";
-import {getTurkeyVisual} from "../../../lib/turkeyVisuals";
-import styles from "../../it/_seo/ItalyPage.module.css";
+import type { TurkeySeoPage } from "../../../lib/turkeySeoPages";
+import { turkeyMarketConfig } from "../../../lib/turkeyMarketConfig";
+import { getTurkeyVisual } from "../../../lib/turkeyVisuals";
 
-function PriceBox({page}:{page:TurkeySeoPage}){
-  if(!page.priceKey)return <div className={styles.quote}><small>ÖZEL PLAN</small><h3>Önce ihtiyaç, sonra fiyat.</h3><p>Tarih, kişi sayısı, otel, rehber dili ve görmek istediğiniz iki yeri gönderin. Sadece gerçekten gereken parçaları fiyatlandıralım.</p><a href={turkeyMarketConfig.whatsapp} target="_blank" rel="noreferrer">WhatsApp'tan yazın</a></div>;
-  const p=turkeyMarketConfig.prices[page.priceKey];if(!p)return null;
-  return <div className={styles.priceBox}><small>{p.label}</small><h3>{new Intl.NumberFormat("tr-TR").format(p.vnd)} VND</h3><strong>Yetişkin referans fiyatı</strong><p>{p.note}</p><div className={styles.same}>✓ Aynı standart GoVietStay ürününde ekstra “Türkiye fiyatı” yok</div><em>{turkeyMarketConfig.priceDisclaimer}</em><a href={turkeyMarketConfig.whatsapp} target="_blank" rel="noreferrer">Tarih ve kapsamı teyit et</a></div>
+function fmt(vnd: number) {
+  return new Intl.NumberFormat("tr-TR").format(vnd) + " VND";
 }
 
-export default function TurkeyPage({page,related}:{page:TurkeySeoPage;related:TurkeySeoPage[]}){
-  const visual=getTurkeyVisual(page.slug,page.destination);
-  const canonical=`https://www.govietstay.com/tr/${page.slug}`;
-  const schema={"@context":"https://schema.org","@type":page.type==="guide"?"Article":"WebPage",headline:page.h1,description:page.desc,url:canonical,inLanguage:"tr-TR",dateModified:page.updated,author:{"@type":"Organization",name:"GoVietStay"}};
-  const faqSchema={"@context":"https://schema.org","@type":"FAQPage",mainEntity:page.faqs.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))};
-  const privateLike=page.type==="private";
-  return <main className={styles.page} lang="tr-TR">
-    <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(faqSchema)}}/>
-    <header className={styles.nav}><a href="/tr" className={styles.brand}><img src="/govietstay-logo.jpg" alt="GoVietStay"/><span><b>GoVietStay</b><small>TÜRKİYE → VİETNAM</small></span></a><nav><a href="/tr">Türkçe ana sayfa</a><a href="/tr/da-nang-gezi-rehberi">Da Nang</a><a href="/tr/vietnam-ozel-tur">Özel tur</a><a href="/tr/vietnam-e-vize-turk-vatandaslari">E-vize</a><a className={styles.cta} href={turkeyMarketConfig.whatsapp} target="_blank" rel="noreferrer">WhatsApp</a></nav></header>
-
-    <section className={styles.hero}><img src={visual.hero} alt={page.h1} fetchPriority="high"/><div className={styles.shade}/><div className={styles.heroInner}><div><p>{page.destination} · TÜRK GEZGİNLER İÇİN</p><h1>{page.h1}</h1><h2>{page.desc}</h2><blockquote>{page.wiifm}</blockquote><div className={styles.actions}><a href="#detay">Detayları gör</a><a href={turkeyMarketConfig.whatsapp} target="_blank" rel="noreferrer">WhatsApp</a></div></div><aside><small>30 SANİYELİK ÖZET</small><h3>En ucuz etiketi değil, doğru kapsamı karşılaştırın.</h3><p>Standart ürünlerde mevcut GoVietStay fiyatını koruyoruz. Özel turu ise grup ekonomisine göre hesaplıyoruz.</p><div><span>Standart tur</span><b>Aynı kamu fiyatı</b></div><div><span>Türkçe rehber</span><b>Müsaitliğe göre</b></div><div><span>Özel tur</span><b>Sizin grubunuz</b></div></aside></div></section>
-
-    <section className={styles.gallery}>{visual.gallery.map((src,i)=><figure key={src}><img src={src} alt={`${visual.label} ${i+1}`} loading="lazy"/>{i===0?<figcaption>GoVietStay gerçek seyahat görselleri</figcaption>:null}</figure>)}</section>
-    <section className={styles.scan}>{page.bullets.map((x,i)=><div key={x}><small>0{i+1}</small><b>{x}</b></div>)}</section>
-
-    {privateLike?<section className={styles.private}><div><img src="/travelers/germany.jpg" alt="GoVietStay özel seyahat" loading="lazy"/></div><div><p>ÖZEL · SİZE GÖRE</p><h2>Grubunuz tura uymak zorunda değil. Tur grubunuza uymalı.</h2><span>Tarih · kişi sayısı · çocuk/senior · otel · rehber dili · ilgi alanı · istemediğiniz şeyler</span><p>{turkeyMarketConfig.guideRule}</p><a href={turkeyMarketConfig.whatsapp} target="_blank" rel="noreferrer">Rotayı birlikte kuralım</a></div></section>:null}
-
-    <div className={styles.layout}><article id="detay">
-      <section className={styles.story}><p>01 · SİZE NE KAZANDIRIR?</p><h2>{page.wiifm}</h2><p>{page.desc}</p></section>
-      {page.sections.map((s,i)=><section className={styles.check} key={s.title}><p>{String(i+2).padStart(2,"0")} · {s.eyebrow.replace(/^\d+\s*·\s*/,"")}</p><h2>{s.title}</h2><p>{s.body}</p>{s.points?.map(x=><div key={x}>✓ {x}</div>)}</section>)}
-      <section id="prezzo" className={styles.priceSection}><p>FİYAT / PLAN</p><PriceBox page={page}/></section>
-      {page.sourceLinks?.length?<section className={styles.official}><p>KAYNAKLAR</p><h2>Değişebilecek bilgiyi resmi kaynaktan doğrulayın.</h2><span>Vize ve bilet kuralları güncellenebilir. Bu yüzden kaynak bağlantısını doğrudan veriyoruz.</span>{page.sourceLinks.map(([label,url])=><a key={url} href={url} target="_blank" rel="noreferrer">{label} ↗</a>)}</section>:null}
-      <section className={styles.local}><div><p>YEREL DESTEK</p><h2>Yerel ekibin değeri, plan değiştiğinde ortaya çıkar.</h2><span>Hava, deniz, uçuş gecikmesi, çocukların yorulması veya programı değiştirme isteği: burada gerçek bir yerel temas noktası katalogdan daha değerlidir.</span><a href={turkeyMarketConfig.whatsapp} target="_blank" rel="noreferrer">GoVietStay'e yazın</a></div><img src={visual.gallery[0]} alt={visual.label} loading="lazy"/></section>
-      <section className={styles.faq}><p>SIK SORULAN SORULAR</p><h2>Ödeme yapmadan önce netleştirin</h2>{page.faqs.map(([q,a])=><details key={q}><summary>{q}<span>＋</span></summary><p>{a}</p></details>)}</section>
-    </article>
-    <aside><div className={styles.sticky}><img src={visual.gallery[1]} alt={visual.label} loading="lazy"/><small>UÇUŞ + OTEL HAZIR MI?</small><h3>Bize 5 bilgi gönderin.</h3><p>Tarih · kişi sayısı · otel · iki öncelik · istediğiniz rehber dili.</p><a href={turkeyMarketConfig.whatsapp} target="_blank" rel="noreferrer">WhatsApp</a><a href="/tr/vietnam-ozel-tur">Özel rota →</a><a href={turkeyMarketConfig.googleMaps} target="_blank" rel="noreferrer">Google Maps →</a></div></aside>
+function SectionTitle({ eyebrow, title }: { eyebrow: string; title: string }) {
+  return (
+    <div style={{ marginBottom: 12 }}>
+      <div style={{ color: "#0b5d3b", fontWeight: 700, fontSize: 12, letterSpacing: 0.5 }}>{eyebrow}</div>
+      <h2 style={{ margin: "6px 0 0", fontSize: 30, lineHeight: 1.2, color: "#10231a" }}>{title}</h2>
     </div>
+  );
+}
 
-    <section className={styles.related}><p>BUNLAR DA İŞİNİZE YARAYABİLİR</p><h2>Bağlantılı rehberler</h2><div>{related.map(x=>{const v=getTurkeyVisual(x.slug,x.destination);return <a href={`/tr/${x.slug}`} key={x.slug}><img src={v.hero} alt={x.h1} loading="lazy"/><div><small>{x.destination}</small><b>{x.h1}</b><span>Aç →</span></div></a>})}</div></section>
-    <div className={styles.mobile}><a href={turkeyMarketConfig.whatsapp} target="_blank" rel="noreferrer">💬 WhatsApp</a><a href="/tr/vietnam-ozel-tur">★ Özel tur</a><a href="/tr/vietnam-e-vize-turk-vatandaslari">🛂 E-vize</a></div>
-  </main>
+function PriceBox({ page }: { page: TurkeySeoPage }) {
+  if (!page.priceKey) {
+    return (
+      <div style={{ background: "#f7f4eb", border: "1px solid #e5dcc6", borderRadius: 18, padding: 24 }}>
+        <div style={{ fontSize: 12, fontWeight: 700, color: "#0b5d3b" }}>ÖZEL PLAN</div>
+        <h3 style={{ fontSize: 28, margin: "8px 0 10px", color: "#10231a" }}>Önce ihtiyaç, sonra fiyat.</h3>
+        <p style={{ margin: 0, lineHeight: 1.75, color: "#31443b" }}>
+          Tarih, kişi sayısı, otel, rehber dili ve görmek istediğiniz iki yeri gönderin. Size
+          gereksiz hizmet eklemeden, mantıklı bir ilk plan çıkaralım.
+        </p>
+      </div>
+    );
+  }
+  const p = turkeyMarketConfig.prices[page.priceKey];
+  if (!p) return null;
+  return (
+    <div style={{ background: "#f7f4eb", border: "1px solid #e5dcc6", borderRadius: 18, padding: 24 }}>
+      <div style={{ fontSize: 12, fontWeight: 700, color: "#0b5d3b" }}>{p.label}</div>
+      <h3 style={{ fontSize: 34, margin: "8px 0 4px", color: "#10231a" }}>{fmt(p.vnd)}</h3>
+      <div style={{ fontWeight: 700, color: "#31443b", marginBottom: 10 }}>Yetişkin referans fiyatı</div>
+      <p style={{ margin: 0, lineHeight: 1.75, color: "#31443b" }}>{p.note}</p>
+      <p style={{ margin: "12px 0 0", lineHeight: 1.6, color: "#7a6d53", fontSize: 14 }}>
+        {turkeyMarketConfig.priceDisclaimer}
+      </p>
+    </div>
+  );
+}
+
+export default function TurkeyPage({
+  page,
+  related,
+}: {
+  page: TurkeySeoPage;
+  related: TurkeySeoPage[];
+}) {
+  const visual = getTurkeyVisual(page.slug);
+  const canonical = `https://www.govietstay.com/tr/${page.slug}`;
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: page.faqs.map(([q, a]) => ({
+      "@type": "Question",
+      name: q,
+      acceptedAnswer: { "@type": "Answer", text: a },
+    })),
+  };
+
+  return (
+    <main style={{ fontFamily: "Inter, Arial, sans-serif", color: "#10231a", background: "#fcfbf7" }}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <div style={{ maxWidth: 1240, margin: "0 auto", padding: "18px 20px 70px" }}>
+        <header
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 16,
+            marginBottom: 24,
+            flexWrap: "wrap",
+          }}
+        >
+          <a href="/tr" style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none" }}>
+            <img src="/govietstay-logo.jpg" alt="GoVietStay" style={{ width: 54, height: 54, borderRadius: 999 }} />
+            <div>
+              <div style={{ fontSize: 30, fontWeight: 800, color: "#10231a" }}>GoVietStay</div>
+              <div style={{ color: "#6a786e", letterSpacing: 1, fontSize: 13 }}>TÜRK GEZGİNLER</div>
+            </div>
+          </a>
+          <nav style={{ display: "flex", gap: 18, flexWrap: "wrap", alignItems: "center" }}>
+            <a href="/tr" style={{ color: "#10231a", textDecoration: "none", fontWeight: 700 }}>Ana sayfa</a>
+            <a href="/tr/da-nang-gezi-rehberi" style={{ color: "#10231a", textDecoration: "none", fontWeight: 700 }}>Da Nang</a>
+            <a href="/tr/vietnam-ozel-tur" style={{ color: "#10231a", textDecoration: "none", fontWeight: 700 }}>Özel tur</a>
+            <a href={turkeyMarketConfig.whatsapp} target="_blank" rel="noreferrer" style={{ textDecoration: "none", background: "#13a36b", color: "#fff", padding: "12px 18px", borderRadius: 999, fontWeight: 800 }}>WhatsApp</a>
+          </nav>
+        </header>
+
+        <section
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1.2fr 1fr",
+            gap: 24,
+            background: "#fff",
+            borderRadius: 28,
+            overflow: "hidden",
+            border: "1px solid #ebe3cf",
+            marginBottom: 26,
+          }}
+        >
+          <img src={visual.hero} alt={page.h1} style={{ width: "100%", height: "100%", objectFit: "cover", minHeight: 360 }} />
+          <div style={{ padding: 30, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <div style={{ color: "#0b5d3b", fontWeight: 800, fontSize: 13, marginBottom: 10 }}>{page.destination}</div>
+            <h1 style={{ margin: 0, fontSize: 46, lineHeight: 1.08, color: "#10231a" }}>{page.h1}</h1>
+            <p style={{ fontSize: 20, lineHeight: 1.6, color: "#31443b", margin: "16px 0 14px" }}>{page.desc}</p>
+            <div style={{ fontSize: 18, lineHeight: 1.7, color: "#6b5c2d", background: "#faf4d7", padding: 16, borderRadius: 16 }}>
+              {page.wiifm}
+            </div>
+            <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 18 }}>
+              <a href={turkeyMarketConfig.whatsapp} target="_blank" rel="noreferrer" style={{ background: "#13a36b", color: "#fff", textDecoration: "none", padding: "14px 18px", borderRadius: 999, fontWeight: 800 }}>WhatsApp</a>
+              <a href={canonical} style={{ background: "#f3efe5", color: "#10231a", textDecoration: "none", padding: "14px 18px", borderRadius: 999, fontWeight: 800 }}>Bu sayfayı paylaş</a>
+            </div>
+          </div>
+        </section>
+
+        <section style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 32 }}>
+          {page.bullets.map((item, idx) => (
+            <div key={item} style={{ background: "#fff", border: "1px solid #ebe3cf", borderRadius: 18, padding: 20 }}>
+              <div style={{ color: "#0b5d3b", fontWeight: 800, fontSize: 13 }}>0{idx + 1}</div>
+              <div style={{ marginTop: 8, lineHeight: 1.7, fontWeight: 700 }}>{item}</div>
+            </div>
+          ))}
+        </section>
+
+        <div style={{ display: "grid", gridTemplateColumns: "1.4fr 0.9fr", gap: 26, alignItems: "start" }}>
+          <article style={{ display: "grid", gap: 24 }}>
+            {page.sections.map((s) => (
+              <section key={s.title} style={{ background: "#fff", border: "1px solid #ebe3cf", borderRadius: 22, padding: 26 }}>
+                <SectionTitle eyebrow={s.eyebrow} title={s.title} />
+                <p style={{ margin: 0, lineHeight: 1.85, color: "#31443b", fontSize: 18 }}>{s.body}</p>
+                {s.points?.length ? (
+                  <div style={{ display: "grid", gap: 10, marginTop: 16 }}>
+                    {s.points.map((pt) => (
+                      <div key={pt} style={{ background: "#f7f4eb", padding: "12px 14px", borderRadius: 14, color: "#31443b", fontWeight: 700 }}>✓ {pt}</div>
+                    ))}
+                  </div>
+                ) : null}
+              </section>
+            ))}
+
+            <section style={{ background: "#fff", border: "1px solid #ebe3cf", borderRadius: 22, padding: 26 }}>
+              <SectionTitle eyebrow="FİYAT / PLAN" title="Karar vermeden önce toplam resmi görün." />
+              <PriceBox page={page} />
+            </section>
+
+            {page.sourceLinks?.length ? (
+              <section style={{ background: "#fff", border: "1px solid #ebe3cf", borderRadius: 22, padding: 26 }}>
+                <SectionTitle eyebrow="KAYNAKLAR" title="Değişebilecek bilgiyi resmi kaynaktan doğrulayın." />
+                <div style={{ display: "grid", gap: 12 }}>
+                  {page.sourceLinks.map(([label, url]) => (
+                    <a key={url} href={url} target="_blank" rel="noreferrer" style={{ textDecoration: "none", color: "#0b5d3b", fontWeight: 800 }}>
+                      {label} ↗
+                    </a>
+                  ))}
+                </div>
+              </section>
+            ) : null}
+
+            <section style={{ background: "#fff", border: "1px solid #ebe3cf", borderRadius: 22, padding: 26 }}>
+              <SectionTitle eyebrow="SIK SORULAN SORULAR" title="Ödeme yapmadan önce netleştirin." />
+              <div style={{ display: "grid", gap: 12 }}>
+                {page.faqs.map(([q, a]) => (
+                  <details key={q} style={{ background: "#f8f6ef", borderRadius: 16, padding: 16 }}>
+                    <summary style={{ cursor: "pointer", fontWeight: 800 }}>{q}</summary>
+                    <p style={{ margin: "10px 0 0", lineHeight: 1.75, color: "#31443b" }}>{a}</p>
+                  </details>
+                ))}
+              </div>
+            </section>
+          </article>
+
+          <aside style={{ display: "grid", gap: 18, position: "sticky", top: 18 }}>
+            <div style={{ background: "#f7f4eb", border: "1px solid #e5dcc6", borderRadius: 22, padding: 22 }}>
+              <div style={{ color: "#0b5d3b", fontWeight: 800, fontSize: 13 }}>GO VIETSTAY LOCAL SUPPORT</div>
+              <h3 style={{ fontSize: 30, lineHeight: 1.15, margin: "10px 0", color: "#10231a" }}>
+                Uçuş ve otelinizi siz seçin. Yerelde yalnız kalmayın.
+              </h3>
+              <p style={{ lineHeight: 1.8, color: "#31443b", margin: 0 }}>
+                Tarih, kişi sayısı, otel, çocuk bilgisi ve görmek istediğiniz iki yeri yazın. Size en çok turu
+                değil, en mantıklı planı çıkaralım.
+              </p>
+              <a href={turkeyMarketConfig.whatsapp} target="_blank" rel="noreferrer" style={{ display: "inline-block", marginTop: 16, textDecoration: "none", background: "#13a36b", color: "#fff", padding: "13px 18px", borderRadius: 999, fontWeight: 800 }}>WhatsApp’tan yazın</a>
+            </div>
+
+            <img src={visual.gallery[1]} alt={visual.label} style={{ width: "100%", borderRadius: 20, border: "1px solid #ebe3cf", objectFit: "cover", minHeight: 220 }} />
+
+            <div style={{ background: "#fff", border: "1px solid #ebe3cf", borderRadius: 22, padding: 22 }}>
+              <div style={{ color: "#0b5d3b", fontWeight: 800, fontSize: 13 }}>DÜRÜSTLÜK İLKELERİ</div>
+              <div style={{ display: "grid", gap: 10, marginTop: 12 }}>
+                <div>✓ Yanlış vize iddiası yok</div>
+                <div>✓ Türkçe rehber yalnızca teyitle</div>
+                <div>✓ Fiyatlar VND ile şeffaf</div>
+                <div>✓ Gerçek yerel WhatsApp desteği</div>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <section style={{ marginTop: 38 }}>
+          <SectionTitle eyebrow="BAĞLANTILI SAYFALAR" title="Bunlar da işinize yarayabilir." />
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18 }}>
+            {related.map((r) => {
+              const vr = getTurkeyVisual(r.slug);
+              return (
+                <a key={r.slug} href={`/tr/${r.slug}`} style={{ textDecoration: "none", background: "#fff", border: "1px solid #ebe3cf", borderRadius: 20, overflow: "hidden", color: "#10231a" }}>
+                  <img src={vr.hero} alt={r.h1} style={{ width: "100%", height: 180, objectFit: "cover" }} />
+                  <div style={{ padding: 18 }}>
+                    <div style={{ color: "#0b5d3b", fontWeight: 800, fontSize: 12 }}>{r.destination}</div>
+                    <div style={{ fontSize: 24, lineHeight: 1.2, fontWeight: 800, margin: "8px 0 10px" }}>{r.h1}</div>
+                    <div style={{ color: "#31443b", lineHeight: 1.7 }}>{r.wiifm}</div>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        </section>
+      </div>
+    </main>
+  );
 }

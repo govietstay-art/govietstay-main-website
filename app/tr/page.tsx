@@ -1,146 +1,445 @@
-import type {Metadata} from "next";
-import {turkeySeoPages} from "../../lib/turkeySeoPages";
-import {turkeyMarketConfig} from "../../lib/turkeyMarketConfig";
-import {turkeyHubVisuals,turkeyGuestPhotos,getTurkeyVisual} from "../../lib/turkeyVisuals";
-import styles from "../it/ItalyHub.module.css";
+import type { Metadata } from "next";
+import { turkeyMarketConfig } from "../../lib/turkeyMarketConfig";
+import { turkeySeoPages } from "../../lib/turkeySeoPages";
+import { turkeyHubVisuals, turkeyGuestPhotos } from "../../lib/turkeyVisuals";
 
-export const metadata:Metadata={
-  title:{absolute:"Vietnam Gezi Rehberi ve Turlar 2026 | Türk Gezginler | GoVietStay"},
-  description:"Türk gezginler için Vietnam: doğru e-vize bilgisi, Da Nang mı Phu Quoc mu, ne zaman gidilir, havalimanı transferi, yemek tercihleri, aile seyahati, şeffaf VND fiyatları ve özel tur.",
-  alternates:{canonical:"https://www.govietstay.com/tr",languages:{"tr-TR":"https://www.govietstay.com/tr",en:"https://www.govietstay.com/travel","x-default":"https://www.govietstay.com"}},
-  robots:{index:true,follow:true},
-  openGraph:{type:"website",url:"https://www.govietstay.com/tr",title:"GoVietStay Türkiye | Vietnam'ı kendi ritminizde keşfedin",description:"Hazır paket satmak yerine önce doğru kararı kolaylaştırıyoruz: vize, mevsim, rota, transfer, yemek, tur ve yerel destek.",locale:"tr_TR",siteName:"GoVietStay"}
+export const metadata: Metadata = {
+  title: { absolute: "Vietnam Gezi Rehberi ve Yerel Destek 2026 | GoVietStay Türkiye" },
+  description:
+    "Türk gezginler için Vietnam: vize, mevsim, Da Nang mı Phu Quoc mu, fiyatlar, aile seyahati, yemek tercihleri ve gerçek yerel destek.",
+  alternates: {
+    canonical: "https://www.govietstay.com/tr",
+    languages: {
+      "tr-TR": "https://www.govietstay.com/tr",
+      en: "https://www.govietstay.com/travel",
+      "x-default": "https://www.govietstay.com",
+    },
+  },
+  robots: { index: true, follow: true },
+  openGraph: {
+    type: "website",
+    url: "https://www.govietstay.com/tr",
+    title: "GoVietStay Türkiye | Vietnam’da yerel destek",
+    description:
+      "Önce doğru karar, sonra doğru hizmet: vize, rota, fiyat ve GoVietStay local support.",
+    locale: "tr_TR",
+    siteName: "GoVietStay",
+  },
 };
 
-const bySlug=(slug:string)=>turkeySeoPages.find(x=>x.slug===slug);
-const keyPages=["ba-na-hills-altin-kopru","hoi-an-hindistan-cevizi-ormani","vietnam-ozel-tur"];
+function SectionTitle({ eyebrow, title, text }: { eyebrow: string; title: string; text?: string }) {
+  return (
+    <div style={{ marginBottom: 20 }}>
+      <div style={{ color: "#0b5d3b", fontWeight: 800, fontSize: 12, letterSpacing: 0.5 }}>{eyebrow}</div>
+      <h2 style={{ margin: "7px 0 10px", fontSize: 38, lineHeight: 1.15, color: "#10231a" }}>{title}</h2>
+      {text ? <p style={{ margin: 0, lineHeight: 1.8, color: "#31443b", fontSize: 18 }}>{text}</p> : null}
+    </div>
+  );
+}
 
-export default function TurkeyHub(){
-  const schema={"@context":"https://schema.org","@type":"CollectionPage",name:"GoVietStay Türkiye",url:"https://www.govietstay.com/tr",inLanguage:"tr-TR",description:"Türk gezginler için Vietnam karar ve yerel destek merkezi"};
-  const faqSchema={"@context":"https://schema.org","@type":"FAQPage",mainEntity:[
-    {"@type":"Question",name:"Türk vatandaşları Vietnam'a vizesiz girebilir mi?",acceptedAnswer:{"@type":"Answer",text:"Umuma mahsus pasaport sahipleri için güncel resmi bilgiye göre vize gerekir. E-vize resmi Vietnam Göç İdaresi portalından alınabilir."}},
-    {"@type":"Question",name:"Da Nang mı Phu Quoc mu?",acceptedAnswer:{"@type":"Answer",text:"Da Nang kültür, şehir, Hoi An, Hue ve Bà Nà Hills için güçlü bir üs; Phu Quoc ise resort ve ada/plaj odaklı tatil için daha uygundur. Mevsim seçimi iki bölgeyi ciddi biçimde etkiler."}},
-    {"@type":"Question",name:"Türkçe rehber var mı?",acceptedAnswer:{"@type":"Answer",text:"Talep edilebilir; yalnızca tarih ve rehber müsaitliği teyit edildikten sonra garanti edilir."}},
-    {"@type":"Question",name:"GoVietStay'de ödeme nasıl yapılır?",acceptedAnswer:{"@type":"Answer",text:"Resmi fiyat VND'dir. Önceden bilet gerektiren turlarda standart depozito yüzde 20; yalnız transfer hizmetlerinde genellikle depozito gerekmez. Son rezervasyon teyidi esas alınır."}}
-  ]};
-  return <main className={styles.page} lang="tr-TR">
-    <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/>
-    <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(faqSchema)}}/>
-    <div className={styles.top}><span>TÜRKİYE → VİETNAM</span><b>Da Nang · Hoi An · Hue · Phu Quoc</b><a href="/travel">English →</a></div>
-    <header className={styles.nav}><a href="/tr" className={styles.brand}><img src="/govietstay-logo.jpg" alt="GoVietStay"/><span><b>GoVietStay</b><small>TÜRK GEZGİNLER</small></span></a><nav><a href="#karar">Nereden başlamalı?</a><a href="#fiyat">Fiyatlar</a><a href="#pratik">Pratik</a><a href="/tr/vietnam-e-vize-turk-vatandaslari">E-vize</a><a className={styles.cta} href={turkeyMarketConfig.whatsapp} target="_blank" rel="noreferrer">WhatsApp</a></nav></header>
+function LinkCard({
+  href,
+  eyebrow,
+  title,
+  text,
+}: {
+  href: string;
+  eyebrow: string;
+  title: string;
+  text: string;
+}) {
+  return (
+    <a
+      href={href}
+      style={{
+        textDecoration: "none",
+        background: "#fff",
+        border: "1px solid #ebe3cf",
+        borderRadius: 20,
+        padding: 22,
+        color: "#10231a",
+        display: "block",
+      }}
+    >
+      <div style={{ color: "#0b5d3b", fontWeight: 800, fontSize: 12 }}>{eyebrow}</div>
+      <div style={{ fontWeight: 800, fontSize: 28, lineHeight: 1.16, margin: "10px 0 10px" }}>{title}</div>
+      <div style={{ lineHeight: 1.75, color: "#31443b" }}>{text}</div>
+    </a>
+  );
+}
 
-    <section className={styles.hero}>
-      <div className={styles.heroMain}><img src={turkeyHubVisuals.hero} alt="Hoi An ve Orta Vietnam" fetchPriority="high"/><div className={styles.shade}/><div className={styles.heroCopy}>
-        <p>VİETNAM'A GELMEDEN ÖNCE 7 KARARI TEK SAYFADA ÇÖZ</p>
-        <h1>Vietnam’ı görmek kolay. <em>Yanlış mevsim, yanlış rota ve yanlış paket seçmemek daha değerlidir.</em></h1>
-        <h2>Vize gerekiyor mu? Da Nang mı Phu Quoc mu? Kaç gün? Havalimanından nasıl geçilir? Helal yemek mümkün mü? Grup turu mu özel mi? Önce bunları netleştirelim; sonra sadece gerçekten ihtiyacınız olan hizmeti alın.</h2>
-        <div className={styles.actions}><a href="#karar">5 dakikalık karar rehberi</a><a href="#fiyat">Gerçek fiyatları gör</a><a href={turkeyMarketConfig.whatsapp} target="_blank" rel="noreferrer">WhatsApp</a></div>
-        <div className={styles.proof}><span>✓ Umuma mahsus pasaport: vize gerekir</span><span>✓ Standart tur = aynı kamu fiyatı</span><span>✓ Türkçe rehber: teyitli müsaitlik</span></div>
-      </div></div>
-      <aside className={styles.answer}><small>WIIFM · BU SAYFA SİZE NE KAZANDIRIR?</small><h2>Daha az arama. Daha az yanlış seçim.</h2>
-        {["Vize bilgisini doğrula","Mevsime göre bölge seç","Gün sayısını gerçekçi kur","Transfer ve yemek sorununu önceden çöz","Tur fiyatını aynı kapsamla karşılaştır"].map((x,i)=><div key={x}><b>0{i+1}</b><span>{x}</span></div>)}
-        <a href={turkeyMarketConfig.whatsapp} target="_blank" rel="noreferrer">Tarihlerinizi gönderin</a>
-      </aside>
-    </section>
+function PriceCard({
+  title,
+  price,
+  note,
+  href,
+}: {
+  title: string;
+  price: string;
+  note: string;
+  href: string;
+}) {
+  return (
+    <a
+      href={href}
+      style={{
+        textDecoration: "none",
+        background: "#fff",
+        border: "1px solid #ebe3cf",
+        borderRadius: 20,
+        padding: 22,
+        color: "#10231a",
+        display: "block",
+      }}
+    >
+      <div style={{ fontWeight: 800, fontSize: 24, lineHeight: 1.2 }}>{title}</div>
+      <div style={{ color: "#0b5d3b", fontWeight: 900, fontSize: 34, marginTop: 10 }}>{price}</div>
+      <div style={{ lineHeight: 1.75, color: "#31443b", marginTop: 10 }}>{note}</div>
+    </a>
+  );
+}
 
-    <section className={styles.quick} id="karar">
-      <a href="/tr/vietnam-e-vize-turk-vatandaslari"><small>1 · VİZE</small><b>45 gün vizesiz değil</b><span>Resmi e-vize bilgisini gör →</span></a>
-      <a href="#mevsim"><small>2 · MEVSİM</small><b>Da Nang ≠ Phu Quoc</b><span>Ayınıza göre seç →</span></a>
-      <a href="/tr/da-nang-gezi-rehberi"><small>3 · SÜRE</small><b>Da Nang için 3–5 gece</b><span>4 günlük iskelet →</span></a>
-      <a href="#fiyat"><small>4 · BÜTÇE</small><b>VND ile şeffaf fiyat</b><span>Aynı kapsamı karşılaştır →</span></a>
-    </section>
+export default function TurkeyHubPage() {
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "Türk vatandaşları Vietnam’a vizesiz girebilir mi?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Umuma mahsus pasaport sahipleri için güncel resmi bilgiye göre vize gerekir.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Da Nang mı Phu Quoc mu?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Da Nang ilk Vietnam seyahati için şehir, plaj ve günübirlik kültür rotalarıyla güçlü bir merkezdir; Phu Quoc ise daha ada ve resort odaklıdır.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "GoVietStay’de ödeme nasıl yapılır?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Resmi fiyatlandırma VND ile yapılır. Bilet gerektiren turlarda standart depozito yüzde 20’dir; sadece transferde normal şartlarda depozito gerekmez.",
+        },
+      },
+    ],
+  };
 
-    <section className={styles.privateZone}>
-      <div className={styles.privatePhoto}><img src="/travelers/germany.jpg" alt="GoVietStay gerçek misafir" loading="lazy"/></div>
-      <div className={styles.privateCopy}><p>01 · BİZİM ANA FİKRİMİZ</p><h2>Tur satmak için her günü doldurmayız. Bazen en iyi tavsiye, o günü boş bırakmaktır.</h2><span>Şehir içi kahve, plaj ve restoran için çoğu zaman tura ihtiyacınız yok. Grup turu ekonomik olduğunda onu öneririz; çocuk, senior misafir, yemek tercihi veya küçük grubun ritmi önemli olduğunda özel hizmet daha fazla değer yaratabilir.</span>
-        <div>{["Doğru vize","Doğru mevsim","Gerçek fiyat","Yerel WhatsApp","Özel rota","Dil teyidi"].map((x,i)=><b key={x}><i>0{i+1}</i>{x}</b>)}</div>
-        <a href="/tr/vietnam-ozel-tur">Özel tur mantığını gör →</a><a href="/tr/da-nang-gezi-rehberi">Da Nang planı →</a>
+  return (
+    <main style={{ fontFamily: "Inter, Arial, sans-serif", color: "#10231a", background: "#fcfbf7" }}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <div style={{ background: "#062e22", color: "#f8f0c8", padding: "10px 20px" }}>
+        <div style={{ maxWidth: 1240, margin: "0 auto", display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap", fontWeight: 800 }}>
+          <span>TÜRKİYE → VİETNAM</span>
+          <span>Da Nang · Hoi An · Hue · Phu Quoc</span>
+        </div>
       </div>
-    </section>
 
-    <section className={styles.section} id="mevsim">
-      <div className={styles.head}><div><p>02 · NE ZAMAN / NEREYE?</p><h2>Aynı Vietnam, farklı mevsim. Tatilin ana hedefini önce seçin.</h2></div><span>Da Nang'da Şubat–Mayıs genellikle sıcaklık ve yağış dengesi açısından güçlü dönemdir; Haziran–Ağustos daha sıcak, Eylül–Kasım daha yağışlıdır. Phu Quoc ise kuru dönemde, özellikle sonbahar sonu–ilkbahar başında plaj tatili için daha güçlü olabilir; Temmuz–Eylül yağmur ve fırtına riski artar.</span></div>
-      <div className={styles.whyGrid}>
-        <div><b>DA NANG</b><h3>Şubat–Mayıs</h3><p>Şehir + plaj + Hoi An + Bà Nà Hills için en dengeli dönemlerden biri. İlk kez gelenler için güçlü seçim.</p></div>
-        <div><b>DA NANG</b><h3>Haziran–Ağustos</h3><p>Plaj için popüler ama sıcak ve nemli. Gün ortasını hafif planlamak daha mantıklı.</p></div>
-        <div><b>PHU QUOC</b><h3>Ekim–Mart</h3><p>Genellikle daha kuru ve rahat ada dönemi. Resort, snorkeling ve deniz tatili isteyenler için güçlü.</p></div>
-        <div><b>PHU QUOC</b><h3>Temmuz–Eylül</h3><p>Yağmur ve deniz koşulları daha değişken. Ada turunda esnek gün bırakmak gerekir.</p></div>
+      <div style={{ maxWidth: 1240, margin: "0 auto", padding: "20px 20px 70px" }}>
+        <header
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: 16,
+            marginBottom: 22,
+            flexWrap: "wrap",
+          }}
+        >
+          <a href="/tr" style={{ display: "flex", alignItems: "center", gap: 14, textDecoration: "none" }}>
+            <img src="/govietstay-logo.jpg" alt="GoVietStay" style={{ width: 58, height: 58, borderRadius: 999 }} />
+            <div>
+              <div style={{ fontSize: 36, fontWeight: 900, color: "#10231a" }}>GoVietStay</div>
+              <div style={{ color: "#708076", letterSpacing: 1.1, fontSize: 14 }}>TÜRK GEZGİNLER</div>
+            </div>
+          </a>
+          <nav style={{ display: "flex", alignItems: "center", gap: 18, flexWrap: "wrap" }}>
+            <a href="#start" style={{ color: "#10231a", textDecoration: "none", fontWeight: 800 }}>Nereden başlamalı?</a>
+            <a href="#compare" style={{ color: "#10231a", textDecoration: "none", fontWeight: 800 }}>Da Nang mı Phu Quoc mu?</a>
+            <a href="#prices" style={{ color: "#10231a", textDecoration: "none", fontWeight: 800 }}>Fiyatlar</a>
+            <a href="/tr/vietnam-e-vize-turk-vatandaslari" style={{ color: "#10231a", textDecoration: "none", fontWeight: 800 }}>E-vize</a>
+            <a href={turkeyMarketConfig.whatsapp} target="_blank" rel="noreferrer" style={{ textDecoration: "none", background: "#13a36b", color: "#fff", padding: "13px 20px", borderRadius: 999, fontWeight: 900 }}>
+              WhatsApp
+            </a>
+          </nav>
+        </header>
+
+        <section
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1.05fr 1fr",
+            gap: 24,
+            alignItems: "stretch",
+            marginBottom: 28,
+          }}
+        >
+          <div style={{ background: "#fff", border: "1px solid #ebe3cf", borderRadius: 28, overflow: "hidden" }}>
+            <img
+              src={turkeyHubVisuals.heroSupport}
+              alt="GoVietStay local support"
+              style={{ width: "100%", height: 380, objectFit: "cover" }}
+            />
+            <div style={{ padding: 28 }}>
+              <div style={{ color: "#0b5d3b", fontWeight: 900, fontSize: 13, marginBottom: 10 }}>
+                GO VIETSTAY LOCAL SUPPORT
+              </div>
+              <h1 style={{ margin: 0, fontSize: 56, lineHeight: 1.04, color: "#10231a" }}>
+                Vietnam’ı planlamak zor değil.
+                <span style={{ color: "#98742a" }}> Doğru mevsim, doğru rota ve doğru destek fark yaratır.</span>
+              </h1>
+              <p style={{ margin: "18px 0 0", fontSize: 21, lineHeight: 1.7, color: "#31443b" }}>
+                Uçuş ve otelinizi siz seçin. Biz Vietnam’da neyi kendiniz yapabileceğinizi, nerede destek almanın
+                gerçekten zaman ve stres kazandırdığını açıkça anlatalım.
+              </p>
+              <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 22 }}>
+                <a href="#start" style={{ textDecoration: "none", background: "#f4c84d", color: "#10231a", padding: "14px 20px", borderRadius: 999, fontWeight: 900 }}>5 dakikalık karar rehberi</a>
+                <a href="#prices" style={{ textDecoration: "none", background: "#f3efe5", color: "#10231a", padding: "14px 20px", borderRadius: 999, fontWeight: 900 }}>Gerçek fiyatları gör</a>
+                <a href={turkeyMarketConfig.whatsapp} target="_blank" rel="noreferrer" style={{ textDecoration: "none", background: "#13a36b", color: "#fff", padding: "14px 20px", borderRadius: 999, fontWeight: 900 }}>WhatsApp</a>
+              </div>
+              <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginTop: 18, color: "#31443b" }}>
+                <span>✓ Vize konusunda dürüst bilgi</span>
+                <span>✓ Şeffaf VND fiyatı</span>
+                <span>✓ Türkçe rehber yalnızca teyitle</span>
+              </div>
+            </div>
+          </div>
+
+          <div style={{ background: "#f7f4eb", border: "1px solid #e5dcc6", borderRadius: 28, padding: 26, display: "grid", alignContent: "start", gap: 16 }}>
+            <div style={{ color: "#0b5d3b", fontWeight: 900, fontSize: 13 }}>NEDEN BU SAYFA?</div>
+            <h2 style={{ margin: 0, fontSize: 42, lineHeight: 1.1, color: "#10231a" }}>
+              Daha az arama. Daha az yanlış seçim.
+            </h2>
+            {[
+              "Vize bilgisini doğrula",
+              "Ayınıza göre doğru bölgeyi seç",
+              "Kaç gün gerektiğini gerçekçi kur",
+              "Grab mı, transfer mi, özel araç mı anlayın",
+              "Tur fiyatını aynı kapsamla karşılaştır",
+              "Aile, çocuk ve yemek tercihlerini önceden çöz",
+            ].map((item, i) => (
+              <div key={item} style={{ background: "#fff", borderRadius: 16, padding: "14px 16px", border: "1px solid #ebe3cf", fontWeight: 800, display: "flex", gap: 12 }}>
+                <span style={{ color: "#0b5d3b" }}>0{i + 1}</span>
+                <span>{item}</span>
+              </div>
+            ))}
+            <a href={turkeyMarketConfig.whatsapp} target="_blank" rel="noreferrer" style={{ textDecoration: "none", background: "#13a36b", color: "#fff", padding: "15px 22px", borderRadius: 999, fontWeight: 900, textAlign: "center" }}>
+              Tarihlerinizi gönderin
+            </a>
+          </div>
+        </section>
+
+        <section id="start" style={{ marginBottom: 36 }}>
+          <SectionTitle
+            eyebrow="START HERE"
+            title="Önce şu üç kararı verin."
+            text="Bu üç giriş kapısı, Türk gezginlerin Vietnam öncesi en sık yaşadığı karışıklığı hızlıca sadeleştirir."
+          />
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18 }}>
+            <LinkCard
+              href="/tr/vietnam-e-vize-turk-vatandaslari"
+              eyebrow="1 · VİZE"
+              title="Vietnam’a giriş bilgisini netleştirin."
+              text="Türk umuma mahsus pasaportu için doğru resmi vize bilgisini görün; yanlış “45 gün” iddiasına güvenmeyin."
+            />
+            <LinkCard
+              href="/tr/da-nang-gezi-rehberi"
+              eyebrow="2 · ROTA"
+              title="Da Nang’dan başlayarak akıllı bir plan kurun."
+              text="3–5 gecelik dengeli bir Orta Vietnam akışıyla ilk seyahati gereksiz yormadan kurun."
+            />
+            <LinkCard
+              href="/tr/vietnam-ozel-tur"
+              eyebrow="3 · DESTEK"
+              title="Private trip mi, grup turu mu, sadece araç mı?"
+              text="Hazır paketi değil, grubunuza gerçekten uyan modeli seçin. Gereksiz parçalar için ödeme yapmayın."
+            />
+          </div>
+        </section>
+
+        <section id="compare" style={{ marginBottom: 36 }}>
+          <SectionTitle
+            eyebrow="DA NANG MI PHU QUOC MU?"
+            title="İkisi rakip değil. Tatil amacınıza göre farklı cevaplar."
+            text="Birinde şehir + kültür + günübirlik çeşitlilik, diğerinde ada + resort + deniz odağı öne çıkar."
+          />
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
+            <div style={{ background: "#fff", border: "1px solid #ebe3cf", borderRadius: 22, overflow: "hidden" }}>
+              <img src={turkeyHubVisuals.daNang} alt="Da Nang" style={{ width: "100%", height: 240, objectFit: "cover" }} />
+              <div style={{ padding: 22 }}>
+                <div style={{ color: "#0b5d3b", fontWeight: 900, fontSize: 13 }}>DA NANG</div>
+                <h3 style={{ margin: "8px 0 10px", fontSize: 34, lineHeight: 1.15 }}>İlk Vietnam seyahati için güçlü üs</h3>
+                <div style={{ display: "grid", gap: 10, color: "#31443b", lineHeight: 1.75 }}>
+                  <div>✓ Şehir + plaj + Hoi An + Hue + Bà Nà bağlantısı</div>
+                  <div>✓ 3–5 gece için dengeli seçenek</div>
+                  <div>✓ Aileler ve ilk kez gelenler için lojistik açıdan rahat</div>
+                </div>
+              </div>
+            </div>
+
+            <div style={{ background: "#fff", border: "1px solid #ebe3cf", borderRadius: 22, overflow: "hidden" }}>
+              <img src={turkeyHubVisuals.heroSea} alt="Phu Quoc" style={{ width: "100%", height: 240, objectFit: "cover" }} />
+              <div style={{ padding: 22 }}>
+                <div style={{ color: "#0b5d3b", fontWeight: 900, fontSize: 13 }}>PHU QUOC</div>
+                <h3 style={{ margin: "8px 0 10px", fontSize: 34, lineHeight: 1.15 }}>Ada ve resort odaklı daha rahat tempo</h3>
+                <div style={{ display: "grid", gap: 10, color: "#31443b", lineHeight: 1.75 }}>
+                  <div>✓ Deniz, resort ve ada turları öne çıkar</div>
+                  <div>✓ Kış dönemi için çoğu zaman daha güçlü plaj alternatifi</div>
+                  <div>✓ Daha yavaş, daha tatil odaklı ritim isteyenlere uygun</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section style={{ marginBottom: 36 }}>
+          <SectionTitle
+            eyebrow="PRATİK DESTEK"
+            title="Seyahatin en gerçek meseleleri: transfer, yemek, aile, ödeme"
+            text="GoVietStay’i değerli yapan şey yalnızca tur satmak değil; yerde karar yorgunluğunu azaltmaktır."
+          />
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 18 }}>
+            <div style={{ background: "#fff", border: "1px solid #ebe3cf", borderRadius: 20, padding: 20 }}>
+              <div style={{ color: "#0b5d3b", fontWeight: 900 }}>TRANSFER</div>
+              <p style={{ margin: "10px 0 0", lineHeight: 1.75, color: "#31443b" }}>
+                Tek kişi ve hafif bagajda Grab yeterli olabilir. Aile, çok bagaj, geç saat veya doğrudan Hoi An geçişinde planlı transfer daha rahat olabilir.
+              </p>
+            </div>
+            <div style={{ background: "#fff", border: "1px solid #ebe3cf", borderRadius: 20, padding: 20 }}>
+              <div style={{ color: "#0b5d3b", fontWeight: 900 }}>YEMEK</div>
+              <p style={{ margin: "10px 0 0", lineHeight: 1.75, color: "#31443b" }}>
+                {turkeyMarketConfig.halalRule}
+              </p>
+            </div>
+            <div style={{ background: "#fff", border: "1px solid #ebe3cf", borderRadius: 20, padding: 20 }}>
+              <div style={{ color: "#0b5d3b", fontWeight: 900 }}>AİLE</div>
+              <p style={{ margin: "10px 0 0", lineHeight: 1.75, color: "#31443b" }}>
+                {turkeyMarketConfig.familyRule}
+              </p>
+            </div>
+            <div style={{ background: "#fff", border: "1px solid #ebe3cf", borderRadius: 20, padding: 20 }}>
+              <div style={{ color: "#0b5d3b", fontWeight: 900 }}>ÖDEME</div>
+              <p style={{ margin: "10px 0 0", lineHeight: 1.75, color: "#31443b" }}>
+                {turkeyMarketConfig.payment.currency} {turkeyMarketConfig.payment.ticketDeposit}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="prices" style={{ marginBottom: 36 }}>
+          <SectionTitle
+            eyebrow="FİYATLAR"
+            title="En ucuz olmak değil; aynı kapsamda mantıklı olmak önemli."
+            text="Bilet-only, transfer-only ve tam tur paketini aynı ürün gibi okumayın. Aşağıdaki fiyatlar mevcut GoVietStay ürünleriyle korunmuştur."
+          />
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 18 }}>
+            <PriceCard
+              href="/tr/ba-na-hills-altin-kopru"
+              title="Bà Nà Hills + Altın Köprü"
+              price="1.550.000 VND"
+              note="Transfer + rehber + giriş/teleferik + öğle büfesi"
+            />
+            <PriceCard
+              href="/tr/hoi-an-hindistan-cevizi-ormani"
+              title="Hoi An + Coconut Forest"
+              price="1.250.000 VND"
+              note="Sepet tekne + giriş + akşam yemeği + fener + transfer"
+            />
+            <PriceCard
+              href="/tr/vietnam-ozel-tur"
+              title="Hue günlük tur"
+              price="1.450.000 VND"
+              note="Mevcut kamu fiyatı; tarih teyidinde kapsam yazılı gönderilir"
+            />
+            <PriceCard
+              href="/tr/vietnam-ozel-tur"
+              title="Cham Adaları"
+              price="950.000 VND"
+              note="Sürat teknesi + snorkeling + öğle yemeği + transfer"
+            />
+          </div>
+          <p style={{ marginTop: 14, color: "#6f6248", lineHeight: 1.7 }}>{turkeyMarketConfig.priceDisclaimer}</p>
+        </section>
+
+        <section style={{ marginBottom: 36 }}>
+          <SectionTitle
+            eyebrow="GÜVEN MİMARİSİ"
+            title="Bizi ikna edici yapan şey büyük vaatler değil, kontrollü dürüstlüktür."
+          />
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 18 }}>
+            {[
+              ["Doğru vize bilgisi", "Yanlış kolaylık vaat etmek yerine resmi vize durumunu açıkça söylüyoruz."],
+              ["Türkçe rehber yalnızca teyitle", "Müsaitlik ve tarih netleşmeden “kesin” demiyoruz."],
+              ["Gerçek VND fiyatı", "Kur oyunlarıyla yapay ucuzluk değil, açık kamu fiyatı kullanıyoruz."],
+              ["Yerel WhatsApp desteği", "Plan değiştiğinde veya sorunuz olduğunda gerçek bir temas noktası var."],
+            ].map(([title, text]) => (
+              <div key={title} style={{ background: "#fff", border: "1px solid #ebe3cf", borderRadius: 20, padding: 20 }}>
+                <div style={{ color: "#0b5d3b", fontWeight: 900 }}>{title}</div>
+                <p style={{ margin: "10px 0 0", lineHeight: 1.75, color: "#31443b" }}>{text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section style={{ marginBottom: 36 }}>
+          <SectionTitle
+            eyebrow="GERÇEK GÖRSELLER"
+            title="Yapay tatil değil, gerçek misafir hissi."
+            text="Hero’da da bu yüzden “GoVietStay local support” duygusunu öne çıkardık: insan, destek ve yer duygusu aynı anda görülmeli."
+          />
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 14 }}>
+            {turkeyGuestPhotos.map((src, i) => (
+              <img key={src + i} src={src} alt={`GoVietStay guest ${i + 1}`} style={{ width: "100%", height: 170, objectFit: "cover", borderRadius: 18, border: "1px solid #ebe3cf" }} />
+            ))}
+          </div>
+        </section>
+
+        <section style={{ marginBottom: 36 }}>
+          <SectionTitle
+            eyebrow="6 URL STRATEJİSİ"
+            title="Sayı değil, derinlik."
+            text="Bu Türkçe bölümde sadece 1 ana hub ve 5 derin sayfa var. Her biri gerçek bir karar problemini çözüyor."
+          />
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18 }}>
+            {turkeySeoPages.map((p) => (
+              <LinkCard key={p.slug} href={`/tr/${p.slug}`} eyebrow={p.destination} title={p.h1} text={p.wiifm} />
+            ))}
+          </div>
+        </section>
+
+        <section
+          style={{
+            display: "grid",
+            gridTemplateColumns: "0.95fr 1.05fr",
+            gap: 24,
+            background: "#fff",
+            border: "1px solid #ebe3cf",
+            borderRadius: 28,
+            overflow: "hidden",
+          }}
+        >
+          <img src={turkeyHubVisuals.heroSea} alt="Phu Quoc sea" style={{ width: "100%", height: "100%", objectFit: "cover", minHeight: 320 }} />
+          <div style={{ padding: 28, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <div style={{ color: "#0b5d3b", fontWeight: 900, fontSize: 13 }}>SON ADIM</div>
+            <h2 style={{ margin: "8px 0 10px", fontSize: 46, lineHeight: 1.08 }}>
+              Uçuş tarihinizi ve kaç kişi olduğunuzu yazın.
+            </h2>
+            <p style={{ margin: 0, fontSize: 19, lineHeight: 1.8, color: "#31443b" }}>
+              İsterseniz yalnızca bölge seçimini netleştirelim; isterseniz tam günü planlayalım. Size en uygun
+              bölgeyi, tur modelini ve mantıklı ilk adımı birlikte çıkaralım.
+            </p>
+            <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 20 }}>
+              <a href={turkeyMarketConfig.whatsapp} target="_blank" rel="noreferrer" style={{ textDecoration: "none", background: "#13a36b", color: "#fff", padding: "14px 20px", borderRadius: 999, fontWeight: 900 }}>WhatsApp’tan yazın</a>
+              <a href={turkeyMarketConfig.googleMaps} target="_blank" rel="noreferrer" style={{ textDecoration: "none", background: "#f3efe5", color: "#10231a", padding: "14px 20px", borderRadius: 999, fontWeight: 900 }}>Google Maps</a>
+            </div>
+          </div>
+        </section>
       </div>
-      <p className={styles.disclaimer}>Hava hiçbir tur şirketi tarafından garanti edilemez. Deniz operasyonları resmi/yerel güvenlik kararlarına göre değişebilir. <a href={turkeyMarketConfig.officialLinks.vietnamWeather} target="_blank" rel="noreferrer">Vietnam Tourism hava rehberi ↗</a> · <a href={turkeyMarketConfig.officialLinks.phuQuoc} target="_blank" rel="noreferrer">Phu Quoc resmi turizm rehberi ↗</a></p>
-    </section>
-
-    <section className={styles.section} id="pratik">
-      <div className={styles.head}><div><p>03 · VARIŞTAN İLK AKŞAMA</p><h2>Havalimanı, yemek ve aile konusu turdan önce çözülürse tatil daha kolay başlar.</h2></div><span>Buradaki amaç size her şeyi satmak değil; hangi durumda Grab/taksi yeterli, hangi durumda özel transfer veya önceden planlanmış yemek seçeneği gerçekten stres azaltır onu göstermek.</span></div>
-      <div className={styles.whyGrid}>
-        <div><b>01</b><h3>Havalimanı → otel</h3><p>Tek kişi veya hafif bagajda Grab/taksi pratik olabilir. Aile, çok bagaj, geç saat veya doğrudan Hoi An transferinde önceden ayarlanmış araç daha kontrollüdür.</p></div>
-        <div><b>02</b><h3>Şehir içinde ulaşım</h3><p>Da Nang içinde ride-hailing çoğu kısa yolculuk için yeterlidir. Bir günde çok durak, çocuk veya senior misafir varsa özel araç zaman kazandırır.</p></div>
-        <div><b>03</b><h3>Helal / yemek tercihi</h3><p>{turkeyMarketConfig.halalRule}</p></div>
-        <div><b>04</b><h3>Çocuklu aile</h3><p>{turkeyMarketConfig.familyRule} Uzun günü iki kısa bloğa bölmek çoğu zaman “daha fazla aktivite” eklemekten değerlidir.</p></div>
-      </div>
-    </section>
-
-    <section className={styles.priceZone} id="fiyat">
-      <div className={styles.priceIntro}><p>04 · FİYAT KONTROLÜ · 29.08.2026</p><h2>En ucuz olmak zorunda değiliz. Aynı kapsamda mantıklı olmak zorundayız.</h2><span>“Bilet”, “transfer”, “yarım tur” ve “tam günlük paket” aynı ürün değildir. Mevcut GoVietStay grup fiyatlarını koruduk; çünkü kapsam eşleştirildiğinde fiyatlar hâlâ savunulabilir ve müşteriye ekstra “Türkiye fiyatı” eklemiyoruz.</span></div>
-      <div className={styles.priceGrid}>
-        <a href="/tr/ba-na-hills-altin-kopru"><small>DA NANG</small><h3>Bà Nà Hills + Golden Bridge</h3><strong>1.550.000 VND</strong><b>transfer + rehber + giriş + büfe</b><span>Fiyat matematiği →</span></a>
-        <a href="/tr/hoi-an-hindistan-cevizi-ormani"><small>HOI AN</small><h3>Coconut Forest + Ancient Town</h3><strong>1.250.000 VND</strong><b>tekne + yemek + fener + transfer</b><span>Kapsamı gör →</span></a>
-        <a href="/tr/vietnam-ozel-tur"><small>HUE</small><h3>Hue günlük grup turu</h3><strong>1.450.000 VND</strong><b>mevcut kamu fiyatı</b><span>Özel alternatif →</span></a>
-        <a href="/tr/vietnam-ozel-tur"><small>CHAM ADALARI</small><h3>Sürat teknesi + snorkeling</h3><strong>950.000 VND</strong><b>deniz koşuluna bağlı</b><span>Rotaya ekle →</span></a>
-      </div>
-      <p className={styles.disclaimer}>{turkeyMarketConfig.priceDisclaimer}</p>
-    </section>
-
-    <section className={styles.section}>
-      <div className={styles.head}><div><p>05 · FİYAT NASIL OKUNUR?</p><h2>Bà Nà Hills bize iyi bir örnek veriyor: sadece giriş biletiyle tam günlük tur aynı şey değil.</h2></div><span>Sun World 2026 referansında yabancı yetişkin temel bilet 1.000.000 VND, bilet + öğle büfesi 1.300.000 VND. GoVietStay standart ürün 1.550.000 VND olduğunda aradaki fark transfer, rehberlik ve operasyonu da taşır. Bu yüzden fiyatı “etiket” değil, “toplam kapsam” olarak okuyoruz.</span></div>
-      <div className={styles.cards}>{keyPages.map(slug=>{const p=bySlug(slug)!;const v=getTurkeyVisual(p.slug,p.destination);return <a href={`/tr/${slug}`} key={slug}><div className={styles.photo}><img src={v.hero} alt={p.h1} loading="lazy"/><span>{p.destination}</span></div><div className={styles.body}><h3>{p.h1}</h3><p>{p.wiifm}</p><div><strong>Detaylı rehber</strong><b>Aç →</b></div></div></a>})}</div>
-      <p className={styles.disclaimer}><a href={turkeyMarketConfig.officialLinks.bana2026} target="_blank" rel="noreferrer">Sun World Bà Nà Hills 2026 resmi fiyat kaynağı ↗</a></p>
-    </section>
-
-    <section className={styles.section}>
-      <div className={styles.head}><div><p>06 · DA NANG MI PHU QUOC MU?</p><h2>İkisi rakip değil. Tatil amacınıza göre farklı ürünler.</h2></div><span>Google'da “hangisi daha iyi?” sorusunun tek cevabı yok. Kararı plaj, kültür, çocuk, gün sayısı ve seyahat ayına göre verin.</span></div>
-      <div className={styles.whyGrid}>
-        <div><b>DA NANG</b><h3>İlk Vietnam seyahati</h3><p>Hoi An, Hue, Bà Nà Hills, şehir ve plajı tek merkezden bağlamak isteyenler için daha çeşitli.</p></div>
-        <div><b>PHU QUOC</b><h3>Resort + ada tatili</h3><p>Programı azaltıp plaj, resort, snorkeling ve gün batımına daha fazla zaman bırakmak isteyenlere daha uygun.</p></div>
-        <div><b>AİLE</b><h3>Da Nang lojistik avantajı</h3><p>Havalimanı-şehir mesafesi kısa ve birçok deneyim günübirlik yapılabilir; ancak her aile için ritim ayrı düşünülmelidir.</p></div>
-        <div><b>KIŞ</b><h3>Phu Quoc'u ciddi düşünün</h3><p>Da Nang daha serin/yağışlı olabilirken Phu Quoc çoğu kış döneminde daha güçlü plaj alternatifi sunabilir.</p></div>
-      </div>
-    </section>
-
-    <section className={styles.section}>
-      <div className={styles.head}><div><p>07 · ÖDEME / İPTAL</p><h2>Ödemeden önce dört satırda ne olacağını bilin.</h2></div><span>Fiyat kadar iptal ve depozito mantığı da güvenin parçasıdır. Rezervasyon teyidinde son koşulları yazılı olarak gönderiyoruz.</span></div>
-      <div className={styles.whyGrid}>
-        <div><b>VND</b><h3>Resmi fiyat para birimi</h3><p>{turkeyMarketConfig.payment.currency}</p></div>
-        <div><b>%20</b><h3>Bilet gereken turlar</h3><p>{turkeyMarketConfig.payment.ticketDeposit}</p></div>
-        <div><b>0%</b><h3>Sadece transfer</h3><p>{turkeyMarketConfig.payment.transfer}</p></div>
-        <div><b>İADE</b><h3>Hava / hastalık</h3><p>{turkeyMarketConfig.payment.refund}</p></div>
-      </div>
-    </section>
-
-    <section className={styles.why}>
-      <div className={styles.head}><div><p>08 · GÜVEN MİMARİSİ</p><h2>Bir sayfanın amacı müşteriyi ikna etmek değil; yanlış kararı zorlaştırmaktır.</h2></div></div>
-      <div className={styles.whyGrid}>
-        <div><b>01</b><h3>Vizeyi doğru söylüyoruz</h3><p>Türk umuma mahsus pasaportu için 45 günlük muafiyet yok; resmi e-vize yolunu gösteriyoruz.</p></div>
-        <div><b>02</b><h3>Helal kelimesini kolay kullanmıyoruz</h3><p>Restoran veya öğün ancak gerçekten teyit edildiğinde helal diye sunulur.</p></div>
-        <div><b>03</b><h3>Rehber dilini garanti etmiyoruz</h3><p>Türkçe rehber yalnızca tarih ve müsaitlik teyidinden sonra teklife girer.</p></div>
-        <div><b>04</b><h3>VND esas</h3><p>Kur oynaklığıyla yapay ucuzluk yaratmamak için resmi rezervasyon fiyatını VND gösteriyoruz.</p></div>
-      </div>
-    </section>
-
-    <section className={styles.guests}><div className={styles.head}><div><p>09 · GERÇEK İNSANLAR</p><h2>Bir söz satın almadan önce, gerçekten yapılmış yolculuklara bakın.</h2></div><span>Mevcut GoVietStay misafir görsellerini kullanıyoruz; Türk pazarı için yapay “mükemmel tatil” fotoğrafı üretmiyoruz.</span></div><div className={styles.guestStrip}>{turkeyGuestPhotos.map((src,i)=><figure key={src}><img src={src} alt={`GoVietStay misafir ${i+1}`} loading="lazy"/></figure>)}</div><a className={styles.reviews} href={turkeyMarketConfig.googleMaps} target="_blank" rel="noreferrer">Google Maps yorumlarını gör →</a></section>
-
-    <section className={styles.intent}><div className={styles.head}><div><p>10 · SADECE 5 DESTEK SAYFASI</p><h2>30 ince sayfa değil. Beş derin karar sayfası.</h2></div><span>/tr ana sayfası bütün yolculuğu anlamanıza yardım eder; alt sayfalar yalnızca daha derin karar gerektiğinde devreye girer.</span></div><div className={styles.intentGrid}>{turkeySeoPages.map(p=><a href={`/tr/${p.slug}`} key={p.slug}><small>{p.destination}</small><h3>{p.h1}</h3><p>{p.wiifm}</p><b>Aç →</b></a>)}</div></section>
-
-    <section className={styles.section}>
-      <div className={styles.head}><div><p>11 · RESMİ / BİRİNCİL KAYNAKLAR</p><h2>Değişebilecek bilgiyi kaynakla birlikte veriyoruz.</h2></div><span>Vize, hava ve park fiyatı gibi konular değişebilir. Bu yüzden kullanıcıyı yalnızca GoVietStay metnine mahkûm etmiyoruz.</span></div>
-      <div className={styles.whyGrid}>
-        <div><b>VİZE</b><h3>T.C. Dışişleri</h3><p>Türk pasaportlarının Vietnam vize durumunu resmi kaynaktan kontrol edin.</p><a href={turkeyMarketConfig.officialLinks.turkeyMfaVietnam} target="_blank" rel="noreferrer">Kaynağı aç ↗</a></div>
-        <div><b>E-VİZE</b><h3>Vietnam Göç İdaresi</h3><p>Başvuruyu aracı site yerine resmi e-vize portalından başlatabilirsiniz.</p><a href={turkeyMarketConfig.officialLinks.vietnamEvisa} target="_blank" rel="noreferrer">Resmi portal ↗</a></div>
-        <div><b>HAVA</b><h3>Vietnam Tourism</h3><p>Da Nang ve Vietnam mevsim yapısını resmi turizm kaynağından karşılaştırın.</p><a href={turkeyMarketConfig.officialLinks.vietnamWeather} target="_blank" rel="noreferrer">Hava rehberi ↗</a></div>
-        <div><b>BÀ NÀ</b><h3>Sun World</h3><p>2026 resmi bilet ve hizmet fiyatını tur fiyatıyla aynı kapsamda karşılaştırın.</p><a href={turkeyMarketConfig.officialLinks.bana2026} target="_blank" rel="noreferrer">Fiyat kaynağı ↗</a></div>
-      </div>
-    </section>
-
-    <section className={styles.final}><img src="/tour/cham.jpg" alt="GoVietStay yerel destek" loading="lazy"/><div><p>VİETNAM'DA YEREL EKİBİNİZ</p><h2>Uçuş ve otel hazırsa tarih, kişi sayısı, çocukların yaşı/boyu ve görmek istediğiniz iki yeri gönderin. Size en fazla turu değil, en mantıklı planı çıkaralım.</h2><a href={turkeyMarketConfig.whatsapp} target="_blank" rel="noreferrer">WhatsApp'tan yazın</a></div></section>
-    <div className={styles.mobile}><a href={turkeyMarketConfig.whatsapp} target="_blank" rel="noreferrer">💬 WhatsApp</a><a href="/tr/vietnam-ozel-tur">★ Özel tur</a><a href="/tr/vietnam-e-vize-turk-vatandaslari">🛂 E-vize</a></div>
-  </main>
+    </main>
+  );
 }
