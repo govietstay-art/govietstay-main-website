@@ -5,7 +5,7 @@ export type TurkeyPrice = {
 };
 
 export const turkeyMarketConfig = {
-  version: "3.0",
+  version: "FINAL",
   locale: "tr-TR",
   whatsapp: "https://wa.me/84937762607",
   googleMaps: "https://maps.app.goo.gl/znWBmL8zPKEJqnoW6?g_st=ic",
