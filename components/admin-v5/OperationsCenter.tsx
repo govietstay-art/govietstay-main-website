@@ -106,6 +106,30 @@ function code() {
 function timeShort(v: string | null) {
   return v ? String(v).slice(0, 5) : "—";
 }
+function monthValue(date = new Date()) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+}
+function shiftMonth(value: string, delta: number) {
+  const [year, month] = value.split("-").map(Number);
+  const d = new Date(year, month - 1 + delta, 1);
+  return monthValue(d);
+}
+function monthTitle(value: string) {
+  const [year, month] = value.split("-").map(Number);
+  return new Intl.DateTimeFormat("vi-VN", { month: "long", year: "numeric" }).format(new Date(year, month - 1, 1));
+}
+function monthCalendarDates(value: string) {
+  const [year, month] = value.split("-").map(Number);
+  const first = new Date(year, month - 1, 1, 12);
+  const mondayOffset = (first.getDay() + 6) % 7;
+  const start = new Date(first);
+  start.setDate(first.getDate() - mondayOffset);
+  return Array.from({ length: 42 }, (_, index) => {
+    const d = new Date(start);
+    d.setDate(start.getDate() + index);
+    return localISO(d);
+  });
+}
 
 const COST_TYPES = [
   ["transport", "Xe / Transport"],
@@ -133,8 +157,9 @@ export default function OperationsCenter() {
   const [saving, setSaving] = useState(false);
   const [modal, setModal] = useState<Modal>(null);
   const [selectedBooking, setSelectedBooking] = useState<string | null>(null);
-  const [view, setView] = useState<"dispatch" | "guides" | "bookings">("dispatch");
+  const [view, setView] = useState<"calendar" | "dispatch" | "guides" | "bookings">("calendar");
   const [focusDate, setFocusDate] = useState(localISO());
+  const [calendarMonth, setCalendarMonth] = useState(monthValue());
   const [languageFilter, setLanguageFilter] = useState("all");
 
   const [tours, setTours] = useState<Tour[]>([]);
@@ -194,8 +219,8 @@ export default function OperationsCenter() {
   async function loadAll() {
     setError("");
     const today = localISO();
-    const from = addDays(today, -1);
-    const to = addDays(today, 60);
+    const from = addDays(today, -120);
+    const to = addDays(today, 400);
     try {
       const results = await Promise.all([
         supabase.from("tours").select("id,name,destination,adult_price_vnd,active").eq("active", true).order("name"),
@@ -263,6 +288,28 @@ export default function OperationsCenter() {
   const needGuide = sevenDayBookings.filter((b) => b.guide_language && activeAssignments(b.id).length === 0).length;
   const sevenDayPax = sevenDayBookings.reduce((sum, b) => sum + Number(b.pax ?? b.adults + b.children), 0);
   const customCount = sevenDayBookings.filter((b) => b.booking_mode === "custom").length;
+  const calendarDates = useMemo(() => monthCalendarDates(calendarMonth), [calendarMonth]);
+  const monthBookings = useMemo(() => bookings.filter((b) => b.tour_date?.startsWith(calendarMonth)), [bookings, calendarMonth]);
+  const activeMonthBookings = useMemo(() => monthBookings.filter((b) => b.status !== "cancelled"), [monthBookings]);
+  const monthPax = activeMonthBookings.reduce((sum, b) => sum + Number(b.pax ?? b.adults + b.children), 0);
+  const monthRevenue = activeMonthBookings.reduce((sum, b) => sum + Number(b.net_revenue_vnd ?? b.gross_revenue_vnd ?? 0), 0);
+  const monthNeedGuide = activeMonthBookings.filter((b) => b.guide_language && activeAssignments(b.id).length === 0).length;
+  const monthByDate = useMemo(() => {
+    const result: Record<string, Booking[]> = {};
+    for (const b of bookings) {
+      if (!b.tour_date) continue;
+      (result[b.tour_date] ||= []).push(b);
+    }
+    return result;
+  }, [bookings]);
+
+  function calendarBookingState(b: Booking) {
+    if (b.status === "cancelled") return "cancelled";
+    if (b.guide_language && activeAssignments(b.id).length === 0) return "need-guide";
+    if (b.status === "pending") return "pending";
+    if (b.status === "completed") return "completed";
+    return "confirmed";
+  }
 
   async function createGuide(e: any) {
     e.preventDefault();
@@ -391,6 +438,17 @@ export default function OperationsCenter() {
     setSaving(false);
   }
 
+  async function updateRevenue(bookingId: string, amountValue: number) {
+    setSaving(true); setError("");
+    try {
+      const amount = numberOnly(amountValue);
+      const { error: updateError } = await supabase.from("bookings").update({ gross_revenue_vnd: amount }).eq("id", bookingId);
+      if (updateError) throw updateError;
+      setMessage("Đã điều chỉnh tiền thu của tour. Lãi gộp đã được tính lại.");
+      await loadAll();
+    } catch (e: any) { setError(e.message); } finally { setSaving(false); }
+  }
+
   async function createCost(e: any) {
     e.preventDefault();
     if (!selectedBooking) return;
@@ -477,7 +535,7 @@ export default function OperationsCenter() {
   return <div className="gvo-shell">
     <header className="gvo-header">
       <div>
-        <div className="gvo-eyebrow">GoVietStay · Operations Center V1</div>
+        <div className="gvo-eyebrow">GoVietStay · Operations Center V1.7</div>
         <h1>Điều phối tour & hướng dẫn viên</h1>
         <p>{staff.display_name} · dữ liệu vận hành thật từ Supabase</p>
       </div>
@@ -498,10 +556,54 @@ export default function OperationsCenter() {
     </section>
 
     <nav className="gvo-tabs">
-      <button className={view === "dispatch" ? "active" : ""} onClick={() => setView("dispatch")}>Điều phối</button>
-      <button className={view === "guides" ? "active" : ""} onClick={() => setView("guides")}>Hướng dẫn viên</button>
+      <button className={view === "calendar" ? "active" : ""} onClick={() => setView("calendar")}>Lịch tháng</button>
+      <button className={view === "dispatch" ? "active" : ""} onClick={() => setView("dispatch")}>Điều phối ngày</button>
       <button className={view === "bookings" ? "active" : ""} onClick={() => setView("bookings")}>Bookings</button>
+      <button className={view === "guides" ? "active" : ""} onClick={() => setView("guides")}>Hướng dẫn viên</button>
     </nav>
+
+    {view === "calendar" && <section className="gvo-card gvo-month-card">
+      <div className="gvo-month-head">
+        <div>
+          <div className="gvo-month-nav">
+            <button type="button" onClick={() => setCalendarMonth(shiftMonth(calendarMonth, -1))}>‹</button>
+            <h2>{monthTitle(calendarMonth)}</h2>
+            <button type="button" onClick={() => setCalendarMonth(shiftMonth(calendarMonth, 1))}>›</button>
+            <button type="button" className="today" onClick={() => setCalendarMonth(monthValue())}>Tháng này</button>
+          </div>
+          <p>Nhìn toàn bộ tour trong tháng. Bấm vào một ngày để mở điều phối chi tiết.</p>
+        </div>
+        <button className="gva-btn" onClick={() => setModal("booking")}>+ Booking</button>
+      </div>
+      <div className="gvo-month-kpis">
+        <div><span>Tour trong tháng</span><b>{activeMonthBookings.length}</b></div>
+        <div><span>Khách</span><b>{monthPax}</b></div>
+        <div className={monthNeedGuide ? "alert" : ""}><span>Cần HDV</span><b>{monthNeedGuide}</b></div>
+        <div><span>Doanh thu dự kiến</span><b>{money(monthRevenue)}</b></div>
+      </div>
+      <div className="gvo-calendar-legend">
+        <span className="confirmed">Đã xác nhận</span><span className="pending">Pending</span><span className="need-guide">Thiếu HDV</span><span className="completed">Hoàn thành</span><span className="cancelled">Đã hủy</span>
+      </div>
+      <div className="gvo-calendar-wrap">
+        <div className="gvo-calendar-weekdays">{["T2","T3","T4","T5","T6","T7","CN"].map((d) => <div key={d}>{d}</div>)}</div>
+        <div className="gvo-calendar-grid">
+          {calendarDates.map((date) => {
+            const dayBookings = (monthByDate[date] || []).sort((a,b) => String(a.start_time || a.pickup_time || "99:99").localeCompare(String(b.start_time || b.pickup_time || "99:99")));
+            const inMonth = date.startsWith(calendarMonth);
+            const isToday = date === localISO();
+            return <button type="button" key={date} className={`gvo-cal-day ${inMonth ? "" : "outside"} ${isToday ? "today" : ""}`} onClick={() => { setFocusDate(date); setView("dispatch"); }}>
+              <div className="gvo-cal-day-head"><b>{Number(date.slice(8))}</b>{dayBookings.filter((b) => b.status !== "cancelled").length > 0 && <span>{dayBookings.filter((b) => b.status !== "cancelled").length} tour</span>}</div>
+              <div className="gvo-cal-items">
+                {dayBookings.slice(0, 4).map((b) => <div key={b.id} className={`gvo-cal-chip ${calendarBookingState(b)}`}>
+                  <strong>{timeShort(b.start_time || b.pickup_time)}</strong><span>{bookingName(b)}</span>
+                </div>)}
+                {dayBookings.length > 4 && <div className="gvo-cal-more">+{dayBookings.length - 4} tour khác</div>}
+              </div>
+            </button>;
+          })}
+        </div>
+      </div>
+    </section>}
 
     {view === "dispatch" && <>
       <section className="gvo-toolbar">
@@ -598,7 +700,7 @@ export default function OperationsCenter() {
     </section>}
 
     {view === "bookings" && <section className="gvo-card">
-      <div className="gvo-card-head"><div><h2>Booking vận hành 60 ngày</h2><p>Tour chuẩn và tour nhập thủ công dùng chung một booking master.</p></div><button className="gva-btn" onClick={() => setModal("booking")}>+ Booking</button></div>
+      <div className="gvo-card-head"><div><h2>Booking vận hành</h2><p>Tiền thu và chi phí đều có thể điều chỉnh khi lịch trình khách thay đổi.</p></div><button className="gva-btn" onClick={() => setModal("booking")}>+ Booking</button></div>
       <div className="gvo-table-wrap"><table className="gvo-table"><thead><tr><th>Ngày</th><th>Code</th><th>Tour</th><th>Khách</th><th>Ngôn ngữ</th><th>HDV</th><th>Thu</th><th>Chi</th><th>Lãi gộp</th></tr></thead><tbody>
         {bookings.filter((b) => b.status !== "cancelled").map((b) => {
           const cost = totalCost(b.id);
@@ -610,7 +712,7 @@ export default function OperationsCenter() {
             <td>{contactMap[b.contact_id || ""]?.full_name || "—"}</td>
             <td>{langLabel(b.guide_language)}</td>
             <td>{activeAssignments(b.id).map((a) => guideMap[a.guide_id]?.full_name).filter(Boolean).join(", ") || "⚠️ Chưa gán"}</td>
-            <td>{money(revenue)}</td>
+            <td><b>{money(revenue)}</b><div><button type="button" className="gvo-revenue-btn" onClick={() => { setSelectedBooking(b.id); setModal("cost"); }}>Sửa thu</button></div></td>
             <td>
               <b>{money(cost)}</b>
               <div><button type="button" className="gvo-cost-btn" onClick={() => { setSelectedBooking(b.id); setModal("cost"); }}>Điều chỉnh</button></div>
@@ -662,6 +764,7 @@ export default function OperationsCenter() {
       onUpdateCost={updateCost}
       onDeleteCost={deleteCost}
       onUpdateGuideFee={updateGuideFee}
+      onUpdateRevenue={updateRevenue}
       onClose={() => { setModal(null); setSelectedBooking(null); }}
     />}
   </div>;
@@ -680,15 +783,21 @@ function ModalActions({ saving, onClose, label }: any) {
   return <div className="gvo-modal-actions"><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button className="gva-btn" disabled={saving}>{saving ? "Đang lưu…" : label}</button></div>;
 }
 
-function CostManagerModal({ booking, bookingName, revenue, total, bookingCosts, guideAssignments, guideMap, saving, onAdd, onUpdateCost, onDeleteCost, onUpdateGuideFee, onClose }: any) {
+function CostManagerModal({ booking, bookingName, revenue, total, bookingCosts, guideAssignments, guideMap, saving, onAdd, onUpdateCost, onDeleteCost, onUpdateGuideFee, onUpdateRevenue, onClose }: any) {
   if (!booking) return null;
   const profit = Number(revenue || 0) - Number(total || 0);
-  return <ModalFrame title="Quản lý chi phí booking" onClose={onClose}>
+  return <ModalFrame title="Tài chính booking" onClose={onClose}>
     <div className="gvo-cost-summary">
       <div><span>Booking</span><b>{booking.booking_code || "—"}</b><small>{bookingName(booking)}</small></div>
       <div><span>Thu</span><b>{money(revenue)}</b></div>
       <div><span>Chi hiện tại</span><b>{money(total)}</b></div>
       <div className={profit < 0 ? "loss" : ""}><span>Lãi gộp</span><b>{money(profit)}</b></div>
+    </div>
+
+    <div className="gvo-cost-section revenue">
+      <h3>Điều chỉnh tiền thu của tour</h3>
+      <p>Khách đổi lịch trình, số khách hoặc dịch vụ thì cập nhật tiền thu tại đây. Hệ thống giữ lịch sử thay đổi trong Activity Log.</p>
+      <RevenueEditor bookingId={booking.id} revenue={revenue} saving={saving} onSave={onUpdateRevenue} />
     </div>
 
     <div className="gvo-cost-section">
@@ -724,6 +833,16 @@ function CostManagerModal({ booking, bookingName, revenue, total, bookingCosts, 
     </div>
     <div className="gvo-cost-footer"><button type="button" className="gva-btn secondary" onClick={onClose}>Đóng</button></div>
   </ModalFrame>;
+}
+
+function RevenueEditor({ bookingId, revenue, saving, onSave }: any) {
+  const [amount, setAmount] = useState(String(revenue || 0));
+  useEffect(() => setAmount(String(revenue || 0)), [revenue]);
+  return <div className="gvo-revenue-editor">
+    <div><span>Tiền thu hiện tại</span><b>{money(revenue)}</b></div>
+    <input className="gva-input gvo-money-input" inputMode="numeric" value={amount} onChange={(e) => setAmount(e.target.value)} />
+    <button type="button" className="gvo-save-revenue" disabled={saving} onClick={() => onSave(bookingId, numberOnly(amount))}>Lưu tiền thu</button>
+  </div>;
 }
 
 function GuideFeeEditor({ assignment, guideName, saving, onSave }: any) {
