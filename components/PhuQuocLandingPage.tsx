@@ -490,48 +490,140 @@ const tours: Record<Language, Tour[]> = {
 export default function PhuQuocLandingPage({ language }: { language: Language }) {
   const t = content[language];
   const items = tours[language];
-  const [openTour, setOpenTour] = useState(items[0].id);
+  const [openTour, setOpenTour] = useState("");
   const [bookingTour, setBookingTour] = useState<Tour | null>(null);
   const [booking, setBooking] = useState<BookingForm>(emptyBooking);
   const message = useMemo(() => encodeURIComponent(t.hello), [t.hello]);
   const whatsapp = `https://wa.me/${PHONE}?text=${message}`;
   const allTours = language === "ru" ? "/ru" : "/";
   const otherLanguage = language === "ru" ? "/tours/phu-quoc" : "/ru/tours/phu-quoc";
+  const guideUrl = language === "ru" ? "/ru" : "/travel/phu-quoc-travel-guide";
+
+  const finder = language === "ru"
+    ? {
+        label: "Быстрый выбор",
+        title: "Сначала выберите формат дня.",
+        text: "Не нужно читать все 10 программ подряд. Начните с того, какой отдых вам нужен, затем сравните детали ниже.",
+        see: "Смотреть тур",
+        choices: [
+          { id: "four-islands", kicker: "Первый раз на Фукуоке", title: "Максимум за один день", item: items[5] },
+          { id: "three-islands", kicker: "Острова и снорклинг", title: "Выгодный морской день", item: items[4] },
+          { id: "sunset-squid-fishing", kicker: "Вечер на море", title: "Закат и кальмары", item: items[3] },
+          { id: "nemo-yacht", kicker: "Премиум", title: "Яхта и BBQ", item: items[8] },
+        ],
+      }
+    : {
+        label: "Choose faster",
+        title: "Start with the kind of day you want.",
+        text: "You do not need to read all 10 programs first. Pick a travel style, then compare the exact details below.",
+        see: "See this tour",
+        choices: [
+          { id: "four-islands", kicker: "First time in Phu Quoc", title: "The most complete day", item: items[5] },
+          { id: "three-islands", kicker: "Islands + snorkeling", title: "Best-value sea day", item: items[4] },
+          { id: "sunset-squid-fishing", kicker: "Evening at sea", title: "Sunset + squid fishing", item: items[3] },
+          { id: "nemo-yacht", kicker: "Premium", title: "Yacht + BBQ experience", item: items[8] },
+        ],
+      };
+
+  const hero = language === "ru"
+    ? {
+        guide: "Гид по Фукуоку",
+        seeTours: "Сравнить 10 экскурсий",
+        ask: "Помочь выбрать",
+        mainCaption: "4 острова · Хон Тхом · Aquatopia",
+        subOne: "3 острова · Снорклинг",
+        subTwo: "Nemo · Яхта",
+      }
+    : {
+        guide: "Phu Quoc Guide",
+        seeTours: "Compare all 10 tours",
+        ask: "Help me choose",
+        mainCaption: "4 Islands · Hon Thom · Aquatopia",
+        subOne: "3 Islands · Snorkeling",
+        subTwo: "Nemo · Luxury Yacht",
+      };
+
   const openBooking = (tour: Tour) => {
     setBookingTour(tour);
     setBooking(emptyBooking);
   };
+
   const sendBooking = () => {
     if (!bookingTour) return;
     if (!booking.name.trim() || !booking.whatsapp.trim() || !booking.date) {
       window.alert(t.required);
       return;
     }
-    const message = language === "ru"
+    const bookingMessage = language === "ru"
       ? `ЗАЯВКА НА БРОНИРОВАНИЕ — ФУКУОК\n\nЭкскурсия: ${bookingTour.title}\nДата: ${booking.date}\nВзрослые: ${booking.adults || "0"}\nДети: ${booking.children || "Нет"}\nИмя: ${booking.name}\nWhatsApp / телефон: ${booking.whatsapp}\nОтель: ${booking.hotel || "Не указан"}\nМесто встречи: ${booking.pickup || "Не указано"}\nПожелания: ${booking.request || "Нет"}\n\nПожалуйста, подтвердите наличие мест и актуальную стоимость.`
       : `PHU QUOC BOOKING REQUEST\n\nTour: ${bookingTour.title}\nTour date: ${booking.date}\nAdults: ${booking.adults || "0"}\nChildren: ${booking.children || "None"}\nGuest name: ${booking.name}\nWhatsApp / Phone: ${booking.whatsapp}\nHotel: ${booking.hotel || "Not provided"}\nPickup location: ${booking.pickup || "Not provided"}\nSpecial request: ${booking.request || "None"}\n\nPlease confirm availability and the latest price.`;
-    window.open(`https://wa.me/${PHONE}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+    window.open(`https://wa.me/${PHONE}?text=${encodeURIComponent(bookingMessage)}`, "_blank", "noopener,noreferrer");
   };
 
   return (
-    <main>
+    <main className="pqPage">
       <section className="pqHero">
         <header className="pqHeader">
-          <a className="pqBrand" href={language === "ru" ? "/ru" : "/"}><b>G</b><span>GoVietStay</span></a>
-          <nav><a href={allTours}>← {t.navTours}</a><a href={otherLanguage}>{language === "ru" ? "EN" : "RU"}</a><a className="pqPrimary" href="#tours">{t.navCheck}</a></nav>
+          <a className="pqBrand" href={language === "ru" ? "/ru" : "/"} aria-label="GoVietStay home">
+            <img src="/brand/govietstay-official-logo.jpg" alt="GoVietStay official logo" />
+            <span className="pqBrandName">GoVietStay</span>
+          </a>
+          <nav>
+            <a className="pqGuideLink" href={guideUrl}>{hero.guide}</a>
+            <a className="pqAllToursLink" href={allTours}>← {t.navTours}</a>
+            <a className="pqLang" href={otherLanguage}>{language === "ru" ? "EN" : "RU"}</a>
+            <a className="pqPrimary" href="#tour-finder">{t.navCheck}</a>
+          </nav>
         </header>
+
         <div className="pqHeroGrid">
           <div className="pqHeroCopy">
             <p className="pqEyebrow">{t.eyebrow}</p>
             <h1>{t.title}<em>{t.titleAccent}</em></h1>
             <p className="pqLead">{t.lead}</p>
-            <div className="pqChips">{t.chips.map(x=><span key={x}>{x}</span>)}</div>
+            <div className="pqHeroActions">
+              <a className="pqHeroPrimary" href="#tour-finder">{hero.seeTours}</a>
+              <a className="pqHeroSecondary" href={whatsapp} target="_blank" rel="noreferrer">{hero.ask}</a>
+            </div>
+            <div className="pqChips">{t.chips.map(x => <span key={x}>✓ {x}</span>)}</div>
           </div>
-          <div className="pqHeroImages" aria-label="Phu Quoc tour collection">
-            <figure className="pqImageMain"><TourImage sources={items[5].images} alt={items[5].title}/><figcaption>4 Islands · Hon Thom</figcaption></figure>
-            <figure><TourImage sources={items[0].images} alt={items[0].title}/></figure>
-            <figure><TourImage sources={items[8].images} alt={items[8].title}/></figure>
+
+          <div className="pqHeroVisual" aria-label="Featured Phu Quoc experiences">
+            <figure className="pqHeroMain">
+              <TourImage sources={items[5].images} alt={items[5].title}/>
+              <figcaption><span>{hero.mainCaption}</span><strong>{items[5].adult}</strong></figcaption>
+            </figure>
+            <figure className="pqHeroMini pqHeroMiniOne">
+              <TourImage sources={items[4].images} alt={items[4].title}/>
+              <figcaption>{hero.subOne}</figcaption>
+            </figure>
+            <figure className="pqHeroMini pqHeroMiniTwo">
+              <TourImage sources={items[8].images} alt={items[8].title}/>
+              <figcaption>{hero.subTwo}</figcaption>
+            </figure>
           </div>
+        </div>
+      </section>
+
+      <section className="pqFinder" id="tour-finder">
+        <div className="pqFinderHead">
+          <div>
+            <p className="pqLabel">{finder.label}</p>
+            <h2>{finder.title}</h2>
+          </div>
+          <p>{finder.text}</p>
+        </div>
+        <div className="pqFinderGrid">
+          {finder.choices.map((choice) => (
+            <a className="pqFinderCard" href={`#${choice.id}`} key={choice.id}>
+              <div className="pqFinderImage"><TourImage sources={choice.item.images} alt={choice.item.title}/></div>
+              <div className="pqFinderBody">
+                <span>{choice.kicker}</span>
+                <h3>{choice.title}</h3>
+                <div><strong>{choice.item.adult}</strong><b>{finder.see} →</b></div>
+              </div>
+            </a>
+          ))}
         </div>
       </section>
 
@@ -553,66 +645,112 @@ export default function PhuQuocLandingPage({ language }: { language: Language })
         {items.map((tour, index) => {
           const open = openTour === tour.id;
           const tourMessage = encodeURIComponent(`${t.hello}\n\n${tour.title}`);
-          return <article className={`pqTour ${open ? "isOpen" : ""}`} id={tour.id} key={tour.id}>
-            <div className="pqTourTop">
-              <TourImage sources={tour.images} alt={tour.title}/>
-              <div className="pqTourSummary">
-                <div className="pqTourNumber">0{index + 1}</div>
-                <p className="pqCategory">{tour.category}</p>
-                <h3>{tour.title}</h3>
-                <p>{tour.description}</p>
-                <div className="pqMeta"><span>⏱ {tour.duration}</span><span>{t.from}: <strong>{tour.adult}</strong></span><span>{t.child}: <strong>{tour.child}</strong></span></div>
-                <button type="button" onClick={()=>setOpenTour(open ? "" : tour.id)} aria-expanded={open}>{open ? t.close : t.details}<span>{open ? "−" : "+"}</span></button>
+          return (
+            <article className={`pqTour ${open ? "isOpen" : ""}`} id={tour.id} key={tour.id}>
+              <div className="pqTourTop">
+                <div className="pqTourPhoto">
+                  <TourImage sources={tour.images} alt={tour.title}/>
+                  <div className="pqPhotoBadge">{String(index + 1).padStart(2, "0")}</div>
+                </div>
+
+                <div className="pqTourSummary">
+                  <p className="pqCategory">{tour.category}</p>
+                  <h3>{tour.title}</h3>
+                  <p className="pqDescription">{tour.description}</p>
+
+                  <div className="pqPriceGrid">
+                    <div><span>⏱ {language === "ru" ? "Время" : "Duration"}</span><strong>{tour.duration}</strong></div>
+                    <div><span>{t.from}</span><strong>{tour.adult}</strong></div>
+                    <div><span>{t.child}</span><strong>{tour.child}</strong></div>
+                  </div>
+
+                  <div className="pqSummaryActions">
+                    <button type="button" className="pqDetailsButton" onClick={() => setOpenTour(open ? "" : tour.id)} aria-expanded={open}>
+                      <span>{open ? t.close : t.details}</span><b>{open ? "−" : "+"}</b>
+                    </button>
+                    <button type="button" className="pqBookInline" onClick={() => openBooking(tour)}>{t.book}</button>
+                  </div>
+                </div>
               </div>
-            </div>
-            {open && <div className="pqTourDetails">
-              <div className="pqProgram"><h4>{t.itinerary}</h4><ol>{tour.itinerary.map((x,i)=><li key={x}><b>{i+1}</b><span>{x}</span></li>)}</ol></div>
-              <div className="pqDetailColumns"><section><h4>{t.included}</h4><ul>{tour.included.map(x=><li key={x}>✓ <span>{x}</span></li>)}</ul></section><section><h4>{t.excluded}</h4><ul>{tour.excluded.map(x=><li key={x}>— <span>{x}</span></li>)}</ul></section><section className="pqNotes"><h4>{t.notes}</h4><ul>{tour.notes.map(x=><li key={x}>• <span>{x}</span></li>)}</ul></section></div>
-              <div className="pqTourActions">
-                <button type="button" className="pqBookNow" onClick={()=>openBooking(tour)}>{t.book}</button>
-                <a className="pqTourAsk" href={`https://wa.me/${PHONE}?text=${tourMessage}`} target="_blank" rel="noreferrer">{t.ask} →</a>
-              </div>
-            </div>}
-          </article>;
+
+              {open && (
+                <div className="pqTourDetails">
+                  <div className="pqProgram">
+                    <div className="pqDetailTitle"><span>{String(index + 1).padStart(2, "0")}</span><h4>{t.itinerary}</h4></div>
+                    <ol>{tour.itinerary.map((x, i) => <li key={`${tour.id}-${i}`}><b>{i + 1}</b><span>{x}</span></li>)}</ol>
+                  </div>
+
+                  <div className="pqDetailColumns">
+                    <section><h4>{t.included}</h4><ul>{tour.included.map((x, i) => <li key={`in-${i}`}>✓ <span>{x}</span></li>)}</ul></section>
+                    <section><h4>{t.excluded}</h4><ul>{tour.excluded.map((x, i) => <li key={`ex-${i}`}>— <span>{x}</span></li>)}</ul></section>
+                    <section className="pqNotes"><h4>{t.notes}</h4><ul>{tour.notes.map((x, i) => <li key={`note-${i}`}>• <span>{x}</span></li>)}</ul></section>
+                  </div>
+
+                  <div className="pqTourActions">
+                    <button type="button" className="pqBookNow" onClick={() => openBooking(tour)}>{t.book}</button>
+                    <a className="pqTourAsk" href={`https://wa.me/${PHONE}?text=${tourMessage}`} target="_blank" rel="noreferrer">{t.ask} →</a>
+                  </div>
+                </div>
+              )}
+            </article>
+          );
         })}
       </section>
 
       <section className="pqCompare">
-        <div className="pqSection"><p className="pqLabel">{t.compareLabel}</p><h2>{t.compareTitle}</h2><div className="pqCompareGrid">{t.compare.map(([title,text],i)=><article key={title}><b>0{i+1}</b><h3>{title}</h3><p>{text}</p></article>)}</div></div>
+        <div className="pqSection">
+          <p className="pqLabel">{t.compareLabel}</p>
+          <h2>{t.compareTitle}</h2>
+          <div className="pqCompareGrid">{t.compare.map(([title, text], i) => <article key={title}><b>0{i + 1}</b><h3>{title}</h3><p>{text}</p></article>)}</div>
+        </div>
       </section>
 
       <section className="pqNotice pqWarning"><b>!</b><div><h2>{t.warningTitle}</h2><p>{t.warning}</p></div></section>
-      <section className="pqNotice pqCancellation"><b>↺</b><div><h2>{t.cancelTitle}</h2><ul>{t.cancel.map(x=><li key={x}>{x}</li>)}</ul></div></section>
+      <section className="pqNotice pqCancellation"><b>↺</b><div><h2>{t.cancelTitle}</h2><ul>{t.cancel.map(x => <li key={x}>{x}</li>)}</ul></div></section>
 
-      <section className="pqSupport"><p className="pqLabel">GoVietStay · Phu Quoc</p><h2>{t.supportTitle}</h2><p>{t.supportText}</p><div><a href={whatsapp} target="_blank" rel="noreferrer">{t.supportButton}</a><a className="pqSecondary" href={allTours}>{t.otherTours}</a></div></section>
-      <footer><strong>GoVietStay</strong><span>Trusted Local Support</span><a href="https://GoVietStay.com">GoVietStay.com</a><span>WhatsApp: +84 937 762 607</span></footer>
+      <section className="pqSupport">
+        <img src="/brand/govietstay-official-logo.jpg" alt="GoVietStay" />
+        <p className="pqLabel">GoVietStay · Phu Quoc</p>
+        <h2>{t.supportTitle}</h2>
+        <p>{t.supportText}</p>
+        <div><a href={whatsapp} target="_blank" rel="noreferrer">{t.supportButton}</a><a className="pqSecondary" href={allTours}>{t.otherTours}</a></div>
+      </section>
 
-      {bookingTour && <div className="pqBookingOverlay" role="dialog" aria-modal="true" aria-labelledby="pq-booking-title" onClick={()=>setBookingTour(null)}>
-        <div className="pqBookingModal" onClick={(event)=>event.stopPropagation()}>
-          <button type="button" className="pqBookingX" onClick={()=>setBookingTour(null)} aria-label={t.formClose}>×</button>
-          <p className="pqLabel">{t.formEyebrow}</p>
-          <h2 id="pq-booking-title">{t.formTitle}</h2>
-          <p>{t.formText}</p>
-          <div className="pqSelectedTour"><span>{language === "ru" ? "Выбрано" : "Selected tour"}</span><strong>{bookingTour.title}</strong></div>
-          <div className="pqBookingGrid">
-            {(["name", "whatsapp", "date", "adults", "children", "hotel", "pickup"] as const).map((field)=><label key={field}>
-              <span>{t.fields[field]}</span>
-              <input
-                type={field === "date" ? "date" : field === "adults" ? "number" : "text"}
-                min={field === "adults" ? "1" : undefined}
-                value={booking[field]}
-                placeholder={field === "date" || field === "adults" ? undefined : t.placeholders[field]}
-                onChange={(event)=>setBooking(current=>({...current, [field]: event.target.value}))}
-              />
-            </label>)}
-            <label className="pqFullField"><span>{t.fields.request}</span><textarea rows={4} value={booking.request} placeholder={t.placeholders.request} onChange={(event)=>setBooking(current=>({...current, request: event.target.value}))}/></label>
-          </div>
-          <div className="pqBookingButtons">
-            <button type="button" className="pqBookNow" onClick={sendBooking}>{t.send}</button>
-            <button type="button" className="pqCancelBooking" onClick={()=>setBookingTour(null)}>{t.formClose}</button>
+      <footer><strong>GoVietStay</strong><span>Trusted Local Support</span><a href="https://www.govietstay.com">GoVietStay.com</a><span>WhatsApp: +84 937 762 607</span></footer>
+
+      <div className="pqMobileBar">
+        <a href="#tour-finder">{language === "ru" ? "Выбрать тур" : "Choose a tour"}</a>
+        <a href={whatsapp} target="_blank" rel="noreferrer">WhatsApp</a>
+      </div>
+
+      {bookingTour && (
+        <div className="pqBookingOverlay" role="dialog" aria-modal="true" aria-labelledby="pq-booking-title" onClick={() => setBookingTour(null)}>
+          <div className="pqBookingModal" onClick={(event) => event.stopPropagation()}>
+            <button type="button" className="pqBookingX" onClick={() => setBookingTour(null)} aria-label={t.formClose}>×</button>
+            <p className="pqLabel">{t.formEyebrow}</p>
+            <h2 id="pq-booking-title">{t.formTitle}</h2>
+            <p>{t.formText}</p>
+            <div className="pqSelectedTour"><span>{language === "ru" ? "Выбрано" : "Selected tour"}</span><strong>{bookingTour.title}</strong></div>
+            <div className="pqBookingGrid">
+              {(["name", "whatsapp", "date", "adults", "children", "hotel", "pickup"] as const).map((field) => <label key={field}>
+                <span>{t.fields[field]}</span>
+                <input
+                  type={field === "date" ? "date" : field === "adults" ? "number" : "text"}
+                  min={field === "adults" ? "1" : undefined}
+                  value={booking[field]}
+                  placeholder={field === "date" || field === "adults" ? undefined : t.placeholders[field]}
+                  onChange={(event) => setBooking(current => ({...current, [field]: event.target.value}))}
+                />
+              </label>)}
+              <label className="pqFullField"><span>{t.fields.request}</span><textarea rows={4} value={booking.request} placeholder={t.placeholders.request} onChange={(event) => setBooking(current => ({...current, request: event.target.value}))}/></label>
+            </div>
+            <div className="pqBookingButtons">
+              <button type="button" className="pqBookNow" onClick={sendBooking}>{t.send}</button>
+              <button type="button" className="pqCancelBooking" onClick={() => setBookingTour(null)}>{t.formClose}</button>
+            </div>
           </div>
         </div>
-      </div>}
+      )}
     </main>
   );
 }
