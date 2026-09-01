@@ -107,6 +107,21 @@ function timeShort(v: string | null) {
   return v ? String(v).slice(0, 5) : "—";
 }
 
+const COST_TYPES = [
+  ["transport", "Xe / Transport"],
+  ["ticket", "Vé / Ticket"],
+  ["meal", "Ăn uống / Meal"],
+  ["supplier", "Supplier / Operator"],
+  ["guide", "HDV bổ sung"],
+  ["other", "Khác"],
+] as const;
+function costTypeLabel(value: string) {
+  return COST_TYPES.find(([code]) => code === value)?.[1] || value;
+}
+function numberOnly(value: any) {
+  return Math.max(0, Number(String(value || 0).replace(/\D/g, "")));
+}
+
 export default function OperationsCenter() {
   const [loading, setLoading] = useState(true);
   const [session, setSession] = useState<any>(null);
@@ -380,17 +395,60 @@ export default function OperationsCenter() {
     e.preventDefault();
     if (!selectedBooking) return;
     setSaving(true); setError("");
-    const v = Object.fromEntries(new FormData(e.currentTarget).entries()) as any;
+    const form = e.currentTarget as HTMLFormElement;
+    const v = Object.fromEntries(new FormData(form).entries()) as any;
     try {
+      const amount = numberOnly(v.amount_vnd);
+      if (!amount) throw new Error("Số tiền chi phí phải lớn hơn 0.");
       const { error: insertError } = await supabase.from("booking_costs").insert({
         booking_id: selectedBooking,
         cost_type: v.cost_type,
         description: String(v.description || "").trim() || null,
-        amount_vnd: Number(String(v.amount_vnd || 0).replace(/\D/g, "")),
+        amount_vnd: amount,
         created_by: staff?.id || null,
       });
       if (insertError) throw insertError;
-      setModal(null); setSelectedBooking(null); setMessage("Đã ghi nhận chi phí booking."); await loadAll();
+      form.reset();
+      setMessage("Đã thêm chi phí. Tổng chi và lãi gộp đã cập nhật.");
+      await loadAll();
+    } catch (e: any) { setError(e.message); } finally { setSaving(false); }
+  }
+
+  async function updateCost(id: string, values: { cost_type: string; description: string; amount_vnd: number }) {
+    setSaving(true); setError("");
+    try {
+      const amount = numberOnly(values.amount_vnd);
+      if (!amount) throw new Error("Số tiền chi phí phải lớn hơn 0.");
+      const { error: updateError } = await supabase.from("booking_costs").update({
+        cost_type: values.cost_type,
+        description: values.description.trim() || null,
+        amount_vnd: amount,
+      }).eq("id", id);
+      if (updateError) throw updateError;
+      setMessage("Đã điều chỉnh chi phí.");
+      await loadAll();
+    } catch (e: any) { setError(e.message); } finally { setSaving(false); }
+  }
+
+  async function deleteCost(id: string) {
+    if (!window.confirm("Xóa khoản chi phí này? Tổng chi và lãi gộp sẽ được tính lại.")) return;
+    setSaving(true); setError("");
+    try {
+      const { error: deleteError } = await supabase.from("booking_costs").delete().eq("id", id);
+      if (deleteError) throw deleteError;
+      setMessage("Đã xóa khoản chi phí.");
+      await loadAll();
+    } catch (e: any) { setError(e.message); } finally { setSaving(false); }
+  }
+
+  async function updateGuideFee(id: string, amountValue: number) {
+    setSaving(true); setError("");
+    try {
+      const amount = numberOnly(amountValue);
+      const { error: updateError } = await supabase.from("booking_guides").update({ agreed_fee_vnd: amount }).eq("id", id);
+      if (updateError) throw updateError;
+      setMessage("Đã điều chỉnh phí hướng dẫn viên.");
+      await loadAll();
     } catch (e: any) { setError(e.message); } finally { setSaving(false); }
   }
 
@@ -506,7 +564,7 @@ export default function OperationsCenter() {
                 </div>
                 <div className="gvo-finance-row">
                   <span>Thu: <b>{money(revenue)}</b></span><span>Chi: <b>{money(cost)}</b></span><span>Lãi gộp: <b>{money(revenue - cost)}</b></span>
-                  <button className="gvo-text-btn" onClick={() => { setSelectedBooking(b.id); setModal("cost"); }}>+ Chi phí</button>
+                  <button className="gvo-text-btn" onClick={() => { setSelectedBooking(b.id); setModal("cost"); }}>Quản lý chi phí</button>
                 </div>
               </article>;
             })}
@@ -555,7 +613,7 @@ export default function OperationsCenter() {
             <td>{money(revenue)}</td>
             <td>
               <b>{money(cost)}</b>
-              <div><button type="button" className="gvo-cost-btn" onClick={() => { setSelectedBooking(b.id); setModal("cost"); }}>+ Chi phí</button></div>
+              <div><button type="button" className="gvo-cost-btn" onClick={() => { setSelectedBooking(b.id); setModal("cost"); }}>Điều chỉnh</button></div>
             </td>
             <td><b>{money(revenue - cost)}</b></td>
           </tr>;
@@ -591,12 +649,21 @@ export default function OperationsCenter() {
 
     {modal === "booking" && <BookingModal tours={tours} saving={saving} onClose={() => setModal(null)} onSubmit={createBooking} />}
 
-    {modal === "cost" && <ModalFrame title="Thêm chi phí booking" onClose={() => { setModal(null); setSelectedBooking(null); }}><form onSubmit={createCost} className="gvo-form-grid">
-      <Field label="Loại chi phí"><select name="cost_type" className="gva-select"><option value="transport">Xe / Transport</option><option value="ticket">Vé</option><option value="meal">Ăn uống</option><option value="supplier">Supplier</option><option value="guide">HDV bổ sung</option><option value="other">Khác</option></select></Field>
-      <Field label="Số tiền"><input name="amount_vnd" className="gva-input" inputMode="numeric" required /></Field>
-      <Field label="Mô tả" wide><input name="description" className="gva-input" placeholder="VD: Xe riêng 4 chỗ" /></Field>
-      <ModalActions saving={saving} onClose={() => { setModal(null); setSelectedBooking(null); }} label="Lưu chi phí" />
-    </form></ModalFrame>}
+    {modal === "cost" && selectedBooking && <CostManagerModal
+      booking={bookings.find((b) => b.id === selectedBooking)}
+      bookingName={bookingName}
+      revenue={Number(bookings.find((b) => b.id === selectedBooking)?.net_revenue_vnd ?? bookings.find((b) => b.id === selectedBooking)?.gross_revenue_vnd ?? 0)}
+      total={totalCost(selectedBooking)}
+      bookingCosts={costs.filter((x) => x.booking_id === selectedBooking)}
+      guideAssignments={activeAssignments(selectedBooking)}
+      guideMap={guideMap}
+      saving={saving}
+      onAdd={createCost}
+      onUpdateCost={updateCost}
+      onDeleteCost={deleteCost}
+      onUpdateGuideFee={updateGuideFee}
+      onClose={() => { setModal(null); setSelectedBooking(null); }}
+    />}
   </div>;
 }
 
@@ -612,6 +679,80 @@ function Field({ label, children, wide }: any) {
 function ModalActions({ saving, onClose, label }: any) {
   return <div className="gvo-modal-actions"><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button className="gva-btn" disabled={saving}>{saving ? "Đang lưu…" : label}</button></div>;
 }
+
+function CostManagerModal({ booking, bookingName, revenue, total, bookingCosts, guideAssignments, guideMap, saving, onAdd, onUpdateCost, onDeleteCost, onUpdateGuideFee, onClose }: any) {
+  if (!booking) return null;
+  const profit = Number(revenue || 0) - Number(total || 0);
+  return <ModalFrame title="Quản lý chi phí booking" onClose={onClose}>
+    <div className="gvo-cost-summary">
+      <div><span>Booking</span><b>{booking.booking_code || "—"}</b><small>{bookingName(booking)}</small></div>
+      <div><span>Thu</span><b>{money(revenue)}</b></div>
+      <div><span>Chi hiện tại</span><b>{money(total)}</b></div>
+      <div className={profit < 0 ? "loss" : ""}><span>Lãi gộp</span><b>{money(profit)}</b></div>
+    </div>
+
+    <div className="gvo-cost-section">
+      <h3>Phí hướng dẫn viên đã gán</h3>
+      {guideAssignments.length ? guideAssignments.map((a: Assignment) => <GuideFeeEditor
+        key={a.id}
+        assignment={a}
+        guideName={guideMap[a.guide_id]?.full_name || "HDV"}
+        saving={saving}
+        onSave={onUpdateGuideFee}
+      />) : <div className="gvo-cost-empty">Booking này chưa có HDV được gán.</div>}
+    </div>
+
+    <div className="gvo-cost-section">
+      <h3>Các khoản chi phí khác</h3>
+      {bookingCosts.length ? bookingCosts.map((c: BookingCost) => <CostEditorRow
+        key={c.id}
+        item={c}
+        saving={saving}
+        onSave={onUpdateCost}
+        onDelete={onDeleteCost}
+      />) : <div className="gvo-cost-empty">Chưa có khoản chi phí bổ sung.</div>}
+    </div>
+
+    <div className="gvo-cost-section add">
+      <h3>+ Thêm khoản chi phí</h3>
+      <form onSubmit={onAdd} className="gvo-form-grid">
+        <Field label="Loại chi phí"><select name="cost_type" className="gva-select" defaultValue="transport">{COST_TYPES.map(([v,l]) => <option key={v} value={v}>{l}</option>)}</select></Field>
+        <Field label="Số tiền"><input name="amount_vnd" className="gva-input" inputMode="numeric" placeholder="700000" required /></Field>
+        <Field label="Mô tả" wide><input name="description" className="gva-input" placeholder="VD: Xe riêng 4 chỗ / vé / phụ thu..." /></Field>
+        <div className="gvo-cost-add-actions"><button className="gva-btn" disabled={saving}>{saving ? "Đang lưu…" : "+ Thêm chi phí"}</button></div>
+      </form>
+    </div>
+    <div className="gvo-cost-footer"><button type="button" className="gva-btn secondary" onClick={onClose}>Đóng</button></div>
+  </ModalFrame>;
+}
+
+function GuideFeeEditor({ assignment, guideName, saving, onSave }: any) {
+  const [amount, setAmount] = useState(String(assignment.agreed_fee_vnd || 0));
+  useEffect(() => setAmount(String(assignment.agreed_fee_vnd || 0)), [assignment.agreed_fee_vnd]);
+  return <div className="gvo-cost-edit-row guide">
+    <div className="gvo-cost-kind"><b>HDV · {guideName}</b><span>{assignment.status}</span></div>
+    <div className="gvo-cost-grow">Phí HDV của booking này</div>
+    <input className="gva-input gvo-money-input" inputMode="numeric" value={amount} onChange={(e) => setAmount(e.target.value)} />
+    <button type="button" className="gvo-save-cost" disabled={saving} onClick={() => onSave(assignment.id, numberOnly(amount))}>Lưu</button>
+  </div>;
+}
+
+function CostEditorRow({ item, saving, onSave, onDelete }: any) {
+  const [type, setType] = useState(item.cost_type);
+  const [description, setDescription] = useState(item.description || "");
+  const [amount, setAmount] = useState(String(item.amount_vnd || 0));
+  useEffect(() => {
+    setType(item.cost_type); setDescription(item.description || ""); setAmount(String(item.amount_vnd || 0));
+  }, [item.cost_type, item.description, item.amount_vnd]);
+  return <div className="gvo-cost-edit-row">
+    <select className="gva-select gvo-cost-type" value={type} onChange={(e) => setType(e.target.value)}>{COST_TYPES.map(([v,l]) => <option key={v} value={v}>{l}</option>)}</select>
+    <input className="gva-input gvo-cost-grow" value={description} onChange={(e) => setDescription(e.target.value)} placeholder={costTypeLabel(type)} />
+    <input className="gva-input gvo-money-input" inputMode="numeric" value={amount} onChange={(e) => setAmount(e.target.value)} />
+    <button type="button" className="gvo-save-cost" disabled={saving} onClick={() => onSave(item.id, { cost_type: type, description, amount_vnd: numberOnly(amount) })}>Lưu</button>
+    <button type="button" className="gvo-delete-cost" disabled={saving} onClick={() => onDelete(item.id)}>Xóa</button>
+  </div>;
+}
+
 function BookingModal({ tours, saving, onClose, onSubmit }: any) {
   const [mode, setMode] = useState<"catalog" | "custom">("catalog");
   return <ModalFrame title="Tạo booking vận hành" onClose={onClose}><form onSubmit={onSubmit} className="gvo-form-grid">
