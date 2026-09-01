@@ -160,6 +160,7 @@ export default function OperationsCenter() {
   const [view, setView] = useState<"calendar" | "dispatch" | "guides" | "bookings">("calendar");
   const [focusDate, setFocusDate] = useState(localISO());
   const [calendarMonth, setCalendarMonth] = useState(monthValue());
+  const [mobileCalendarFilter, setMobileCalendarFilter] = useState<"today" | "tomorrow" | "7days" | "month">("month");
   const [languageFilter, setLanguageFilter] = useState("all");
 
   const [tours, setTours] = useState<Tour[]>([]);
@@ -302,6 +303,19 @@ export default function OperationsCenter() {
     }
     return result;
   }, [bookings]);
+  const mobileCalendarDates = useMemo(() => {
+    const today = localISO();
+    const tomorrow = addDays(today, 1);
+    const end7 = addDays(today, 6);
+    const dates = Array.from(new Set(bookings
+      .filter((b) => b.tour_date && b.status !== "cancelled")
+      .map((b) => b.tour_date as string)))
+      .sort();
+    if (mobileCalendarFilter === "today") return dates.filter((d) => d === today);
+    if (mobileCalendarFilter === "tomorrow") return dates.filter((d) => d === tomorrow);
+    if (mobileCalendarFilter === "7days") return dates.filter((d) => d >= today && d <= end7);
+    return dates.filter((d) => d.startsWith(calendarMonth));
+  }, [bookings, mobileCalendarFilter, calendarMonth]);
 
   function calendarBookingState(b: Booking) {
     if (b.status === "cancelled") return "cancelled";
@@ -601,6 +615,52 @@ export default function OperationsCenter() {
               </div>
             </button>;
           })}
+        </div>
+      </div>
+      <div className="gvo-mobile-ops">
+        <div className="gvo-mobile-filters" role="group" aria-label="Lọc lịch điều hành">
+          <button type="button" className={mobileCalendarFilter === "today" ? "active" : ""} onClick={() => setMobileCalendarFilter("today")}>Hôm nay</button>
+          <button type="button" className={mobileCalendarFilter === "tomorrow" ? "active" : ""} onClick={() => setMobileCalendarFilter("tomorrow")}>Ngày mai</button>
+          <button type="button" className={mobileCalendarFilter === "7days" ? "active" : ""} onClick={() => setMobileCalendarFilter("7days")}>7 ngày</button>
+          <button type="button" className={mobileCalendarFilter === "month" ? "active" : ""} onClick={() => setMobileCalendarFilter("month")}>Cả tháng</button>
+        </div>
+        <div className="gvo-mobile-day-list">
+          {mobileCalendarDates.map((date) => {
+            const dayBookings = (monthByDate[date] || [])
+              .filter((b) => b.status !== "cancelled")
+              .sort((a,b) => String(a.start_time || a.pickup_time || "99:99").localeCompare(String(b.start_time || b.pickup_time || "99:99")));
+            const dayPax = dayBookings.reduce((sum, b) => sum + Number(b.pax ?? b.adults + b.children), 0);
+            const dayNeedGuide = dayBookings.filter((b) => b.guide_language && activeAssignments(b.id).length === 0).length;
+            const dateLabel = new Intl.DateTimeFormat("vi-VN", { weekday: "short", day: "2-digit", month: "2-digit" }).format(new Date(`${date}T12:00:00`));
+            return <section className={`gvo-mobile-day ${date === localISO() ? "today" : ""}`} key={date}>
+              <button type="button" className="gvo-mobile-day-head" onClick={() => { setFocusDate(date); setView("dispatch"); }}>
+                <span><b>{dateLabel}</b><small>{dayBookings.length} tour · {dayPax} khách</small></span>
+                <span className={dayNeedGuide ? "need-guide" : "ready"}>{dayNeedGuide ? `⚠ ${dayNeedGuide} thiếu HDV` : "✓ Đủ HDV"}</span>
+              </button>
+              <div className="gvo-mobile-tour-list">
+                {dayBookings.map((b) => {
+                  const state = calendarBookingState(b);
+                  const revenue = Number(b.net_revenue_vnd ?? b.gross_revenue_vnd ?? 0);
+                  const cost = totalCost(b.id);
+                  return <article className={`gvo-mobile-tour ${state}`} key={b.id}>
+                    <div className="gvo-mobile-tour-main">
+                      <div className="gvo-mobile-tour-time">{timeShort(b.start_time || b.pickup_time)}</div>
+                      <div className="gvo-mobile-tour-copy">
+                        <b>{bookingName(b)}</b>
+                        <span>{contactMap[b.contact_id || ""]?.full_name || "Khách"} · {b.pax ?? b.adults + b.children} khách · {langLabel(b.guide_language)}</span>
+                        <small>Thu {money(revenue)} · Chi {money(cost)} · Lãi {money(revenue - cost)}</small>
+                      </div>
+                    </div>
+                    <div className="gvo-mobile-tour-actions">
+                      <button type="button" onClick={() => { setFocusDate(date); setView("dispatch"); }}>Điều phối</button>
+                      <button type="button" className="finance" onClick={() => { setSelectedBooking(b.id); setModal("cost"); }}>Tài chính</button>
+                    </div>
+                  </article>;
+                })}
+              </div>
+            </section>;
+          })}
+          {!mobileCalendarDates.length && <div className="gvo-mobile-empty">Không có tour trong khoảng thời gian này.</div>}
         </div>
       </div>
     </section>}

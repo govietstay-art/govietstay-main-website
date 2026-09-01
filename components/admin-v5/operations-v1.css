@@ -57,3 +57,35 @@
 .gvo-cal-day{appearance:none;text-align:left;border:0;border-right:1px solid #eaecf0;border-top:1px solid #eaecf0;background:#fff;padding:8px;cursor:pointer;min-height:128px;color:#101828}.gvo-cal-day:hover{background:#f8fbff}.gvo-cal-day.outside{background:#fafafa;color:#98a2b3}.gvo-cal-day.today{box-shadow:inset 0 0 0 2px #2563eb}.gvo-cal-day-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}.gvo-cal-day-head>b{font-size:13px}.gvo-cal-day-head>span{font-size:10px;color:#667085;font-weight:800}.gvo-cal-items{display:flex;flex-direction:column;gap:4px}.gvo-cal-chip{display:grid;grid-template-columns:38px minmax(0,1fr);gap:5px;align-items:center;border:1px solid;border-radius:7px;padding:4px 5px;font-size:10px;line-height:1.25}.gvo-cal-chip strong{font-size:9px}.gvo-cal-chip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.gvo-cal-chip.confirmed{background:#ecfdf3;color:#067647;border-color:#abefc6}.gvo-cal-chip.pending{background:#fffaeb;color:#b54708;border-color:#fedf89}.gvo-cal-chip.need-guide{background:#fef3f2;color:#b42318;border-color:#fecdca}.gvo-cal-chip.completed{background:#eff8ff;color:#175cd3;border-color:#b2ddff}.gvo-cal-chip.cancelled{background:#f2f4f7;color:#667085;border-color:#d0d5dd;text-decoration:line-through}.gvo-cal-more{font-size:10px;font-weight:800;color:#475467;padding:2px 4px}
 .gvo-cost-section.revenue{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:13px}.gvo-cost-section.revenue p{font-size:12px;color:#475467;margin:0 0 10px}.gvo-revenue-editor{display:grid;grid-template-columns:minmax(160px,1fr) 180px auto;gap:9px;align-items:end}.gvo-revenue-editor>div{display:flex;flex-direction:column;gap:2px}.gvo-revenue-editor span{font-size:11px;color:#667085}.gvo-revenue-editor b{font-size:18px}.gvo-save-revenue{border:1px solid #86efac;background:#16a34a;color:#fff;border-radius:8px;padding:9px 12px;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap}.gvo-save-revenue:disabled{opacity:.55;cursor:not-allowed}
 @media(max-width:820px){.gvo-month-kpis{grid-template-columns:1fr 1fr}.gvo-month-head{flex-direction:column}.gvo-revenue-editor{grid-template-columns:1fr}.gvo-save-revenue{width:100%}}
+
+
+/* V1.8: mobile-first busy-season operations list */
+.gvo-mobile-ops{display:none}
+@media(max-width:760px){
+  .gvo-calendar-wrap{display:none}
+  .gvo-mobile-ops{display:block}
+  .gvo-month-card{padding:12px}
+  .gvo-month-head{gap:10px;margin-bottom:8px}
+  .gvo-month-head>.gva-btn{width:100%}
+  .gvo-month-nav{display:grid;grid-template-columns:auto 1fr auto;gap:6px;width:100%}
+  .gvo-month-nav h2{min-width:0;text-align:center;font-size:18px;margin:0;align-self:center}
+  .gvo-month-nav .today{grid-column:1/-1;width:100%}
+  .gvo-month-kpis{grid-template-columns:1fr 1fr;gap:7px}
+  .gvo-month-kpis>div{padding:9px}.gvo-month-kpis b{font-size:15px}
+  .gvo-calendar-legend{gap:5px}.gvo-calendar-legend span{font-size:10px;padding:4px 7px}
+  .gvo-mobile-filters{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;position:sticky;top:0;z-index:5;background:#fff;padding:8px 0 9px;border-bottom:1px solid #eaecf0}
+  .gvo-mobile-filters button{border:1px solid #d0d5dd;background:#fff;color:#475467;border-radius:9px;padding:8px 4px;font-size:11px;font-weight:800;cursor:pointer}
+  .gvo-mobile-filters button.active{background:#111827;color:#fff;border-color:#111827}
+  .gvo-mobile-day-list{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+  .gvo-mobile-day{border:1px solid #e4e7ec;border-radius:13px;overflow:hidden;background:#fff;box-shadow:0 1px 4px rgba(16,24,40,.04)}
+  .gvo-mobile-day.today{border-color:#93c5fd;box-shadow:inset 0 0 0 1px #3b82f6}
+  .gvo-mobile-day-head{width:100%;border:0;background:#f9fafb;padding:10px 11px;display:flex;justify-content:space-between;align-items:center;gap:10px;text-align:left;color:#101828;cursor:pointer}
+  .gvo-mobile-day-head>span:first-child{display:flex;flex-direction:column;gap:2px}.gvo-mobile-day-head b{text-transform:capitalize;font-size:14px}.gvo-mobile-day-head small{font-size:11px;color:#667085}
+  .gvo-mobile-day-head>span:last-child{font-size:10px;font-weight:900;border-radius:999px;padding:5px 7px;white-space:nowrap}.gvo-mobile-day-head .need-guide{background:#fef3f2;color:#b42318}.gvo-mobile-day-head .ready{background:#ecfdf3;color:#067647}
+  .gvo-mobile-tour-list{display:flex;flex-direction:column}
+  .gvo-mobile-tour{padding:10px 10px 9px;border-top:1px solid #eaecf0;border-left:5px solid #d0d5dd}.gvo-mobile-tour.confirmed{border-left-color:#12b76a}.gvo-mobile-tour.pending{border-left-color:#f79009;background:#fffdf5}.gvo-mobile-tour.need-guide{border-left-color:#f04438;background:#fff8f7}.gvo-mobile-tour.completed{border-left-color:#2e90fa;background:#f8fbff}
+  .gvo-mobile-tour-main{display:grid;grid-template-columns:48px minmax(0,1fr);gap:9px;align-items:start}.gvo-mobile-tour-time{font-size:13px;font-weight:900;color:#344054;padding-top:1px}
+  .gvo-mobile-tour-copy{min-width:0;display:flex;flex-direction:column;gap:3px}.gvo-mobile-tour-copy>b{font-size:13px;line-height:1.3}.gvo-mobile-tour-copy>span{font-size:10px;color:#667085;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.gvo-mobile-tour-copy>small{font-size:10px;color:#475467;font-weight:700}
+  .gvo-mobile-tour-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}.gvo-mobile-tour-actions button{border:1px solid #d0d5dd;background:#fff;color:#344054;border-radius:8px;padding:7px;font-size:11px;font-weight:800;cursor:pointer}.gvo-mobile-tour-actions .finance{border-color:#bbf7d0;background:#f0fdf4;color:#15803d}
+  .gvo-mobile-empty{padding:28px 12px;text-align:center;color:#98a2b3;font-size:12px}
+}
