@@ -1,0 +1,4 @@
+Database Operations V1 is already installed in Supabase project vscffgnxaexestnayvae.
+Tables/features include guides, guide_availability, booking_guides, booking_costs, activity_log and custom-tour booking fields.
+Italian and other ISO-style guide-language codes are supported.
+Guide overlapping-assignment guard was transaction-tested successfully and test data was rolled back.

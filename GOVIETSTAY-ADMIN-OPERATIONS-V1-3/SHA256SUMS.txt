@@ -1,0 +1,5 @@
+a4630e164e4019a38622d2332eae44b99d09c0bdec92140531d826b44d7781a3  INSTALL-OPERATIONS-V1-3.ps1
+abdb588606f2d1397b0bfbb556e50a9d5e66179e47e74b3bb31d1ea9e1bb0774  CHAY-NANG-CAP-OPERATIONS-V1-3.bat
+3b332be1a22722472c66b37c93ee5fda584e9f9d3fa76344fdcedf37a75a9231  payload/components/admin-v5/OperationsCenter.tsx
+00c896f1a6b4d3f5af1198028968cb6f7bf099db5bfe697c4e6eab61dfab1916  payload/components/admin-v5/operations-v1.css
+3b7ae723534fddb198690dd2380fb546a1b7f2ccbd36e4476b49ebc963d3332c  payload/app/admin/operations/page.tsx

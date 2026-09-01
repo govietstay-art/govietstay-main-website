@@ -1,0 +1,34 @@
+.gvo-shell{min-height:100vh;background:#f5f7fb;color:#162033;padding:24px;font-family:Arial,Helvetica,sans-serif}
+.gvo-header{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;max-width:1500px;margin:0 auto 18px}
+.gvo-header h1{margin:4px 0 4px;font-size:30px;line-height:1.15}.gvo-header p,.gvo-card p{margin:0;color:#667085}
+.gvo-eyebrow{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#2563eb}
+.gvo-header-actions{display:flex;gap:8px;flex-wrap:wrap}.gvo-header-actions a{text-decoration:none}
+.gvo-kpis{max-width:1500px;margin:0 auto 16px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.gvo-kpi{background:#fff;border:1px solid #e4e7ec;border-radius:14px;padding:15px 16px;box-shadow:0 2px 8px rgba(16,24,40,.04)}
+.gvo-kpi div{font-size:13px;color:#667085}.gvo-kpi strong{display:block;font-size:27px;margin:4px 0}.gvo-kpi span{font-size:12px;color:#98a2b3}.gvo-kpi.warn{border-color:#f59e0b;background:#fffbeb}
+.gvo-tabs,.gvo-toolbar{max-width:1500px;margin:0 auto 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.gvo-tabs{background:#fff;border:1px solid #e4e7ec;border-radius:12px;padding:6px;width:max-content;max-width:100%}
+.gvo-tabs button{border:0;background:transparent;padding:9px 14px;border-radius:8px;font-weight:700;cursor:pointer}.gvo-tabs button.active{background:#111827;color:#fff}
+.gvo-toolbar{background:#fff;border:1px solid #e4e7ec;border-radius:14px;padding:10px}.gvo-spacer{flex:1}
+.gvo-date-nav{display:flex;align-items:center;gap:6px}.gvo-date-nav>button{border:1px solid #d0d5dd;background:#fff;border-radius:8px;padding:8px 11px;cursor:pointer}.gvo-date-nav .today{font-weight:700}
+.gvo-grid2{max-width:1500px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(360px,.75fr);gap:14px}
+.gvo-card{max-width:1500px;margin:0 auto 14px;background:#fff;border:1px solid #e4e7ec;border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(16,24,40,.04)}
+.gvo-card-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}.gvo-card h2{font-size:19px;margin:0 0 3px}
+.gvo-stack,.gvo-guide-list{display:flex;flex-direction:column;gap:10px}.gvo-booking{border:1px solid #e4e7ec;border-radius:13px;padding:13px;background:#fff}.gvo-booking h3{margin:8px 0;font-size:17px}
+.gvo-booking-top,.gvo-assigned,.gvo-finance-row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.gvo-mode{display:inline-block;margin-left:8px;padding:3px 7px;border-radius:999px;font-size:10px;font-weight:800;background:#eef2ff;color:#3730a3}.gvo-mode.custom{background:#ecfdf3;color:#027a48}
+.gvo-pill{display:inline-block;border-radius:999px;background:#f2f4f7;padding:4px 8px;font-size:11px;font-weight:700}
+.gvo-booking-meta{display:flex;gap:8px 14px;flex-wrap:wrap;color:#475467;font-size:12px}.gvo-itinerary{white-space:pre-wrap;margin-top:9px;padding:9px;background:#f9fafb;border-radius:9px;font-size:12px;color:#344054}
+.gvo-assignment{margin-top:11px;padding-top:10px;border-top:1px dashed #e4e7ec}.gvo-need-guide{font-weight:800;color:#b54708}.gvo-assign-row{margin-top:8px}.gvo-assign-row .gva-select{width:100%}
+.gvo-finance-row{margin-top:10px;background:#f9fafb;border-radius:9px;padding:9px;font-size:12px}.gvo-text-btn{border:0;background:transparent;color:#175cd3;font-weight:800;cursor:pointer}
+.gvo-guide-row{display:grid;grid-template-columns:1fr .8fr 1.2fr;gap:10px;align-items:center;border:1px solid #e4e7ec;border-left:5px solid #d0d5dd;border-radius:11px;padding:11px}
+.gvo-guide-row.status-available{border-left-color:#12b76a}.gvo-guide-row.status-pending{border-left-color:#f79009}.gvo-guide-row.status-booked{border-left-color:#f04438}.gvo-guide-row.status-unavailable{border-left-color:#667085}
+.gvo-small{font-size:11px;color:#667085;margin-top:2px}.gvo-empty{padding:24px;text-align:center;color:#98a2b3}
+.gvo-table-wrap{overflow:auto}.gvo-table{width:100%;border-collapse:collapse;min-width:900px}.gvo-table th,.gvo-table td{padding:10px;border-bottom:1px solid #eaecf0;text-align:left;vertical-align:top;font-size:12px}.gvo-table th{background:#f9fafb;color:#475467;font-weight:800}
+.gvo-login{min-height:100vh;background:#f5f7fb;display:grid;place-items:center;padding:20px}.gvo-login-card{width:min(430px,100%);background:#fff;border:1px solid #e4e7ec;border-radius:16px;padding:22px;box-shadow:0 10px 30px rgba(16,24,40,.08)}.gvo-login-card label{display:block;font-size:12px;font-weight:800;margin:11px 0 5px}.gvo-brand{font-size:22px;font-weight:900}.gvo-back-link{display:block;text-align:center;margin-top:13px;color:#475467;text-decoration:none}
+.gvo-modal-bg{position:fixed;inset:0;background:rgba(16,24,40,.56);z-index:3000;display:grid;place-items:center;padding:18px;overflow:auto}.gvo-modal{width:min(820px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:17px;padding:18px;box-shadow:0 24px 70px rgba(16,24,40,.25)}
+.gvo-modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.gvo-modal-head h2{margin:0;font-size:20px}.gvo-modal-head button{border:0;background:#f2f4f7;border-radius:8px;width:34px;height:34px;cursor:pointer}
+.gvo-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.gvo-field{display:flex;flex-direction:column;gap:5px}.gvo-field>span{font-size:12px;font-weight:800;color:#344054}.gvo-field.wide{grid-column:1/-1}
+.gvo-modal-actions{grid-column:1/-1;display:flex;justify-content:flex-end;gap:8px;margin-top:5px}.gvo-mode-switch{display:flex;gap:10px;flex-wrap:wrap}.gvo-mode-switch label{border:1px solid #d0d5dd;border-radius:9px;padding:9px 11px;cursor:pointer}
+@media(max-width:980px){.gvo-grid2{grid-template-columns:1fr}.gvo-kpis{grid-template-columns:repeat(2,1fr)}.gvo-guide-row{grid-template-columns:1fr}.gvo-header{flex-direction:column}.gvo-spacer{display:none}}
+@media(max-width:640px){.gvo-shell{padding:12px}.gvo-kpis{grid-template-columns:1fr 1fr;gap:8px}.gvo-kpi{padding:12px}.gvo-kpi strong{font-size:22px}.gvo-toolbar{align-items:stretch}.gvo-date-nav{width:100%}.gvo-date-nav .gva-input{flex:1;min-width:0}.gvo-toolbar>.gva-select{width:100%}.gvo-toolbar>.gva-btn{flex:1}.gvo-form-grid{grid-template-columns:1fr}.gvo-field.wide,.gvo-modal-actions{grid-column:1}.gvo-booking-top,.gvo-finance-row,.gvo-assigned{align-items:flex-start}.gvo-tabs{width:100%}.gvo-tabs button{flex:1;padding:9px 7px}}
