@@ -552,7 +552,12 @@ export default function OperationsCenter() {
             <td>{contactMap[b.contact_id || ""]?.full_name || "—"}</td>
             <td>{langLabel(b.guide_language)}</td>
             <td>{activeAssignments(b.id).map((a) => guideMap[a.guide_id]?.full_name).filter(Boolean).join(", ") || "⚠️ Chưa gán"}</td>
-            <td>{money(revenue)}</td><td>{money(cost)}</td><td><b>{money(revenue - cost)}</b></td>
+            <td>{money(revenue)}</td>
+            <td>
+              <b>{money(cost)}</b>
+              <div><button type="button" className="gvo-cost-btn" onClick={() => { setSelectedBooking(b.id); setModal("cost"); }}>+ Chi phí</button></div>
+            </td>
+            <td><b>{money(revenue - cost)}</b></td>
           </tr>;
         })}
         {!bookings.length && <tr><td colSpan={9}><div className="gvo-empty">Chưa có booking.</div></td></tr>}

@@ -32,3 +32,7 @@
 .gvo-modal-actions{grid-column:1/-1;display:flex;justify-content:flex-end;gap:8px;margin-top:5px}.gvo-mode-switch{display:flex;gap:10px;flex-wrap:wrap}.gvo-mode-switch label{border:1px solid #d0d5dd;border-radius:9px;padding:9px 11px;cursor:pointer}
 @media(max-width:980px){.gvo-grid2{grid-template-columns:1fr}.gvo-kpis{grid-template-columns:repeat(2,1fr)}.gvo-guide-row{grid-template-columns:1fr}.gvo-header{flex-direction:column}.gvo-spacer{display:none}}
 @media(max-width:640px){.gvo-shell{padding:12px}.gvo-kpis{grid-template-columns:1fr 1fr;gap:8px}.gvo-kpi{padding:12px}.gvo-kpi strong{font-size:22px}.gvo-toolbar{align-items:stretch}.gvo-date-nav{width:100%}.gvo-date-nav .gva-input{flex:1;min-width:0}.gvo-toolbar>.gva-select{width:100%}.gvo-toolbar>.gva-btn{flex:1}.gvo-form-grid{grid-template-columns:1fr}.gvo-field.wide,.gvo-modal-actions{grid-column:1}.gvo-booking-top,.gvo-finance-row,.gvo-assigned{align-items:flex-start}.gvo-tabs{width:100%}.gvo-tabs button{flex:1;padding:9px 7px}}
+
+/* V1.5: visible cost action in Bookings table */
+.gvo-cost-btn{margin-top:7px;border:1px solid #bfdbfe;background:#eff6ff;color:#1d4ed8;border-radius:8px;padding:6px 10px;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap}
+.gvo-cost-btn:hover{background:#dbeafe;border-color:#93c5fd}
