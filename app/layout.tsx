@@ -132,6 +132,7 @@ export default async function RootLayout({
         />
         {children}
               <script src="/govietstay-partner-tracking.js" defer></script>
+        <script src="/govietstay-partner-portal-v2.js" defer></script>
       </body>
     </html>
   );
