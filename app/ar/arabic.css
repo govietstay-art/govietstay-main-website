@@ -53,14 +53,14 @@
 .arabic-shell .trust-strip svg { color: #a87c2e; width: 21px; }
 
 .arabic-shell .guide-hub { background: #0b3328; color: white; overflow: hidden; position: relative; }
-.arabic-shell .guide-hub::before { content: "٥"; position: absolute; left: 2vw; top: -150px; font-size: 28rem; line-height: 1; color: rgba(255,255,255,.025); font-weight: 900; }
+.arabic-shell .guide-hub::before { content: "٧"; position: absolute; left: 2vw; top: -150px; font-size: 28rem; line-height: 1; color: rgba(255,255,255,.025); font-weight: 900; }
 .arabic-shell .guide-heading { position: relative; z-index: 1; }
 .arabic-shell .guide-heading h2 { color: white; }
 .arabic-shell .guide-heading > p { color: #bcd1c9; }
 .arabic-shell .guide-hub .eyebrow.green { color: #e3c57f; }
 .arabic-shell .guide-grid { position: relative; z-index: 1; max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
 .arabic-shell .guide-card { grid-column: span 2; min-height: 245px; padding: 26px; border-radius: 22px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.13); display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto 1fr; gap: 16px; transition: .25s ease; backdrop-filter: blur(8px); }
-.arabic-shell .guide-card:nth-child(4), .arabic-shell .guide-card:nth-child(5) { grid-column: span 3; min-height: 220px; }
+.arabic-shell .guide-card:nth-child(4), .arabic-shell .guide-card:nth-child(5), .arabic-shell .guide-card:nth-child(6), .arabic-shell .guide-card:nth-child(7) { grid-column: span 3; min-height: 220px; }
 .arabic-shell .guide-card:hover { background: rgba(255,255,255,.12); transform: translateY(-4px); border-color: rgba(227,197,127,.5); }
 .arabic-shell .guide-number { color: #e3c57f; font-size: .85rem; font-weight: 800; letter-spacing: .08em; }
 .arabic-shell .guide-card > div { grid-column: 1 / -1; align-self: end; }
@@ -176,7 +176,7 @@
   .arabic-shell .hero-card { right: max(7vw, 28px); left: auto; bottom: 32px; width: min(420px, calc(100% - 56px)); }
   .arabic-shell .trust-strip, .arabic-shell .assurance-grid { grid-template-columns: repeat(2, 1fr); }
   .arabic-shell .guide-grid { grid-template-columns: 1fr 1fr; }
-  .arabic-shell .guide-card, .arabic-shell .guide-card:nth-child(4), .arabic-shell .guide-card:nth-child(5) { grid-column: span 1; }
+  .arabic-shell .guide-card, .arabic-shell .guide-card:nth-child(4), .arabic-shell .guide-card:nth-child(5), .arabic-shell .guide-card:nth-child(6), .arabic-shell .guide-card:nth-child(7) { grid-column: span 1; }
   .arabic-shell .guide-card:last-child { grid-column: 1 / -1; }
   .arabic-shell .route-section { grid-template-columns: 1fr; gap: 36px; }
   .arabic-shell .destination-grid { grid-template-columns: 1fr; }
@@ -210,7 +210,7 @@
   .arabic-shell .section-heading { text-align: right; }
   .arabic-shell .assurance-grid, .arabic-shell .process-grid { grid-template-columns: 1fr; }
   .arabic-shell .guide-grid { grid-template-columns: 1fr; }
-  .arabic-shell .guide-card, .arabic-shell .guide-card:nth-child(4), .arabic-shell .guide-card:nth-child(5), .arabic-shell .guide-card:last-child { grid-column: auto; min-height: 210px; }
+  .arabic-shell .guide-card, .arabic-shell .guide-card:nth-child(4), .arabic-shell .guide-card:nth-child(5), .arabic-shell .guide-card:nth-child(6), .arabic-shell .guide-card:nth-child(7), .arabic-shell .guide-card:last-child { grid-column: auto; min-height: 210px; }
   .arabic-shell .clarity-note { padding: 22px 20px; }
   .arabic-shell .timeline article { grid-template-columns: 86px 1fr; gap: 14px; }
   .arabic-shell .split-heading { grid-template-columns: 1fr; gap: 0; }
@@ -232,4 +232,116 @@
   .arabic-shell .included-card { padding: 34px 22px; border-radius: 24px; }
   .arabic-shell .included-card ul { grid-template-columns: 1fr; }
   .arabic-shell .related-section { padding: 64px 20px; }
+}
+
+/* Arabic V4 — deeper SEO/content sections + transactional tour catalogues */
+.arabic-shell .quick-answer-wrap { padding: 34px max(7vw,28px) 0; background:#f7faf8; }
+.arabic-shell .quick-answer-card { max-width:1100px; margin:0 auto; padding:30px 34px; border:1px solid #d7e6df; border-right:5px solid var(--page-accent,#c9a763); border-radius:20px; background:#fff; box-shadow:0 14px 45px rgba(8,67,50,.06); }
+.arabic-shell .quick-answer-card > span { color:#9a762f; font-size:.8rem; font-weight:800; }
+.arabic-shell .quick-answer-card h2 { margin:6px 0 8px; font-size:clamp(1.45rem,2.5vw,2.25rem); }
+.arabic-shell .quick-answer-card p { margin:0; color:#61776e; }
+
+.arabic-shell .decision-section { background:#fff; }
+.arabic-shell .decision-grid { max-width:1240px; margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+.arabic-shell .decision-grid article { border:1px solid #dce7e2; background:#f8fbf9; border-radius:20px; padding:25px; min-height:210px; }
+.arabic-shell .decision-grid article > span { display:inline-flex; min-width:48px; min-height:30px; align-items:center; justify-content:center; border-radius:999px; padding:5px 12px; background:#eaf3ef; color:#087455; font-size:.78rem; font-weight:800; }
+.arabic-shell .decision-grid h3 { margin:18px 0 7px; font-size:1.08rem; }
+.arabic-shell .decision-grid p { margin:0; color:#687b73; font-size:.9rem; }
+
+.arabic-shell .faq-section { background:#f7faf8; }
+.arabic-shell .faq-list { max-width:950px; margin:0 auto; display:grid; gap:12px; }
+.arabic-shell .faq-list details { background:#fff; border:1px solid #d9e6e0; border-radius:16px; padding:0 22px; overflow:hidden; }
+.arabic-shell .faq-list summary { cursor:pointer; list-style:none; font-weight:800; padding:20px 0; position:relative; padding-left:30px; }
+.arabic-shell .faq-list summary::-webkit-details-marker { display:none; }
+.arabic-shell .faq-list summary::before { content:"+"; position:absolute; left:0; top:19px; width:24px; height:24px; border-radius:50%; background:#edf5f1; color:#087455; display:grid; place-items:center; font-size:1rem; }
+.arabic-shell .faq-list details[open] summary::before { content:"−"; }
+.arabic-shell .faq-list details p { margin:0; padding:0 0 20px; color:#657970; }
+
+.arabic-shell .mobile-sticky-bar { display:none; }
+
+/* Transactional catalogue */
+.arabic-shell .catalog-page { background:#f7faf8; }
+.arabic-shell .catalog-hero { min-height:650px; position:relative; overflow:hidden; display:flex; align-items:center; color:#fff; }
+.arabic-shell .catalog-hero-image { object-fit:cover; }
+.arabic-shell .catalog-hero-shade { position:absolute; inset:0; background:linear-gradient(90deg,rgba(2,30,24,.28),rgba(3,48,38,.9) 72%); }
+.arabic-shell .catalog-hero-inner { position:relative; z-index:2; width:min(900px,86vw); margin-right:max(7vw,28px); padding:86px 0 70px; }
+.arabic-shell .catalog-hero h1 { margin:0 0 20px; font-size:clamp(3rem,6vw,6rem); line-height:1.12; letter-spacing:-.04em; }
+.arabic-shell .catalog-hero-inner > p:last-of-type { max-width:760px; font-size:1.12rem; color:#e7f0ec; }
+.arabic-shell .catalog-facts { margin-top:26px; display:flex; flex-wrap:wrap; gap:10px; }
+.arabic-shell .catalog-facts span { display:flex; align-items:center; gap:7px; padding:8px 12px; border:1px solid rgba(255,255,255,.22); background:rgba(255,255,255,.08); border-radius:999px; font-size:.84rem; }
+
+.arabic-shell .google-review-section { background:#fff; }
+.arabic-shell .google-review-section .split-heading > div:last-child p { margin-top:0; color:#63766f; }
+.arabic-shell .review-grid { max-width:1240px; margin:0 auto; display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.arabic-shell .review-card { padding:26px; border:1px solid #dde8e3; border-radius:22px; background:#fbfdfc; display:flex; flex-direction:column; min-height:290px; }
+.arabic-shell .stars { display:flex; gap:3px; color:#b8892f; direction:ltr; justify-content:flex-end; }
+.arabic-shell .stars svg { width:18px; fill:currentColor; }
+.arabic-shell .review-card blockquote { margin:24px 0; font-size:1.04rem; line-height:1.85; color:#263f36; }
+.arabic-shell .review-card > div:last-child { margin-top:auto; display:flex; flex-direction:column; gap:2px; }
+.arabic-shell .review-card > div:last-child span { color:#788982; font-size:.8rem; }
+.arabic-shell .review-proof-bar { max-width:1100px; margin:24px auto 0; border:1px solid #d9e5df; background:#f2f8f5; border-radius:18px; padding:18px 22px; display:grid; grid-template-columns:auto 1fr auto; gap:14px; align-items:center; }
+.arabic-shell .review-proof-bar > svg { color:#087455; }
+.arabic-shell .review-proof-bar > div { display:flex; flex-direction:column; }
+.arabic-shell .review-proof-bar span { color:#657970; font-size:.82rem; }
+.arabic-shell .review-proof-bar a { color:#075c44; font-weight:800; }
+
+.arabic-shell .tour-catalog-section { background:#f3f8f5; }
+.arabic-shell .tour-card-grid { max-width:1240px; margin:0 auto; display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
+.arabic-shell .tour-card-ar { border:1px solid #d8e5df; border-radius:24px; background:#fff; overflow:hidden; box-shadow:0 10px 35px rgba(8,67,50,.05); }
+.arabic-shell .tour-card-image { height:235px; position:relative; overflow:hidden; }
+.arabic-shell .tour-card-image img { object-fit:cover; transition:transform .35s ease; }
+.arabic-shell .tour-card-ar:hover .tour-card-image img { transform:scale(1.035); }
+.arabic-shell .tour-index { position:absolute; top:14px; right:14px; width:42px; height:42px; border-radius:50%; display:grid; place-items:center; background:rgba(4,49,38,.9); color:#fff; font-weight:800; }
+.arabic-shell .tour-card-body { padding:23px; }
+.arabic-shell .tour-card-body > small { color:#a47b31; font-weight:800; }
+.arabic-shell .tour-card-body h3 { font-size:1.25rem; margin:7px 0 9px; line-height:1.45; }
+.arabic-shell .tour-card-body > p { color:#63776f; margin:0 0 16px; }
+.arabic-shell .tour-meta { display:flex; flex-wrap:wrap; gap:12px 18px; color:#486158; font-size:.83rem; }
+.arabic-shell .tour-meta span { display:flex; align-items:center; gap:6px; }
+.arabic-shell .tour-tags { display:flex; flex-wrap:wrap; gap:7px; margin:16px 0; }
+.arabic-shell .tour-tags span { background:#eef5f1; color:#2e5a49; border-radius:999px; padding:6px 10px; font-size:.74rem; }
+.arabic-shell .tour-price-row { padding-top:17px; border-top:1px solid #e0e9e5; display:flex; align-items:end; justify-content:space-between; gap:20px; }
+.arabic-shell .tour-price-row > div { display:flex; flex-direction:column; }
+.arabic-shell .tour-price-row small { color:#7a8a84; }
+.arabic-shell .tour-price-row b { color:#075c44; font-size:1.16rem; }
+.arabic-shell .tour-price-row a { display:flex; align-items:center; gap:4px; color:#075c44; font-weight:800; font-size:.86rem; }
+.arabic-shell .catalog-price-note { max-width:1050px; margin:28px auto 0; color:#647870; font-size:.85rem; text-align:center; }
+
+.arabic-shell .family-cross-sell { margin:0 max(4vw,18px); border-radius:30px; background:#083d31; color:#fff; display:flex; align-items:center; justify-content:space-between; gap:45px; }
+.arabic-shell .family-cross-sell > div { max-width:760px; }
+.arabic-shell .family-cross-sell h2 { font-size:clamp(2rem,4vw,3.7rem); margin:0 0 12px; line-height:1.25; }
+.arabic-shell .family-cross-sell > div > p:last-child { color:#cfe0da; }
+.arabic-shell .catalog-note-section { padding-top:40px; padding-bottom:40px; }
+.arabic-shell .catalog-honest-note { margin-top:0; background:#fff; }
+.arabic-shell .catalog-final-cta { margin-top:0; }
+
+@media (max-width:980px) {
+  .arabic-shell .decision-grid { grid-template-columns:repeat(2,1fr); }
+  .arabic-shell .review-grid { grid-template-columns:1fr; }
+  .arabic-shell .tour-card-grid { grid-template-columns:1fr; }
+  .arabic-shell .family-cross-sell { flex-direction:column; align-items:flex-start; }
+  .arabic-shell .review-proof-bar { grid-template-columns:auto 1fr; }
+  .arabic-shell .review-proof-bar a { grid-column:2; }
+}
+
+@media (max-width:640px) {
+  .arabic-shell .quick-answer-wrap { padding:22px 20px 0; }
+  .arabic-shell .quick-answer-card { padding:23px 20px; }
+  .arabic-shell .decision-grid { grid-template-columns:1fr; }
+  .arabic-shell .catalog-hero { min-height:700px; align-items:flex-start; }
+  .arabic-shell .catalog-hero-shade { background:linear-gradient(180deg,rgba(3,31,25,.86),rgba(3,44,35,.92)); }
+  .arabic-shell .catalog-hero-inner { width:auto; margin:0; padding:72px 20px 70px; }
+  .arabic-shell .catalog-hero h1 { font-size:3rem; }
+  .arabic-shell .catalog-hero .hero-actions { flex-direction:column; align-items:stretch; }
+  .arabic-shell .review-card { min-height:auto; }
+  .arabic-shell .review-proof-bar { grid-template-columns:1fr; }
+  .arabic-shell .review-proof-bar a { grid-column:auto; }
+  .arabic-shell .tour-card-image { height:210px; }
+  .arabic-shell .tour-price-row { align-items:flex-start; flex-direction:column; }
+  .arabic-shell .family-cross-sell { margin:0 12px; padding:50px 22px; border-radius:24px; }
+  .arabic-shell .mobile-sticky-bar { position:fixed; z-index:40; right:0; left:0; bottom:0; display:grid; grid-template-columns:1fr 1fr; background:rgba(255,255,255,.98); border-top:1px solid #d6e4de; box-shadow:0 -8px 30px rgba(0,0,0,.08); }
+  .arabic-shell .mobile-sticky-bar a { min-height:58px; display:flex; align-items:center; justify-content:center; gap:7px; font-weight:800; color:#075c44; }
+  .arabic-shell .mobile-sticky-bar a:first-child { background:#075c44; color:#fff; }
+  .arabic-shell .floating-whatsapp { display:none; }
+  .arabic-shell footer { padding-bottom:90px; }
 }

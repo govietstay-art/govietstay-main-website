@@ -84,6 +84,8 @@ const servicePages = [
   { number: "03", href: "/ar/vietnam-11-day-itinerary", kicker: "من الشمال إلى البحر", title: "برنامج فيتنام 11 يوماً", text: "هانوي وهالونغ ودا نانغ وهوي آن وفو كوك بإيقاع متوازن." },
   { number: "04", href: "/ar/da-nang-hoi-an-private-tour", kicker: "وسط فيتنام", title: "دا نانغ وهوي آن بشكل خاص", text: "الجسر الذهبي والشاطئ والفوانيس من قاعدة واحدة مريحة." },
   { number: "05", href: "/ar/phu-quoc-family-tour", kicker: "الجزيرة للعائلة", title: "فو كوك بخطة طقس مرنة", text: "3 أو 4 جزر، هون ثوم، وقت منتجع وخيارات برية." },
+  { number: "06", href: "/ar/phu-quoc-tours", kicker: "احجز جولة منفصلة", title: "10 جولات فو كوك الحالية", text: "قارن الجزر وهون ثوم والغروب واليخت وشمال الجزيرة في صفحة واحدة." },
+  { number: "07", href: "/ar/da-nang-hoi-an-tours", kicker: "احجز ما تحتاجه فقط", title: "جولات دا نانغ وهوي آن", text: "با نا هيلز وهوي آن وجزيرة تشام وهوي ومغامرات وسط فيتنام." },
 ];
 
 export default function Home() {
@@ -152,8 +154,8 @@ export default function Home() {
 
       <section className="section guide-hub" id="guides">
         <div className="section-heading split-heading guide-heading">
-          <div><p className="eyebrow green">خمسة أدلة، قرار أوضح</p><h2>ابدأوا من السؤال الأقرب لرحلتكم</h2></div>
-          <p>كل صفحة تجيب عن حاجة محددة، ثم تعيدكم إلى خطة واحدة متكاملة بدلاً من خمس خدمات منفصلة.</p>
+          <div><p className="eyebrow green">سبع صفحات، قرار أوضح</p><h2>ابدأوا من السؤال الأقرب لرحلتكم</h2></div>
+          <p>خمس صفحات للتخطيط الخاص، وصفحتان للجولات اليومية المنفصلة. اختاروا الطريق الأقرب إلى قراركم ثم انتقلوا بين الصفحات ذات الصلة.</p>
         </div>
         <div className="guide-grid">
           {servicePages.map((page, index) => (
