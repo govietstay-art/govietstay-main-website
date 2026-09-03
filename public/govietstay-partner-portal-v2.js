@@ -1,548 +1,139 @@
-/**
- * GoVietStay Partner Portal V2
- * Languages: Russian / Vietnamese / English / Korean
- * Mobile-first enhancement layer.
- * Keeps booking/database logic untouched.
- */
-(function () {
-  "use strict";
 
-  const LANGS = ["ru", "vi", "en", "ko"];
-  const LANG_META = {
-    ru: { label: "Русский", short: "RU", flag: "🇷🇺" },
-    vi: { label: "Tiếng Việt", short: "VI", flag: "🇻🇳" },
-    en: { label: "English", short: "EN", flag: "🇬🇧" },
-    ko: { label: "한국어", short: "KO", flag: "🇰🇷" },
-  };
+(function(){
+"use strict";
+const VERSION="2.1-full-i18n-20260903";
+const LANGS=["ru","vi","en","ko"];
+const META={ru:{label:"Русский",flag:"🇷🇺"},vi:{label:"Tiếng Việt",flag:"🇻🇳"},en:{label:"English",flag:"🇬🇧"},ko:{label:"한국어",flag:"🇰🇷"}};
+const ROWS=[[["GOVIETSTAY PARTNER PORTAL","ПАРТНЁРСКИЙ ПОРТАЛ GOVIETSTAY"],"ПАРТНЁРСКИЙ ПОРТАЛ GOVIETSTAY","CỔNG ĐỐI TÁC GOVIETSTAY","GOVIETSTAY PARTNER PORTAL","GOVIETSTAY 파트너 포털"],[["Партнёрский кабинет","Cổng thông tin Đối tác","Partner Portal","파트너 포털"],"Партнёрский кабинет","Cổng thông tin Đối tác","Partner Portal","파트너 포털"],[["Прозрачные правила · прозрачный учёт · прозрачный доход","Quy định minh bạch · Theo dõi minh bạch · Thu nhập rõ ràng"],"Прозрачные правила · прозрачный учёт · прозрачный доход","Quy định minh bạch · Theo dõi rõ ràng · Thu nhập minh bạch","Transparent rules · Clear tracking · Transparent earnings","투명한 운영 · 정확한 실적 관리 · 명확한 파트너 수익"],[["Ссылка на кабинет не найдена."],"Ссылка на кабинет не найдена.","Không tìm thấy đường dẫn Cổng đối tác.","Partner Portal link not found.","파트너 포털 링크를 찾을 수 없습니다."],[["Загрузка…"],"Загрузка…","Đang tải…","Loading…","불러오는 중…"],[["Ссылка недействительна или партнёр неактивен."],"Ссылка недействительна или партнёр неактивен.","Đường dẫn không hợp lệ hoặc đối tác hiện không hoạt động.","The link is invalid or the partner is inactive.","링크가 유효하지 않거나 현재 비활성 파트너입니다."],[["Код партнёра:","Mã đối tác:","Partner code:","파트너 코드:"],"Код партнёра:","Mã đối tác:","Partner code:","파트너 코드:"],[["Рынок:","Thị trường:","Market:","시장:"],"Рынок:","Thị trường:","Market:","시장:"],[["Статус:","Trạng thái:","Status:","상태:"],"Статус:","Trạng thái:","Status:","상태:"],[["Дата начала:","Ngày bắt đầu:","Start date:","시작일:"],"Дата начала:","Ngày bắt đầu:","Start date:","시작일:"],[["Условия:","Điều khoản:","Terms:","조건:"],"Условия:","Điều khoản:","Terms:","조건:"],[["версия","phiên bản","version","버전"],"версия","phiên bản","version","버전"],[["Russian-speaking travelers","Русскоязычные путешественники","Khách du lịch nói tiếng Nga","러시아어권 여행객"],"Русскоязычные путешественники","Khách du lịch nói tiếng Nga","Russian-speaking travelers","러시아어권 여행객"],[["Vietnamese-speaking travelers","Khách du lịch Việt Nam"],"Вьетнамские путешественники","Khách du lịch Việt Nam","Vietnamese-speaking travelers","베트남 여행객"],[["English-speaking travelers","Khách du lịch nói tiếng Anh"],"Англоязычные путешественники","Khách du lịch nói tiếng Anh","English-speaking travelers","영어권 여행객"],[["Korean-speaking travelers","Khách du lịch Hàn Quốc"],"Корейские путешественники","Khách du lịch Hàn Quốc","Korean travelers","한국인 여행객"],[["ready","sẵn sàng","готов"],"готов","sẵn sàng","ready","준비 완료"],[["active","đang hoạt động","активен"],"активен","đang hoạt động","active","활성"],[["pending","đang chờ","ожидает"],"ожидает","đang chờ","pending","대기"],[["confirmed","đã xác nhận","подтверждено"],"подтверждено","đã xác nhận","confirmed","확정"],[["completed","hoàn thành","завершено"],"завершено","hoàn thành","completed","완료"],[["cancelled","đã hủy","отменено"],"отменено","đã hủy","cancelled","취소"],[["7 дней","7 ngày","7 days","7일"],"7 дней","7 ngày","7 days","7일"],[["30 дней","30 ngày","30 days","30일"],"30 дней","30 ngày","30 days","30일"],[["90 дней","90 ngày","90 days","90일"],"90 дней","90 ngày","90 days","90일"],[["365 дней","365 ngày","365 days","365일"],"365 дней","365 ngày","365 days","365일"],[["Как мы работаем","Cách chúng tôi vận hành","Cách thức hoạt động","How it works","운영 방식"],"Как мы работаем","Cách thức hoạt động","How it works","운영 방식"],[["Вы находите клиента и отправляете свою персональную ссылку или QR."],"Вы находите клиента и отправляете свою персональную ссылку или QR.","Bạn tìm khách hàng và gửi đường link cá nhân hoặc mã QR của mình.","You find a customer and send your personal link or QR code.","고객을 찾고 개인 링크 또는 QR 코드를 전달합니다."],[["GoVietStay принимает клиента и ведёт весь сервис: консультация, подтверждение, транспорт, гид, сопровождение."],"GoVietStay принимает клиента и ведёт весь сервис: консультация, подтверждение, транспорт, гид, сопровождение.","GoVietStay tiếp nhận khách và phụ trách toàn bộ dịch vụ: tư vấn, xác nhận, vận chuyển, hướng dẫn viên và hỗ trợ trong suốt hành trình.","GoVietStay takes over the customer journey: consultation, confirmation, transport, guide and trip support.","GoVietStay가 상담, 예약 확정, 교통, 가이드 및 여행 지원까지 전체 서비스를 담당합니다."],[["Система фиксирует переход, обращение, бронирование и PAX за вашим кодом."],"Система фиксирует переход, обращение, бронирование и PAX за вашим кодом.","Hệ thống ghi nhận lượt truy cập, yêu cầu tư vấn, booking và PAX theo mã đối tác của bạn.","The system attributes visits, enquiries, bookings and PAX to your partner code.","시스템이 방문, 문의, 예약 및 PAX를 파트너 코드에 자동 기록합니다."],[["Ваш доход = базовая выплата по месячному PAX + комиссия за каждый подтверждённый PAX."],"Ваш доход = базовая выплата по месячному PAX + комиссия за каждый подтверждённый PAX.","Thu nhập của bạn = khoản chi trả cơ bản theo tổng PAX trong tháng + hoa hồng cho từng PAX đã được xác nhận.","Your earnings = base payout based on monthly PAX + commission for each confirmed PAX.","파트너 수익 = 월간 PAX 기준 기본 지급액 + 확정된 각 PAX의 수수료입니다."],[["Все спорные случаи сверяются по данным системы GoVietStay."],"Все спорные случаи сверяются по данным системы GoVietStay.","Mọi trường hợp cần đối soát sẽ căn cứ vào dữ liệu được ghi nhận trong hệ thống GoVietStay.","Any case requiring reconciliation is checked against GoVietStay system records.","확인이나 정산이 필요한 경우 GoVietStay 시스템 기록을 기준으로 검토합니다."],[["Переходы"],"Переходы","Lượt truy cập","Visits","방문"],[["WhatsApp"],"WhatsApp","WhatsApp","WhatsApp","WhatsApp"],[["Заявки"],"Заявки","Yêu cầu","Enquiries","문의"],[["Бронирования"],"Бронирования","Booking","Bookings","예약"],[["PAX за период"],"PAX за период","PAX trong kỳ","PAX in period","기간 PAX"],[["Выручка"],"Выручка","Doanh thu","Revenue","매출"],[["PAX в этом месяце"],"PAX в этом месяце","PAX tháng này","PAX this month","이번 달 PAX"],[["Базовая выплата"],"Базовая выплата","Khoản chi trả cơ bản","Base payout","기본 지급액"],[["Комиссия"],"Комиссия","Hoa hồng","Commission","수수료"],[["Итого доход"],"Итого доход","Tổng thu nhập","Total earnings","총 수익"],[["Базовая выплата по месячному PAX"],"Базовая выплата по месячному PAX","Chi trả cơ bản theo PAX tháng","Base payout by monthly PAX","월간 PAX 기준 기본 지급액"],[["PAX / месяц"],"PAX / месяц","PAX / tháng","PAX / month","PAX / 월"],[["Комиссия за туры"],"Комиссия за туры","Hoa hồng theo tour","Tour commissions","투어 수수료"],[["Гид"],"Гид","Hướng dẫn viên","Guide","가이드"],[["Ставка / PAX"],"Ставка / PAX","Mức hoa hồng / PAX","Rate / PAX","PAX당 수수료"],[["Расчёт комиссии за текущий месяц"],"Расчёт комиссии за текущий месяц","Hoa hồng tháng hiện tại","Current month commission","이번 달 수수료"],[["Комиссия / PAX"],"Комиссия / PAX","Hoa hồng / PAX","Commission / PAX","PAX당 수수료"],[["Итого"],"Итого","Tổng cộng","Total","합계"],[["Уровень ставки определяется общим количеством PAX Партнёра за календарный месяц."],"Уровень ставки определяется общим количеством PAX Партнёра за календарный месяц.","Mức hoa hồng được xác định theo tổng số PAX của Đối tác trong tháng dương lịch.","The commission tier is determined by the Partner’s total PAX for the calendar month.","수수료 등급은 해당 월의 파트너 총 PAX를 기준으로 결정됩니다."],[["Пока нет бронирований с рассчитанной комиссией."],"Пока нет бронирований с рассчитанной комиссией.","Chưa có booking nào được tính hoa hồng.","No bookings with calculated commission yet.","산정된 수수료가 있는 예약이 아직 없습니다."],[["Airport Transfer","Трансфер из аэропорта","Đón / tiễn sân bay","공항 픽업 / 샌딩"],"Трансфер из аэропорта","Đón / tiễn sân bay","Airport Transfer","공항 픽업 / 샌딩"],[["Cham Island","Остров Чам","Cù Lao Chàm","참섬"],"Остров Чам","Cù Lao Chàm","Cham Island","참섬"],[["Rừng Dừa - Hội An","Rừng dừa Hội An","Кокосовый лес — Хойан","호이안 코코넛 숲"],"Кокосовый лес — Хойан","Rừng dừa Hội An","Hoi An Coconut Forest","호이안 코코넛 숲"],[["Hoi An Memory","Ký Ức Hội An","Шоу «Воспоминания Хойана»","호이안 메모리즈 쇼"],"Шоу «Воспоминания Хойана»","Ký Ức Hội An","Hoi An Memories Show","호이안 메모리즈 쇼"],[["Huế City Tour","Tour Huế","Экскурсия по Хюэ","후에 시티 투어"],"Экскурсия по Хюэ","Tour Huế","Hue City Tour","후에 시티 투어"],[["Linh Ứng - Marble - Hội An","Linh Ứng – Ngũ Hành Sơn – Hội An","Линь Ынг — Мраморные горы — Хойан","린응사 – 오행산 – 호이안"],"Линь Ынг — Мраморные горы — Хойан","Linh Ứng – Ngũ Hành Sơn – Hội An","Linh Ung – Marble Mountains – Hoi An","린응사 – 오행산 – 호이안"],[["Создать бронирование","Tạo booking","Create booking","예약 등록"],"Создать бронирование","Tạo booking","Create booking","예약 등록"],[["Partner Booking V1","Бронирование партнёра V1","Đặt dịch vụ đối tác V1","파트너 예약 V1"],"Бронирование партнёра V1","Đặt dịch vụ đối tác V1","Partner Booking V1","파트너 예약 V1"],[["Тур / услуга","Тур / Дịch vụ","Tour / Dịch vụ","Tour / Service","투어 / 서비스"],"Тур / услуга","Tour / Dịch vụ","Tour / Service","투어 / 서비스"],[["Дата тура","Ngày tour","Tour date","투어 날짜"],"Дата тура","Ngày tour","Tour date","투어 날짜"],[["Имя клиента","Tên khách","Customer name","고객명"],"Имя клиента","Tên khách","Customer name","고객명"],[["WhatsApp / телефон","WhatsApp / điện thoại","WhatsApp / phone","WhatsApp / 전화번호"],"WhatsApp / телефон","WhatsApp / điện thoại","WhatsApp / phone","WhatsApp / 전화번호"],[["Взрослые","Người lớn","Adults","성인"],"Взрослые","Người lớn","Adults","성인"],[["Дети","Trẻ em","Children","아동"],"Дети","Trẻ em","Children","아동"],[["Язык гида","Ngôn ngữ HDV","Guide language","가이드 언어"],"Язык гида","Ngôn ngữ HDV","Guide language","가이드 언어"],[["Отель","Khách sạn","Hotel","호텔"],"Отель","Khách sạn","Hotel","호텔"],[["Комната","Номер","Số phòng","Room number","객실 번호"],"Номер","Số phòng","Room number","객실 번호"],[["Время встречи","Giờ đón","Pickup time","픽업 시간"],"Время встречи","Giờ đón","Pickup time","픽업 시간"],[["Итоговая сумма (VND)","Tổng tiền (VND)","Total amount (VND)","총 금액 (VND)"],"Итоговая сумма (VND)","Tổng tiền (VND)","Total amount (VND)","총 금액 (VND)"],[["Депозит (VND)","Tiền cọc (VND)","Deposit (VND)","예약금 (VND)"],"Депозит (VND)","Tiền cọc (VND)","Deposit (VND)","예약금 (VND)"],[["Оплата","Thanh toán","Payment","결제"],"Оплата","Thanh toán","Payment","결제"],[["Примечание","Ghi chú","Notes","메모"],"Примечание","Ghi chú","Notes","메모"],[["Русский (RU)","Tiếng Nga (RU)","Russian (RU)","러시아어 (RU)"],"Русский (RU)","Tiếng Nga (RU)","Russian (RU)","러시아어 (RU)"],[["Английский (EN)","Tiếng Anh (EN)","English (EN)","영어 (EN)"],"Английский (EN)","Tiếng Anh (EN)","English (EN)","영어 (EN)"],[["Вьетнамский (VI)","Tiếng Việt (VI)","Vietnamese (VI)","베트남어 (VI)"],"Вьетнамский (VI)","Tiếng Việt (VI)","Vietnamese (VI)","베트남어 (VI)"],[["Корейский (KO)","Tiếng Hàn (KO)","Korean (KO)","한국어 (KO)"],"Корейский (KO)","Tiếng Hàn (KO)","Korean (KO)","한국어 (KO)"],[["Не оплачено","Chưa thanh toán","Unpaid","미결제"],"Не оплачено","Chưa thanh toán","Unpaid","미결제"],[["Депозит","Đã đặt cọc","Deposit paid","예약금 결제"],"Депозит","Đã đặt cọc","Deposit paid","예약금 결제"],[["Частично","Thanh toán một phần","Partially paid","일부 결제"],"Частично","Thanh toán một phần","Partially paid","일부 결제"],[["Оплачено","Đã thanh toán","Paid","결제 완료"],"Оплачено","Đã thanh toán","Paid","결제 완료"],[["Используйте эту форму для прямой продажи у стойки."],"Используйте эту форму для прямой продажи у стойки.","Dùng biểu mẫu này để tạo booking trực tiếp tại quầy.","Use this form to create a booking directly at the counter.","카운터에서 직접 예약을 등록할 때 이 양식을 사용하세요."],[["Ваш код"],"Ваш код","Mã đối tác","Your partner code","파트너 코드"],[["добавляется автоматически."],"добавляется автоматически.","sẽ được tự động gắn vào booking.","is attached to the booking automatically.","는 예약에 자동으로 적용됩니다."],[["Не удалось загрузить бронирования."],"Не удалось загрузить бронирования.","Không thể tải danh sách booking.","Could not load bookings.","예약 목록을 불러올 수 없습니다."],[["Не удалось скопировать текст."],"Не удалось скопировать текст.","Không thể sao chép nội dung.","Could not copy the text.","내용을 복사할 수 없습니다."],[["Не удалось создать бронирование."],"Не удалось создать бронирование.","Không thể tạo booking.","Could not create the booking.","예약을 생성할 수 없습니다."],[["Рекомендованная цена в каталоге: взрослый"],"Рекомендованная цена в каталоге: взрослый","Giá đề xuất trong danh mục: người lớn","Recommended catalog price: adult","카탈로그 권장 가격: 성인"],[["ребёнок"],"ребёнок","trẻ em","child","아동"],[["Итог можно изменить, если цена была отдельно согласована."],"Итог можно изменить, если цена была отдельно согласована.","Có thể điều chỉnh tổng tiền nếu hai bên đã thống nhất mức giá riêng.","The total can be adjusted if a different price was agreed separately.","별도 가격에 합의한 경우 총 금액을 조정할 수 있습니다."],[["Подтвердить и записать бронирование","Xác nhận và tạo booking","Confirm and create booking","예약 확인 및 등록"],"Подтвердить и записать бронирование","Xác nhận và tạo booking","Confirm and create booking","예약 확인 및 등록"],[["Сохраняем…"],"Сохраняем…","Đang lưu…","Saving…","저장 중…"],[["создано. PAX и комиссия уже записаны в систему."],"создано. PAX и комиссия уже записаны в систему.","đã được tạo. PAX và hoa hồng đã được ghi nhận trong hệ thống.","has been created. PAX and commission have been recorded in the system.","이 생성되었습니다. PAX와 수수료가 시스템에 기록되었습니다."],[["Готово:","Hoàn tất:","Done:","완료:"],"Готово:","Hoàn tất:","Done:","완료:"],[["Клиенту","Gửi khách","Customer","고객용"],"Клиенту","Gửi khách","Customer","고객용"],[["Скопировано ✓","Đã sao chép ✓","Copied ✓","복사됨 ✓"],"Скопировано ✓","Đã sao chép ✓","Copied ✓","복사됨 ✓"],[["Copy confirmation","Скопировать подтверждение","Sao chép xác nhận","확인서 복사"],"Скопировать подтверждение","Sao chép xác nhận","Copy confirmation","확인서 복사"],[["Поставщику","Gửi nhà cung cấp","Supplier","공급업체용"],"Поставщику","Gửi nhà cung cấp","Supplier","공급업체용"],[["Copy supplier","Скопировать поставщику","Sao chép cho nhà cung cấp","공급업체용 복사"],"Скопировать поставщику","Sao chép cho nhà cung cấp","Copy supplier","공급업체용 복사"],[["Обновить","Làm mới","Refresh","새로고침"],"Обновить","Làm mới","Refresh","새로고침"],[["Booking","Mã booking","예약 번호"],"Бронирование","Mã booking","Booking","예약 번호"],[["Клиент","Khách hàng","Customer","고객"],"Клиент","Khách hàng","Customer","고객"],[["Сумма","Số tiền","Amount","금액"],"Сумма","Số tiền","Amount","금액"],[["Действия","Thao tác","Actions","작업"],"Действия","Thao tác","Actions","작업"],[["Русское подтверждение + сайт GoVietStay"],"Подтверждение на русском + сайт GoVietStay","Xác nhận bằng tiếng Việt + website GoVietStay","English confirmation + GoVietStay website","한국어 확인서 + GoVietStay 웹사이트"],[["Короткая операционная версия без комиссии"],"Короткая операционная версия без комиссии","Bản vận hành ngắn gọn, không hiển thị hoa hồng","Short operational version without commission","수수료를 제외한 간단한 운영용 버전"],[["Последние бронирования"],"Последние бронирования","Booking gần đây","Recent bookings","최근 예약"],[["Все эти записи уже связаны с вашим Partner Code."],"Все эти записи уже связаны с вашим кодом партнёра.","Tất cả bản ghi này đã được liên kết với mã đối tác của bạn.","All of these records are already linked to your partner code.","모든 기록은 이미 파트너 코드에 연결되어 있습니다."],[["Тур / дата"],"Тур / дата","Tour / ngày","Tour / date","투어 / 날짜"],[["Пока нет бронирований."],"Пока нет бронирований.","Chưa có booking nào.","No bookings yet.","아직 예약이 없습니다."],[["Room 1205","Номер 1205","Phòng 1205","객실 1205"],"Номер 1205","Phòng 1205","Room 1205","객실 1205"],[["Hotel name","Название отеля","Tên khách sạn","호텔명"],"Название отеля","Tên khách sạn","Hotel name","호텔명"],[["Special request...","Особые пожелания...","Yêu cầu đặc biệt...","특별 요청..."],"Особые пожелания...","Yêu cầu đặc biệt...","Special request...","특별 요청..."],[["Ivan Petrov","Иван Петров","Nguyễn Văn A","홍길동"],"Иван Петров","Nguyễn Văn A","John Smith","홍길동"],[["Условия сотрудничества","Điều khoản hợp tác","Cooperation Terms","협업 조건"],"Условия сотрудничества","Điều khoản hợp tác","Cooperation Terms","협업 조건"],[["Принято","Đã xác nhận","Accepted","동의 완료"],"Принято","Đã xác nhận","Accepted","동의 완료"],[["Требуется подтверждение","Cần xác nhận","Confirmation required","확인 필요"],"Требуется подтверждение","Cần xác nhận","Confirmation required","확인 필요"],[["1. Статус сотрудничества"],"1. Статус сотрудничества","1. Tư cách hợp tác","1. Independent partner status","1. 파트너 관계의 지위"],[["Партнёр действует как независимый партнёр по привлечению клиентов и не является сотрудником или лицом, имеющим право создавать обязательства от имени GoVietStay, если иное не согласовано письменно."],"Партнёр действует как независимый партнёр по привлечению клиентов и не является сотрудником или лицом, имеющим право создавать обязательства от имени GoVietStay, если иное не согласовано письменно.","Đối tác hoạt động với tư cách là đối tác độc lập trong việc giới thiệu khách hàng; không phải là nhân viên và không có quyền tạo nghĩa vụ hoặc cam kết thay mặt GoVietStay, trừ khi có thỏa thuận khác bằng văn bản.","The Partner acts as an independent customer-referral partner and is not an employee or a person authorized to create obligations on behalf of GoVietStay, unless otherwise agreed in writing.","파트너는 고객 소개를 수행하는 독립 파트너이며, 별도의 서면 합의가 없는 한 GoVietStay의 직원이 아니며 GoVietStay를 대신해 의무나 약정을 체결할 권한이 없습니다."],[["2. Атрибуция клиентов"],"2. Атрибуция клиентов","2. Ghi nhận khách hàng cho đối tác","2. Customer attribution","2. 고객 귀속"],[["Клиент закрепляется за Партнёром, если первое подтверждаемое обращение зафиксировано через персональную ссылку, QR-код, партнёрский код либо вручную подтверждено GoVietStay до бронирования. Данные системы GoVietStay являются основной записью для расчёта."],"Клиент закрепляется за Партнёром, если первое подтверждаемое обращение зафиксировано через персональную ссылку, QR-код, партнёрский код либо вручную подтверждено GoVietStay до бронирования. Данные системы GoVietStay являются основной записью для расчёта.","Khách hàng được ghi nhận cho Đối tác nếu lần liên hệ đầu tiên có thể xác minh được ghi nhận qua link cá nhân, mã QR, mã đối tác hoặc được GoVietStay xác nhận thủ công trước khi booking được tạo. Dữ liệu trong hệ thống GoVietStay là căn cứ chính để đối soát và tính toán.","A customer is attributed to the Partner when the first verifiable enquiry is recorded through the Partner’s personal link, QR code, partner code, or is manually confirmed by GoVietStay before booking. GoVietStay system records are the primary basis for reconciliation and calculation.","고객의 최초 확인 가능한 문의가 개인 링크, QR 코드, 파트너 코드로 기록되거나 예약 전에 GoVietStay가 수동으로 확인한 경우 해당 고객은 파트너에게 귀속됩니다. 정산 및 계산의 기준은 GoVietStay 시스템 기록입니다."],[["3. Запрет обхода и «увода» клиента"],"3. Запрет обхода и «увода» клиента","3. Không được bỏ qua hệ thống hoặc chuyển khách ra ngoài","3. No circumvention or customer diversion","3. 시스템 우회 및 고객 전환 금지"],[["После передачи клиента GoVietStay запрещено обходить систему, переводить клиента на прямую оплату себе или третьему лицу, перенаправлять его к конкуренту по тому же запросу, скрывать бронирование или искажать код атрибуции. При подтверждённом нарушении GoVietStay вправе приостановить доступ, исключить спорные операции из расчёта и требовать возмещения фактически причинённого ущерба в пределах закона."],"После передачи клиента GoVietStay запрещено обходить систему, переводить клиента на прямую оплату себе или третьему лицу, перенаправлять его к конкуренту по тому же запросу, скрывать бронирование или искажать код атрибуции. При подтверждённом нарушении GoVietStay вправе приостановить доступ, исключить спорные операции из расчёта и требовать возмещения фактически причинённого ущерба в пределах закона.","Sau khi đã chuyển khách cho GoVietStay, Đối tác không được bỏ qua hệ thống, yêu cầu khách thanh toán trực tiếp cho mình hoặc bên thứ ba, chuyển khách sang đối thủ cho cùng nhu cầu, che giấu booking hoặc làm sai lệch mã ghi nhận. Khi có vi phạm được xác minh, GoVietStay có quyền tạm ngừng quyền truy cập, loại các giao dịch tranh chấp khỏi kỳ đối soát và yêu cầu bồi thường thiệt hại thực tế trong phạm vi pháp luật cho phép.","After a customer is handed over to GoVietStay, the Partner must not bypass the system, direct the customer to pay the Partner or a third party, redirect the customer to a competitor for the same request, conceal a booking, or manipulate the attribution code. If a breach is verified, GoVietStay may suspend access, exclude disputed transactions from settlement, and seek compensation for actual loss to the extent permitted by law.","고객을 GoVietStay에 전달한 이후 파트너는 시스템을 우회하거나, 본인 또는 제3자에게 직접 결제하도록 유도하거나, 동일한 요청을 경쟁사로 전환하거나, 예약을 숨기거나, 귀속 코드를 왜곡해서는 안 됩니다. 위반이 확인되면 GoVietStay는 접근 권한을 일시 중지하고 분쟁 거래를 정산에서 제외하며 법이 허용하는 범위에서 실제 발생한 손해의 배상을 요구할 수 있습니다."],[["4. Обязанности GoVietStay"],"4. Обязанности GoVietStay","4. Trách nhiệm của GoVietStay","4. GoVietStay responsibilities","4. GoVietStay의 책임"],[["GoVietStay консультирует переданных клиентов, подтверждает цену и доступность, организует бронирование, транспорт, гидов и согласованные услуги, ведёт учёт заказов и PAX и предоставляет статистику в кабинете."],"GoVietStay консультирует переданных клиентов, подтверждает цену и доступность, организует бронирование, транспорт, гидов и согласованные услуги, ведёт учёт заказов и PAX и предоставляет статистику в кабинете.","GoVietStay tư vấn cho khách do Đối tác giới thiệu, xác nhận giá và khả năng cung cấp, tổ chức booking, phương tiện, hướng dẫn viên và các dịch vụ đã thống nhất; đồng thời ghi nhận đơn hàng, PAX và cung cấp số liệu trong Cổng đối tác.","GoVietStay advises referred customers, confirms pricing and availability, arranges bookings, transport, guides and agreed services, records orders and PAX, and provides statistics in the Partner Portal.","GoVietStay는 파트너가 소개한 고객에게 상담을 제공하고 가격과 이용 가능 여부를 확인하며 예약, 교통, 가이드 및 합의된 서비스를 준비합니다. 또한 주문과 PAX를 기록하고 파트너 포털에서 통계를 제공합니다."],[["5. Обязанности Партнёра"],"5. Обязанности Партнёра","5. Trách nhiệm của Đối tác","5. Partner responsibilities","5. 파트너의 책임"],[["Партнёр использует только свой персональный код/ссылку/QR, предоставляет достоверную информацию, не вводит клиента в заблуждение, соблюдает законы и правила платформ и не выдаёт себя за сотрудника GoVietStay без письменного разрешения."],"Партнёр использует только свой персональный код/ссылку/QR, предоставляет достоверную информацию, не вводит клиента в заблуждение, соблюдает законы и правила платформ и не выдаёт себя за сотрудника GoVietStay без письменного разрешения.","Đối tác chỉ sử dụng mã, link hoặc QR cá nhân của mình; cung cấp thông tin chính xác, không gây hiểu lầm cho khách, tuân thủ pháp luật và quy định của các nền tảng, đồng thời không tự nhận là nhân viên GoVietStay khi chưa có chấp thuận bằng văn bản.","The Partner uses only their own personal code, link or QR; provides accurate information, does not mislead customers, complies with applicable laws and platform rules, and does not represent themselves as a GoVietStay employee without written permission.","파트너는 본인의 개인 코드, 링크 또는 QR만 사용하고 정확한 정보를 제공해야 하며 고객을 오도해서는 안 됩니다. 관련 법률과 플랫폼 규정을 준수하고, 서면 허가 없이 GoVietStay 직원인 것처럼 표시해서는 안 됩니다."],[["6. PAX"],"6. PAX","6. Cách tính PAX","6. PAX definition","6. PAX 기준"],[["Один оплачиваемый пассажир/гость в подтверждённом бронировании = 1 PAX. Отменённые, возвращённые, тестовые, фиктивные, дублирующие или оспоренные бронирования могут быть исключены из расчёта."],"Один оплачиваемый пассажир/гость в подтверждённом бронировании = 1 PAX. Отменённые, возвращённые, тестовые, фиктивные, дублирующие или оспоренные бронирования могут быть исключены из расчёта.","Một hành khách/khách đã thanh toán trong booking được xác nhận = 1 PAX. Booking bị hủy, hoàn tiền, thử nghiệm, giả mạo, trùng lặp hoặc đang tranh chấp có thể bị loại khỏi kỳ tính.","One paying passenger/guest in a confirmed booking = 1 PAX. Cancelled, refunded, test, fraudulent, duplicate or disputed bookings may be excluded from the calculation.","확정된 예약에서 결제한 승객/고객 1명 = 1 PAX입니다. 취소, 환불, 테스트, 허위, 중복 또는 분쟁 예약은 산정에서 제외될 수 있습니다."],[["7. Базовая выплата"],"7. Базовая выплата","7. Khoản chi trả cơ bản","7. Base payout","7. 기본 지급액"],[["Базовая выплата зависит от общего PAX за календарный месяц. Это партнёрское стимулирующее вознаграждение за результат и не является гарантированной заработной платой, если стороны не заключили отдельный трудовой договор."],"Базовая выплата зависит от общего PAX за календарный месяц. Это партнёрское стимулирующее вознаграждение за результат и не является гарантированной заработной платой, если стороны не заключили отдельный трудовой договор.","Khoản chi trả cơ bản phụ thuộc vào tổng PAX trong tháng dương lịch. Đây là khoản khuyến khích dành cho đối tác dựa trên kết quả và không phải mức lương được bảo đảm, trừ khi hai bên có hợp đồng lao động riêng.","The base payout depends on total PAX in the calendar month. It is a performance-based partner incentive and is not a guaranteed salary unless the parties have entered into a separate employment agreement.","기본 지급액은 해당 월의 총 PAX에 따라 결정됩니다. 이는 실적에 따른 파트너 인센티브이며, 별도의 근로계약이 체결되지 않는 한 보장 급여가 아닙니다."],[["8. Комиссия"],"8. Комиссия","8. Hoa hồng","8. Commission","8. 수수료"],[["Комиссия рассчитывается по каждому подтверждённому PAX в зависимости от тура, языка гида EN/RU и общего PAX за месяц. Изменения ставок применяются только к будущим бронированиям после публикации новой версии условий."],"Комиссия рассчитывается по каждому подтверждённому PAX в зависимости от тура, языка гида EN/RU и общего PAX за месяц. Изменения ставок применяются только к будущим бронированиям после публикации новой версии условий.","Hoa hồng được tính cho từng PAX đã xác nhận, căn cứ vào tour, ngôn ngữ hướng dẫn viên EN/RU và tổng PAX trong tháng. Mọi thay đổi về mức hoa hồng chỉ áp dụng cho các booking phát sinh sau khi phiên bản điều khoản mới được công bố.","Commission is calculated for each confirmed PAX based on the tour, guide language EN/RU and total monthly PAX. Rate changes apply only to future bookings after a new version of the terms is published.","수수료는 투어, 가이드 언어(EN/RU), 월간 총 PAX를 기준으로 확정된 각 PAX에 대해 계산됩니다. 수수료율 변경은 새로운 약관 버전이 공지된 이후의 신규 예약에만 적용됩니다."],[["9. Выплаты"],"9. Выплаты","9. Thanh toán hoa hồng","9. Payouts","9. 지급"],[["Вознаграждение начисляется только по завершённым и финансово действительным бронированиям. Возвраты, chargeback, отмены, ошибки, мошенничество и дубли могут корректироваться в текущем или следующем расчёте."],"Вознаграждение начисляется только по завершённым и финансово действительным бронированиям. Возвраты, chargeback, отмены, ошибки, мошенничество и дубли могут корректироваться в текущем или следующем расчёте.","Khoản thưởng chỉ được ghi nhận cho các booking đã hoàn thành và hợp lệ về tài chính. Hoàn tiền, chargeback, hủy booking, sai sót, gian lận hoặc booking trùng có thể được điều chỉnh trong kỳ đối soát hiện tại hoặc kỳ tiếp theo.","Rewards are credited only for completed and financially valid bookings. Refunds, chargebacks, cancellations, errors, fraud and duplicates may be adjusted in the current or next settlement.","보상은 완료되고 재무적으로 유효한 예약에 대해서만 지급됩니다. 환불, 차지백, 취소, 오류, 사기 또는 중복 예약은 현재 또는 다음 정산에서 조정될 수 있습니다."],[["10. Конфиденциальность"],"10. Конфиденциальность","10. Bảo mật","10. Confidentiality","10. 기밀 유지"],[["Контакты клиентов, внутренние цены, операционные процессы, партнёрские условия, доступ к кабинету и иная непубличная информация являются конфиденциальными и не должны передаваться третьим лицам."],"Контакты клиентов, внутренние цены, операционные процессы, партнёрские условия, доступ к кабинету и иная непубличная информация являются конфиденциальными и не должны передаваться третьим лицам.","Thông tin liên hệ của khách, giá nội bộ, quy trình vận hành, điều khoản đối tác, quyền truy cập Cổng đối tác và các thông tin không công khai khác đều là thông tin bảo mật và không được chia sẻ cho bên thứ ba.","Customer contact details, internal pricing, operating processes, partner terms, Portal access and other non-public information are confidential and must not be shared with third parties.","고객 연락처, 내부 가격, 운영 절차, 파트너 조건, 포털 접근 정보 및 기타 비공개 정보는 기밀이며 제3자에게 제공해서는 안 됩니다."],[["11. Бренд GoVietStay"],"11. Бренд GoVietStay","11. Thương hiệu GoVietStay","11. GoVietStay brand","11. GoVietStay 브랜드"],[["Логотип и материалы GoVietStay можно использовать только для добросовестного продвижения в рамках сотрудничества. Нельзя создавать аккаунты, домены или рекламу, вводящие людей в заблуждение относительно собственности или официального представительства."],"Логотип и материалы GoVietStay можно использовать только для добросовестного продвижения в рамках сотрудничества. Нельзя создавать аккаунты, домены или рекламу, вводящие людей в заблуждение относительно собственности или официального представительства.","Logo và tài liệu GoVietStay chỉ được sử dụng để quảng bá đúng mục đích trong phạm vi hợp tác. Không được tạo tài khoản, tên miền hoặc quảng cáo khiến người khác hiểu nhầm về quyền sở hữu hoặc tư cách đại diện chính thức.","The GoVietStay logo and materials may be used only for good-faith promotion within the partnership. Accounts, domains or advertising must not mislead people about ownership or official representation.","GoVietStay 로고와 자료는 협업 범위 내에서 정상적인 홍보 목적으로만 사용할 수 있습니다. 소유권이나 공식 대리 관계를 오해하게 만드는 계정, 도메인 또는 광고를 만들어서는 안 됩니다."],[["12. Проверка и приостановление"],"12. Проверка и приостановление","12. Kiểm tra và tạm ngừng","12. Review and suspension","12. 검토 및 일시 중지"],[["При разумном подозрении на мошенничество, обход системы, жалобы клиентов, нарушение закона или бренда GoVietStay вправе временно приостановить доступ и начисления на период проверки."],"При разумном подозрении на мошенничество, обход системы, жалобы клиентов, нарушение закона или бренда GoVietStay вправе временно приостановить доступ и начисления на период проверки.","Khi có căn cứ hợp lý để nghi ngờ gian lận, bỏ qua hệ thống, có khiếu nại từ khách, vi phạm pháp luật hoặc vi phạm thương hiệu, GoVietStay có quyền tạm ngừng quyền truy cập và việc ghi nhận khoản chi trả trong thời gian kiểm tra.","Where there is reasonable suspicion of fraud, system circumvention, customer complaints, legal violations or brand misuse, GoVietStay may temporarily suspend access and accruals while the matter is reviewed.","사기, 시스템 우회, 고객 불만, 법률 위반 또는 브랜드 오용이 합리적으로 의심되는 경우 GoVietStay는 검토 기간 동안 접근 권한과 지급 산정을 일시 중지할 수 있습니다."],[["13. Прекращение сотрудничества"],"13. Прекращение сотрудничества","13. Chấm dứt hợp tác","13. Ending the partnership","13. 협업 종료"],[["Каждая сторона может прекратить сотрудничество на будущее. GoVietStay вправе прекратить его немедленно при существенном нарушении, мошенничестве, обходе системы, злоупотреблении данными клиентов или незаконной деятельности."],"Каждая сторона может прекратить сотрудничество на будущее. GoVietStay вправе прекратить его немедленно при существенном нарушении, мошенничестве, обходе системы, злоупотреблении данными клиентов или незаконной деятельности.","Mỗi bên có thể chấm dứt hợp tác cho thời gian tiếp theo. GoVietStay có quyền chấm dứt ngay khi xảy ra vi phạm nghiêm trọng, gian lận, bỏ qua hệ thống, lạm dụng dữ liệu khách hàng hoặc hoạt động trái pháp luật.","Either party may end the partnership going forward. GoVietStay may terminate it immediately in the event of a material breach, fraud, system circumvention, misuse of customer data or unlawful activity.","각 당사자는 향후 협업을 종료할 수 있습니다. 중대한 위반, 사기, 시스템 우회, 고객 데이터 오용 또는 불법 행위가 발생한 경우 GoVietStay는 즉시 협업을 종료할 수 있습니다."],[["14. Ограничение полномочий"],"14. Ограничение полномочий","14. Giới hạn thẩm quyền","14. Limits of authority","14. 권한의 제한"],[["Партнёр не вправе принимать деньги от имени GoVietStay, заключать договоры, давать гарантии или создавать обязательства для GoVietStay без отдельного письменного разрешения."],"Партнёр не вправе принимать деньги от имени GoVietStay, заключать договоры, давать гарантии или создавать обязательства для GoVietStay без отдельного письменного разрешения.","Đối tác không được nhận tiền thay mặt GoVietStay, ký kết hợp đồng, đưa ra bảo đảm hoặc tạo nghĩa vụ cho GoVietStay nếu không có chấp thuận riêng bằng văn bản.","The Partner may not accept money on behalf of GoVietStay, enter into contracts, give guarantees or create obligations for GoVietStay without separate written authorization.","파트너는 별도의 서면 승인이 없는 한 GoVietStay를 대신해 금전을 수령하거나 계약을 체결하거나 보증을 제공하거나 GoVietStay에 의무를 발생시킬 수 없습니다."],[["15. Споры"],"15. Споры","15. Giải quyết tranh chấp","15. Disputes","15. 분쟁"],[["Стороны сначала пытаются урегулировать спор переговорами и сверкой данных системы. Для повышенной юридической определённости рекомендуется отдельный двуязычный договор с полными реквизитами сторон."],"Стороны сначала пытаются урегулировать спор переговорами и сверкой данных системы. Для повышенной юридической определённости рекомендуется отдельный двуязычный договор с полными реквизитами сторон.","Hai bên trước tiên sẽ cố gắng giải quyết tranh chấp bằng trao đổi và đối chiếu dữ liệu hệ thống. Để tăng tính rõ ràng về pháp lý, các bên nên ký hợp đồng song ngữ riêng có đầy đủ thông tin pháp lý của hai bên.","The parties will first try to resolve a dispute through discussion and reconciliation of system records. For greater legal certainty, a separate bilingual agreement containing full party details is recommended.","분쟁이 발생하면 당사자는 먼저 협의와 시스템 기록 대조를 통해 해결하도록 노력합니다. 법적 명확성을 높이기 위해 당사자 정보를 모두 포함한 별도의 이중언어 계약을 체결하는 것이 권장됩니다."],[["16. Электронное согласие"],"16. Электронное согласие","16. Xác nhận điện tử","16. Electronic consent","16. 전자 동의"],[["Нажатие кнопки принятия условий, ввод имени и продолжение использования партнёрского кабинета после отображения условий фиксируются системой как электронное подтверждение ознакомления и согласия с указанной версией условий в пределах, допускаемых применимым законодательством."],"Нажатие кнопки принятия условий, ввод имени и продолжение использования партнёрского кабинета после отображения условий фиксируются системой как электронное подтверждение ознакомления и согласия с указанной версией условий в пределах, допускаемых применимым законодательством.","Việc bấm nút đồng ý điều khoản, nhập họ tên và tiếp tục sử dụng Cổng đối tác sau khi điều khoản được hiển thị sẽ được hệ thống ghi nhận là xác nhận điện tử rằng Đối tác đã đọc và đồng ý với phiên bản điều khoản được nêu, trong phạm vi pháp luật áp dụng cho phép.","Clicking the acceptance button, entering a name and continuing to use the Partner Portal after the terms are displayed are recorded by the system as electronic confirmation that the Partner has reviewed and agreed to the stated version of the terms, to the extent permitted by applicable law.","약관 동의 버튼을 누르고 이름을 입력한 후 약관이 표시된 상태에서 파트너 포털을 계속 사용하는 행위는 적용 법률이 허용하는 범위에서 해당 버전의 약관을 확인하고 동의했다는 전자 확인으로 시스템에 기록됩니다."],[["Электронное подтверждение","Xác nhận điện tử","Electronic confirmation","전자 확인"],"Электронное подтверждение","Xác nhận điện tử","Electronic confirmation","전자 확인"],[["Введите полное имя. Система сохранит версию условий, имя и время подтверждения."],"Введите полное имя. Система сохранит версию условий, имя и время подтверждения.","Nhập họ tên đầy đủ. Hệ thống sẽ lưu phiên bản điều khoản, họ tên và thời điểm xác nhận.","Enter your full name. The system will save the terms version, name and confirmation time.","성명을 입력하세요. 시스템에 약관 버전, 이름 및 동의 시간이 저장됩니다."],[["Полное имя","Họ và tên","Full name","성명"],"Полное имя","Họ và tên","Full name","성명"],[["Я прочитал(а) и принимаю условия"],"Я прочитал(а) и принимаю условия","Tôi đã đọc và đồng ý với điều khoản","I have read and accept the terms","약관을 읽었으며 동의합니다"],[["Условия приняты и зафиксированы в системе."],"Условия приняты и зафиксированы в системе.","Điều khoản đã được chấp nhận và ghi nhận trong hệ thống.","The terms have been accepted and recorded in the system.","약관 동의가 시스템에 기록되었습니다."],[["Условия приняты."],"Условия приняты.","Đã xác nhận điều khoản.","Terms accepted.","약관 동의 완료."],[["Имя:","Họ tên:","Name:","이름:"],"Имя:","Họ tên:","Name:","이름:"],[["Время:","Thời gian:","Time:","시간:"],"Время:","Thời gian:","Time:","시간:"],[["Настоящий портал фиксирует операционные правила партнёрской программы GoVietStay. Для сложных или крупных партнёрств стороны могут подписать отдельный двуязычный договор с полными юридическими реквизитами."],"Настоящий портал фиксирует операционные правила партнёрской программы GoVietStay. Для сложных или крупных партнёрств стороны могут подписать отдельный двуязычный договор с полными юридическими реквизитами.","Cổng này ghi nhận các quy tắc vận hành của chương trình đối tác GoVietStay. Với các quan hệ hợp tác lớn hoặc có cấu trúc phức tạp, hai bên có thể ký hợp đồng song ngữ riêng với đầy đủ thông tin pháp lý.","This Portal records the operating rules of the GoVietStay Partner Program. For larger or more complex partnerships, the parties may sign a separate bilingual agreement containing full legal details.","본 포털은 GoVietStay 파트너 프로그램의 운영 규칙을 기록합니다. 규모가 크거나 구조가 복잡한 협업의 경우 양 당사자는 법적 정보를 모두 포함한 별도의 이중언어 계약을 체결할 수 있습니다."],[["✅ GoVietStay — подтверждение бронирования"],"✅ GoVietStay — подтверждение бронирования","✅ GoVietStay — xác nhận booking","✅ GoVietStay — booking confirmation","✅ GoVietStay — 예약 확인"],[["Номер бронирования:"],"Номер бронирования:","Mã booking:","Booking number:","예약 번호:"],[["Тур:"],"Тур:","Tour:","Tour:","투어:"],[["Дата:"],"Дата:","Ngày:","Date:","날짜:"],[["Гости:"],"Гости:","Khách:","Guests:","인원:"],[["взрослых"],"взрослых","người lớn","adults","성인"],[["детей"],"детей","trẻ em","children","아동"],[["Гид:"],"Гид:","Hướng dẫn viên:","Guide:","가이드:"],[["Отель:"],"Отель:","Khách sạn:","Hotel:","호텔:"],[["комната"],"номер","phòng","room","객실"],[["Время встречи:"],"Время встречи:","Giờ đón:","Pickup time:","픽업 시간:"],[["будет подтверждено"],"будет подтверждено","sẽ xác nhận sau","to be confirmed","추후 확정"],[["Стоимость:"],"Стоимость:","Tổng tiền:","Total:","총 금액:"],[["Депозит:"],"Депозит:","Tiền cọc:","Deposit:","예약금:"],[["Остаток:"],"Остаток:","Còn lại:","Balance:","잔액:"],[["Ваше бронирование зарегистрировано в системе GoVietStay."],"Ваше бронирование зарегистрировано в системе GoVietStay.","Booking của bạn đã được ghi nhận trong hệ thống GoVietStay.","Your booking has been registered in the GoVietStay system.","예약이 GoVietStay 시스템에 등록되었습니다."],[["Информация о турах и поддержка:"],"Информация о турах и поддержка:","Thông tin tour và hỗ trợ:","Tour information and support:","투어 정보 및 지원:"],[["GoVietStay — Trusted Local Support"],"GoVietStay — Надёжная местная поддержка","GoVietStay — Hỗ trợ địa phương đáng tin cậy","GoVietStay — Trusted Local Support","GoVietStay — 믿을 수 있는 현지 여행 지원"],[["Date:"],"Дата:","Ngày:","Date:","날짜:"],[["Guest:"],"Клиент:","Khách:","Guest:","고객:"],[["Phone/WA:"],"Телефон/WA:","Điện thoại/WA:","Phone/WA:","전화/WA:"],[["Pax:"],"PAX:","PAX:","PAX:","PAX:"],[["Hotel:"],"Отель:","Khách sạn:","Hotel:","호텔:"],[["Room:"],"Номер:","Phòng:","Room:","객실:"],[["Pickup:"],"Встреча:","Giờ đón:","Pickup:","픽업:"],[["Guide:"],"Гид:","Hướng dẫn viên:","Guide:","가이드:"],[["Note:"],"Примечание:","Ghi chú:","Note:","메모:"],[["TBC"],"будет подтверждено","sẽ xác nhận","TBC","추후 확정"],[["ADL"],"ВЗР","NL","ADL","성인"],[["CHD"],"ДЕТ","TE","CHD","아동"],[["Тур","Tour","투어"],"Тур","Tour","Tour","투어"],[["Статус","Trạng thái","Status","상태"],"Статус","Trạng thái","Status","상태"],[["PAX","PAX"],"PAX","PAX","PAX","PAX"],[["Бронирование","Booking","예약"],"Бронирование","Booking","Booking","예약"]];
+const R=[];
+for(const row of ROWS){for(const key of row[0])if(key)R.push({key,row});}
+R.sort((a,b)=>b.key.length-a.key.length);
+const originalText=new WeakMap(), originalPlaceholder=new WeakMap(), originalTitle=new WeakMap();
+let lang="ru",partnerCode="",timer=null,clipboardDone=false;
 
-  const EXACT = {
-    "Партнёрский кабинет": {
-      vi: "Cổng thông tin Đối tác",
-      en: "Partner Portal",
-      ko: "파트너 포털"
-    },
-    "Прозрачные правила · прозрачный учёт · прозрачный доход": {
-      vi: "Quy định minh bạch · Theo dõi minh bạch · Thu nhập rõ ràng",
-      en: "Transparent rules · Transparent tracking · Transparent earnings",
-      ko: "투명한 운영 · 정확한 실적 관리 · 명확한 파트너 수익"
-    },
-    "Как мы работаем": {
-      vi: "Cách chúng tôi vận hành",
-      en: "How it works",
-      ko: "운영 방식"
-    },
-    "Создать бронирование": {
-      vi: "Tạo booking",
-      en: "Create booking",
-      ko: "예약 등록"
-    },
-    "Используйте эту форму для прямой продажи у стойки.": {
-      vi: "Sử dụng biểu mẫu này cho booking trực tiếp tại quầy.",
-      en: "Use this form for direct bookings at the counter.",
-      ko: "카운터에서 직접 예약을 등록할 때 이 양식을 사용하세요."
-    },
-    "Тур": { vi: "Tour / Dịch vụ", en: "Tour / Service", ko: "투어 / 서비스" },
-    "Дата тура": { vi: "Ngày tour", en: "Tour date", ko: "투어 날짜" },
-    "Имя клиента": { vi: "Tên khách", en: "Customer name", ko: "고객명" },
-    "WhatsApp / телефон": { vi: "WhatsApp / điện thoại", en: "WhatsApp / phone", ko: "WhatsApp / 전화번호" },
-    "Взрослые": { vi: "Người lớn", en: "Adults", ko: "성인" },
-    "Дети": { vi: "Trẻ em", en: "Children", ko: "아동" },
-    "Язык гида": { vi: "Ngôn ngữ HDV", en: "Guide language", ko: "가이드 언어" },
-    "Отель": { vi: "Khách sạn", en: "Hotel", ko: "호텔" },
-    "Статус": { vi: "Trạng thái", en: "Status", ko: "상태" },
-    "Статус:": { vi: "Trạng thái:", en: "Status:", ko: "상태:" },
-    "Код партнёра": { vi: "Mã đối tác", en: "Partner code", ko: "파트너 코드" },
-    "Код партнёра:": { vi: "Mã đối tác:", en: "Partner code:", ko: "파트너 코드:" },
-    "Рынок": { vi: "Thị trường", en: "Market", ko: "시장" },
-    "Рынок:": { vi: "Thị trường:", en: "Market:", ko: "시장:" },
-    "Дата начала": { vi: "Ngày bắt đầu", en: "Start date", ko: "시작일" },
-    "Дата начала:": { vi: "Ngày bắt đầu:", en: "Start date:", ko: "시작일:" },
-    "Условия": { vi: "Điều khoản", en: "Terms", ko: "조건" },
-    "Условия:": { vi: "Điều khoản:", en: "Terms:", ko: "조건:" },
-    "версия 1.0": { vi: "phiên bản 1.0", en: "version 1.0", ko: "버전 1.0" },
-    "30 дней": { vi: "30 ngày", en: "30 days", ko: "30일" },
-    "7 дней": { vi: "7 ngày", en: "7 days", ko: "7일" },
-    "90 дней": { vi: "90 ngày", en: "90 days", ko: "90일" },
-    "ready": { vi: "sẵn sàng", en: "ready", ko: "준비 완료" },
-    "pending": { vi: "đang chờ", en: "pending", ko: "대기" },
-    "confirmed": { vi: "đã xác nhận", en: "confirmed", ko: "확정" },
-    "completed": { vi: "hoàn thành", en: "completed", ko: "완료" },
-    "cancelled": { vi: "đã hủy", en: "cancelled", ko: "취소" },
-    "Airport Transfer": { vi: "Đón / tiễn sân bay", en: "Airport Transfer", ko: "공항 픽업 / 샌딩" },
-    "Russian-speaking travelers": { vi: "Khách du lịch nói tiếng Nga", en: "Russian-speaking travelers", ko: "러시아어권 여행객" },
-    "Vietnamese-speaking travelers": { vi: "Khách du lịch Việt Nam", en: "Vietnamese-speaking travelers", ko: "베트남 여행객" },
-    "Korean-speaking travelers": { vi: "Khách du lịch Hàn Quốc", en: "Korean-speaking travelers", ko: "한국인 여행객" },
-    "English-speaking travelers": { vi: "Khách du lịch nói tiếng Anh", en: "English-speaking travelers", ko: "영어권 여행객" },
-    "Русский (RU)": { vi: "Tiếng Nga (RU)", en: "Russian (RU)", ko: "러시아어 (RU)" },
-    "Английский (EN)": { vi: "Tiếng Anh (EN)", en: "English (EN)", ko: "영어 (EN)" },
-    "Вьетнамский (VI)": { vi: "Tiếng Việt (VI)", en: "Vietnamese (VI)", ko: "베트남어 (VI)" },
-    "Корейский (KO)": { vi: "Tiếng Hàn (KO)", en: "Korean (KO)", ko: "한국어 (KO)" },
-    "Комиссия": { vi: "Hoa hồng", en: "Commission", ko: "파트너 수수료" },
-    "Доход": { vi: "Thu nhập", en: "Earnings", ko: "파트너 수익" },
-    "Всего PAX": { vi: "Tổng PAX", en: "Total PAX", ko: "총 이용객 수" },
-    "Бронирования": { vi: "Booking", en: "Bookings", ko: "예약" },
-    "Сегодня": { vi: "Hôm nay", en: "Today", ko: "오늘" },
-    "Клиент": { vi: "Khách hàng", en: "Customer", ko: "고객" },
-    "Цена": { vi: "Giá", en: "Price", ko: "가격" },
-    "Итого": { vi: "Tổng", en: "Total", ko: "합계" },
-    "Примечание": { vi: "Ghi chú", en: "Notes", ko: "메모" },
-    "Отправить": { vi: "Gửi booking", en: "Submit booking", ko: "예약 등록" },
-    "Сохранить": { vi: "Lưu", en: "Save", ko: "저장" }
-  };
-
-  const SENTENCES = [
-    {
-      ru: "1. Вы находите клиента и отправляете свою персональную ссылку или QR.",
-      vi: "1. Bạn giới thiệu khách và gửi link cá nhân hoặc QR của mình.",
-      en: "1. You find a customer and send your personal link or QR code.",
-      ko: "1. 고객을 찾고 개인 링크 또는 QR 코드를 전달합니다."
-    },
-    {
-      ru: "2. GoVietStay принимает клиента и ведёт весь сервис: консультация, подтверждение, транспорт, гид, сопровождение.",
-      vi: "2. GoVietStay tiếp nhận khách và phụ trách toàn bộ dịch vụ: tư vấn, xác nhận, xe, hướng dẫn viên và hỗ trợ trong chuyến đi.",
-      en: "2. GoVietStay takes over the customer journey: consultation, confirmation, transport, guide and trip support.",
-      ko: "2. GoVietStay가 상담, 예약 확정, 교통, 가이드 및 여행 지원까지 전체 서비스를 담당합니다."
-    },
-    {
-      ru: "3. Система фиксирует переход, обращение, бронирование и PAX за вашим кодом.",
-      vi: "3. Hệ thống ghi nhận lượt truy cập, yêu cầu, booking và PAX theo mã đối tác của bạn.",
-      en: "3. The system attributes visits, enquiries, bookings and PAX to your partner code.",
-      ko: "3. 시스템이 방문, 문의, 예약 및 PAX를 파트너 코드에 자동 기록합니다."
-    },
-    {
-      ru: "4. Ваш доход = базовая выплата по месячному PAX + комиссия за каждый подтверждённый PAX.",
-      vi: "4. Thu nhập của bạn = khoản thanh toán cơ bản theo PAX tháng + hoa hồng cho mỗi PAX được xác nhận.",
-      en: "4. Your earnings = base payout based on monthly PAX + commission for each confirmed PAX.",
-      ko: "4. 파트너 수익 = 월간 PAX 기준 기본 지급액 + 확정된 각 PAX의 수수료입니다."
-    },
-    {
-      ru: "5. Все спорные случаи сверяются по данным системы GoVietStay.",
-      vi: "5. Mọi trường hợp cần đối chiếu đều dựa trên dữ liệu được ghi nhận trong hệ thống GoVietStay.",
-      en: "5. Any disputed case is reconciled against GoVietStay system records.",
-      ko: "5. 모든 확인 또는 이의 사항은 GoVietStay 시스템 기록을 기준으로 검토합니다."
-    }
-  ];
-
-  const originalText = new WeakMap();
-  let observer = null;
-  let activeLang = "ru";
-  let partnerCode = "";
-
-  function normalize(s) {
-    return String(s || "").replace(/\s+/g, " ").trim();
+function target(row,l){return row[{ru:1,vi:2,en:3,ko:4}[l]]||row[1];}
+function isPortal(){
+ const p=location.pathname.toLowerCase(),t=document.body?.innerText||"";
+ return p==="/partner"||p.startsWith("/partner/")||t.includes("Партнёрский кабинет")||t.includes("Cổng thông tin Đối tác")||t.includes("GOVIETSTAY PARTNER PORTAL")||t.includes("파트너 포털");
+}
+function code(){
+ const t=document.body?.innerText||"";
+ for(const re of [/Код партнёра:\s*([A-Z0-9_-]{3,})/i,/Mã đối tác:\s*([A-Z0-9_-]{3,})/i,/Partner code:\s*([A-Z0-9_-]{3,})/i,/파트너 코드:\s*([A-Z0-9_-]{3,})/i]){
+  const m=t.match(re); if(m)return m[1].toUpperCase();
+ }
+ return "";
+}
+function sk(){return "gvs_partner_lang_v2:"+(partnerCode||"default");}
+function infer(){
+ try{const q=new URLSearchParams(location.search).get("lang");if(LANGS.includes(q))return q;}catch(_){}
+ try{const s=localStorage.getItem(sk());if(LANGS.includes(s))return s;}catch(_){}
+ const t=(document.body?.innerText||"").toLowerCase();
+ if(t.includes("korean-speaking")||t.includes("한국인 여행객"))return"ko";
+ if(t.includes("vietnamese-speaking")||t.includes("khách du lịch việt nam"))return"vi";
+ if(t.includes("russian-speaking")||t.includes("русскоязыч"))return"ru";
+ return"ru";
+}
+function tr(src,l){
+ let out=String(src??"");
+ const d=out.match(/Используйте эту форму для прямой продажи у стойки\.\s*Ваш код\s+([A-Z0-9_-]+)\s+добавляется автоматически\./i);
+ if(d){
+  const c=d[1],v={ru:`Используйте эту форму для прямой продажи у стойки. Ваш код ${c} добавляется автоматически.`,vi:`Dùng biểu mẫu này để tạo booking trực tiếp tại quầy. Mã đối tác ${c} sẽ được tự động gắn vào booking.`,en:`Use this form to create a booking directly at the counter. Your partner code ${c} is attached to the booking automatically.`,ko:`카운터에서 직접 예약을 등록할 때 이 양식을 사용하세요. 파트너 코드 ${c}는 예약에 자동으로 적용됩니다.`}[l];
+  out=out.replace(d[0],v);
+ }
+ const cmsg=out.match(/Бронирование\s+([A-Z0-9_-]+)\s+создано\. PAX и комиссия уже записаны в систему\./i);
+ if(cmsg){
+  const c=cmsg[1],v={ru:`Бронирование ${c} создано. PAX и комиссия уже записаны в систему.`,vi:`Booking ${c} đã được tạo. PAX và hoa hồng đã được ghi nhận trong hệ thống.`,en:`Booking ${c} has been created. PAX and commission have been recorded in the system.`,ko:`예약 ${c}이 생성되었습니다. PAX와 수수료가 시스템에 기록되었습니다.`}[l];
+  out=out.replace(cmsg[0],v);
+ }
+ for(const x of R){if(out.includes(x.key)){const v=target(x.row,l);if(v!==x.key)out=out.split(x.key).join(v);}}
+ if(l==="ru")out=out.replace(/https:\/\/www\.govietstay\.com\/(?:vi|ko)(?=\s|$)/g,"https://www.govietstay.com/ru");
+ if(l==="vi")out=out.replace(/https:\/\/www\.govietstay\.com\/(?:ru|ko)(?=\s|$)/g,"https://www.govietstay.com/vi");
+ if(l==="ko")out=out.replace(/https:\/\/www\.govietstay\.com\/(?:ru|vi)(?=\s|$)/g,"https://www.govietstay.com/ko");
+ if(l==="en")out=out.replace(/https:\/\/www\.govietstay\.com\/(?:ru|vi|ko)(?=\s|$)/g,"https://www.govietstay.com");
+ return out;
+}
+function skip(n){
+ const p=n.parentElement;if(!p)return true;
+ if(p.closest(".gvs-partner-lang-switch")||p.closest("[data-gvs-no-i18n]"))return true;
+ return["SCRIPT","STYLE","NOSCRIPT","CODE","PRE"].includes(p.tagName);
+}
+function apply(root){
+ if(!root)return;
+ const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),nodes=[];
+ while(w.nextNode())nodes.push(w.currentNode);
+ for(const n of nodes){
+  if(skip(n))continue;
+  if(!originalText.has(n))originalText.set(n,n.nodeValue||"");
+  const v=tr(originalText.get(n)||"",lang);if(n.nodeValue!==v)n.nodeValue=v;
+ }
+ root.querySelectorAll?.("input,textarea,button,[title]").forEach(el=>{
+  if(el.closest?.(".gvs-partner-lang-switch"))return;
+  if(el.hasAttribute("placeholder")){
+   if(!originalPlaceholder.has(el))originalPlaceholder.set(el,el.getAttribute("placeholder")||"");
+   el.setAttribute("placeholder",tr(originalPlaceholder.get(el),lang));
   }
-
-  function detectPortal() {
-    const t = document.body ? document.body.innerText : "";
-    return t.includes("GOVIETSTAY PARTNER PORTAL") ||
-           t.includes("Партнёрский кабинет") ||
-           (location.pathname.toLowerCase().includes("partner") && /GoVietStay/i.test(t));
+  if(el.hasAttribute("title")){
+   if(!originalTitle.has(el))originalTitle.set(el,el.getAttribute("title")||"");
+   el.setAttribute("title",tr(originalTitle.get(el),lang));
   }
-
-  function getPartnerCode() {
-    const text = document.body ? document.body.innerText : "";
-    const patterns = [
-      /Код партнёра:\s*([A-Z0-9_-]{3,})/i,
-      /Partner code:\s*([A-Z0-9_-]{3,})/i,
-      /Mã đối tác:\s*([A-Z0-9_-]{3,})/i,
-      /파트너 코드:\s*([A-Z0-9_-]{3,})/i
-    ];
-    for (const p of patterns) {
-      const m = text.match(p);
-      if (m) return m[1].toUpperCase();
-    }
-    const el = document.querySelector("[data-partner-code]");
-    return el ? String(el.getAttribute("data-partner-code") || "").toUpperCase() : "";
-  }
-
-  function storageKey() {
-    return "gvs_partner_lang_v2:" + (partnerCode || "default");
-  }
-
-  function inferDefaultLang() {
-    try {
-      const qp = new URLSearchParams(location.search).get("lang");
-      if (LANGS.includes(qp)) return qp;
-    } catch (_) {}
-
-    try {
-      const saved = localStorage.getItem(storageKey());
-      if (LANGS.includes(saved)) return saved;
-    } catch (_) {}
-
-    const explicit =
-      document.body?.getAttribute("data-partner-language") ||
-      document.documentElement?.getAttribute("data-partner-language");
-    if (explicit && LANGS.includes(explicit.toLowerCase())) return explicit.toLowerCase();
-
-    const text = (document.body?.innerText || "").toLowerCase();
-    if (text.includes("korean-speaking") || text.includes("한국인 여행객") || text.includes("한국어권")) return "ko";
-    if (text.includes("vietnamese-speaking") || text.includes("khách du lịch việt nam")) return "vi";
-    if (text.includes("russian-speaking") || text.includes("русск")) return "ru";
-
-    const path = location.pathname.toLowerCase();
-    if (path.startsWith("/ko/") || path === "/ko") return "ko";
-    if (path.startsWith("/vi/") || path === "/vi") return "vi";
-    if (path.startsWith("/ru/") || path === "/ru") return "ru";
-    return "en";
-  }
-
-  function targetExact(src, lang) {
-    const n = normalize(src);
-    const row = EXACT[n];
-    if (!row) return null;
-    return lang === "ru" ? n : (row[lang] || n);
-  }
-
-  function translateOriginal(src, lang) {
-    if (lang === "ru") return src;
-    const trimmed = normalize(src);
-    if (!trimmed) return src;
-
-    const exact = targetExact(trimmed, lang);
-    if (exact !== null) {
-      const lead = src.match(/^\s*/)?.[0] || "";
-      const tail = src.match(/\s*$/)?.[0] || "";
-      return lead + exact + tail;
-    }
-
-    for (const s of SENTENCES) {
-      if (trimmed === s.ru) {
-        const lead = src.match(/^\s*/)?.[0] || "";
-        const tail = src.match(/\s*$/)?.[0] || "";
-        return lead + s[lang] + tail;
-      }
-    }
-
-    let out = src;
-
-    const labelReplacements = {
-      vi: [
-        ["Код партнёра:", "Mã đối tác:"],
-        ["Рынок:", "Thị trường:"],
-        ["Статус:", "Trạng thái:"],
-        ["Дата начала:", "Ngày bắt đầu:"],
-        ["Условия:", "Điều khoản:"],
-        ["версия 1.0", "phiên bản 1.0"]
-      ],
-      en: [
-        ["Код партнёра:", "Partner code:"],
-        ["Рынок:", "Market:"],
-        ["Статус:", "Status:"],
-        ["Дата начала:", "Start date:"],
-        ["Условия:", "Terms:"],
-        ["версия 1.0", "version 1.0"]
-      ],
-      ko: [
-        ["Код партнёра:", "파트너 코드:"],
-        ["Рынок:", "시장:"],
-        ["Статус:", "상태:"],
-        ["Дата начала:", "시작일:"],
-        ["Условия:", "조건:"],
-        ["версия 1.0", "버전 1.0"]
-      ]
-    };
-
-    for (const [a, b] of labelReplacements[lang]) out = out.split(a).join(b);
-
-    const bookingPattern = /Используйте эту форму для прямой продажи у стойки\.\s*Ваш код\s+([A-Z0-9_-]+)\s+добавляется автоматически\./i;
-    if (bookingPattern.test(out)) {
-      const code = out.match(bookingPattern)?.[1] || partnerCode || "";
-      const msg = {
-        vi: `Sử dụng biểu mẫu này cho booking trực tiếp tại quầy. Mã ${code} của bạn được thêm tự động.`,
-        en: `Use this form for direct bookings at the counter. Your code ${code} is added automatically.`,
-        ko: `카운터에서 직접 예약을 등록할 때 이 양식을 사용하세요. 파트너 코드 ${code}는 자동으로 적용됩니다.`
-      }[lang];
-      out = out.replace(bookingPattern, msg);
-    }
-
-    return out;
-  }
-
-  function shouldSkip(node) {
-    const p = node.parentElement;
-    if (!p) return true;
-    if (p.closest(".gvs-partner-lang-switch")) return true;
-    if (["SCRIPT", "STYLE", "NOSCRIPT", "CODE", "PRE"].includes(p.tagName)) return true;
-    return false;
-  }
-
-  function applyTextTranslations(root) {
-    if (!root) return;
-    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
-    const nodes = [];
-    while (walker.nextNode()) nodes.push(walker.currentNode);
-
-    for (const node of nodes) {
-      if (shouldSkip(node)) continue;
-      if (!originalText.has(node)) originalText.set(node, node.nodeValue || "");
-      const src = originalText.get(node) || "";
-      const next = translateOriginal(src, activeLang);
-      if (node.nodeValue !== next) node.nodeValue = next;
-    }
-
-    document.querySelectorAll("input, textarea").forEach((el) => {
-      if (!el.dataset.gvsOriginalPlaceholder && el.getAttribute("placeholder")) {
-        el.dataset.gvsOriginalPlaceholder = el.getAttribute("placeholder");
-      }
-      const ph = el.dataset.gvsOriginalPlaceholder;
-      if (!ph) return;
-
-      const dict = {
-        "Ivan Petrov": {vi:"Nguyễn Văn A", en:"John Smith", ko:"홍길동"},
-        "+7 / +84...": {vi:"+84...", en:"+84 / +7...", ko:"+82 / +84..."},
-        "Hotel name": {vi:"Tên khách sạn", en:"Hotel name", ko:"호텔명"}
-      };
-      const row = dict[ph];
-      if (row && activeLang !== "ru") el.setAttribute("placeholder", row[activeLang] || ph);
-      else el.setAttribute("placeholder", ph);
-    });
-  }
-
-  function makeSelector() {
-    if (document.querySelector(".gvs-partner-lang-switch")) return;
-
-    const wrap = document.createElement("div");
-    wrap.className = "gvs-partner-lang-switch";
-    wrap.setAttribute("aria-label", "Partner portal language");
-
-    const globe = document.createElement("span");
-    globe.className = "gvs-lang-globe";
-    globe.textContent = "🌐";
-
-    const select = document.createElement("select");
-    select.className = "gvs-lang-select";
-    select.setAttribute("aria-label", "Language");
-
-    LANGS.forEach((code) => {
-      const o = document.createElement("option");
-      o.value = code;
-      o.textContent = `${LANG_META[code].flag} ${LANG_META[code].label}`;
-      select.appendChild(o);
-    });
-
-    select.value = activeLang;
-    select.addEventListener("change", () => setLanguage(select.value));
-
-    wrap.appendChild(globe);
-    wrap.appendChild(select);
-
-    const bodyText = document.body.innerText || "";
-    let hero = null;
-    for (const el of document.querySelectorAll("header, section, div")) {
-      const txt = normalize(el.innerText || "");
-      if (txt.includes("GOVIETSTAY PARTNER PORTAL") && txt.length < 1000) {
-        hero = el;
-        break;
-      }
-    }
-
-    if (hero) {
-      hero.classList.add("gvs-partner-hero");
-      hero.appendChild(wrap);
-    } else {
-      wrap.classList.add("gvs-lang-floating");
-      document.body.appendChild(wrap);
-    }
-  }
-
-  function mobileEnhance() {
-    document.body.classList.add("gvs-partner-v2");
-
-    let viewport = document.querySelector('meta[name="viewport"]');
-    if (!viewport) {
-      viewport = document.createElement("meta");
-      viewport.name = "viewport";
-      viewport.content = "width=device-width, initial-scale=1, viewport-fit=cover";
-      document.head.appendChild(viewport);
-    }
-
-    document.querySelectorAll("form").forEach((form) => {
-      form.classList.add("gvs-partner-booking-form");
-      form.querySelectorAll("*").forEach((el) => {
-        try {
-          const cs = getComputedStyle(el);
-          if (cs.display === "grid") el.classList.add("gvs-mobile-grid");
-        } catch (_) {}
-      });
-    });
-
-    document.querySelectorAll("table").forEach((table) => {
-      table.classList.add("gvs-partner-table");
-      const p = table.parentElement;
-      if (p) p.classList.add("gvs-partner-table-wrap");
-    });
-
-    document.querySelectorAll("input, select, textarea, button").forEach((el) => {
-      el.classList.add("gvs-touch-control");
-    });
-  }
-
-  function injectStyle() {
-    if (document.getElementById("gvs-partner-v2-style")) return;
-    const style = document.createElement("style");
-    style.id = "gvs-partner-v2-style";
-    style.textContent = `
-      body.gvs-partner-v2 { overflow-x: hidden; }
-      body.gvs-partner-v2 *, body.gvs-partner-v2 *::before, body.gvs-partner-v2 *::after { box-sizing: border-box; }
-      body.gvs-partner-v2 img, body.gvs-partner-v2 svg { max-width: 100%; }
-      body.gvs-partner-v2 .gvs-partner-hero { position: relative !important; }
-      .gvs-partner-lang-switch {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 6px 8px;
-        border-radius: 12px;
-        background: rgba(255,255,255,.10);
-        border: 1px solid rgba(255,255,255,.20);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        z-index: 40;
-      }
-      .gvs-partner-hero > .gvs-partner-lang-switch {
-        position: absolute;
-        right: 18px;
-        top: 18px;
-      }
-      .gvs-lang-floating {
-        position: fixed;
-        right: 16px;
-        top: 16px;
-        background: #112e52;
-        box-shadow: 0 8px 30px rgba(0,0,0,.18);
-      }
-      .gvs-lang-globe { font-size: 18px; line-height: 1; }
-      .gvs-lang-select {
-        appearance: auto;
-        -webkit-appearance: menulist;
-        min-height: 38px;
-        border: 0 !important;
-        outline: 0;
-        border-radius: 9px;
-        padding: 6px 30px 6px 10px !important;
-        background: #fff !important;
-        color: #10294a !important;
-        font: inherit;
-        font-weight: 700;
-        width: auto !important;
-        max-width: 190px;
-        cursor: pointer;
-      }
-      body.gvs-partner-v2 .gvs-touch-control {
-        min-height: 44px;
-      }
-      body.gvs-partner-v2 input,
-      body.gvs-partner-v2 select,
-      body.gvs-partner-v2 textarea {
-        font-size: 16px;
-      }
-      body.gvs-partner-v2 .gvs-partner-table-wrap {
-        max-width: 100%;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      @media (max-width: 720px) {
-        body.gvs-partner-v2 {
-          width: 100%;
-          min-width: 0;
-        }
-        body.gvs-partner-v2 main,
-        body.gvs-partner-v2 section,
-        body.gvs-partner-v2 form {
-          max-width: 100%;
-        }
-        body.gvs-partner-v2 .gvs-mobile-grid {
-          grid-template-columns: minmax(0, 1fr) !important;
-        }
-        body.gvs-partner-v2 .gvs-partner-booking-form input,
-        body.gvs-partner-v2 .gvs-partner-booking-form select,
-        body.gvs-partner-v2 .gvs-partner-booking-form textarea,
-        body.gvs-partner-v2 .gvs-partner-booking-form button {
-          width: 100% !important;
-          max-width: 100% !important;
-        }
-        body.gvs-partner-v2 .gvs-partner-hero {
-          padding-top: 76px !important;
-        }
-        body.gvs-partner-v2 .gvs-partner-hero > .gvs-partner-lang-switch {
-          top: 14px;
-          right: 14px;
-          left: auto;
-        }
-        .gvs-partner-lang-switch {
-          padding: 5px 7px;
-          gap: 5px;
-        }
-        .gvs-lang-select {
-          min-height: 40px;
-          max-width: 155px;
-          font-size: 14px !important;
-          padding-left: 8px !important;
-        }
-        body.gvs-partner-v2 .gvs-partner-table {
-          display: block;
-          width: 100%;
-          min-width: 620px;
-        }
-        body.gvs-partner-v2 [class*="card"],
-        body.gvs-partner-v2 [class*="panel"] {
-          max-width: 100%;
-        }
-      }
-
-      @media (max-width: 390px) {
-        .gvs-lang-globe { display: none; }
-        .gvs-lang-select { max-width: 142px; }
-      }
-    `;
-    document.head.appendChild(style);
-  }
-
-  function setLanguage(lang) {
-    if (!LANGS.includes(lang)) lang = "ru";
-    activeLang = lang;
-    try { localStorage.setItem(storageKey(), lang); } catch (_) {}
-
-    const select = document.querySelector(".gvs-lang-select");
-    if (select && select.value !== lang) select.value = lang;
-
-    document.documentElement.setAttribute("lang", lang);
-    applyTextTranslations(document.body);
-  }
-
-  function rescan() {
-    mobileEnhance();
-    makeSelector();
-    applyTextTranslations(document.body);
-  }
-
-  function init() {
-    if (!document.body || !detectPortal()) return;
-    partnerCode = getPartnerCode();
-    activeLang = inferDefaultLang();
-
-    injectStyle();
-    mobileEnhance();
-    makeSelector();
-    setLanguage(activeLang);
-
-    let timer = null;
-    observer = new MutationObserver((mutations) => {
-      const selfOnly = mutations.every((m) => {
-        const target = m.target && m.target.parentElement;
-        return target && target.closest && target.closest(".gvs-partner-lang-switch");
-      });
-      if (selfOnly) return;
-      clearTimeout(timer);
-      timer = setTimeout(rescan, 80);
-    });
-    observer.observe(document.body, { subtree: true, childList: true });
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init, { once: true });
-  } else {
-    init();
-  }
+ });
+ document.documentElement.lang=lang;
+ document.documentElement.dataset.gvsPartnerI18n=VERSION;
+}
+function selector(){
+ let wrap=document.querySelector(".gvs-partner-lang-switch");
+ if(wrap){const s=wrap.querySelector("select");if(s&&s.value!==lang)s.value=lang;return;}
+ wrap=document.createElement("div");wrap.className="gvs-partner-lang-switch";wrap.dataset.gvsNoI18n="1";
+ const g=document.createElement("span");g.className="gvs-lang-globe";g.textContent="🌐";
+ const s=document.createElement("select");s.className="gvs-lang-select";s.setAttribute("aria-label","Language");
+ for(const c of LANGS){const o=document.createElement("option");o.value=c;o.textContent=`${META[c].flag} ${META[c].label}`;s.appendChild(o);}
+ s.value=lang;s.onchange=e=>setLang(e.target.value);wrap.append(g,s);
+ const h=document.querySelector("main header")||document.querySelector("header");
+ if(h){h.classList.add("gvs-partner-hero");h.appendChild(wrap);}else{wrap.classList.add("gvs-lang-floating");document.body.appendChild(wrap);}
+}
+function mobile(){
+ document.body.classList.add("gvs-partner-v2","gvs-partner-v2-full-i18n");
+ let v=document.querySelector('meta[name="viewport"]');if(!v){v=document.createElement("meta");v.name="viewport";document.head.appendChild(v);}
+ v.content="width=device-width, initial-scale=1, viewport-fit=cover";
+ document.querySelectorAll("form").forEach(f=>{f.classList.add("gvs-partner-booking-form");f.querySelectorAll("div").forEach(x=>{try{if(getComputedStyle(x).display==="grid")x.classList.add("gvs-mobile-grid")}catch(_){}})});
+ document.querySelectorAll("table").forEach(t=>{t.classList.add("gvs-partner-table");t.parentElement?.classList.add("gvs-partner-table-wrap")});
+ document.querySelectorAll("input,select,textarea,button").forEach(x=>{if(!x.closest(".gvs-partner-lang-switch"))x.classList.add("gvs-touch-control")});
+}
+function css(){
+ if(document.getElementById("gvs-partner-v2-style"))return;
+ const s=document.createElement("style");s.id="gvs-partner-v2-style";s.textContent=`
+ body.gvs-partner-v2{overflow-x:hidden}body.gvs-partner-v2 *,body.gvs-partner-v2 *:before,body.gvs-partner-v2 *:after{box-sizing:border-box}
+ body.gvs-partner-v2 .gvs-partner-hero{position:relative!important;padding-right:220px!important}
+ .gvs-partner-lang-switch{display:inline-flex;align-items:center;gap:8px;padding:6px 8px;border-radius:12px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(8px);z-index:60}
+ .gvs-partner-hero>.gvs-partner-lang-switch{position:absolute;right:18px;top:18px}.gvs-lang-floating{position:fixed;right:16px;top:16px;background:#112e52}
+ .gvs-lang-globe{font-size:18px}.gvs-lang-select{appearance:auto;min-height:40px;border:0!important;outline:0;border-radius:9px;padding:6px 28px 6px 10px!important;background:#fff!important;color:#10294a!important;font:inherit;font-weight:700;width:auto!important;max-width:190px}
+ body.gvs-partner-v2 .gvs-touch-control{min-height:44px}body.gvs-partner-v2 input,body.gvs-partner-v2 select,body.gvs-partner-v2 textarea{font-size:16px}
+ body.gvs-partner-v2 .gvs-partner-table-wrap{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+ @media(max-width:720px){body.gvs-partner-v2 main{padding-left:10px!important;padding-right:10px!important}body.gvs-partner-v2 main>div{width:100%;max-width:100%!important}
+ body.gvs-partner-v2 .gvs-mobile-grid{grid-template-columns:minmax(0,1fr)!important}body.gvs-partner-v2 .gvs-partner-booking-form input,body.gvs-partner-v2 .gvs-partner-booking-form select,body.gvs-partner-v2 .gvs-partner-booking-form textarea,body.gvs-partner-v2 .gvs-partner-booking-form button{width:100%!important;max-width:100%!important}
+ body.gvs-partner-v2 .gvs-partner-hero{padding:82px 18px 20px!important;min-height:190px;align-items:flex-start!important}body.gvs-partner-v2 .gvs-partner-hero>img{width:58px!important;height:58px!important}
+ body.gvs-partner-v2 .gvs-partner-hero>.gvs-partner-lang-switch{top:14px;right:14px}body.gvs-partner-v2 .gvs-partner-hero h1{font-size:24px!important;line-height:1.16!important}
+ .gvs-lang-select{max-width:158px;font-size:14px!important}.gvs-partner-lang-switch{padding:5px 7px;gap:5px}body.gvs-partner-v2 .gvs-partner-table{min-width:620px}}
+ @media(max-width:390px){.gvs-lang-globe{display:none}.gvs-lang-select{max-width:145px}}`;
+ document.head.appendChild(s);
+}
+function clip(){
+ if(clipboardDone)return;
+ try{if(!navigator.clipboard||typeof navigator.clipboard.writeText!=="function")return;const ow=navigator.clipboard.writeText.bind(navigator.clipboard);navigator.clipboard.writeText=t=>ow(tr(String(t||""),lang));clipboardDone=true;}catch(_){}
+}
+function qa(){
+ const t=document.body?.innerText||"";
+ if(lang!=="ru"&&/[\u0400-\u04FF]/.test(t))console.warn("[GVS I18N QA] Cyrillic text remains",{lang});
+}
+function setLang(l){
+ if(!LANGS.includes(l))l="ru";lang=l;partnerCode=code()||partnerCode;
+ try{localStorage.setItem(sk(),l)}catch(_){}
+ selector();apply(document.body);mobile();document.documentElement.lang=l;setTimeout(qa,100);
+}
+function rescan(){if(!isPortal())return;partnerCode=code()||partnerCode;selector();mobile();apply(document.body);clip();}
+function init(){
+ if(!document.body||!isPortal())return;partnerCode=code();lang=infer();css();mobile();selector();clip();setLang(lang);
+ new MutationObserver(ms=>{if(ms.every(m=>{const e=m.target?.nodeType===1?m.target:m.target?.parentElement;return e?.closest?.(".gvs-partner-lang-switch")}))return;clearTimeout(timer);timer=setTimeout(rescan,50)}).observe(document.body,{subtree:true,childList:true});
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
 })();
