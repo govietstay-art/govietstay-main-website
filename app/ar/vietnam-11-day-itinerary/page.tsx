@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "برنامج فيتنام 11 يوماً للعائلة | هانوي إلى فو كوك | GoVietStay",
   description: "برنامج فيتنام 11 يوماً للعائلات: هانوي، نينه بينه، خليج هالونغ، دا نانغ، هوي آن وفو كوك مع سيارات خاصة وإيقاع مريح.",
   alternates:{canonical:url},
-  openGraph:{title:"برنامج فيتنام 11 يوماً للعائلة",description:"مسار من هانوي إلى فو كوك بإيقاع عائلي منطقي وقابل للتعديل.",url,locale:"ar_AR",type:"article",images:[{url:"https://www.govietstay.com/ar-assets/bana.webp",alt:"برنامج فيتنام 11 يوماً"}]},
+  openGraph:{title:"برنامج فيتنام 11 يوماً للعائلة",description:"مسار من هانوي إلى فو كوك بإيقاع عائلي منطقي وقابل للتعديل.",url,locale:"ar_AR",type:"article",images:[{url:"https://www.govietstay.com/tour/bana.jpg",alt:"برنامج فيتنام 11 يوماً"}]},
   robots:{index:true,follow:true},
 };
 
@@ -17,7 +17,7 @@ export default function Page() {
     eyebrow="مسار فيتنام من الشمال إلى البحر"
     title="11 يوماً في فيتنام، من دون أن تتحول الرحلة إلى سباق"
     lead="هانوي ونينه بينه وهالونغ ثم دا نانغ وهوي آن وفو كوك. نضبط عدد الانتقالات والليالي حول مواعيد الطيران وراحة الأطفال وكبار السن."
-    image="/ar-assets/bana.webp"
+    image="/tour/bana.jpg"
     imageAlt="الجسر الذهبي في با نا هيلز، فيتنام"
     quickFacts={["هانوي إلى فو كوك", "سيارات خاصة داخل المدن", "قابل للتمديد إلى 13–14 يوماً"]}
     quickAnswerTitle="11 يوماً تكفي إذا لم تحاولوا إضافة كل مدينة في فيتنام"

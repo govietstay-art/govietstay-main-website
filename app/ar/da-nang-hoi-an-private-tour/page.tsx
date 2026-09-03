@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "رحلة دا نانغ وهوي آن الخاصة للعائلة 2026 | GoVietStay",
   description: "برنامج خاص لدا نانغ وهوي آن مع الجسر الذهبي، الشاطئ، الجبال الرخامية، الفوانيس، سيارة خاصة وخيارات طعام تناسب العائلة.",
   alternates:{canonical:url},
-  openGraph:{title:"رحلة دا نانغ وهوي آن الخاصة للعائلة",description:"برنامج 4 أيام أو أكثر بمرونة عائلية وسيارة خاصة.",url,locale:"ar_AR",type:"article",images:[{url:"https://www.govietstay.com/ar-assets/bana.webp",alt:"الجسر الذهبي قرب دا نانغ"}]},
+  openGraph:{title:"رحلة دا نانغ وهوي آن الخاصة للعائلة",description:"برنامج 4 أيام أو أكثر بمرونة عائلية وسيارة خاصة.",url,locale:"ar_AR",type:"article",images:[{url:"https://www.govietstay.com/tour/bana.jpg",alt:"الجسر الذهبي قرب دا نانغ"}]},
   robots:{index:true,follow:true},
 };
 
@@ -17,7 +17,7 @@ export default function Page() {
     eyebrow="وسط فيتنام للعائلات"
     title="دا نانغ وهوي آن: رحلة خاصة بإيقاع عائلتكم"
     lead="الشاطئ والجسر الذهبي والجبال الرخامية والفوانيس من قاعدة مريحة واحدة. نحدد وقت الانطلاق والسيارة والوجبات حول الأطفال وكبار السن بدلاً من جدول مجموعة ثابت."
-    image="/ar-assets/bana.webp"
+    image="/tour/bana.jpg"
     imageAlt="الجسر الذهبي في با نا هيلز قرب دا نانغ"
     quickFacts={["4 أيام أو أكثر", "سيارة خاصة", "هوي آن في أجمل ساعات المساء"]}
     quickAnswerTitle="اجعلوا كل يوم له تجربة رئيسية واحدة"

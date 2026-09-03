@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "رحلة فيتنام خاصة للعائلة | سيارة وفنادق وخطة مرنة | GoVietStay",
   description: "رحلات فيتنام الخاصة للعائلات مع سيارة خاصة، فنادق 4 أو 5 نجوم عند الطلب، برنامج مرن، تنسيق الطعام ودعم واتساب محلي.",
   alternates:{canonical:url},
-  openGraph:{title:"رحلة فيتنام خاصة لعائلتكم",description:"برنامج خاص من المطار إلى المطار، مبني حول الأطفال والراحة والوقت.",url,locale:"ar_AR",type:"article",images:[{url:"https://www.govietstay.com/ar-assets/hero-hoian.webp",alt:"رحلة فيتنام خاصة للعائلة"}]},
+  openGraph:{title:"رحلة فيتنام خاصة لعائلتكم",description:"برنامج خاص من المطار إلى المطار، مبني حول الأطفال والراحة والوقت.",url,locale:"ar_AR",type:"article",images:[{url:"https://www.govietstay.com/tour/hoian.jpg",alt:"رحلة فيتنام خاصة للعائلة"}]},
   robots:{index:true,follow:true},
 };
 
@@ -17,7 +17,7 @@ export default function Page() {
     eyebrow="رحلات عائلية خاصة في فيتنام"
     title="رحلة فيتنام خاصة لعائلتكم — مصممة حولكم، لا حول جدول جماعي"
     lead="نبدأ بأعمار الأطفال، احتياجات الوالدين، نوع الغرف، مستوى الفندق والسرعة التي تناسبكم. ثم نبني المدن والسيارات والجولات حول هذه المعلومات."
-    image="/ar-assets/hero-hoian.webp"
+    image="/tour/hoian.jpg"
     imageAlt="أجواء الفوانيس في هوي آن، فيتنام"
     quickFacts={["سيارة خاصة للعائلة", "فنادق 4 أو 5 نجوم عند الطلب", "دعم محلي عبر واتساب"]}
     quickAnswerTitle="الخاص يعني أن وقت عائلتكم هو الذي يقود الرحلة"

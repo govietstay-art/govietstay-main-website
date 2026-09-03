@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "فو كوك للعائلات 2026–2027 | منتجع وجزر وخطة طقس | GoVietStay",
   description: "دليل فو كوك للعائلات: أين تسكن، 3 جزر أم 4 جزر، هون ثوم، سيارة المطار، يوم منتجع وخطة بديلة للطقس والبحر.",
   alternates:{canonical:url},
-  openGraph:{title:"فو كوك للعائلات — منتجع أولاً ثم الجزر",description:"خطة عائلية مرنة لفو كوك مع منطقة الفندق والبحر والطقس في الحسبان.",url,locale:"ar_AR",type:"article",images:[{url:"https://www.govietstay.com/ar-assets/phuquoc.webp",alt:"فو كوك للعائلات"}]},
+  openGraph:{title:"فو كوك للعائلات — منتجع أولاً ثم الجزر",description:"خطة عائلية مرنة لفو كوك مع منطقة الفندق والبحر والطقس في الحسبان.",url,locale:"ar_AR",type:"article",images:[{url:"https://www.govietstay.com/tour/phuquoc/tour-06-1.jpg",alt:"فو كوك للعائلات"}]},
   robots:{index:true,follow:true},
 };
 
@@ -17,7 +17,7 @@ export default function Page() {
     eyebrow="فو كوك للعائلات"
     title="فو كوك مع العائلة: المنتجع أولاً، ثم أيام البحر"
     lead="نختار منطقة الإقامة قبل الجولات، ثم نبني الأنشطة حول أعمار الأطفال وحالة البحر: 3 أو 4 جزر، هون ثوم، يوم منتجع وخيارات شمال أو جنوب الجزيرة."
-    image="/ar-assets/phuquoc.webp"
+    image="/tour/phuquoc/tour-06-1.jpg"
     imageAlt="مياه وجزر فو كوك في جنوب فيتنام"
     quickFacts={["3 أو 4 جزر", "سيارة خاصة للمطار", "خطة بديلة للطقس"]}
     quickAnswerTitle="لا تحجزوا المنتجع قبل أن تعرفوا أين ستقضون معظم الأيام"

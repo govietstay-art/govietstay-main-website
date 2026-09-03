@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "السفر الحلال في فيتنام 2026 | للعائلات المسلمة | GoVietStay",
   description: "دليل عملي للسفر الحلال في فيتنام: الطعام الحلال، الفرق بين الحلال المعتمد والمناسب للمسلمين، الصلاة، الفنادق والسيارة الخاصة.",
   alternates: { canonical: url },
-  openGraph: { title: "السفر الحلال في فيتنام بلا تخمين", description: "تخطيط واضح للعائلات المسلمة في فيتنام مع تحقق من الطعام والصلاة والخدمات قبل الحجز.", url, locale: "ar_AR", type: "article", images:[{url:"https://www.govietstay.com/ar-assets/hero-hoian.webp",alt:"السفر الحلال في فيتنام"}] },
+  openGraph: { title: "السفر الحلال في فيتنام بلا تخمين", description: "تخطيط واضح للعائلات المسلمة في فيتنام مع تحقق من الطعام والصلاة والخدمات قبل الحجز.", url, locale: "ar_AR", type: "article", images:[{url:"https://www.govietstay.com/tour/hoian.jpg",alt:"السفر الحلال في فيتنام"}] },
   robots: { index: true, follow: true },
 };
 
@@ -17,7 +17,7 @@ export default function Page() {
     eyebrow="سفر مسلم مريح وشفاف"
     title="السفر الحلال في فيتنام، بلا تخمين"
     lead="نفرّق بوضوح بين مطعم معتمد حلال ومكان يقدم خيارات مناسبة فقط. نتحقق حسب المدينة والتاريخ، ونرتب الطعام والصلاة داخل المسار بطريقة طبيعية للعائلة."
-    image="/ar-assets/hero-hoian.webp"
+    image="/tour/hoian.jpg"
     imageAlt="مدينة هوي آن القديمة في فيتنام ليلاً"
     quickFacts={["حالة الوجبة موضحة قبل الحجز", "مراعاة أوقات الصلاة", "طلبات فندق واضحة"]}
     quickAnswerTitle="لا تفترضوا أن كلمة Muslim-friendly تعني Halal certified"

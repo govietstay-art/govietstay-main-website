@@ -52,21 +52,21 @@ const destinations = [
     kicker: "وسط فيتنام",
     title: "دا نانغ · هوي آن · هوي",
     text: "شواطئ، فوانيس وتراث — مع توقيت مرن بعيداً عن أشد ساعات الحر والزحام.",
-    image: "/ar-assets/hero-hoian.webp",
+    image: "/tour/hoian.jpg",
     position: "center",
   },
   {
     kicker: "يوم عائلي مميز",
     title: "با نا هيلز · الجسر الذهبي",
     text: "تلفريك وإطلالات وتجربة جبلية كاملة، نضعها في اليوم الأنسب لحالة الطقس والعائلة.",
-    image: "/ar-assets/bana.webp",
+    image: "/tour/bana.jpg",
     position: "center",
   },
   {
     kicker: "الجزيرة",
     title: "فو كوك · الجزر · هون ثوم",
     text: "استرخاء في المنتجع وخيارات بحرية وبرية، مع خطة بديلة إذا لم تكن حالة البحر مناسبة.",
-    image: "/ar-assets/phuquoc.webp",
+    image: "/tour/phuquoc/tour-06-1.jpg",
     position: "center",
   },
 ];
@@ -108,7 +108,7 @@ export default function Home() {
 
       <section className="hero" id="top">
         <Image
-          src="/ar-assets/hero-hoian.webp"
+          src="/tour/hoian.jpg"
           alt="الفوانيس الملونة في مدينة هوي آن القديمة في فيتنام"
           fill
           priority
