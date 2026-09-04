@@ -9,6 +9,7 @@ import MarketingTools from "./MarketingTools";
 import ReviewRequestTools from "./ReviewRequestTools";
 import PartnerTools from "./PartnerTools";
 import FinancePL from "./FinancePL";
+import OperatorPayables from "./OperatorPayables";
 import StaffSalesTeam from "./StaffSalesTeam";
 
 const SUPABASE_URL = "https://vscffgnxaexestnayvae.supabase.co";
@@ -38,7 +39,7 @@ export default function AdminV5() {
   const [bootstrap,setBootstrap]=useState("");
   const [msg,setMsg]=useState("");
   const [err,setErr]=useState("");
-  const [tab,setTab]=useState<"dashboard"|"analytics"|"marketing"|"partners"|"seo"|"leads"|"bookings"|"reviews"|"finance"|"team">("dashboard");
+  const [tab,setTab]=useState<"dashboard"|"analytics"|"marketing"|"partners"|"seo"|"leads"|"bookings"|"reviews"|"finance"|"team"|"operator_payables">("dashboard");
   const [days,setDays]=useState(7);
   const [metrics,setMetrics]=useState<any>(null);
   const [breakdown,setBreakdown]=useState<any[]>([]);
@@ -291,6 +292,7 @@ export default function AdminV5() {
         <button className={tab==="leads"?"active":""} onClick={()=>setTab("leads")}>Leads</button>
         <button className={tab==="bookings"?"active":""} onClick={()=>setTab("bookings")}>Bookings</button>
         <button className={tab=="team"?"active":""} onClick={()=>setTab("team")}>Sales Team / Payroll</button>
+        <button className={tab=="operator_payables"?"active":""} onClick={()=>setTab("operator_payables")}>Công nợ Tour Ghép</button>
         <button className={tab=="finance"?"active":""} onClick={()=>setTab("finance")}>P&L / Finance</button>
         <button className={tab==="reviews"?"active":""} onClick={()=>setTab("reviews")}>Reviews</button>
       </div>
@@ -586,6 +588,7 @@ export default function AdminV5() {
 
 
             {tab==="team"&&<StaffSalesTeam supabase={supabase} adminStaff={staff}/>}
+            {tab=="operator_payables"&&<OperatorPayables supabase={supabase}/>}
             {tab==="finance"&&<FinancePL supabase={supabase}/>} 
 
       {/* GVS_REVIEW_WHATSAPP_V1 */}
@@ -601,7 +604,7 @@ export default function AdminV5() {
 
 
 function adminPageTitle(tab:any){
-  return tab==="team"?"Sales Team / Payroll":tab==="finance"?"Monthly P&L":tab==="dashboard"?"Dashboard thật":tab==="analytics"?"Analytics khách truy cập":tab==="marketing"?"Marketing Funnel":tab==="partners"?"Partners / QR":tab==="seo"?"SEO Intelligence":tab==="leads"?"Quản lý Leads":tab==="reviews"?"Review WhatsApp":"Quản lý Bookings";
+  return tab=="operator_payables"?"Công nợ nhà tổ chức tour ghép":tab==="team"?"Sales Team / Payroll":tab==="finance"?"Monthly P&L":tab==="dashboard"?"Dashboard thật":tab==="analytics"?"Analytics khách truy cập":tab==="marketing"?"Marketing Funnel":tab==="partners"?"Partners / QR":tab==="seo"?"SEO Intelligence":tab==="leads"?"Quản lý Leads":tab==="reviews"?"Review WhatsApp":"Quản lý Bookings";
 }
 
 function shortPage(value:any){
