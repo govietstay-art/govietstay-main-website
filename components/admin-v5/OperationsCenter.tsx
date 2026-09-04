@@ -1,4 +1,5 @@
 "use client";
+// GVS-LANGUAGE-MATRIX-V3
 
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
@@ -70,13 +71,14 @@ type BookingCost = { id: string; booking_id: string; cost_type: string; descript
 type Modal = null | "guide" | "availability" | "booking" | "cost";
 
 const LANGUAGES = [
-  ["it", "🇮🇹 Italian"],
-  ["ru", "🇷🇺 Russian"],
   ["en", "🇬🇧 English"],
+  ["ru", "🇷🇺 Russian"],
   ["ko", "🇰🇷 Korean"],
-  ["zh", "🇨🇳 Chinese"],
+  ["it", "🇮🇹 Italian"],
+  ["zh", "🇨🇳 Chinese / 中文"],
   ["tr", "🇹🇷 Turkish"],
   ["he", "🇮🇱 Hebrew"],
+  ["ar", "🇸🇦 Arabic"],
   ["vi", "🇻🇳 Vietnamese"],
 ] as const;
 

@@ -1,4 +1,5 @@
 "use client";
+// GVS-LANGUAGE-MATRIX-V3
 // GVS_MARKETING_FUNNEL_V7
 // GVS_MARKETING_LINK_GENERATOR_V8
 
@@ -28,6 +29,19 @@ type Booking = { id:string; booking_code:string|null; contact_id:string|null; to
 function money(v:any) { return new Intl.NumberFormat("vi-VN").format(Number(v || 0)) + " ₫"; }
 function d(v:string|null) { return v ? new Date(v).toLocaleString("vi-VN") : "—"; }
 function code() { return "GVS-" + new Date().toISOString().slice(2,10).replace(/-/g,"") + "-" + Math.random().toString(36).slice(2,7).toUpperCase(); }
+
+const GVS_BOOKING_LANGUAGES = [
+  ["", "—"],
+  ["en", "English"],
+  ["ru", "Russian"],
+  ["ko", "Korean"],
+  ["it", "Italian"],
+  ["zh", "Chinese / 中文"],
+  ["tr", "Turkish"],
+  ["he", "Hebrew"],
+  ["ar", "Arabic / العربية"],
+  ["vi", "Vietnamese"],
+] as const;
 
 export default function AdminV5() {
   const [loading,setLoading]=useState(true);
@@ -649,7 +663,9 @@ function KPI({label,value,hint}:any){return <div className="gva-card gva-kpi"><d
 
 function LeadModal({tours,partners,onClose,onSubmit,saving}:any){return <div className="gva-modal-bg"><form className="gva-modal" onSubmit={onSubmit}><div className="gva-modal-head"><h3>Tạo Lead thật</h3><button type="button" className="gva-close" onClick={onClose}>✕</button></div><div className="gva-form-grid">
   <F label="Tên khách"><input name="full_name" className="gva-input" required /></F><F label="WhatsApp / Phone"><input name="whatsapp" className="gva-input" /></F>
-  <F label="Quốc gia"><input name="country" className="gva-input" /></F><F label="Ngôn ngữ"><select name="preferred_language" className="gva-select"><option value="">—</option><option value="ru">Russian</option><option value="ko">Korean</option><option value="en">English</option><option value="vi">Vietnamese</option></select></F>
+  <F label="Quốc gia"><input name="country" className="gva-input" /></F><F label="Ngôn ngữ"><select name="preferred_language" className="gva-select">
+    {GVS_BOOKING_LANGUAGES.map(([value,label])=><option key={value||"none"} value={value}>{label}</option>)}
+  </select></F>
   <F label="Nguồn"><select name="source" className="gva-select"><option>whatsapp</option><option>website</option><option>google_maps</option><option>google</option><option>naver</option><option>tiktok</option><option>facebook</option><option>partner_qr</option><option>desk</option><option>direct</option></select></F>
   <F label="Tour"><select name="tour_id" className="gva-select"><option value="">Chưa xác định</option>{tours.map((x:any)=><option value={x.id} key={x.id}>{x.name}</option>)}</select></F>
   <F label="Partner"><select name="partner_id" className="gva-select"><option value="">Không có</option>{partners.map((x:any)=><option value={x.id} key={x.id}>{x.name} · {x.ref_code}</option>)}</select></F>
@@ -658,10 +674,15 @@ function LeadModal({tours,partners,onClose,onSubmit,saving}:any){return <div cla
 
 function BookingModal({tours,partners,onClose,onSubmit,saving}:any){return <div className="gva-modal-bg"><form className="gva-modal" onSubmit={onSubmit}><div className="gva-modal-head"><h3>Tạo Booking thật</h3><button type="button" className="gva-close" onClick={onClose}>✕</button></div><div className="gva-form-grid">
   <F label="Tên khách"><input name="full_name" className="gva-input" required /></F><F label="WhatsApp"><input name="whatsapp" className="gva-input" /></F>
-  <F label="Quốc gia"><input name="country" className="gva-input" /></F><F label="Ngôn ngữ"><select name="preferred_language" className="gva-select"><option value="">—</option><option value="ru">Russian</option><option value="ko">Korean</option><option value="en">English</option></select></F>
+  <F label="Quốc gia"><input name="country" className="gva-input" /></F><F label="Ngôn ngữ"><select name="preferred_language" className="gva-select">
+    {GVS_BOOKING_LANGUAGES.map(([value,label])=><option key={value||"none"} value={value}>{label}</option>)}
+  </select></F>
   <F label="Tour"><select name="tour_id" className="gva-select" required><option value="">Chọn tour</option>{tours.map((x:any)=><option value={x.id} key={x.id}>{x.name}</option>)}</select></F><F label="Ngày đi"><input name="tour_date" type="date" className="gva-input" required /></F>
   <F label="Adults"><input name="adults" type="number" min="0" defaultValue="1" className="gva-input" /></F><F label="Children"><input name="children" type="number" min="0" defaultValue="0" className="gva-input" /></F>
-  <F label="Revenue VND"><input name="revenue" inputMode="numeric" className="gva-input" placeholder="1900000" required /></F><F label="Guide language"><select name="guide_language" className="gva-select" required><option value="">Chọn guide</option><option value="en">English Guide</option><option value="ru">Russian Guide</option></select></F><F label="Nguồn"><select name="source" className="gva-select"><option>whatsapp</option><option>website</option><option>google_maps</option><option>partner_qr</option><option>desk</option><option>direct</option></select></F>
+  <F label="Revenue VND"><input name="revenue" inputMode="numeric" className="gva-input" placeholder="1900000" required /></F><F label="Guide language"><select name="guide_language" className="gva-select" required>
+    <option value="">Chọn guide</option>
+    {GVS_BOOKING_LANGUAGES.filter(([value])=>value).map(([value,label])=><option key={value} value={value}>{label} Guide</option>)}
+  </select></F><F label="Nguồn"><select name="source" className="gva-select"><option>whatsapp</option><option>website</option><option>google_maps</option><option>partner_qr</option><option>desk</option><option>direct</option></select></F>
   <F label="Partner"><select name="partner_id" className="gva-select"><option value="">Không có</option>{partners.map((x:any)=><option value={x.id} key={x.id}>{x.name} · {x.ref_code}</option>)}</select></F><F label="Khách sạn"><input name="hotel" className="gva-input" /></F>
   <F label="Ghi chú" wide><textarea name="notes" className="gva-input" rows={3} /></F>
 </div><div style={{display:"flex",gap:8,justifyContent:"flex-end",marginTop:16}}><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button className="gva-btn" disabled={saving}>{saving?"Đang lưu…":"Lưu Booking"}</button></div></form></div>}
