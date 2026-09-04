@@ -4,6 +4,7 @@
 
 import { FormEvent, useMemo, useState } from "react";
 import styles from "./TommyPage.module.css";
+import { submitStaffBookingRequest } from "../../../lib/staffBookingClient";
 
 const cx = (names: string) => names.split(" ").map((name) => styles[name]).filter(Boolean).join(" ");
 
@@ -238,7 +239,7 @@ function createBookingId() {
     hourCycle: "h23",
   }).formatToParts(new Date());
   const read = (type: string) => parts.find((part) => part.type === type)?.value ?? "00";
-  return `GVS-TOMMY-${read("year")}${read("month")}${read("day")}-${read("hour")}${read("minute")}`;
+  return `GVS-TOMMY-${read("year")}${read("month")}${read("day")}-${read("hour")}${read("minute")}-${Math.random().toString(36).slice(2,5).toUpperCase()}`;
 }
 
 function GuestCounter({ label, value, onChange }: { label: string; value: number; onChange: (value: number) => void }) {
@@ -380,7 +381,7 @@ export default function TommyOfficialPage() {
     setPinError("Неверный PIN. Попробуйте ещё раз.");
   }
 
-  function submitBooking(event: FormEvent<HTMLFormElement>) {
+  async function submitBooking(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const guestCount = adults + children + infants;
@@ -489,6 +490,31 @@ export default function TommyOfficialPage() {
       "",
       "Tommy • GoVietStay 💚",
     ];
+    try {
+      await submitStaffBookingRequest({
+        sales_code: "GVS-RU-TOMMY-02",
+        booking_code: bookingId,
+        guest_name: String(data.get("guest") || ""),
+        phone: String(data.get("phone") || ""),
+        tour_date: String(data.get("date") || ""),
+        pickup_time: String(data.get("pickupTime") || ""),
+        hotel: String(data.get("hotel") || ""),
+        region,
+        tour_slug: currentTour.id,
+        tour_name: tourEnglish,
+        variant_id: currentVariant.id,
+        variant_name: variantEnglish,
+        language,
+        adults, children, infants,
+        gross_revenue_vnd: total + discount,
+        discount_vnd: discount,
+        deposit_vnd: deposit,
+        notes: note + "\nLocal Point: " + localPoint,
+      });
+    } catch (e: any) {
+      setBookingError("Не удалось сохранить booking в Admin. Проверьте интернет и попробуйте ещё раз. " + (e?.message || ""));
+      return;
+    }
     const whatsAppUrl = `https://wa.me/84937762607?text=${encodeURIComponent(message)}`;
     setBookingError("");
     setCopied(false);
@@ -736,8 +762,8 @@ export default function TommyOfficialPage() {
                   <div className={cx("summary-balance")}><span>Остаток</span><strong>{formatVnd(balance)}</strong></div>
                   <p className={cx("summary-warning")}>Перед отправкой проверьте тариф, детские условия и дополнительные услуги по актуальному прайсу GoVietStay.</p>
                   {bookingError && <p className={cx("booking-error")}>{bookingError}</p>}
-                  {bookingResult && <p className={cx("whatsapp-ready")}>✓ WhatsApp открыт. Проверьте сообщение и нажмите Send.</p>}
-                  <button className={cx("button yellow full whatsapp-submit")} type="submit">Отправить David в WhatsApp</button>
+                  {bookingResult && <p className={cx("whatsapp-ready")}>✓ Booking сохранён в Admin. WhatsApp открыт — проверьте сообщение и нажмите Send.</p>}
+                  <button className={cx("button yellow full whatsapp-submit")} type="submit">Сохранить в Admin + отправить David</button>
                   {bookingResult && <button className={cx("copy-fallback")} type="button" onClick={copyBooking}>{copied ? "✓ Скопировано" : "Скопировать booking"}</button>}
                   {customerConfirmation && <p className={cx("customer-step")}>После подтверждения David:</p>}
                   {customerConfirmation && <button className={cx("customer-copy")} type="button" onClick={copyCustomerConfirmation}>{customerCopied ? "✓ Подтверждение скопировано" : "Копировать подтверждение клиенту"}</button>}

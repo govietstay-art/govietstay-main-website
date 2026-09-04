@@ -72,6 +72,7 @@ type BookingRow = {
   finance_record:boolean;
   recognized:boolean;
   finance_notes:string|null;
+  finance_finalized:boolean;
 };
 
 type Expense = {
@@ -183,7 +184,8 @@ export default function FinancePL({supabase}:Props){
         refund_recovery_vnd:parseMoney(vals.refund_recovery_vnd),
         other_cost_vnd:parseMoney(vals.other_cost_vnd),
         direct_cost_paid_vnd:parseMoney(vals.direct_cost_paid_vnd),
-        notes:String(vals.notes||"").trim()||null
+        notes:String(vals.notes||"").trim()||null,
+        finance_finalized:vals.finance_finalized==="on"
       };
       const [b,fres]=await Promise.all([
         supabase.from("bookings").update({gross_revenue_vnd:gross,discount_vnd:discount}).eq("id",editBooking.booking_id),
@@ -244,7 +246,7 @@ export default function FinancePL({supabase}:Props){
       <PLCard label="Revenue" value={money(summary.revenue_vnd)} hint={`${summary.bookings_completed||0} completed bookings · ${summary.pax_completed||0} pax`} />
       <PLCard label="Direct Cost" value={money(summary.direct_costs_vnd)} hint="Supplier + guide + driver + tickets + meals + commissions…" />
       <PLCard label="Gross Profit" value={money(summary.gross_profit_vnd)} hint={`Gross margin ${Number(summary.gross_margin_pct||0).toFixed(1)}%`} tone={(summary.gross_profit_vnd||0)>=0?"good":"bad"} />
-      <PLCard label="Operating Expenses" value={money(summary.opex_vnd)} hint="Salary / Ads / Office / Software / Other" />
+      <PLCard label="Operating Expenses" value={money(summary.opex_vnd)} hint="Staff base salary + manual OPEX / Ads / Office / Software / Other" />
       <PLCard label="Net Operating Profit" value={money(summary.net_profit_vnd)} hint={`Net margin ${Number(summary.net_margin_pct||0).toFixed(1)}%`} tone={(summary.net_profit_vnd||0)>=0?"good":"bad"} strong />
     </div>
 
@@ -360,6 +362,7 @@ function FinanceModal({row,saving,onClose,onSubmit}:any){
       <MoneyField name="payment_fee_vnd" label="Payment / platform fee" value={row.payment_fee_vnd}/>
       <MoneyField name="refund_recovery_vnd" label="Refund / service recovery" value={row.refund_recovery_vnd}/>
       <MoneyField name="other_cost_vnd" label="Other direct cost" value={row.other_cost_vnd}/>
+      <Field label="Finance finalized" wide><label style={{display:"flex",gap:8,alignItems:"center",fontWeight:700}}><input type="checkbox" name="finance_finalized" defaultChecked={!!row.finance_finalized}/> Costs checked · payment/revenue reviewed · allow staff commission calculation</label></Field>
       <Field label="Finance notes" wide><textarea className="gva-input" name="notes" rows={3} defaultValue={row.finance_notes||""}/></Field>
     </div>
     <div className="gvs-modal-summary"><span>Current revenue <b>{money(row.revenue_vnd)}</b></span><span>Direct cost <b>{money(row.total_direct_cost_vnd)}</b></span><span>Profit <b>{money(row.gross_profit_vnd)}</b></span></div>
