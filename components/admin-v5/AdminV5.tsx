@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 // GVS_MARKETING_FUNNEL_V7
 // GVS_MARKETING_LINK_GENERATOR_V8
 
@@ -8,6 +8,7 @@ import "./admin-v5.css";
 import MarketingTools from "./MarketingTools";
 import ReviewRequestTools from "./ReviewRequestTools";
 import PartnerTools from "./PartnerTools";
+import FinancePL from "./FinancePL";
 
 const SUPABASE_URL = "https://vscffgnxaexestnayvae.supabase.co";
 const SUPABASE_KEY = "sb_publishable_BI1rIhiGB5cEUyJbnKGI5w_kCMI--oV";
@@ -36,7 +37,7 @@ export default function AdminV5() {
   const [bootstrap,setBootstrap]=useState("");
   const [msg,setMsg]=useState("");
   const [err,setErr]=useState("");
-  const [tab,setTab]=useState<"dashboard"|"analytics"|"marketing"|"partners"|"seo"|"leads"|"bookings"|"reviews">("dashboard");
+  const [tab,setTab]=useState<"dashboard"|"analytics"|"marketing"|"partners"|"seo"|"leads"|"bookings"|"reviews"|"finance">("dashboard");
   const [days,setDays]=useState(7);
   const [metrics,setMetrics]=useState<any>(null);
   const [breakdown,setBreakdown]=useState<any[]>([]);
@@ -288,6 +289,7 @@ export default function AdminV5() {
         <button className={tab==="seo"?"active":""} onClick={()=>setTab("seo")}>SEO Intelligence</button>
         <button className={tab==="leads"?"active":""} onClick={()=>setTab("leads")}>Leads</button>
         <button className={tab==="bookings"?"active":""} onClick={()=>setTab("bookings")}>Bookings</button>
+        <button className={tab==="finance"?"active":""} onClick={()=>setTab("finance")}>P&L / Finance</button>
         <button className={tab==="reviews"?"active":""} onClick={()=>setTab("reviews")}>Reviews</button>
       </div>
     </aside>
@@ -581,6 +583,8 @@ export default function AdminV5() {
       </>}
 
 
+            {tab==="finance"&&<FinancePL supabase={supabase}/>}
+
       {/* GVS_REVIEW_WHATSAPP_V1 */}
       {tab==="reviews"&&<>
         <ReviewRequestTools bookings={bookings} contactMap={contactMap} tourMap={tourMap}/>
@@ -594,7 +598,7 @@ export default function AdminV5() {
 
 
 function adminPageTitle(tab:any){
-  return tab==="dashboard"?"Dashboard thật":tab==="analytics"?"Analytics khách truy cập":tab==="marketing"?"Marketing Funnel":tab==="partners"?"Partners / QR":tab==="seo"?"SEO Intelligence":tab==="leads"?"Quản lý Leads":tab==="reviews"?"Review WhatsApp":"Quản lý Bookings";
+  return tab==="finance"?"Monthly P&L":tab==="dashboard"?"Dashboard thật":tab==="analytics"?"Analytics khách truy cập":tab==="marketing"?"Marketing Funnel":tab==="partners"?"Partners / QR":tab==="seo"?"SEO Intelligence":tab==="leads"?"Quản lý Leads":tab==="reviews"?"Review WhatsApp":"Quản lý Bookings";
 }
 
 function shortPage(value:any){
