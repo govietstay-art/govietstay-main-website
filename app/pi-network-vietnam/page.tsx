@@ -1,69 +1,73 @@
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
+export const metadata = {
   title: "Pi Network Vietnam Travel | 10% Pioneer Welcome | GoVietStay",
   description:
-    "A special GoVietStay page for Pi Pioneers travelling to Vietnam. Discover Da Nang, Hoi An, Hue and Phu Quoc, plus a 10% Pioneer welcome offer.",
-  keywords: [
-    "Pi Network Vietnam",
-    "Pi Network travel",
-    "Pi Pioneer Vietnam",
-    "Pi Network Da Nang",
-    "Pi Network Phu Quoc",
-    "Vietnam travel Pi Network",
-    "GoVietStay Pi Network",
-  ],
-  alternates: { canonical: "https://www.govietstay.com/pi-network-vietnam" },
+    "A special GoVietStay landing page for Pi Pioneers travelling to Vietnam. 10% Pioneer welcome, local support, WhatsApp, Telegram, Google Reviews and trusted Vietnam travel guides.",
+  alternates: {
+    canonical: "https://www.govietstay.com/pi-network-vietnam",
+  },
   openGraph: {
-    title: "Pi Pioneer Travelling to Vietnam? Welcome to GoVietStay",
-    description: "Any Pioneer. Any country. 10% off GoVietStay bookings in Vietnam.",
+    title: "Pi Pioneer travelling to Vietnam? Welcome to GoVietStay",
+    description:
+      "Eight years of belief. One global community. 10% Pioneer welcome in Vietnam.",
     url: "https://www.govietstay.com/pi-network-vietnam",
     siteName: "GoVietStay",
     type: "website",
-    images: [{ url: "/tour/phuquoc/tour-09-1.jpg", width: 1600, height: 1067, alt: "Phu Quoc, Vietnam" }],
+    images: [
+      {
+        url: "/pi-network/govietstay-pi-handshake.webp",
+        width: 1254,
+        height: 1254,
+        alt: "GoVietStay and Pi Pioneer community",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Pi Pioneer x Vietnam | GoVietStay",
-    description: "8 years of belief. One global community. 10% Pioneer welcome in Vietnam.",
-    images: ["/tour/phuquoc/tour-09-1.jpg"],
+    title: "GoVietStay x Pi Pioneer Community",
+    description:
+      "Pi Pioneer travelling to Vietnam? Claim a 10% Pioneer welcome with GoVietStay.",
+    images: ["/pi-network/govietstay-pi-handshake.webp"],
   },
 };
 
 const whatsapp =
-  "https://wa.me/84937762607?text=Hello%20GoVietStay%2C%20I%20am%20a%20Pi%20Pioneer.%20I%20want%20to%20claim%20the%2010%25%20Pioneer%20welcome%20offer.%20Code%3A%20PI10";
+  "https://wa.me/84937762607?text=Hello%20GoVietStay%2C%20I%20am%20a%20Pi%20Pioneer.%20I%20want%20to%20claim%20the%2010%25%20Pioneer%20welcome.%20Code%3A%20PI10";
 
-const shareX =
-  "https://twitter.com/intent/tweet?text=Eight%20years%20with%20Pi.%20Now%20GoVietStay%20welcomes%20Pi%20Pioneers%20to%20Vietnam%20with%2010%25%20off%20bookings.%20A%20small%20step%20from%20digital%20community%20to%20real-world%20travel.&url=https%3A%2F%2Fwww.govietstay.com%2Fpi-network-vietnam";
+const telegram = "https://t.me/govietstay_travel_bot";
+const googleReviews = "https://maps.app.goo.gl/znWBmL8zPKEJqnoW6?g_st=ic";
 
 const destinations = [
   {
+    code: "01",
     city: "PHU QUOC",
     title: "Pearl Island, planned around your trip.",
-    copy: "Island hopping, airport transfer, family planning and private experiences with local support.",
+    copy:
+      "Island hopping, airport transfer, family planning and weather-aware local support.",
     href: "/travel/phu-quoc-travel-guide",
-    tag: "ISLANDS · BEACH · FAMILY",
   },
   {
+    code: "02",
     city: "DA NANG",
-    title: "Vietnam's coastal city with local support.",
-    copy: "Ba Na Hills, Marble Mountains, airport transfer, private cars and Central Vietnam planning.",
+    title: "Vietnam's coastal city with a trusted local base.",
+    copy:
+      "Ba Na Hills, beaches, airport transfer, private cars and Central Vietnam planning.",
     href: "/travel/da-nang-travel-guide",
-    tag: "CITY · BEACH · DAY TRIPS",
   },
   {
+    code: "03",
     city: "HOI AN",
-    title: "Ancient streets, lantern evenings, real moments.",
-    copy: "Coconut Village, old-town walks, local food and private evening experiences from Da Nang.",
-    href: "/travel/hoi-an-from-da-nang",
-    tag: "CULTURE · FOOD · LANTERNS",
+    title: "Ancient streets, lantern evenings and local experiences.",
+    copy:
+      "Coconut Forest, basket boat, Ancient Town, food, lanterns and a practical evening route.",
+    href: "/travel/hoi-an-day-trip-from-da-nang",
   },
   {
+    code: "04",
     city: "HUE",
-    title: "A heritage day with room to understand it.",
-    copy: "Imperial history, Hai Van Pass routing and private day-trip planning with a local team.",
-    href: "/travel/hue-from-da-nang",
-    tag: "HERITAGE · PRIVATE DAY",
+    title: "A full heritage day with time to understand it.",
+    copy:
+      "Imperial City, cultural context, Hai Van routing and joined or private options.",
+    href: "/travel/hue-day-trip-from-da-nang",
   },
 ];
 
@@ -74,337 +78,894 @@ export default function PiNetworkVietnamPage() {
     name: "Pi Network Vietnam Travel | GoVietStay",
     url: "https://www.govietstay.com/pi-network-vietnam",
     description:
-      "Independent GoVietStay travel landing page welcoming Pi Pioneers visiting Vietnam.",
-    about: ["Vietnam travel", "Pi Network community", "Pi Pioneers"],
+      "Independent GoVietStay travel page welcoming Pi Pioneers visiting Vietnam.",
     mainEntity: {
       "@type": "Offer",
-      name: "Pi Pioneer Welcome - 10% Off",
-      description: "10% off eligible GoVietStay bookings for verified Pi Pioneers worldwide.",
+      name: "Pi Pioneer Welcome - PI10",
+      description:
+        "10% off eligible GoVietStay bookings for Pi Pioneers travelling to Vietnam.",
       url: "https://www.govietstay.com/pi-network-vietnam",
-      seller: { "@type": "Organization", name: "GoVietStay", url: "https://www.govietstay.com" },
+      seller: {
+        "@type": "Organization",
+        name: "GoVietStay",
+        url: "https://www.govietstay.com",
+      },
     },
   };
 
   return (
-    <main className="piPage">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+    <main className="piPageV6">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
 
-      <section className="hero">
-        <div className="heroPhoto" aria-hidden="true" />
-        <div className="heroShade" aria-hidden="true" />
-        <div className="network" aria-hidden="true">
-          <span className="n n1" /><span className="n n2" /><span className="n n3" /><span className="n n4" />
-          <span className="line l1" /><span className="line l2" /><span className="line l3" />
-        </div>
+      <section className="heroV6">
+        <div className="heroImageV6" />
+        <div className="heroShadeV6" />
 
-        <nav className="nav shell">
-          <a className="brand" href="/">GoVietStay<span>Trusted Local Support</span></a>
-          <div className="navLinks">
+        <nav className="navV6 shellV6">
+          <a className="brandV6" href="/">
+            GoVietStay
+            <span>TRUSTED LOCAL SUPPORT</span>
+          </a>
+
+          <div className="navLinksV6">
             <a href="#journey">Our Journey</a>
             <a href="#pioneer-gift">10% Pioneer Gift</a>
             <a href="#vietnam">Vietnam</a>
           </div>
-          <a className="navCta" href={whatsapp}>Claim PI10</a>
+
+          <a className="navClaimV6" href={whatsapp} target="_blank" rel="noreferrer">
+            Claim PI10
+          </a>
         </nav>
 
-        <div className="heroInner shell">
-          <div className="eyebrow"><b>PI PIONEERS × VIETNAM</b><span>INDEPENDENT COMMUNITY WELCOME</span></div>
-          <h1>A Pioneer journey that<br /><em>never stopped believing.</em></h1>
-          <p className="lead">
-            For eight years, Pi has represented more than a screen to us. It has represented an idea: that technology becomes meaningful when real people can use it in real life.
-          </p>
-          <div className="heroActions">
-            <a className="primary" href="#pioneer-gift">Unlock 10% Pioneer Welcome</a>
-            <a className="ghost" href="#future">See the future we believe in ↓</a>
+        <div className="heroInnerV6 shellV6">
+          <div className="heroEyebrowV6">
+            <b>PI PIONEERS X VIETNAM</b>
+            <span>INDEPENDENT COMMUNITY WELCOME</span>
           </div>
-          <div className="trustRow">
-            <div><strong>60M+</strong><span>engaged members stated by Pi Network</span></div>
-            <div><strong>GLOBAL</strong><span>Pioneer community</span></div>
-            <div><strong>VIETNAM</strong><span>Da Nang · Hoi An · Hue · Phu Quoc</span></div>
+
+          <h1>
+            A Pioneer journey that
+            <em> never stopped believing.</em>
+          </h1>
+
+          <p className="heroLeadV6">
+            For eight years, Pi has represented more than a screen to us. It has
+            represented an idea: technology becomes meaningful when real people
+            can connect it with real life.
+          </p>
+
+          <div className="heroActionsV6">
+            <a className="primaryV6" href="#pioneer-gift">
+              Unlock 10% Pioneer Welcome
+            </a>
+            <a className="secondaryV6" href="#future">
+              See the future we believe in
+            </a>
+          </div>
+
+          <div className="heroStatsV6">
+            <div>
+              <strong>PI10</strong>
+              <span>10% Pioneer welcome</span>
+            </div>
+            <div>
+              <strong>GLOBAL</strong>
+              <span>Pioneers from any country</span>
+            </div>
+            <div>
+              <strong>VIETNAM</strong>
+              <span>Da Nang - Hoi An - Hue - Phu Quoc</span>
+            </div>
           </div>
         </div>
-
-        <div className="heroNote">GO VIETNAM · GO LOCAL · GO WITH TRUST</div>
       </section>
 
-      {/* GVS_PI_CONTACT_V3 */}
-      <section className="collabShowcase" aria-label="GoVietStay and Pi Pioneer community">
-        <div className="shell collabWrap">
-          <span className="kicker">GOVIETSTAY Ã— PI PIONEER COMMUNITY</span>
+      <section className="collabV6">
+        <div className="shellV6 collabInnerV6">
+          <span className="sectionLabelV6">GOVIETSTAY X PI PIONEER COMMUNITY</span>
 
           <img
-            className="collabOfficialLogo"
+            className="officialLogoV6"
             src="/pi-network/govietstay-logo.png"
             alt="GoVietStay official logo"
           />
 
-          <h2 className="collabTitle">
+          <h2>
             Travel meets <em>community.</em>
           </h2>
 
-          <p className="collabIntro">
-            A special GoVietStay welcome for Pioneers travelling to Vietnam â€”
-            real local support, real destinations and <strong>10% off eligible bookings with code PI10.</strong>
+          <p className="collabLeadV6">
+            A special GoVietStay welcome for Pioneers travelling to Vietnam -
+            real local support, real destinations and a clear way to contact us.
           </p>
 
-          <div className="collabArtFrame">
+          <div className="collabImageWrapV6">
             <img
-              className="collabArt"
               src="/pi-network/govietstay-pi-handshake.webp"
-              alt="GoVietStay and Pi Network community handshake concept"
+              alt="GoVietStay and Pi Pioneer community travel concept"
             />
           </div>
 
-          <p className="collabIndependent">
-            Independent GoVietStay community tribute for Pi Pioneers. This visual does not imply official endorsement,
-            sponsorship or partnership by Pi Network or the Pi Core Team.
-          </p>
-
-          <div className="contactMega">
+          <div className="contactGridV6">
             <a
-              className="contactMegaBtn wa"
-              href="https://wa.me/84937762607?text=Hello%20GoVietStay%2C%20I%20am%20a%20Pi%20Pioneer.%20I%20want%20to%20claim%20the%2010%25%20Pioneer%20welcome.%20Code%3A%20PI10"
+              className="contactCardV6 waV6"
+              href={whatsapp}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
-              <span className="contactIcon">ðŸ’¬</span>
-              <span><b>WhatsApp 24/7</b><small>Claim PI10 Â· Talk to GoVietStay</small></span>
+              <span className="contactIconV6">WA</span>
+              <span className="contactTextV6">
+                <b>WhatsApp 24/7</b>
+                <small>Claim PI10 - talk to GoVietStay</small>
+              </span>
+              <span className="contactArrowV6">-&gt;</span>
             </a>
 
             <a
-              className="contactMegaBtn tg"
-              href="https://t.me/govietstay_travel_bot"
+              className="contactCardV6 tgV6"
+              href={telegram}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
-              <span className="contactIcon">âœˆï¸</span>
-              <span><b>Telegram</b><small>Open GoVietStay Travel Bot</small></span>
+              <span className="contactIconV6">TG</span>
+              <span className="contactTextV6">
+                <b>Telegram</b>
+                <small>Open @govietstay_travel_bot</small>
+              </span>
+              <span className="contactArrowV6">-&gt;</span>
             </a>
 
             <a
-              className="contactMegaBtn gr"
-              href="https://maps.app.goo.gl/znWBmL8zPKEJqnoW6?g_st=ic"
+              className="contactCardV6 grV6"
+              href={googleReviews}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
-              <span className="contactIcon">â­</span>
-              <span><b>Google Reviews</b><small>Verify GoVietStay before booking</small></span>
+              <span className="contactIconV6">G</span>
+              <span className="contactTextV6">
+                <b>Google Reviews</b>
+                <small>Verify GoVietStay before booking</small>
+              </span>
+              <span className="contactArrowV6">-&gt;</span>
             </a>
           </div>
+
+          <p className="independentNoteV6">
+            Independent GoVietStay community page for Pi Pioneers. This page and
+            visual do not imply official endorsement, sponsorship or partnership
+            by Pi Network or the Pi Core Team.
+          </p>
         </div>
       </section>
-      <section id="pioneer-gift" className="gift">
-        <div className="shell giftGrid">
+
+      <section id="pioneer-gift" className="giftV6">
+        <div className="shellV6 giftGridV6">
           <div>
-            <span className="kicker">A GIFT TO THE COMMUNITY</span>
-            <h2>ANY PIONEER.<br />ANY COUNTRY.<br /><b>10% OFF.</b></h2>
+            <span className="sectionLabelV6 darkLabelV6">A GIFT TO THE COMMUNITY</span>
+            <h2>
+              ANY PIONEER.
+              <br />
+              ANY COUNTRY.
+              <br />
+              <b>10% OFF.</b>
+            </h2>
           </div>
-          <div className="giftCard">
-            <span className="code">CODE · PI10</span>
+
+          <div className="giftCardV6">
+            <span className="piCodeV6">CODE: PI10</span>
             <h3>10% Pioneer Welcome</h3>
             <p>
-              If you are a Pi Pioneer travelling to Vietnam, GoVietStay welcomes you with 10% off eligible GoVietStay bookings — wherever in the world you come from.
+              If you are a Pi Pioneer travelling to Vietnam, GoVietStay welcomes
+              you with 10% off eligible bookings - wherever in the world you come from.
             </p>
-            <ol>
-              <li><span>01</span>Tell us you are a Pi Pioneer.</li>
-              <li><span>02</span>Send your travel date, hotel and group size.</li>
-              <li><span>03</span>Use code <b>PI10</b> when we confirm your booking.</li>
-            </ol>
-            <a className="primary wide" href={whatsapp}>Claim my Pioneer 10% →</a>
-            <small>Offer confirmation, service availability and booking conditions apply. This is a GoVietStay travel promotion, not an investment or financial offer.</small>
+
+            <div className="stepsV6">
+              <div><span>01</span><b>Tell us you are a Pi Pioneer.</b></div>
+              <div><span>02</span><b>Send dates, guests and hotel.</b></div>
+              <div><span>03</span><b>Use PI10 when we confirm the booking.</b></div>
+            </div>
+
+            <a className="primaryV6 fullV6" href={whatsapp} target="_blank" rel="noreferrer">
+              Claim my Pioneer 10%
+            </a>
+
+            <small className="giftLegalV6">
+              Service availability and booking conditions apply. This is a
+              GoVietStay travel promotion, not an investment or financial offer.
+            </small>
           </div>
         </div>
       </section>
 
-      <section id="journey" className="journey shell">
-        <div className="sectionHead">
-          <span className="kicker">WHY THIS PAGE EXISTS</span>
-          <h2>We did not build this page because Pi is trending.</h2>
-          <p>We built it because the journey matters to us.</p>
-        </div>
-        <div className="storyGrid">
-          <div className="bigQuote">“A digital community becomes powerful when it creates trust between real people.”</div>
-          <div className="storyText">
+      <section id="journey" className="journeyV6 shellV6">
+        <span className="sectionLabelV6">WHY THIS PAGE EXISTS</span>
+        <h2>We did not build this page only because Pi is being discussed.</h2>
+        <p className="journeyIntroV6">
+          We built it because the journey matters to us.
+        </p>
+
+        <div className="journeyGridV6">
+          <blockquote>
+            "A digital community becomes powerful when it creates trust between real people."
+          </blockquote>
+
+          <div>
             <p>
-              We have stayed with Pi through uncertainty, waiting, debate and change. That experience shaped how we see technology: belief alone is not enough — utility has to reach everyday life.
+              We stayed with Pi through uncertainty, waiting, debate and change.
+              That experience shaped how we see technology: belief alone is not
+              enough - utility has to reach everyday life.
             </p>
             <p>
-              GoVietStay works in the physical world: airports, hotels, boats, guides, families, local restaurants and real journeys. Our contribution is simple — welcome Pioneers who come to Vietnam and connect the digital community with a trusted local experience.
+              GoVietStay works in the physical world: airports, hotels, cars,
+              boats, guides, families, restaurants and real journeys. Our
+              contribution is simple - welcome Pioneers who come to Vietnam and
+              connect the digital community with trusted local support.
             </p>
           </div>
         </div>
-        <div className="timeline">
-          <div><span>EARLY DAYS</span><b>Belief</b><p>Stay curious. Keep learning.</p></div>
-          <div><span>OPEN NETWORK</span><b>Utility</b><p>Real-world use becomes the important question.</p></div>
-          <div><span>NOW</span><b>Travel</b><p>Bring the community into real places and real experiences.</p></div>
-          <div><span>NEXT</span><b>More doors</b><p>We hope useful digital value becomes easier to use around the world.</p></div>
-        </div>
       </section>
 
-      <section id="future" className="future">
-        <div className="futureGlow" aria-hidden="true" />
-        <div className="shell futureInner">
-          <span className="kicker light">THE FUTURE WE BELIEVE IN</span>
-          <h2>From a phone screen<br />to <em>real places.</em></h2>
-          <p className="futureLead">
-            Imagine a traveller landing in a new country and discovering that the community they have been part of for years can connect them to transport, food, experiences and trusted local businesses.
+      <section id="future" className="futureV6">
+        <div className="shellV6">
+          <span className="sectionLabelV6 lightLabelV6">THE FUTURE WE BELIEVE IN</span>
+          <h2>
+            From a phone screen
+            <br />
+            to <em>real places.</em>
+          </h2>
+
+          <p className="futureLeadV6">
+            We hope digital communities become easier to connect with legitimate
+            businesses and useful services around the world - travel, transport,
+            food, experiences and everyday needs.
           </p>
-          <div className="futureCards">
-            <article><span>01</span><h3>People first</h3><p>Technology should make connection easier — not replace human trust.</p></article>
-            <article><span>02</span><h3>Utility over hype</h3><p>Real value is created when digital tools solve everyday needs.</p></article>
-            <article><span>03</span><h3>More places, over time</h3><p>We hope to see Pi accepted by more legitimate businesses, communities and services worldwide.</p></article>
+
+          <div className="futureCardsV6">
+            <article>
+              <span>01</span>
+              <h3>People first</h3>
+              <p>Technology should make connection easier, not replace human trust.</p>
+            </article>
+            <article>
+              <span>02</span>
+              <h3>Utility over hype</h3>
+              <p>Real value grows when digital tools solve real everyday needs.</p>
+            </article>
+            <article>
+              <span>03</span>
+              <h3>More real-world doors</h3>
+              <p>We hope more legitimate services can welcome Pi communities over time.</p>
+            </article>
           </div>
-          <a className="xButton" href={shareX} target="_blank" rel="noreferrer">Share this vision on X ↗</a>
         </div>
       </section>
 
-      <section id="vietnam" className="vietnam shell">
-        <div className="vietnamHero">
-          <img src="/hero-hoian-new.png" alt="Dragon Bridge in Da Nang, Vietnam" />
-          <div className="vietnamOverlay">
-            <span>WELCOME TO VIETNAM</span>
-            <h2>Your Pioneer journey can become a real journey here.</h2>
-            <p>Travel with local support in Central Vietnam and Phu Quoc.</p>
-          </div>
+      <section id="vietnam" className="destinationsV6 shellV6">
+        <div className="destinationHeadV6">
+          <span className="sectionLabelV6">WELCOME TO VIETNAM</span>
+          <h2>Your Pioneer journey can become a real journey here.</h2>
+          <p>Every destination button below goes to an existing GoVietStay landing page.</p>
         </div>
 
-        <div className="destGrid">
-          {destinations.map((d, i) => (
-            <a className="dest" href={d.href} key={d.city}>
-              <span className="num">0{i + 1}</span>
-              <small>{d.tag}</small>
+        <div className="destinationGridV6">
+          {destinations.map((d) => (
+            <a className="destinationCardV6" href={d.href} key={d.city}>
+              <span className="destinationCodeV6">{d.code}</span>
               <h3>{d.city}</h3>
               <h4>{d.title}</h4>
               <p>{d.copy}</p>
-              <b>Explore →</b>
+              <b>Open guide -&gt;</b>
             </a>
           ))}
         </div>
       </section>
 
-      <section className="facts shell">
-        <div className="sectionHead compact">
-          <span className="kicker">OFFICIAL PI SOURCES</span>
-          <h2>Belief is personal. Facts should still be verifiable.</h2>
-        </div>
-        <div className="factGrid">
-          <a href="https://minepi.com/about/" target="_blank" rel="noreferrer"><b>Pi Network · About</b><span>Official overview and stated 60M+ engaged members ↗</span></a>
-          <a href="https://minepi.com/blog/pi-day-2025/" target="_blank" rel="noreferrer"><b>Open Network utility</b><span>Official Pi article on local commerce and real-world utility ↗</span></a>
-          <a href="https://minepi.com/pi-trademark-guidelines/" target="_blank" rel="noreferrer"><b>Trademark guidelines</b><span>Why this page remains visually independent from Pi's official branding ↗</span></a>
-        </div>
-      </section>
-
-      {/* GVS_PI_REVIEWS_V3 */}
-      <section className="piReviews">
-        <div className="shell">
-          <div className="reviewHeader">
+      <section className="reviewsV6">
+        <div className="shellV6">
+          <div className="reviewsHeadV6">
             <div>
-              <span className="kicker light">REAL GOOGLE REVIEWS</span>
-              <h2>Do not just believe us.<br /><em>Verify us.</em></h2>
+              <span className="sectionLabelV6 lightLabelV6">GOOGLE MAPS & REVIEWS</span>
+              <h2>
+                Do not just believe us.
+                <br />
+                <em>Verify GoVietStay.</em>
+              </h2>
+              <p>
+                Read public reviews, traveler photos, business details and
+                directions directly on Google Maps before booking.
+              </p>
             </div>
+
             <a
-              className="reviewAllBtn"
-              href="https://maps.app.goo.gl/znWBmL8zPKEJqnoW6?g_st=ic"
+              className="reviewButtonV6"
+              href={googleReviews}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
-              â˜…â˜…â˜…â˜…â˜… Read all Google Reviews â†—
+              <span className="starsV6">5 STARS</span>
+              <b>Open Google Reviews</b>
             </a>
           </div>
 
-          <div className="reviewCards">
+          <div className="reviewGridV6">
             <article>
-              <div className="stars">â˜…â˜…â˜…â˜…â˜…</div>
-              <p>â€œ10/10 service. David and Terry are very professional and super supportive.â€</p>
-              <b>Mehak Khanna</b>
-              <small>Google Review Â· GoVietStay</small>
+              <span>01</span>
+              <h3>Real public feedback</h3>
+              <p>Use Google Maps to check what travelers say before you pay.</p>
             </article>
-
             <article>
-              <div className="stars">â˜…â˜…â˜…â˜…â˜…</div>
-              <p>â€œAn amazing trip! Great service and very helpful support. Highly recommended!â€</p>
-              <b>Ryan</b>
-              <small>Google Review Â· GoVietStay</small>
+              <span>02</span>
+              <h3>Real photos</h3>
+              <p>See traveler photos, business updates and local activity.</p>
             </article>
-
             <article>
-              <div className="stars">â˜…â˜…â˜…â˜…â˜…</div>
-              <p>â€œA wonderful, unforgettable holiday. Thank you, Anna and David!â€</p>
-              <b>Dariga Baitleuova</b>
-              <small>Google Review Â· GoVietStay</small>
+              <span>03</span>
+              <h3>Verify first</h3>
+              <p>Confirm GoVietStay, then message our local team directly.</p>
             </article>
-          </div>
-
-          <div className="reviewTrustLine">
-            <span>âœ“ Real public reviews</span>
-            <span>âœ“ Real traveler experiences</span>
-            <span>âœ“ Check our Google Maps profile before booking</span>
-          </div>
-        </div>
-      </section>
-      <section className="closing">
-        <div className="shell closingInner">
-          <span className="kicker light">PI PIONEER TRAVELLING TO VIETNAM?</span>
-          <h2>Welcome.<br />Your 10% is waiting.</h2>
-          <p>Send us your dates. We will help you turn Vietnam into a real local experience.</p>
-          <div className="heroActions center">
-            <a className="primary" href={whatsapp}>WhatsApp GoVietStay · PI10</a>
-            <a className="ghost" href="/travel">Explore Vietnam Guides</a>
-          </div>
-          <div className="disclaimer">
-            Independent community page by GoVietStay. GoVietStay is not Pi Network, Pi Core Team, or an official Pi representative, and this page does not imply endorsement, sponsorship or affiliation by Pi Network. No price prediction, investment promise or financial advice is provided here.
-          </div>
-          <div className="credits">
-            Vietnam visuals are served from GoVietStay website assets.
           </div>
         </div>
       </section>
 
-      <style>{`
-        :root{--ink:#07130f;--green:#0a7a4b;--lime:#b7e46f;--gold:#e5bd62;--cream:#f5f2e8;--muted:#66736d;--line:rgba(7,19,15,.12)}
-        *{box-sizing:border-box}.piPage{background:#f8f7f2;color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow:hidden}.shell{width:min(1180px,calc(100% - 40px));margin:0 auto}
-        .hero{min-height:860px;position:relative;color:white;background:#07130f;display:flex;flex-direction:column}.heroPhoto{position:absolute;inset:0;background:url('/tour/phuquoc/tour-09-1.jpg') center 54%/cover no-repeat;filter:saturate(.94) contrast(1.03)}.heroShade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(3,15,10,.94) 0%,rgba(3,15,10,.79) 43%,rgba(3,15,10,.34) 72%,rgba(3,15,10,.58) 100%),linear-gradient(0deg,rgba(3,15,10,.66) 0%,transparent 42%)}
-        .nav{position:relative;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:22px 0;border-bottom:1px solid rgba(255,255,255,.18)}.brand{color:#fff;text-decoration:none;font-size:22px;font-weight:900;letter-spacing:-.8px}.brand span{display:block;font-size:9px;font-weight:700;letter-spacing:1.7px;opacity:.65;text-transform:uppercase;margin-top:2px}.navLinks{display:flex;gap:28px}.navLinks a{color:#fff;text-decoration:none;font-size:13px;font-weight:700;opacity:.78}.navCta{color:#06110c;background:#d8f28d;text-decoration:none;padding:11px 16px;border-radius:999px;font-size:13px;font-weight:900}
-        .heroInner{position:relative;z-index:3;padding:128px 0 92px}.eyebrow{display:flex;align-items:center;gap:14px;font-size:11px;letter-spacing:1.8px;text-transform:uppercase}.eyebrow b{color:#d8f28d}.eyebrow span{opacity:.64}.hero h1{font-size:clamp(66px,8.8vw,118px);line-height:.91;letter-spacing:-5px;max-width:980px;margin:22px 0 28px}.hero h1 em,.future h2 em{font-family:Georgia,serif;font-weight:400;color:#e4c369}.lead{font-size:21px;line-height:1.7;max-width:670px;color:rgba(255,255,255,.82)}.heroActions{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}.primary,.ghost{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border-radius:999px;padding:15px 21px;font-weight:900;font-size:16px}.primary{background:#d8f28d;color:#07130f}.ghost{border:1px solid rgba(255,255,255,.35);color:white;background:rgba(255,255,255,.05);backdrop-filter:blur(8px)}.trustRow{display:grid;grid-template-columns:repeat(3,1fr);max-width:820px;margin-top:76px;border-top:1px solid rgba(255,255,255,.22);border-bottom:1px solid rgba(255,255,255,.22)}.trustRow div{padding:19px 20px 19px 0}.trustRow strong{display:block;font-size:22px}.trustRow span{display:block;font-size:11px;opacity:.62;margin-top:5px}.heroNote{position:absolute;right:26px;bottom:28px;z-index:4;font-size:10px;letter-spacing:2px;opacity:.55;writing-mode:vertical-rl}.network{position:absolute;right:7vw;top:22%;z-index:2;width:280px;height:280px;opacity:.65}.n{position:absolute;width:12px;height:12px;border-radius:50%;background:#d8f28d;box-shadow:0 0 26px #d8f28d}.n1{left:16px;top:85px}.n2{left:130px;top:22px}.n3{right:25px;top:120px}.n4{left:105px;bottom:18px}.line{position:absolute;height:1px;background:linear-gradient(90deg,transparent,#d8f28d,transparent);transform-origin:left center}.l1{width:145px;left:25px;top:92px;transform:rotate(-28deg)}.l2{width:155px;left:138px;top:34px;transform:rotate(37deg)}.l3{width:160px;left:117px;bottom:29px;transform:rotate(-56deg)}
-        .gift{background:#e7c56a;padding:92px 0}.giftGrid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}.kicker{display:inline-block;font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#3c5d4b}.gift h2{font-size:clamp(62px,7.6vw,102px);line-height:.86;letter-spacing:-5px;margin:17px 0}.gift h2 b{color:#fff}.giftCard{background:#07130f;color:white;border-radius:30px;padding:38px;box-shadow:0 30px 80px rgba(56,38,4,.25)}.code{display:inline-block;border:1px solid rgba(216,242,141,.35);color:#d8f28d;border-radius:999px;padding:8px 12px;font-size:11px;font-weight:900;letter-spacing:1.4px}.giftCard h3{font-size:40px;letter-spacing:-1.5px;margin:22px 0 10px}.giftCard p{color:rgba(255,255,255,.72);line-height:1.65}.giftCard ol{list-style:none;padding:0;margin:25px 0}.giftCard li{display:flex;gap:14px;align-items:center;padding:13px 0;border-top:1px solid rgba(255,255,255,.11);font-size:14px}.giftCard li span{color:#d8f28d;font-weight:900}.wide{width:100%}.giftCard small{display:block;color:rgba(255,255,255,.48);line-height:1.5;margin-top:14px}
-        .journey{padding:112px 0}.sectionHead{max-width:800px}.sectionHead h2{font-size:clamp(52px,6.6vw,86px);line-height:.96;letter-spacing:-4px;margin:15px 0}.sectionHead p{color:var(--muted);font-size:18px}.storyGrid{display:grid;grid-template-columns:1.1fr 1fr;gap:70px;margin-top:70px}.bigQuote{font-family:Georgia,serif;font-size:clamp(34px,4.2vw,56px);line-height:1.07;color:#0b6846}.storyText p{font-size:17px;line-height:1.85;color:#4e5e56;margin-top:0}.timeline{display:grid;grid-template-columns:repeat(4,1fr);margin-top:70px;border-top:1px solid var(--line)}.timeline div{padding:28px 22px 0 0}.timeline span{font-size:10px;letter-spacing:1.6px;color:#718078;font-weight:900}.timeline b{display:block;font-size:24px;margin:8px 0}.timeline p{font-size:13px;line-height:1.5;color:#708078}
-        .future{position:relative;background:#07130f;color:white;padding:120px 0;overflow:hidden}.futureGlow{position:absolute;width:800px;height:800px;border:1px solid rgba(216,242,141,.12);border-radius:50%;right:-260px;top:-220px;box-shadow:0 0 140px rgba(164,209,91,.08) inset}.futureGlow:before,.futureGlow:after{content:"";position:absolute;border:1px solid rgba(229,189,98,.12);border-radius:50%;inset:120px}.futureGlow:after{inset:250px}.light{color:#d8f28d}.future h2{font-size:clamp(58px,8vw,104px);line-height:.88;letter-spacing:-6px;margin:20px 0 30px;max-width:950px}.futureLead{font-size:22px;line-height:1.65;max-width:760px;color:rgba(255,255,255,.7)}.futureCards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:58px}.futureCards article{min-height:230px;padding:28px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);border-radius:22px;backdrop-filter:blur(7px)}.futureCards span{font-size:11px;color:#d8f28d;font-weight:900}.futureCards h3{font-size:25px;margin:36px 0 10px}.futureCards p{color:rgba(255,255,255,.62);line-height:1.6;font-size:14px}.xButton{display:inline-flex;margin-top:30px;color:white;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.4);padding-bottom:4px;font-weight:800}
-        .vietnam{padding:112px 0}.vietnamHero{height:560px;border-radius:30px;overflow:hidden;position:relative;background:#132}.vietnamHero img{width:100%;height:100%;object-fit:cover}.vietnamHero:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(2,14,8,.82),rgba(2,14,8,.08) 62%)}.vietnamOverlay{position:absolute;z-index:2;left:38px;right:38px;bottom:35px;color:white}.vietnamOverlay span{font-size:10px;letter-spacing:2px;font-weight:900;color:#d8f28d}.vietnamOverlay h2{font-size:clamp(38px,5.5vw,67px);letter-spacing:-3px;line-height:.96;max-width:850px;margin:10px 0}.vietnamOverlay p{opacity:.75}.destGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:18px}.dest{position:relative;display:block;text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:22px;padding:30px;min-height:310px;background:white;transition:.2s ease}.dest:hover{transform:translateY(-4px);box-shadow:0 25px 60px rgba(3,20,13,.08)}.dest .num{position:absolute;right:24px;top:22px;font-size:42px;color:#dde4df;font-weight:900}.dest small{font-size:10px;letter-spacing:1.4px;color:#738078;font-weight:800}.dest h3{font-size:44px;letter-spacing:-2px;margin:45px 0 4px}.dest h4{font-size:21px;margin:0 0 10px}.dest p{max-width:520px;color:#68756f;line-height:1.7;font-size:16px}.dest b{display:inline-block;margin-top:14px;color:#0b6846}
-        .facts{padding:0 0 110px}.compact h2{font-size:clamp(36px,5vw,58px)}.factGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:38px}.factGrid a{display:block;text-decoration:none;color:var(--ink);padding:24px;border-radius:18px;background:#eef0ea;border:1px solid #e1e5de}.factGrid b{display:block}.factGrid span{display:block;color:#6a766f;font-size:13px;line-height:1.5;margin-top:8px}
-        .closing{background:#0a6d49;color:white;padding:100px 0}.closingInner{text-align:center}.closing h2{font-size:clamp(58px,8vw,100px);line-height:.88;letter-spacing:-6px;margin:18px auto 25px}.closing p{font-size:18px;color:rgba(255,255,255,.74)}.center{justify-content:center}.disclaimer,.credits{max-width:900px;margin:58px auto 0;padding-top:24px;border-top:1px solid rgba(255,255,255,.18);font-size:11px;line-height:1.6;color:rgba(255,255,255,.5)}.credits{margin-top:12px;padding-top:0;border:0}
-        @media(max-width:820px){.shell{width:min(100% - 28px,1180px)}.navLinks{display:none}.navCta{font-size:12px;padding:10px 13px}.hero{min-height:820px}.heroInner{padding:96px 0 70px}.hero h1{letter-spacing:-3.3px}.lead{font-size:16px}.trustRow{grid-template-columns:1fr;margin-top:48px}.trustRow div{border-top:1px solid rgba(255,255,255,.12)}.network{right:-100px;top:25%;opacity:.3}.giftGrid,.storyGrid,.destGrid,.factGrid{grid-template-columns:1fr}.gift{padding:76px 0}.gift h2{letter-spacing:-3px}.giftCard{padding:26px}.timeline{grid-template-columns:1fr 1fr}.future{padding:90px 0}.future h2,.closing h2{letter-spacing:-4px}.futureCards{grid-template-columns:1fr}.vietnam{padding:76px 0}.vietnamHero{height:520px;border-radius:22px}.vietnamOverlay{left:22px;right:22px;bottom:22px}.vietnamOverlay h2{letter-spacing:-2px}.dest{min-height:280px}.facts{padding-bottom:80px}}
-        @media(max-width:520px){.hero{min-height:780px}.heroPhoto{background-position:63% center}.hero h1{font-size:56px;letter-spacing:-2.7px}.eyebrow span{display:none}.heroActions{flex-direction:column}.heroActions a{width:100%}.gift h2{font-size:58px}.timeline{grid-template-columns:1fr}.timeline div{padding-bottom:18px}.future h2{font-size:58px}.vietnamHero{height:500px}.closing h2{font-size:60px}.heroNote{display:none}}
-      `}</style>
-      {/* GVS_PI_FLOATING_CONTACT_V3 */}
-      <div className="contactDock" aria-label="Contact GoVietStay">
-        <a
-          className="dockBtn dockWA"
-          href="https://wa.me/84937762607?text=Hello%20GoVietStay%2C%20I%20am%20a%20Pi%20Pioneer.%20Code%3A%20PI10"
-          target="_blank"
-          rel="noreferrer"
-          aria-label="WhatsApp GoVietStay"
-        >
-          <span>ðŸ’¬</span><b>WhatsApp</b>
+      <section className="factsV6 shellV6">
+        <span className="sectionLabelV6">OFFICIAL PI SOURCES</span>
+        <h2>Belief is personal. Facts should still be verifiable.</h2>
+
+        <div className="factGridV6">
+          <a href="https://minepi.com/about/" target="_blank" rel="noreferrer">
+            <b>Pi Network - About</b>
+            <span>Official Pi Network overview</span>
+          </a>
+          <a href="https://minepi.com/blog/pi-day-2025/" target="_blank" rel="noreferrer">
+            <b>Open Network utility</b>
+            <span>Official Pi article on ecosystem utility</span>
+          </a>
+          <a href="https://minepi.com/pi-trademark-guidelines/" target="_blank" rel="noreferrer">
+            <b>Trademark guidelines</b>
+            <span>Official Pi trademark guidance</span>
+          </a>
+        </div>
+      </section>
+
+      <section className="closingV6">
+        <div className="shellV6 closingInnerV6">
+          <span className="sectionLabelV6 lightLabelV6">PI PIONEER TRAVELLING TO VIETNAM?</span>
+          <h2>
+            Welcome.
+            <br />
+            Your PI10 is waiting.
+          </h2>
+          <p>Send us your dates. We will help turn Vietnam into a real local experience.</p>
+
+          <div className="closingButtonsV6">
+            <a className="primaryV6" href={whatsapp} target="_blank" rel="noreferrer">
+              WhatsApp GoVietStay
+            </a>
+            <a className="secondaryV6" href={telegram} target="_blank" rel="noreferrer">
+              Telegram
+            </a>
+            <a className="secondaryV6" href={googleReviews} target="_blank" rel="noreferrer">
+              Google Reviews
+            </a>
+          </div>
+
+          <small className="finalLegalV6">
+            GoVietStay is not Pi Network, the Pi Core Team or an official Pi
+            representative. This page does not imply endorsement, sponsorship or
+            affiliation by Pi Network. No price prediction, investment promise or
+            financial advice is provided here.
+          </small>
+        </div>
+      </section>
+
+      <div className="dockV6" aria-label="GoVietStay contact shortcuts">
+        <a className="dockBtnV6 dockWaV6" href={whatsapp} target="_blank" rel="noreferrer">
+          <span>WA</span><b>WhatsApp</b>
         </a>
-        <a
-          className="dockBtn dockTG"
-          href="https://t.me/govietstay_travel_bot"
-          target="_blank"
-          rel="noreferrer"
-          aria-label="Telegram GoVietStay"
-        >
-          <span>âœˆï¸</span><b>Telegram</b>
+        <a className="dockBtnV6 dockTgV6" href={telegram} target="_blank" rel="noreferrer">
+          <span>TG</span><b>Telegram</b>
         </a>
-        <a
-          className="dockBtn dockGR"
-          href="https://maps.app.goo.gl/znWBmL8zPKEJqnoW6?g_st=ic"
-          target="_blank"
-          rel="noreferrer"
-          aria-label="Google Reviews GoVietStay"
-        >
-          <span>â­</span><b>Reviews</b>
+        <a className="dockBtnV6 dockGrV6" href={googleReviews} target="_blank" rel="noreferrer">
+          <span>G</span><b>Reviews</b>
         </a>
       </div>
+
+      <style>{`
+        *{box-sizing:border-box}
+        .piPageV6{
+          --ink:#07130f;
+          --green:#0b704b;
+          --lime:#d8f28d;
+          --gold:#e5bd62;
+          --cream:#f7f4ea;
+          --muted:#637168;
+          background:#faf9f5;
+          color:var(--ink);
+          font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+          overflow:hidden;
+        }
+        .shellV6{width:min(1180px,calc(100% - 40px));margin:0 auto}
+
+        .heroV6{
+          min-height:860px;
+          position:relative;
+          color:#fff;
+          background:#06110c;
+        }
+        .heroImageV6{
+          position:absolute;
+          inset:0;
+          background:url('/tour/phuquoc/tour-09-1.jpg') center 50%/cover no-repeat;
+        }
+        .heroShadeV6{
+          position:absolute;
+          inset:0;
+          background:
+            linear-gradient(90deg,rgba(3,15,10,.96) 0%,rgba(3,15,10,.82) 45%,rgba(3,15,10,.38) 76%,rgba(3,15,10,.55) 100%),
+            linear-gradient(0deg,rgba(3,15,10,.7),transparent 50%);
+        }
+        .navV6{
+          position:relative;
+          z-index:4;
+          min-height:94px;
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          gap:20px;
+          border-bottom:1px solid rgba(255,255,255,.17);
+        }
+        .brandV6{
+          color:white;
+          text-decoration:none;
+          font-size:23px;
+          font-weight:950;
+          letter-spacing:-.8px;
+        }
+        .brandV6 span{
+          display:block;
+          margin-top:3px;
+          font-size:9px;
+          letter-spacing:1.6px;
+          opacity:.63;
+        }
+        .navLinksV6{display:flex;gap:28px}
+        .navLinksV6 a{color:#fff;text-decoration:none;font-size:13px;font-weight:800;opacity:.77}
+        .navClaimV6{
+          text-decoration:none;
+          color:#06110c;
+          background:var(--lime);
+          padding:12px 17px;
+          border-radius:999px;
+          font-size:13px;
+          font-weight:950;
+        }
+        .heroInnerV6{position:relative;z-index:3;padding:122px 0 95px}
+        .heroEyebrowV6{
+          display:flex;
+          gap:14px;
+          align-items:center;
+          font-size:11px;
+          letter-spacing:1.8px;
+        }
+        .heroEyebrowV6 b{color:var(--lime)}
+        .heroEyebrowV6 span{opacity:.6}
+        .heroV6 h1{
+          max-width:1040px;
+          margin:24px 0 30px;
+          font-size:clamp(68px,8.6vw,116px);
+          line-height:.9;
+          letter-spacing:-5px;
+        }
+        .heroV6 h1 em{
+          display:block;
+          color:var(--gold);
+          font-family:Georgia,serif;
+          font-weight:400;
+        }
+        .heroLeadV6{
+          max-width:720px;
+          margin:0;
+          font-size:21px;
+          line-height:1.7;
+          color:rgba(255,255,255,.82);
+        }
+        .heroActionsV6{display:flex;gap:12px;flex-wrap:wrap;margin-top:34px}
+        .primaryV6,.secondaryV6{
+          min-height:52px;
+          display:inline-flex;
+          align-items:center;
+          justify-content:center;
+          padding:14px 21px;
+          border-radius:999px;
+          text-decoration:none;
+          font-size:15px;
+          font-weight:950;
+        }
+        .primaryV6{background:var(--lime);color:#06110c}
+        .secondaryV6{
+          color:#fff;
+          border:1px solid rgba(255,255,255,.32);
+          background:rgba(255,255,255,.06);
+        }
+        .heroStatsV6{
+          max-width:870px;
+          display:grid;
+          grid-template-columns:repeat(3,1fr);
+          margin-top:70px;
+          border-top:1px solid rgba(255,255,255,.2);
+          border-bottom:1px solid rgba(255,255,255,.2);
+        }
+        .heroStatsV6 div{padding:20px 24px 20px 0}
+        .heroStatsV6 strong{display:block;font-size:23px}
+        .heroStatsV6 span{display:block;margin-top:5px;font-size:12px;opacity:.6}
+
+        .collabV6{
+          padding:105px 0 115px;
+          background:
+            radial-gradient(circle at 50% 0%,rgba(229,189,98,.2),transparent 34%),
+            linear-gradient(180deg,#fffef9,#f4f0e4);
+        }
+        .collabInnerV6{text-align:center;display:flex;flex-direction:column;align-items:center}
+        .sectionLabelV6{
+          display:inline-block;
+          color:#426254;
+          font-size:11px;
+          font-weight:950;
+          letter-spacing:2px;
+        }
+        .officialLogoV6{
+          width:clamp(210px,20vw,310px);
+          height:auto;
+          margin:28px auto 20px;
+          filter:drop-shadow(0 20px 38px rgba(7,19,15,.2));
+        }
+        .collabV6 h2{
+          max-width:1050px;
+          margin:8px 0 22px;
+          font-size:clamp(64px,8vw,108px);
+          line-height:.9;
+          letter-spacing:-5px;
+        }
+        .collabV6 h2 em{font-family:Georgia,serif;font-weight:400;color:var(--green)}
+        .collabLeadV6{
+          max-width:850px;
+          margin:0 auto 40px;
+          color:#526159;
+          font-size:22px;
+          line-height:1.65;
+        }
+        .collabImageWrapV6{
+          width:min(1140px,100%);
+          padding:12px;
+          background:white;
+          border:1px solid rgba(7,19,15,.08);
+          border-radius:32px;
+          box-shadow:0 30px 90px rgba(7,19,15,.13);
+        }
+        .collabImageWrapV6 img{display:block;width:100%;height:auto;border-radius:22px}
+        .contactGridV6{
+          width:min(1120px,100%);
+          display:grid;
+          grid-template-columns:repeat(3,minmax(0,1fr));
+          gap:15px;
+          margin-top:34px;
+        }
+        .contactCardV6{
+          min-height:100px;
+          display:flex;
+          align-items:center;
+          gap:15px;
+          padding:20px;
+          border-radius:22px;
+          text-decoration:none;
+          color:var(--ink);
+          border:1px solid rgba(7,19,15,.1);
+          box-shadow:0 15px 38px rgba(7,19,15,.08);
+          transition:.18s ease;
+        }
+        .contactCardV6:hover{transform:translateY(-4px);box-shadow:0 22px 52px rgba(7,19,15,.14)}
+        .waV6{background:#e0f7e8}
+        .tgV6{background:#e4f3ff}
+        .grV6{background:#fff0c7}
+        .contactIconV6{
+          flex:0 0 52px;
+          width:52px;
+          height:52px;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          border-radius:50%;
+          background:var(--ink);
+          color:#fff;
+          font-size:13px;
+          font-weight:1000;
+        }
+        .contactTextV6{min-width:0;flex:1;text-align:left}
+        .contactTextV6 b{display:block;font-size:20px}
+        .contactTextV6 small{display:block;margin-top:5px;color:#637168;font-size:14px;line-height:1.4}
+        .contactArrowV6{font-size:22px;font-weight:950}
+        .independentNoteV6{max-width:920px;margin:22px auto 0;color:#78837e;font-size:12px;line-height:1.6}
+
+        .giftV6{padding:100px 0;background:var(--gold)}
+        .giftGridV6{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+        .darkLabelV6{color:#435447}
+        .giftV6 h2{
+          margin:18px 0 0;
+          font-size:clamp(64px,7vw,96px);
+          line-height:.87;
+          letter-spacing:-5px;
+        }
+        .giftV6 h2 b{color:white}
+        .giftCardV6{
+          padding:38px;
+          background:var(--ink);
+          color:white;
+          border-radius:30px;
+          box-shadow:0 30px 80px rgba(55,37,2,.22);
+        }
+        .piCodeV6{
+          display:inline-block;
+          padding:8px 12px;
+          border-radius:999px;
+          border:1px solid rgba(216,242,141,.35);
+          color:var(--lime);
+          font-size:11px;
+          font-weight:950;
+          letter-spacing:1.3px;
+        }
+        .giftCardV6 h3{font-size:40px;letter-spacing:-1.5px;margin:22px 0 10px}
+        .giftCardV6 p{font-size:17px;line-height:1.7;color:rgba(255,255,255,.72)}
+        .stepsV6{margin:24px 0}
+        .stepsV6 div{display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(255,255,255,.11)}
+        .stepsV6 span{color:var(--lime);font-weight:950}
+        .fullV6{width:100%}
+        .giftLegalV6{display:block;margin-top:14px;color:rgba(255,255,255,.48);line-height:1.5}
+
+        .journeyV6{padding:115px 0}
+        .journeyV6>h2{
+          max-width:900px;
+          margin:17px 0 14px;
+          font-size:clamp(54px,6vw,82px);
+          line-height:.95;
+          letter-spacing:-4px;
+        }
+        .journeyIntroV6{font-size:20px;color:var(--muted)}
+        .journeyGridV6{display:grid;grid-template-columns:1fr 1fr;gap:70px;margin-top:65px}
+        .journeyGridV6 blockquote{
+          margin:0;
+          color:var(--green);
+          font-family:Georgia,serif;
+          font-size:clamp(36px,4vw,56px);
+          line-height:1.08;
+        }
+        .journeyGridV6 p{margin-top:0;font-size:18px;line-height:1.85;color:#526159}
+
+        .futureV6{padding:120px 0;background:var(--ink);color:white}
+        .lightLabelV6{color:var(--lime)}
+        .futureV6 h2{
+          max-width:1000px;
+          margin:18px 0 28px;
+          font-size:clamp(62px,8vw,108px);
+          line-height:.88;
+          letter-spacing:-6px;
+        }
+        .futureV6 h2 em{font-family:Georgia,serif;font-weight:400;color:var(--gold)}
+        .futureLeadV6{max-width:800px;font-size:21px;line-height:1.7;color:rgba(255,255,255,.68)}
+        .futureCardsV6{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:55px}
+        .futureCardsV6 article{
+          min-height:230px;
+          padding:28px;
+          border-radius:22px;
+          border:1px solid rgba(255,255,255,.12);
+          background:rgba(255,255,255,.05);
+        }
+        .futureCardsV6 article>span{color:var(--lime);font-size:11px;font-weight:950}
+        .futureCardsV6 h3{margin:38px 0 10px;font-size:25px}
+        .futureCardsV6 p{margin:0;font-size:15px;line-height:1.6;color:rgba(255,255,255,.63)}
+
+        .destinationsV6{padding:115px 0}
+        .destinationHeadV6{max-width:880px}
+        .destinationHeadV6 h2{
+          margin:15px 0;
+          font-size:clamp(54px,6.5vw,84px);
+          line-height:.95;
+          letter-spacing:-4px;
+        }
+        .destinationHeadV6 p{font-size:18px;color:var(--muted)}
+        .destinationGridV6{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin-top:48px}
+        .destinationCardV6{
+          position:relative;
+          min-height:330px;
+          display:block;
+          padding:30px;
+          border-radius:23px;
+          background:white;
+          border:1px solid rgba(7,19,15,.1);
+          text-decoration:none;
+          color:var(--ink);
+          transition:.18s ease;
+        }
+        .destinationCardV6:hover{transform:translateY(-4px);box-shadow:0 24px 58px rgba(7,19,15,.09)}
+        .destinationCodeV6{position:absolute;right:25px;top:20px;color:#e0e5e1;font-size:46px;font-weight:950}
+        .destinationCardV6 h3{margin:55px 0 5px;font-size:44px;letter-spacing:-2px}
+        .destinationCardV6 h4{margin:0 0 10px;font-size:21px}
+        .destinationCardV6 p{max-width:520px;font-size:16px;line-height:1.7;color:#66736c}
+        .destinationCardV6 b{display:inline-block;margin-top:12px;color:var(--green)}
+
+        .reviewsV6{padding:110px 0;background:#06110c;color:white}
+        .reviewsHeadV6{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:40px;align-items:end}
+        .reviewsHeadV6 h2{
+          max-width:900px;
+          margin:16px 0;
+          font-size:clamp(58px,7vw,92px);
+          line-height:.91;
+          letter-spacing:-4.5px;
+        }
+        .reviewsHeadV6 h2 em{font-family:Georgia,serif;font-weight:400;color:var(--gold)}
+        .reviewsHeadV6 p{max-width:720px;margin:0;font-size:18px;line-height:1.65;color:rgba(255,255,255,.67)}
+        .reviewButtonV6{
+          min-width:270px;
+          display:flex;
+          flex-direction:column;
+          align-items:center;
+          justify-content:center;
+          gap:7px;
+          padding:21px 24px;
+          border-radius:20px;
+          background:var(--lime);
+          color:var(--ink);
+          text-decoration:none;
+        }
+        .starsV6{font-size:12px;letter-spacing:2px;font-weight:950;color:#6b5400}
+        .reviewGridV6{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:52px}
+        .reviewGridV6 article{
+          min-height:210px;
+          padding:28px;
+          border-radius:22px;
+          border:1px solid rgba(255,255,255,.13);
+          background:rgba(255,255,255,.05);
+        }
+        .reviewGridV6 article>span{color:var(--lime);font-size:11px;font-weight:950}
+        .reviewGridV6 h3{margin:34px 0 10px;font-size:25px}
+        .reviewGridV6 p{margin:0;font-size:15px;line-height:1.6;color:rgba(255,255,255,.63)}
+
+        .factsV6{padding:110px 0}
+        .factsV6>h2{
+          max-width:900px;
+          margin:16px 0 42px;
+          font-size:clamp(50px,6vw,76px);
+          line-height:.96;
+          letter-spacing:-4px;
+        }
+        .factGridV6{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+        .factGridV6 a{
+          min-height:130px;
+          display:flex;
+          flex-direction:column;
+          justify-content:center;
+          padding:24px;
+          border-radius:20px;
+          background:#eef0ea;
+          border:1px solid #e1e5de;
+          color:var(--ink);
+          text-decoration:none;
+        }
+        .factGridV6 b{font-size:17px}
+        .factGridV6 span{margin-top:8px;color:#67736c;font-size:14px}
+
+        .closingV6{padding:105px 0 135px;background:var(--green);color:white}
+        .closingInnerV6{text-align:center}
+        .closingV6 h2{
+          margin:18px 0 24px;
+          font-size:clamp(62px,8vw,108px);
+          line-height:.87;
+          letter-spacing:-6px;
+        }
+        .closingV6 p{font-size:19px;color:rgba(255,255,255,.76)}
+        .closingButtonsV6{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:30px}
+        .finalLegalV6{
+          display:block;
+          max-width:900px;
+          margin:55px auto 0;
+          padding-top:25px;
+          border-top:1px solid rgba(255,255,255,.18);
+          color:rgba(255,255,255,.5);
+          line-height:1.6;
+        }
+
+        .dockV6{
+          position:fixed;
+          z-index:9999;
+          right:16px;
+          bottom:16px;
+          display:flex;
+          flex-direction:column;
+          gap:8px;
+        }
+        .dockBtnV6{
+          min-width:156px;
+          min-height:50px;
+          display:flex;
+          align-items:center;
+          gap:9px;
+          padding:10px 14px;
+          border-radius:999px;
+          text-decoration:none;
+          color:var(--ink);
+          box-shadow:0 12px 32px rgba(0,0,0,.18);
+          border:1px solid rgba(255,255,255,.7);
+        }
+        .dockBtnV6 span{
+          width:28px;
+          height:28px;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          border-radius:50%;
+          background:var(--ink);
+          color:white;
+          font-size:9px;
+          font-weight:1000;
+        }
+        .dockWaV6{background:#dcf8e5}
+        .dockTgV6{background:#e4f4ff}
+        .dockGrV6{background:#fff1cb}
+
+        @media(max-width:820px){
+          .shellV6{width:min(100% - 28px,1180px)}
+          .navLinksV6{display:none}
+          .heroV6{min-height:810px}
+          .heroInnerV6{padding:95px 0 70px}
+          .heroV6 h1{font-size:58px;letter-spacing:-3px}
+          .heroLeadV6{font-size:18px}
+          .heroStatsV6{grid-template-columns:1fr;margin-top:48px}
+          .heroStatsV6 div{border-top:1px solid rgba(255,255,255,.12)}
+          .collabV6{padding:78px 0 88px}
+          .officialLogoV6{width:205px}
+          .collabV6 h2{font-size:58px;letter-spacing:-3px}
+          .collabLeadV6{font-size:18px}
+          .collabImageWrapV6{padding:7px;border-radius:21px}
+          .contactGridV6,.giftGridV6,.journeyGridV6,.futureCardsV6,.destinationGridV6,.reviewGridV6,.factGridV6{grid-template-columns:1fr}
+          .giftV6 h2{font-size:58px;letter-spacing:-3px}
+          .giftCardV6{padding:27px}
+          .journeyV6>h2,.destinationHeadV6 h2{font-size:56px;letter-spacing:-3px}
+          .futureV6 h2,.closingV6 h2{font-size:60px;letter-spacing:-3px}
+          .reviewsHeadV6{grid-template-columns:1fr}
+          .reviewsHeadV6 h2{font-size:58px;letter-spacing:-3px}
+          .reviewButtonV6{width:100%;min-width:0}
+          .destinationCardV6{min-height:285px}
+          .dockV6{
+            left:7px;
+            right:7px;
+            bottom:7px;
+            display:grid;
+            grid-template-columns:repeat(3,minmax(0,1fr));
+            gap:6px;
+          }
+          .dockBtnV6{min-width:0;justify-content:center;padding:8px 6px}
+          .dockBtnV6 b{font-size:11px}
+        }
+
+        @media(max-width:520px){
+          .heroV6 h1{font-size:52px;letter-spacing:-2.6px}
+          .heroEyebrowV6 span{display:none}
+          .heroActionsV6{flex-direction:column}
+          .heroActionsV6 a{width:100%}
+          .officialLogoV6{width:185px}
+          .collabV6 h2{font-size:51px;letter-spacing:-2.6px}
+          .collabLeadV6{font-size:17px}
+          .contactTextV6 b{font-size:18px}
+          .contactTextV6 small{font-size:13px}
+          .giftV6 h2{font-size:53px}
+          .futureV6 h2,.closingV6 h2{font-size:53px}
+          .reviewsHeadV6 h2{font-size:51px}
+          .destinationHeadV6 h2,.journeyV6>h2{font-size:50px}
+        }
+      `}</style>
     </main>
   );
 }
