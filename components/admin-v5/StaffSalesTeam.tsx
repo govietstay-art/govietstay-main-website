@@ -1,4 +1,5 @@
 "use client";
+// GVS-STAFF-COMPENSATION-TOUR-TIER-V2
 
 import { useEffect, useMemo, useState } from "react";
 import "./staff-sales-team.css";
@@ -6,7 +7,8 @@ import "./staff-sales-team.css";
 type Props={supabase:any;adminStaff:any};
 type Staff={id:string;display_name:string;sales_code:string;role:string;compensation_plan_code:string;allow_booking_portal:boolean};
 type Payroll={staff_id:string;display_name:string;sales_code:string;plan_code:string;eligible_bookings:number;pax:number;revenue_vnd:number;commissionable_profit_vnd:number;base_salary_vnd:number;commission_rate:number;commission_vnd:number;commission_adjustment_vnd:number;bonus_vnd:number;deduction_vnd:number;advance_paid_vnd:number;total_compensation_vnd:number;payable_vnd:number;override_notes:string|null};
-type Tier={id:string;plan_code:string;min_completed_tours:number;max_completed_tours:number|null;base_salary_vnd:number;commission_rate:number;active:boolean;notes:string|null};
+type BaseTier={id:string;plan_code:string;min_monthly_pax:number;max_monthly_pax:number|null;base_salary_vnd:number;active:boolean;notes:string|null};
+type CommissionRate={id:string;plan_code:string;tour_slug:string;guide_language:string;min_monthly_pax:number;max_monthly_pax:number|null;rate_per_pax_vnd:number;active:boolean;notes:string|null};
 type Intake={id:string;submitted_at:string;sales_code:string;staff_id:string;booking_code:string;guest_name:string;phone:string|null;tour_date:string;pickup_time:string|null;hotel:string|null;region:string|null;tour_name:string|null;variant_name:string|null;language:string|null;adults:number;children:number;infants:number;gross_revenue_vnd:number;discount_vnd:number;deposit_vnd:number;notes:string|null;status:string;admin_notes:string|null};
 type SalesBooking={booking_id:string;booking_code:string;tour_date:string;staff_id:string;staff_name:string;guest_name:string|null;product:string;status:string;payment_status:string;pax:number;revenue_vnd:number;amount_received_vnd:number;profit_before_staff_commission_vnd:number;staff_commission_vnd:number;commission_eligible:boolean;commission_base_override_vnd:number|null;commission_amount_override_vnd:number|null;override_notes:string|null};
 
@@ -16,11 +18,21 @@ function parseMoney(v:any){return Math.max(0,Number(String(v||"0").replace(/[^0-
 function parseSignedMoney(v:any){const s=String(v||"0").trim();const neg=s.startsWith("-");const n=Number(s.replace(/[^0-9]/g,""))||0;return neg?-n:n;}
 function num(v:any){return Number(v||0);}
 
+const COMMISSION_TOURS = [
+  ["ba-na-hills","Ba Na Hills"],
+  ["cham-island","Cham Island"],
+  ["hoi-an-coconut","Rừng Dừa - Hội An"],
+  ["hoi-an-memory","Hoi An Memory"],
+  ["hue-day-tour","Huế City Tour"],
+  ["linh-ung-marble-hoi-an","Linh Ứng - Marble - Hội An"],
+] as const;
+
 export default function StaffSalesTeam({supabase,adminStaff}:Props){
   const [month,setMonth]=useState(monthNow());
   const [staff,setStaff]=useState<Staff[]>([]);
   const [payroll,setPayroll]=useState<Payroll[]>([]);
-  const [tiers,setTiers]=useState<Tier[]>([]);
+  const [baseTiers,setBaseTiers]=useState<BaseTier[]>([]);
+  const [commissionRates,setCommissionRates]=useState<CommissionRate[]>([]);
   const [intake,setIntake]=useState<Intake[]>([]);
   const [bookings,setBookings]=useState<SalesBooking[]>([]);
   const [loading,setLoading]=useState(true);
@@ -44,16 +56,18 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
       const results=await Promise.all([
         supabase.from("staff_profiles").select("id,display_name,sales_code,role,compensation_plan_code,allow_booking_portal").not("sales_code","is",null).order("display_name"),
         supabase.rpc("admin_staff_payroll",{p_month:pMonth}),
-        supabase.from("staff_compensation_tiers").select("id,plan_code,min_completed_tours,max_completed_tours,base_salary_vnd,commission_rate,active,notes").eq("plan_code","sales_profit_v1").order("min_completed_tours"),
+        supabase.from("staff_base_pax_tiers").select("id,plan_code,min_monthly_pax,max_monthly_pax,base_salary_vnd,active,notes").eq("plan_code","sales_pax_v1").eq("active",true).order("min_monthly_pax"),
+        supabase.from("staff_tour_commission_rates").select("id,plan_code,tour_slug,guide_language,min_monthly_pax,max_monthly_pax,rate_per_pax_vnd,active,notes").eq("plan_code","sales_pax_v1").eq("active",true).order("tour_slug").order("guide_language").order("min_monthly_pax"),
         supabase.from("staff_booking_intake").select("id,submitted_at,sales_code,staff_id,booking_code,guest_name,phone,tour_date,pickup_time,hotel,region,tour_name,variant_name,language,adults,children,infants,gross_revenue_vnd,discount_vnd,deposit_vnd,notes,status,admin_notes").order("submitted_at",{ascending:false}).limit(100),
         supabase.rpc("admin_staff_sales_bookings",{p_month:pMonth,p_staff_id:null})
       ]);
       for(const r of results) if(r.error) throw r.error;
       setStaff((results[0].data||[]) as Staff[]);
       setPayroll((results[1].data||[]) as Payroll[]);
-      setTiers((results[2].data||[]) as Tier[]);
-      setIntake((results[3].data||[]) as Intake[]);
-      setBookings((results[4].data||[]) as SalesBooking[]);
+      setBaseTiers((results[2].data||[]) as BaseTier[]);
+      setCommissionRates((results[3].data||[]) as CommissionRate[]);
+      setIntake((results[4].data||[]) as Intake[]);
+      setBookings((results[5].data||[]) as SalesBooking[]);
     }catch(e:any){setError(e?.message||"Không tải được Sales Team.");}
     finally{setLoading(false)}
   }
@@ -100,22 +114,30 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
       const f=new FormData(e.currentTarget);const v=Object.fromEntries(f.entries()) as any;
       const [br,ov]=await Promise.all([
         supabase.from("bookings").update({staff_id:v.staff_id,ref_code:staffMap[v.staff_id]?.sales_code||null,status:v.status,payment_status:v.payment_status}).eq("id",editBooking.booking_id),
-        supabase.from("staff_booking_commission_overrides").upsert({booking_id:editBooking.booking_id,commission_eligible:v.commission_eligible==="yes",commission_base_override_vnd:String(v.commission_base_override_vnd||"").trim()===""?null:parseMoney(v.commission_base_override_vnd),commission_amount_override_vnd:String(v.commission_amount_override_vnd||"").trim()===""?null:parseMoney(v.commission_amount_override_vnd),notes:String(v.override_notes||"").trim()||null,updated_by:adminStaff?.id||null,updated_at:new Date().toISOString()},{onConflict:"booking_id"})
+        supabase.from("staff_booking_commission_overrides").upsert({booking_id:editBooking.booking_id,commission_eligible:v.commission_eligible==="yes",commission_base_override_vnd:null,commission_amount_override_vnd:String(v.commission_amount_override_vnd||"").trim()===""?null:parseMoney(v.commission_amount_override_vnd),notes:String(v.override_notes||"").trim()||null,updated_by:adminStaff?.id||null,updated_at:new Date().toISOString()},{onConflict:"booking_id"})
       ]);
       if(br.error)throw br.error;if(ov.error)throw ov.error;
       await supabase.rpc("admin_recalculate_staff_compensation",{p_month:month+"-01"});
       setEditBooking(null);setMessage("Đã cập nhật booking và hoa hồng.");await load();
     }catch(e:any){setError(e?.message||"Không lưu được booking control.");}finally{setSaving(false)}
   }
-  async function saveTier(tier:Tier,base:string,rate:string){
+  async function saveBaseTier(tier:BaseTier,base:string){
     setSaving(true);setError("");setMessage("");
-    try{const {error}=await supabase.from("staff_compensation_tiers").update({base_salary_vnd:parseMoney(base),commission_rate:Math.max(0,Number(rate||0))/100,updated_at:new Date().toISOString()}).eq("id",tier.id);if(error)throw error;setMessage("Đã cập nhật công thức lương/hoa hồng.");await load();}
-    catch(e:any){setError(e?.message||"Không lưu được công thức.");}finally{setSaving(false)}
+    try{const {error}=await supabase.from("staff_base_pax_tiers").update({base_salary_vnd:parseMoney(base),updated_at:new Date().toISOString()}).eq("id",tier.id);if(error)throw error;setMessage("Đã cập nhật mức lương cơ bản.");await load();}
+    catch(e:any){setError(e?.message||"Không lưu được mức lương.");}finally{setSaving(false)}
+  }
+  async function saveCommissionTour(rates:CommissionRate[],values:Record<string,string>){
+    setSaving(true);setError("");setMessage("");
+    try{
+      const updates=rates.map(r=>supabase.from("staff_tour_commission_rates").update({rate_per_pax_vnd:parseMoney(values[`${r.guide_language}-${r.min_monthly_pax}`]||r.rate_per_pax_vnd),updated_at:new Date().toISOString()}).eq("id",r.id));
+      const results=await Promise.all(updates);for(const r of results)if(r.error)throw r.error;
+      setMessage("Đã cập nhật commission / pax cho tour.");await load();
+    }catch(e:any){setError(e?.message||"Không lưu được commission.");}finally{setSaving(false)}
   }
 
   return <div className="gvs-team">
     <div className="gvs-team-head">
-      <div><h2>Sales Team · Salary & Commission</h2><p>Vlad / Tommy → request → Admin duyệt → Booking Master → Completed + Paid → tính hoa hồng trên <b>lợi nhuận thực tế</b>.</p></div>
+      <div><h2>Sales Team · Salary & Commission</h2><p>Completed + Paid → <b>lương cơ bản theo số tour hoàn thành/tháng</b> + <b>commission theo Tour × Pax × ngôn ngữ HDV</b>.</p></div>
       <div className="gvs-team-actions"><input className="gva-input" type="month" value={month} onChange={e=>setMonth(e.target.value)}/><button className="gva-btn secondary" onClick={load} disabled={loading}>{loading?"Đang tải…":"Làm mới"}</button></div>
     </div>
     {error&&<div className="gva-msg err">{error}</div>}{message&&<div className="gva-msg">{message}</div>}
@@ -145,7 +167,7 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
       <div className="gvs-payroll-grid">
         {payroll.map(p=><article className="gvs-payroll-card" key={p.staff_id}>
           <div className="gvs-payroll-title"><div><h3>{p.display_name}</h3><span>{p.sales_code}</span></div><button className="gva-btn secondary" onClick={()=>setEditPayroll(p)}>Điều chỉnh</button></div>
-          <div className="gvs-payroll-stats"><span><small>Eligible tours</small><b>{p.eligible_bookings}</b></span><span><small>Revenue</small><b>{money(p.revenue_vnd)}</b></span><span><small>Actual profit base</small><b>{money(p.commissionable_profit_vnd)}</b></span><span><small>Rate</small><b>{(num(p.commission_rate)*100).toFixed(0)}%</b></span><span><small>Base salary</small><b>{money(p.base_salary_vnd)}</b></span><span><small>Commission</small><b>{money(p.commission_vnd)}</b></span></div>
+          <div className="gvs-payroll-stats"><span><small>Completed tours</small><b>{p.eligible_bookings}</b></span><span><small>Total pax</small><b>{p.pax}</b></span><span><small>Revenue</small><b>{money(p.revenue_vnd)}</b></span><span><small>Base salary</small><b>{money(p.base_salary_vnd)}</b></span><span><small>Commission total</small><b>{money(p.commission_vnd)}</b></span><span><small>Total before adjustments</small><b>{money(num(p.base_salary_vnd)+num(p.commission_vnd))}</b></span></div>
           <div className="gvs-payroll-total"><span>Total compensation</span><strong>{money(p.total_compensation_vnd)}</strong></div>
           <div className="gvs-payroll-payable"><span>PAYABLE</span><strong>{money(p.payable_vnd)}</strong></div>
           {(p.commission_adjustment_vnd||p.bonus_vnd||p.deduction_vnd||p.advance_paid_vnd)?<div className="gva-mini">Adj {money(p.commission_adjustment_vnd)} · Bonus {money(p.bonus_vnd)} · Deduction {money(p.deduction_vnd)} · Advance {money(p.advance_paid_vnd)}</div>:null}
@@ -154,13 +176,23 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
     </section>
 
     <section className="gva-card gvs-team-section">
-      <div className="gva-section-head"><div><h2>Salary & Commission Formula</h2><div className="gva-mini">Công thức đang dùng: commission trên actual tour profit, không phải revenue. Có thể chỉnh thủ công tại đây.</div></div></div>
-      <div className="gva-table-wrap"><table className="gva-table"><thead><tr><th>Completed tours / month</th><th>Base salary</th><th>Commission</th><th></th></tr></thead><tbody>
-        {tiers.map(t=><TierRow key={t.id} tier={t} onSave={saveTier} saving={saving}/>)}</tbody></table></div>
+      <div className="gva-section-head"><div><h2>1. Base Salary by Completed Tours / Month</h2><div className="gva-mini">Tính theo số booking đã Completed + Paid trong tháng. Không tính theo Pax.</div></div></div>
+      <div className="gva-table-wrap"><table className="gva-table"><thead><tr><th>Completed tours / month</th><th>Base salary</th><th></th></tr></thead><tbody>
+        {baseTiers.map(t=><BaseTierRow key={t.id} tier={t} onSave={saveBaseTier} saving={saving}/>)}</tbody></table></div>
     </section>
 
     <section className="gva-card gvs-team-section">
-      <div className="gva-section-head"><div><h2>Staff Booking Economics</h2><div className="gva-mini">Kiểm soát attribution, status/payment và override commission nếu có sai sót.</div></div></div>
+      <div className="gva-section-head"><div><h2>2. Commission per Pax by Tour & Guide Language</h2><div className="gva-mini">Tier 1–9 / 10–29 / 30+ căn theo tổng số tour Completed + Paid của nhân viên trong tháng. Commission booking = mức VND/Pax × Pax.</div></div></div>
+      <div className="gva-table-wrap"><table className="gva-table"><thead>
+        <tr><th rowSpan={2}>Tour</th><th colSpan={3}>English Guide · VND/Pax</th><th colSpan={3}>Russian Guide · VND/Pax</th><th rowSpan={2}></th></tr>
+        <tr><th>1–9 tours</th><th>10–29 tours</th><th>30+ tours</th><th>1–9 tours</th><th>10–29 tours</th><th>30+ tours</th></tr>
+      </thead><tbody>
+        {COMMISSION_TOURS.map(([slug,label])=><CommissionTourRow key={slug} label={label} rates={commissionRates.filter(r=>r.tour_slug===slug)} onSave={saveCommissionTour} saving={saving}/>) }
+      </tbody></table></div>
+    </section>
+
+    <section className="gva-card gvs-team-section">
+      <div className="gva-section-head"><div><h2>Staff Booking Economics</h2><div className="gva-mini">Commission tự tính theo Tour × Pax × ngôn ngữ HDV × tier số tour Completed trong tháng. Profit chỉ hiển thị để tham khảo vận hành.</div></div></div>
       <div className="gva-table-wrap"><table className="gva-table"><thead><tr><th>Booking</th><th>Staff</th><th>Guest / Tour</th><th>Status</th><th>Revenue</th><th>Profit base</th><th>Commission</th><th></th></tr></thead><tbody>
         {bookings.map(b=><tr key={b.booking_id}><td><b>{b.booking_code}</b><div className="gva-mini">{b.tour_date}</div></td><td>{b.staff_name}</td><td><b>{b.guest_name||"—"}</b><div className="gva-mini">{b.product} · {b.pax} pax</div></td><td><span className="gva-pill">{b.status}</span><div className="gva-mini">{b.payment_status}</div></td><td>{money(b.revenue_vnd)}</td><td>{money(b.profit_before_staff_commission_vnd)}</td><td><b>{money(b.staff_commission_vnd)}</b>{!b.commission_eligible&&<div className="gva-mini">Not eligible</div>}</td><td><button className="gva-btn secondary" onClick={()=>setEditBooking(b)}>Edit</button></td></tr>)}
         {!bookings.length&&<tr><td colSpan={8}><div className="gva-empty">Chưa có staff booking trong tháng này.</div></td></tr>}
@@ -175,11 +207,19 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
 
 function K({label,value,hint,strong}:any){return <div className={`gva-card gvs-team-kpi ${strong?"strong":""}`}><div className="gvs-team-label">{label}</div><div className="gvs-team-value">{value}</div><div className="gva-mini">{hint}</div></div>}
 function F({label,children,wide}:any){return <div className={`gva-field ${wide?"wide":""}`}><label>{label}</label>{children}</div>}
-function TierRow({tier,onSave,saving}:any){
-  const [base,setBase]=useState(String(tier.base_salary_vnd||0));const [rate,setRate]=useState(String(Math.round(num(tier.commission_rate)*100)));
-  useEffect(()=>{setBase(String(tier.base_salary_vnd||0));setRate(String(Math.round(num(tier.commission_rate)*100)));},[tier.base_salary_vnd,tier.commission_rate]);
-  const range=tier.max_completed_tours===null?`${tier.min_completed_tours}+`:tier.min_completed_tours===tier.max_completed_tours?String(tier.min_completed_tours):`${tier.min_completed_tours}–${tier.max_completed_tours}`;
-  return <tr><td><b>{range}</b></td><td><input className="gva-input gvs-tier-input" value={base} onChange={e=>setBase(e.target.value)} inputMode="numeric"/></td><td><div className="gvs-rate-input"><input className="gva-input" value={rate} onChange={e=>setRate(e.target.value)} inputMode="decimal"/><span>% profit</span></div></td><td><button className="gva-btn secondary" disabled={saving} onClick={()=>onSave(tier,base,rate)}>Save</button></td></tr>;
+function BaseTierRow({tier,onSave,saving}:any){
+  const [base,setBase]=useState(String(tier.base_salary_vnd||0));
+  useEffect(()=>{setBase(String(tier.base_salary_vnd||0));},[tier.base_salary_vnd]);
+  const range=tier.max_monthly_pax===null?`${tier.min_monthly_pax}+`:tier.min_monthly_pax===tier.max_monthly_pax?String(tier.min_monthly_pax):`${tier.min_monthly_pax}–${tier.max_monthly_pax}`;
+  return <tr><td><b>{range}</b></td><td><input className="gva-input gvs-tier-input" value={base} onChange={e=>setBase(e.target.value)} inputMode="numeric"/></td><td><button className="gva-btn secondary" disabled={saving} onClick={()=>onSave(tier,base)}>Save</button></td></tr>;
+}
+function CommissionTourRow({label,rates,onSave,saving}:any){
+  const key=(lang:string,min:number)=>`${lang}-${min}`;
+  const initial=()=>Object.fromEntries(["en","ru"].flatMap(lang=>[1,10,30].map(min=>{const r=rates.find((x:any)=>x.guide_language===lang&&x.min_monthly_pax===min);return [key(lang,min),String(r?.rate_per_pax_vnd||0)];})));
+  const [values,setValues]=useState<Record<string,string>>(initial);
+  useEffect(()=>setValues(initial()),[rates]);
+  const input=(lang:string,min:number)=><input className="gva-input gvs-tier-input" value={values[key(lang,min)]||"0"} onChange={e=>setValues(v=>({...v,[key(lang,min)]:e.target.value}))} inputMode="numeric"/>;
+  return <tr><td><b>{label}</b></td><td>{input("en",1)}</td><td>{input("en",10)}</td><td>{input("en",30)}</td><td>{input("ru",1)}</td><td>{input("ru",10)}</td><td>{input("ru",30)}</td><td><button className="gva-btn secondary" disabled={saving||rates.length===0} onClick={()=>onSave(rates,values)}>Save</button></td></tr>;
 }
 function RequestModal({row,staff,saving,onClose,onSubmit}:any){return <div className="gva-modal-bg"><form className="gva-modal" onSubmit={onSubmit}><div className="gva-modal-head"><div><h3>Sửa Staff Request</h3><div className="gva-mini">{row.booking_code}</div></div><button type="button" className="gva-close" onClick={onClose}>✕</button></div><div className="gva-form-grid">
   <F label="Sales owner"><select className="gva-select" name="staff_id" defaultValue={row.staff_id}>{staff.map((s:any)=><option value={s.id} key={s.id}>{s.display_name}</option>)}</select></F><F label="Guest"><input className="gva-input" name="guest_name" defaultValue={row.guest_name} required/></F>
@@ -197,12 +237,11 @@ function PayrollModal({row,saving,onClose,onSubmit}:any){return <div className="
   <F label="Bonus"><input className="gva-input" name="bonus_vnd" defaultValue={row.bonus_vnd||0}/></F><F label="Deduction"><input className="gva-input" name="deduction_vnd" defaultValue={row.deduction_vnd||0}/></F>
   <F label="Advance already paid"><input className="gva-input" name="advance_paid_vnd" defaultValue={row.advance_paid_vnd||0}/></F><F label="Notes" wide><textarea className="gva-input" name="notes" rows={3} defaultValue={row.override_notes||""}/></F>
 </div><div className="gvs-team-modal-actions"><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button className="gva-btn" disabled={saving}>{saving?"Đang lưu…":"Lưu payroll"}</button></div></form></div>}
-function BookingControlModal({row,staff,saving,onClose,onSubmit}:any){return <div className="gva-modal-bg"><form className="gva-modal" onSubmit={onSubmit}><div className="gva-modal-head"><div><h3>Booking Control · {row.booking_code}</h3><div className="gva-mini">Commission base hiện tại: {money(row.profit_before_staff_commission_vnd)}</div></div><button type="button" className="gva-close" onClick={onClose}>✕</button></div><div className="gva-form-grid">
+function BookingControlModal({row,staff,saving,onClose,onSubmit}:any){return <div className="gva-modal-bg"><form className="gva-modal" onSubmit={onSubmit}><div className="gva-modal-head"><div><h3>Booking Control · {row.booking_code}</h3><div className="gva-mini">Commission tự động theo bảng Tour / Pax / Guide language. Chỉ override số tiền khi thật sự cần.</div></div><button type="button" className="gva-close" onClick={onClose}>✕</button></div><div className="gva-form-grid">
   <F label="Sales owner"><select className="gva-select" name="staff_id" defaultValue={row.staff_id}>{staff.map((s:any)=><option value={s.id} key={s.id}>{s.display_name}</option>)}</select></F>
   <F label="Booking status"><select className="gva-select" name="status" defaultValue={row.status}><option value="pending">pending</option><option value="confirmed">confirmed</option><option value="ready">ready</option><option value="in_progress">in_progress</option><option value="completed">completed</option><option value="closed">closed</option><option value="cancelled">cancelled</option></select></F>
   <F label="Payment status"><select className="gva-select" name="payment_status" defaultValue={row.payment_status}><option value="unpaid">unpaid</option><option value="deposit">deposit</option><option value="paid">paid</option><option value="refunded">refunded</option></select></F>
   <F label="Commission eligible"><select className="gva-select" name="commission_eligible" defaultValue={row.commission_eligible?"yes":"no"}><option value="yes">Yes</option><option value="no">No</option></select></F>
-  <F label="Profit base override"><input className="gva-input" name="commission_base_override_vnd" placeholder="Blank = auto" defaultValue={row.commission_base_override_vnd??""}/></F>
-  <F label="Commission amount override"><input className="gva-input" name="commission_amount_override_vnd" placeholder="Blank = formula" defaultValue={row.commission_amount_override_vnd??""}/></F>
+  <F label="Commission amount override"><input className="gva-input" name="commission_amount_override_vnd" placeholder="Để trống = tự tính theo bảng commission" defaultValue={row.commission_amount_override_vnd??""}/></F>
   <F label="Override reason" wide><textarea className="gva-input" name="override_notes" rows={3} defaultValue={row.override_notes||""}/></F>
 </div><div className="gvs-team-modal-actions"><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button className="gva-btn" disabled={saving}>{saving?"Đang lưu…":"Lưu + tính lại"}</button></div></form></div>}
