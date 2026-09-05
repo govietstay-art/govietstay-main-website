@@ -1,4 +1,5 @@
 "use client";
+// GVS-STAFF-BOOKING-PENDING-WHATSAPP-V1
 
 // govietstay-vlad-v4-fast-mobile-booking
 
@@ -442,7 +443,7 @@ export default function VladOfficialPage() {
       `📝 Notes / Примечания:\n${note}`,
       "",
       "👤 Booking Consultant / Консультант: Vladislav • GVS-RU-VLAD-01",
-      "📌 Status / Статус: Pending confirmation from David / Ожидает подтверждения Дэвида",
+      "📌 Status / Статус: Pending Admin approval / Ожидает подтверждения Admin / David",
       "",
       "Thank you for choosing GoVietStay 💚 / Спасибо за выбор GoVietStay!",
       "WhatsApp: +84 93 776 2607",
@@ -599,7 +600,7 @@ export default function VladOfficialPage() {
             <div className={cx("modal-heading")}>
               <p className={cx("section-kicker")}>🔒 ВНУТРЕННИЙ ИНСТРУМЕНТ МЕНЕДЖЕРА</p>
               <h2 id="booking-title">Быстрый booking</h2>
-              <p>Заполните основные данные и отправьте готовый запрос David прямо в WhatsApp.</p>
+              <p>Один клик: запрос сохраняется в Admin со статусом Pending и одновременно открывается WhatsApp для David. Официальный booking создаётся только после подтверждения Admin.</p>
             </div>
 
             {(
@@ -712,8 +713,8 @@ export default function VladOfficialPage() {
                   <div className={cx("summary-balance")}><span>Остаток</span><strong>{formatVnd(balance)}</strong></div>
                   <p className={cx("summary-warning")}>Перед отправкой проверьте тариф, детские условия и дополнительные услуги по актуальному прайсу GoVietStay.</p>
                   {bookingError && <p className={cx("booking-error")}>{bookingError}</p>}
-                  {bookingResult && <p className={cx("whatsapp-ready")}>✓ Booking сохранён в Admin. WhatsApp открыт — проверьте сообщение и нажмите Send.</p>}
-                  <button className={cx("button yellow full whatsapp-submit")} type="submit">Сохранить в Admin + отправить David</button>
+                  {bookingResult && <p className={cx("whatsapp-ready")}>✓ Booking Request сохранён в Admin как Pending. WhatsApp для David открыт. После Approve запрос станет Booking Master и попадёт в Operations.</p>}
+                  <button className={cx("button yellow full whatsapp-submit")} type="submit">Отправить Booking Request в GoVietStay</button>
                   {bookingResult && <button className={cx("copy-fallback")} type="button" onClick={copyBooking}>{copied ? "✓ Скопировано" : "Скопировать booking"}</button>}
                 </aside>
               </form>
