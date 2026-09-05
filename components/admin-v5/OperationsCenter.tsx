@@ -1,5 +1,6 @@
 "use client";
 // GVS-LANGUAGE-MATRIX-V3
+// GVS-BOOKING-DEPOSIT-SHARE-V1
 
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
@@ -50,6 +51,7 @@ type Booking = {
   pax: number | null;
   gross_revenue_vnd: number;
   net_revenue_vnd: number | null;
+  deposit_required_vnd: number;
   status: string;
   payment_status: string;
   pickup_time: string | null;
@@ -95,6 +97,9 @@ function addDays(value: string, days: number) {
 }
 function money(v: any) {
   return new Intl.NumberFormat("vi-VN").format(Number(v || 0)) + " ₫";
+}
+function moneyVnd(v: any) {
+  return new Intl.NumberFormat("vi-VN").format(Number(v || 0)) + " VND";
 }
 function langLabel(code?: string | null) {
   return LANGUAGES.find(([x]) => x === code)?.[1] || (code ? code.toUpperCase() : "—");
@@ -147,6 +152,10 @@ function costTypeLabel(value: string) {
 function numberOnly(value: any) {
   return Math.max(0, Number(String(value || 0).replace(/\D/g, "")));
 }
+function customerDate(value: string | null, locale: string) {
+  if (!value) return "—";
+  return new Intl.DateTimeFormat(locale, { day: "2-digit", month: "2-digit", year: "numeric" }).format(new Date(`${value}T12:00:00`));
+}
 
 export default function OperationsCenter() {
   const [loading, setLoading] = useState(true);
@@ -176,6 +185,8 @@ export default function OperationsCenter() {
   const tourMap = useMemo(() => Object.fromEntries(tours.map((x) => [x.id, x])), [tours]);
   const guideMap = useMemo(() => Object.fromEntries(guides.map((x) => [x.id, x])), [guides]);
   const contactMap = useMemo(() => Object.fromEntries(contacts.map((x) => [x.id, x])), [contacts]);
+  const isAdmin = !!staff && (staff.role === "owner" || staff.role === "admin");
+  const isOpsStaff = !!staff && ["owner", "admin", "sales", "desk"].includes(staff.role);
 
   useEffect(() => {
     let alive = true;
@@ -198,7 +209,7 @@ export default function OperationsCenter() {
   }, []);
 
   useEffect(() => {
-    if (staff && (staff.role === "owner" || staff.role === "admin")) loadAll();
+    if (staff && ["owner", "admin", "sales", "desk"].includes(staff.role)) loadAll();
   }, [staff]);
 
   async function resolveStaff(userId: string) {
@@ -230,7 +241,7 @@ export default function OperationsCenter() {
         supabase.from("guides").select("*").order("active", { ascending: false }).order("full_name"),
         supabase.from("guide_availability").select("*").gte("work_date", from).lte("work_date", to).order("work_date"),
         supabase.from("bookings")
-          .select("id,booking_code,contact_id,tour_id,tour_date,adults,children,pax,gross_revenue_vnd,net_revenue_vnd,status,payment_status,pickup_time,start_time,end_time,hotel,room,notes,guide_language,booking_mode,custom_tour_name,custom_destination,custom_itinerary,created_at")
+          .select("id,booking_code,contact_id,tour_id,tour_date,adults,children,pax,gross_revenue_vnd,net_revenue_vnd,deposit_required_vnd,status,payment_status,pickup_time,start_time,end_time,hotel,room,notes,guide_language,booking_mode,custom_tour_name,custom_destination,custom_itinerary,created_at")
           .gte("tour_date", from).lte("tour_date", to).order("tour_date", { ascending: true }).order("start_time", { ascending: true }),
         supabase.from("contacts").select("id,full_name,whatsapp,country,preferred_language").order("created_at", { ascending: false }).limit(1000),
         supabase.from("booking_guides").select("id,booking_id,guide_id,status,agreed_fee_vnd,notes").limit(2000),
@@ -251,6 +262,113 @@ export default function OperationsCenter() {
 
   function bookingName(b: Booking) {
     return b.booking_mode === "custom" ? b.custom_tour_name || "Custom Tour" : tourMap[b.tour_id || ""]?.name || "Tour chưa xác định";
+  }
+  function bookingRevenue(b: Booking) {
+    return Number(b.net_revenue_vnd ?? b.gross_revenue_vnd ?? 0);
+  }
+  function bookingDeposit(b: Booking) {
+    return Math.max(0, Number(b.deposit_required_vnd || 0));
+  }
+  function bookingBalance(b: Booking) {
+    return Math.max(0, bookingRevenue(b) - bookingDeposit(b));
+  }
+  async function copyText(text: string, label: string) {
+    try {
+      if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(text);
+      else {
+        const el = document.createElement("textarea");
+        el.value = text; el.style.position = "fixed"; el.style.opacity = "0";
+        document.body.appendChild(el); el.focus(); el.select(); document.execCommand("copy"); el.remove();
+      }
+      setMessage(`Đã copy ${label}.`);
+    } catch {
+      setError("Không copy được tự động. Hãy thử lại trên trình duyệt.");
+    }
+  }
+  function customerCopy(b: Booking, language: "en" | "ru") {
+    const contact = contactMap[b.contact_id || ""];
+    const pickupTime = timeShort(b.pickup_time || b.start_time);
+    const itinerary = b.booking_mode === "custom" && b.custom_itinerary ? b.custom_itinerary.trim() : "";
+    const notes = b.notes?.trim() || "";
+    if (language === "ru") return [
+      "✅ GOVIETSTAY — ПОДТВЕРЖДЕНИЕ БРОНИРОВАНИЯ", "",
+      `Номер бронирования: ${b.booking_code || "—"}`,
+      `Гость: ${contact?.full_name || "—"}`,
+      `Тур: ${bookingName(b)}`,
+      `Дата: ${customerDate(b.tour_date, "ru-RU")}`,
+      `Взрослые: ${b.adults} · Дети: ${b.children}`,
+      `Место встречи: ${b.hotel || "—"}`,
+      `Время встречи: ${pickupTime}`,
+      `Язык гида: ${langLabel(b.guide_language)}`,
+      itinerary ? `Маршрут: ${itinerary}` : "",
+      notes ? `Примечание: ${notes}` : "", "",
+      `Стоимость: ${moneyVnd(bookingRevenue(b))}`,
+      `Депозит: ${moneyVnd(bookingDeposit(b))}`,
+      `Остаток: ${moneyVnd(bookingBalance(b))}`, "",
+      "Спасибо, что выбрали GoVietStay."
+    ].filter(Boolean).join("\n");
+    return [
+      "✅ GOVIETSTAY — BOOKING CONFIRMATION", "",
+      `Booking ID: ${b.booking_code || "—"}`,
+      `Guest: ${contact?.full_name || "—"}`,
+      `Tour: ${bookingName(b)}`,
+      `Date: ${customerDate(b.tour_date, "en-GB")}`,
+      `Adults: ${b.adults} · Children: ${b.children}`,
+      `Pickup: ${b.hotel || "—"}`,
+      `Pickup time: ${pickupTime}`,
+      `Guide language: ${langLabel(b.guide_language)}`,
+      itinerary ? `Itinerary: ${itinerary}` : "",
+      notes ? `Note: ${notes}` : "", "",
+      `Total: ${moneyVnd(bookingRevenue(b))}`,
+      `Deposit: ${moneyVnd(bookingDeposit(b))}`,
+      `Balance: ${moneyVnd(bookingBalance(b))}`, "",
+      "Thank you for choosing GoVietStay."
+    ].filter(Boolean).join("\n");
+  }
+  function driverCopy(b: Booking, language: "en" | "vi") {
+    const contact = contactMap[b.contact_id || ""];
+    const pickupTime = timeShort(b.pickup_time || b.start_time);
+    const route = b.booking_mode === "custom" && b.custom_itinerary ? b.custom_itinerary.trim() : bookingName(b);
+    const notes = b.notes?.trim() || "";
+    if (language === "vi") return [
+      "🚗 THÔNG TIN TÀI XẾ — GOVIETSTAY", "",
+      `Mã booking: ${b.booking_code || "—"}`,
+      `Ngày: ${customerDate(b.tour_date, "vi-VN")}`,
+      `Khách: ${contact?.full_name || "—"}`,
+      `Số khách: ${b.pax ?? b.adults + b.children} (${b.adults} người lớn + ${b.children} trẻ em)`,
+      `Điện thoại: ${contact?.whatsapp || "—"}`,
+      `Điểm đón: ${b.hotel || "—"}`,
+      `Giờ đón: ${pickupTime}`,
+      `Tour: ${bookingName(b)}`,
+      b.end_time ? `Giờ kết thúc dự kiến: ${timeShort(b.end_time)}` : "",
+      `Lộ trình: ${route}`,
+      notes ? `Ghi chú: ${notes}` : ""
+    ].filter(Boolean).join("\n");
+    return [
+      "🚗 DRIVER INFO — GOVIETSTAY", "",
+      `Booking ID: ${b.booking_code || "—"}`,
+      `Date: ${customerDate(b.tour_date, "en-GB")}`,
+      `Guest: ${contact?.full_name || "—"}`,
+      `Guests: ${b.pax ?? b.adults + b.children} (${b.adults} adults + ${b.children} children)`,
+      `Phone / WhatsApp: ${contact?.whatsapp || "—"}`,
+      `Pickup: ${b.hotel || "—"}`,
+      `Pickup time: ${pickupTime}`,
+      `Tour: ${bookingName(b)}`,
+      b.end_time ? `Expected finish: ${timeShort(b.end_time)}` : "",
+      `Route: ${route}`,
+      notes ? `Note: ${notes}` : ""
+    ].filter(Boolean).join("\n");
+  }
+  function shareButtons(b: Booking) {
+    const style = { padding: "6px 9px", fontSize: 12, minHeight: 32 } as const;
+    return <div style={{ display: "flex", flexWrap: "wrap", gap: 6, alignItems: "center", marginTop: 10 }}>
+      <span className="gvo-small"><b>Khách:</b></span>
+      <button type="button" className="gva-btn secondary" style={style} onClick={() => copyText(customerCopy(b, "en"), "Booking EN")}>EN</button>
+      <button type="button" className="gva-btn secondary" style={style} onClick={() => copyText(customerCopy(b, "ru"), "Booking RU")}>RU</button>
+      <span className="gvo-small" style={{ marginLeft: 4 }}><b>Driver:</b></span>
+      <button type="button" className="gva-btn secondary" style={style} onClick={() => copyText(driverCopy(b, "vi"), "Driver VI")}>VI</button>
+      <button type="button" className="gva-btn secondary" style={style} onClick={() => copyText(driverCopy(b, "en"), "Driver EN")}>EN</button>
+    </div>;
   }
   function activeAssignments(bookingId: string) {
     return assignments.filter((x) => x.booking_id === bookingId && x.status !== "cancelled");
@@ -391,7 +509,10 @@ export default function OperationsCenter() {
       if (mode === "custom" && !String(v.custom_tour_name || "").trim()) throw new Error("Hãy nhập tên tour thủ công.");
       const adults = Math.max(0, Number(v.adults || 0));
       const children = Math.max(0, Number(v.children || 0));
-      const revenue = Math.max(0, Number(String(v.revenue || 0).replace(/\D/g, "")));
+      const revenue = numberOnly(v.revenue);
+      const deposit = numberOnly(v.deposit);
+      if (deposit > revenue) throw new Error("Deposit / tiền cọc không thể lớn hơn giá bán.");
+      const paymentStatus = deposit <= 0 ? "unpaid" : deposit >= revenue && revenue > 0 ? "paid" : "deposit";
       const contactId = await createContact(v);
       const { error: insertError } = await supabase.from("bookings").insert({
         booking_code: code(),
@@ -401,8 +522,8 @@ export default function OperationsCenter() {
         tour_date: v.tour_date,
         adults, children,
         gross_revenue_vnd: revenue,
-        discount_vnd: 0, deposit_required_vnd: 0,
-        status: v.status || "confirmed", payment_status: "unpaid",
+        discount_vnd: 0, deposit_required_vnd: deposit,
+        status: v.status || "confirmed", payment_status: paymentStatus,
         pickup_time: v.pickup_time || null,
         start_time: v.start_time || null,
         end_time: v.end_time || null,
@@ -417,7 +538,7 @@ export default function OperationsCenter() {
       });
       if (insertError) throw insertError;
       setFocusDate(v.tour_date || focusDate); setModal(null); setView("dispatch");
-      setMessage("Đã tạo booking. Có thể gán HDV ngay trên bảng điều phối."); await loadAll();
+      setMessage("Đã tạo booking. Có thể copy thông tin Khách EN/RU hoặc Driver VI/EN ngay bên dưới booking."); await loadAll();
     } catch (e: any) { setError(e.message); } finally { setSaving(false); }
   }
 
@@ -536,7 +657,7 @@ export default function OperationsCenter() {
 
   if (!session) return <div className="gvo-login"><form className="gvo-login-card" onSubmit={login}>
     <div className="gvo-brand">GoVietStay Operations</div>
-    <p>Dùng cùng tài khoản Owner/Admin hiện tại.</p>
+    <p>Dùng tài khoản GoVietStay Owner/Admin/Sales/Desk.</p>
     {error && <div className="gva-msg err">{error}</div>}
     <label>Email</label><input className="gva-input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
     <label>Mật khẩu</label><input className="gva-input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
@@ -544,8 +665,8 @@ export default function OperationsCenter() {
     <a className="gvo-back-link" href="/admin">← Quay lại Admin</a>
   </form></div>;
 
-  if (!staff || !(staff.role === "owner" || staff.role === "admin")) {
-    return <div className="gvo-login"><div className="gvo-login-card">Tài khoản này chưa có quyền Owner/Admin. <a href="/admin">Quay lại Admin</a>.</div></div>;
+  if (!staff || !isOpsStaff) {
+    return <div className="gvo-login"><div className="gvo-login-card">Tài khoản này chưa có quyền Operations. <a href="/admin">Quay lại Admin</a>.</div></div>;
   }
 
   return <div className="gvo-shell">
@@ -553,7 +674,7 @@ export default function OperationsCenter() {
       <div>
         <div className="gvo-eyebrow">GoVietStay · Operations Center V1.7</div>
         <h1>Điều phối tour & hướng dẫn viên</h1>
-        <p>{staff.display_name} · dữ liệu vận hành thật từ Supabase</p>
+        <p>{staff.display_name} · {staff.role} · dữ liệu vận hành thật từ Supabase</p>
       </div>
       <div className="gvo-header-actions">
         <a className="gva-btn secondary" href="/admin">← Admin chính</a>
@@ -574,8 +695,8 @@ export default function OperationsCenter() {
     <nav className="gvo-tabs">
       <button className={view === "calendar" ? "active" : ""} onClick={() => setView("calendar")}>Lịch tháng</button>
       <button className={view === "dispatch" ? "active" : ""} onClick={() => setView("dispatch")}>Điều phối ngày</button>
-      <button className={view === "bookings" ? "active" : ""} onClick={() => setView("bookings")}>Bookings</button>
-      <button className={view === "guides" ? "active" : ""} onClick={() => setView("guides")}>Hướng dẫn viên</button>
+      {isAdmin && <button className={view === "bookings" ? "active" : ""} onClick={() => setView("bookings")}>Bookings</button>}
+      {isAdmin && <button className={view === "guides" ? "active" : ""} onClick={() => setView("guides")}>Hướng dẫn viên</button>}
     </nav>
 
     {view === "calendar" && <section className="gvo-card gvo-month-card">
@@ -650,12 +771,13 @@ export default function OperationsCenter() {
                       <div className="gvo-mobile-tour-copy">
                         <b>{bookingName(b)}</b>
                         <span>{contactMap[b.contact_id || ""]?.full_name || "Khách"} · {b.pax ?? b.adults + b.children} khách · {langLabel(b.guide_language)}</span>
-                        <small>Thu {money(revenue)} · Chi {money(cost)} · Lãi {money(revenue - cost)}</small>
+                        {isAdmin ? <small>Thu {money(revenue)} · Chi {money(cost)} · Lãi {money(revenue - cost)}</small> : <small>Cọc {money(bookingDeposit(b))} · Còn lại {money(bookingBalance(b))}</small>}
                       </div>
                     </div>
+                    {shareButtons(b)}
                     <div className="gvo-mobile-tour-actions">
                       <button type="button" onClick={() => { setFocusDate(date); setView("dispatch"); }}>Điều phối</button>
-                      <button type="button" className="finance" onClick={() => { setSelectedBooking(b.id); setModal("cost"); }}>Tài chính</button>
+                      {isAdmin && <button type="button" className="finance" onClick={() => { setSelectedBooking(b.id); setModal("cost"); }}>Tài chính</button>}
                     </div>
                   </article>;
                 })}
@@ -680,7 +802,7 @@ export default function OperationsCenter() {
           {LANGUAGES.map(([v, label]) => <option key={v} value={v}>{label}</option>)}
         </select>
         <div className="gvo-spacer" />
-        <button className="gva-btn secondary" onClick={() => setModal("availability")}>+ Lịch HDV</button>
+        {isAdmin && <button className="gva-btn secondary" onClick={() => setModal("availability")}>+ Lịch HDV</button>}
         <button className="gva-btn" onClick={() => setModal("booking")}>+ Booking</button>
       </section>
 
@@ -715,21 +837,24 @@ export default function OperationsCenter() {
                 <div className="gvo-assignment">
                   {ass.length ? ass.map((a) => <div className="gvo-assigned" key={a.id}>
                     <span>HDV: <b>{guideMap[a.guide_id]?.full_name || "—"}</b> · {money(a.agreed_fee_vnd)}</span>
-                    <select className="gva-select" value={a.status} onChange={(e) => updateAssignment(a.id, e.target.value)} disabled={saving}>
+                    {isAdmin && <select className="gva-select" value={a.status} onChange={(e) => updateAssignment(a.id, e.target.value)} disabled={saving}>
                       <option value="pending">pending</option><option value="confirmed">confirmed</option><option value="completed">completed</option><option value="cancelled">cancelled</option>
-                    </select>
+                    </select>}
                   </div>) : <div className="gvo-need-guide">⚠️ Chưa gán hướng dẫn viên</div>}
-                  {!ass.length && <div className="gvo-assign-row">
+                  {!ass.length && isAdmin && <div className="gvo-assign-row">
                     <select className="gva-select" defaultValue="" onChange={(e) => { if (e.target.value) assignGuide(b.id, e.target.value); }} disabled={saving}>
                       <option value="">Chọn HDV phù hợp…</option>
                       {eligibleGuides.map((g) => <option key={g.id} value={g.id}>{g.full_name} · {statusText(guideStatus(g.id, focusDate))} · {money(suggestedFee(g, b))}</option>)}
                     </select>
                   </div>}
                 </div>
-                <div className="gvo-finance-row">
+                {isAdmin ? <div className="gvo-finance-row">
                   <span>Thu: <b>{money(revenue)}</b></span><span>Chi: <b>{money(cost)}</b></span><span>Lãi gộp: <b>{money(revenue - cost)}</b></span>
                   <button className="gvo-text-btn" onClick={() => { setSelectedBooking(b.id); setModal("cost"); }}>Quản lý chi phí</button>
-                </div>
+                </div> : <div className="gvo-finance-row">
+                  <span>Tổng: <b>{money(revenue)}</b></span><span>Cọc: <b>{money(bookingDeposit(b))}</b></span><span>Còn lại: <b>{money(bookingBalance(b))}</b></span>
+                </div>}
+                {shareButtons(b)}
               </article>;
             })}
             {!focusBookings.length && <div className="gvo-empty">Không có tour trong ngày này.</div>}
@@ -753,7 +878,7 @@ export default function OperationsCenter() {
       </div>
     </>}
 
-    {view === "guides" && <section className="gvo-card">
+    {view === "guides" && isAdmin && <section className="gvo-card">
       <div className="gvo-card-head"><div><h2>Database hướng dẫn viên</h2><p>Mỗi HDV một hồ sơ; lịch rảnh lưu riêng theo ngày/khung giờ.</p></div><button className="gva-btn" onClick={() => setModal("guide")}>+ Thêm HDV</button></div>
       <div className="gvo-table-wrap"><table className="gvo-table"><thead><tr><th>HDV</th><th>Ngôn ngữ</th><th>Khu vực</th><th>Liên hệ</th><th>Nửa ngày</th><th>Cả ngày</th><th>License</th></tr></thead><tbody>
         {guides.map((g) => <tr key={g.id}><td><b>{g.full_name}</b>{!g.active && <div className="gvo-small">inactive</div>}</td><td>{(g.languages || []).map(langLabel).join(", ") || "—"}</td><td>{(g.service_areas || []).join(", ") || "—"}</td><td>{g.whatsapp || g.phone || g.zalo || "—"}</td><td>{money(g.half_day_rate_vnd)}</td><td>{money(g.full_day_rate_vnd)}</td><td>{g.license_status}</td></tr>)}
@@ -761,7 +886,7 @@ export default function OperationsCenter() {
       </tbody></table></div>
     </section>}
 
-    {view === "bookings" && <section className="gvo-card">
+    {view === "bookings" && isAdmin && <section className="gvo-card">
       <div className="gvo-card-head"><div><h2>Booking vận hành</h2><p>Tiền thu và chi phí đều có thể điều chỉnh khi lịch trình khách thay đổi.</p></div><button className="gva-btn" onClick={() => setModal("booking")}>+ Booking</button></div>
       <div className="gvo-table-wrap"><table className="gvo-table"><thead><tr><th>Ngày</th><th>Code</th><th>Tour</th><th>Khách</th><th>Ngôn ngữ</th><th>HDV</th><th>Thu</th><th>Chi</th><th>Lãi gộp</th></tr></thead><tbody>
         {bookings.filter((b) => b.status !== "cancelled").map((b) => {
@@ -786,7 +911,7 @@ export default function OperationsCenter() {
       </tbody></table></div>
     </section>}
 
-    {modal === "guide" && <ModalFrame title="Thêm hướng dẫn viên" onClose={() => setModal(null)}><form onSubmit={createGuide} className="gvo-form-grid">
+    {modal === "guide" && isAdmin && <ModalFrame title="Thêm hướng dẫn viên" onClose={() => setModal(null)}><form onSubmit={createGuide} className="gvo-form-grid">
       <Field label="Tên HDV"><input name="full_name" className="gva-input" required /></Field>
       <Field label="WhatsApp"><input name="whatsapp" className="gva-input" /></Field>
       <Field label="Phone"><input name="phone" className="gva-input" /></Field>
@@ -801,7 +926,7 @@ export default function OperationsCenter() {
       <ModalActions saving={saving} onClose={() => setModal(null)} label="Lưu HDV" />
     </form></ModalFrame>}
 
-    {modal === "availability" && <ModalFrame title="Cập nhật lịch HDV" onClose={() => setModal(null)}><form onSubmit={createAvailability} className="gvo-form-grid">
+    {modal === "availability" && isAdmin && <ModalFrame title="Cập nhật lịch HDV" onClose={() => setModal(null)}><form onSubmit={createAvailability} className="gvo-form-grid">
       <Field label="Hướng dẫn viên"><select name="guide_id" className="gva-select" required><option value="">Chọn HDV</option>{guides.filter((g) => g.active).map((g) => <option key={g.id} value={g.id}>{g.full_name} · {(g.languages || []).map(langLabel).join(", ")}</option>)}</select></Field>
       <Field label="Ngày"><input name="work_date" type="date" className="gva-input" defaultValue={focusDate} required /></Field>
       <Field label="Từ giờ"><input name="start_time" type="time" className="gva-input" defaultValue="00:00" required /></Field>
@@ -813,7 +938,7 @@ export default function OperationsCenter() {
 
     {modal === "booking" && <BookingModal tours={tours} saving={saving} onClose={() => setModal(null)} onSubmit={createBooking} />}
 
-    {modal === "cost" && selectedBooking && <CostManagerModal
+    {modal === "cost" && selectedBooking && isAdmin && <CostManagerModal
       booking={bookings.find((b) => b.id === selectedBooking)}
       bookingName={bookingName}
       revenue={Number(bookings.find((b) => b.id === selectedBooking)?.net_revenue_vnd ?? bookings.find((b) => b.id === selectedBooking)?.gross_revenue_vnd ?? 0)}
@@ -936,6 +1061,9 @@ function CostEditorRow({ item, saving, onSave, onDelete }: any) {
 
 function BookingModal({ tours, saving, onClose, onSubmit }: any) {
   const [mode, setMode] = useState<"catalog" | "custom">("catalog");
+  const [revenue, setRevenue] = useState("");
+  const [deposit, setDeposit] = useState("0");
+  const balance = Math.max(0, numberOnly(revenue) - numberOnly(deposit));
   return <ModalFrame title="Tạo booking vận hành" onClose={onClose}><form onSubmit={onSubmit} className="gvo-form-grid">
     <Field label="Loại booking" wide><div className="gvo-mode-switch">
       <label><input type="radio" name="booking_mode" value="catalog" checked={mode === "catalog"} onChange={() => setMode("catalog")} /> Tour GoVietStay</label>
@@ -959,7 +1087,9 @@ function BookingModal({ tours, saving, onClose, onSubmit }: any) {
     <Field label="Adults"><input name="adults" type="number" min="0" defaultValue="1" className="gva-input" /></Field>
     <Field label="Children"><input name="children" type="number" min="0" defaultValue="0" className="gva-input" /></Field>
     <Field label="Ngôn ngữ HDV"><select name="guide_language" className="gva-select"><option value="">Không cần / chưa xác định</option>{LANGUAGES.map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select></Field>
-    <Field label="Giá bán VND"><input name="revenue" inputMode="numeric" className="gva-input" placeholder="3200000" required /></Field>
+    <Field label="Giá bán VND"><input name="revenue" inputMode="numeric" className="gva-input" placeholder="3200000" value={revenue} onChange={(e) => setRevenue(e.target.value)} required /></Field>
+    <Field label="Deposit / Đã cọc"><input name="deposit" inputMode="numeric" className="gva-input" placeholder="0" value={deposit} onChange={(e) => setDeposit(e.target.value)} /></Field>
+    <Field label="Balance / Còn lại" wide><input className="gva-input" value={money(balance)} readOnly /></Field>
     <Field label="Ghi chú" wide><textarea name="notes" className="gva-input" rows={3} /></Field>
     <ModalActions saving={saving} onClose={onClose} label="Lưu booking" />
   </form></ModalFrame>;
