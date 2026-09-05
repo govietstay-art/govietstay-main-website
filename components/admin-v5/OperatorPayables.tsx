@@ -1,4 +1,5 @@
 "use client";
+// GVS-OPERATOR-MOBILE-QUICK-ADD-V2
 
 import { useEffect, useMemo, useState } from "react";
 import "./operator-payables.css";
@@ -126,6 +127,7 @@ export default function OperatorPayables({supabase}:Props){
   const [operatorOpen,setOperatorOpen]=useState(false);
   const [rateOpen,setRateOpen]=useState(false);
   const [settle,setSettle]=useState<OperatorSummary|null>(null);
+  const [quickBooking,setQuickBooking]=useState<Booking|null>(null);
 
   const supplierMap=useMemo(()=>Object.fromEntries(suppliers.map(x=>[x.id,x])),[suppliers]);
   const tourMap=useMemo(()=>Object.fromEntries(tours.map(x=>[x.id,x])),[tours]);
@@ -240,6 +242,58 @@ export default function OperatorPayables({supabase}:Props){
     finally{setSaving(false);}
   }
 
+  async function quickCreateSupplierRate(e:any){
+    e.preventDefault(); if(!quickBooking)return;
+    setSaving(true);setError("");setMessage("");
+    try{
+      if(!quickBooking.tour_id) throw new Error("Booking custom chưa có Tour ID. Hãy dùng giá tự nhập với một nhà cung cấp đã có.");
+      const f=new FormData(e.currentTarget); const v=Object.fromEntries(f.entries()) as any;
+      const name=String(v.name||"").trim();
+      if(!name) throw new Error("Cần tên nhà cung cấp.");
+      const {data:supplier,error:sErr}=await supabase.from("suppliers").insert({
+        name,
+        contact_name:String(v.contact_name||"").trim()||null,
+        phone:String(v.phone||"").trim()||null,
+        whatsapp:String(v.whatsapp||"").trim()||null,
+        service_area:String(v.service_area||"").trim()||null,
+        payment_terms_days:Math.max(0,Number(v.payment_terms_days||0)),
+        settlement_mode:"after_tour",
+        supplier_type:"group_tour_operator",
+        active:true,
+        notes:"Quick added from Booking → Operator"
+      }).select("id,name").single();
+      if(sErr) throw sErr;
+
+      const adult=parseMoney(v.adult_net_vnd);
+      const child=parseMoney(v.child_net_vnd);
+      const flat=parseMoney(v.flat_fee_vnd);
+      const {data:rate,error:rErr}=await supabase.from("operator_tour_rates").insert({
+        supplier_id:supplier.id,
+        tour_id:quickBooking.tour_id,
+        adult_net_vnd:adult,
+        child_net_vnd:child,
+        flat_fee_vnd:flat,
+        valid_from:isoToday(),
+        active:true,
+        notes:String(v.notes||"").trim()||null
+      }).select("id").single();
+      if(rErr) throw rErr;
+
+      const {error:bErr}=await supabase.from("bookings").update({
+        operator_supplier_id:supplier.id,
+        operator_rate_id:rate.id,
+        operator_cost_override_vnd:null,
+        operator_payable_auto:true
+      }).eq("id",quickBooking.id);
+      if(bErr) throw bErr;
+
+      setQuickBooking(null);
+      setMessage(`✓ Đã thêm ${supplier.name}, lưu giá net và gán luôn vào ${quickBooking.booking_code||"booking"}. Công nợ tự chạy.`);
+      await load();
+    }catch(e:any){setError(e?.message||"Không thêm được nhà cung cấp + giá net.");}
+    finally{setSaving(false);}
+  }
+
   async function settleOperator(e:any){
     e.preventDefault(); if(!settle)return;
     setSaving(true);setError("");setMessage("");
@@ -305,11 +359,11 @@ export default function OperatorPayables({supabase}:Props){
       <div className="gva-section-head">
         <div>
           <h2>Booking → Operator</h2>
-          <div className="gva-mini">Đây là điểm duy nhất cần chọn nhà tổ chức. Sau đó công nợ và supplier cost trong P&L tự chạy.</div>
+          <div className="gva-mini">Chọn NCC đã lưu → giá net tự lên. Hoặc nhập giá thủ công. Nếu chưa có NCC, bấm “+ NCC” ngay tại booking để thêm và lưu bằng điện thoại.</div>
         </div>
       </div>
       <div className="gvs-op-bookings">
-        {bookings.map(b=><BookingAssignRow key={b.id} b={b} suppliers={suppliers} tours={tours} rates={rates} supplierMap={supplierMap} tourMap={tourMap} previewCost={previewCost} ratesFor={ratesFor} onSave={assignOperator} saving={saving}/>)}
+        {bookings.map(b=><BookingAssignRow key={b.id} b={b} suppliers={suppliers} tours={tours} rates={rates} supplierMap={supplierMap} tourMap={tourMap} previewCost={previewCost} ratesFor={ratesFor} onSave={assignOperator} onQuickAdd={()=>setQuickBooking(b)} saving={saving}/>)}
         {!bookings.length&&<div className="gva-empty">Không có booking trong tháng này.</div>}
       </div>
     </section>
@@ -346,6 +400,7 @@ export default function OperatorPayables({supabase}:Props){
       </table></div>
     </section>
 
+    {quickBooking&&<QuickSupplierRateModal booking={quickBooking} tourName={quickBooking.custom_tour_name||tourMap[quickBooking.tour_id||""]?.name||"Tour"} saving={saving} onClose={()=>setQuickBooking(null)} onSubmit={quickCreateSupplierRate}/>}
     {operatorOpen&&<OperatorModal saving={saving} onClose={()=>setOperatorOpen(false)} onSubmit={createOperator}/>}
     {rateOpen&&<RateModal saving={saving} suppliers={suppliers} tours={tours} onClose={()=>setRateOpen(false)} onSubmit={createRate}/>}
     {settle&&<SettlementModal row={settle} saving={saving} onClose={()=>setSettle(null)} onSubmit={settleOperator}/>}
@@ -356,7 +411,7 @@ function K({label,value,hint,strong,bad}:any){
   return <div className={`gva-card gvs-op-kpi ${strong?"strong":""} ${bad?"bad":""}`}><div className="gvs-op-label">{label}</div><div className="gvs-op-value">{value}</div><div className="gva-mini">{hint}</div></div>;
 }
 
-function BookingAssignRow({b,suppliers,tourMap,rates,previewCost,ratesFor,onSave,saving}:any){
+function BookingAssignRow({b,suppliers,tourMap,rates,previewCost,ratesFor,onSave,onQuickAdd,saving}:any){
   const [supplierId,setSupplierId]=useState(b.operator_supplier_id||"");
   const matching=ratesFor(supplierId,b.tour_id);
   const [rateId,setRateId]=useState(b.operator_rate_id||"");
@@ -374,27 +429,53 @@ function BookingAssignRow({b,suppliers,tourMap,rates,previewCost,ratesFor,onSave
 
   const expected=override.trim()?parseMoney(override):previewCost(b,supplierId,rateId);
   const tourName=b.custom_tour_name||tourMap[b.tour_id||""]?.name||"Tour";
+  const recommendedSupplierIds=new Set(rates.filter((r:any)=>r.tour_id===b.tour_id).map((r:any)=>r.supplier_id));
+  const orderedSuppliers=[...suppliers].sort((a:any,bx:any)=>Number(recommendedSupplierIds.has(bx.id))-Number(recommendedSupplierIds.has(a.id)));
+  const selectedRate=matching.find((x:any)=>x.id===rateId)||matching[0];
+  const childRateMissing=Number(b.children||0)>0 && !!supplierId && !!selectedRate && Number(selectedRate.child_net_vnd||0)===0 && !override.trim();
 
   return <div className={`gvs-op-booking ${supplierId?"assigned":"needs"}`}>
     <div><b>{b.booking_code||"Booking"}</b><small>{b.tour_date||"—"} · {b.status}</small></div>
     <div><strong>{tourName}</strong><small>{b.adults}A · {b.children}C · {b.pax} pax</small></div>
-    <select className="gva-select" value={supplierId} onChange={e=>setSupplierId(e.target.value)}>
-      <option value="">— Chưa chọn Operator —</option>
-      {suppliers.map((s:any)=><option value={s.id} key={s.id}>{s.name}</option>)}
-    </select>
+    <div style={{display:"flex",gap:6,minWidth:0}}>
+      <select className="gva-select" style={{minWidth:0,flex:1}} value={supplierId} onChange={e=>setSupplierId(e.target.value)}>
+        <option value="">— Chọn nhà cung cấp —</option>
+        {orderedSuppliers.map((s:any)=><option value={s.id} key={s.id}>{recommendedSupplierIds.has(s.id)?"★ ":""}{s.name}</option>)}
+      </select>
+      <button type="button" className="gva-btn secondary" style={{whiteSpace:"nowrap",padding:"8px 10px"}} onClick={onQuickAdd}>+ NCC</button>
+    </div>
     <select className="gva-select" value={rateId} onChange={e=>setRateId(e.target.value)} disabled={!supplierId}>
       <option value="">Auto rate theo ngày tour</option>
       {matching.map((r:any)=><option value={r.id} key={r.id}>{money(r.adult_net_vnd)} A · {money(r.child_net_vnd)} C · từ {r.valid_from}</option>)}
     </select>
-    <input className="gva-input" value={override} onChange={e=>setOverride(e.target.value)} inputMode="numeric" placeholder="Override cost (optional)"/>
-    <div className="gvs-op-expected"><small>Expected payable</small><b>{money(expected)}</b></div>
+    <input className="gva-input" value={override} onChange={e=>setOverride(e.target.value)} inputMode="numeric" placeholder="Giá net tự nhập (tuỳ chọn)"/>
+    <div className="gvs-op-expected"><small>{override.trim()?"Giá tự nhập":"Công nợ dự kiến"}</small><b>{money(expected)}</b>{childRateMissing&&<small style={{color:"#b45309"}}>Thiếu giá trẻ em → nhập giá net tự nhập</small>}</div>
     <button className="gva-btn" disabled={saving || (!!supplierId && !rateId && !matching.length && !override.trim())} onClick={()=>onSave(b,supplierId,rateId,override)}>
-      {supplierId?"Lưu + Auto Payable":"Bỏ Operator"}
+      {supplierId?"Lưu công nợ":"Bỏ NCC"}
     </button>
   </div>;
 }
 
 function F({label,children,wide}:any){return <div className={`gva-field ${wide?"wide":""}`}><label>{label}</label>{children}</div>}
+
+function QuickSupplierRateModal({booking,tourName,saving,onClose,onSubmit}:any){
+  return <div className="gva-modal-bg"><form className="gva-modal" onSubmit={onSubmit}>
+    <div className="gva-modal-head"><div><h3>+ Nhà cung cấp & giá net</h3><div className="gva-mini">{booking.booking_code||"Booking"} · {tourName}</div></div><button type="button" className="gva-close" onClick={onClose}>✕</button></div>
+    <div style={{padding:"10px 12px",background:"#f6f8fb",borderRadius:10,fontSize:13,lineHeight:1.5,marginBottom:12}}><b>Lưu 1 lần:</b> NCC + giá net sẽ được lưu dùng cho các booking sau và gán luôn cho booking này.</div>
+    <div className="gva-form-grid">
+      <F label="Tên nhà cung cấp" wide><input className="gva-input" name="name" required autoFocus placeholder="VD: Ms Trinh / S-Tour"/></F>
+      <F label="Giá net người lớn"><input className="gva-input" name="adult_net_vnd" inputMode="numeric" required placeholder="530000"/></F>
+      <F label="Giá net trẻ em"><input className="gva-input" name="child_net_vnd" inputMode="numeric" placeholder="0 nếu chưa có"/></F>
+      <F label="Flat fee / booking"><input className="gva-input" name="flat_fee_vnd" inputMode="numeric" placeholder="0"/></F>
+      <F label="Người liên hệ"><input className="gva-input" name="contact_name"/></F>
+      <F label="WhatsApp / Phone"><input className="gva-input" name="whatsapp" inputMode="tel"/></F>
+      <F label="Khu vực"><input className="gva-input" name="service_area" placeholder="Da Nang / Hoi An"/></F>
+      <F label="Số ngày công nợ"><input className="gva-input" type="number" min="0" name="payment_terms_days" defaultValue="0"/></F>
+      <F label="Ghi chú" wide><textarea className="gva-input" name="notes" rows={2} placeholder="Điều kiện giá / trẻ em / phụ thu..."/></F>
+    </div>
+    <div className="gvs-op-modal-actions"><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button className="gva-btn" disabled={saving}>{saving?"Đang lưu…":"Lưu NCC + giá + gán booking"}</button></div>
+  </form></div>
+}
 
 function OperatorModal({saving,onClose,onSubmit}:any){
   return <div className="gva-modal-bg"><form className="gva-modal" onSubmit={onSubmit}>
