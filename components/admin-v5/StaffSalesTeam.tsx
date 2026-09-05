@@ -1,11 +1,12 @@
 "use client";
 // GVS-STAFF-COMPENSATION-TOUR-TIER-V2
+// GVS-STAFF-AUTO-ONBOARDING-V3
 
 import { useEffect, useMemo, useState } from "react";
 import "./staff-sales-team.css";
 
 type Props={supabase:any;adminStaff:any};
-type Staff={id:string;display_name:string;sales_code:string;role:string;compensation_plan_code:string;allow_booking_portal:boolean};
+type Staff={id:string;display_name:string;sales_code:string;role:string;compensation_plan_code:string;allow_booking_portal:boolean;sales_page:string|null};
 type Payroll={staff_id:string;display_name:string;sales_code:string;plan_code:string;eligible_bookings:number;pax:number;revenue_vnd:number;commissionable_profit_vnd:number;base_salary_vnd:number;commission_rate:number;commission_vnd:number;commission_adjustment_vnd:number;bonus_vnd:number;deduction_vnd:number;advance_paid_vnd:number;total_compensation_vnd:number;payable_vnd:number;override_notes:string|null};
 type BaseTier={id:string;plan_code:string;min_monthly_pax:number;max_monthly_pax:number|null;base_salary_vnd:number;active:boolean;notes:string|null};
 type CommissionRate={id:string;plan_code:string;tour_slug:string;guide_language:string;min_monthly_pax:number;max_monthly_pax:number|null;rate_per_pax_vnd:number;active:boolean;notes:string|null};
@@ -42,6 +43,7 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
   const [editRequest,setEditRequest]=useState<Intake|null>(null);
   const [editPayroll,setEditPayroll]=useState<Payroll|null>(null);
   const [editBooking,setEditBooking]=useState<SalesBooking|null>(null);
+  const [newStaffOpen,setNewStaffOpen]=useState(false);
 
   const staffMap=useMemo(()=>Object.fromEntries(staff.map(x=>[x.id,x])),[staff]);
   const pending=intake.filter(x=>x.status==="pending");
@@ -54,7 +56,7 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
     try{
       const pMonth=month+"-01";
       const results=await Promise.all([
-        supabase.from("staff_profiles").select("id,display_name,sales_code,role,compensation_plan_code,allow_booking_portal").not("sales_code","is",null).order("display_name"),
+        supabase.from("staff_profiles").select("id,display_name,sales_code,role,compensation_plan_code,allow_booking_portal,sales_page").not("sales_code","is",null).order("display_name"),
         supabase.rpc("admin_staff_payroll",{p_month:pMonth}),
         supabase.from("staff_base_pax_tiers").select("id,plan_code,min_monthly_pax,max_monthly_pax,base_salary_vnd,active,notes").eq("plan_code","sales_pax_v1").eq("active",true).order("min_monthly_pax"),
         supabase.from("staff_tour_commission_rates").select("id,plan_code,tour_slug,guide_language,min_monthly_pax,max_monthly_pax,rate_per_pax_vnd,active,notes").eq("plan_code","sales_pax_v1").eq("active",true).order("tour_slug").order("guide_language").order("min_monthly_pax"),
@@ -121,6 +123,24 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
       setEditBooking(null);setMessage("Đã cập nhật booking và hoa hồng.");await load();
     }catch(e:any){setError(e?.message||"Không lưu được booking control.");}finally{setSaving(false)}
   }
+  async function createSalesStaff(e:any){
+    e.preventDefault();setSaving(true);setError("");setMessage("");
+    try{
+      const f=new FormData(e.currentTarget);const v=Object.fromEntries(f.entries()) as any;
+      const {data,error}=await supabase.rpc("admin_create_sales_staff",{
+        p_display_name:String(v.display_name||"").trim(),
+        p_market_code:String(v.market_code||"RU").trim().toUpperCase(),
+        p_sales_page:String(v.sales_page||"").trim()||null,
+        p_notes:String(v.notes||"").trim()||null
+      });
+      if(error)throw error;
+      setNewStaffOpen(false);
+      setMessage(`Đã tạo ${data?.display_name||"nhân viên"} · ${data?.sales_code||""}. Payroll + Booking Portal đã tự liên kết.`);
+      await load();
+    }catch(e:any){setError(e?.message||"Không tạo được nhân viên sales.");}
+    finally{setSaving(false)}
+  }
+
   async function saveBaseTier(tier:BaseTier,base:string){
     setSaving(true);setError("");setMessage("");
     try{const {error}=await supabase.from("staff_base_pax_tiers").update({base_salary_vnd:parseMoney(base),updated_at:new Date().toISOString()}).eq("id",tier.id);if(error)throw error;setMessage("Đã cập nhật mức lương cơ bản.");await load();}
@@ -138,7 +158,7 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
   return <div className="gvs-team">
     <div className="gvs-team-head">
       <div><h2>Sales Team · Salary & Commission</h2><p>Completed + Paid → <b>lương cơ bản theo số tour hoàn thành/tháng</b> + <b>commission theo Tour × Pax × ngôn ngữ HDV</b>.</p></div>
-      <div className="gvs-team-actions"><input className="gva-input" type="month" value={month} onChange={e=>setMonth(e.target.value)}/><button className="gva-btn secondary" onClick={load} disabled={loading}>{loading?"Đang tải…":"Làm mới"}</button></div>
+      <div className="gvs-team-actions"><button className="gva-btn" onClick={()=>setNewStaffOpen(true)}>+ Sales Staff</button><input className="gva-input" type="month" value={month} onChange={e=>setMonth(e.target.value)}/><button className="gva-btn secondary" onClick={load} disabled={loading}>{loading?"Đang tải…":"Làm mới"}</button></div>
     </div>
     {error&&<div className="gva-msg err">{error}</div>}{message&&<div className="gva-msg">{message}</div>}
 
@@ -150,7 +170,15 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
     </div>
 
     <section className="gva-card gvs-team-section">
-      <div className="gva-section-head"><div><h2>Staff Booking Requests</h2><div className="gva-mini">Booking từ /ru/Vlad và /ru/Tommy phải qua đây trước khi trở thành booking thật.</div></div></div>
+      <div className="gva-section-head"><div><h2>Sales Staff · Auto Linked</h2><div className="gva-mini">Tạo một lần → Sales Code + sales_pax_v1 + Booking Portal + Monthly Payroll tự có. Không cần tạo Payroll thủ công.</div></div><button className="gva-btn" onClick={()=>setNewStaffOpen(true)}>+ Thêm nhân viên</button></div>
+      <div className="gva-table-wrap"><table className="gva-table"><thead><tr><th>Nhân viên</th><th>Sales Code</th><th>Trang booking</th><th>Payroll plan</th><th>Portal</th></tr></thead><tbody>
+        {staff.map(s=><tr key={s.id}><td><b>{s.display_name}</b></td><td><b>{s.sales_code}</b></td><td>{s.sales_page||"—"}</td><td>{s.compensation_plan_code==="sales_pax_v1"?"✓ sales_pax_v1":s.compensation_plan_code||"—"}</td><td>{s.allow_booking_portal?"✓ Ready":"—"}</td></tr>)}
+        {!staff.length&&<tr><td colSpan={5}><div className="gva-empty">Chưa có sales staff.</div></td></tr>}
+      </tbody></table></div>
+    </section>
+
+    <section className="gva-card gvs-team-section">
+      <div className="gva-section-head"><div><h2>Staff Booking Requests</h2><div className="gva-mini">Booking Request từ bất kỳ trang nhân viên nào đều vào Pending tại đây → Admin Approve → Booking Master → Operations → Finance → Payroll.</div></div></div>
       <div className="gvs-request-list">
         {pending.map(r=><div className="gvs-request" key={r.id}>
           <div><b>{r.booking_code}</b><span>{staffMap[r.staff_id]?.display_name||r.sales_code}</span></div>
@@ -199,12 +227,19 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
       </tbody></table></div>
     </section>
 
+    {newStaffOpen&&<NewSalesStaffModal saving={saving} onClose={()=>setNewStaffOpen(false)} onSubmit={createSalesStaff}/>}
     {editRequest&&<RequestModal row={editRequest} staff={staff} saving={saving} onClose={()=>setEditRequest(null)} onSubmit={saveRequest}/>} 
     {editPayroll&&<PayrollModal row={editPayroll} saving={saving} onClose={()=>setEditPayroll(null)} onSubmit={savePayrollOverride}/>} 
     {editBooking&&<BookingControlModal row={editBooking} staff={staff} saving={saving} onClose={()=>setEditBooking(null)} onSubmit={saveBookingControl}/>} 
   </div>;
 }
 
+function NewSalesStaffModal({saving,onClose,onSubmit}:any){return <div className="gva-modal-bg"><form className="gva-modal" onSubmit={onSubmit}><div className="gva-modal-head"><div><h3>Thêm Sales Staff</h3><div className="gva-mini">Hệ thống tự tạo Sales Code, gắn sales_pax_v1, bật Booking Portal và đưa vào Payroll ngay.</div></div><button type="button" className="gva-close" onClick={onClose}>✕</button></div><div className="gva-form-grid">
+  <F label="Tên nhân viên"><input className="gva-input" name="display_name" placeholder="VD: Anna" required/></F>
+  <F label="Market code"><select className="gva-select" name="market_code" defaultValue="RU"><option value="RU">RU · Russian</option><option value="EN">EN · English</option><option value="KO">KO · Korean</option><option value="CN">CN · Chinese</option><option value="IT">IT · Italian</option><option value="TR">TR · Turkish</option><option value="IL">IL · Hebrew / Israel</option><option value="AR">AR · Arabic</option><option value="VI">VI · Vietnamese</option></select></F>
+  <F label="Trang booking (tuỳ chọn)" wide><input className="gva-input" name="sales_page" placeholder="Để trống = hệ thống tự tạo đường dẫn, VD /ru/anna"/></F>
+  <F label="Ghi chú" wide><textarea className="gva-input" name="notes" rows={3} placeholder="Khu vực phụ trách / ghi chú nội bộ"/></F>
+</div><div style={{padding:"10px 12px",background:"#f6f8fb",borderRadius:10,fontSize:13,lineHeight:1.5}}><b>Sau khi tạo:</b> nhân viên xuất hiện ngay trong Monthly Payroll. Booking mang Sales Code của người này sẽ tự giữ staff_id xuyên suốt đến Payroll.</div><div className="gvs-team-modal-actions"><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button className="gva-btn" disabled={saving}>{saving?"Đang tạo…":"Tạo & liên kết tự động"}</button></div></form></div>}
 function K({label,value,hint,strong}:any){return <div className={`gva-card gvs-team-kpi ${strong?"strong":""}`}><div className="gvs-team-label">{label}</div><div className="gvs-team-value">{value}</div><div className="gva-mini">{hint}</div></div>}
 function F({label,children,wide}:any){return <div className={`gva-field ${wide?"wide":""}`}><label>{label}</label>{children}</div>}
 function BaseTierRow({tier,onSave,saving}:any){
