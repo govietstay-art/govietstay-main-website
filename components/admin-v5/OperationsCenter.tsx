@@ -1,6 +1,7 @@
 "use client";
 // GVS-LANGUAGE-MATRIX-V3
 // GVS-BOOKING-DEPOSIT-SHARE-V1
+// GVS-BOOKING-PAYMENT-HOTEL-DELETE-V3
 
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
@@ -45,6 +46,7 @@ type Booking = {
   booking_code: string | null;
   contact_id: string | null;
   tour_id: string | null;
+  staff_id: string | null;
   tour_date: string | null;
   adults: number;
   children: number;
@@ -58,6 +60,7 @@ type Booking = {
   start_time: string | null;
   end_time: string | null;
   hotel: string | null;
+  hotel_address: string | null;
   room: string | null;
   notes: string | null;
   guide_language: string | null;
@@ -241,7 +244,7 @@ export default function OperationsCenter() {
         supabase.from("guides").select("*").order("active", { ascending: false }).order("full_name"),
         supabase.from("guide_availability").select("*").gte("work_date", from).lte("work_date", to).order("work_date"),
         supabase.from("bookings")
-          .select("id,booking_code,contact_id,tour_id,tour_date,adults,children,pax,gross_revenue_vnd,net_revenue_vnd,deposit_required_vnd,status,payment_status,pickup_time,start_time,end_time,hotel,room,notes,guide_language,booking_mode,custom_tour_name,custom_destination,custom_itinerary,created_at")
+          .select("id,booking_code,contact_id,tour_id,staff_id,tour_date,adults,children,pax,gross_revenue_vnd,net_revenue_vnd,deposit_required_vnd,status,payment_status,pickup_time,start_time,end_time,hotel,hotel_address,room,notes,guide_language,booking_mode,custom_tour_name,custom_destination,custom_itinerary,created_at")
           .gte("tour_date", from).lte("tour_date", to).order("tour_date", { ascending: true }).order("start_time", { ascending: true }),
         supabase.from("contacts").select("id,full_name,whatsapp,country,preferred_language").order("created_at", { ascending: false }).limit(1000),
         supabase.from("booking_guides").select("id,booking_id,guide_id,status,agreed_fee_vnd,notes").limit(2000),
@@ -298,6 +301,7 @@ export default function OperationsCenter() {
       `Дата: ${customerDate(b.tour_date, "ru-RU")}`,
       `Взрослые: ${b.adults} · Дети: ${b.children}`,
       `Место встречи: ${b.hotel || "—"}`,
+      b.hotel_address ? `Адрес отеля: ${b.hotel_address}` : "",
       `Время встречи: ${pickupTime}`,
       `Язык гида: ${langLabel(b.guide_language)}`,
       itinerary ? `Маршрут: ${itinerary}` : "",
@@ -315,6 +319,7 @@ export default function OperationsCenter() {
       `Date: ${customerDate(b.tour_date, "en-GB")}`,
       `Adults: ${b.adults} · Children: ${b.children}`,
       `Pickup: ${b.hotel || "—"}`,
+      b.hotel_address ? `Pickup address: ${b.hotel_address}` : "",
       `Pickup time: ${pickupTime}`,
       `Guide language: ${langLabel(b.guide_language)}`,
       itinerary ? `Itinerary: ${itinerary}` : "",
@@ -338,6 +343,7 @@ export default function OperationsCenter() {
       `Số khách: ${b.pax ?? b.adults + b.children} (${b.adults} người lớn + ${b.children} trẻ em)`,
       `Điện thoại: ${contact?.whatsapp || "—"}`,
       `Điểm đón: ${b.hotel || "—"}`,
+      b.hotel_address ? `Địa chỉ: ${b.hotel_address}` : "",
       `Giờ đón: ${pickupTime}`,
       `Tour: ${bookingName(b)}`,
       b.end_time ? `Giờ kết thúc dự kiến: ${timeShort(b.end_time)}` : "",
@@ -352,6 +358,7 @@ export default function OperationsCenter() {
       `Guests: ${b.pax ?? b.adults + b.children} (${b.adults} adults + ${b.children} children)`,
       `Phone / WhatsApp: ${contact?.whatsapp || "—"}`,
       `Pickup: ${b.hotel || "—"}`,
+      b.hotel_address ? `Pickup address: ${b.hotel_address}` : "",
       `Pickup time: ${pickupTime}`,
       `Tour: ${bookingName(b)}`,
       b.end_time ? `Expected finish: ${timeShort(b.end_time)}` : "",
@@ -528,6 +535,7 @@ export default function OperationsCenter() {
         start_time: v.start_time || null,
         end_time: v.end_time || null,
         hotel: String(v.hotel || "").trim() || null,
+        hotel_address: String(v.hotel_address || "").trim() || null,
         notes: String(v.notes || "").trim() || null,
         source: "manual", created_via: "operations_v1",
         guide_language: v.guide_language || null,
@@ -621,6 +629,30 @@ export default function OperationsCenter() {
       }).eq("id", id);
       if (updateError) throw updateError;
       setMessage("Đã điều chỉnh chi phí.");
+      await loadAll();
+    } catch (e: any) { setError(e.message); } finally { setSaving(false); }
+  }
+
+  function canDeleteBooking(b: Booking) {
+    if (isAdmin) return true;
+    return !!staff && ["sales", "desk"].includes(staff.role) && b.staff_id === staff.id && b.status === "pending" && bookingDeposit(b) === 0 && b.payment_status === "unpaid";
+  }
+
+  async function deleteBooking(b: Booking) {
+    if (!canDeleteBooking(b)) {
+      setError("Nhân viên chỉ có thể xóa booking Pending do chính mình tạo và chưa có tiền cọc.");
+      return;
+    }
+    const label = `${b.booking_code || "Booking"} · ${bookingName(b)}`;
+    const question = isAdmin
+      ? `Xóa vĩnh viễn booking này?\n\n${label}\n\nCác dữ liệu HDV / chi phí / payment liên quan cũng sẽ được xóa.`
+      : `Xóa booking nháp này?\n\n${label}`;
+    if (!window.confirm(question)) return;
+    setSaving(true); setError("");
+    try {
+      const { error: deleteError } = await supabase.from("bookings").delete().eq("id", b.id);
+      if (deleteError) throw deleteError;
+      setMessage(`Đã xóa ${b.booking_code || "booking"}.`);
       await loadAll();
     } catch (e: any) { setError(e.message); } finally { setSaving(false); }
   }
@@ -771,13 +803,14 @@ export default function OperationsCenter() {
                       <div className="gvo-mobile-tour-copy">
                         <b>{bookingName(b)}</b>
                         <span>{contactMap[b.contact_id || ""]?.full_name || "Khách"} · {b.pax ?? b.adults + b.children} khách · {langLabel(b.guide_language)}</span>
-                        {isAdmin ? <small>Thu {money(revenue)} · Chi {money(cost)} · Lãi {money(revenue - cost)}</small> : <small>Cọc {money(bookingDeposit(b))} · Còn lại {money(bookingBalance(b))}</small>}
+                        {isAdmin ? <><small>Thu {money(revenue)} · Chi {money(cost)} · Lãi {money(revenue - cost)}</small><small>Cọc {money(bookingDeposit(b))} · Còn lại {money(bookingBalance(b))}</small></> : <small>Cọc {money(bookingDeposit(b))} · Còn lại {money(bookingBalance(b))}</small>}
                       </div>
                     </div>
                     {shareButtons(b)}
                     <div className="gvo-mobile-tour-actions">
                       <button type="button" onClick={() => { setFocusDate(date); setView("dispatch"); }}>Điều phối</button>
                       {isAdmin && <button type="button" className="finance" onClick={() => { setSelectedBooking(b.id); setModal("cost"); }}>Tài chính</button>}
+                      {canDeleteBooking(b) && <button type="button" onClick={() => deleteBooking(b)} disabled={saving} style={{ color: "#b42318" }}>{isAdmin ? "Xóa" : "Xóa nháp"}</button>}
                     </div>
                   </article>;
                 })}
@@ -832,6 +865,7 @@ export default function OperationsCenter() {
                   <span>{langLabel(b.guide_language)}</span>
                   <span>🕘 {timeShort(b.start_time || b.pickup_time)}–{timeShort(b.end_time)}</span>
                   <span>🏨 {b.hotel || "—"}</span>
+                  {b.hotel_address && <span>📍 {b.hotel_address}</span>}
                 </div>
                 {b.booking_mode === "custom" && b.custom_itinerary && <div className="gvo-itinerary">{b.custom_itinerary}</div>}
                 <div className="gvo-assignment">
@@ -848,13 +882,21 @@ export default function OperationsCenter() {
                     </select>
                   </div>}
                 </div>
-                {isAdmin ? <div className="gvo-finance-row">
-                  <span>Thu: <b>{money(revenue)}</b></span><span>Chi: <b>{money(cost)}</b></span><span>Lãi gộp: <b>{money(revenue - cost)}</b></span>
-                  <button className="gvo-text-btn" onClick={() => { setSelectedBooking(b.id); setModal("cost"); }}>Quản lý chi phí</button>
-                </div> : <div className="gvo-finance-row">
+                {isAdmin ? <>
+                  <div className="gvo-finance-row">
+                    <span>Thu: <b>{money(revenue)}</b></span><span>Chi: <b>{money(cost)}</b></span><span>Lãi gộp: <b>{money(revenue - cost)}</b></span>
+                    <button className="gvo-text-btn" onClick={() => { setSelectedBooking(b.id); setModal("cost"); }}>Quản lý chi phí</button>
+                  </div>
+                  <div className="gvo-finance-row">
+                    <span>💵 Cọc: <b>{money(bookingDeposit(b))}</b></span><span>Còn lại: <b>{money(bookingBalance(b))}</b></span>
+                  </div>
+                </> : <div className="gvo-finance-row">
                   <span>Tổng: <b>{money(revenue)}</b></span><span>Cọc: <b>{money(bookingDeposit(b))}</b></span><span>Còn lại: <b>{money(bookingBalance(b))}</b></span>
                 </div>}
                 {shareButtons(b)}
+                {canDeleteBooking(b) && <div style={{ marginTop: 8, textAlign: "right" }}>
+                  <button type="button" disabled={saving} onClick={() => deleteBooking(b)} style={{ border: 0, background: "transparent", color: "#b42318", fontWeight: 700, cursor: "pointer" }}>{isAdmin ? "🗑 Xóa booking" : "🗑 Xóa booking nháp"}</button>
+                </div>}
               </article>;
             })}
             {!focusBookings.length && <div className="gvo-empty">Không có tour trong ngày này.</div>}
@@ -1079,11 +1121,12 @@ function BookingModal({ tours, saving, onClose, onSubmit }: any) {
       <Field label="Lịch trình" wide><textarea name="custom_itinerary" className="gva-input" rows={4} placeholder="08:00 đón khách..." /></Field>
     </>}
     <Field label="Ngày tour"><input name="tour_date" type="date" className="gva-input" defaultValue={localISO()} required /></Field>
-    <Field label="Trạng thái"><select name="status" className="gva-select"><option value="confirmed">confirmed</option><option value="pending">pending</option></select></Field>
+    <Field label="Trạng thái"><select name="status" className="gva-select"><option value="confirmed">confirmed</option><option value="pending">pending / nháp</option></select></Field>
     <Field label="Giờ bắt đầu"><input name="start_time" type="time" className="gva-input" /></Field>
     <Field label="Giờ kết thúc"><input name="end_time" type="time" className="gva-input" /></Field>
     <Field label="Pickup time"><input name="pickup_time" type="time" className="gva-input" /></Field>
-    <Field label="Khách sạn"><input name="hotel" className="gva-input" /></Field>
+    <Field label="Khách sạn"><input name="hotel" className="gva-input" placeholder="VD: Mandila Beach Hotel" /></Field>
+    <Field label="Địa chỉ khách sạn" wide><input name="hotel_address" className="gva-input" placeholder="VD: 218 Võ Nguyên Giáp, Sơn Trà, Đà Nẵng" /></Field>
     <Field label="Adults"><input name="adults" type="number" min="0" defaultValue="1" className="gva-input" /></Field>
     <Field label="Children"><input name="children" type="number" min="0" defaultValue="0" className="gva-input" /></Field>
     <Field label="Ngôn ngữ HDV"><select name="guide_language" className="gva-select"><option value="">Không cần / chưa xác định</option>{LANGUAGES.map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select></Field>
