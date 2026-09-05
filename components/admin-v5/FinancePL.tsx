@@ -1,4 +1,5 @@
 "use client";
+// GVS-FINANCE-ONE-CLICK-FINALIZE-V1
 
 import { useEffect, useMemo, useState } from "react";
 import "./finance-pl.css";
@@ -200,6 +201,20 @@ export default function FinancePL({supabase}:Props){
     finally{setSaving(false)}
   }
 
+  async function finalizeBookingOneClick(row:BookingRow){
+    if(!window.confirm(`Hoàn tất & chốt ${row.booking_code||"booking"}?\n\nTự động:\n• Completed\n• Paid\n• Amount Received = ${money(row.revenue_vnd)}\n• Finance Finalized\n• Payroll recalculated\n\nChi phí hiện tại được giữ nguyên.`))return;
+    setSaving(true);setError("");setMessage("");
+    try{
+      const {data,error}=await supabase.rpc("admin_finalize_booking_one_click",{p_booking_id:row.booking_id});
+      if(error)throw error;
+      setEditBooking(null);
+      const warning=data?.warning==="NO_DIRECT_COST"?" ⚠ Chưa có direct cost; anh có thể bổ sung sau.":"";
+      setMessage(`✓ ${data?.booking_code||row.booking_code||"Booking"} đã chốt hoàn tất.${warning}`);
+      await load();
+    }catch(e:any){setError(e?.message||"Không chốt được booking.");}
+    finally{setSaving(false)}
+  }
+
   async function addExpense(e:any){
     e.preventDefault(); setSaving(true); setError(""); setMessage("");
     try{
@@ -289,7 +304,12 @@ export default function FinancePL({supabase}:Props){
               <div className="gvs-booking-name">{row.product||"—"}</div>
               <div className="gva-mini">{row.tour_date||"—"} · {row.guest_name||"—"} · {row.pax||0} pax · {row.destination||"—"}</div>
             </div>
-            <button className="gva-btn secondary" onClick={()=>setEditBooking(row)}>Edit P&amp;L</button>
+            <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+              <button className="gva-btn secondary" onClick={()=>setEditBooking(row)}>Edit P&amp;L</button>
+              {row.status==="completed"&&row.finance_finalized&&row.balance_vnd<=0
+                ? <button className="gva-btn secondary" disabled>✓ Đã chốt</button>
+                : <button className="gva-btn" disabled={saving||String(row.status||"").toLowerCase()==="cancelled"} onClick={()=>finalizeBookingOneClick(row)}>✓ Hoàn tất & chốt</button>}
+            </div>
           </div>
           <div className="gvs-booking-numbers">
             <span><small>Revenue</small><b>{money(row.revenue_vnd)}</b></span>
@@ -319,7 +339,7 @@ export default function FinancePL({supabase}:Props){
       </table></div>
     </div>
 
-    {editBooking&&<FinanceModal row={editBooking} saving={saving} onClose={()=>setEditBooking(null)} onSubmit={saveBookingFinance}/>}    
+    {editBooking&&<FinanceModal row={editBooking} saving={saving} onClose={()=>setEditBooking(null)} onSubmit={saveBookingFinance} onFinalize={()=>finalizeBookingOneClick(editBooking)}/>}    
     {expenseOpen&&<ExpenseModal month={month} saving={saving} onClose={()=>setExpenseOpen(false)} onSubmit={addExpense}/>}    
   </div>;
 }
@@ -342,7 +362,7 @@ function expenseLabel(v:string){
 function Field({label,children,wide}:any){return <div className={`gva-field ${wide?"wide":""}`}><label>{label}</label>{children}</div>}
 function MoneyField({name,label,value}:any){return <Field label={label}><input className="gva-input" name={name} inputMode="numeric" defaultValue={numberInput(value)} /></Field>}
 
-function FinanceModal({row,saving,onClose,onSubmit}:any){
+function FinanceModal({row,saving,onClose,onSubmit,onFinalize}:any){
   return <div className="gva-modal-bg"><form className="gva-modal gvs-finance-modal" onSubmit={onSubmit}>
     <div className="gva-modal-head"><div><h3>P&amp;L · {row.booking_code||"Booking"}</h3><div className="gva-mini">{row.product} · {row.tour_date} · {row.guest_name||"—"}</div></div><button type="button" className="gva-close" onClick={onClose}>✕</button></div>
     <div className="gvs-finance-note compact">Không nhập trùng chi phí. Ví dụ supplier package đã bao gồm vé/meal thì không nhập lại vé/meal lần nữa.</div>
@@ -366,7 +386,7 @@ function FinanceModal({row,saving,onClose,onSubmit}:any){
       <Field label="Finance notes" wide><textarea className="gva-input" name="notes" rows={3} defaultValue={row.finance_notes||""}/></Field>
     </div>
     <div className="gvs-modal-summary"><span>Current revenue <b>{money(row.revenue_vnd)}</b></span><span>Direct cost <b>{money(row.total_direct_cost_vnd)}</b></span><span>Profit <b>{money(row.gross_profit_vnd)}</b></span></div>
-    <div className="gvs-modal-actions"><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button className="gva-btn" disabled={saving}>{saving?"Đang lưu…":"Lưu P&L"}</button></div>
+    <div className="gvs-modal-actions"><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button type="button" className="gva-btn" disabled={saving||String(row.status||"").toLowerCase()==="cancelled"} onClick={onFinalize}>✓ Hoàn tất & chốt</button><button className="gva-btn secondary" disabled={saving}>{saving?"Đang lưu…":"Lưu P&L"}</button></div>
   </form></div>;
 }
 

@@ -1,6 +1,7 @@
 "use client";
 // GVS-STAFF-COMPENSATION-TOUR-TIER-V2
 // GVS-STAFF-AUTO-ONBOARDING-V3
+// GVS-ONE-CLICK-FINALIZE-V1
 
 import { useEffect, useMemo, useState } from "react";
 import "./staff-sales-team.css";
@@ -123,6 +124,19 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
       setEditBooking(null);setMessage("Đã cập nhật booking và hoa hồng.");await load();
     }catch(e:any){setError(e?.message||"Không lưu được booking control.");}finally{setSaving(false)}
   }
+  async function finalizeBookingOneClick(b:SalesBooking){
+    if(!window.confirm(`Hoàn tất & chốt ${b.booking_code}?\n\nHệ thống sẽ tự:\n• status = completed\n• payment = paid\n• Amount Received = ${money(b.revenue_vnd)}\n• Finance Finalized = ON\n• tính lại Payroll\n\nChi phí đã nhập sẽ được giữ nguyên.`))return;
+    setSaving(true);setError("");setMessage("");
+    try{
+      const {data,error}=await supabase.rpc("admin_finalize_booking_one_click",{p_booking_id:b.booking_id});
+      if(error)throw error;
+      const warning=data?.warning==="NO_DIRECT_COST"?" ⚠ Booking chưa có direct cost; có thể bổ sung chi phí sau nếu cần.":"";
+      setMessage(`✓ ${data?.booking_code||b.booking_code} đã Completed + Paid + Finance Finalized. Payroll đã tính lại.${warning}`);
+      await load();
+    }catch(e:any){setError(e?.message||"Không chốt được booking.");}
+    finally{setSaving(false)}
+  }
+
   async function createSalesStaff(e:any){
     e.preventDefault();setSaving(true);setError("");setMessage("");
     try{
@@ -220,9 +234,9 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
     </section>
 
     <section className="gva-card gvs-team-section">
-      <div className="gva-section-head"><div><h2>Staff Booking Economics</h2><div className="gva-mini">Commission tự tính theo Tour × Pax × ngôn ngữ HDV × tier số tour Completed trong tháng. Profit chỉ hiển thị để tham khảo vận hành.</div></div></div>
+      <div className="gva-section-head"><div><h2>Staff Booking Economics</h2><div className="gva-mini">Commission tự tính theo Tour × Pax × ngôn ngữ HDV × tier số tour Completed. Dùng “Hoàn tất & chốt” để Completed + Paid + Finance Finalized trong 1 lần.</div></div></div>
       <div className="gva-table-wrap"><table className="gva-table"><thead><tr><th>Booking</th><th>Staff</th><th>Guest / Tour</th><th>Status</th><th>Revenue</th><th>Profit base</th><th>Commission</th><th></th></tr></thead><tbody>
-        {bookings.map(b=><tr key={b.booking_id}><td><b>{b.booking_code}</b><div className="gva-mini">{b.tour_date}</div></td><td>{b.staff_name}</td><td><b>{b.guest_name||"—"}</b><div className="gva-mini">{b.product} · {b.pax} pax</div></td><td><span className="gva-pill">{b.status}</span><div className="gva-mini">{b.payment_status}</div></td><td>{money(b.revenue_vnd)}</td><td>{money(b.profit_before_staff_commission_vnd)}</td><td><b>{money(b.staff_commission_vnd)}</b>{!b.commission_eligible&&<div className="gva-mini">Not eligible</div>}</td><td><button className="gva-btn secondary" onClick={()=>setEditBooking(b)}>Edit</button></td></tr>)}
+        {bookings.map(b=><tr key={b.booking_id}><td><b>{b.booking_code}</b><div className="gva-mini">{b.tour_date}</div></td><td>{b.staff_name}</td><td><b>{b.guest_name||"—"}</b><div className="gva-mini">{b.product} · {b.pax} pax</div></td><td><span className="gva-pill">{b.status}</span><div className="gva-mini">{b.payment_status}</div></td><td>{money(b.revenue_vnd)}</td><td>{money(b.profit_before_staff_commission_vnd)}</td><td><b>{money(b.staff_commission_vnd)}</b>{!b.commission_eligible&&<div className="gva-mini">Not eligible</div>}</td><td><div style={{display:"flex",gap:6,flexWrap:"wrap"}}><button className="gva-btn secondary" onClick={()=>setEditBooking(b)}>Edit</button><button className="gva-btn" disabled={saving||b.status==="cancelled"} onClick={()=>finalizeBookingOneClick(b)}>{b.status==="completed"&&b.payment_status==="paid"&&num(b.amount_received_vnd)>=num(b.revenue_vnd)?"✓ Chốt lại":"✓ Hoàn tất & chốt"}</button></div></td></tr>)}
         {!bookings.length&&<tr><td colSpan={8}><div className="gva-empty">Chưa có staff booking trong tháng này.</div></td></tr>}
       </tbody></table></div>
     </section>
