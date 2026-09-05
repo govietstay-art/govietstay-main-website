@@ -2,6 +2,7 @@
 // GVS-LANGUAGE-MATRIX-V3
 // GVS-BOOKING-DEPOSIT-SHARE-V1
 // GVS-BOOKING-PAYMENT-HOTEL-DELETE-V3
+// GVS-POST-SAVE-BILINGUAL-SHARE-V4
 
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
@@ -171,6 +172,7 @@ export default function OperationsCenter() {
   const [saving, setSaving] = useState(false);
   const [modal, setModal] = useState<Modal>(null);
   const [selectedBooking, setSelectedBooking] = useState<string | null>(null);
+  const [shareBookingId, setShareBookingId] = useState<string | null>(null);
   const [view, setView] = useState<"calendar" | "dispatch" | "guides" | "bookings">("calendar");
   const [focusDate, setFocusDate] = useState(localISO());
   const [calendarMonth, setCalendarMonth] = useState(monthValue());
@@ -366,15 +368,17 @@ export default function OperationsCenter() {
       notes ? `Note: ${notes}` : ""
     ].filter(Boolean).join("\n");
   }
+  function customerBilingualCopy(b: Booking) {
+    return `${customerCopy(b, "en")}\n\n------------------------------\n\n${customerCopy(b, "ru")}`;
+  }
+  function driverBilingualCopy(b: Booking) {
+    return `${driverCopy(b, "en")}\n\n------------------------------\n\n${driverCopy(b, "vi")}`;
+  }
   function shareButtons(b: Booking) {
-    const style = { padding: "6px 9px", fontSize: 12, minHeight: 32 } as const;
-    return <div style={{ display: "flex", flexWrap: "wrap", gap: 6, alignItems: "center", marginTop: 10 }}>
-      <span className="gvo-small"><b>Khách:</b></span>
-      <button type="button" className="gva-btn secondary" style={style} onClick={() => copyText(customerCopy(b, "en"), "Booking EN")}>EN</button>
-      <button type="button" className="gva-btn secondary" style={style} onClick={() => copyText(customerCopy(b, "ru"), "Booking RU")}>RU</button>
-      <span className="gvo-small" style={{ marginLeft: 4 }}><b>Driver:</b></span>
-      <button type="button" className="gva-btn secondary" style={style} onClick={() => copyText(driverCopy(b, "vi"), "Driver VI")}>VI</button>
-      <button type="button" className="gva-btn secondary" style={style} onClick={() => copyText(driverCopy(b, "en"), "Driver EN")}>EN</button>
+    const style = { padding: "6px 10px", fontSize: 12, minHeight: 32 } as const;
+    return <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center", marginTop: 10 }}>
+      <button type="button" className="gva-btn secondary" style={style} onClick={() => copyText(customerBilingualCopy(b), "Booking khách EN + RU")}>Khách EN + RU</button>
+      <button type="button" className="gva-btn secondary" style={style} onClick={() => copyText(driverBilingualCopy(b), "Driver EN + VI")}>Driver EN + VI</button>
     </div>;
   }
   function activeAssignments(bookingId: string) {
@@ -521,7 +525,7 @@ export default function OperationsCenter() {
       if (deposit > revenue) throw new Error("Deposit / tiền cọc không thể lớn hơn giá bán.");
       const paymentStatus = deposit <= 0 ? "unpaid" : deposit >= revenue && revenue > 0 ? "paid" : "deposit";
       const contactId = await createContact(v);
-      const { error: insertError } = await supabase.from("bookings").insert({
+      const { data: createdBooking, error: insertError } = await supabase.from("bookings").insert({
         booking_code: code(),
         contact_id: contactId,
         tour_id: mode === "catalog" ? v.tour_id : null,
@@ -543,10 +547,12 @@ export default function OperationsCenter() {
         custom_tour_name: mode === "custom" ? String(v.custom_tour_name || "").trim() : null,
         custom_destination: mode === "custom" ? String(v.custom_destination || "").trim() || null : null,
         custom_itinerary: mode === "custom" ? String(v.custom_itinerary || "").trim() || null : null,
-      });
+      }).select("id").single();
       if (insertError) throw insertError;
       setFocusDate(v.tour_date || focusDate); setModal(null); setView("dispatch");
-      setMessage("Đã tạo booking. Có thể copy thông tin Khách EN/RU hoặc Driver VI/EN ngay bên dưới booking."); await loadAll();
+      await loadAll();
+      setShareBookingId(createdBooking.id);
+      setMessage("Đã lưu booking thành công.");
     } catch (e: any) { setError(e.message); } finally { setSaving(false); }
   }
 
@@ -979,6 +985,33 @@ export default function OperationsCenter() {
     </form></ModalFrame>}
 
     {modal === "booking" && <BookingModal tours={tours} saving={saving} onClose={() => setModal(null)} onSubmit={createBooking} />}
+
+    {shareBookingId && bookings.find((b) => b.id === shareBookingId) && (() => {
+      const b = bookings.find((x) => x.id === shareBookingId)!;
+      const contact = contactMap[b.contact_id || ""];
+      return <ModalFrame title="Booking đã lưu — Copy ngay" onClose={() => setShareBookingId(null)}>
+        <div style={{ padding: "4px 2px 8px" }}>
+          <div style={{ background: "#f6f8fb", border: "1px solid #e5e9f0", borderRadius: 12, padding: 14, lineHeight: 1.6 }}>
+            <div><b>{b.booking_code || "Booking"}</b></div>
+            <div><b>{bookingName(b)}</b></div>
+            <div>Khách: {contact?.full_name || "—"} · {b.pax ?? b.adults + b.children} khách</div>
+            <div>Ngày: {customerDate(b.tour_date, "vi-VN")} · Pickup: {timeShort(b.pickup_time || b.start_time)}</div>
+            <div>Khách sạn: {b.hotel || "—"}</div>
+            {b.hotel_address && <div>Địa chỉ: {b.hotel_address}</div>}
+            <div style={{ marginTop: 6 }}><b>Tổng: {money(bookingRevenue(b))} · Cọc: {money(bookingDeposit(b))} · Còn lại: {money(bookingBalance(b))}</b></div>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginTop: 14 }}>
+            <button type="button" className="gva-btn" onClick={() => copyText(customerBilingualCopy(b), "Booking khách EN + RU")}>Copy khách EN + RU</button>
+            <button type="button" className="gva-btn secondary" onClick={() => copyText(driverBilingualCopy(b), "Driver EN + VI")}>Copy Driver EN + VI</button>
+          </div>
+
+          <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 16 }}>
+            <button type="button" className="gva-btn secondary" onClick={() => setShareBookingId(null)}>Đóng</button>
+          </div>
+        </div>
+      </ModalFrame>;
+    })()}
 
     {modal === "cost" && selectedBooking && isAdmin && <CostManagerModal
       booking={bookings.find((b) => b.id === selectedBooking)}
