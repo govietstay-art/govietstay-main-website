@@ -4,6 +4,7 @@
 // GVS-BOOKING-PAYMENT-HOTEL-DELETE-V3
 // GVS-POST-SAVE-BILINGUAL-SHARE-V4
 // GVS-OPERATIONS-FLOW-RBAC-V6
+// GVS-BOOKING-PAYMENT-V4-UI
 
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
@@ -75,6 +76,7 @@ type Booking = {
 type Contact = { id: string; full_name: string | null; whatsapp: string | null; country: string | null; preferred_language: string | null };
 type Assignment = { id: string; booking_id: string; guide_id: string; status: string; agreed_fee_vnd: number; notes: string | null };
 type BookingCost = { id: string; booking_id: string; cost_type: string; description: string | null; amount_vnd: number };
+type BookingFinancial = { booking_id: string; amount_received_vnd: number };
 type Modal = null | "guide" | "availability" | "booking" | "cost" | "quick";
 
 const LANGUAGES = [
@@ -187,10 +189,12 @@ export default function OperationsCenter() {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [costs, setCosts] = useState<BookingCost[]>([]);
+  const [financials, setFinancials] = useState<BookingFinancial[]>([]);
 
   const tourMap = useMemo(() => Object.fromEntries(tours.map((x) => [x.id, x])), [tours]);
   const guideMap = useMemo(() => Object.fromEntries(guides.map((x) => [x.id, x])), [guides]);
   const contactMap = useMemo(() => Object.fromEntries(contacts.map((x) => [x.id, x])), [contacts]);
+  const financialMap = useMemo(() => Object.fromEntries(financials.map((x) => [x.booking_id, x])), [financials]);
   const isAdmin = !!staff && (staff.role === "owner" || staff.role === "admin");
   const isDesk = !!staff && staff.role === "desk";
   const isSales = !!staff && staff.role === "sales";
@@ -255,6 +259,7 @@ export default function OperationsCenter() {
         supabase.from("contacts").select("id,full_name,whatsapp,country,preferred_language").order("created_at", { ascending: false }).limit(1000),
         supabase.from("booking_guides").select("id,booking_id,guide_id,status,agreed_fee_vnd,notes").limit(2000),
         supabase.from("booking_costs").select("id,booking_id,cost_type,description,amount_vnd").limit(3000),
+        supabase.from("booking_financials").select("booking_id,amount_received_vnd").limit(3000),
       ]);
       for (const r of results) if (r.error) throw r.error;
       setTours((results[0].data || []) as Tour[]);
@@ -264,6 +269,7 @@ export default function OperationsCenter() {
       setContacts((results[4].data || []) as Contact[]);
       setAssignments((results[5].data || []) as Assignment[]);
       setCosts((results[6].data || []) as BookingCost[]);
+      setFinancials((results[7].data || []) as BookingFinancial[]);
     } catch (e: any) {
       setError(e.message || "Không tải được Operations Center.");
     }
@@ -278,8 +284,11 @@ export default function OperationsCenter() {
   function bookingDeposit(b: Booking) {
     return Math.max(0, Number(b.deposit_required_vnd || 0));
   }
+  function bookingReceived(b: Booking) {
+    return Math.max(0, Number(financialMap[b.id]?.amount_received_vnd || 0));
+  }
   function bookingBalance(b: Booking) {
-    return Math.max(0, bookingRevenue(b) - bookingDeposit(b));
+    return Math.max(0, bookingRevenue(b) - bookingReceived(b));
   }
   async function copyText(text: string, label: string) {
     try {
@@ -313,7 +322,8 @@ export default function OperationsCenter() {
       itinerary ? `Маршрут: ${itinerary}` : "",
       notes ? `Примечание: ${notes}` : "", "",
       `Стоимость: ${moneyVnd(bookingRevenue(b))}`,
-      `Депозит: ${moneyVnd(bookingDeposit(b))}`,
+      `Депозит требуется: ${moneyVnd(bookingDeposit(b))}`,
+      `Получено: ${moneyVnd(bookingReceived(b))}`,
       `Остаток: ${moneyVnd(bookingBalance(b))}`, "",
       "Спасибо, что выбрали GoVietStay."
     ].filter(Boolean).join("\n");
@@ -331,7 +341,8 @@ export default function OperationsCenter() {
       itinerary ? `Itinerary: ${itinerary}` : "",
       notes ? `Note: ${notes}` : "", "",
       `Total: ${moneyVnd(bookingRevenue(b))}`,
-      `Deposit: ${moneyVnd(bookingDeposit(b))}`,
+      `Deposit required: ${moneyVnd(bookingDeposit(b))}`,
+      `Received: ${moneyVnd(bookingReceived(b))}`,
       `Balance: ${moneyVnd(bookingBalance(b))}`, "",
       "Thank you for choosing GoVietStay."
     ].filter(Boolean).join("\n");
@@ -391,6 +402,7 @@ export default function OperationsCenter() {
     return <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center", marginTop: 10 }}>
       <button type="button" className="gva-btn secondary" style={style} onClick={() => copyText(customerBilingualCopy(b), "Booking khách EN + RU")}>Khách EN + RU</button>
       <button type="button" className="gva-btn secondary" style={style} onClick={() => copyText(driverBilingualCopy(b), "Driver EN + VI")}>Driver EN + VI</button>
+      {isAdmin && <button type="button" className="gva-btn secondary" style={style} onClick={() => window.open(`/admin/payments?q=${encodeURIComponent(b.booking_code || "")}`, "_blank", "noopener,noreferrer")}>💳 Payment</button>}
     </div>;
   }
   function activeAssignments(bookingId: string) {
@@ -565,8 +577,7 @@ export default function OperationsCenter() {
       const children = Math.max(0, Number(v.children || 0));
       const revenue = numberOnly(v.revenue);
       const deposit = numberOnly(v.deposit);
-      if (deposit > revenue) throw new Error("Deposit / tiền cọc không thể lớn hơn giá bán.");
-      const paymentStatus = deposit <= 0 ? "unpaid" : deposit >= revenue && revenue > 0 ? "paid" : "deposit";
+      if (deposit > revenue) throw new Error("Deposit required / tiền cọc yêu cầu không thể lớn hơn giá bán.");
       const contactId = await createContact(v);
       const { data: createdBooking, error: insertError } = await supabase.from("bookings").insert({
         booking_code: code(),
@@ -577,7 +588,7 @@ export default function OperationsCenter() {
         adults, children,
         gross_revenue_vnd: revenue,
         discount_vnd: 0, deposit_required_vnd: deposit,
-        status: v.status || "confirmed", payment_status: paymentStatus,
+        status: v.status || "confirmed", payment_status: "unpaid",
         pickup_time: v.pickup_time || null,
         start_time: v.start_time || null,
         end_time: v.end_time || null,
@@ -646,7 +657,7 @@ export default function OperationsCenter() {
         p_hotel_address: String(v.hotel_address || "").trim() || null,
         p_pickup_time: v.pickup_time || null,
         p_deposit_vnd: numberOnly(v.deposit),
-        p_payment_status: v.payment_status || null,
+        p_payment_status: null,
       });
       if (updateError) throw updateError;
       setModal(null); setSelectedBooking(null); setMessage("Đã cập nhật booking."); await loadAll();
@@ -717,7 +728,7 @@ export default function OperationsCenter() {
 
   function canDeleteBooking(b: Booking) {
     if (isAdmin) return true;
-    return !!staff && ["sales", "desk"].includes(staff.role) && b.staff_id === staff.id && b.status === "pending" && bookingDeposit(b) === 0 && b.payment_status === "unpaid";
+    return !!staff && ["sales", "desk"].includes(staff.role) && b.staff_id === staff.id && b.status === "pending" && bookingReceived(b) === 0 && b.payment_status === "unpaid";
   }
 
   async function deleteBooking(b: Booking) {
@@ -809,6 +820,7 @@ export default function OperationsCenter() {
     <nav className="gvo-tabs">
       <button className={view === "calendar" ? "active" : ""} onClick={() => setView("calendar")}>Lịch tháng</button>
       <button className={view === "dispatch" ? "active" : ""} onClick={() => setView("dispatch")}>Điều phối ngày</button>
+      {isAdmin && <button type="button" onClick={() => window.open("/admin/payments", "_blank", "noopener,noreferrer")}>💳 Payment Center</button>}
       {isAdmin && <button className={view === "bookings" ? "active" : ""} onClick={() => setView("bookings")}>Bookings</button>}
       {isAdmin && <button className={view === "guides" ? "active" : ""} onClick={() => setView("guides")}>Hướng dẫn viên</button>}
     </nav>
@@ -885,7 +897,7 @@ export default function OperationsCenter() {
                       <div className="gvo-mobile-tour-copy">
                         <b>{bookingName(b)}</b>
                         <span>{contactMap[b.contact_id || ""]?.full_name || "Khách"} · {b.pax ?? b.adults + b.children} khách · {langLabel(b.guide_language)}</span>
-                        {isAdmin ? <><small>Thu {money(revenue)} · Chi {money(cost)} · Lãi {money(revenue - cost)}</small><small>Cọc {money(bookingDeposit(b))} · Còn lại {money(bookingBalance(b))}</small></> : <small>Cọc {money(bookingDeposit(b))} · Còn lại {money(bookingBalance(b))}</small>}
+                        {isAdmin ? <><small>Thu {money(revenue)} · Chi {money(cost)} · Lãi {money(revenue - cost)}</small><small>Cọc YC {money(bookingDeposit(b))} · Đã nhận {money(bookingReceived(b))} · Còn {money(bookingBalance(b))}</small></> : <small>Cọc YC {money(bookingDeposit(b))} · Đã nhận {money(bookingReceived(b))} · Còn {money(bookingBalance(b))}</small>}
                       </div>
                     </div>
                     {renderNextAction(b)}
@@ -971,10 +983,10 @@ export default function OperationsCenter() {
                     <button className="gvo-text-btn" onClick={() => { setSelectedBooking(b.id); setModal("cost"); }}>Quản lý chi phí</button>
                   </div>
                   <div className="gvo-finance-row">
-                    <span>💵 Cọc: <b>{money(bookingDeposit(b))}</b></span><span>Còn lại: <b>{money(bookingBalance(b))}</b></span>
+                    <span>💵 Cọc YC: <b>{money(bookingDeposit(b))}</b></span><span>Đã nhận: <b>{money(bookingReceived(b))}</b></span><span>Còn: <b>{money(bookingBalance(b))}</b></span>
                   </div>
                 </> : <div className="gvo-finance-row">
-                  <span>Tổng: <b>{money(revenue)}</b></span><span>Cọc: <b>{money(bookingDeposit(b))}</b></span><span>Còn lại: <b>{money(bookingBalance(b))}</b></span>
+                  <span>Tổng: <b>{money(revenue)}</b></span><span>Cọc YC: <b>{money(bookingDeposit(b))}</b></span><span>Đã nhận: <b>{money(bookingReceived(b))}</b></span><span>Còn: <b>{money(bookingBalance(b))}</b></span>
                 </div>}
                 {renderNextAction(b)}
                 {shareButtons(b)}
@@ -1066,6 +1078,7 @@ export default function OperationsCenter() {
 
     {modal === "quick" && selectedBooking && bookings.find((b) => b.id === selectedBooking) && <QuickBookingModal
       booking={bookings.find((b) => b.id === selectedBooking)!}
+      received={bookingReceived(bookings.find((b) => b.id === selectedBooking)!)}
       saving={saving}
       onClose={() => { setModal(null); setSelectedBooking(null); }}
       onSubmit={saveQuick}
@@ -1083,7 +1096,7 @@ export default function OperationsCenter() {
             <div>Ngày: {customerDate(b.tour_date, "vi-VN")} · Pickup: {timeShort(b.pickup_time || b.start_time)}</div>
             <div>Khách sạn: {b.hotel || "—"}</div>
             {b.hotel_address && <div>Địa chỉ: {b.hotel_address}</div>}
-            <div style={{ marginTop: 6 }}><b>Tổng: {money(bookingRevenue(b))} · Cọc: {money(bookingDeposit(b))} · Còn lại: {money(bookingBalance(b))}</b></div>
+            <div style={{ marginTop: 6 }}><b>Tổng: {money(bookingRevenue(b))} · Cọc YC: {money(bookingDeposit(b))} · Đã nhận: {money(bookingReceived(b))} · Còn: {money(bookingBalance(b))}</b></div>
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginTop: 14 }}>
@@ -1219,15 +1232,15 @@ function CostEditorRow({ item, saving, onSave, onDelete }: any) {
   </div>;
 }
 
-function QuickBookingModal({ booking, saving, onClose, onSubmit }: any) {
+function QuickBookingModal({ booking, received, saving, onClose, onSubmit }: any) {
   const [deposit, setDeposit] = useState(String(booking.deposit_required_vnd || 0));
   return <ModalFrame title={`Sửa nhanh · ${booking.booking_code || "Booking"}`} onClose={onClose}><form onSubmit={onSubmit} className="gvo-form-grid">
     <Field label="Khách sạn"><input name="hotel" className="gva-input" defaultValue={booking.hotel || ""} placeholder="Tên khách sạn" /></Field>
     <Field label="Pickup time"><input name="pickup_time" type="time" className="gva-input" defaultValue={timeShort(booking.pickup_time || booking.start_time) === "—" ? "" : timeShort(booking.pickup_time || booking.start_time)} /></Field>
     <Field label="Địa chỉ khách sạn" wide><input name="hotel_address" className="gva-input" defaultValue={booking.hotel_address || ""} placeholder="Địa chỉ / vị trí đón" /></Field>
-    <Field label="Deposit / Đã cọc"><input name="deposit" className="gva-input" inputMode="numeric" value={deposit} onChange={(e) => setDeposit(e.target.value)} /></Field>
-    <Field label="Payment status"><select name="payment_status" className="gva-select" defaultValue={booking.payment_status || "unpaid"}><option value="unpaid">unpaid</option><option value="deposit">deposit</option><option value="paid">paid</option><option value="refunded">refunded</option></select></Field>
-    <Field label="Balance / Còn lại" wide><input className="gva-input" readOnly value={money(Math.max(0, Number(booking.net_revenue_vnd ?? booking.gross_revenue_vnd ?? 0) - numberOnly(deposit)))} /></Field>
+    <Field label="Deposit required / Cọc yêu cầu"><input name="deposit" className="gva-input" inputMode="numeric" value={deposit} onChange={(e) => setDeposit(e.target.value)} /></Field>
+    <Field label="Actual received / Đã nhận"><input className="gva-input" readOnly value={money(received)} /></Field>
+    <Field label="Balance / Còn lại" wide><input className="gva-input" readOnly value={money(Math.max(0, Number(booking.net_revenue_vnd ?? booking.gross_revenue_vnd ?? 0) - Number(received || 0)))} /></Field>
     <ModalActions saving={saving} onClose={onClose} label="Lưu cập nhật" />
   </form></ModalFrame>;
 }
@@ -1262,8 +1275,8 @@ function BookingModal({ tours, saving, onClose, onSubmit }: any) {
     <Field label="Children"><input name="children" type="number" min="0" defaultValue="0" className="gva-input" /></Field>
     <Field label="Ngôn ngữ HDV"><select name="guide_language" className="gva-select"><option value="">Không cần / chưa xác định</option>{LANGUAGES.map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select></Field>
     <Field label="Giá bán VND"><input name="revenue" inputMode="numeric" className="gva-input" placeholder="3200000" value={revenue} onChange={(e) => setRevenue(e.target.value)} required /></Field>
-    <Field label="Deposit / Đã cọc"><input name="deposit" inputMode="numeric" className="gva-input" placeholder="0" value={deposit} onChange={(e) => setDeposit(e.target.value)} /></Field>
-    <Field label="Balance / Còn lại" wide><input className="gva-input" value={money(balance)} readOnly /></Field>
+    <Field label="Deposit required / Cọc yêu cầu"><input name="deposit" inputMode="numeric" className="gva-input" placeholder="0" value={deposit} onChange={(e) => setDeposit(e.target.value)} /></Field>
+    <Field label="Balance after deposit paid / Còn sau khi cọc" wide><input className="gva-input" value={money(balance)} readOnly /></Field>
     <Field label="Ghi chú" wide><textarea name="notes" className="gva-input" rows={3} /></Field>
     <ModalActions saving={saving} onClose={onClose} label="Lưu booking" />
   </form></ModalFrame>;
