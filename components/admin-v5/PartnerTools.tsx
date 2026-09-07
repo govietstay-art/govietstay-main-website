@@ -1,10 +1,39 @@
 "use client";
+// GOVIETSTAY UNIVERSAL PARTNER KIT V4.1 - Smart Background Switcher / Mobile First
 
 import { useEffect, useState } from "react";
 import QRCode from "qrcode";
 
 type PosterLang = "ru" | "en" | "vi";
 type FormatKey = "a3" | "a4" | "a5" | "carSeat" | "sticker" | "table" | "digital";
+type BackgroundKey = "danang-dragon" | "danang-beach" | "hoian-lantern" | "hue-heritage" | "phuquoc-island" | "phuquoc-sunset" | "global" | "vietnam-general" | "custom";
+type BackgroundFit = "cover" | "contain";
+type BackgroundFocus = "left" | "center" | "right" | "top" | "bottom";
+type OverlayLevel = "soft" | "medium" | "strong";
+
+type BackgroundPreset = {
+  key:BackgroundKey; label:string; short:string; src:string;
+  focus:BackgroundFocus; fit:BackgroundFit; overlay:OverlayLevel;
+};
+
+const BACKGROUND_PRESETS:BackgroundPreset[] = [
+  {key:"danang-dragon",label:"Đà Nẵng / Dragon Bridge",short:"Dragon",src:"/partner-assets/hero-danang-pavel-standard.jpg",focus:"center",fit:"cover",overlay:"medium"},
+  {key:"danang-beach",label:"Đà Nẵng / Beach",short:"Beach",src:"https://images.unsplash.com/photo-1530789253388-582c481c54b0?auto=format&fit=crop&w=2400&q=88",focus:"center",fit:"cover",overlay:"medium"},
+  {key:"hoian-lantern",label:"Hội An / Lantern Town",short:"Hội An",src:"/hero-hoian-new.png",focus:"center",fit:"cover",overlay:"medium"},
+  {key:"hue-heritage",label:"Huế / Heritage",short:"Huế",src:"https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=2400&q=88",focus:"center",fit:"cover",overlay:"medium"},
+  {key:"phuquoc-island",label:"Phú Quốc / Island",short:"PQ Island",src:"https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2400&q=90",focus:"center",fit:"cover",overlay:"soft"},
+  {key:"phuquoc-sunset",label:"Phú Quốc / Sunset",short:"PQ Sunset",src:"https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&w=2400&q=90",focus:"center",fit:"cover",overlay:"medium"},
+  {key:"global",label:"Global / International",short:"Global",src:"https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=2400&q=88",focus:"right",fit:"cover",overlay:"medium"},
+  {key:"vietnam-general",label:"Vietnam / General",short:"Vietnam",src:"https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?auto=format&fit=crop&w=2400&q=88",focus:"center",fit:"cover",overlay:"medium"}
+];
+
+function preserveAspect(fit:BackgroundFit,focus:BackgroundFocus){
+  const align=focus==="left"?"xMinYMid":focus==="right"?"xMaxYMid":focus==="top"?"xMidYMin":focus==="bottom"?"xMidYMax":"xMidYMid";
+  return `${align} ${fit==="contain"?"meet":"slice"}`;
+}
+function overlayOpacity(level:OverlayLevel){
+  return level==="soft"?.08:level==="strong"?.34:.18;
+}
 
 type PartnerRow = {
   partner_id:string; partner_name:string; ref_code:string; partner_type:string; contact_name:string|null; contact:string|null;
@@ -206,7 +235,7 @@ function partnerMessage(r:PartnerRow,lang:PosterLang){
   const d=discountPct(r);
   if(lang==="en")return `Hello ${r.contact_name||r.partner_name},
 
-Your GoVietStay Partner Kit V4 is ready.
+Your GoVietStay Partner Kit V4.1 is ready.
 
 Partner code: ${r.ref_code}
 Customer / QR link:
@@ -220,7 +249,7 @@ ${dashboardUrl(r)}
 GoVietStay — Trusted Local Support`;
   if(lang==="vi")return `Chào ${r.contact_name||r.partner_name},
 
-Bộ GoVietStay Partner Kit V4 của bạn đã sẵn sàng.
+Bộ GoVietStay Partner Kit V4.1 của bạn đã sẵn sàng.
 
 Mã đối tác: ${r.ref_code}
 Link / QR dành cho khách:
@@ -234,7 +263,7 @@ ${dashboardUrl(r)}
 GoVietStay — Trusted Local Support`;
   return `Здравствуйте, ${r.contact_name||r.partner_name}!
 
-Ваш GoVietStay Partner Kit V4 готов.
+Ваш GoVietStay Partner Kit V4.1 готов.
 
 Код партнёра: ${r.ref_code}
 Ссылка / QR для гостей:
@@ -266,7 +295,7 @@ function benefitPill(r:PartnerRow,lang:PosterLang,x:number,y:number,w:number){
   return `<rect x="${x}" y="${y}" width="${w}" height="48" rx="24" fill="${BRAND.gold}"/>
     <text x="${x+w/2}" y="${y+32}" text-anchor="middle" font-family="${FONT}" font-size="18" font-weight="800" fill="${BRAND.navy}">${xml(text)}</text>`;
 }
-function portraitSvg(r:PartnerRow,qr:string,lang:PosterLang,hero:string,gvsLogo:string,partnerLogo:string|null){
+function portraitSvg(r:PartnerRow,qr:string,lang:PosterLang,hero:string,gvsLogo:string,partnerLogo:string|null,bgFit:BackgroundFit,bgFocus:BackgroundFocus,overlay:OverlayLevel){
   const c=COPY[lang];const nameSize=partnerNameSize(r.partner_name,56);
   const bullets=c.bullets.map((b,i)=>{
     const y=1000+i*64;
@@ -280,7 +309,8 @@ function portraitSvg(r:PartnerRow,qr:string,lang:PosterLang,hero:string,gvsLogo:
       <filter id="shadow"><feDropShadow dx="0" dy="8" stdDeviation="12" flood-opacity=".18"/></filter>
     </defs>
     <rect width="1240" height="1754" fill="${BRAND.navy}"/>
-    <image href="${hero}" x="0" y="0" width="1240" height="620" preserveAspectRatio="xMidYMid slice"/>
+    <image href="${hero}" x="0" y="0" width="1240" height="620" preserveAspectRatio="${preserveAspect(bgFit,bgFocus)}"/>
+    <rect x="0" y="0" width="1240" height="620" fill="${BRAND.navy}" fill-opacity="${overlayOpacity(overlay)}"/>
     <rect x="0" y="0" width="1240" height="620" fill="url(#heroShade)"/>
     <rect x="0" y="0" width="1240" height="12" fill="${BRAND.gold}"/>
 
@@ -322,16 +352,17 @@ function portraitSvg(r:PartnerRow,qr:string,lang:PosterLang,hero:string,gvsLogo:
     <rect x="54" y="1490" width="1132" height="150" rx="28" fill="${BRAND.navy2}"/>
     <text x="86" y="1542" font-family="${FONT}" font-size="22" font-weight="800" fill="#fff">${xml(c.footer)}</text>
     <text x="86" y="1582" font-family="${FONT}" font-size="19" font-weight="600" fill="${BRAND.muted}">govietstay.com • WhatsApp • Telegram</text>
-    <text x="1150" y="1580" text-anchor="end" font-family="${FONT}" font-size="18" font-weight="700" fill="${BRAND.gold}">PARTNER KIT V4</text>
+    <text x="1150" y="1580" text-anchor="end" font-family="${FONT}" font-size="18" font-weight="700" fill="${BRAND.gold}">PARTNER KIT V4.1</text>
 
     <text x="620" y="1702" text-anchor="middle" font-family="${FONT}" font-size="16" font-weight="600" fill="#8fa7c0">QR quiet zone protected • print-safe layout • scalable artwork</text>
   </svg>`;
 }
-function landscapeSvg(r:PartnerRow,qr:string,lang:PosterLang,gvsLogo:string,partnerLogo:string|null){
+function landscapeSvg(r:PartnerRow,qr:string,lang:PosterLang,hero:string,gvsLogo:string,partnerLogo:string|null,bgFit:BackgroundFit,bgFocus:BackgroundFocus,overlay:OverlayLevel){
   const c=COPY[lang];const nameSize=partnerNameSize(r.partner_name,42);
   return `<?xml version="1.0" encoding="UTF-8"?>
   <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="530" viewBox="0 0 1600 530">
-    <rect width="1600" height="530" rx="26" fill="${BRAND.navy}"/>
+    <image href="${hero}" x="0" y="0" width="1600" height="530" preserveAspectRatio="${preserveAspect(bgFit,bgFocus)}"/>
+    <rect width="1600" height="530" rx="26" fill="${BRAND.navy}" fill-opacity="${Math.min(.92,overlayOpacity(overlay)+.62)}"/>
     <rect x="0" y="0" width="1600" height="10" fill="${BRAND.gold}"/>
     <rect x="42" y="38" width="190" height="84" rx="16" fill="#fff"/><image href="${gvsLogo}" x="54" y="46" width="166" height="68" preserveAspectRatio="xMidYMid meet"/>
     <text x="258" y="73" font-family="${FONT}" font-size="20" font-weight="800" fill="${BRAND.gold}">${xml(c.network)}</text>
@@ -352,12 +383,12 @@ function landscapeSvg(r:PartnerRow,qr:string,lang:PosterLang,gvsLogo:string,part
     <text x="1406" y="445" text-anchor="middle" font-family="${FONT}" font-size="18" font-weight="800" fill="${BRAND.navy3}">${xml(c.code)} ${xml(r.ref_code)}</text>
   </svg>`;
 }
-function digitalSvg(r:PartnerRow,qr:string,lang:PosterLang,hero:string,gvsLogo:string,partnerLogo:string|null){
+function digitalSvg(r:PartnerRow,qr:string,lang:PosterLang,hero:string,gvsLogo:string,partnerLogo:string|null,bgFit:BackgroundFit,bgFocus:BackgroundFocus,overlay:OverlayLevel){
   const c=COPY[lang];const nameSize=partnerNameSize(r.partner_name,44);
   return `<?xml version="1.0" encoding="UTF-8"?>
   <svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350">
     <defs><linearGradient id="d" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${BRAND.navy}" stop-opacity=".18"/><stop offset="70%" stop-color="${BRAND.navy}" stop-opacity=".94"/><stop offset="100%" stop-color="${BRAND.navy}"/></linearGradient></defs>
-    <image href="${hero}" x="0" y="0" width="1080" height="560" preserveAspectRatio="xMidYMid slice"/><rect width="1080" height="560" fill="url(#d)"/>
+    <image href="${hero}" x="0" y="0" width="1080" height="560" preserveAspectRatio="${preserveAspect(bgFit,bgFocus)}"/><rect width="1080" height="560" fill="${BRAND.navy}" fill-opacity="${overlayOpacity(overlay)}"/><rect width="1080" height="560" fill="url(#d)"/>
     <rect x="42" y="38" width="180" height="82" rx="16" fill="#fff"/><image href="${gvsLogo}" x="54" y="46" width="156" height="66" preserveAspectRatio="xMidYMid meet"/>
     <text x="248" y="78" font-family="${FONT}" font-size="21" font-weight="800" fill="#fff">${xml(c.network)}</text>
 
@@ -377,19 +408,19 @@ function digitalSvg(r:PartnerRow,qr:string,lang:PosterLang,hero:string,gvsLogo:s
     <text x="540" y="1320" text-anchor="middle" font-family="${FONT}" font-size="16" font-weight="650" fill="${BRAND.muted}">govietstay.com • ${xml(c.code)} ${xml(r.ref_code)}</text>
   </svg>`;
 }
-function buildSvg(r:PartnerRow,qr:string,lang:PosterLang,format:FormatKey,hero:string,gvsLogo:string,partnerLogo:string|null){
+function buildSvg(r:PartnerRow,qr:string,lang:PosterLang,format:FormatKey,hero:string,gvsLogo:string,partnerLogo:string|null,bgFit:BackgroundFit,bgFocus:BackgroundFocus,overlay:OverlayLevel){
   const p=FORMATS[format];
-  if(p.family==="landscape")return landscapeSvg(r,qr,lang,gvsLogo,partnerLogo);
-  if(p.family==="digital")return digitalSvg(r,qr,lang,hero,gvsLogo,partnerLogo);
-  return portraitSvg(r,qr,lang,hero,gvsLogo,partnerLogo);
+  if(p.family==="landscape")return landscapeSvg(r,qr,lang,hero,gvsLogo,partnerLogo,bgFit,bgFocus,overlay);
+  if(p.family==="digital")return digitalSvg(r,qr,lang,hero,gvsLogo,partnerLogo,bgFit,bgFocus,overlay);
+  return portraitSvg(r,qr,lang,hero,gvsLogo,partnerLogo,bgFit,bgFocus,overlay);
 }
-async function buildArtwork(r:PartnerRow,qr:string,lang:PosterLang,format:FormatKey,partnerLogo:string|null,heroOverride:string|null,full=false){
+async function buildArtwork(r:PartnerRow,qr:string,lang:PosterLang,format:FormatKey,partnerLogo:string|null,heroOverride:string|null,full=false,bgFit:BackgroundFit="cover",bgFocus:BackgroundFocus="center",overlay:OverlayLevel="medium"){
   const [defaultHero,gvsLogo]=await Promise.all([
     heroOverride?Promise.resolve(heroOverride):fetchAsDataUrl("/partner-assets/hero-danang-pavel-standard.jpg"),
     fetchAsDataUrl("/govietstay-logo.jpg")
   ]);
   const hero=heroOverride||defaultHero;
-  const svg=buildSvg(r,qr,lang,format,hero,gvsLogo,partnerLogo);
+  const svg=buildSvg(r,qr,lang,format,hero,gvsLogo,partnerLogo,bgFit,bgFocus,overlay);
   const p=FORMATS[format];
   const scale=full?1:Math.min(1,1400/p.outW);
   const w=Math.max(720,Math.round(p.outW*scale));
@@ -410,7 +441,7 @@ function PartnerQR({row,onQr,onKit,onMobile}:{row:PartnerRow;onQr:(r:PartnerRow,
     <button type="button" onClick={()=>onQr(row,qr)} style={{border:"1px solid #dbe5f1",background:"#fff",padding:4,borderRadius:10,cursor:"pointer"}}>
       <img src={qr} alt={"QR "+row.ref_code} width={62} height={62} style={{display:"block"}}/>
     </button>
-    <button type="button" className="gva-btn secondary" style={{padding:"6px 8px",fontSize:12}} onClick={()=>onKit(row,qr)}>Kit V4</button>
+    <button type="button" className="gva-btn secondary" style={{padding:"6px 8px",fontSize:12}} onClick={()=>onKit(row,qr)}>Kit V4.1</button>
     <button type="button" className="gva-btn secondary" style={{padding:"6px 8px",fontSize:12}} onClick={()=>onMobile(row,qr)}>Mobile</button>
   </div>;
 }
@@ -425,7 +456,7 @@ export default function PartnerTools({supabase,days}:any){
   const [name,setName]=useState("");
   const [ref,setRef]=useState("");
   const [qrModal,setQrModal]=useState<{row:PartnerRow;qr:string}|null>(null);
-  const [kitModal,setKitModal]=useState<{row:PartnerRow;qr:string;lang:PosterLang;format:FormatKey;png:string;svg:string;partnerLogo:string|null;heroOverride:string|null}|null>(null);
+  const [kitModal,setKitModal]=useState<{row:PartnerRow;qr:string;lang:PosterLang;format:FormatKey;png:string;svg:string;partnerLogo:string|null;heroOverride:string|null;backgroundKey:BackgroundKey;bgFit:BackgroundFit;bgFocus:BackgroundFocus;overlay:OverlayLevel}|null>(null);
   const [mobileModal,setMobileModal]=useState<{row:PartnerRow;qr:string;lang:PosterLang;poster:string|null}|null>(null);
   const [working,setWorking]=useState("");
 
@@ -444,38 +475,55 @@ export default function PartnerTools({supabase,days}:any){
     catch{setError("Không copy được")}
   }
 
-  async function openKit(row:PartnerRow,qr:string,lang:PosterLang,format:FormatKey="a4",partnerLogo:string|null=null,heroOverride:string|null=null){
+  async function openKit(row:PartnerRow,qr:string,lang:PosterLang,format:FormatKey="a4",partnerLogo:string|null=null,heroOverride:string|null=null,backgroundKey:BackgroundKey="danang-dragon",bgFit:BackgroundFit="cover",bgFocus:BackgroundFocus="center",overlay:OverlayLevel="medium"){
     setWorking("kit");setError("");
     try{
-      const art=await buildArtwork(row,qr,lang,format,partnerLogo,heroOverride,false);
-      setKitModal({row,qr,lang,format,png:art.png,svg:art.svg,partnerLogo,heroOverride});
-    }catch(e:any){setError(e?.message||"Không tạo được Partner Kit V4.")}
+      const art=await buildArtwork(row,qr,lang,format,partnerLogo,heroOverride,false,bgFit,bgFocus,overlay);
+      setKitModal({row,qr,lang,format,png:art.png,svg:art.svg,partnerLogo,heroOverride,backgroundKey,bgFit,bgFocus,overlay});
+    }catch(e:any){setError(e?.message||"Không tạo được Partner Kit V4.1.")}
     finally{setWorking("")}
   }
-  async function switchKit(next:{lang?:PosterLang;format?:FormatKey;partnerLogo?:string|null;heroOverride?:string|null}){
+  async function switchKit(next:{lang?:PosterLang;format?:FormatKey;partnerLogo?:string|null;heroOverride?:string|null;backgroundKey?:BackgroundKey;bgFit?:BackgroundFit;bgFocus?:BackgroundFocus;overlay?:OverlayLevel}){
     if(!kitModal)return;
     const lang=next.lang??kitModal.lang;
     const format=next.format??kitModal.format;
     const logo=Object.prototype.hasOwnProperty.call(next,"partnerLogo")?next.partnerLogo!:kitModal.partnerLogo;
     const hero=Object.prototype.hasOwnProperty.call(next,"heroOverride")?next.heroOverride!:kitModal.heroOverride;
-    await openKit(kitModal.row,kitModal.qr,lang,format,logo,hero);
+    const backgroundKey=next.backgroundKey??kitModal.backgroundKey;
+    const bgFit=next.bgFit??kitModal.bgFit;
+    const bgFocus=next.bgFocus??kitModal.bgFocus;
+    const overlay=next.overlay??kitModal.overlay;
+    await openKit(kitModal.row,kitModal.qr,lang,format,logo,hero,backgroundKey,bgFit,bgFocus,overlay);
   }
   async function changePartnerLogo(file:File|null){
     if(!kitModal)return;const data=file?await fileAsDataUrl(file):null;await switchKit({partnerLogo:data});
   }
   async function changeHero(file:File|null){
-    if(!kitModal)return;const data=file?await fileAsDataUrl(file):null;await switchKit({heroOverride:data});
+    if(!kitModal)return;
+    const data=file?await fileAsDataUrl(file):null;
+    await switchKit({heroOverride:data,backgroundKey:file?"custom":"danang-dragon",bgFit:"cover",bgFocus:"center",overlay:"medium"});
+  }
+  async function changePreset(key:BackgroundKey){
+    if(!kitModal||key==="custom")return;
+    const preset=BACKGROUND_PRESETS.find(p=>p.key===key);if(!preset)return;
+    setWorking("background");setError("");
+    try{
+      const data=await fetchAsDataUrl(preset.src);
+      await openKit(kitModal.row,kitModal.qr,kitModal.lang,kitModal.format,kitModal.partnerLogo,data,preset.key,preset.fit,preset.focus,preset.overlay);
+    }catch(e:any){
+      setError(e?.message||"Không tải được ảnh nền preset. Hãy thử preset khác hoặc upload ảnh riêng.");
+    }finally{setWorking("")}
   }
   async function downloadFullPng(){
     if(!kitModal)return;setWorking("download");
     try{
-      const art=await buildArtwork(kitModal.row,kitModal.qr,kitModal.lang,kitModal.format,kitModal.partnerLogo,kitModal.heroOverride,true);
-      downloadData(art.png,`GVS_${kitModal.row.ref_code}_${kitModal.lang.toUpperCase()}_${kitModal.format.toUpperCase()}_V4.png`);
+      const art=await buildArtwork(kitModal.row,kitModal.qr,kitModal.lang,kitModal.format,kitModal.partnerLogo,kitModal.heroOverride,true,kitModal.bgFit,kitModal.bgFocus,kitModal.overlay);
+      downloadData(art.png,`GVS_${kitModal.row.ref_code}_${kitModal.lang.toUpperCase()}_${kitModal.format.toUpperCase()}_V4_1.png`);
     }catch(e:any){setError(e?.message||"Không xuất được PNG.")}finally{setWorking("")}
   }
   function downloadSvg(){
     if(!kitModal)return;
-    downloadText(kitModal.svg,`GVS_${kitModal.row.ref_code}_${kitModal.lang.toUpperCase()}_${kitModal.format.toUpperCase()}_V4.svg`);
+    downloadText(kitModal.svg,`GVS_${kitModal.row.ref_code}_${kitModal.lang.toUpperCase()}_${kitModal.format.toUpperCase()}_V4_1.svg`);
   }
   async function ensureMobilePoster(){
     if(!mobileModal)return null;if(mobileModal.poster)return mobileModal.poster;
@@ -493,8 +541,8 @@ export default function PartnerTools({supabase,days}:any){
     if(!mobileModal)return;setWorking("shareposter");
     try{
       const src=await ensureMobilePoster();if(!src)return;
-      const ok=await shareFile(src,`GVS_${mobileModal.row.ref_code}_${mobileModal.lang.toUpperCase()}_DIGITAL_V4.png`,partnerMessage(mobileModal.row,mobileModal.lang));
-      if(!ok)downloadData(src,`GVS_${mobileModal.row.ref_code}_${mobileModal.lang.toUpperCase()}_DIGITAL_V4.png`);
+      const ok=await shareFile(src,`GVS_${mobileModal.row.ref_code}_${mobileModal.lang.toUpperCase()}_DIGITAL_V4_1.png`,partnerMessage(mobileModal.row,mobileModal.lang));
+      if(!ok)downloadData(src,`GVS_${mobileModal.row.ref_code}_${mobileModal.lang.toUpperCase()}_DIGITAL_V4_1.png`);
     }catch(e:any){if(e?.name!=="AbortError")setError("Không mở được menu chia sẻ.")}finally{setWorking("")}
   }
 
@@ -517,14 +565,14 @@ export default function PartnerTools({supabase,days}:any){
         p_start_date:String(f.get("start_date")||"")||null,p_guest_discount:discount/100
       });
       if(error)throw error;
-      setMsg("Đã tạo đối tác "+code+". Hệ thống đã sinh Partner Code + Sales Link + QR + Portal + Universal Kit V4.");
+      setMsg("Đã tạo đối tác "+code+". Hệ thống đã sinh Partner Code + Sales Link + QR + Portal + Universal Kit V4.1.");
       form.reset();setName("");setRef("");await loadRows();
     }catch(e:any){setError(e?.message||"Không tạo được partner.")}finally{setSaving(false)}
   }
 
   return <>
     <div className="gva-card" style={{marginBottom:15}}>
-      <div className="gva-section-head"><div><h2>+ Tạo đối tác mới</h2><div className="gva-mini">Một lần tạo: Partner Code + Sales Link + QR + Portal + Universal Display Kit V4.</div></div></div>
+      <div className="gva-section-head"><div><h2>+ Tạo đối tác mới</h2><div className="gva-mini">Một lần tạo: Partner Code + Sales Link + QR + Portal + Universal Display Kit V4.1.</div></div></div>
       {error&&<div className="gva-msg err">{error}</div>}
       {msg&&<div className="gva-msg">{msg}</div>}
       {working&&<div className="gva-msg">Đang xử lý {working==="download"?"file in chất lượng cao":"Partner Kit V4"}…</div>}
@@ -547,7 +595,7 @@ export default function PartnerTools({supabase,days}:any){
     </div>
 
     <div className="gva-card">
-      <div className="gva-section-head"><div><h2>Partner Deployment Center</h2><div className="gva-mini">V4 • một QR, nhiều bề mặt • A3/A4/A5 • xe • sticker • table stand • digital • SVG vector.</div></div><button type="button" className="gva-btn secondary" onClick={loadRows}>{loading?"Đang tải…":"Cập nhật"}</button></div>
+      <div className="gva-section-head"><div><h2>Partner Deployment Center</h2><div className="gva-mini">V4.1 • Smart Background • một QR, nhiều bề mặt • A3/A4/A5 • xe • sticker • table stand • digital • SVG vector.</div></div><button type="button" className="gva-btn secondary" onClick={loadRows}>{loading?"Đang tải…":"Cập nhật"}</button></div>
       <div className="gva-table-wrap"><table className="gva-table">
         <thead><tr><th>Partner</th><th>Terms</th><th>Traffic</th><th>Lead</th><th>Booking</th><th>PAX tháng</th><th>Basic</th><th>Commission</th><th>Total</th><th>QR / Kit</th><th>Portal</th></tr></thead>
         <tbody>
@@ -568,30 +616,46 @@ export default function PartnerTools({supabase,days}:any){
       <div onClick={e=>e.stopPropagation()} style={{width:"min(520px,96vw)",background:"#fff",borderRadius:18,padding:18}}>
         <div style={{display:"flex",justifyContent:"space-between",gap:10}}><div><h2 style={{margin:0}}>{qrModal.row.partner_name}</h2><div className="gva-mini">{qrModal.row.ref_code}</div></div><button className="gva-btn secondary" onClick={()=>setQrModal(null)}>Đóng</button></div>
         <div style={{textAlign:"center",padding:"16px 0"}}><img src={qrModal.qr} alt="QR" style={{width:"min(310px,75vw)",height:"auto"}}/></div>
-        <div style={{display:"flex",gap:8,flexWrap:"wrap"}}><button className="gva-btn" onClick={()=>downloadData(qrModal.qr,`GVS_${qrModal.row.ref_code}_QR.png`)}>Tải QR</button><button className="gva-btn" onClick={()=>openKit(qrModal.row,qrModal.qr,defaultPosterLang(qrModal.row),"a4",null)}>Mở Kit V4</button><button className="gva-btn secondary" onClick={()=>setMobileModal({row:qrModal.row,qr:qrModal.qr,lang:defaultPosterLang(qrModal.row),poster:null})}>Mobile Share</button></div>
+        <div style={{display:"flex",gap:8,flexWrap:"wrap"}}><button className="gva-btn" onClick={()=>downloadData(qrModal.qr,`GVS_${qrModal.row.ref_code}_QR.png`)}>Tải QR</button><button className="gva-btn" onClick={()=>openKit(qrModal.row,qrModal.qr,defaultPosterLang(qrModal.row),"a4",null)}>Mở Kit V4.1</button><button className="gva-btn secondary" onClick={()=>setMobileModal({row:qrModal.row,qr:qrModal.qr,lang:defaultPosterLang(qrModal.row),poster:null})}>Mobile Share</button></div>
       </div>
     </div>}
 
     {kitModal&&<div onClick={()=>setKitModal(null)} style={{position:"fixed",inset:0,zIndex:10000,background:"rgba(4,13,27,.84)",display:"flex",alignItems:"center",justifyContent:"center",padding:12,overflow:"auto"}}>
-      <div onClick={e=>e.stopPropagation()} style={{width:"min(980px,98vw)",background:"#fff",borderRadius:18,padding:16}}>
+      <div onClick={e=>e.stopPropagation()} style={{width:"min(980px,100%)",maxHeight:"94vh",overflow:"auto",background:"#fff",borderRadius:18,padding:"clamp(10px,2.5vw,16px)"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",gap:10,flexWrap:"wrap"}}>
-          <div><h2 style={{margin:0}}>Universal Partner Kit V4 — {kitModal.row.partner_name}</h2><div className="gva-mini">Một QR • print-safe • typography mới • logo thật • co giãn theo mọi bề mặt</div></div><button className="gva-btn secondary" onClick={()=>setKitModal(null)}>Đóng</button>
+          <div><h2 style={{margin:0}}>Universal Partner Kit V4.1 — {kitModal.row.partner_name}</h2><div className="gva-mini">Smart Background Switcher • mobile-first • một QR • mọi bề mặt</div></div><button className="gva-btn secondary" onClick={()=>setKitModal(null)}>Đóng</button>
         </div>
-        <div style={{display:"flex",gap:8,flexWrap:"wrap",marginTop:12}}>
+        <div style={{display:"flex",gap:8,flexWrap:"nowrap",overflowX:"auto",marginTop:12,paddingBottom:4,WebkitOverflowScrolling:"touch"}}>
           <button className={kitModal.lang==="ru"?"gva-btn":"gva-btn secondary"} onClick={()=>switchKit({lang:"ru"})}>🇷🇺 Русский</button>
           <button className={kitModal.lang==="en"?"gva-btn":"gva-btn secondary"} onClick={()=>switchKit({lang:"en"})}>🇬🇧 English</button>
           <button className={kitModal.lang==="vi"?"gva-btn":"gva-btn secondary"} onClick={()=>switchKit({lang:"vi"})}>🇻🇳 Tiếng Việt</button>
           <label className="gva-btn secondary" style={{cursor:"pointer"}}>Logo partner<input type="file" accept="image/*" style={{display:"none"}} onChange={e=>changePartnerLogo(e.target.files?.[0]||null)}/></label>
           {kitModal.partnerLogo&&<button className="gva-btn secondary" onClick={()=>switchKit({partnerLogo:null})}>Bỏ logo partner</button>}
-          <label className="gva-btn secondary" style={{cursor:"pointer"}}>Ảnh nền / Destination<input type="file" accept="image/*" style={{display:"none"}} onChange={e=>changeHero(e.target.files?.[0]||null)}/></label>
-          {kitModal.heroOverride&&<button className="gva-btn secondary" onClick={()=>switchKit({heroOverride:null})}>Về ảnh mặc định</button>}
+          <label className="gva-btn secondary" style={{cursor:"pointer",minHeight:44,display:"inline-flex",alignItems:"center"}}>Upload ảnh riêng<input type="file" accept="image/*" style={{display:"none"}} onChange={e=>changeHero(e.target.files?.[0]||null)}/></label>
         </div>
-        <div style={{display:"flex",gap:7,flexWrap:"wrap",marginTop:10}}>
+        <div style={{marginTop:12,padding:"12px 0",borderTop:"1px solid #e4ebf3"}}>
+          <div style={{display:"flex",justifyContent:"space-between",gap:10,alignItems:"center",marginBottom:8}}>
+            <div><b>Smart Background Switcher</b><div className="gva-mini">Chạm để đổi destination • ảnh luôn giữ đúng tỷ lệ</div></div>
+            <span className="gva-pill">{kitModal.backgroundKey==="custom"?"Custom":BACKGROUND_PRESETS.find(p=>p.key===kitModal.backgroundKey)?.short||"Background"}</span>
+          </div>
+          <div style={{display:"flex",gap:10,overflowX:"auto",padding:"2px 2px 8px",WebkitOverflowScrolling:"touch"}}>
+            {BACKGROUND_PRESETS.map(p=><button type="button" key={p.key} onClick={()=>changePreset(p.key)} style={{minWidth:122,width:122,border:kitModal.backgroundKey===p.key?"3px solid #1d65b8":"1px solid #d8e2ee",background:"#fff",borderRadius:14,padding:6,cursor:"pointer",textAlign:"left",flex:"0 0 auto"}}>
+              <img src={p.src} alt={p.label} loading="lazy" style={{width:"100%",height:70,objectFit:"cover",borderRadius:10,display:"block",background:"#e9eef5"}}/>
+              <div style={{fontSize:12,fontWeight:800,color:"#10233d",marginTop:6,lineHeight:1.2}}>{p.short}</div>
+            </button>)}
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(190px,1fr))",gap:10,marginTop:8}}>
+            <div><div className="gva-mini" style={{fontWeight:800,marginBottom:5}}>Fit</div><div style={{display:"flex",gap:6}}>{(["cover","contain"] as BackgroundFit[]).map(v=><button type="button" key={v} className={kitModal.bgFit===v?"gva-btn":"gva-btn secondary"} style={{minHeight:44,flex:1}} onClick={()=>switchKit({bgFit:v})}>{v==="cover"?"Cover":"Contain"}</button>)}</div></div>
+            <div><div className="gva-mini" style={{fontWeight:800,marginBottom:5}}>Focus</div><div style={{display:"flex",gap:5,overflowX:"auto"}}>{(["left","center","right","top","bottom"] as BackgroundFocus[]).map(v=><button type="button" key={v} className={kitModal.bgFocus===v?"gva-btn":"gva-btn secondary"} style={{minHeight:44,minWidth:58,padding:"7px 9px"}} onClick={()=>switchKit({bgFocus:v})}>{v==="left"?"Trái":v==="right"?"Phải":v==="top"?"Trên":v==="bottom"?"Dưới":"Giữa"}</button>)}</div></div>
+            <div><div className="gva-mini" style={{fontWeight:800,marginBottom:5}}>Overlay</div><div style={{display:"flex",gap:6}}>{(["soft","medium","strong"] as OverlayLevel[]).map(v=><button type="button" key={v} className={kitModal.overlay===v?"gva-btn":"gva-btn secondary"} style={{minHeight:44,flex:1,padding:"7px 8px"}} onClick={()=>switchKit({overlay:v})}>{v==="soft"?"Nhẹ":v==="strong"?"Đậm":"Vừa"}</button>)}</div></div>
+          </div>
+        </div>
+        <div style={{display:"flex",gap:7,flexWrap:"nowrap",overflowX:"auto",marginTop:10,paddingBottom:4,WebkitOverflowScrolling:"touch"}}>
           {(Object.keys(FORMATS) as FormatKey[]).map(k=><button key={k} className={kitModal.format===k?"gva-btn":"gva-btn secondary"} onClick={()=>switchKit({format:k})}>{FORMATS[k].short}</button>)}
         </div>
         <div className="gva-mini" style={{marginTop:8,lineHeight:1.5}}><b>{FORMATS[kitModal.format].label}:</b> {FORMATS[kitModal.format].note} QR luôn giữ quiet zone và Partner Code.</div>
-        <div style={{background:"#e9eef5",borderRadius:12,padding:10,marginTop:12,maxHeight:"64vh",overflow:"auto",textAlign:"center"}}><img src={kitModal.png} alt="Partner Kit V4" style={{display:"block",maxWidth:"100%",width:kitModal.format==="sticker"?"100%":"min(760px,100%)",height:"auto",borderRadius:8,margin:"0 auto"}}/></div>
-        <div style={{display:"flex",gap:8,flexWrap:"wrap",marginTop:12}}>
+        <div style={{background:"#e9eef5",borderRadius:12,padding:10,marginTop:12,maxHeight:"64vh",overflow:"auto",textAlign:"center"}}><img src={kitModal.png} alt="Partner Kit V4.1" style={{display:"block",maxWidth:"100%",width:kitModal.format==="sticker"?"100%":"min(760px,100%)",height:"auto",borderRadius:8,margin:"0 auto"}}/></div>
+        <div style={{display:"flex",gap:8,flexWrap:"wrap",position:"sticky",bottom:0,zIndex:5,background:"rgba(255,255,255,.97)",borderTop:"1px solid #dfe7f0",padding:"10px 0 4px",marginTop:12}}>
           <button className="gva-btn" disabled={working==="download"} onClick={downloadFullPng}>{working==="download"?"Đang xuất…":"Tải PNG chất lượng in"}</button>
           <button className="gva-btn" onClick={downloadSvg}>Tải SVG vector</button>
           <button className="gva-btn secondary" onClick={()=>setMobileModal({row:kitModal.row,qr:kitModal.qr,lang:kitModal.lang,poster:null})}>Mobile Share</button>
