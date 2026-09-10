@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 
 const links = [
   ["Главная на русском", "/ru"],
@@ -6,6 +6,7 @@ const links = [
   ["Что посмотреть в Хойане", "/ru/hoi-an"],
   ["Экскурсия в Хюэ", "/ru/hue"],
   ["Туры на Фукуоке", "/ru/tours/phu-quoc"],
+  ["Гид по Фукуоку", "/ru/phu-quoc"],
   ["Ba Na Hills", "/ru/tours/ba-na-hills"],
   ["Остров Чам", "/ru/tours/cham-island"],
   ["Актуально во Вьетнаме", "/ru/aktualno"],
@@ -31,3 +32,4 @@ export default function RussianInternalLinks() {
     </aside>
   );
 }
+

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import JsonLd from "../../../components/JsonLd";
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
       "Практический гид для тех, кто уже на Фукуоке: что посмотреть, как передвигаться, чем платить, куда ехать с детьми и что делать в экстренной ситуации.",
     images: [
       {
-        url: `${BASE_URL}/tour/phuquoc/tour-01-1.jpg`,
+        url: `${BASE_URL}/phu-quoc/ru-cluster/hero-sunset.png`,
         alt: "Фукуок, Вьетнам — полезный гид GoVietStay на русском языке",
       },
     ],
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     title: "Фукуок на русском — бесплатная местная помощь",
     description:
       "Полезный гид GoVietStay для туристов на Фукуоке: районы, транспорт, деньги, погода, дети и экстренные контакты.",
-    images: [`${BASE_URL}/tour/phuquoc/tour-01-1.jpg`],
+    images: [`${BASE_URL}/phu-quoc/ru-cluster/hero-sunset.png`],
   },
 };
 
@@ -225,7 +225,7 @@ export default function PhuQuocHelpPage() {
 
       <section className="relative isolate overflow-hidden bg-[#06251b] text-white">
         <Image
-          src="/tour/phuquoc/tour-01-1.jpg"
+          src="/phu-quoc/ru-cluster/hero-sunset.png"
           alt="Фукуок во Вьетнаме — местный гид на русском языке"
           fill
           priority
@@ -235,8 +235,14 @@ export default function PhuQuocHelpPage() {
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#031b14]/95 via-[#031b14]/82 to-[#031b14]/48" />
         <div className="mx-auto flex min-h-[76svh] max-w-6xl flex-col px-5 py-6 md:px-10 md:py-9">
           <header className="flex flex-wrap items-center justify-between gap-4">
-            <Link href="/ru" className="text-xl font-black tracking-tight">
-              GoVietStay
+            <Link href="/ru" className="inline-flex rounded-2xl bg-white/95 p-2 shadow-lg">
+              <Image
+                src="/brand/govietstay-official-logo.jpg"
+                alt="GoVietStay — Trusted Local Support"
+                width={300}
+                height={110}
+                className="h-12 w-auto object-contain sm:h-14"
+              />
             </Link>
             <nav aria-label="Навигация по Фукуоку" className="flex flex-wrap gap-2 text-sm font-semibold">
               <a href="#first" className="rounded-full border border-white/30 px-4 py-2 backdrop-blur hover:bg-white/10">
@@ -522,3 +528,5 @@ export default function PhuQuocHelpPage() {
     </main>
   );
 }
+
+
