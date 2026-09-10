@@ -1,0 +1,34 @@
+GoVietStay Arabic deploy fix started at Thu 09/03/2026 10:32:09.80
+true
+Branch: main
+https://github.com/govietstay-art/govietstay-main-website.git
+warning: in the working copy of 'app/ar/_components/ArabicLandingPage.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/ar/arabic.css', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/ar/da-nang-hoi-an-private-tour/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/ar/halal-travel-vietnam/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/ar/layout.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/ar/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/ar/phu-quoc-family-tour/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/ar/vietnam-11-day-itinerary/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/ar/vietnam-family-private-tour/page.tsx', LF will be replaced by CRLF the next time Git touches it
+[main 410188a] Add GoVietStay Arabic hub
+ 17 files changed, 872 insertions(+)
+ create mode 100644 app/ar/_components/ArabicLandingPage.tsx
+ create mode 100644 app/ar/arabic.css
+ create mode 100644 app/ar/da-nang-hoi-an-private-tour/page.tsx
+ create mode 100644 app/ar/halal-travel-vietnam/page.tsx
+ create mode 100644 app/ar/layout.tsx
+ create mode 100644 app/ar/page.tsx
+ create mode 100644 app/ar/phu-quoc-family-tour/page.tsx
+ create mode 100644 app/ar/vietnam-11-day-itinerary/page.tsx
+ create mode 100644 app/ar/vietnam-family-private-tour/page.tsx
+ create mode 100644 public/ar-assets/bana.jpg
+ create mode 100644 public/ar-assets/bana.webp
+ create mode 100644 public/ar-assets/hero-hoian.jpg
+ create mode 100644 public/ar-assets/hero-hoian.webp
+ create mode 100644 public/ar-assets/logo.png
+ create mode 100644 public/ar-assets/logo.webp
+ create mode 100644 public/ar-assets/phuquoc.jpg
+ create mode 100644 public/ar-assets/phuquoc.webp
+To https://github.com/govietstay-art/govietstay-main-website.git
+   3f5a7b5..410188a  main -> main

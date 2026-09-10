@@ -1,0 +1,21 @@
+RU PHU QUOC SEO CHECKLIST
+========================
+[ ] 01 Install thành công
+[ ] 02 Patch Help visual/logo thành công
+[ ] 03 Check files: tất cả [OK]
+[ ] 04 npm build PASS
+[ ] 05 Git push PASS
+[ ] Vercel deployment Ready
+[ ] /ru/phu-quoc trả 200
+[ ] 13 subpages trả 200
+[ ] /ru/phu-quoc-help trả 200
+[ ] Official GoVietStay logo hiển thị ở hero
+[ ] Hero mobile không crop xấu
+[ ] WhatsApp mở đúng +84 937 762 607
+[ ] Telegram mở @GoVietStay
+[ ] /ru/phu-quoc/sitemap.xml trả XML 200
+[ ] Submit sitemap vào Google Search Console
+[ ] URL Inspection /ru/phu-quoc -> Request indexing
+[ ] Kiểm tra canonical từng page
+[ ] Không có English/Vietnamese lọt vào nội dung front-end
+[ ] Sau 7–14 ngày kiểm tra impression/query trong Search Console

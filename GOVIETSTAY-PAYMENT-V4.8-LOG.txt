@@ -1,0 +1,56 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20260909212024
+Username: DESKTOP-QL3GLOA\ADMIN
+RunAs User: DESKTOP-QL3GLOA\ADMIN
+Configuration Name: 
+Machine: DESKTOP-QL3GLOA (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\ADMIN\AppData\Local\Temp\gvs_payment_v48_17930_16621.ps1
+Process ID: 20196
+PSVersion: 5.1.26100.9168
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9168
+BuildVersion: 10.0.26100.9168
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+[1/7 FETCH] git -C C:/Users/ADMIN/Documents/GitHub/govietstay-main-website fetch origin main
+From https://github.com/govietstay-art/govietstay-main-website
+ * branch            main       -> FETCH_HEAD
+[2/7 WORKTREE] git -C C:/Users/ADMIN/Documents/GitHub/govietstay-main-website worktree add --detach C:\Users\ADMIN\AppData\Local\Temp\gvs_payment_v48_8f9f6568e23c466eb0203de187b4ee94 origin/main
+Preparing worktree (detached HEAD b999205)
+Updating files: 100% (532/532), done.
+HEAD is now at b999205 fix(payments): render public payment page on GoVietStay
+[4/7 BUILD] npm.cmd run build
+├ ƒ /travel/phu-quoc-travel-guide
+├ ƒ /travel/phu-quoc-with-family
+├ ƒ /travel/vietnam-local-help
+├ ƒ /travel/vietnam-tet-travel-guide
+├ ƒ /tw
+├ ƒ /tw/[slug]
+├ ƒ /vi
+├ ƒ /vi/[slug]
+└ ƒ /visa
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+[5/7 ADD] git -C C:\Users\ADMIN\AppData\Local\Temp\gvs_payment_v48_8f9f6568e23c466eb0203de187b4ee94 add -- app/pay/[token]/page.tsx
+
+
+[6/7 COMMIT] git -C C:\Users\ADMIN\AppData\Local\Temp\gvs_payment_v48_8f9f6568e23c466eb0203de187b4ee94 -c user.name=GoVietStay Installer -c user.email=govietstay@gmail.com commit -m fix(payments): add brand logo and international card label
+
+[7/7 PUSH] git -C C:\Users\ADMIN\AppData\Local\Temp\gvs_payment_v48_8f9f6568e23c466eb0203de187b4ee94 push origin HEAD:main
+
+
+SUCCESS - Vercel will deploy automatically.
+Test: https://www.govietstay.com/pay/YOUR_TOKEN
+Log: C:\Users\ADMIN\Documents\GitHub\govietstay-main-website\GOVIETSTAY-PAYMENT-V4.8-LOG.txt
+**********************
+Windows PowerShell transcript end
+End time: 20260909212206
+**********************

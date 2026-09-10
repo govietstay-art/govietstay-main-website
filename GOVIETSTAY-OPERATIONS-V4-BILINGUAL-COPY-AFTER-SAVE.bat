@@ -1,0 +1,118 @@
+﻿@echo off
+setlocal EnableExtensions EnableDelayedExpansion
+chcp 65001 >nul
+title GoVietStay - Operations V4 Bilingual Copy
+
+echo.
+echo ================================================================
+echo  GOVIETSTAY OPERATIONS V4 - BILINGUAL COPY AFTER SAVE
+echo ================================================================
+echo.
+echo  One click = TWO languages in the SAME message:
+echo  - Customer: English + Russian
+  echo - Driver: English + Vietnamese
+  echo - Popup opens immediately after Save Booking
+
+echo.
+set "PROJECT="
+for /f "delims=" %%I in ('git rev-parse --show-toplevel 2^>nul') do set "PROJECT=%%I"
+if not defined PROJECT if exist "%USERPROFILE%\Documents\GitHub\govietstay-main-website\.git" set "PROJECT=%USERPROFILE%\Documents\GitHub\govietstay-main-website"
+if not defined PROJECT if exist "%USERPROFILE%\govietstay-main-website\.git" set "PROJECT=%USERPROFILE%\govietstay-main-website"
+if not defined PROJECT if exist "%USERPROFILE%\Desktop\govietstay-main-website\.git" set "PROJECT=%USERPROFILE%\Desktop\govietstay-main-website"
+
+if not defined PROJECT (
+  echo Khong tu tim thay thu muc project.
+  set /p "PROJECT=Dan duong dan thu muc govietstay-main-website roi Enter: "
+)
+if not exist "%PROJECT%\.git" (
+  echo [STOP] Khong tim thay Git project: %PROJECT%
+  pause
+  exit /b 1
+)
+
+set "WORKTREE=%TEMP%\gvs_ops_v4_bi_%RANDOM%_%RANDOM%"
+set "GVS_WORKTREE=%WORKTREE%"
+
+echo [1/7] Fetch origin/main...
+git -C "%PROJECT%" fetch origin main
+if errorlevel 1 goto FAIL
+
+echo [2/7] Tao worktree sach...
+git -C "%PROJECT%" worktree add --detach "%WORKTREE%" origin/main
+if errorlevel 1 goto FAIL
+
+echo [3/7] Patch bilingual popup...
+set "PATCH_B64=%TEMP%\gvs_ops_v4_bi_%RANDOM%_%RANDOM%.b64"
+set "PATCH_PS1=%TEMP%\gvs_ops_v4_bi_%RANDOM%_%RANDOM%.ps1"
+> "%PATCH_B64%" (
+  echo 77u/JEVycm9yQWN0aW9uUHJlZmVyZW5jZSA9ICJTdG9wIgokcm9vdCA9ICRlbnY6R1ZTX1dPUktUUkVFCmlmICgtbm90ICRyb290KSB7IHRocm93ICJHVlNfV09SS1RSRUUgaXMgbm90IHNldC4iIH0KJHBhdGggPSBKb2luLVBhdGggJHJvb3QgImNvbXBvbmVudHNcYWRtaW4tdjVcT3BlcmF0aW9uc0NlbnRlci50c3giCmlmICgtbm90IChUZXN0LVBhdGggJHBhdGgpKSB7IHRocm93ICJDYW5ub3QgZmluZCBPcGVyYXRpb25zQ2VudGVyLnRzeCBhdCAkcGF0aCIgfQoKJHV0ZjggPSBOZXctT2JqZWN0IFN5c3RlbS5UZXh0LlVURjhFbmNvZGluZygkZmFsc2UpCiR0ZXh0ID0gW0lPLkZpbGVdOjpSZWFkQWxsVGV4dCgkcGF0aCwgJHV0ZjgpLlJlcGxhY2UoImByYG4iLCAiYG4iKQoKaWYgKCR0ZXh0LkNvbnRhaW5zKCIvLyBHVlMtUE9TVC1TQVZFLUJJTElOR1VBTC1TSEFSRS1WNCIpKSB7CiAgV3JpdGUtSG9zdCAiW09LXSBCaWxpbmd1YWwgVjQgYWxyZWFkeSBpbnN0YWxsZWQuIiAtRm9yZWdyb3VuZENvbG9yIEdyZWVuCiAgZXhpdCAwCn0KCmZ1bmN0aW9uIFJlcGxhY2UtRXhhY3QoW3N0cmluZ10kb2xkLCBbc3RyaW5nXSRuZXcsIFtzdHJpbmddJGxhYmVsKSB7CiAgaWYgKC1ub3QgJHNjcmlwdDp0ZXh0LkNvbnRhaW5zKCRvbGQpKSB7CiAgICB0aHJvdyAiUGF0Y2ggcG9pbnQgbm90IGZvdW5kOiAkbGFiZWwuIFNvdXJjZSBjaGFuZ2VkOyBub3RoaW5nIHdhcyB3cml0dGVuLiIKICB9CiAgJHNjcmlwdDp0ZXh0ID0gJHNjcmlwdDp0ZXh0LlJlcGxhY2UoJG9sZCwgJG5ldykKICBXcml0ZS1Ib3N0ICJbUEFUQ0hdICRsYWJlbCIgLUZvcmVncm91bmRDb2xvciBDeWFuCn0KClJlcGxhY2UtRXhhY3QgQCcKLy8gR1ZTLUJPT0tJTkctUEFZTUVOVC1IT1RFTC1ERUxFVEUtVjMKJ0AgQCcKLy8gR1ZTLUJPT0tJTkctUEFZTUVOVC1IT1RFTC1ERUxFVEUtVjMKLy8gR1ZTLVBPU1QtU0FWRS1CSUxJTkdVQUwtU0hBUkUtVjQKJ0AgInZlcnNpb24gbWFya2VyIgoKUmVwbGFjZS1FeGFjdCBAJwogIGNvbnN0IFtzZWxlY3RlZEJvb2tpbmcsIHNldFNlbGVjdGVkQm9va2luZ10gPSB1c2VTdGF0ZTxzdHJpbmcgfCBudWxsPihudWxsKTsKICBjb25zdCBbdmlldywgc2V0Vmlld10gPSB1c2VTdGF0ZTwiY2FsZW5kYXIiIHwgImRpc3BhdGNoIiB8ICJndWlkZXMiIHwgImJvb2tpbmdzIj4oImNhbGVuZGFyIik7CidAIEAnCiAgY29uc3QgW3NlbGVjdGVkQm9va2luZywgc2V0U2VsZWN0ZWRCb29raW5nXSA9IHVzZVN0YXRlPHN0cmluZyB8IG51bGw+KG51bGwpOwogIGNvbnN0IFtzaGFyZUJvb2tpbmdJZCwgc2V0U2hhcmVCb29raW5nSWRdID0gdXNlU3RhdGU8c3RyaW5nIHwgbnVsbD4obnVsbCk7CiAgY29uc3QgW3ZpZXcsIHNldFZpZXddID0gdXNlU3RhdGU8ImNhbGVuZGFyIiB8ICJkaXNwYXRjaCIgfCAiZ3VpZGVzIiB8ICJib29raW5ncyI+KCJjYWxlbmRhciIpOwonQCAicG9zdC1zYXZlIHNoYXJlIHN0YXRlIgoKUmVwbGFjZS1FeGFjdCBAJwogIGZ1bmN0aW9uIHNoYXJlQnV0dG9ucyhiOiBCb29raW5nKSB7CiAgICBjb25zdCBzdHlsZSA9IHsgcGFkZGluZzogIjZweCA5cHgiLCBmb250U2l6ZTogMTIsIG1pbkhlaWdodDogMzIgfSBhcyBjb25zdDsKICAgIHJldHVybiA8ZGl2IHN0eWxlPXt7IGRpc3BsYXk6ICJmbGV4IiwgZmxleFdyYXA6ICJ3cmFwIiwgZ2FwOiA2LCBhbGlnbkl0ZW1zOiAiY2VudGVyIiwgbWFyZ2luVG9wOiAxMCB9fT4KICAgICAgPHNwYW4gY2xhc3NOYW1lPSJndm8tc21hbGwiPjxiPktow6FjaDo8L2I+PC9zcGFuPgogICAgICA8YnV0dG9uIHR5cGU9ImJ1dHRvbiIgY2xhc3NOYW1lPSJndmEtYnRuIHNlY29uZGFyeSIgc3R5bGU9e3N0eWxlfSBvbkNsaWNrPXsoKSA9PiBjb3B5VGV4dChjdXN0b21lckNvcHkoYiwgImVuIiksICJCb29raW5nIEVOIil9PkVOPC9idXR0b24+CiAgICAgIDxidXR0b24gdHlwZT0iYnV0dG9uIiBjbGFzc05hbWU9Imd2YS1idG4gc2Vjb25kYXJ5IiBzdHlsZT17c3R5bGV9IG9uQ2xpY2s9eygpID0+IGNvcHlUZXh0KGN1c3RvbWVyQ29weShiLCAicnUiKSwgIkJvb2tpbmcgUlUiKX0+UlU8L2J1dHRvbj4KICAgICAgPHNwYW4gY2xhc3NOYW1lPSJndm8tc21hbGwiIHN0eWxlPXt7IG1hcmdpbkxlZnQ6IDQgfX0+PGI+RHJpdmVyOjwvYj48L3NwYW4+CiAgICAgIDxidXR0b24gdHlwZT0iYnV0dG9uIiBjbGFzc05hbWU9Imd2YS1idG4gc2Vjb25kYXJ5IiBzdHlsZT17c3R5bGV9IG9uQ2xpY2s9eygpID0+IGNvcHlUZXh0KGRyaXZlckNvcHko
+  echo YiwgInZpIiksICJEcml2ZXIgVkkiKX0+Vkk8L2J1dHRvbj4KICAgICAgPGJ1dHRvbiB0eXBlPSJidXR0b24iIGNsYXNzTmFtZT0iZ3ZhLWJ0biBzZWNvbmRhcnkiIHN0eWxlPXtzdHlsZX0gb25DbGljaz17KCkgPT4gY29weVRleHQoZHJpdmVyQ29weShiLCAiZW4iKSwgIkRyaXZlciBFTiIpfT5FTjwvYnV0dG9uPgogICAgPC9kaXY+OwogIH0KJ0AgQCcKICBmdW5jdGlvbiBjdXN0b21lckJpbGluZ3VhbENvcHkoYjogQm9va2luZykgewogICAgcmV0dXJuIGAke2N1c3RvbWVyQ29weShiLCAiZW4iKX1cblxuLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG5cbiR7Y3VzdG9tZXJDb3B5KGIsICJydSIpfWA7CiAgfQogIGZ1bmN0aW9uIGRyaXZlckJpbGluZ3VhbENvcHkoYjogQm9va2luZykgewogICAgcmV0dXJuIGAke2RyaXZlckNvcHkoYiwgImVuIil9XG5cbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLVxuXG4ke2RyaXZlckNvcHkoYiwgInZpIil9YDsKICB9CiAgZnVuY3Rpb24gc2hhcmVCdXR0b25zKGI6IEJvb2tpbmcpIHsKICAgIGNvbnN0IHN0eWxlID0geyBwYWRkaW5nOiAiNnB4IDEwcHgiLCBmb250U2l6ZTogMTIsIG1pbkhlaWdodDogMzIgfSBhcyBjb25zdDsKICAgIHJldHVybiA8ZGl2IHN0eWxlPXt7IGRpc3BsYXk6ICJmbGV4IiwgZmxleFdyYXA6ICJ3cmFwIiwgZ2FwOiA4LCBhbGlnbkl0ZW1zOiAiY2VudGVyIiwgbWFyZ2luVG9wOiAxMCB9fT4KICAgICAgPGJ1dHRvbiB0eXBlPSJidXR0b24iIGNsYXNzTmFtZT0iZ3ZhLWJ0biBzZWNvbmRhcnkiIHN0eWxlPXtzdHlsZX0gb25DbGljaz17KCkgPT4gY29weVRleHQoY3VzdG9tZXJCaWxpbmd1YWxDb3B5KGIpLCAiQm9va2luZyBraMOhY2ggRU4gKyBSVSIpfT5LaMOhY2ggRU4gKyBSVTwvYnV0dG9uPgogICAgICA8YnV0dG9uIHR5cGU9ImJ1dHRvbiIgY2xhc3NOYW1lPSJndmEtYnRuIHNlY29uZGFyeSIgc3R5bGU9e3N0eWxlfSBvbkNsaWNrPXsoKSA9PiBjb3B5VGV4dChkcml2ZXJCaWxpbmd1YWxDb3B5KGIpLCAiRHJpdmVyIEVOICsgVkkiKX0+RHJpdmVyIEVOICsgVkk8L2J1dHRvbj4KICAgIDwvZGl2PjsKICB9CidAICJjb21iaW5lIGxhbmd1YWdlcyBpbnRvIG9uZSBjb3B5IgoKUmVwbGFjZS1FeGFjdCBAJwogICAgICBjb25zdCB7IGVycm9yOiBpbnNlcnRFcnJvciB9ID0gYXdhaXQgc3VwYWJhc2UuZnJvbSgiYm9va2luZ3MiKS5pbnNlcnQoewonQCBAJwogICAgICBjb25zdCB7IGRhdGE6IGNyZWF0ZWRCb29raW5nLCBlcnJvcjogaW5zZXJ0RXJyb3IgfSA9IGF3YWl0IHN1cGFiYXNlLmZyb20oImJvb2tpbmdzIikuaW5zZXJ0KHsKJ0AgImNhcHR1cmUgY3JlYXRlZCBib29raW5nIgoKUmVwbGFjZS1FeGFjdCBAJwogICAgICAgIGN1c3RvbV9pdGluZXJhcnk6IG1vZGUgPT09ICJjdXN0b20iID8gU3RyaW5nKHYuY3VzdG9tX2l0aW5lcmFyeSB8fCAiIikudHJpbSgpIHx8IG51bGwgOiBudWxsLAogICAgICB9KTsKICAgICAgaWYgKGluc2VydEVycm9yKSB0aHJvdyBpbnNlcnRFcnJvcjsKICAgICAgc2V0Rm9jdXNEYXRlKHYudG91cl9kYXRlIHx8IGZvY3VzRGF0ZSk7IHNldE1vZGFsKG51bGwpOyBzZXRWaWV3KCJkaXNwYXRjaCIpOwogICAgICBzZXRNZXNzYWdlKCLEkMOjIHThuqFvIGJvb2tpbmcuIEPDsyB0aOG7gyBjb3B5IHRow7RuZyB0aW4gS2jDoWNoIEVOL1JVIGhv4bq3YyBEcml2ZXIgVkkvRU4gbmdheSBiw6puIGTGsOG7m2kgYm9va2luZy4iKTsgYXdhaXQgbG9hZEFsbCgpOwonQCBAJwogICAgICAgIGN1c3RvbV9pdGluZXJhcnk6IG1vZGUgPT09ICJjdXN0b20iID8gU3RyaW5nKHYuY3VzdG9tX2l0aW5lcmFyeSB8fCAiIikudHJpbSgpIHx8IG51bGwgOiBudWxsLAogICAgICB9KS5zZWxlY3QoImlkIikuc2luZ2xlKCk7CiAgICAgIGlmIChpbnNlcnRFcnJvcikgdGhyb3cgaW5zZXJ0RXJyb3I7CiAgICAgIHNldEZvY3VzRGF0ZSh2LnRvdXJfZGF0ZSB8fCBmb2N1c0RhdGUpOyBzZXRNb2RhbChudWxsKTsgc2V0VmlldygiZGlzcGF0Y2giKTsKICAgICAgYXdhaXQgbG9hZEFsbCgpOwogICAgICBzZXRTaGFyZUJvb2tpbmdJZChjcmVhdGVkQm9va2luZy5pZCk7CiAgICAgIHNldE1lc3NhZ2UoIsSQw6MgbMawdSBib29raW5nIHRow6BuaCBjw7RuZy4iKTsKJ0AgIm9wZW4gYmlsaW5ndWFsIGNvcHkgcG9wdXAgYWZ0ZXIgc2F2ZSIKClJlcGxhY2UtRXhhY3QgQCcKICAgIHttb2RhbCA9PT0gImJvb2tpbmciICYmIDxCb29raW5nTW9kYWwgdG91cnM9e3RvdXJzfSBzYXZp
+  echo bmc9e3NhdmluZ30gb25DbG9zZT17KCkgPT4gc2V0TW9kYWwobnVsbCl9IG9uU3VibWl0PXtjcmVhdGVCb29raW5nfSAvPn0KCiAgICB7bW9kYWwgPT09ICJjb3N0IiAmJiBzZWxlY3RlZEJvb2tpbmcgJiYgaXNBZG1pbiAmJiA8Q29zdE1hbmFnZXJNb2RhbAonQCBAJwogICAge21vZGFsID09PSAiYm9va2luZyIgJiYgPEJvb2tpbmdNb2RhbCB0b3Vycz17dG91cnN9IHNhdmluZz17c2F2aW5nfSBvbkNsb3NlPXsoKSA9PiBzZXRNb2RhbChudWxsKX0gb25TdWJtaXQ9e2NyZWF0ZUJvb2tpbmd9IC8+fQoKICAgIHtzaGFyZUJvb2tpbmdJZCAmJiBib29raW5ncy5maW5kKChiKSA9PiBiLmlkID09PSBzaGFyZUJvb2tpbmdJZCkgJiYgKCgpID0+IHsKICAgICAgY29uc3QgYiA9IGJvb2tpbmdzLmZpbmQoKHgpID0+IHguaWQgPT09IHNoYXJlQm9va2luZ0lkKSE7CiAgICAgIGNvbnN0IGNvbnRhY3QgPSBjb250YWN0TWFwW2IuY29udGFjdF9pZCB8fCAiIl07CiAgICAgIHJldHVybiA8TW9kYWxGcmFtZSB0aXRsZT0iQm9va2luZyDEkcOjIGzGsHUg4oCUIENvcHkgbmdheSIgb25DbG9zZT17KCkgPT4gc2V0U2hhcmVCb29raW5nSWQobnVsbCl9PgogICAgICAgIDxkaXYgc3R5bGU9e3sgcGFkZGluZzogIjRweCAycHggOHB4IiB9fT4KICAgICAgICAgIDxkaXYgc3R5bGU9e3sgYmFja2dyb3VuZDogIiNmNmY4ZmIiLCBib3JkZXI6ICIxcHggc29saWQgI2U1ZTlmMCIsIGJvcmRlclJhZGl1czogMTIsIHBhZGRpbmc6IDE0LCBsaW5lSGVpZ2h0OiAxLjYgfX0+CiAgICAgICAgICAgIDxkaXY+PGI+e2IuYm9va2luZ19jb2RlIHx8ICJCb29raW5nIn08L2I+PC9kaXY+CiAgICAgICAgICAgIDxkaXY+PGI+e2Jvb2tpbmdOYW1lKGIpfTwvYj48L2Rpdj4KICAgICAgICAgICAgPGRpdj5LaMOhY2g6IHtjb250YWN0Py5mdWxsX25hbWUgfHwgIuKAlCJ9IMK3IHtiLnBheCA/PyBiLmFkdWx0cyArIGIuY2hpbGRyZW59IGtow6FjaDwvZGl2PgogICAgICAgICAgICA8ZGl2Pk5nw6B5OiB7Y3VzdG9tZXJEYXRlKGIudG91cl9kYXRlLCAidmktVk4iKX0gwrcgUGlja3VwOiB7dGltZVNob3J0KGIucGlja3VwX3RpbWUgfHwgYi5zdGFydF90aW1lKX08L2Rpdj4KICAgICAgICAgICAgPGRpdj5LaMOhY2ggc+G6oW46IHtiLmhvdGVsIHx8ICLigJQifTwvZGl2PgogICAgICAgICAgICB7Yi5ob3RlbF9hZGRyZXNzICYmIDxkaXY+xJDhu4thIGNo4buJOiB7Yi5ob3RlbF9hZGRyZXNzfTwvZGl2Pn0KICAgICAgICAgICAgPGRpdiBzdHlsZT17eyBtYXJnaW5Ub3A6IDYgfX0+PGI+VOG7lW5nOiB7bW9uZXkoYm9va2luZ1JldmVudWUoYikpfSDCtyBD4buNYzoge21vbmV5KGJvb2tpbmdEZXBvc2l0KGIpKX0gwrcgQ8OybiBs4bqhaToge21vbmV5KGJvb2tpbmdCYWxhbmNlKGIpKX08L2I+PC9kaXY+CiAgICAgICAgICA8L2Rpdj4KCiAgICAgICAgICA8ZGl2IHN0eWxlPXt7IGRpc3BsYXk6ICJncmlkIiwgZ3JpZFRlbXBsYXRlQ29sdW1uczogIjFmciAxZnIiLCBnYXA6IDEwLCBtYXJnaW5Ub3A6IDE0IH19PgogICAgICAgICAgICA8YnV0dG9uIHR5cGU9ImJ1dHRvbiIgY2xhc3NOYW1lPSJndmEtYnRuIiBvbkNsaWNrPXsoKSA9PiBjb3B5VGV4dChjdXN0b21lckJpbGluZ3VhbENvcHkoYiksICJCb29raW5nIGtow6FjaCBFTiArIFJVIil9PkNvcHkga2jDoWNoIEVOICsgUlU8L2J1dHRvbj4KICAgICAgICAgICAgPGJ1dHRvbiB0eXBlPSJidXR0b24iIGNsYXNzTmFtZT0iZ3ZhLWJ0biBzZWNvbmRhcnkiIG9uQ2xpY2s9eygpID0+IGNvcHlUZXh0KGRyaXZlckJpbGluZ3VhbENvcHkoYiksICJEcml2ZXIgRU4gKyBWSSIpfT5Db3B5IERyaXZlciBFTiArIFZJPC9idXR0b24+CiAgICAgICAgICA8L2Rpdj4KCiAgICAgICAgICA8ZGl2IHN0eWxlPXt7IGRpc3BsYXk6ICJmbGV4IiwganVzdGlmeUNvbnRlbnQ6ICJmbGV4LWVuZCIsIG1hcmdpblRvcDogMTYgfX0+CiAgICAgICAgICAgIDxidXR0b24gdHlwZT0iYnV0dG9uIiBjbGFzc05hbWU9Imd2YS1idG4gc2Vjb25kYXJ5IiBvbkNsaWNrPXsoKSA9PiBzZXRTaGFyZUJvb2tpbmdJZChudWxsKX0+xJDDs25nPC9idXR0b24+CiAgICAgICAgICA8L2Rpdj4KICAgICAgICA8L2Rpdj4KICAgICAgPC9Nb2RhbEZyYW1lPjsKICAgIH0pKCl9CgogICAge21vZGFsID09PSAiY29zdCIgJiYgc2VsZWN0ZWRCb29raW5nICYmIGlzQWRtaW4gJiYgPENvc3RNYW5hZ2VyTW9kYWwKJ0AgImJpbGluZ3VhbCBwb3N0LXNhdmUgcG9wdXAiCgpbSU8uRmlsZV06OldyaXRlQWxs
+  echo VGV4dCgkcGF0aCwgJHRleHQsICR1dGY4KQpXcml0ZS1Ib3N0ICJbT0tdIE9wZXJhdGlvbnNDZW50ZXIgYmlsaW5ndWFsIFY0IHBhdGNoZWQgc3VjY2Vzc2Z1bGx5LiIgLUZvcmVncm91bmRDb2xvciBHcmVlbgo=
+)
+certutil -f -decode "%PATCH_B64%" "%PATCH_PS1%" >nul
+if errorlevel 1 goto FAIL_WORKTREE
+powershell -NoProfile -ExecutionPolicy Bypass -File "%PATCH_PS1%"
+set "PATCH_RC=%ERRORLEVEL%"
+del /q "%PATCH_B64%" "%PATCH_PS1%" >nul 2>&1
+if not "%PATCH_RC%"=="0" goto FAIL_WORKTREE
+
+if exist "%PROJECT%\.env.local" copy /Y "%PROJECT%\.env.local" "%WORKTREE%\.env.local" >nul
+if exist "%PROJECT%\node_modules" (
+  echo [4/7] Dung node_modules hien tai...
+  cmd /c mklink /J "%WORKTREE%\node_modules" "%PROJECT%\node_modules" >nul 2>&1
+) else (
+  echo [4/7] Cai dependencies...
+  pushd "%WORKTREE%"
+  if exist package-lock.json (call npm ci) else (call npm install)
+  if errorlevel 1 (popd & goto FAIL_WORKTREE)
+  popd
+)
+
+echo [5/7] Production build check...
+pushd "%WORKTREE%"
+call npm run build
+if errorlevel 1 (
+  popd
+  echo [STOP] BUILD FAILED. Khong push production.
+  goto FAIL_WORKTREE
+)
+popd
+
+echo [6/7] Commit change...
+git -C "%WORKTREE%" add -- "components/admin-v5/OperationsCenter.tsx"
+git -C "%WORKTREE%" diff --cached --quiet
+if not errorlevel 1 goto CLEAN_SUCCESS
+git -C "%WORKTREE%" -c user.name="GoVietStay Installer" -c user.email="govietstay@gmail.com" commit -m "feat(operations): bilingual copy after booking save" -- "components/admin-v5/OperationsCenter.tsx"
+if errorlevel 1 goto FAIL_WORKTREE
+
+echo [7/7] Push main - Vercel auto deploy...
+git -C "%WORKTREE%" push origin HEAD:main
+if errorlevel 1 goto FAIL_WORKTREE
+
+:CLEAN_SUCCESS
+echo.
+echo ================================================================
+echo  SUCCESS - BILINGUAL COPY
+  echo ================================================================
+echo  Customer button copies EN + RU together.
+echo  Driver button copies EN + VI together.
+echo.
+git -C "%PROJECT%" worktree remove --force "%WORKTREE%" >nul 2>&1
+git -C "%PROJECT%" worktree prune >nul 2>&1
+pause
+exit /b 0
+
+:FAIL_WORKTREE
+echo.
+echo [STOP] Co loi. Khong push production.
+git -C "%PROJECT%" worktree remove --force "%WORKTREE%" >nul 2>&1
+git -C "%PROJECT%" worktree prune >nul 2>&1
+pause
+exit /b 1
+
+:FAIL
+echo.
+echo [STOP] Khong the chuan bi source. Khong push production.
+pause
+exit /b 1

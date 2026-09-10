@@ -1,0 +1,187 @@
+GoVietStay Partner Kit V4 - Safe GitHub Deploy
+Started: Mon 09/07/2026 18:26:13.79
+
+ M HUONG-DAN.txt
+ M components/admin-v5/PartnerTools.tsx
+?? AGARWOOD-DANANG-PAYLOAD-V2.zip
+?? AGARWOOD-DANANG-PAYLOAD-V3.zip
+?? AGARWOOD-DANANG-PAYLOAD.zip
+?? APPLY_PARTNER_KIT_V4.bat
+?? DEPLOY-AGARWOOD-DANANG-EN-CN-V1.bat
+?? DEPLOY-AGARWOOD-DANANG-EN-CN-V2.bat
+?? DEPLOY-AGARWOOD-DANANG-EN-CN-V3.bat
+?? DEPLOY_V4_SAFE_GITHUB.bat
+?? GOVIETSTAY-2-HELP-LANDING-PAGES-V1-CHECK.bat
+?? GOVIETSTAY-2-HELP-PAGES-V1-PUSH-PRODUCTION.bat
+?? GOVIETSTAY-DAVID-ENGLISH-BOOKING-PORTAL-V1.bat
+?? GOVIETSTAY-GROUP-TOUR-OPERATOR-PAYABLES-V1-DEPLOY.bat
+?? GOVIETSTAY-HELP-PAGES-RECOVER-DEPLOY-V2.bat
+?? GOVIETSTAY-ONE-CLICK-COMPLETE-FINALIZE-V1.bat
+?? GOVIETSTAY-OPERATIONS-DEPOSIT-COPY-BOOKING-DRIVER-V1.bat
+?? GOVIETSTAY-OPERATIONS-DEPOSIT-COPY-BOOKING-DRIVER-V2-FIX.bat
+?? GOVIETSTAY-OPERATIONS-FLOW-RBAC-V6.bat
+?? GOVIETSTAY-OPERATIONS-V3-DEPOSIT-HOTEL-DELETE.bat
+?? GOVIETSTAY-OPERATIONS-V4-BILINGUAL-COPY-AFTER-SAVE.bat
+?? GOVIETSTAY-OPERATOR-MOBILE-QUICK-ADD-V2.bat
+?? GOVIETSTAY-PHU-QUOC-10-TOURS-LANGUAGES-V1.bat
+?? GOVIETSTAY-PHU-QUOC-10-TOURS-LANGUAGES-V2-FIX.bat
+?? GOVIETSTAY-PHU-QUOC-10-TOURS-LANGUAGES-V3-PARSER-FIX.bat
+?? GOVIETSTAY-PHU-QUOC-10-TOURS-LANGUAGES-V4-UTF8-FIX.bat
+?? GOVIETSTAY-PHU-QUOC-10-TOURS-LANGUAGES-V5-CONTAINS-FIX.bat
+?? GOVIETSTAY-SALES-STAFF-AUTO-ONBOARDING-V3.bat
+?? GOVIETSTAY-STAFF-SALARY-COMMISSION-V2-FIX.bat
+?? GOVIETSTAY-STAFF-SALES-PAYROLL-V1-FIX5-TRACKED-STASH.bat
+?? GOVIETSTAY-STAFF-SALES-PAYROLL-V1-FIX6-GIT-ARGS.bat
+?? GOVIETSTAY-STAFF-SALES-PAYROLL-V1-FIX7-TOMMY-PATCH.bat
+?? GOVIETSTAY-STAFF-SALES-PAYROLL-V1-FIX8-TOLERANT-PATCH.bat
+?? GOVIETSTAY-STAFF-SALES-PAYROLL-V1-FIX9-DRYRUN-VALIDATED.bat
+?? GOVIETSTAY-VLAD-TOMMY-BOOKING-REQUEST-FLOW-V1.bat
+?? GVS-STAFF-SALES-PAYROLL-INSTALL.log
+?? GVS_PI_NETWORK_FIX_V2.log
+?? GVS_PI_NETWORK_V3_DEPLOY.log
+?? GVS_PI_NETWORK_VIETNAM_DEPLOY.log
+?? GVS_PI_V5_DEPLOY.log
+?? GVS_PI_V6_DEPLOY.log
+?? GVS_V4_DEPLOY_LOG.txt
+?? HUONG-DAN-V2.txt
+?? HUONG-DAN-V3.txt
+?? INSTALL_AR_CORE.cmd
+?? INSTALL_AR_V4_CORE.cmd
+?? INSTALL_AR_V5_CORE.cmd
+?? INSTALL_GOVIETSTAY_AR.bat
+?? Payroll
+?? README_V4.txt
+?? README_VIETNAMESE.txt
+?? RUN_INSTALL.bat
+?? Sales
+?? Vercel
+?? _govietstay_backups/
+?? deploy-ar-fix.log
+?? install-ar-v4.log
+?? install-ar-v5.log
+?? install-ar.log
+?? payload/
+?? public/pi-network/hero-phu-quoc.jpg
+?? v4-patch/
+origin	https://github.com/govietstay-art/govietstay-main-website.git (fetch)
+origin	https://github.com/govietstay-art/govietstay-main-website.git (push)
+----- npm run build ----- 
+
+> govietstay-main-website@0.1.0 build
+> next build
+
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\ADMIN\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * C:\Users\ADMIN\Documents\GitHub\govietstay-main-website\package-lock.json
+
+▲ Next.js 16.2.9 (Turbopack)
+- Environments: .env.local
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 15.5s
+  Running TypeScript ...
+  Finished TypeScript in 21.6s ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/318) ...
+  Generating static pages using 3 workers (79/318) 
+  Generating static pages using 3 workers (158/318) 
+  Generating static pages using 3 workers (238/318) 
+✓ Generating static pages using 3 workers (318/318) in 1549ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /
+├ ƒ /_not-found
+├ ƒ /admin
+├ ƒ /admin/operations
+├ ƒ /api/admin/search-console/sync
+├ ƒ /api/dao
+├ ƒ /api/happy-travelers
+├ ƒ /api/partner/application
+├ ƒ /api/partner/booking
+├ ƒ /api/qr
+├ ƒ /api/track
+├ ƒ /ar
+├ ƒ /ar/da-nang-hoi-an-private-tour
+├ ƒ /ar/da-nang-hoi-an-tours
+├ ƒ /ar/halal-travel-vietnam
+├ ƒ /ar/phu-quoc-family-tour
+├ ƒ /ar/phu-quoc-tours
+├ ƒ /ar/vietnam-11-day-itinerary
+├ ƒ /ar/vietnam-family-private-tour
+├ ƒ /cn
+├ ƒ /cn/[slug]
+├ ƒ /cn/agarwood-da-nang
+├ ƒ /en/David
+├ ƒ /il
+├ ƒ /il/[slug]
+├ ƒ /in
+├ ƒ /in/[slug]
+├ ƒ /it
+├ ƒ /it/[slug]
+├ ƒ /ko
+├ ƒ /ko/[slug]
+├ ƒ /ko/cham-island-tour
+├ ƒ /kz
+├ ƒ /kz/[slug]
+├ ƒ /local-food
+├ ƒ /partner
+├ ƒ /ph
+├ ƒ /ph/[slug]
+├ ƒ /pi-network-vietnam
+├ ○ /robots.txt
+├ ƒ /ru
+├ ƒ /ru/[landing]
+├ ƒ /ru/aktualno
+├ ƒ /ru/aktualno/[slug]
+├ ○ /ru/aktualno/sitemap.xml
+├ ƒ /ru/local-point
+├ ƒ /ru/partner
+├ ƒ /ru/partner/cham-island
+├ ƒ /ru/Tommy
+├ ƒ /ru/tours/[slug]
+├ ƒ /ru/tours/ba-na-hills
+├ ƒ /ru/tours/hoi-an-coconut-forest
+├ ƒ /ru/tours/phu-quoc
+├ ƒ /ru/Vlad
+├ ƒ /secret
+├ ƒ /secret/[slug]
+├ ○ /sitemap.xml
+├ ƒ /tours/ba-na-hills
+├ ƒ /tours/hoi-an-coconut-forest
+├ ƒ /tours/phu-quoc
+├ ƒ /tr
+├ ƒ /tr/[slug]
+├ ƒ /travel
+├ ƒ /travel/[slug]
+├ ƒ /travel/agarwood-da-nang
+├ ƒ /travel/best-time-to-visit-phu-quoc
+├ ƒ /travel/phu-quoc-3-islands-vs-4-islands
+├ ƒ /travel/phu-quoc-airport-transfer-private-car
+├ ƒ /travel/phu-quoc-itinerary-3d2n-4d3n
+├ ƒ /travel/phu-quoc-travel-guide
+├ ƒ /travel/phu-quoc-with-family
+├ ƒ /travel/vietnam-local-help
+├ ƒ /travel/vietnam-tet-travel-guide
+├ ƒ /tw
+├ ƒ /tw/[slug]
+├ ƒ /vi
+├ ƒ /vi/[slug]
+└ ƒ /visa
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+BUILD OK.
+warning: in the working copy of 'components/admin-v5/PartnerTools.tsx', LF will be replaced by CRLF the next time Git touches it
+[main 32ff543] feat(partner): universal partner kit v4
+ 1 file changed, 384 insertions(+), 406 deletions(-)
+To https://github.com/govietstay-art/govietstay-main-website.git
+   cefaf54..32ff543  main -> main
+SUCCESS: pushed to GitHub main.

@@ -1,0 +1,173 @@
+GoVietStay Arabic V4 started at Thu 09/03/2026 11:09:57.22 
+Backup: _govietstay_backups\AR_V4_20260903_110957 
+app\ar\arabic.css
+app\ar\layout.tsx
+app\ar\page.tsx
+app\ar\da-nang-hoi-an-private-tour\page.tsx
+app\ar\halal-travel-vietnam\page.tsx
+app\ar\phu-quoc-family-tour\page.tsx
+app\ar\vietnam-11-day-itinerary\page.tsx
+app\ar\vietnam-family-private-tour\page.tsx
+app\ar\_components\ArabicLandingPage.tsx
+9 File(s) copied
+public\ar-assets\bana.jpg
+public\ar-assets\bana.webp
+public\ar-assets\hero-hoian.jpg
+public\ar-assets\hero-hoian.webp
+public\ar-assets\logo.png
+public\ar-assets\logo.webp
+public\ar-assets\phuquoc.jpg
+public\ar-assets\phuquoc.webp
+8 File(s) copied
+payload\app\ar\arabic.css
+payload\app\ar\layout.tsx
+payload\app\ar\page.tsx
+payload\app\ar\da-nang-hoi-an-private-tour\page.tsx
+payload\app\ar\da-nang-hoi-an-tours\page.tsx
+payload\app\ar\halal-travel-vietnam\page.tsx
+payload\app\ar\phu-quoc-family-tour\page.tsx
+payload\app\ar\phu-quoc-tours\page.tsx
+payload\app\ar\vietnam-11-day-itinerary\page.tsx
+payload\app\ar\vietnam-family-private-tour\page.tsx
+payload\app\ar\_components\ArabicLandingPage.tsx
+payload\app\ar\_components\ArabicTourCatalogPage.tsx
+12 File(s) copied
+payload\public\ar-assets\bana.jpg
+payload\public\ar-assets\bana.webp
+payload\public\ar-assets\hero-hoian.jpg
+payload\public\ar-assets\hero-hoian.webp
+payload\public\ar-assets\logo.png
+payload\public\ar-assets\logo.webp
+payload\public\ar-assets\phuquoc.jpg
+payload\public\ar-assets\phuquoc.webp
+8 File(s) copied
+govietstay-main-website@0.1.0 C:\Users\ADMIN\Documents\GitHub\govietstay-main-website
+`-- lucide-react@1.30.0
+
+npm run build 
+
+> govietstay-main-website@0.1.0 build
+> next build
+
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\ADMIN\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * C:\Users\ADMIN\Documents\GitHub\govietstay-main-website\package-lock.json
+
+▲ Next.js 16.2.9 (Turbopack)
+- Environments: .env.local
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 19.0s
+  Running TypeScript ...
+  Finished TypeScript in 20.8s ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/312) ...
+  Generating static pages using 3 workers (78/312) 
+  Generating static pages using 3 workers (156/312) 
+  Generating static pages using 3 workers (234/312) 
+✓ Generating static pages using 3 workers (312/312) in 1487ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /
+├ ƒ /_not-found
+├ ƒ /admin
+├ ƒ /admin/operations
+├ ƒ /api/admin/search-console/sync
+├ ƒ /api/dao
+├ ƒ /api/happy-travelers
+├ ƒ /api/partner/application
+├ ƒ /api/partner/booking
+├ ƒ /api/qr
+├ ƒ /api/track
+├ ƒ /ar
+├ ƒ /ar/da-nang-hoi-an-private-tour
+├ ƒ /ar/da-nang-hoi-an-tours
+├ ƒ /ar/halal-travel-vietnam
+├ ƒ /ar/phu-quoc-family-tour
+├ ƒ /ar/phu-quoc-tours
+├ ƒ /ar/vietnam-11-day-itinerary
+├ ƒ /ar/vietnam-family-private-tour
+├ ƒ /cn
+├ ƒ /cn/[slug]
+├ ƒ /il
+├ ƒ /il/[slug]
+├ ƒ /in
+├ ƒ /in/[slug]
+├ ƒ /it
+├ ƒ /it/[slug]
+├ ƒ /ko
+├ ƒ /ko/[slug]
+├ ƒ /ko/cham-island-tour
+├ ƒ /kz
+├ ƒ /kz/[slug]
+├ ƒ /local-food
+├ ƒ /partner
+├ ƒ /ph
+├ ƒ /ph/[slug]
+├ ○ /robots.txt
+├ ƒ /ru
+├ ƒ /ru/[landing]
+├ ƒ /ru/aktualno
+├ ƒ /ru/aktualno/[slug]
+├ ○ /ru/aktualno/sitemap.xml
+├ ƒ /ru/local-point
+├ ƒ /ru/partner
+├ ƒ /ru/partner/cham-island
+├ ƒ /ru/Tommy
+├ ƒ /ru/tours/[slug]
+├ ƒ /ru/tours/ba-na-hills
+├ ƒ /ru/tours/hoi-an-coconut-forest
+├ ƒ /ru/tours/phu-quoc
+├ ƒ /ru/Vlad
+├ ƒ /secret
+├ ƒ /secret/[slug]
+├ ○ /sitemap.xml
+├ ƒ /tours/ba-na-hills
+├ ƒ /tours/hoi-an-coconut-forest
+├ ƒ /tours/phu-quoc
+├ ƒ /tr
+├ ƒ /tr/[slug]
+├ ƒ /travel
+├ ƒ /travel/[slug]
+├ ƒ /travel/best-time-to-visit-phu-quoc
+├ ƒ /travel/phu-quoc-3-islands-vs-4-islands
+├ ƒ /travel/phu-quoc-airport-transfer-private-car
+├ ƒ /travel/phu-quoc-itinerary-3d2n-4d3n
+├ ƒ /travel/phu-quoc-travel-guide
+├ ƒ /travel/phu-quoc-with-family
+├ ƒ /tw
+├ ƒ /tw/[slug]
+├ ƒ /vi
+├ ƒ /vi/[slug]
+└ ƒ /visa
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+[SUCCESS] Build passed at Thu 09/03/2026 11:10:58.45 
+warning: in the working copy of 'app/ar/_components/ArabicLandingPage.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/ar/arabic.css', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/ar/da-nang-hoi-an-private-tour/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/ar/halal-travel-vietnam/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/ar/layout.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/ar/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/ar/phu-quoc-family-tour/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/ar/vietnam-11-day-itinerary/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/ar/vietnam-family-private-tour/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/ar/_components/ArabicTourCatalogPage.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/ar/da-nang-hoi-an-tours/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/ar/phu-quoc-tours/page.tsx', LF will be replaced by CRLF the next time Git touches it
+[main 72fb556] Upgrade Arabic hub V4 with seven landing pages
+ 11 files changed, 783 insertions(+), 106 deletions(-)
+ create mode 100644 app/ar/_components/ArabicTourCatalogPage.tsx
+ create mode 100644 app/ar/da-nang-hoi-an-tours/page.tsx
+ create mode 100644 app/ar/phu-quoc-tours/page.tsx
+To https://github.com/govietstay-art/govietstay-main-website.git
+   410188a..72fb556  main -> main

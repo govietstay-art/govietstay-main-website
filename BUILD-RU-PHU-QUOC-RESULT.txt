@@ -1,0 +1,117 @@
+
+> govietstay-main-website@0.1.0 build
+> next build
+
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\ADMIN\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * C:\Users\ADMIN\Documents\GitHub\govietstay-main-website\package-lock.json
+
+▲ Next.js 16.2.9 (Turbopack)
+- Environments: .env.local
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 18.7s
+  Running TypeScript ...
+  Finished TypeScript in 27.4s ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/322) ...
+  Generating static pages using 3 workers (80/322) 
+  Generating static pages using 3 workers (160/322) 
+  Generating static pages using 3 workers (241/322) 
+✓ Generating static pages using 3 workers (322/322) in 1520ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /
+├ ƒ /_not-found
+├ ƒ /admin
+├ ƒ /admin/operations
+├ ƒ /admin/payments
+├ ƒ /api/admin/search-console/sync
+├ ƒ /api/dao
+├ ƒ /api/happy-travelers
+├ ƒ /api/partner/application
+├ ƒ /api/partner/booking
+├ ƒ /api/qr
+├ ƒ /api/track
+├ ƒ /ar
+├ ƒ /ar/da-nang-hoi-an-private-tour
+├ ƒ /ar/da-nang-hoi-an-tours
+├ ƒ /ar/halal-travel-vietnam
+├ ƒ /ar/phu-quoc-family-tour
+├ ƒ /ar/phu-quoc-tours
+├ ƒ /ar/vietnam-11-day-itinerary
+├ ƒ /ar/vietnam-family-private-tour
+├ ƒ /cn
+├ ƒ /cn/[slug]
+├ ƒ /cn/agarwood-da-nang
+├ ƒ /en/cruise-port-shore-excursions
+├ ƒ /en/David
+├ ƒ /il
+├ ƒ /il/[slug]
+├ ƒ /in
+├ ƒ /in/[slug]
+├ ƒ /it
+├ ƒ /it/[slug]
+├ ƒ /ko
+├ ƒ /ko/[slug]
+├ ƒ /ko/cham-island-tour
+├ ƒ /kz
+├ ƒ /kz/[slug]
+├ ƒ /local-food
+├ ƒ /partner
+├ ƒ /pay/[token]
+├ ƒ /ph
+├ ƒ /ph/[slug]
+├ ƒ /pi-network-vietnam
+├ ○ /robots.txt
+├ ƒ /ru
+├ ƒ /ru/[landing]
+├ ƒ /ru/aktualno
+├ ƒ /ru/aktualno/[slug]
+├ ○ /ru/aktualno/sitemap.xml
+├ ƒ /ru/kruiznye-ekskursii-chan-may-tien-sa
+├ ƒ /ru/local-point
+├ ƒ /ru/partner
+├ ƒ /ru/partner/cham-island
+├ ƒ /ru/phu-quoc-help
+├ ƒ /ru/Tommy
+├ ƒ /ru/tours/[slug]
+├ ƒ /ru/tours/ba-na-hills
+├ ƒ /ru/tours/hoi-an-coconut-forest
+├ ƒ /ru/tours/phu-quoc
+├ ƒ /ru/Vlad
+├ ƒ /secret
+├ ƒ /secret/[slug]
+├ ○ /sitemap.xml
+├ ƒ /tours/ba-na-hills
+├ ƒ /tours/hoi-an-coconut-forest
+├ ƒ /tours/phu-quoc
+├ ƒ /tr
+├ ƒ /tr/[slug]
+├ ƒ /travel
+├ ƒ /travel/[slug]
+├ ƒ /travel/agarwood-da-nang
+├ ƒ /travel/best-time-to-visit-phu-quoc
+├ ƒ /travel/phu-quoc-3-islands-vs-4-islands
+├ ƒ /travel/phu-quoc-airport-transfer-private-car
+├ ƒ /travel/phu-quoc-itinerary-3d2n-4d3n
+├ ƒ /travel/phu-quoc-travel-guide
+├ ƒ /travel/phu-quoc-with-family
+├ ƒ /travel/vietnam-local-help
+├ ƒ /travel/vietnam-tet-travel-guide
+├ ƒ /tw
+├ ƒ /tw/[slug]
+├ ƒ /vi
+├ ƒ /vi/[slug]
+└ ƒ /visa
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

@@ -1,0 +1,28 @@
+﻿GoVietStay Agarwood Da Nang – DEPLOY V3
+
+Lỗi V2:
+ROBOCOPY đọc sai destination vì đường dẫn TARGET có dấu backslash ở cuối:
+  C:\...\govietstay-main-website\
+khi đặt trong dấu ngoặc kép, Windows/robocopy nuốt luôn /E /R /W vào destination.
+
+V3 sửa bằng 2 lớp:
+1) Chuẩn hóa TARGET qua pushd + %CD% để bỏ backslash cuối.
+2) Khi copy, pushd thẳng vào website và dùng destination ".".
+
+Cách chạy:
+1. Đóng cửa sổ V2.
+2. KHÔNG cần xóa file nào trong website.
+3. Giải nén bộ V3.
+4. Copy 2 file sau vào thư mục gốc govietstay-main-website:
+   - DEPLOY-AGARWOOD-DANANG-EN-CN-V3.bat
+   - AGARWOOD-DANANG-PAYLOAD-V3.zip
+5. Double-click file .bat.
+
+Trang:
+EN https://www.govietstay.com/travel/agarwood-da-nang
+CN https://www.govietstay.com/cn/agarwood-da-nang
+
+An toàn:
+- Build fail: không commit, không push.
+- Có staged file cũ: không auto commit.
+- File trùng: backup trước khi ghi đè.

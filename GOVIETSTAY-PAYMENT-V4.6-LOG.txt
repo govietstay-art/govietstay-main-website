@@ -1,0 +1,95 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20260907234311
+Username: DESKTOP-QL3GLOA\ADMIN
+RunAs User: DESKTOP-QL3GLOA\ADMIN
+Configuration Name: 
+Machine: DESKTOP-QL3GLOA (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\ADMIN\AppData\Local\Temp\gvs_payment_v46_32202_2352.ps1
+Process ID: 16416
+PSVersion: 5.1.26100.9168
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9168
+BuildVersion: 10.0.26100.9168
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Project: C:/Users/ADMIN/Documents/GitHub/govietstay-main-website
+Log:     C:\Users\ADMIN\Documents\GitHub\govietstay-main-website\GOVIETSTAY-PAYMENT-V4.6-LOG.txt
+Temp:    C:\Users\ADMIN\AppData\Local\Temp\gvs_payment_v46_e504cd8eac3a4e89b4f45daf0e5a04aa
+
+[1/8 FETCH] git -C C:/Users/ADMIN/Documents/GitHub/govietstay-main-website fetch origin main
+
+[2/8 WORKTREE] git -C C:/Users/ADMIN/Documents/GitHub/govietstay-main-website worktree add --detach C:\Users\ADMIN\AppData\Local\Temp\gvs_payment_v46_e504cd8eac3a4e89b4f45daf0e5a04aa origin/main
+
+[3/8 PATCH] Creating Payment V4.2 frontend...
+[INFO] UI wording patches are warning-only; accounting/data patches remain mandatory.
+[INFO] UTF-8 BOM enabled for Windows PowerShell 5.1 Unicode patching.
+[WRITE] C:\Users\ADMIN\AppData\Local\Temp\gvs_payment_v46_e504cd8eac3a4e89b4f45daf0e5a04aa\components\admin-v5\PaymentCenter.tsx
+[WRITE] C:\Users\ADMIN\AppData\Local\Temp\gvs_payment_v46_e504cd8eac3a4e89b4f45daf0e5a04aa\components\admin-v5\payment-v4.css
+[WRITE] C:\Users\ADMIN\AppData\Local\Temp\gvs_payment_v46_e504cd8eac3a4e89b4f45daf0e5a04aa\app\admin\payments\page.tsx
+[WRITE] C:\Users\ADMIN\AppData\Local\Temp\gvs_payment_v46_e504cd8eac3a4e89b4f45daf0e5a04aa\app\pay\[token]\page.tsx
+[PATCH] V4 marker
+[PATCH] BookingFinancial type
+[PATCH] financial state
+[PATCH] financial map
+[PATCH] load booking financials
+[PATCH] save booking financials
+[PATCH] Deposit Required vs Actual Received
+[PATCH] RU payment copy
+[PATCH] EN payment copy
+[PATCH] Payment button on every booking
+[PATCH] Payment Center navigation
+[PATCH] mobile Actual Received
+[PATCH] admin finance Actual Received
+[PATCH] staff finance Actual Received
+[PATCH] share modal Actual Received
+[PATCH] new booking deposit semantics
+[PATCH] new booking never fakes received payment
+[PATCH] new booking labels
+[PATCH] Quick Edit cannot fake payment status
+[PATCH] Quick Edit receives Actual Received
+[PATCH] Quick Edit received prop
+[PATCH] Quick Edit real balance
+[PATCH] delete rule uses real money
+[OK] OperationsCenter upgraded to Payment V4.2.
+
+[4/8 DEPENDENCIES] Preparing node_modules...
+[OK] Reused local node_modules.
+
+[5/8 BUILD] Production build check. Nothing is pushed unless this passes.
+[BUILD] C:\Program Files\nodejs\npm.cmd run build
+
+
+[6/8 STAGE] Staging Payment V4.2 only...
+[GIT ADD] git -C C:\Users\ADMIN\AppData\Local\Temp\gvs_payment_v46_e504cd8eac3a4e89b4f45daf0e5a04aa add -- components/admin-v5/OperationsCenter.tsx components/admin-v5/PaymentCenter.tsx components/admin-v5/payment-v4.css app/admin/payments/page.tsx app/pay/[token]/page.tsx
+
+
+[7/8 COMMIT] Creating commit...
+[COMMIT] git -C C:\Users\ADMIN\AppData\Local\Temp\gvs_payment_v46_e504cd8eac3a4e89b4f45daf0e5a04aa -c user.name=GoVietStay Installer -c user.email=govietstay@gmail.com commit -m feat(payments): connect Booking Payment V4.6 to Operations
+
+[8/8 PUSH] Pushing main. Vercel auto-deploys after this.
+[PUSH] git -C C:\Users\ADMIN\AppData\Local\Temp\gvs_payment_v46_e504cd8eac3a4e89b4f45daf0e5a04aa push origin HEAD:main
+
+
+==========================================================================
+  SUCCESS - Booking Payment V4.6 installed
+==========================================================================
+
+Check after Vercel finishes deploying:
+  https://www.govietstay.com/admin/operations
+  https://www.govietstay.com/admin/payments
+
+Booking Master now means:
+  Deposit Required = amount requested as deposit
+  Actual Received  = money actually received
+  Balance          = Total - Actual Received
+  Waive/Exception  = confirmed exception, NOT fake payment
+
+Log saved at: C:\Users\ADMIN\Documents\GitHub\govietstay-main-website\GOVIETSTAY-PAYMENT-V4.6-LOG.txt
+**********************
+Windows PowerShell transcript end
+End time: 20260907234432
+**********************

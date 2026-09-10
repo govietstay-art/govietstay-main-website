@@ -1,35 +1,31 @@
-GOVIETSTAY LOCAL POINT - BO CAI TIENG NGA DA SUA LOI VERCEL
-===========================================================
+﻿GoVietStay Agarwood Da Nang – DEPLOY V1
+==========================================
 
-NEU ANH DA CAI BAN CU VA VERCEL DANG BAO LOI:
+Mục tiêu:
+- English: https://www.govietstay.com/travel/agarwood-da-nang
+- Chinese: https://www.govietstay.com/cn/agarwood-da-nang
 
-1. Giai nen file ZIP nay.
-2. Copy 3 file trong thu muc bo cai vao THU MUC GOC website
-   (noi co package.json):
-     - SUA-LOI-DEPLOY-NGAY.bat
-     - CAI-DAT-LOCAL-POINT.bat
-     - LOCAL-POINT-PAYLOAD.zip
-3. Bam dup SUA-LOI-DEPLOY-NGAY.bat.
-4. Cho den khi man hinh bao DA SUA LOI XONG.
-5. Chay:
-     git add -A
-     git commit -m "Fix Local Point deployment"
-     git push origin main
+Logo:
+- Trang dùng trực tiếp logo official đang có trên website:
+  public/govietstay-logo.jpg
 
-NEU CHUA TUNG CAI LOCAL POINT:
+Cách chạy:
+1. Giải nén ZIP.
+2. Copy 2 file:
+   - DEPLOY-AGARWOOD-DANANG-EN-CN-V1.bat
+   - AGARWOOD-DANANG-PAYLOAD.zip
+   vào thư mục gốc govietstay-main-website (nơi có package.json).
+3. Double-click DEPLOY-AGARWOOD-DANANG-EN-CN-V1.bat.
+4. File .bat sẽ:
+   - backup file cũ nếu có,
+   - cài 2 landing page,
+   - copy bảng giá,
+   - npm run build toàn bộ website,
+   - chỉ stage các file Agarwood,
+   - commit,
+   - git push origin main,
+   - Vercel tự deploy.
 
-1. Copy 3 file tren vao thu muc goc website.
-2. Bam dup CAI-DAT-LOCAL-POINT.bat.
-3. Chay 3 lenh Git duoc hien tren man hinh.
-
-DUONG DAN SAU KHI DEPLOY:
-https://GoVietStay.com/ru/local-point
-
-BAN NAY DA SUA 2 NGUYEN NHAN:
-- Ma nguon cai dat duoc nen trong LOCAL-POINT-PAYLOAD.zip, nen Vercel
-  khong con quet nham ban sao tam _LOCAL_POINT_FILES.
-- Hai thu vien lucide-react va @svg-maps/vietnam luon duoc ghi vao
-  package.json va package-lock.json truoc khi deploy.
-
-Bo sua loi chi xoa dung thu muc tam _LOCAL_POINT_FILES cua bo cai cu.
-Trang that trong components, app va public duoc giu nguyen.
+An toàn:
+- Nếu build lỗi: KHÔNG commit / KHÔNG push.
+- Nếu có file đã stage từ trước: KHÔNG tự commit để tránh trộn thay đổi khác.

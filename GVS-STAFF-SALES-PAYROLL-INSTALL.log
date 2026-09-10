@@ -1,0 +1,65 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20260904202215
+Username: DESKTOP-QL3GLOA\ADMIN
+RunAs User: DESKTOP-QL3GLOA\ADMIN
+Configuration Name: 
+Machine: DESKTOP-QL3GLOA (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\ADMIN\AppData\Local\Temp\gvs_staff_payroll_fix4.ps1 -Root C:\Users\ADMIN\Documents\GitHub\govietstay-main-website\.
+Process ID: 9376
+PSVersion: 5.1.26100.9168
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9168
+BuildVersion: 10.0.26100.9168
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+===============================================================
+ GOVIETSTAY - STAFF SALES + PAYROLL V1 FIX4
+ Auto-stash local changes + keep-open + safe restore
+===============================================================
+Root: C:\Users\ADMIN\Documents\GitHub\govietstay-main-website
+Log : C:\Users\ADMIN\Documents\GitHub\govietstay-main-website\GVS-STAFF-SALES-PAYROLL-INSTALL.log
+
+=== Kiem tra Git ===
+
+=== Bao ve thay doi local hien tai ===
+Repo dang co thay doi local. FIX4 se TU DONG STASH de khong ghi de.
+   M components/admin-v5/AdminV5.tsx
+   M components/admin-v5/FinancePL.tsx
+  ?? BACKUP-PARTNER-PORTAL-V2-1-FULL-I18N-20260903-113908/
+  ?? BACKUP-PARTNER-PORTAL-V2-20260903-111415/
+  ?? BACKUP-PARTNER-PORTAL-V2-FIX-20260903-111751/
+  ?? GOVIETSTAY-ADMIN-FINANCE-PL-V1-DEPLOY.bat
+  ?? GOVIETSTAY-ADMIN-FINANCE-PL-V1-FIX1-DEPLOY.bat
+  ?? GOVIETSTAY-STAFF-SALES-PAYROLL-V1-DEPLOY.bat
+  ?? GOVIETSTAY-STAFF-SALES-PAYROLL-V1-FIX2-KEEP-OPEN.bat
+  ?? GOVIETSTAY-STAFF-SALES-PAYROLL-V1-FIX3-ROOTPATH.bat
+  ?? GOVIETSTAY-STAFF-SALES-PAYROLL-V1-FIX4-AUTO-STASH.bat
+  ?? GOVIETSTAY_ARABIC_FINAL_ONE_CLICK.bat
+  ?? GOVIETSTAY_ARABIC_V4_7_PAGES_BUILD_ONE_CLICK.bat
+  ?? GOVIETSTAY_ARABIC_V5_OFFICIAL_IMAGES_BUILD_ONE_CLICK.bat
+  ?? GOVIETSTAY_AR_DEPLOY_FIX_ONE_CLICK.bat
+  ?? GOVIETSTAY_PARTNER_PORTAL_V2_1_FULL_I18N_ONE_CLICK.bat
+  ?? GOVIETSTAY_PARTNER_PORTAL_V2_4LANG_MOBILE_ONE_CLICK.bat
+  ?? GOVIETSTAY_PARTNER_PORTAL_V2_FIX_BUILD_ONE_CLICK.bat
+  ?? GVS-STAFF-SALES-PAYROLL-INSTALL.log
+  ?? INSTALL_AR_CORE.cmd
+  ?? INSTALL_AR_V4_CORE.cmd
+  ?? INSTALL_AR_V5_CORE.cmd
+  ?? INSTALL_GOVIETSTAY_AR.bat
+  ?? Payroll
+  ?? README_VIETNAMESE.txt
+  ?? RUN_INSTALL.bat
+  ?? Vercel
+  ?? _govietstay_backups/
+  ?? components/admin-v5/StaffSalesTeam.tsx
+  ?? components/admin-v5/staff-sales-team.css
+  ?? deploy-ar-fix.log
+  ?? install-ar-v4.log
+  ?? install-ar-v5.log
+  ?? install-ar.log
+  ?? lib/staffBookingClient.ts
+  ?? payload/

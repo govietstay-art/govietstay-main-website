@@ -1,0 +1,24 @@
+﻿GoVietStay Agarwood Da Nang – DEPLOY V2
+
+V1 đã dừng ở bước xác minh file sau copy trên một số máy Windows.
+V2 thay phần copy bằng ROBOCOPY và xác minh bằng PowerShell Select-String.
+
+Cách chạy:
+1) KHÔNG cần xóa gì trong website.
+2) Giải nén bộ V2.
+3) Copy 2 file vào thư mục gốc govietstay-main-website:
+   - DEPLOY-AGARWOOD-DANANG-EN-CN-V2.bat
+   - AGARWOOD-DANANG-PAYLOAD-V2.zip
+4) Double-click file .bat.
+5) Nếu V1 đã tạo file dở dang, V2 sẽ backup và ghi đè đúng.
+
+Trang sau khi deploy:
+EN https://www.govietstay.com/travel/agarwood-da-nang
+CN https://www.govietstay.com/cn/agarwood-da-nang
+
+Logo:
+Dùng asset official có sẵn: public/govietstay-logo.jpg
+
+An toàn:
+- Build lỗi => không commit, không push.
+- Có file staged trước => build xong nhưng không auto commit.

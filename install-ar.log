@@ -1,0 +1,154 @@
+GoVietStay Arabic installer started at Thu 09/03/2026 10:22:23.96 
+[1/5] Backup: _govietstay_backups\AR_20260903_102224 
+app\ar\arabic.css
+app\ar\layout.tsx
+app\ar\page.tsx
+app\ar\da-nang-hoi-an-private-tour\page.tsx
+app\ar\halal-travel-vietnam\page.tsx
+app\ar\phu-quoc-family-tour\page.tsx
+app\ar\vietnam-11-day-itinerary\page.tsx
+app\ar\vietnam-family-private-tour\page.tsx
+app\ar\_components\ArabicLandingPage.tsx
+9 File(s) copied
+public\ar-assets\bana.jpg
+public\ar-assets\hero-hoian.jpg
+public\ar-assets\logo.png
+public\ar-assets\phuquoc.jpg
+4 File(s) copied
+[2/5] Copying files. 
+payload\app\ar\arabic.css
+payload\app\ar\layout.tsx
+payload\app\ar\page.tsx
+payload\app\ar\da-nang-hoi-an-private-tour\page.tsx
+payload\app\ar\halal-travel-vietnam\page.tsx
+payload\app\ar\phu-quoc-family-tour\page.tsx
+payload\app\ar\vietnam-11-day-itinerary\page.tsx
+payload\app\ar\vietnam-family-private-tour\page.tsx
+payload\app\ar\_components\ArabicLandingPage.tsx
+9 File(s) copied
+payload\public\ar-assets\bana.jpg
+payload\public\ar-assets\bana.webp
+payload\public\ar-assets\hero-hoian.jpg
+payload\public\ar-assets\hero-hoian.webp
+payload\public\ar-assets\logo.png
+payload\public\ar-assets\logo.webp
+payload\public\ar-assets\phuquoc.jpg
+payload\public\ar-assets\phuquoc.webp
+8 File(s) copied
+govietstay-main-website@0.1.0 C:\Users\ADMIN\Documents\GitHub\govietstay-main-website
+`-- lucide-react@1.30.0
+
+[4/5] npm run build 
+
+> govietstay-main-website@0.1.0 build
+> next build
+
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\ADMIN\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * C:\Users\ADMIN\Documents\GitHub\govietstay-main-website\package-lock.json
+
+▲ Next.js 16.2.9 (Turbopack)
+- Environments: .env.local
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 41s
+  Running TypeScript ...
+  Finished TypeScript in 57s ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/310) ...
+  Generating static pages using 3 workers (77/310) 
+  Generating static pages using 3 workers (154/310) 
+  Generating static pages using 3 workers (232/310) 
+✓ Generating static pages using 3 workers (310/310) in 2.4s
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /
+├ ƒ /_not-found
+├ ƒ /admin
+├ ƒ /admin/operations
+├ ƒ /api/admin/search-console/sync
+├ ƒ /api/dao
+├ ƒ /api/happy-travelers
+├ ƒ /api/partner/application
+├ ƒ /api/partner/booking
+├ ƒ /api/qr
+├ ƒ /api/track
+├ ƒ /ar
+├ ƒ /ar/da-nang-hoi-an-private-tour
+├ ƒ /ar/halal-travel-vietnam
+├ ƒ /ar/phu-quoc-family-tour
+├ ƒ /ar/vietnam-11-day-itinerary
+├ ƒ /ar/vietnam-family-private-tour
+├ ƒ /cn
+├ ƒ /cn/[slug]
+├ ƒ /il
+├ ƒ /il/[slug]
+├ ƒ /in
+├ ƒ /in/[slug]
+├ ƒ /it
+├ ƒ /it/[slug]
+├ ƒ /ko
+├ ƒ /ko/[slug]
+├ ƒ /ko/cham-island-tour
+├ ƒ /kz
+├ ƒ /kz/[slug]
+├ ƒ /local-food
+├ ƒ /partner
+├ ƒ /ph
+├ ƒ /ph/[slug]
+├ ○ /robots.txt
+├ ƒ /ru
+├ ƒ /ru/[landing]
+├ ƒ /ru/aktualno
+├ ƒ /ru/aktualno/[slug]
+├ ○ /ru/aktualno/sitemap.xml
+├ ƒ /ru/local-point
+├ ƒ /ru/partner
+├ ƒ /ru/partner/cham-island
+├ ƒ /ru/Tommy
+├ ƒ /ru/tours/[slug]
+├ ƒ /ru/tours/ba-na-hills
+├ ƒ /ru/tours/hoi-an-coconut-forest
+├ ƒ /ru/tours/phu-quoc
+├ ƒ /ru/Vlad
+├ ƒ /secret
+├ ƒ /secret/[slug]
+├ ○ /sitemap.xml
+├ ƒ /tours/ba-na-hills
+├ ƒ /tours/hoi-an-coconut-forest
+├ ƒ /tours/phu-quoc
+├ ƒ /tr
+├ ƒ /tr/[slug]
+├ ƒ /travel
+├ ƒ /travel/[slug]
+├ ƒ /travel/best-time-to-visit-phu-quoc
+├ ƒ /travel/phu-quoc-3-islands-vs-4-islands
+├ ƒ /travel/phu-quoc-airport-transfer-private-car
+├ ƒ /travel/phu-quoc-itinerary-3d2n-4d3n
+├ ƒ /travel/phu-quoc-travel-guide
+├ ƒ /travel/phu-quoc-with-family
+├ ƒ /tw
+├ ƒ /tw/[slug]
+├ ƒ /vi
+├ ƒ /vi/[slug]
+└ ƒ /visa
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+[SUCCESS] Installation completed. 
+Deploying to Vercel. 
+Need to install the following packages:
+vercel@59.11.2
+Ok to proceed? (y) npm warn deprecated stream-to-promise@2.2.0: Deprecated. Use node:stream/promises and node:stream/consumers instead.
+npm warn deprecated tar@7.5.7: Old versions of tar are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+Vercel CLI 59.11.2 (Node.js 24.16.0)
+Error: No existing credentials found. Run `vercel deploy --temporary` to create a temporary deployment you can claim later, or `vercel login` to log in.
+Learn More: https://err.sh/vercel/no-credentials-found

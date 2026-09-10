@@ -1,0 +1,150 @@
+GoVietStay Universal Partner Kit V4.1 FIX4
+Smart Background Switcher + Mobile First
+Started: Mon 09/07/2026 22:29:32.11
+
+V4 source preflight OK.
+  OK  background types + preset library
+  OK  portrait renderer signature
+  OK  portrait smart crop
+  OK  landscape renderer signature
+  OK  sticker destination background
+  OK  digital renderer signature
+  OK  digital smart crop
+  OK  buildSvg signature
+  OK  buildSvg routing
+  OK  buildArtwork signature
+  OK  buildArtwork background routing
+  OK  kit modal state
+  OK  openKit signature
+  OK  openKit artwork state
+  OK  switchKit signature
+  OK  switchKit background state
+  OK  preset/custom background handlers
+  OK  full PNG uses smart crop
+  OK  custom background upload UI
+  OK  mobile preset + format controls
+  OK  mobile modal viewport
+  OK  V4.1 modal title
+  OK  mobile language tabs
+  OK  sticky mobile action bar
+
+Universal Partner Kit V4.1 source patch completed.
+
+> govietstay-main-website@0.1.0 build
+> next build
+
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\ADMIN\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * C:\Users\ADMIN\Documents\GitHub\govietstay-main-website\package-lock.json
+
+▲ Next.js 16.2.9 (Turbopack)
+- Environments: .env.local
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 16.3s
+  Running TypeScript ...
+  Finished TypeScript in 32.7s ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/318) ...
+  Generating static pages using 3 workers (79/318) 
+  Generating static pages using 3 workers (158/318) 
+  Generating static pages using 3 workers (238/318) 
+✓ Generating static pages using 3 workers (318/318) in 2.0s
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /
+├ ƒ /_not-found
+├ ƒ /admin
+├ ƒ /admin/operations
+├ ƒ /api/admin/search-console/sync
+├ ƒ /api/dao
+├ ƒ /api/happy-travelers
+├ ƒ /api/partner/application
+├ ƒ /api/partner/booking
+├ ƒ /api/qr
+├ ƒ /api/track
+├ ƒ /ar
+├ ƒ /ar/da-nang-hoi-an-private-tour
+├ ƒ /ar/da-nang-hoi-an-tours
+├ ƒ /ar/halal-travel-vietnam
+├ ƒ /ar/phu-quoc-family-tour
+├ ƒ /ar/phu-quoc-tours
+├ ƒ /ar/vietnam-11-day-itinerary
+├ ƒ /ar/vietnam-family-private-tour
+├ ƒ /cn
+├ ƒ /cn/[slug]
+├ ƒ /cn/agarwood-da-nang
+├ ƒ /en/David
+├ ƒ /il
+├ ƒ /il/[slug]
+├ ƒ /in
+├ ƒ /in/[slug]
+├ ƒ /it
+├ ƒ /it/[slug]
+├ ƒ /ko
+├ ƒ /ko/[slug]
+├ ƒ /ko/cham-island-tour
+├ ƒ /kz
+├ ƒ /kz/[slug]
+├ ƒ /local-food
+├ ƒ /partner
+├ ƒ /ph
+├ ƒ /ph/[slug]
+├ ƒ /pi-network-vietnam
+├ ○ /robots.txt
+├ ƒ /ru
+├ ƒ /ru/[landing]
+├ ƒ /ru/aktualno
+├ ƒ /ru/aktualno/[slug]
+├ ○ /ru/aktualno/sitemap.xml
+├ ƒ /ru/local-point
+├ ƒ /ru/partner
+├ ƒ /ru/partner/cham-island
+├ ƒ /ru/Tommy
+├ ƒ /ru/tours/[slug]
+├ ƒ /ru/tours/ba-na-hills
+├ ƒ /ru/tours/hoi-an-coconut-forest
+├ ƒ /ru/tours/phu-quoc
+├ ƒ /ru/Vlad
+├ ƒ /secret
+├ ƒ /secret/[slug]
+├ ○ /sitemap.xml
+├ ƒ /tours/ba-na-hills
+├ ƒ /tours/hoi-an-coconut-forest
+├ ƒ /tours/phu-quoc
+├ ƒ /tr
+├ ƒ /tr/[slug]
+├ ƒ /travel
+├ ƒ /travel/[slug]
+├ ƒ /travel/agarwood-da-nang
+├ ƒ /travel/best-time-to-visit-phu-quoc
+├ ƒ /travel/phu-quoc-3-islands-vs-4-islands
+├ ƒ /travel/phu-quoc-airport-transfer-private-car
+├ ƒ /travel/phu-quoc-itinerary-3d2n-4d3n
+├ ƒ /travel/phu-quoc-travel-guide
+├ ƒ /travel/phu-quoc-with-family
+├ ƒ /travel/vietnam-local-help
+├ ƒ /travel/vietnam-tet-travel-guide
+├ ƒ /tw
+├ ƒ /tw/[slug]
+├ ƒ /vi
+├ ƒ /vi/[slug]
+└ ƒ /visa
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+BUILD OK.
+warning: in the working copy of 'components/admin-v5/PartnerTools.tsx', LF will be replaced by CRLF the next time Git touches it
+[main c4118fb] feat(partner): V4.1 smart background switcher mobile
+ 1 file changed, 106 insertions(+), 42 deletions(-)
+To https://github.com/govietstay-art/govietstay-main-website.git
+   32ff543..c4118fb  main -> main
+SUCCESS: V4.1 pushed to GitHub main.
