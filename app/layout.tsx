@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { Geist, Geist_Mono } from "next/font/google";
 import HtmlLanguageSync from "../components/HtmlLanguageSync";
+import YandexMetrika from "../components/YandexMetrika";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -90,6 +91,7 @@ export default async function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <HtmlLanguageSync />
+        <YandexMetrika />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
