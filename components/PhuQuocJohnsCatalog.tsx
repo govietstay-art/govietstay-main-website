@@ -2,6 +2,7 @@
 
 import { FormEvent, useMemo, useState } from "react";
 import { PHU_QUOC_PUBLISHED_RATES } from "../lib/phuQuocPublishedRates";
+import { PHU_QUOC_TOUR_DETAILS } from "../lib/phuQuocTourDetails";
 
 type Language = "en" | "ru";
 type Tour = {
@@ -141,7 +142,29 @@ export default function PhuQuocJohnsCatalog({language}:{language:Language}){
     </section>
 
     <section id="joint-tours" className="mx-auto max-w-7xl px-5 py-14 md:px-8 md:py-20"><div className="max-w-4xl"><p className="text-xs font-black uppercase tracking-[.2em] text-emerald-800">13 programs</p><h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">{t.jointTitle}</h2><p className="mt-4 text-lg leading-8 text-[#315b56]">{t.jointText}</p></div>
-      <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">{tours.map(tour=><article key={tour.code} className="overflow-hidden rounded-[1.6rem] border border-[#0b4b43]/10 bg-white shadow-[0_14px_45px_rgba(10,70,63,.08)]"><div className="relative h-52 overflow-hidden bg-[#0b5c55]"><SupplierImage src={tour.image} fallback={tour.fallback} alt={tourName(tour,language)} className="h-full w-full object-cover transition duration-500 hover:scale-[1.03]"/><div className="absolute left-4 top-4 rounded-full bg-[#052f2d]/90 px-3 py-1.5 text-xs font-black text-white">{tour.code}</div></div><div className="p-6"><p className="text-xs font-black uppercase tracking-[.13em] text-emerald-700">{language === "ru" ? tour.categoryRu : tour.categoryEn}</p><h3 className="mt-2 text-2xl font-black leading-tight">{tourName(tour,language)}</h3><p className="mt-3 min-h-12 text-sm leading-6 text-[#496b67]">{language === "ru" ? tour.featureRu : tour.featureEn}</p><p className="mt-5 text-[10px] font-black uppercase tracking-[.12em] text-emerald-700">{t.published}</p><div className="mt-2 grid grid-cols-2 gap-2"><div className="rounded-2xl bg-[#eff8f4] p-3"><span className="block text-[10px] font-black uppercase tracking-wider text-[#6e8d88]">{t.adult}</span><strong className="mt-1 block text-sm text-emerald-800">{money(tour.adult,language)}</strong></div><div className="rounded-2xl bg-[#eff8f4] p-3"><span className="block text-[10px] font-black uppercase tracking-wider text-[#6e8d88]">{t.child}</span><strong className="mt-1 block text-sm text-emerald-800">{money(tour.child,language)}</strong></div></div><button type="button" onClick={()=>openBooking(tour)} className="mt-5 w-full rounded-2xl bg-[#1fa85b] px-5 py-3.5 text-center font-black text-white">{t.book}</button></div></article>)}</div>
+      <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">{tours.map(tour=><article key={tour.code} className="overflow-hidden rounded-[1.6rem] border border-[#0b4b43]/10 bg-white shadow-[0_14px_45px_rgba(10,70,63,.08)]"><div className="relative h-52 overflow-hidden bg-[#0b5c55]"><SupplierImage src={tour.image} fallback={tour.fallback} alt={tourName(tour,language)} className="h-full w-full object-cover transition duration-500 hover:scale-[1.03]"/><div className="absolute left-4 top-4 rounded-full bg-[#052f2d]/90 px-3 py-1.5 text-xs font-black text-white">{tour.code}</div></div><div className="p-6"><p className="text-xs font-black uppercase tracking-[.13em] text-emerald-700">{language === "ru" ? tour.categoryRu : tour.categoryEn}</p><h3 className="mt-2 text-2xl font-black leading-tight">{tourName(tour,language)}</h3><p className="mt-3 min-h-12 text-sm leading-6 text-[#496b67]">{language === "ru" ? tour.featureRu : tour.featureEn}</p><p className="mt-5 text-[10px] font-black uppercase tracking-[.12em] text-emerald-700">{t.published}</p><div className="mt-2 grid grid-cols-2 gap-2"><div className="rounded-2xl bg-[#eff8f4] p-3"><span className="block text-[10px] font-black uppercase tracking-wider text-[#6e8d88]">{t.adult}</span><strong className="mt-1 block text-sm text-emerald-800">{money(tour.adult,language)}</strong></div><div className="rounded-2xl bg-[#eff8f4] p-3"><span className="block text-[10px] font-black uppercase tracking-wider text-[#6e8d88]">{t.child}</span><strong className="mt-1 block text-sm text-emerald-800">{money(tour.child,language)}</strong></div></div>{PHU_QUOC_TOUR_DETAILS[tour.code] && <details className="mt-4 overflow-hidden rounded-2xl border border-[#dce9e3] bg-[#f8fbf9]">
+  <summary className="cursor-pointer list-none px-4 py-3 text-sm font-black text-[#0b5c55]">
+    <span className="flex items-center justify-between gap-3">
+      <span>{language === "ru" ? "Подробнее о туре" : "View tour details"}</span>
+      <span aria-hidden="true">＋</span>
+    </span>
+  </summary>
+  <div className="border-t border-[#dce9e3] px-4 py-4">
+    <div className="grid grid-cols-2 gap-2 text-xs">
+      <div className="rounded-xl bg-white p-3"><span className="block font-black uppercase tracking-wide text-[#6e8d88]">{language === "ru" ? "Время" : "Time"}</span><strong className="mt-1 block text-[#0b5c55]">{PHU_QUOC_TOUR_DETAILS[tour.code].time}</strong></div>
+      <div className="rounded-xl bg-white p-3"><span className="block font-black uppercase tracking-wide text-[#6e8d88]">{language === "ru" ? "Транспорт" : "Transport"}</span><strong className="mt-1 block text-[#0b5c55]">{language === "ru" ? PHU_QUOC_TOUR_DETAILS[tour.code].transportRu : PHU_QUOC_TOUR_DETAILS[tour.code].transportEn}</strong></div>
+    </div>
+    <h4 className="mt-4 text-sm font-black text-[#082f2b]">{language === "ru" ? "Программа" : "Itinerary"}</h4>
+    <ol className="mt-2 space-y-2 text-sm leading-6 text-[#496b67]">
+      {(language === "ru" ? PHU_QUOC_TOUR_DETAILS[tour.code].itineraryRu : PHU_QUOC_TOUR_DETAILS[tour.code].itineraryEn).map((step,index)=><li key={index} className="flex gap-2"><span className="mt-[2px] flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#e3f4ec] text-[10px] font-black text-emerald-800">{index+1}</span><span>{step}</span></li>)}
+    </ol>
+    <h4 className="mt-4 text-sm font-black text-[#082f2b]">{language === "ru" ? "Включено" : "Included"}</h4>
+    <ul className="mt-2 space-y-1.5 text-sm leading-6 text-[#496b67]">
+      {(language === "ru" ? PHU_QUOC_TOUR_DETAILS[tour.code].includesRu : PHU_QUOC_TOUR_DETAILS[tour.code].includesEn).map(item=><li key={item}>✓ {item}</li>)}
+    </ul>
+    {(language === "ru" ? PHU_QUOC_TOUR_DETAILS[tour.code].noteRu : PHU_QUOC_TOUR_DETAILS[tour.code].noteEn) && <p className="mt-4 rounded-xl bg-amber-50 p-3 text-xs font-semibold leading-5 text-[#6c5830]"><strong>{language === "ru" ? "Важно: " : "Important: "}</strong>{language === "ru" ? PHU_QUOC_TOUR_DETAILS[tour.code].noteRu : PHU_QUOC_TOUR_DETAILS[tour.code].noteEn}</p>}
+  </div>
+</details>}<button type="button" onClick={()=>openBooking(tour)} className="mt-5 w-full rounded-2xl bg-[#1fa85b] px-5 py-3.5 text-center font-black text-white">{t.book}</button></div></article>)}</div>
 
     </section>
 
