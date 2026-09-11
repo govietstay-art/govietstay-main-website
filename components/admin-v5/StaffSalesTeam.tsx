@@ -78,9 +78,73 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
 
   async function approveRequest(id:string){
     if(!window.confirm("Duyệt request này vào Booking Master?"))return;
+    const req=intake.find((x:any)=>x.id===id);
     setSaving(true);setError("");setMessage("");
-    try{const {data,error}=await supabase.rpc("admin_approve_staff_booking_request",{p_request_id:id});if(error)throw error;setMessage(`Đã tạo booking ${data?.booking_code||""} trong Admin.`);await load();}
-    catch(e:any){setError(e?.message||"Không duyệt được request.");}finally{setSaving(false)}
+    try{
+      const {data,error}=await supabase.rpc("admin_approve_staff_booking_request",{p_request_id:id});
+      if(error)throw error;
+
+      let pqCommissionNote="";
+      const pqMarker=!!req && (
+        String(req.region||"").toLowerCase().replace(/ú/g,"u").includes("phu quoc") ||
+        String(req.notes||"").includes("GVS_PQ_7PCT")
+      );
+
+      if(pqMarker){
+        // GVS_PQ_7PCT_APPROVAL_OVERRIDE
+        try{
+          let bookingId=data?.booking_id||data?.id||null;
+          let bookingCode=data?.booking_code||req?.booking_code||"";
+          let booking:any=null;
+
+          if(bookingId){
+            const q=await supabase.from("bookings")
+              .select("id,booking_code,gross_revenue_vnd,discount_vnd,tour_date")
+              .eq("id",bookingId).maybeSingle();
+            if(q.error)throw q.error;
+            booking=q.data;
+          }else if(bookingCode){
+            const q=await supabase.from("bookings")
+              .select("id,booking_code,gross_revenue_vnd,discount_vnd,tour_date")
+              .eq("booking_code",bookingCode).maybeSingle();
+            if(q.error)throw q.error;
+            booking=q.data;
+            bookingId=booking?.id||null;
+          }
+
+          if(bookingId){
+            const gross=Math.max(0,Number(booking?.gross_revenue_vnd??req?.gross_revenue_vnd??0));
+            const disc=Math.max(0,Number(booking?.discount_vnd??req?.discount_vnd??0));
+            const base=Math.max(0,gross-disc);
+            const amount=Math.round(base*0.07);
+
+            const ov=await supabase.from("staff_booking_commission_overrides").upsert({
+              booking_id:bookingId,
+              commission_eligible:true,
+              commission_base_override_vnd:base,
+              commission_amount_override_vnd:amount,
+              notes:"Phu Quoc fixed commission = 7% of net selling price. Base salary framework unchanged.",
+              updated_by:adminStaff?.id||null,
+              updated_at:new Date().toISOString()
+            },{onConflict:"booking_id"});
+            if(ov.error)throw ov.error;
+
+            const monthStart=String(booking?.tour_date||req?.tour_date||"").slice(0,7)+"-01";
+            if(/^\d{4}-\d{2}-01$/.test(monthStart)){
+              await supabase.rpc("admin_recalculate_staff_compensation",{p_month:monthStart});
+            }
+            pqCommissionNote=` · PQ commission override 7% = ${money(amount)}`;
+          }else{
+            pqCommissionNote=" · Booking created; 7% override could not resolve booking_id automatically.";
+          }
+        }catch(pqErr:any){
+          pqCommissionNote=" · Booking approved; 7% override warning: "+(pqErr?.message||"unknown error");
+        }
+      }
+
+      setMessage(`Đã tạo booking ${data?.booking_code||""} trong Admin.${pqCommissionNote}`);
+      await load();
+    }catch(e:any){setError(e?.message||"Không duyệt được request.");}finally{setSaving(false)}
   }
   async function rejectRequest(id:string){
     const note=window.prompt("Lý do từ chối / ghi chú nội bộ:","");if(note===null)return;
