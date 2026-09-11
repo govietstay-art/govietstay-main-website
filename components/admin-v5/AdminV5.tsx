@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 // GVS-LANGUAGE-MATRIX-V3
 // GVS_MARKETING_FUNNEL_V7
 // GVS_MARKETING_LINK_GENERATOR_V8
@@ -11,6 +11,8 @@ import ReviewRequestTools from "./ReviewRequestTools";
 import PartnerTools from "./PartnerTools";
 import FinancePL from "./FinancePL";
 import OperatorPayables from "./OperatorPayables";
+import YandexSeoPanel from "./YandexSeoPanel";
+// GVS_YANDEX_INTELLIGENCE_V1
 import StaffSalesTeam from "./StaffSalesTeam";
 
 const SUPABASE_URL = "https://vscffgnxaexestnayvae.supabase.co";
@@ -53,7 +55,7 @@ export default function AdminV5() {
   const [bootstrap,setBootstrap]=useState("");
   const [msg,setMsg]=useState("");
   const [err,setErr]=useState("");
-  const [tab,setTab]=useState<"dashboard"|"analytics"|"marketing"|"partners"|"seo"|"leads"|"bookings"|"reviews"|"finance"|"team"|"operator_payables">("dashboard");
+  const [tab,setTab]=useState<"dashboard"|"analytics"|"marketing"|"partners"|"seo"|"leads"|"bookings"|"reviews"|"finance"|"team"|"operator_payables"|"yandex">("dashboard");
   const [days,setDays]=useState(7);
   const [metrics,setMetrics]=useState<any>(null);
   const [breakdown,setBreakdown]=useState<any[]>([]);
@@ -303,6 +305,7 @@ export default function AdminV5() {
         <button className={tab==="marketing"?"active":""} onClick={()=>setTab("marketing")}>Marketing</button>
         <button className={tab==="partners"?"active":""} onClick={()=>setTab("partners")}>Partners / QR</button>
         <button className={tab==="seo"?"active":""} onClick={()=>setTab("seo")}>SEO Intelligence</button>
+        <button className={tab==="yandex"?"active":""} onClick={()=>setTab("yandex")}>Yandex Search</button>
         <button className={tab==="leads"?"active":""} onClick={()=>setTab("leads")}>Leads</button>
         <button className={tab==="bookings"?"active":""} onClick={()=>setTab("bookings")}>Bookings</button>
         <button className={tab=="team"?"active":""} onClick={()=>setTab("team")}>Sales Team / Payroll</button>
@@ -584,6 +587,8 @@ export default function AdminV5() {
         </table></div></div>
       </>}
 
+      {tab==="yandex"&&<YandexSeoPanel supabase={supabase} days={days}/>}
+
       {tab==="leads"&&<>
         <div className="gva-section-head"><h2>Leads</h2><button className="gva-btn" onClick={()=>setModal("lead")}>+ Tạo Lead</button></div>
         <div className="gva-card"><div className="gva-table-wrap"><table className="gva-table"><thead><tr><th>Ngày</th><th>Khách</th><th>WhatsApp</th><th>Nguồn</th><th>Tour</th><th>Partner</th><th>Status</th></tr></thead><tbody>
@@ -618,7 +623,7 @@ export default function AdminV5() {
 
 
 function adminPageTitle(tab:any){
-  return tab=="operator_payables"?"Công nợ nhà tổ chức tour ghép":tab==="team"?"Sales Team / Payroll":tab==="finance"?"Monthly P&L":tab==="dashboard"?"Dashboard thật":tab==="analytics"?"Analytics khách truy cập":tab==="marketing"?"Marketing Funnel":tab==="partners"?"Partners / QR":tab==="seo"?"SEO Intelligence":tab==="leads"?"Quản lý Leads":tab==="reviews"?"Review WhatsApp":"Quản lý Bookings";
+  return tab=="operator_payables"?"Công nợ nhà tổ chức tour ghép":tab==="team"?"Sales Team / Payroll":tab==="finance"?"Monthly P&L":tab==="dashboard"?"Dashboard thật":tab==="analytics"?"Analytics khách truy cập":tab==="marketing"?"Marketing Funnel":tab==="partners"?"Partners / QR":tab==="seo"?"SEO Intelligence":tab==="yandex"?"Yandex Search":tab==="leads"?"Quản lý Leads":tab==="reviews"?"Review WhatsApp":"Quản lý Bookings";
 }
 
 function shortPage(value:any){
@@ -688,5 +693,6 @@ function BookingModal({tours,partners,onClose,onSubmit,saving}:any){return <div 
 </div><div style={{display:"flex",gap:8,justifyContent:"flex-end",marginTop:16}}><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button className="gva-btn" disabled={saving}>{saving?"Đang lưu…":"Lưu Booking"}</button></div></form></div>}
 
 function F({label,children,wide}:any){return <div className={"gva-field "+(wide?"wide":"")}><label>{label}</label>{children}</div>}
+
 
 
