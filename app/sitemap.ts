@@ -342,6 +342,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   }));
 
+
+  const phuQuocPriorityPages: MetadataRoute.Sitemap = [
+    "phu-quoc-3-islands-vs-4-islands",
+    "phu-quoc-airport-transfer-private-car",
+    "phu-quoc-with-family",
+    "phu-quoc-itinerary-3d2n-4d3n",
+    "best-time-to-visit-phu-quoc",
+  ].map((slug) => ({
+    url: `${BASE_URL}/travel/${slug}`,
+    lastModified: new Date("2026-09-11T00:00:00.000Z"),
+    changeFrequency: "weekly" as const,
+    priority: 0.92,
+    alternates: {
+      languages: {
+        en: `${BASE_URL}/travel/${slug}`,
+      },
+    },
+  }));
+
   const aktualnoPages: MetadataRoute.Sitemap = aktualnoArticles.map(
     (article) => ({
       url: `${BASE_URL}/ru/aktualno/${article.slug}`,
@@ -377,6 +396,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...chinaPages,
     ...kazakhstanPages,
     ...englishGuidePages,
+    ...phuQuocPriorityPages,
     ...taiwanGuidePages,
     ...indiaGuidePages,
     ...koreanGuidePages,
