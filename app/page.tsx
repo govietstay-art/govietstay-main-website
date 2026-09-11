@@ -5645,6 +5645,26 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <section
+        id="govietstay-yandex-business-info"
+        className="bg-[#02140f] text-white px-4 md:px-20 py-10 border-t border-white/10"
+      >
+        <div className="max-w-7xl mx-auto w-full">
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-5 md:p-6">
+            <h2 className="text-xl md:text-2xl font-bold">GoVietStay - Da Nang Office</h2>
+            <div className="mt-4 space-y-1 text-white/70 leading-relaxed">
+              <p>Office: Room 106, Vicoland Building</p>
+              <p>01 Lê Thanh Nghị, Phường Hòa Cường, Đà Nẵng, Việt Nam</p>
+              <p>Office hours: 07:30-22:00 daily</p>
+              <p>Phone / WhatsApp: +84 937 762 607</p>
+              <p>Email: govietstay@gmail.com</p>
+              <p>WhatsApp support: 24/7</p>
+              <p>Official website: https://www.govietstay.com/</p>
+            </div>
+          </div>
+        </div>
+      </section>
 </main>
   );
 }
