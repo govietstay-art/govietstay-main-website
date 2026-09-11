@@ -80,28 +80,113 @@ async function getWebmasterIdentity(yandexToken: string) {
   );
 
   const hosts = Array.isArray(data?.hosts) ? data.hosts : [];
-  const host = hosts.find((h: any) => {
+
+  const normalizeHost = (value: any) => {
     try {
-      const hostname = new URL(String(h?.ascii_host_url || h?.unicode_host_url || ""))
-        .hostname.replace(/^www\./i, "")
-        .toLowerCase();
-      return hostname === YANDEX_HOSTNAME;
+      const raw = String(value || "").trim();
+      if (!raw) return "";
+      const withScheme = /^[a-z][a-z0-9+.-]*:\/\//i.test(raw) ? raw : `https://${raw}`;
+      return new URL(withScheme).hostname.toLowerCase();
     } catch {
-      return false;
+      return "";
     }
+  };
+
+  const wanted = String(YANDEX_HOSTNAME || "govietstay.com")
+    .replace(/^www\./i, "")
+    .toLowerCase();
+
+  const matches = hosts.filter((h: any) => {
+    const rawHost = normalizeHost(h?.ascii_host_url || h?.unicode_host_url || "");
+    return rawHost.replace(/^www\./i, "") === wanted;
   });
 
-  if (!host?.host_id) {
-    throw new Error(`Không tìm thấy ${YANDEX_HOSTNAME} trong Yandex Webmaster của OAuth token này.`);
+  if (!matches.length) {
+    throw new Error(`Không tìm thấy ${wanted} trong Yandex Webmaster của OAuth token này.`);
   }
+
+  const detailed: any[] = [];
+
+  for (const h of matches) {
+    if (!h?.host_id) continue;
+
+    let info: any = h;
+    try {
+      info = await getYandexJson(
+        `https://api.webmaster.yandex.net/v4/user/${encodeURIComponent(userId)}/hosts/${encodeURIComponent(String(h.host_id))}`,
+        yandexToken,
+        "Yandex Webmaster host details"
+      );
+    } catch {
+      info = h;
+    }
+
+    const rawHost = normalizeHost(info?.ascii_host_url || info?.unicode_host_url || h?.ascii_host_url || h?.unicode_host_url || "");
+    const status = String(info?.host_data_status || "").toUpperCase();
+
+    let score = 0;
+    if (status === "OK") score += 1000;
+    if (info?.verified !== false) score += 100;
+    if (rawHost === wanted) score += 50;
+    if (!rawHost.startsWith("www.")) score += 25;
+    if (String(info?.ascii_host_url || "").startsWith("https://")) score += 10;
+
+    detailed.push({
+      ...h,
+      ...info,
+      _score: score,
+      _rawHost: rawHost,
+      _status: status || "UNKNOWN",
+    });
+
+    const mirror = info?.main_mirror;
+    if (mirror?.host_id && String(mirror.host_id) !== String(info?.host_id)) {
+      try {
+        const mirrorInfo = await getYandexJson(
+          `https://api.webmaster.yandex.net/v4/user/${encodeURIComponent(userId)}/hosts/${encodeURIComponent(String(mirror.host_id))}`,
+          yandexToken,
+          "Yandex Webmaster main mirror details"
+        );
+
+        const mirrorHost = normalizeHost(mirrorInfo?.ascii_host_url || mirrorInfo?.unicode_host_url || mirror?.ascii_host_url || mirror?.unicode_host_url || "");
+        const mirrorStatus = String(mirrorInfo?.host_data_status || "").toUpperCase();
+
+        let mirrorScore = 5;
+        if (mirrorStatus === "OK") mirrorScore += 1200;
+        if (mirrorInfo?.verified !== false) mirrorScore += 100;
+        if (mirrorHost.replace(/^www\./i, "") === wanted) mirrorScore += 50;
+        if (mirrorHost === wanted) mirrorScore += 50;
+        if (!mirrorHost.startsWith("www.")) mirrorScore += 25;
+        if (String(mirrorInfo?.ascii_host_url || "").startsWith("https://")) mirrorScore += 10;
+
+        detailed.push({
+          ...mirror,
+          ...mirrorInfo,
+          _score: mirrorScore,
+          _rawHost: mirrorHost,
+          _status: mirrorStatus || "UNKNOWN",
+        });
+      } catch {}
+    }
+  }
+
+  detailed.sort((a, b) => Number(b?._score || 0) - Number(a?._score || 0));
+  const host = detailed[0];
+
+  if (!host?.host_id) {
+    throw new Error(`Không xác định được host_id tốt nhất cho ${wanted}.`);
+  }
+
   if (host.verified === false) {
-    throw new Error(`${YANDEX_HOSTNAME} có trong Yandex Webmaster nhưng chưa verified.`);
+    throw new Error(`${wanted} có trong Yandex Webmaster nhưng chưa verified.`);
   }
 
   return {
     userId,
     hostId: String(host.host_id),
-    hostUrl: String(host.ascii_host_url || host.unicode_host_url || YANDEX_HOSTNAME),
+    hostUrl: String(host.ascii_host_url || host.unicode_host_url || wanted),
+    hostDataStatus: String(host._status || host.host_data_status || "UNKNOWN"),
+    candidateCount: detailed.length,
   };
 }
 
@@ -327,9 +412,30 @@ export async function POST(request: NextRequest) {
           user_id: identity.userId,
           host_id: identity.hostId,
           host_url: identity.hostUrl,
+          host_data_status: identity.hostDataStatus,
+          candidate_count: identity.candidateCount,
         },
         date_from: startDate,
         date_to: endDate,
+      });
+    }
+
+    if (identity.hostDataStatus !== "OK") {
+      return NextResponse.json({
+        ok: true,
+        mode: "sync",
+        source: "yandex_webmaster",
+        waiting: true,
+        warning:
+          `Yandex Webmaster đang ở trạng thái ${identity.hostDataStatus}. ` +
+          `API đã kết nối đúng host ${identity.hostUrl}, nhưng Yandex chưa cấp dữ liệu Search Queries cho host này.`,
+        date_from: startDate,
+        date_to: endDate,
+        webmaster_rows: 0,
+        query_rows: 0,
+        metrica_rows: 0,
+        host_url: identity.hostUrl,
+        host_data_status: identity.hostDataStatus,
       });
     }
 

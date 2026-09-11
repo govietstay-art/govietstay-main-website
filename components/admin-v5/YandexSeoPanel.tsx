@@ -82,12 +82,19 @@ export default function YandexSeoPanel({ supabase, days }: any) {
       if (!res.ok) throw new Error(data?.error || `Yandex API lỗi ${res.status}`);
 
       if (mode === "test") {
-        setMessage(`Kết nối Webmaster OK · ${data?.webmaster?.host_url || "govietstay.com"}`);
+        setMessage(`Kết nối Webmaster OK · ${data?.webmaster?.host_url || "govietstay.com"} · ${data?.webmaster?.host_data_status || "UNKNOWN"}`);
       } else {
-        setMessage(
-          `Đã đồng bộ Yandex ${data.date_from} → ${data.date_to}: ` +
-          `${data.webmaster_rows || 0} ngày, ${data.query_rows || 0} queries.`
-        );
+        if (data?.waiting) {
+          setMessage(
+            data?.warning ||
+            `Yandex Webmaster đã kết nối nhưng host đang chờ Yandex nạp dữ liệu Search Queries.`
+          );
+        } else {
+          setMessage(
+            `Đã đồng bộ Yandex ${data.date_from} → ${data.date_to}: ` +
+            `${data.webmaster_rows || 0} ngày, ${data.query_rows || 0} queries.`
+          );
+        }
         await load();
       }
     } catch (e: any) {
