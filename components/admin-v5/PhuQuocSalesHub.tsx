@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
+import PhuQuocPartnerPosterInline from "./PhuQuocPartnerPosterInline";
 import {
   PHU_QUOC_SALES_COMMISSION_RATE,
   PHU_QUOC_SALES_TOURS,
@@ -294,6 +295,12 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
               <div className="gva-mini">Chỉ ghi nhận khi tour hoàn thành/đủ điều kiện theo Commission Master.</div>
             </div>
           </div>
+        
+          <PhuQuocPartnerPosterInline
+            partnerCode={partnerCode}
+            language={partnerLang}
+            partnerLink={partnerLink}
+          />
         </section>
       </div>
 
