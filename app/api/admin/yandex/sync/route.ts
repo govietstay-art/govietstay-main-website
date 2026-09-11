@@ -5,10 +5,11 @@ export const dynamic = "force-dynamic";
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://vscffgnxaexestnayvae.supabase.co";
 const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || "sb_publishable_BI1rIhiGB5cEUyJbnKGI5w_kCMI--oV";
-const YANDEX_COUNTER_ID = process.env.YANDEX_METRIKA_COUNTER_ID || "112457261";
 const YANDEX_HOSTNAME = (process.env.YANDEX_WEBMASTER_HOST || "govietstay.com").replace(/^www\./i, "").toLowerCase();
 
-function isoDate(d: Date) { return d.toISOString().slice(0, 10); }
+function isoDate(d: Date) {
+  return d.toISOString().slice(0, 10);
+}
 
 async function verifyAdmin(token: string) {
   const userRes = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
@@ -16,51 +17,87 @@ async function verifyAdmin(token: string) {
     cache: "no-store",
   });
   if (!userRes.ok) return { ok: false, userId: null as string | null };
+
   const user = await userRes.json();
   const staffRes = await fetch(
     `${SUPABASE_URL}/rest/v1/staff_profiles?select=role,active&auth_user_id=eq.${encodeURIComponent(user.id)}&active=eq.true&limit=1`,
-    { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${token}` }, cache: "no-store" }
+    {
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${token}` },
+      cache: "no-store",
+    }
   );
   if (!staffRes.ok) return { ok: false, userId: user.id as string };
+
   const staff = await staffRes.json();
   const role = staff?.[0]?.role;
   return { ok: role === "owner" || role === "admin", userId: user.id as string };
 }
 
-async function getJson(url: string, yandexToken: string) {
+async function getYandexJson(url: string, yandexToken: string, label: string) {
   const res = await fetch(url, {
-    headers: { Authorization: `OAuth ${yandexToken}`, Accept: "application/json" },
+    headers: {
+      Authorization: `OAuth ${yandexToken}`,
+      Accept: "application/json",
+    },
     cache: "no-store",
   });
+
   const text = await res.text();
   let data: any = {};
-  try { data = text ? JSON.parse(text) : {}; } catch { data = { raw: text }; }
-  if (!res.ok) {
-    const msg = data?.error_message || data?.message || data?.error?.message || `${res.status} ${res.statusText}`;
-    throw new Error(`Yandex API: ${msg}`);
+  try {
+    data = text ? JSON.parse(text) : {};
+  } catch {
+    data = { raw: text };
   }
+
+  if (!res.ok) {
+    const msg =
+      data?.error_message ||
+      data?.message ||
+      data?.error?.message ||
+      data?.error ||
+      `${res.status} ${res.statusText}`;
+    throw new Error(`${label}: ${String(msg)}`);
+  }
+
   return data;
 }
 
 async function getWebmasterIdentity(yandexToken: string) {
-  const user = await getJson("https://api.webmaster.yandex.net/v4/user", yandexToken);
+  const user = await getYandexJson(
+    "https://api.webmaster.yandex.net/v4/user",
+    yandexToken,
+    "Yandex Webmaster /user"
+  );
+
   const userId = String(user?.user_id ?? "");
   if (!userId) throw new Error("Yandex Webmaster không trả về user_id.");
 
-  const data = await getJson(
+  const data = await getYandexJson(
     `https://api.webmaster.yandex.net/v4/user/${encodeURIComponent(userId)}/hosts`,
-    yandexToken
+    yandexToken,
+    "Yandex Webmaster /hosts"
   );
+
   const hosts = Array.isArray(data?.hosts) ? data.hosts : [];
   const host = hosts.find((h: any) => {
     try {
-      const hostname = new URL(String(h?.ascii_host_url || h?.unicode_host_url || "")).hostname
-        .replace(/^www\./i, "").toLowerCase();
+      const hostname = new URL(String(h?.ascii_host_url || h?.unicode_host_url || ""))
+        .hostname.replace(/^www\./i, "")
+        .toLowerCase();
       return hostname === YANDEX_HOSTNAME;
-    } catch { return false; }
+    } catch {
+      return false;
+    }
   });
-  if (!host?.host_id) throw new Error(`Không tìm thấy ${YANDEX_HOSTNAME} trong Yandex Webmaster của token này.`);
-  if (host.verified === false) throw new Error(`${YANDEX_HOSTNAME} có trong Webmaster nhưng chưa verified.`);
+
+  if (!host?.host_id) {
+    throw new Error(`Không tìm thấy ${YANDEX_HOSTNAME} trong Yandex Webmaster của OAuth token này.`);
+  }
+  if (host.verified === false) {
+    throw new Error(`${YANDEX_HOSTNAME} có trong Yandex Webmaster nhưng chưa verified.`);
+  }
+
   return {
     userId,
     hostId: String(host.host_id),
@@ -79,14 +116,23 @@ function wmParams(startDate: string, endDate: string) {
   return p;
 }
 
-async function getWebmasterDaily(yandexToken: string, userId: string, hostId: string, startDate: string, endDate: string) {
+async function getWebmasterDaily(
+  yandexToken: string,
+  userId: string,
+  hostId: string,
+  startDate: string,
+  endDate: string
+) {
   const p = wmParams(startDate, endDate);
-  const data = await getJson(
+  const data = await getYandexJson(
     `https://api.webmaster.yandex.net/v4/user/${encodeURIComponent(userId)}/hosts/${encodeURIComponent(hostId)}/search-queries/all/history?${p.toString()}`,
-    yandexToken
+    yandexToken,
+    "Yandex Webmaster search history"
   );
+
   const indicators = data?.indicators || {};
   const byDate = new Map<string, any>();
+
   for (const key of ["TOTAL_SHOWS", "TOTAL_CLICKS", "AVG_SHOW_POSITION", "AVG_CLICK_POSITION"]) {
     const rows = Array.isArray(indicators?.[key]) ? indicators[key] : [];
     for (const item of rows) {
@@ -96,6 +142,7 @@ async function getWebmasterDaily(yandexToken: string, userId: string, hostId: st
       byDate.get(date)[key] = Number(item?.value || 0);
     }
   }
+
   const syncedAt = new Date().toISOString();
   return [...byDate.values()].map((r: any) => ({
     date: r.date,
@@ -108,86 +155,45 @@ async function getWebmasterDaily(yandexToken: string, userId: string, hostId: st
   }));
 }
 
-async function getWebmasterQueries(yandexToken: string, userId: string, hostId: string, startDate: string, endDate: string) {
+async function getWebmasterQueries(
+  yandexToken: string,
+  userId: string,
+  hostId: string,
+  startDate: string,
+  endDate: string
+) {
   const p = wmParams(startDate, endDate);
   p.set("order_by", "TOTAL_SHOWS");
   p.set("offset", "0");
   p.set("limit", "500");
-  const data = await getJson(
+
+  const data = await getYandexJson(
     `https://api.webmaster.yandex.net/v4/user/${encodeURIComponent(userId)}/hosts/${encodeURIComponent(hostId)}/search-queries/popular?${p.toString()}`,
-    yandexToken
+    yandexToken,
+    "Yandex Webmaster popular queries"
   );
+
   const queries = Array.isArray(data?.queries) ? data.queries : [];
   const actualFrom = String(data?.date_from || startDate).slice(0, 10);
   const actualTo = String(data?.date_to || endDate).slice(0, 10);
   const syncedAt = new Date().toISOString();
-  return queries.map((q: any) => {
-    const i = q?.indicators || {};
-    return {
-      date_from: actualFrom,
-      date_to: actualTo,
-      query_id: String(q?.query_id || ""),
-      query_text: String(q?.query_text || ""),
-      impressions: Math.max(0, Math.round(Number(i?.TOTAL_SHOWS || 0))),
-      clicks: Math.max(0, Math.round(Number(i?.TOTAL_CLICKS || 0))),
-      avg_show_position: Math.max(0, Number(i?.AVG_SHOW_POSITION || 0)),
-      avg_click_position: Math.max(0, Number(i?.AVG_CLICK_POSITION || 0)),
-      synced_at: syncedAt,
-    };
-  }).filter((q: any) => q.query_id && q.query_text);
-}
 
-function metricaParams(startDate: string, endDate: string, dimensions?: string) {
-  const p = new URLSearchParams();
-  p.set("id", YANDEX_COUNTER_ID);
-  p.set("date1", startDate);
-  p.set("date2", endDate);
-  p.set("metrics", "ym:s:visits,ym:s:users,ym:s:pageviews");
-  if (dimensions) p.set("dimensions", dimensions);
-  p.set("filters", "ym:s:trafficSource=='organic' AND ym:s:searchEngine=='yandex' AND ym:s:isRobot=='No'");
-  p.set("accuracy", "full");
-  p.set("lang", "en");
-  p.set("limit", dimensions ? "10000" : "100");
-  return p;
-}
-
-function metricsFromMetrica(data: any) {
-  const totals = Array.isArray(data?.totals)
-    ? data.totals
-    : (Array.isArray(data?.data?.[0]?.metrics) ? data.data[0].metrics : []);
-  return {
-    visits: Math.max(0, Math.round(Number(totals?.[0] || 0))),
-    users: Math.max(0, Math.round(Number(totals?.[1] || 0))),
-    pageviews: Math.max(0, Math.round(Number(totals?.[2] || 0))),
-  };
-}
-
-async function getMetricaTotals(yandexToken: string, startDate: string, endDate: string) {
-  const p = metricaParams(startDate, endDate);
-  const data = await getJson(`https://api-metrika.yandex.net/stat/v1/data?${p.toString()}`, yandexToken);
-  const m = metricsFromMetrica(data);
-  return { date_from: startDate, date_to: endDate, ...m, synced_at: new Date().toISOString() };
-}
-
-async function getMetricaLandings(yandexToken: string, startDate: string, endDate: string) {
-  const p = metricaParams(startDate, endDate, "ym:s:startURL");
-  p.set("sort", "-ym:s:visits");
-  const data = await getJson(`https://api-metrika.yandex.net/stat/v1/data?${p.toString()}`, yandexToken);
-  const rows = Array.isArray(data?.data) ? data.data : [];
-  const syncedAt = new Date().toISOString();
-  return rows.map((r: any) => {
-    const d = Array.isArray(r?.dimensions) ? r.dimensions : [];
-    const m = Array.isArray(r?.metrics) ? r.metrics : [];
-    return {
-      date_from: startDate,
-      date_to: endDate,
-      landing_page: String(d?.[0]?.name || d?.[0]?.id || ""),
-      visits: Math.max(0, Math.round(Number(m?.[0] || 0))),
-      users: Math.max(0, Math.round(Number(m?.[1] || 0))),
-      pageviews: Math.max(0, Math.round(Number(m?.[2] || 0))),
-      synced_at: syncedAt,
-    };
-  }).filter((r: any) => r.landing_page);
+  return queries
+    .map((q: any) => {
+      const i = q?.indicators || {};
+      return {
+        date_from: actualFrom,
+        date_to: actualTo,
+        query_id: String(q?.query_id || ""),
+        query_text: String(q?.query_text || ""),
+        impressions: Math.max(0, Math.round(Number(i?.TOTAL_SHOWS || 0))),
+        clicks: Math.max(0, Math.round(Number(i?.TOTAL_CLICKS || 0))),
+        avg_show_position: Math.max(0, Number(i?.AVG_SHOW_POSITION || 0)),
+        avg_click_position: Math.max(0, Number(i?.AVG_CLICK_POSITION || 0)),
+        synced_at: syncedAt,
+      };
+    })
+    .filter((q: any) => q.query_id && q.query_text);
 }
 
 function sbHeaders(userToken: string, prefer = "return=minimal") {
@@ -203,7 +209,12 @@ async function sbRequest(url: string, options: RequestInit) {
   const res = await fetch(url, { ...options, cache: "no-store" });
   const text = await res.text();
   let data: any = null;
-  try { data = text ? JSON.parse(text) : null; } catch { data = text; }
+  try {
+    data = text ? JSON.parse(text) : null;
+  } catch {
+    data = text;
+  }
+
   if (!res.ok) {
     const msg = data?.message || data?.hint || data?.details || text || `${res.status}`;
     throw new Error(`Supabase: ${String(msg).slice(0, 500)}`);
@@ -215,7 +226,12 @@ async function insertRun(userToken: string, userId: string, startDate: string, e
   const data = await sbRequest(`${SUPABASE_URL}/rest/v1/yandex_sync_runs`, {
     method: "POST",
     headers: sbHeaders(userToken, "return=representation"),
-    body: JSON.stringify({ date_from: startDate, date_to: endDate, status: "running", created_by: userId }),
+    body: JSON.stringify({
+      date_from: startDate,
+      date_to: endDate,
+      status: "running",
+      created_by: userId,
+    }),
   });
   return String(data?.[0]?.id || "");
 }
@@ -234,28 +250,46 @@ async function upsert(userToken: string, table: string, conflict: string, record
   for (let i = 0; i < records.length; i += 500) {
     const batch = records.slice(i, i + 500);
     if (!batch.length) continue;
-    await sbRequest(`${SUPABASE_URL}/rest/v1/${table}?on_conflict=${encodeURIComponent(conflict)}`, {
-      method: "POST",
-      headers: sbHeaders(userToken, "resolution=merge-duplicates,return=minimal"),
-      body: JSON.stringify(batch),
-    });
+
+    await sbRequest(
+      `${SUPABASE_URL}/rest/v1/${table}?on_conflict=${encodeURIComponent(conflict)}`,
+      {
+        method: "POST",
+        headers: sbHeaders(userToken, "resolution=merge-duplicates,return=minimal"),
+        body: JSON.stringify(batch),
+      }
+    );
     total += batch.length;
   }
   return total;
 }
 
-async function replaceRange(userToken: string, table: string, startDate: string, endDate: string, rows: any[], conflict: string) {
+async function replaceQueryRange(
+  userToken: string,
+  startDate: string,
+  endDate: string,
+  rows: any[]
+) {
   await sbRequest(
-    `${SUPABASE_URL}/rest/v1/${table}?date_from=eq.${encodeURIComponent(startDate)}&date_to=eq.${encodeURIComponent(endDate)}`,
+    `${SUPABASE_URL}/rest/v1/yandex_query_snapshots?date_from=eq.${encodeURIComponent(startDate)}&date_to=eq.${encodeURIComponent(endDate)}`,
     { method: "DELETE", headers: sbHeaders(userToken) }
   );
-  return upsert(userToken, table, conflict, rows);
+
+  return upsert(
+    userToken,
+    "yandex_query_snapshots",
+    "date_from,date_to,query_id",
+    rows
+  );
 }
 
 export async function POST(request: NextRequest) {
   const auth = request.headers.get("authorization") || "";
   const userToken = auth.startsWith("Bearer ") ? auth.slice(7).trim() : "";
-  if (!userToken) return NextResponse.json({ error: "Thiếu phiên đăng nhập Admin." }, { status: 401 });
+
+  if (!userToken) {
+    return NextResponse.json({ error: "Thiếu phiên đăng nhập Admin." }, { status: 401 });
+  }
 
   const admin = await verifyAdmin(userToken);
   if (!admin.ok || !admin.userId) {
@@ -264,52 +298,69 @@ export async function POST(request: NextRequest) {
 
   const yandexToken = String(process.env.YANDEX_OAUTH_TOKEN || "").trim();
   if (!yandexToken) {
-    return NextResponse.json({ error: "Thiếu YANDEX_OAUTH_TOKEN trong Vercel Production." }, { status: 500 });
+    return NextResponse.json(
+      { error: "Thiếu YANDEX_OAUTH_TOKEN trong Vercel Production." },
+      { status: 500 }
+    );
   }
 
   let runId = "";
+
   try {
     const body = await request.json().catch(() => ({}));
     const mode = body?.mode === "test" ? "test" : "sync";
     const requestedDays = Math.max(7, Math.min(Number(body?.days || 28), 180));
+
     const end = new Date(Date.now() - 86400000);
     const start = new Date(end.getTime() - (requestedDays - 1) * 86400000);
     const startDate = isoDate(start);
     const endDate = isoDate(end);
 
     const identity = await getWebmasterIdentity(yandexToken);
-    const metrica = await getMetricaTotals(yandexToken, startDate, endDate);
 
     if (mode === "test") {
       return NextResponse.json({
         ok: true,
         mode: "test",
-        webmaster: { user_id: identity.userId, host_id: identity.hostId, host_url: identity.hostUrl },
-        metrica: { counter_id: YANDEX_COUNTER_ID, visits: metrica.visits, users: metrica.users, pageviews: metrica.pageviews },
+        source: "yandex_webmaster",
+        webmaster: {
+          user_id: identity.userId,
+          host_id: identity.hostId,
+          host_url: identity.hostUrl,
+        },
         date_from: startDate,
         date_to: endDate,
       });
     }
 
     runId = await insertRun(userToken, admin.userId, startDate, endDate);
-    const [daily, queries, landings] = await Promise.all([
+
+    const [daily, queries] = await Promise.all([
       getWebmasterDaily(yandexToken, identity.userId, identity.hostId, startDate, endDate),
       getWebmasterQueries(yandexToken, identity.userId, identity.hostId, startDate, endDate),
-      getMetricaLandings(yandexToken, startDate, endDate),
     ]);
 
-    const webmasterRows = await upsert(userToken, "yandex_webmaster_daily", "date,device", daily);
+    const webmasterRows = await upsert(
+      userToken,
+      "yandex_webmaster_daily",
+      "date,device",
+      daily
+    );
+
     const actualQueryFrom = queries?.[0]?.date_from || startDate;
     const actualQueryTo = queries?.[0]?.date_to || endDate;
-    const queryRows = await replaceRange(userToken, "yandex_query_snapshots", actualQueryFrom, actualQueryTo, queries, "date_from,date_to,query_id");
-    await upsert(userToken, "yandex_metrica_snapshots", "date_from,date_to", [metrica]);
-    const landingRows = await replaceRange(userToken, "yandex_metrica_landing_snapshots", startDate, endDate, landings, "date_from,date_to,landing_page");
+    const queryRows = await replaceQueryRange(
+      userToken,
+      actualQueryFrom,
+      actualQueryTo,
+      queries
+    );
 
     await updateRun(userToken, runId, {
       completed_at: new Date().toISOString(),
       webmaster_rows: webmasterRows,
       query_rows: queryRows,
-      metrica_rows: landingRows + 1,
+      metrica_rows: 0,
       status: "success",
       error_message: null,
     });
@@ -317,22 +368,28 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       ok: true,
       mode: "sync",
+      source: "yandex_webmaster",
       date_from: startDate,
       date_to: endDate,
       webmaster_rows: webmasterRows,
       query_rows: queryRows,
-      metrica_rows: landingRows + 1,
+      metrica_rows: 0,
       host_url: identity.hostUrl,
-      counter_id: YANDEX_COUNTER_ID,
     });
   } catch (error: any) {
-    const message = String(error?.message || "Không đồng bộ được Yandex.").slice(0, 1000);
+    const message = String(error?.message || "Không đồng bộ được Yandex Webmaster.").slice(0, 1000);
+
     if (runId) {
       try {
-        await updateRun(userToken, runId, { completed_at: new Date().toISOString(), status: "failed", error_message: message });
+        await updateRun(userToken, runId, {
+          completed_at: new Date().toISOString(),
+          status: "failed",
+          error_message: message,
+        });
       } catch {}
     }
-    console.error("Yandex sync failed", message);
+
+    console.error("Yandex Webmaster sync failed", message);
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
