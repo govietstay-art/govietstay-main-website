@@ -1,0 +1,34 @@
+name: GoVietStay IndexNow
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  notify-yandex:
+    name: Notify Yandex IndexNow
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Wait for Vercel deployment
+        run: sleep 90
+
+      - name: Submit changed URLs to Yandex
+        env:
+          INDEXNOW_BEFORE: ${{ github.event.before }}
+          INDEXNOW_AFTER: ${{ github.sha }}
+        run: node scripts/indexnow-submit.mjs --changed "$INDEXNOW_BEFORE" "$INDEXNOW_AFTER"
