@@ -28,6 +28,32 @@ const languageAlternates = (englishPath: string, russianPath: string) => ({
 export default function sitemap(): MetadataRoute.Sitemap {
   const corePages: MetadataRoute.Sitemap = [
     {
+      url: `${BASE_URL}/en/cruise-port-shore-excursions`,
+      lastModified: new Date("2026-09-12T00:00:00.000Z"),
+      changeFrequency: "weekly",
+      priority: 0.95,
+      alternates: {
+        languages: {
+          en: `${BASE_URL}/en/cruise-port-shore-excursions`,
+          ru: `${BASE_URL}/ru/cruise-port-shore-excursions`,
+          "x-default": `${BASE_URL}/en/cruise-port-shore-excursions`,
+        },
+      },
+    },
+    {
+      url: `${BASE_URL}/ru/cruise-port-shore-excursions`,
+      lastModified: new Date("2026-09-12T00:00:00.000Z"),
+      changeFrequency: "weekly",
+      priority: 0.95,
+      alternates: {
+        languages: {
+          en: `${BASE_URL}/en/cruise-port-shore-excursions`,
+          ru: `${BASE_URL}/ru/cruise-port-shore-excursions`,
+          "x-default": `${BASE_URL}/en/cruise-port-shore-excursions`,
+        },
+      },
+    },
+    {
       url: BASE_URL,
       lastModified: SITE_UPDATED,
       changeFrequency: "weekly",

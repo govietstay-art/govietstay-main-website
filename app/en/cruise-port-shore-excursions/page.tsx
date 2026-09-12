@@ -3,11 +3,55 @@ import JsonLd from "../../../components/JsonLd";
 
 const BASE_URL = "https://www.govietstay.com";
 const canonical = `${BASE_URL}/en/cruise-port-shore-excursions`;
+const LAST_CHECKED = "12 September 2026";
+
+// Official Chan May Port vessel plan checked on 12 September 2026.
+// These are port ETA/ETD values, NOT the passenger's all-aboard time.
+const chanMayCalls: string[][] = [
+  ["14 Sep 2026", "Adora Magic City", "08:00", "20:00"],
+  ["22 Sep 2026", "Dream", "06:00", "15:00"],
+  ["13 Oct 2026", "Royal Princess", "07:00", "17:00"],
+  ["16 Oct 2026", "Viking Venus", "06:00", "18:00"],
+  ["17 Oct 2026", "Dream", "08:00", "21:00"],
+  ["26 Oct 2026", "Navigator of the Seas", "07:00", "19:00"],
+  ["03 Nov 2026", "Dream", "08:00", "21:00"],
+  ["04 Nov 2026", "Viking Orion", "08:00", "18:30"],
+  ["17 Nov 2026", "Celebrity Millennium", "07:00", "18:00"],
+  ["18 Nov 2026", "Spectrum of the Seas", "07:00", "19:00"],
+  ["25 Nov 2026", "Adora Flora City", "08:00", "20:00"],
+  ["05 Dec 2026", "Diamond Princess", "07:00", "17:00"],
+  ["07 Dec 2026", "Adora Flora City", "07:00", "20:00"],
+  ["16 Dec 2026", "Diamond Princess", "07:00", "17:00"],
+  ["21 Dec 2026", "Sapphire Princess", "07:00", "19:00"],
+  ["25 Dec 2026", "Nautica", "07:00", "18:00"],
+  ["26 Dec 2026", "Silver Muse", "08:00", "23:00"],
+  ["27 Dec 2026", "Celebrity Solstice", "07:00", "18:00"],
+  ["30 Dec 2026", "Norwegian Jade", "07:00", "15:30"],
+];
+
+// Advance Da Nang-region cruise planning reference.
+// Final berth (Tien Sa / Chan May / other permitted berth) must be reconfirmed.
+const daNangRegionalCalls: string[][] = [
+  ["04 Nov 2026", "Azamara Pursuit", "08:00", "20:00"],
+  ["17 Nov 2026", "Star Seeker", "06:00", "23:00"],
+  ["24 Nov 2026", "Seabourn Encore", "07:00", "17:00"],
+  ["25 Nov 2026", "Ritz-Carlton Luminara", "08:00", "20:00"],
+  ["27 Nov 2026", "Westerdam", "08:00", "18:00"],
+  ["15 Dec 2026", "Westerdam", "07:00", "23:00"],
+  ["29 Dec 2026", "Star Seeker", "06:00", "23:00"],
+  ["31 Dec 2026", "Seabourn Encore", "08:00", "18:00"],
+  ["06 Jan 2027", "Celebrity Solstice", "08:00", "20:00"],
+  ["08 Jan 2027", "Seabourn Encore", "08:00", "18:00"],
+  ["21 Jan 2027", "Celebrity Solstice", "07:00", "19:00"],
+  ["24 Jan 2027", "Norwegian Jade", "07:00", "15:30"],
+  ["27 Jan 2027", "Silver Muse", "07:00", "23:00"],
+  ["30 Jan 2027", "Celebrity Solstice", "08:00", "20:00"],
+];
 
 export const metadata: Metadata = {
-  title: "Chan May & Tien Sa Cruise Port Shore Excursions | GoVietStay",
+  title: "Chan May & Tien Sa Cruise Port Shore Excursions 2026–2027 | GoVietStay",
   description:
-    "Private shore excursions from Chan May Port and Tien Sa Port to Hue, Da Nang, Hoi An, Ba Na Hills and Lang Co. Port pickup coordination, realistic travel times and return-to-ship planning.",
+    "Private shore excursions from Chan May and Tien Sa ports with current cruise-call planning, port pickup coordination, Hue, Da Nang, Hoi An, Ba Na Hills and safe return-to-ship timing.",
   keywords: [
     "Chan May Port shore excursion",
     "Tien Sa Port shore excursion",
@@ -120,6 +164,31 @@ const faq = [
   },
 ];
 
+function ScheduleTable({ rows }: { rows: string[][] }) {
+  return (
+    <div className="mt-5 overflow-x-auto rounded-2xl border border-white/10">
+      <table className="min-w-full text-left text-sm">
+        <thead className="bg-white/10 text-slate-100">
+          <tr>
+            <th className="px-4 py-3">Date</th>
+            <th className="px-4 py-3">Ship</th>
+            <th className="px-4 py-3">Port ETA</th>
+            <th className="px-4 py-3">Port ETD</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-white/10">
+          {rows.map((row) => (
+            <tr key={`${row[0]}-${row[1]}`} className="bg-slate-950/40">
+              {row.map((cell, index) => (
+                <td key={`${cell}-${index}`} className="whitespace-nowrap px-4 py-3 text-slate-300">{cell}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
 export default function Page() {
   const graph = {
     "@context": "https://schema.org",
@@ -150,6 +219,20 @@ export default function Page() {
       <section className="relative overflow-hidden border-b border-white/10">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(14,165,233,0.25),transparent_35%),radial-gradient(circle_at_bottom_left,rgba(16,185,129,0.18),transparent_30%)]" />
         <div className="relative mx-auto max-w-6xl px-5 py-16 md:py-24">
+          <div className="mb-8 flex flex-wrap items-center justify-between gap-5">
+            <a href="/" aria-label="GoVietStay home" className="inline-flex rounded-2xl bg-white p-2 shadow-2xl">
+              <img
+                src="/brand/govietstay-official-logo.jpg"
+                alt="GoVietStay official logo"
+                className="h-16 w-auto rounded-xl object-contain md:h-20"
+              />
+            </a>
+            <div className="text-right text-xs leading-6 text-slate-400">
+              <div className="font-bold text-slate-200">Trusted Local Support</div>
+              <div>Da Nang • Hoi An • Hue • Phu Quoc</div>
+              <div>WhatsApp +84 937 762 607</div>
+            </div>
+          </div>
           <p className="mb-4 text-sm font-semibold uppercase tracking-[0.25em] text-sky-300">GoVietStay • Central Vietnam Cruise Support</p>
           <h1 className="max-w-5xl text-4xl font-black leading-tight md:text-6xl">Chan May & Tien Sa Port Shore Excursions</h1>
           <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">Private shore days built around one question: <strong className="text-white">what can you realistically see and still return to your ship safely?</strong></p>
@@ -175,6 +258,51 @@ export default function Page() {
         </div>
       </section>
 
+      <section id="schedule" className="border-y border-white/10 bg-white/[0.03]">
+        <div className="mx-auto max-w-6xl px-5 py-14">
+          <div className="flex flex-wrap items-end justify-between gap-5">
+            <div>
+              <p className="text-sm font-bold uppercase tracking-[0.2em] text-emerald-300">Cruise schedule watch</p>
+              <h2 className="mt-2 text-3xl font-black md:text-4xl">Upcoming cruise calls we are tracking</h2>
+            </div>
+            <div className="rounded-full border border-white/10 px-4 py-2 text-xs text-slate-400">Last checked: {LAST_CHECKED}</div>
+          </div>
+
+          <div className="mt-8 rounded-3xl border border-emerald-400/20 bg-emerald-400/5 p-5 md:p-7">
+            <h3 className="text-2xl font-black">Chan May — official port plan</h3>
+            <p className="mt-2 max-w-4xl leading-7 text-slate-300">
+              These passenger-cruise calls are taken from the published Chan May Port vessel plan. Times are port ETA/ETD, not your personal all-aboard deadline. Operational changes are possible.
+            </p>
+            <ScheduleTable rows={chanMayCalls} />
+            <p className="mt-4 text-xs leading-6 text-slate-400">
+              Source checked 12 Sep 2026: Chan May Port official “Kế hoạch tàu vào cảng”. Always reconfirm with your cruise line before leaving the ship.
+            </p>
+            <a className="mt-3 inline-block text-sm font-bold text-sky-300 underline" href="https://www.chanmayport.com.vn/ke-hoach-tau-vao-cang" target="_blank" rel="noreferrer">
+              Official Chan May Port vessel plan ↗
+            </a>
+          </div>
+
+          <div className="mt-6 rounded-3xl border border-sky-400/20 bg-sky-400/5 p-5 md:p-7">
+            <h3 className="text-2xl font-black">Da Nang / Tien Sa — advance planning reference</h3>
+            <p className="mt-2 max-w-4xl leading-7 text-slate-300">
+              These published Da Nang-region calls help us prepare drivers and guides early. <strong className="text-white">They do not prove the final berth is Tien Sa.</strong> Some cruise listings use “Da Nang” for the wider destination while the actual berth may be Chan May, Tien Sa or another permitted berth.
+            </p>
+            <ScheduleTable rows={daNangRegionalCalls} />
+            <p className="mt-4 text-xs leading-6 text-slate-400">
+              Planning reference cross-checked against public cruise calendars. Final berth, pickup permission and meeting point are reconfirmed for the specific ship call.
+            </p>
+            <div className="mt-3 flex flex-wrap gap-4 text-sm font-bold">
+              <a className="text-sky-300 underline" href="https://danangport.com/dich-vu-khach-hang/?lang=en" target="_blank" rel="noreferrer">Da Nang Port customer services ↗</a>
+              <a className="text-sky-300 underline" href="https://www.cruisetimetables.com/da-nang-vietnam-cruise-ship-schedule.html" target="_blank" rel="noreferrer">Public Da Nang cruise calendar ↗</a>
+            </div>
+          </div>
+
+          <div className="mt-6 rounded-2xl border border-amber-300/30 bg-amber-300/10 p-5 leading-7 text-amber-50">
+            <strong>Do not plan from ETD alone.</strong> Your ship’s all-aboard time is normally earlier. GoVietStay plans the route backward from the all-aboard time supplied by the passenger and keeps a practical return buffer.
+          </div>
+        </div>
+      </section>
+
       <section id="itineraries" className="border-y border-white/10 bg-white/[0.03]">
         <div className="mx-auto max-w-6xl px-5 py-14">
           <h2 className="text-3xl font-black md:text-4xl">How much can you really see in one port day?</h2>
@@ -197,6 +325,30 @@ export default function Page() {
           <div className="rounded-3xl border border-emerald-400/20 bg-emerald-400/10 p-7">
             <h2 className="text-2xl font-black">Our cruise-day rule</h2>
             <p className="mt-4 leading-7 text-slate-200">We would rather remove one attraction than create an unsafe return. Your itinerary is planned backward from all aboard, with a practical buffer for road and port conditions.</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-y border-white/10 bg-slate-900/70">
+        <div className="mx-auto max-w-6xl px-5 py-14">
+          <div className="grid gap-8 lg:grid-cols-[.75fr_1.25fr] lg:items-center">
+            <div className="rounded-3xl bg-white p-5">
+              <img src="/brand/govietstay-official-logo.jpg" alt="GoVietStay official logo" className="mx-auto h-28 w-auto rounded-xl object-contain" />
+            </div>
+            <div>
+              <p className="text-sm font-bold uppercase tracking-[0.2em] text-emerald-300">Real local coordination</p>
+              <h2 className="mt-2 text-3xl font-black">Who is coordinating your cruise day?</h2>
+              <p className="mt-4 leading-7 text-slate-300">
+                GoVietStay is a Vietnam travel support company coordinating private tours, transfers and local assistance in Central Vietnam. Our Da Nang coordination office is <strong className="text-white">Room 106, Vicoland Building, 01 Le Thanh Nghi, Hoa Cuong Ward, Da Nang, Vietnam</strong>.
+              </p>
+              <div className="mt-5 grid gap-3 sm:grid-cols-2 text-sm">
+                <div className="rounded-xl border border-white/10 bg-white/5 p-4"><strong>Office hours</strong><br />07:30–22:00 daily</div>
+                <div className="rounded-xl border border-white/10 bg-white/5 p-4"><strong>WhatsApp</strong><br />+84 937 762 607</div>
+                <div className="rounded-xl border border-white/10 bg-white/5 p-4"><strong>Email</strong><br />govietstay@gmail.com</div>
+                <div className="rounded-xl border border-white/10 bg-white/5 p-4"><strong>Website</strong><br />www.govietstay.com</div>
+              </div>
+              <p className="mt-4 text-xs leading-6 text-slate-500">The Da Nang office is our coordination office, not a cruise terminal. The exact port meeting point is confirmed separately for your ship call.</p>
+            </div>
           </div>
         </div>
       </section>
