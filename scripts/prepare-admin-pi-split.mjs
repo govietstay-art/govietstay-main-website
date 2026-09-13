@@ -31,7 +31,7 @@ replaceOnce(
 );
 
 replaceOnce(
-  '{tab==="partners"&&<PartnerTools supabase={supabase} days={days}/>} ',
+  '{tab==="partners"&&<PartnerTools supabase={supabase} days={days}/>}',
   '{tab==="partners"&&<PartnerTools supabase={supabase} days={days}/>}\n      {tab==="pi_partners"&&<PiPartnerTools supabase={supabase} days={days}/>} ',
   "partner render"
 );
