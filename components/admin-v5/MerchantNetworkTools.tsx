@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import MerchantOnboardingForm from "./MerchantOnboardingForm";
+import MerchantVoucherTools from "./MerchantVoucherTools";
 import QRCode from "qrcode";
 
 type MerchantRow = {
@@ -63,6 +64,7 @@ export default function MerchantNetworkTools({supabase,days}:any){
 
   return <>
     <MerchantOnboardingForm supabase={supabase} onCreated={load}/>
+    <MerchantVoucherTools supabase={supabase}/>
     {error&&<div className="gva-msg err">{error}</div>}
     <div className="gva-analytics-note" style={{marginBottom:15}}>
       <b>Multi-Merchant Lab:</b> cùng một Pi Partner ID có thể tham gia nhiều doanh nghiệp. GoVietStay là Merchant thật đầu tiên; <b>Demo Lotus Spa (Sandbox)</b> chỉ để chứng minh kiến trúc và không phải doanh nghiệp thật.
