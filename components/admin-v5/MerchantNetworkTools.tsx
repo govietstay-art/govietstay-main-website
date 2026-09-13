@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import MerchantOnboardingForm from "./MerchantOnboardingForm";
 import QRCode from "qrcode";
 
 type MerchantRow = {
@@ -61,6 +62,7 @@ export default function MerchantNetworkTools({supabase,days}:any){
   async function copy(v:string,k:string){try{await navigator.clipboard.writeText(v);setCopied(k);setTimeout(()=>setCopied(""),1500)}catch{setError("Không copy được link.")}}
 
   return <>
+    <MerchantOnboardingForm supabase={supabase} onCreated={load}/>
     {error&&<div className="gva-msg err">{error}</div>}
     <div className="gva-analytics-note" style={{marginBottom:15}}>
       <b>Multi-Merchant Lab:</b> cùng một Pi Partner ID có thể tham gia nhiều doanh nghiệp. GoVietStay là Merchant thật đầu tiên; <b>Demo Lotus Spa (Sandbox)</b> chỉ để chứng minh kiến trúc và không phải doanh nghiệp thật.
