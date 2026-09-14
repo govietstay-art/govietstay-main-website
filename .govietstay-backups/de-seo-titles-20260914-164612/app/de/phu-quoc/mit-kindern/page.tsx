@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import GermanLanding, { type GermanLandingConfig } from "../../_shared/GermanLanding";
 
 export const metadata: Metadata = {
-  title: "Phú Quốc mit Kindern: Familienurlaub | GoVietStay",
+  title: "Phú Quốc mit Kindern: Familienurlaub, Strände & Ausflüge | GoVietStay",
   description: "Phú Quốc mit Kindern: Hotelregion, Strand, Safari, Inseln, Pausen und private Tagesplanung für Familien mit Baby oder Kleinkind.",
   keywords: ["Phu Quoc mit Kindern", "Phu Quoc mit Kleinkind", "Phu Quoc mit Baby", "Phu Quoc Familienurlaub", "Phu Quoc Familie"],
   alternates: { canonical: "https://www.govietstay.com/de/phu-quoc/mit-kindern" },
@@ -11,14 +11,14 @@ export const metadata: Metadata = {
     type: "article",
     locale: "de_DE",
     url: "https://www.govietstay.com/de/phu-quoc/mit-kindern",
-    title: "Phú Quốc mit Kindern: Familienurlaub | GoVietStay",
+    title: "Phú Quốc mit Kindern: Familienurlaub, Strände & Ausflüge | GoVietStay",
     description: "Phú Quốc mit Kindern: Hotelregion, Strand, Safari, Inseln, Pausen und private Tagesplanung für Familien mit Baby oder Kleinkind.",
     siteName: "GoVietStay",
     images: [{ url: "https://www.govietstay.com/brand/govietstay-official-logo.jpg", alt: "GoVietStay" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Phú Quốc mit Kindern: Familienurlaub | GoVietStay",
+    title: "Phú Quốc mit Kindern: Familienurlaub, Strände & Ausflüge | GoVietStay",
     description: "Phú Quốc mit Kindern: Hotelregion, Strand, Safari, Inseln, Pausen und private Tagesplanung für Familien mit Baby oder Kleinkind.",
   },
 };

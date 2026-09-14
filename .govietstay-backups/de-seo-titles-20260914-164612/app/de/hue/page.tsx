@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import GermanLanding, { type GermanLandingConfig } from "../_shared/GermanLanding";
 
 export const metadata: Metadata = {
-  title: "Huế Sehenswürdigkeiten & Tagesausflug | GoVietStay",
+  title: "Huế Vietnam: Sehenswürdigkeiten, Dauer & Tagesausflug | GoVietStay",
   description: "Huế Vietnam auf Deutsch: Kaiserstadt, Königsgräber, Pagoden, Aufenthaltsdauer und privater Tagesausflug ab Đà Nẵng oder Hội An.",
   keywords: ["Hue Vietnam", "Hue Vietnam Sehenswürdigkeiten", "Hue Vietnam wie lange", "Hue Vietnam lohnt es sich", "Hue Tagesausflug Da Nang", "Hue Kaiserstadt"],
   alternates: { canonical: "https://www.govietstay.com/de/hue" },
@@ -11,14 +11,14 @@ export const metadata: Metadata = {
     type: "article",
     locale: "de_DE",
     url: "https://www.govietstay.com/de/hue",
-    title: "Huế Sehenswürdigkeiten & Tagesausflug | GoVietStay",
+    title: "Huế Vietnam: Sehenswürdigkeiten, Dauer & Tagesausflug | GoVietStay",
     description: "Huế Vietnam auf Deutsch: Kaiserstadt, Königsgräber, Pagoden, Aufenthaltsdauer und privater Tagesausflug ab Đà Nẵng oder Hội An.",
     siteName: "GoVietStay",
     images: [{ url: "https://www.govietstay.com/brand/govietstay-official-logo.jpg", alt: "GoVietStay" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Huế Sehenswürdigkeiten & Tagesausflug | GoVietStay",
+    title: "Huế Vietnam: Sehenswürdigkeiten, Dauer & Tagesausflug | GoVietStay",
     description: "Huế Vietnam auf Deutsch: Kaiserstadt, Königsgräber, Pagoden, Aufenthaltsdauer und privater Tagesausflug ab Đà Nẵng oder Hội An.",
   },
 };

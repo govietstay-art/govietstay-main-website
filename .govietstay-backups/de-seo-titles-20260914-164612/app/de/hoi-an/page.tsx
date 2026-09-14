@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import GermanLanding, { type GermanLandingConfig } from "../_shared/GermanLanding";
 
 export const metadata: Metadata = {
-  title: "Hội An Sehenswürdigkeiten & Tipps | GoVietStay",
+  title: "Hội An Sehenswürdigkeiten: Altstadt, Umgebung & Tipps | GoVietStay",
   description: "Hội An Sehenswürdigkeiten auf Deutsch: Altstadt, beste Tageszeit, Umgebung, Essen und sinnvolle Kombinationen ab Đà Nẵng.",
   keywords: ["Hoi An Sehenswürdigkeiten", "Hoi An Altstadt Sehenswürdigkeiten", "Hoi An Umgebung", "Hoi An Tagesausflug", "Da Nang Hoi An Sehenswürdigkeiten", "Hoi An Sightseeing"],
   alternates: { canonical: "https://www.govietstay.com/de/hoi-an" },
@@ -11,14 +11,14 @@ export const metadata: Metadata = {
     type: "article",
     locale: "de_DE",
     url: "https://www.govietstay.com/de/hoi-an",
-    title: "Hội An Sehenswürdigkeiten & Tipps | GoVietStay",
+    title: "Hội An Sehenswürdigkeiten: Altstadt, Umgebung & Tipps | GoVietStay",
     description: "Hội An Sehenswürdigkeiten auf Deutsch: Altstadt, beste Tageszeit, Umgebung, Essen und sinnvolle Kombinationen ab Đà Nẵng.",
     siteName: "GoVietStay",
     images: [{ url: "https://www.govietstay.com/brand/govietstay-official-logo.jpg", alt: "GoVietStay" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Hội An Sehenswürdigkeiten & Tipps | GoVietStay",
+    title: "Hội An Sehenswürdigkeiten: Altstadt, Umgebung & Tipps | GoVietStay",
     description: "Hội An Sehenswürdigkeiten auf Deutsch: Altstadt, beste Tageszeit, Umgebung, Essen und sinnvolle Kombinationen ab Đà Nẵng.",
   },
 };

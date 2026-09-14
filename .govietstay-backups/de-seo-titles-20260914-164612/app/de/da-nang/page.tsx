@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import GermanLanding, { type GermanLandingConfig } from "../_shared/GermanLanding";
 
 export const metadata: Metadata = {
-  title: "Đà Nẵng Sehenswürdigkeiten 2026/27 | GoVietStay",
+  title: "Đà Nẵng Sehenswürdigkeiten & Reisetipps 2026/27 | GoVietStay",
   description: "Đà Nẵng Sehenswürdigkeiten, Ausflüge, Aufenthaltsdauer und Umgebung auf Deutsch. Praktischer Guide für eine Reise zwischen Hội An, Huế und Bà Nà Hills.",
   keywords: ["Da Nang Sehenswürdigkeiten", "Da Nang Urlaub", "Da Nang Ausflüge", "Da Nang Umgebung Sehenswürdigkeiten", "Da Nang mit Kindern", "Da Nang Sightseeing"],
   alternates: { canonical: "https://www.govietstay.com/de/da-nang" },
@@ -11,14 +11,14 @@ export const metadata: Metadata = {
     type: "article",
     locale: "de_DE",
     url: "https://www.govietstay.com/de/da-nang",
-    title: "Đà Nẵng Sehenswürdigkeiten 2026/27 | GoVietStay",
+    title: "Đà Nẵng Sehenswürdigkeiten & Reisetipps 2026/27 | GoVietStay",
     description: "Đà Nẵng Sehenswürdigkeiten, Ausflüge, Aufenthaltsdauer und Umgebung auf Deutsch. Praktischer Guide für eine Reise zwischen Hội An, Huế und Bà Nà Hills.",
     siteName: "GoVietStay",
     images: [{ url: "https://www.govietstay.com/brand/govietstay-official-logo.jpg", alt: "GoVietStay" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Đà Nẵng Sehenswürdigkeiten 2026/27 | GoVietStay",
+    title: "Đà Nẵng Sehenswürdigkeiten & Reisetipps 2026/27 | GoVietStay",
     description: "Đà Nẵng Sehenswürdigkeiten, Ausflüge, Aufenthaltsdauer und Umgebung auf Deutsch. Praktischer Guide für eine Reise zwischen Hội An, Huế und Bà Nà Hills.",
   },
 };

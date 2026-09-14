@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import GermanLanding, { type GermanLandingConfig } from "../../_shared/GermanLanding";
 
 export const metadata: Metadata = {
-  title: "Phú Quốc: 3 oder 4 Inseln? | GoVietStay",
+  title: "Phú Quốc 3 oder 4 Inseln? Vergleich für Schnorcheln & Hon Thom | GoVietStay",
   description: "Phú Quốc 3 oder 4 Inseln: Unterschiede bei Dauer, Schnorcheln, Hon-Thom-Seilbahn und Familien. Entscheidungshilfe vor einer privaten Inseltour.",
   keywords: ["Phu Quoc 3 Inseln", "Phu Quoc 4 Inseln", "Phu Quoc Inseltour", "Phu Quoc Schnorcheln", "Hon Thom Seilbahn", "An Thoi Inseln"],
   alternates: { canonical: "https://www.govietstay.com/de/phu-quoc/3-oder-4-inseln" },
@@ -11,14 +11,14 @@ export const metadata: Metadata = {
     type: "article",
     locale: "de_DE",
     url: "https://www.govietstay.com/de/phu-quoc/3-oder-4-inseln",
-    title: "Phú Quốc: 3 oder 4 Inseln? | GoVietStay",
+    title: "Phú Quốc 3 oder 4 Inseln? Vergleich für Schnorcheln & Hon Thom | GoVietStay",
     description: "Phú Quốc 3 oder 4 Inseln: Unterschiede bei Dauer, Schnorcheln, Hon-Thom-Seilbahn und Familien. Entscheidungshilfe vor einer privaten Inseltour.",
     siteName: "GoVietStay",
     images: [{ url: "https://www.govietstay.com/brand/govietstay-official-logo.jpg", alt: "GoVietStay" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Phú Quốc: 3 oder 4 Inseln? | GoVietStay",
+    title: "Phú Quốc 3 oder 4 Inseln? Vergleich für Schnorcheln & Hon Thom | GoVietStay",
     description: "Phú Quốc 3 oder 4 Inseln: Unterschiede bei Dauer, Schnorcheln, Hon-Thom-Seilbahn und Familien. Entscheidungshilfe vor einer privaten Inseltour.",
   },
 };

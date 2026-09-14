@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import GermanLanding, { type GermanLandingConfig } from "../../_shared/GermanLanding";
 
 export const metadata: Metadata = {
-  title: "Phú Quốc beste Reisezeit 2026/27 | GoVietStay",
+  title: "Phú Quốc beste Reisezeit: Wetter & Regenzeit 2026/27 | GoVietStay",
   description: "Phú Quốc beste Reisezeit auf Deutsch: Trockenzeit, Regenzeit, Wetter nach Saison und Planung für Strand, Schnorcheln und Familien.",
   keywords: ["Phu Quoc beste Reisezeit", "Phu Quoc Reisezeit", "Phu Quoc Regenzeit", "Phu Quoc Wetter", "beste Reisezeit Phu Quoc Vietnam", "Phu Quoc Reiseklima"],
   alternates: { canonical: "https://www.govietstay.com/de/phu-quoc/beste-reisezeit" },
@@ -11,14 +11,14 @@ export const metadata: Metadata = {
     type: "article",
     locale: "de_DE",
     url: "https://www.govietstay.com/de/phu-quoc/beste-reisezeit",
-    title: "Phú Quốc beste Reisezeit 2026/27 | GoVietStay",
+    title: "Phú Quốc beste Reisezeit: Wetter & Regenzeit 2026/27 | GoVietStay",
     description: "Phú Quốc beste Reisezeit auf Deutsch: Trockenzeit, Regenzeit, Wetter nach Saison und Planung für Strand, Schnorcheln und Familien.",
     siteName: "GoVietStay",
     images: [{ url: "https://www.govietstay.com/brand/govietstay-official-logo.jpg", alt: "GoVietStay" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Phú Quốc beste Reisezeit 2026/27 | GoVietStay",
+    title: "Phú Quốc beste Reisezeit: Wetter & Regenzeit 2026/27 | GoVietStay",
     description: "Phú Quốc beste Reisezeit auf Deutsch: Trockenzeit, Regenzeit, Wetter nach Saison und Planung für Strand, Schnorcheln und Familien.",
   },
 };

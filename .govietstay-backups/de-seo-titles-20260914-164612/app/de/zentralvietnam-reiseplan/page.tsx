@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import GermanLanding, { type GermanLandingConfig } from "../_shared/GermanLanding";
 
 export const metadata: Metadata = {
-  title: "Zentralvietnam Reiseroute: 3–5 Tage | GoVietStay",
+  title: "Zentralvietnam Reiseroute: 3–5 Tage Đà Nẵng, Hội An & Huế | GoVietStay",
   description: "Zentralvietnam Reiseroute für 3, 4 oder 5 Tage: Đà Nẵng, Hội An, Huế und Bà Nà sinnvoll verteilen, ohne die Reise zu überladen.",
   keywords: ["Zentralvietnam Reiseroute", "Zentralvietnam Rundreise", "Zentralvietnam Reise", "Da Nang Hoi An Hue Reiseroute", "Zentralvietnam 3 Tage", "Zentralvietnam 5 Tage"],
   alternates: { canonical: "https://www.govietstay.com/de/zentralvietnam-reiseplan" },
@@ -11,14 +11,14 @@ export const metadata: Metadata = {
     type: "article",
     locale: "de_DE",
     url: "https://www.govietstay.com/de/zentralvietnam-reiseplan",
-    title: "Zentralvietnam Reiseroute: 3–5 Tage | GoVietStay",
+    title: "Zentralvietnam Reiseroute: 3–5 Tage Đà Nẵng, Hội An & Huế | GoVietStay",
     description: "Zentralvietnam Reiseroute für 3, 4 oder 5 Tage: Đà Nẵng, Hội An, Huế und Bà Nà sinnvoll verteilen, ohne die Reise zu überladen.",
     siteName: "GoVietStay",
     images: [{ url: "https://www.govietstay.com/brand/govietstay-official-logo.jpg", alt: "GoVietStay" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Zentralvietnam Reiseroute: 3–5 Tage | GoVietStay",
+    title: "Zentralvietnam Reiseroute: 3–5 Tage Đà Nẵng, Hội An & Huế | GoVietStay",
     description: "Zentralvietnam Reiseroute für 3, 4 oder 5 Tage: Đà Nẵng, Hội An, Huế und Bà Nà sinnvoll verteilen, ohne die Reise zu überladen.",
   },
 };

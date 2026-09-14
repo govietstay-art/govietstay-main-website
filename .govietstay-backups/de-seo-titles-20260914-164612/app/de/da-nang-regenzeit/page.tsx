@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import GermanLanding, { type GermanLandingConfig } from "../_shared/GermanLanding";
 
 export const metadata: Metadata = {
-  title: "Đà Nẵng Regenzeit: Wetter & Plan B | GoVietStay",
+  title: "Đà Nẵng Regenzeit: Wetter, Aktivitäten & Plan B | GoVietStay",
   description: "Đà Nẵng in der Regenzeit: Was von Oktober bis Januar realistisch ist, welche Aktivitäten funktionieren und wie man Hội An, Huế und Bà Nà flexibel plant.",
   keywords: ["Da Nang Regenzeit", "Da Nang Wetter November", "Da Nang Dezember Wetter", "Da Nang Oktober Wetter", "Hoi An Regenzeit", "Da Nang bei Regen"],
   alternates: { canonical: "https://www.govietstay.com/de/da-nang-regenzeit" },
@@ -11,14 +11,14 @@ export const metadata: Metadata = {
     type: "article",
     locale: "de_DE",
     url: "https://www.govietstay.com/de/da-nang-regenzeit",
-    title: "Đà Nẵng Regenzeit: Wetter & Plan B | GoVietStay",
+    title: "Đà Nẵng Regenzeit: Wetter, Aktivitäten & Plan B | GoVietStay",
     description: "Đà Nẵng in der Regenzeit: Was von Oktober bis Januar realistisch ist, welche Aktivitäten funktionieren und wie man Hội An, Huế und Bà Nà flexibel plant.",
     siteName: "GoVietStay",
     images: [{ url: "https://www.govietstay.com/brand/govietstay-official-logo.jpg", alt: "GoVietStay" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Đà Nẵng Regenzeit: Wetter & Plan B | GoVietStay",
+    title: "Đà Nẵng Regenzeit: Wetter, Aktivitäten & Plan B | GoVietStay",
     description: "Đà Nẵng in der Regenzeit: Was von Oktober bis Januar realistisch ist, welche Aktivitäten funktionieren und wie man Hội An, Huế und Bà Nà flexibel plant.",
   },
 };

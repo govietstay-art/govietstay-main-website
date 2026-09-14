@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import GermanLanding, { type GermanLandingConfig } from "../../_shared/GermanLanding";
 
 export const metadata: Metadata = {
-  title: "Phú Quốc individuelle Ausflüge | GoVietStay",
+  title: "Individuelle Ausflüge Phú Quốc: private Route nach Ihrem Tempo | GoVietStay",
   description: "Individuelle Ausflüge auf Phú Quốc: private Route für Paare, Familien und kleine Reisegruppen – mit Hotelabholung, flexiblem Tempo und klarer Planung.",
   keywords: ["Phu Quoc private Tour", "Phu Quoc individuelle Ausflüge", "Phu Quoc privat Tour", "private Tour Phu Quoc", "Phu Quoc private Ausflüge"],
   alternates: { canonical: "https://www.govietstay.com/de/phu-quoc/individuelle-ausfluege" },
@@ -11,14 +11,14 @@ export const metadata: Metadata = {
     type: "article",
     locale: "de_DE",
     url: "https://www.govietstay.com/de/phu-quoc/individuelle-ausfluege",
-    title: "Phú Quốc individuelle Ausflüge | GoVietStay",
+    title: "Individuelle Ausflüge Phú Quốc: private Route nach Ihrem Tempo | GoVietStay",
     description: "Individuelle Ausflüge auf Phú Quốc: private Route für Paare, Familien und kleine Reisegruppen – mit Hotelabholung, flexiblem Tempo und klarer Planung.",
     siteName: "GoVietStay",
     images: [{ url: "https://www.govietstay.com/brand/govietstay-official-logo.jpg", alt: "GoVietStay" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Phú Quốc individuelle Ausflüge | GoVietStay",
+    title: "Individuelle Ausflüge Phú Quốc: private Route nach Ihrem Tempo | GoVietStay",
     description: "Individuelle Ausflüge auf Phú Quốc: private Route für Paare, Familien und kleine Reisegruppen – mit Hotelabholung, flexiblem Tempo und klarer Planung.",
   },
 };

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import GermanLanding, { type GermanLandingConfig } from "./_shared/GermanLanding";
 
 export const metadata: Metadata = {
-  title: "Vietnam auf Deutsch: Zentralvietnam & Phú Quốc | GoVietStay",
+  title: "Vietnam-Reise auf Deutsch: Zentralvietnam & Phú Quốc | GoVietStay",
   description: "Deutschsprachige Reiseinformationen für Đà Nẵng, Hội An, Huế und Phú Quốc. Praktische Planung zuerst, private Reiseoptionen erst danach.",
   keywords: ["Vietnam Reise deutsch", "Zentralvietnam Reise", "Da Nang Sehenswürdigkeiten", "Hoi An Sehenswürdigkeiten", "Phu Quoc Urlaub", "Vietnam private Reise"],
   alternates: { canonical: "https://www.govietstay.com/de" },
@@ -11,14 +11,14 @@ export const metadata: Metadata = {
     type: "article",
     locale: "de_DE",
     url: "https://www.govietstay.com/de",
-    title: "Vietnam auf Deutsch: Zentralvietnam & Phú Quốc | GoVietStay",
+    title: "Vietnam-Reise auf Deutsch: Zentralvietnam & Phú Quốc | GoVietStay",
     description: "Deutschsprachige Reiseinformationen für Đà Nẵng, Hội An, Huế und Phú Quốc. Praktische Planung zuerst, private Reiseoptionen erst danach.",
     siteName: "GoVietStay",
     images: [{ url: "https://www.govietstay.com/brand/govietstay-official-logo.jpg", alt: "GoVietStay" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Vietnam auf Deutsch: Zentralvietnam & Phú Quốc | GoVietStay",
+    title: "Vietnam-Reise auf Deutsch: Zentralvietnam & Phú Quốc | GoVietStay",
     description: "Deutschsprachige Reiseinformationen für Đà Nẵng, Hội An, Huế und Phú Quốc. Praktische Planung zuerst, private Reiseoptionen erst danach.",
   },
 };

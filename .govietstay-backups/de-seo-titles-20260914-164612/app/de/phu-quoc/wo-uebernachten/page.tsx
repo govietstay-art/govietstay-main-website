@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import GermanLanding, { type GermanLandingConfig } from "../../_shared/GermanLanding";
 
 export const metadata: Metadata = {
-  title: "Phú Quốc: Wo übernachten? | GoVietStay",
+  title: "Wo auf Phú Quốc übernachten? Dương Đông, Ông Lang oder Süden | GoVietStay",
   description: "Wo auf Phú Quốc übernachten? Vergleich von Dương Đông, Ông Lang, Norden und Süden nach Strand, Restaurants, Ruhe, Familie und Ausflügen.",
   keywords: ["Phu Quoc beste Lage", "wo übernachten Phu Quoc", "Phu Quoc Unterkunft", "Ong Lang Phu Quoc", "Duong Dong Phu Quoc", "Phu Quoc Süden Hotel"],
   alternates: { canonical: "https://www.govietstay.com/de/phu-quoc/wo-uebernachten" },
@@ -11,14 +11,14 @@ export const metadata: Metadata = {
     type: "article",
     locale: "de_DE",
     url: "https://www.govietstay.com/de/phu-quoc/wo-uebernachten",
-    title: "Phú Quốc: Wo übernachten? | GoVietStay",
+    title: "Wo auf Phú Quốc übernachten? Dương Đông, Ông Lang oder Süden | GoVietStay",
     description: "Wo auf Phú Quốc übernachten? Vergleich von Dương Đông, Ông Lang, Norden und Süden nach Strand, Restaurants, Ruhe, Familie und Ausflügen.",
     siteName: "GoVietStay",
     images: [{ url: "https://www.govietstay.com/brand/govietstay-official-logo.jpg", alt: "GoVietStay" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Phú Quốc: Wo übernachten? | GoVietStay",
+    title: "Wo auf Phú Quốc übernachten? Dương Đông, Ông Lang oder Süden | GoVietStay",
     description: "Wo auf Phú Quốc übernachten? Vergleich von Dương Đông, Ông Lang, Norden und Süden nach Strand, Restaurants, Ruhe, Familie und Ausflügen.",
   },
 };

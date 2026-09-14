@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import GermanLanding, { type GermanLandingConfig } from "../_shared/GermanLanding";
 
 export const metadata: Metadata = {
-  title: "Phú Quốc Urlaub 2026/27: Tipps & Highlights | GoVietStay",
+  title: "Phú Quốc Urlaub 2026/27: Sehenswürdigkeiten & Reisetipps | GoVietStay",
   description: "Phú Quốc Urlaub auf Deutsch: Sehenswürdigkeiten, beste Regionen, Reisezeit, Inselerlebnisse und Planung für Paare und Familien.",
   keywords: ["Phu Quoc Urlaub", "Phu Quoc Sehenswürdigkeiten", "Phu Quoc Ausflüge", "Phu Quoc auf eigene Faust", "Phu Quoc Geheimtipps", "Phu Quoc deutsch"],
   alternates: { canonical: "https://www.govietstay.com/de/phu-quoc" },
@@ -11,14 +11,14 @@ export const metadata: Metadata = {
     type: "article",
     locale: "de_DE",
     url: "https://www.govietstay.com/de/phu-quoc",
-    title: "Phú Quốc Urlaub 2026/27: Tipps & Highlights | GoVietStay",
+    title: "Phú Quốc Urlaub 2026/27: Sehenswürdigkeiten & Reisetipps | GoVietStay",
     description: "Phú Quốc Urlaub auf Deutsch: Sehenswürdigkeiten, beste Regionen, Reisezeit, Inselerlebnisse und Planung für Paare und Familien.",
     siteName: "GoVietStay",
     images: [{ url: "https://www.govietstay.com/brand/govietstay-official-logo.jpg", alt: "GoVietStay" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Phú Quốc Urlaub 2026/27: Tipps & Highlights | GoVietStay",
+    title: "Phú Quốc Urlaub 2026/27: Sehenswürdigkeiten & Reisetipps | GoVietStay",
     description: "Phú Quốc Urlaub auf Deutsch: Sehenswürdigkeiten, beste Regionen, Reisezeit, Inselerlebnisse und Planung für Paare und Familien.",
   },
 };

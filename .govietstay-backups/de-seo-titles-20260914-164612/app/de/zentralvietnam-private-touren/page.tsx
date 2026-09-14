@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import GermanLanding, { type GermanLandingConfig } from "../_shared/GermanLanding";
 
 export const metadata: Metadata = {
-  title: "Zentralvietnam individuell: Đà Nẵng–Hội An–Huế | GoVietStay",
+  title: "Zentralvietnam individuell: Đà Nẵng, Hội An & Huế | GoVietStay",
   description: "Zentralvietnam individuell planen: Đà Nẵng, Hội An und Huế sinnvoll verbinden, Reisetempo verstehen und erst danach eine private Route organisieren.",
   keywords: ["Zentralvietnam Reise", "Zentralvietnam Reiseroute", "Zentralvietnam Rundreise", "Da Nang Hoi An Hue", "Zentralvietnam privat", "private Tour Zentralvietnam"],
   alternates: { canonical: "https://www.govietstay.com/de/zentralvietnam-private-touren" },
@@ -11,14 +11,14 @@ export const metadata: Metadata = {
     type: "article",
     locale: "de_DE",
     url: "https://www.govietstay.com/de/zentralvietnam-private-touren",
-    title: "Zentralvietnam individuell: Đà Nẵng–Hội An–Huế | GoVietStay",
+    title: "Zentralvietnam individuell: Đà Nẵng, Hội An & Huế | GoVietStay",
     description: "Zentralvietnam individuell planen: Đà Nẵng, Hội An und Huế sinnvoll verbinden, Reisetempo verstehen und erst danach eine private Route organisieren.",
     siteName: "GoVietStay",
     images: [{ url: "https://www.govietstay.com/brand/govietstay-official-logo.jpg", alt: "GoVietStay" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Zentralvietnam individuell: Đà Nẵng–Hội An–Huế | GoVietStay",
+    title: "Zentralvietnam individuell: Đà Nẵng, Hội An & Huế | GoVietStay",
     description: "Zentralvietnam individuell planen: Đà Nẵng, Hội An und Huế sinnvoll verbinden, Reisetempo verstehen und erst danach eine private Route organisieren.",
   },
 };
