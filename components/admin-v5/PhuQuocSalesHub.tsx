@@ -13,6 +13,19 @@ import {
 
 type Props = { supabase: any; adminStaff?: any };
 type Staff = { id: string; display_name: string; sales_code: string };
+type PartnerMasterRow = { id: string; name: string; ref_code: string; active: boolean };
+type QuickPartnerForm = {
+  name: string;
+  ref_code: string;
+  contact_name: string;
+  contact: string;
+  partner_type: string;
+  market: string;
+  landing: string;
+  discount: number;
+  start_date: string;
+};
+// GVS_PQ_PARTNER_MASTER_V3
 
 function money(v: any) {
   return new Intl.NumberFormat("vi-VN").format(Number(v || 0)) + " ₫";
@@ -25,6 +38,19 @@ function bookingCode() {
   const day = String(d.getDate()).padStart(2, "0");
   const tail = Math.random().toString(36).slice(2, 7).toUpperCase();
   return `GVS-${y}${m}${day}-PQC-${tail}`;
+}
+function cleanPartnerRef(v: any) {
+  return String(v || "").trim().toUpperCase().replace(/[^A-Z0-9_-]/g, "").slice(0, 60);
+}
+
+function normalizePartnerLanding(v: string) {
+  const x = String(v || "").trim();
+  if (!x) return "/ru/tours/phu-quoc";
+  if (/^https?:\/\//i.test(x)) return x;
+  if (/^(www\.)?govietstay\.com/i.test(x)) {
+    return "https://www.govietstay.com" + x.replace(/^(www\.)?govietstay\.com/i, "");
+  }
+  return x.startsWith("/") ? x : "/" + x;
 }
 
 export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
@@ -51,6 +77,21 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
   const [partnerCode, setPartnerCode] = useState("");
   const [partnerLang, setPartnerLang] = useState<"ru" | "en">("ru");
   const [partnerSale, setPartnerSale] = useState(0);
+  const [partnerRows, setPartnerRows] = useState<PartnerMasterRow[]>([]);
+  const [partnerLoading, setPartnerLoading] = useState(false);
+  const [showPartnerForm, setShowPartnerForm] = useState(false);
+  const [partnerSaving, setPartnerSaving] = useState(false);
+  const [newPartner, setNewPartner] = useState<QuickPartnerForm>({
+    name: "",
+    ref_code: "",
+    contact_name: "",
+    contact: "",
+    partner_type: "referral",
+    market: "Russian-speaking travelers",
+    landing: "/ru/tours/phu-quoc",
+    discount: 0,
+    start_date: "",
+  });
   const [filter, setFilter] = useState("");
 
   const selected = useMemo(
@@ -80,6 +121,94 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
     );
   }, [filter]);
 
+  async function loadPartnerMaster() {
+    setPartnerLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from("partners")
+        .select("id,name,ref_code,active")
+        .eq("active", true)
+        .order("name");
+      if (error) throw error;
+      setPartnerRows((data || []) as PartnerMasterRow[]);
+    } catch (e: any) {
+      setError(e?.message || "KhÃ´ng táº£i Ä‘Æ°á»£c Partner Master.");
+    } finally {
+      setPartnerLoading(false);
+    }
+  }
+
+  async function createPartnerQuick(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    setMessage("");
+
+    const name = newPartner.name.trim();
+    const refCode = cleanPartnerRef(newPartner.ref_code);
+    if (!name || !refCode) {
+      setError("Cáº§n tÃªn partner vÃ  mÃ£ partner.");
+      return;
+    }
+
+    const duplicate = partnerRows.find((p) => p.ref_code.toUpperCase() === refCode);
+    if (duplicate) {
+      setPartnerCode(duplicate.ref_code);
+      setShowPartnerForm(false);
+      setMessage(`Partner ${duplicate.ref_code} Ä‘Ã£ cÃ³ trong Partner Master. ÄÃ£ chá»n partner hiá»‡n cÃ³, khÃ´ng táº¡o trÃ¹ng.`);
+      return;
+    }
+
+    setPartnerSaving(true);
+    try {
+      const market = newPartner.market.trim() || "Russian-speaking travelers";
+      const marketLower = market.toLowerCase();
+      const onboardingLanguage =
+        marketLower.includes("english") || marketLower.includes("canada") || marketLower.includes("international")
+          ? "en"
+          : marketLower.includes("vietnam") || marketLower.includes("viá»‡t")
+            ? "vi"
+            : "ru";
+
+      const { error } = await supabase.rpc("admin_create_partner", {
+        p_name: name,
+        p_ref_code: refCode,
+        p_contact_name: newPartner.contact_name.trim() || null,
+        p_contact: newPartner.contact.trim() || null,
+        p_partner_type: newPartner.partner_type || "referral",
+        p_landing_path: normalizePartnerLanding(newPartner.landing),
+        p_market: market,
+        p_onboarding_language: onboardingLanguage,
+        p_start_date: newPartner.start_date || null,
+        p_guest_discount: Math.max(0, Math.min(100, Number(newPartner.discount || 0))) / 100,
+      });
+      if (error) throw error;
+
+      await loadPartnerMaster();
+      setPartnerCode(refCode);
+      setShowPartnerForm(false);
+      setNewPartner({
+        name: "",
+        ref_code: "",
+        contact_name: "",
+        contact: "",
+        partner_type: "referral",
+        market: "Russian-speaking travelers",
+        landing: partnerLang === "ru" ? "/ru/tours/phu-quoc" : "/travel/phu-quoc-private-tour",
+        discount: 0,
+        start_date: "",
+      });
+      setMessage(`ÄÃ£ táº¡o ${refCode} vÃ o Partner Master chung vÃ  chá»n cho PhÃº Quá»‘c Sales.`);
+    } catch (e: any) {
+      setError(e?.message || "KhÃ´ng táº¡o Ä‘Æ°á»£c partner trong Partner Master.");
+    } finally {
+      setPartnerSaving(false);
+    }
+  }
+
+  useEffect(() => {
+    loadPartnerMaster();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [supabase]);
   useEffect(() => {
     let live = true;
     (async () => {
@@ -272,7 +401,121 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
           </div>
 
           <div style={{ display: "grid", gap: 12 }}>
-            <label><div className="gva-mini">Partner code</div><input className="gva-input" value={partnerCode} onChange={(e) => setPartnerCode(e.target.value.toUpperCase().replace(/[^A-Z0-9_-]/g, ""))} placeholder="VD: DUYTINH01" /></label>
+            <div>
+              <div className="gva-mini">Partner Â· Partner Master chung</div>
+              <div style={{ display: "flex", gap: 8, alignItems: "stretch", flexWrap: "wrap" }}>
+                <select
+                  className="gva-select"
+                  style={{ flex: "1 1 260px" }}
+                  value={partnerCode}
+                  onChange={(e) => setPartnerCode(e.target.value)}
+                  disabled={partnerLoading}
+                >
+                  <option value="">{partnerLoading ? "Äang táº£i Partner Masterâ€¦" : "â€” Chá»n partner â€”"}</option>
+                  {partnerRows.map((p) => (
+                    <option key={p.id} value={p.ref_code}>{p.name} Â· {p.ref_code}</option>
+                  ))}
+                </select>
+                <button
+                  className="gva-btn"
+                  type="button"
+                  onClick={() => {
+                    setShowPartnerForm((v) => !v);
+                    setNewPartner((p) => ({
+                      ...p,
+                      landing: partnerLang === "ru" ? "/ru/tours/phu-quoc" : "/travel/phu-quoc-private-tour",
+                    }));
+                  }}
+                >
+                  {showPartnerForm ? "ÄÃ³ng" : "+ ThÃªm Partner"}
+                </button>
+                <button className="gva-btn secondary" type="button" onClick={loadPartnerMaster}>
+                  Cáº­p nháº­t
+                </button>
+              </div>
+              <div className="gva-mini" style={{ marginTop: 6 }}>
+                Giao diá»‡n PhÃº Quá»‘c tÃ¡ch riÃªng, nhÆ°ng dá»¯ liá»‡u partner váº«n ghi vÃ o má»™t Partner Master duy nháº¥t.
+              </div>
+            </div>
+
+            {showPartnerForm && (
+              <form onSubmit={createPartnerQuick} style={{ border: "1px solid #d0d5dd", borderRadius: 14, padding: 12, background: "#f9fafb", display: "grid", gap: 10 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
+                  <div>
+                    <b>ThÃªm Partner má»›i Â· PhÃº Quá»‘c</b>
+                    <div className="gva-mini">LÆ°u trá»±c tiáº¿p vÃ o Partners thÆ°á»ng / QR â†’ Partner Deployment Center.</div>
+                  </div>
+                  <span className="gva-pill">Single Partner Master</span>
+                </div>
+
+                <div className="gva-grid2">
+                  <label>
+                    <div className="gva-mini">TÃªn Ä‘á»‘i tÃ¡c / Website *</div>
+                    <input
+                      className="gva-input"
+                      required
+                      value={newPartner.name}
+                      onChange={(e) => {
+                        const name = e.target.value;
+                        setNewPartner((p) => ({
+                          ...p,
+                          name,
+                          ref_code: p.ref_code || cleanPartnerRef(name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^A-Za-z0-9]/g, "").slice(0, 10) + "01"),
+                        }));
+                      }}
+                      placeholder="Hotel / Driver / Creator / Agency"
+                    />
+                  </label>
+                  <label>
+                    <div className="gva-mini">MÃ£ Ä‘á»‘i tÃ¡c *</div>
+                    <input className="gva-input" required value={newPartner.ref_code} onChange={(e) => setNewPartner((p) => ({ ...p, ref_code: cleanPartnerRef(e.target.value) }))} placeholder="VD: PQHOTEL01" />
+                  </label>
+                  <label>
+                    <div className="gva-mini">TÃªn liÃªn há»‡</div>
+                    <input className="gva-input" value={newPartner.contact_name} onChange={(e) => setNewPartner((p) => ({ ...p, contact_name: e.target.value }))} placeholder="TÃªn ngÆ°á»i phá»¥ trÃ¡ch" />
+                  </label>
+                  <label>
+                    <div className="gva-mini">Äiá»‡n thoáº¡i / WhatsApp</div>
+                    <input className="gva-input" value={newPartner.contact} onChange={(e) => setNewPartner((p) => ({ ...p, contact: e.target.value }))} placeholder="+84â€¦" />
+                  </label>
+                  <label>
+                    <div className="gva-mini">Loáº¡i Ä‘á»‘i tÃ¡c</div>
+                    <select className="gva-select" value={newPartner.partner_type} onChange={(e) => setNewPartner((p) => ({ ...p, partner_type: e.target.value }))}>
+                      <option value="driver">Driver / Vehicle</option>
+                      <option value="hotel">Hotel / Homestay</option>
+                      <option value="restaurant">Restaurant / Cafe</option>
+                      <option value="spa">Massage / Spa</option>
+                      <option value="creator">Creator / Website</option>
+                      <option value="agent">Travel Agent</option>
+                      <option value="international">International Partner</option>
+                      <option value="referral">Referral / Online</option>
+                      <option value="desk">Tour Desk</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </label>
+                  <label>
+                    <div className="gva-mini">Thá»‹ trÆ°á»ng</div>
+                    <input className="gva-input" value={newPartner.market} onChange={(e) => setNewPartner((p) => ({ ...p, market: e.target.value }))} />
+                  </label>
+                  <label>
+                    <div className="gva-mini">Landing page</div>
+                    <input className="gva-input" value={newPartner.landing} onChange={(e) => setNewPartner((p) => ({ ...p, landing: e.target.value }))} />
+                  </label>
+                  <label>
+                    <div className="gva-mini">Æ¯u Ä‘Ã£i khÃ¡ch (%)</div>
+                    <input className="gva-input" type="number" min="0" max="100" step="0.1" value={newPartner.discount} onChange={(e) => setNewPartner((p) => ({ ...p, discount: Number(e.target.value || 0) }))} />
+                  </label>
+                  <label>
+                    <div className="gva-mini">NgÃ y báº¯t Ä‘áº§u</div>
+                    <input className="gva-input" type="date" value={newPartner.start_date} onChange={(e) => setNewPartner((p) => ({ ...p, start_date: e.target.value }))} />
+                  </label>
+                </div>
+
+                <button className="gva-btn" type="submit" disabled={partnerSaving}>
+                  {partnerSaving ? "Äang táº¡oâ€¦" : "Táº¡o Partner vÃ o Partner Master"}
+                </button>
+              </form>
+            )}
             <label><div className="gva-mini">Landing language</div>
               <select className="gva-select" value={partnerLang} onChange={(e) => setPartnerLang(e.target.value as "ru" | "en")}>
                 <option value="ru">Russian</option><option value="en">English</option>
