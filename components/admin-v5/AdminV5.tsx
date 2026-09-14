@@ -9,6 +9,8 @@ import "./admin-v5.css";
 import MarketingTools from "./MarketingTools";
 import ReviewRequestTools from "./ReviewRequestTools";
 import PartnerTools from "./PartnerTools";
+import PiPartnerTools from "./PiPartnerTools";
+import MerchantNetworkTools from "./MerchantNetworkTools";
 import FinancePL from "./FinancePL";
 import OperatorPayables from "./OperatorPayables";
 import YandexSeoPanel from "./YandexSeoPanel";
@@ -56,7 +58,7 @@ export default function AdminV5() {
   const [bootstrap,setBootstrap]=useState("");
   const [msg,setMsg]=useState("");
   const [err,setErr]=useState("");
-  const [tab,setTab]=useState<"dashboard"|"analytics"|"marketing"|"partners"|"seo"|"leads"|"bookings"|"reviews"|"finance"|"team"|"operator_payables"|"yandex"|"phuquoc">("dashboard");
+  const [tab,setTab]=useState<"dashboard"|"analytics"|"marketing"|"partners"|"pi_partners"|"merchant_network"|"seo"|"leads"|"bookings"|"reviews"|"finance"|"team"|"operator_payables"|"yandex"|"phuquoc">("dashboard");
   const [days,setDays]=useState(7);
   const [metrics,setMetrics]=useState<any>(null);
   const [breakdown,setBreakdown]=useState<any[]>([]);
@@ -304,7 +306,9 @@ export default function AdminV5() {
         <button className={tab==="analytics"?"active":""} onClick={()=>setTab("analytics")}>Analytics</button>
 
         <button className={tab==="marketing"?"active":""} onClick={()=>setTab("marketing")}>Marketing</button>
-        <button className={tab==="partners"?"active":""} onClick={()=>setTab("partners")}>Partners / QR</button>
+        <button className={tab==="partners"?"active":""} onClick={()=>setTab("partners")}>Partners thường / QR</button>
+        <button className={tab==="pi_partners"?"active":""} onClick={()=>setTab("pi_partners")}>Pi Community</button>
+        <button className={tab==="merchant_network"?"active":""} onClick={()=>setTab("merchant_network")}>Merchant Network</button>
         <button className={tab==="seo"?"active":""} onClick={()=>setTab("seo")}>SEO Intelligence</button>
         <button className={tab==="yandex"?"active":""} onClick={()=>setTab("yandex")}>Yandex Search</button>
         <button className={tab==="leads"?"active":""} onClick={()=>setTab("leads")}>Leads</button>
@@ -506,6 +510,8 @@ export default function AdminV5() {
 
 
       {tab==="partners"&&<PartnerTools supabase={supabase} days={days}/>}
+      {tab==="pi_partners"&&<PiPartnerTools supabase={supabase} days={days}/>}
+      {tab==="merchant_network"&&<MerchantNetworkTools supabase={supabase} days={days}/>} 
 
       {tab==="seo"&&<>
         <div className="gva-section-head">
@@ -625,7 +631,7 @@ export default function AdminV5() {
 
 
 function adminPageTitle(tab:any){
-  return tab=="operator_payables"?"Công nợ nhà tổ chức tour ghép":tab==="team"?"Sales Team / Payroll":tab==="finance"?"Monthly P&L":tab==="dashboard"?"Dashboard thật":tab==="analytics"?"Analytics khách truy cập":tab==="marketing"?"Marketing Funnel":tab==="partners"?"Partners / QR":tab==="seo"?"SEO Intelligence":tab==="yandex"?"Yandex Search":tab==="leads"?"Quản lý Leads":tab==="reviews"?"Review WhatsApp":"Quản lý Bookings";
+  return tab=="operator_payables"?"Công nợ nhà tổ chức tour ghép":tab==="team"?"Sales Team / Payroll":tab==="finance"?"Monthly P&L":tab==="dashboard"?"Dashboard thật":tab==="analytics"?"Analytics khách truy cập":tab==="marketing"?"Marketing Funnel":tab==="partners"?"Partners thường / QR":tab==="pi_partners"?"Pi Community Partners":tab==="merchant_network"?"Merchant Network Lab":tab==="seo"?"SEO Intelligence":tab==="yandex"?"Yandex Search":tab==="leads"?"Quản lý Leads":tab==="reviews"?"Review WhatsApp":"Quản lý Bookings";
 }
 
 function shortPage(value:any){

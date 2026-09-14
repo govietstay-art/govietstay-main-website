@@ -14,7 +14,6 @@ import { aktualnoArticles } from "../lib/aktualnoArticles";
 import { russianSeoIndexableLandings } from "../lib/russian-seo-landings";
 import { secretGems } from "./secret/data";
 
-import { germanSeoPages } from "./de/seo";
 const BASE_URL = "https://www.govietstay.com";
 const SITE_UPDATED = new Date("2026-08-22T00:00:00.000Z");
 
@@ -406,22 +405,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }),
   );
 
-  const germanPages: MetadataRoute.Sitemap = germanSeoPages.map((page) => {
-    const deUrl = page.path ? `${BASE_URL}/de/${page.path}` : `${BASE_URL}/de`;
-    const languages: Record<string, string> = {
-      "de-DE": deUrl,
-      "x-default": page.en ? `${BASE_URL}${page.en}` : deUrl,
-    };
-    if (page.en) languages.en = `${BASE_URL}${page.en}`;
-
-    return {
-      url: deUrl,
-      lastModified: new Date(`${page.updated}T00:00:00.000Z`),
-      changeFrequency: page.changeFrequency,
-      priority: page.priority,
-      alternates: { languages },
-    };
-  });
   const secretPages: MetadataRoute.Sitemap = secretGems.map((gem) => ({
     url: `${BASE_URL}/secret/${gem.slug}`,
     lastModified: SITE_UPDATED,
@@ -445,7 +428,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...koreanGuidePages,
     ...russianLandingPages,
     ...aktualnoPages,
-    ...germanPages,
     ...secretPages,
   ];
 }
