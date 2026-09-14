@@ -132,7 +132,7 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
       if (error) throw error;
       setPartnerRows((data || []) as PartnerMasterRow[]);
     } catch (e: any) {
-      setError(e?.message || "KhÃ´ng táº£i Ä‘Æ°á»£c Partner Master.");
+      setError(e?.message || "Không tải được Partner Master.");
     } finally {
       setPartnerLoading(false);
     }
@@ -146,7 +146,7 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
     const name = newPartner.name.trim();
     const refCode = cleanPartnerRef(newPartner.ref_code);
     if (!name || !refCode) {
-      setError("Cáº§n tÃªn partner vÃ  mÃ£ partner.");
+      setError("Cần tên partner và mã partner.");
       return;
     }
 
@@ -154,7 +154,7 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
     if (duplicate) {
       setPartnerCode(duplicate.ref_code);
       setShowPartnerForm(false);
-      setMessage(`Partner ${duplicate.ref_code} Ä‘Ã£ cÃ³ trong Partner Master. ÄÃ£ chá»n partner hiá»‡n cÃ³, khÃ´ng táº¡o trÃ¹ng.`);
+      setMessage(`Partner ${duplicate.ref_code} đã có trong Partner Master. Đã chọn partner hiện có, không tạo trùng.`);
       return;
     }
 
@@ -165,7 +165,7 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
       const onboardingLanguage =
         marketLower.includes("english") || marketLower.includes("canada") || marketLower.includes("international")
           ? "en"
-          : marketLower.includes("vietnam") || marketLower.includes("viá»‡t")
+          : marketLower.includes("vietnam") || marketLower.includes("việt")
             ? "vi"
             : "ru";
 
@@ -197,9 +197,9 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
         discount: 0,
         start_date: "",
       });
-      setMessage(`ÄÃ£ táº¡o ${refCode} vÃ o Partner Master chung vÃ  chá»n cho PhÃº Quá»‘c Sales.`);
+      setMessage(`Đã tạo ${refCode} vào Partner Master chung và chọn cho Phú Quốc Sales.`);
     } catch (e: any) {
-      setError(e?.message || "KhÃ´ng táº¡o Ä‘Æ°á»£c partner trong Partner Master.");
+      setError(e?.message || "Không tạo được partner trong Partner Master.");
     } finally {
       setPartnerSaving(false);
     }
@@ -402,7 +402,7 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
 
           <div style={{ display: "grid", gap: 12 }}>
             <div>
-              <div className="gva-mini">Partner Â· Partner Master chung</div>
+              <div className="gva-mini">Partner · Partner Master chung</div>
               <div style={{ display: "flex", gap: 8, alignItems: "stretch", flexWrap: "wrap" }}>
                 <select
                   className="gva-select"
@@ -411,9 +411,9 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
                   onChange={(e) => setPartnerCode(e.target.value)}
                   disabled={partnerLoading}
                 >
-                  <option value="">{partnerLoading ? "Äang táº£i Partner Masterâ€¦" : "â€” Chá»n partner â€”"}</option>
+                  <option value="">{partnerLoading ? "Đang tải Partner Master…" : "— Chọn partner —"}</option>
                   {partnerRows.map((p) => (
-                    <option key={p.id} value={p.ref_code}>{p.name} Â· {p.ref_code}</option>
+                    <option key={p.id} value={p.ref_code}>{p.name} · {p.ref_code}</option>
                   ))}
                 </select>
                 <button
@@ -427,14 +427,14 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
                     }));
                   }}
                 >
-                  {showPartnerForm ? "ÄÃ³ng" : "+ ThÃªm Partner"}
+                  {showPartnerForm ? "Đóng" : "+ Thêm Partner"}
                 </button>
                 <button className="gva-btn secondary" type="button" onClick={loadPartnerMaster}>
-                  Cáº­p nháº­t
+                  Cập nhật
                 </button>
               </div>
               <div className="gva-mini" style={{ marginTop: 6 }}>
-                Giao diá»‡n PhÃº Quá»‘c tÃ¡ch riÃªng, nhÆ°ng dá»¯ liá»‡u partner váº«n ghi vÃ o má»™t Partner Master duy nháº¥t.
+                Giao diện Phú Quốc tách riêng, nhưng dữ liệu partner vẫn ghi vào một Partner Master duy nhất.
               </div>
             </div>
 
@@ -442,15 +442,15 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
               <form onSubmit={createPartnerQuick} style={{ border: "1px solid #d0d5dd", borderRadius: 14, padding: 12, background: "#f9fafb", display: "grid", gap: 10 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
                   <div>
-                    <b>ThÃªm Partner má»›i Â· PhÃº Quá»‘c</b>
-                    <div className="gva-mini">LÆ°u trá»±c tiáº¿p vÃ o Partners thÆ°á»ng / QR â†’ Partner Deployment Center.</div>
+                    <b>Thêm Partner mới · Phú Quốc</b>
+                    <div className="gva-mini">Lưu trực tiếp vào Partners thường / QR → Partner Deployment Center.</div>
                   </div>
                   <span className="gva-pill">Single Partner Master</span>
                 </div>
 
                 <div className="gva-grid2">
                   <label>
-                    <div className="gva-mini">TÃªn Ä‘á»‘i tÃ¡c / Website *</div>
+                    <div className="gva-mini">Tên đối tác / Website *</div>
                     <input
                       className="gva-input"
                       required
@@ -467,19 +467,19 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
                     />
                   </label>
                   <label>
-                    <div className="gva-mini">MÃ£ Ä‘á»‘i tÃ¡c *</div>
+                    <div className="gva-mini">Mã đối tác *</div>
                     <input className="gva-input" required value={newPartner.ref_code} onChange={(e) => setNewPartner((p) => ({ ...p, ref_code: cleanPartnerRef(e.target.value) }))} placeholder="VD: PQHOTEL01" />
                   </label>
                   <label>
-                    <div className="gva-mini">TÃªn liÃªn há»‡</div>
-                    <input className="gva-input" value={newPartner.contact_name} onChange={(e) => setNewPartner((p) => ({ ...p, contact_name: e.target.value }))} placeholder="TÃªn ngÆ°á»i phá»¥ trÃ¡ch" />
+                    <div className="gva-mini">Tên liên hệ</div>
+                    <input className="gva-input" value={newPartner.contact_name} onChange={(e) => setNewPartner((p) => ({ ...p, contact_name: e.target.value }))} placeholder="Tên người phụ trách" />
                   </label>
                   <label>
-                    <div className="gva-mini">Äiá»‡n thoáº¡i / WhatsApp</div>
-                    <input className="gva-input" value={newPartner.contact} onChange={(e) => setNewPartner((p) => ({ ...p, contact: e.target.value }))} placeholder="+84â€¦" />
+                    <div className="gva-mini">Điện thoại / WhatsApp</div>
+                    <input className="gva-input" value={newPartner.contact} onChange={(e) => setNewPartner((p) => ({ ...p, contact: e.target.value }))} placeholder="+84…" />
                   </label>
                   <label>
-                    <div className="gva-mini">Loáº¡i Ä‘á»‘i tÃ¡c</div>
+                    <div className="gva-mini">Loại đối tác</div>
                     <select className="gva-select" value={newPartner.partner_type} onChange={(e) => setNewPartner((p) => ({ ...p, partner_type: e.target.value }))}>
                       <option value="driver">Driver / Vehicle</option>
                       <option value="hotel">Hotel / Homestay</option>
@@ -494,7 +494,7 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
                     </select>
                   </label>
                   <label>
-                    <div className="gva-mini">Thá»‹ trÆ°á»ng</div>
+                    <div className="gva-mini">Thị trường</div>
                     <input className="gva-input" value={newPartner.market} onChange={(e) => setNewPartner((p) => ({ ...p, market: e.target.value }))} />
                   </label>
                   <label>
@@ -502,17 +502,17 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
                     <input className="gva-input" value={newPartner.landing} onChange={(e) => setNewPartner((p) => ({ ...p, landing: e.target.value }))} />
                   </label>
                   <label>
-                    <div className="gva-mini">Æ¯u Ä‘Ã£i khÃ¡ch (%)</div>
+                    <div className="gva-mini">Ưu đãi khách (%)</div>
                     <input className="gva-input" type="number" min="0" max="100" step="0.1" value={newPartner.discount} onChange={(e) => setNewPartner((p) => ({ ...p, discount: Number(e.target.value || 0) }))} />
                   </label>
                   <label>
-                    <div className="gva-mini">NgÃ y báº¯t Ä‘áº§u</div>
+                    <div className="gva-mini">Ngày bắt đầu</div>
                     <input className="gva-input" type="date" value={newPartner.start_date} onChange={(e) => setNewPartner((p) => ({ ...p, start_date: e.target.value }))} />
                   </label>
                 </div>
 
                 <button className="gva-btn" type="submit" disabled={partnerSaving}>
-                  {partnerSaving ? "Äang táº¡oâ€¦" : "Táº¡o Partner vÃ o Partner Master"}
+                  {partnerSaving ? "Đang tạo…" : "Tạo Partner vào Partner Master"}
                 </button>
               </form>
             )}
