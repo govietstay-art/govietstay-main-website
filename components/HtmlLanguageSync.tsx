@@ -20,11 +20,13 @@ export default function HtmlLanguageSync() {
                 ? "zh-TW"
                 : pathname === "/ko" || pathname.startsWith("/ko/")
                   ? "ko-KR"
-                  : pathname === "/in" || pathname.startsWith("/in/")
-                    ? "en-IN"
-                    : pathname === "/il" || pathname.startsWith("/il/")
-                        ? "he-IL"
-                        : "en";
+                  : pathname === "/fr" || pathname.startsWith("/fr/")
+                    ? "fr-FR"
+                    : pathname === "/in" || pathname.startsWith("/in/")
+                      ? "en-IN"
+                      : pathname === "/il" || pathname.startsWith("/il/")
+                          ? "he-IL"
+                          : "en";
   }, [pathname]);
 
   return null;
