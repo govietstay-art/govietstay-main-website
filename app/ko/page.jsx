@@ -1,5 +1,5 @@
 export const metadata = {
-  title: '다낭 자유여행·현지투어 | 참섬·바나힐·호이안 | GoVietStay',
+  title: '다낭 자유여행·현지투어 | 참섬·바나힐·호이안',
   description:
     '다낭 자유여행을 더 편하게. 참섬 스노클링, 바나힐·골든브릿지, 호이안·바구니배, 후에, 공항픽업, 티켓, eSIM까지 GoVietStay 다낭 현지팀이 한국어 메시지로 도와드립니다.',
   keywords: [
