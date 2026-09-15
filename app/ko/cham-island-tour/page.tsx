@@ -4,7 +4,7 @@ import KoreanChamIslandLandingPage from "./KoreanChamIslandLandingPage";
 const canonicalUrl = "https://www.govietstay.com/ko/cham-island-tour";
 
 export const metadata: Metadata = {
-  title: "다낭 참섬 투어 + 무료 마사지 30분 | 스노클링 | GoVietStay",
+  title: "다낭 참섬 투어 + 무료 마사지 30분 | 스노클링",
   description:
     "다낭 출발 참섬(꾸라오참) 스피드보트 투어. 스노클링, 바다 체험, 점심과 현지 지원. 한국인 여행객 특별 혜택으로 예약 확정 시 30분 마사지 바우처를 제공합니다.",
   keywords: [
