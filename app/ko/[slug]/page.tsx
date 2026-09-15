@@ -21,9 +21,10 @@ export async function generateMetadata({
   if (!guide) return {};
 
   const canonical = `https://www.govietstay.com/ko/${guide.slug}`;
+  const pageTitle = guide.title.replace(/\s*\|\s*GoVietStay\s*$/, "");
 
   return {
-    title: guide.title,
+    title: pageTitle,
     description: guide.description,
     keywords: guide.keywords,
     alternates: {
