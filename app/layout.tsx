@@ -47,6 +47,7 @@ export const metadata: Metadata = {
     languages: {
       en: "https://www.govietstay.com",
       ru: "https://www.govietstay.com/ru",
+      "fr-FR": "https://www.govietstay.com/fr",
       "x-default": "https://www.govietstay.com",
     },
   },
@@ -117,7 +118,7 @@ export default async function RootLayout({
                   "@type": "ContactPoint",
                   telephone: "+84937762607",
                   contactType: "customer service",
-                  availableLanguage: ["en", "ru", "vi", "ko", "zh-TW"],
+                  availableLanguage: ["en", "ru", "vi", "ko", "zh-TW", "fr"],
                 },
               },
               {
@@ -126,7 +127,7 @@ export default async function RootLayout({
                 name: "GoVietStay",
                 alternateName: "GoVietStay.com",
                 url: "https://www.govietstay.com",
-                inLanguage: ["en", "ru", "vi", "ko", "zh-TW"],
+                inLanguage: ["en", "ru", "vi", "ko", "zh-TW", "fr"],
                 publisher: { "@id": "https://www.govietstay.com/#organization" },
               },
             ]),
