@@ -7,7 +7,13 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: "/api/",
     },
-    sitemap: "https://www.govietstay.com/sitemap.xml",
+    sitemap: [
+      "https://www.govietstay.com/sitemap.xml",
+      "https://www.govietstay.com/ru/phu-quoc/sitemap.xml",
+      "https://www.govietstay.com/ru/aktualno/sitemap.xml",
+      "https://www.govietstay.com/ko/phu-quoc/sitemap.xml",
+      "https://www.govietstay.com/fr/sitemap.xml",
+    ],
     host: "https://www.govietstay.com",
   };
 }
