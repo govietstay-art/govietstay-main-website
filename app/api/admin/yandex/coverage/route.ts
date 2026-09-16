@@ -117,7 +117,7 @@ function decodeXml(value: string) {
 }
 
 async function collectSitemap(url: string, seen = new Set<string>(), pages = new Set<string>()) {
-  if (seen.has(url) || seen.size > 50) return pages;
+  if (seen.has(url) || seen.size > 100) return pages;
   seen.add(url);
 
   const res = await fetch(url, { cache: "no-store", headers: { Accept: "application/xml,text/xml,*/*" } });
@@ -137,6 +137,45 @@ async function collectSitemap(url: string, seen = new Set<string>(), pages = new
     } catch {}
   }
   return pages;
+}
+
+async function getDeclaredSitemaps() {
+  const sources = new Set<string>([`${SITE_URL}/sitemap.xml`]);
+  try {
+    const res = await fetch(`${SITE_URL}/robots.txt`, { cache: "no-store" });
+    if (res.ok) {
+      const text = await res.text();
+      for (const match of text.matchAll(/^\s*Sitemap:\s*(\S+)\s*$/gim)) {
+        try {
+          const url = new URL(match[1]);
+          if (url.hostname.replace(/^www\./i, "").toLowerCase() === WANTED_HOST) sources.add(url.toString());
+        } catch {}
+      }
+    }
+  } catch {}
+  return [...sources];
+}
+
+async function collectAllDeclaredSitemaps() {
+  const sources = await getDeclaredSitemaps();
+  const pages = new Set<string>();
+  const seen = new Set<string>();
+  const errors: { url: string; error: string }[] = [];
+
+  for (const source of sources) {
+    try {
+      await collectSitemap(source, seen, pages);
+    } catch (error: any) {
+      errors.push({ url: source, error: String(error?.message || error).slice(0, 300) });
+    }
+  }
+
+  if (!pages.size) {
+    const detail = errors.map((e) => `${e.url}: ${e.error}`).join(" | ");
+    throw new Error(`Không đọc được URL nào từ sitemap.${detail ? ` ${detail}` : ""}`);
+  }
+
+  return { sources, pages, errors };
 }
 
 function urlKey(value: string) {
@@ -201,13 +240,13 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    const [sitemapSet, downloaded, inSearch] = await Promise.all([
-      collectSitemap(`${SITE_URL}/sitemap.xml`),
+    const [sitemapData, downloaded, inSearch] = await Promise.all([
+      collectAllDeclaredSitemaps(),
       getAllSamples(yandexToken, identity.userId, identity.hostId, "downloaded"),
       getAllSamples(yandexToken, identity.userId, identity.hostId, "search"),
     ]);
 
-    const sitemapUrls = [...sitemapSet].sort();
+    const sitemapUrls = [...sitemapData.pages].sort();
     const downloadedByKey = new Map(downloaded.samples.map((row: any) => [urlKey(String(row?.url || "")), row]));
     const searchByKey = new Map(inSearch.samples.map((row: any) => [urlKey(String(row?.url || "")), row]));
 
@@ -255,6 +294,8 @@ export async function POST(request: NextRequest) {
       host_url: identity.hostUrl,
       host_data_status: identity.hostDataStatus,
       sitemap_url: `${SITE_URL}/sitemap.xml`,
+      sitemap_sources: sitemapData.sources,
+      sitemap_source_errors: sitemapData.errors,
       total_sitemap: rows.length,
       crawled,
       healthy,
