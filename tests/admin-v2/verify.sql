@@ -79,7 +79,7 @@ end $$;
 
 -- Owner records consent, sees due anniversary, then opts out; no auto-send.
 select set_config('request.jwt.claim.sub','10000000-0000-4000-8000-000000000001',false);
-do $$ declare q jsonb; rejected boolean := false; begin
+do $$ declare q jsonb; profile jsonb; rejected boolean := false; begin
   begin
     perform public.crm_save_consent('20000000-0000-4000-8000-000000000001',true,'','');
   exception when others then
@@ -96,8 +96,9 @@ do $$ declare q jsonb; rejected boolean := false; begin
   q := public.crm_anniversary_queue(30);
   if jsonb_array_length(q) <> 0 then raise exception 'Completed follow-up still in queue'; end if;
   perform public.crm_save_consent('20000000-0000-4000-8000-000000000001',false,null,null);
-  if (select count(*) from public.crm_contact_preferences where marketing_opt_in) <> 0 then
-    raise exception 'Opt-out not respected'; end if;
+  profile := public.crm_customer_history('20000000-0000-4000-8000-000000000001');
+  if coalesce((profile->>'marketing_opt_in')::boolean,true) then
+    raise exception 'Opt-out not respected by authorized CRM RPC'; end if;
 end $$;
 reset role;
 \echo 'PASS: disposable schema, scoped overview, session expiry/revocation, CRM access and consent tests'
