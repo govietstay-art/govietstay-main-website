@@ -1,0 +1,62 @@
+name: Admin V2 isolated checks
+
+on:
+  pull_request:
+    paths:
+      - 'app/admin/v2/**'
+      - 'components/admin-v2/**'
+      - 'supabase/migrations/20260916_*admin_v2*.sql'
+      - 'tests/admin-v2/**'
+      - '.github/workflows/admin-v2-isolated-checks.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  postgres-contract:
+    name: Disposable PostgreSQL schema and authorization tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: admin_v2_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: synthetic-test-only
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d admin_v2_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      PGPASSWORD: synthetic-test-only
+      PGHOST: localhost
+      PGPORT: '5432'
+      PGUSER: postgres
+      PGDATABASE: admin_v2_test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create synthetic schema without production data
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/admin-v2/schema-fixture.sql
+      - name: Compile new migrations on disposable database
+        run: |
+          psql -X -v ON_ERROR_STOP=1 -f supabase/migrations/20260916_160000_admin_v2_overview_crm.sql
+          psql -X -v ON_ERROR_STOP=1 -f supabase/migrations/20260916_170000_admin_v2_sales_overview.sql
+          psql -X -v ON_ERROR_STOP=1 -f supabase/migrations/20260916_180000_admin_v2_crm_sales_scope.sql
+      - name: Check PII boundaries, role isolation, session validity and opt-out
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/admin-v2/verify.sql
+
+  next-build:
+    name: Next.js build and TypeScript
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run build
