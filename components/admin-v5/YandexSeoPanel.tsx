@@ -7,6 +7,14 @@ function fmt(v: any) { return new Intl.NumberFormat("vi-VN").format(Number(v || 
 function pct(v: number) { return `${v.toFixed(2)}%`; }
 function isoDate(d: Date) { return d.toISOString().slice(0, 10); }
 function isCyrillic(value: any) { return /[\u0400-\u04FF]/.test(String(value || "")); }
+function shortUrl(value: any) {
+  try {
+    const u = new URL(String(value || ""));
+    return `${u.pathname}${u.search}` || "/";
+  } catch {
+    return String(value || "");
+  }
+}
 
 type TabKey = "overview" | "russia" | "queries" | "daily" | "pages";
 
@@ -14,11 +22,13 @@ export default function YandexSeoPanel({ supabase, days }: any) {
   const [loading, setLoading] = useState(false);
   const [syncing, setSyncing] = useState(false);
   const [testing, setTesting] = useState(false);
+  const [coverageLoading, setCoverageLoading] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [run, setRun] = useState<any>(null);
   const [daily, setDaily] = useState<any[]>([]);
   const [queries, setQueries] = useState<any[]>([]);
+  const [coverage, setCoverage] = useState<any>(null);
   const [tab, setTab] = useState<TabKey>("overview");
   const [qFilter, setQFilter] = useState("");
 
@@ -64,31 +74,31 @@ export default function YandexSeoPanel({ supabase, days }: any) {
 
   useEffect(() => { load(); }, [range.startDate, range.endDate]);
 
+  async function adminToken() {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.access_token) throw new Error("Phiên Admin đã hết hạn. Hãy đăng nhập lại.");
+    return session.access_token;
+  }
+
   async function callYandex(mode: "test" | "sync") {
     mode === "test" ? setTesting(true) : setSyncing(true);
     setError("");
     setMessage("");
 
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.access_token) throw new Error("Phiên Admin đã hết hạn. Hãy đăng nhập lại.");
-
+      const token = await adminToken();
       const res = await fetch("/api/admin/yandex/sync", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session.access_token}`,
-        },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ mode, days: Math.max(7, Number(days || 28)) }),
       });
-
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data?.error || `Yandex API lỗi ${res.status}`);
 
       if (mode === "test") {
         setMessage(
           `Kết nối Webmaster OK · ${data?.webmaster?.host_url || "govietstay.com"}` +
-          `${data?.webmaster?.host_data_status ? ` · ${data.webmaster.host_data_status}` : ""}`
+          `${data?.webmaster?.host_data_status ? ` · ${data.webmaster.host_data_status}` : ""}`,
         );
       } else {
         if (data?.waiting) {
@@ -96,7 +106,7 @@ export default function YandexSeoPanel({ supabase, days }: any) {
         } else {
           setMessage(
             `Đã đồng bộ Yandex ${data.date_from} → ${data.date_to}: ` +
-            `${data.webmaster_rows || 0} ngày, ${data.query_rows || 0} queries.`
+            `${data.webmaster_rows || 0} ngày, ${data.query_rows || 0} queries.`,
           );
         }
         await load();
@@ -106,6 +116,36 @@ export default function YandexSeoPanel({ supabase, days }: any) {
     } finally {
       setTesting(false);
       setSyncing(false);
+    }
+  }
+
+  async function loadCoverage() {
+    setCoverageLoading(true);
+    setError("");
+    setMessage("");
+    try {
+      const token = await adminToken();
+      const res = await fetch("/api/admin/yandex/coverage", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({}),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data?.error || `Yandex coverage lỗi ${res.status}`);
+      setCoverage(data);
+      setTab("pages");
+      if (data?.waiting) {
+        setMessage(data?.warning || "Yandex coverage chưa sẵn sàng.");
+      } else {
+        setMessage(
+          `Coverage mới nhất: ${fmt(data?.crawled)} / ${fmt(data?.total_sitemap)} URL đã crawl · ` +
+          `${fmt(data?.in_search)} đang trong search · ${fmt(data?.missing)} URL chưa thấy Yandex crawl.`,
+        );
+      }
+    } catch (e: any) {
+      setError(e?.message || "Không kiểm tra được Yandex Index Coverage.");
+    } finally {
+      setCoverageLoading(false);
     }
   }
 
@@ -138,15 +178,11 @@ export default function YandexSeoPanel({ supabase, days }: any) {
   const opportunities = useMemo(() => {
     const quickWins = [...russianQueries]
       .filter((r: any) => n(r.impressions) > 0 && n(r.avg_show_position) >= 4 && n(r.avg_show_position) <= 20)
-      .sort((a: any, b: any) => n(b.impressions) - n(a.impressions))
-      .slice(0, 10);
-
+      .sort((a: any, b: any) => n(b.impressions) - n(a.impressions)).slice(0, 10);
     const ctrWins = [...russianQueries]
       .filter((r: any) => n(r.impressions) >= 5 && n(r.avg_show_position) > 0 && n(r.avg_show_position) <= 10)
       .filter((r: any) => (n(r.clicks) * 100 / Math.max(1, n(r.impressions))) < 3)
-      .sort((a: any, b: any) => n(b.impressions) - n(a.impressions))
-      .slice(0, 10);
-
+      .sort((a: any, b: any) => n(b.impressions) - n(a.impressions)).slice(0, 10);
     return { quickWins, ctrWins };
   }, [russianQueries]);
 
@@ -170,11 +206,8 @@ export default function YandexSeoPanel({ supabase, days }: any) {
         {rows.slice(0, limit).map((r: any, i: number) => {
           const ctr = n(r.impressions) ? n(r.clicks) * 100 / n(r.impressions) : 0;
           return <tr key={`${r.query_text}|${i}`}>
-            <td><b>{r.query_text}</b></td>
-            <td>{fmt(r.impressions)}</td>
-            <td>{fmt(r.clicks)}</td>
-            <td>{pct(ctr)}</td>
-            <td>{n(r.avg_show_position) ? n(r.avg_show_position).toFixed(1) : "—"}</td>
+            <td><b>{r.query_text}</b></td><td>{fmt(r.impressions)}</td><td>{fmt(r.clicks)}</td>
+            <td>{pct(ctr)}</td><td>{n(r.avg_show_position) ? n(r.avg_show_position).toFixed(1) : "—"}</td>
           </tr>;
         })}
         {!rows.length && <tr><td colSpan={5}><div className="gva-empty">{empty}</div></td></tr>}
@@ -190,15 +223,17 @@ export default function YandexSeoPanel({ supabase, days }: any) {
     { key: "pages", label: "Landing pages" },
   ];
 
+  const languageRows = coverage?.by_language
+    ? Object.entries(coverage.by_language).map(([language, stats]: any) => ({ language, ...stats }))
+        .sort((a: any, b: any) => n(b.total) - n(a.total))
+    : [];
+
   return <>
     <div className="gva-section-head">
       <div>
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
           <h2 style={{ margin: 0 }}>Yandex Russia SEO Command Center</h2>
-          <span style={{
-            display: "inline-flex", alignItems: "center", borderRadius: 999, padding: "6px 10px",
-            background: statusLabel.bg, color: statusLabel.tone, fontSize: 12, fontWeight: 800
-          }}>{statusLabel.text}</span>
+          <span style={{ display: "inline-flex", alignItems: "center", borderRadius: 999, padding: "6px 10px", background: statusLabel.bg, color: statusLabel.tone, fontSize: 12, fontWeight: 800 }}>{statusLabel.text}</span>
         </div>
         <div className="gva-mini" style={{ marginTop: 6 }}>
           Webmaster → Supabase → Admin · {range.startDate} → {range.endDate}
@@ -206,12 +241,9 @@ export default function YandexSeoPanel({ supabase, days }: any) {
         </div>
       </div>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-        <button className="gva-btn secondary" onClick={() => callYandex("test")} disabled={testing || syncing}>
-          {testing ? "Đang test…" : "Test kết nối"}
-        </button>
-        <button className="gva-btn" onClick={() => callYandex("sync")} disabled={syncing || testing}>
-          {syncing ? "Đang đồng bộ…" : "Đồng bộ Yandex"}
-        </button>
+        <button className="gva-btn secondary" onClick={() => callYandex("test")} disabled={testing || syncing || coverageLoading}>{testing ? "Đang test…" : "Test kết nối"}</button>
+        <button className="gva-btn secondary" onClick={loadCoverage} disabled={coverageLoading || syncing || testing}>{coverageLoading ? "Đang kiểm tra…" : "Kiểm tra Index Coverage"}</button>
+        <button className="gva-btn" onClick={() => callYandex("sync")} disabled={syncing || testing || coverageLoading}>{syncing ? "Đang đồng bộ…" : "Đồng bộ Yandex"}</button>
       </div>
     </div>
 
@@ -220,8 +252,7 @@ export default function YandexSeoPanel({ supabase, days }: any) {
 
     <div className="gva-analytics-note">
       <b>Mục tiêu:</b> dùng Yandex như “Google Search Console cho thị trường Nga”.
-      Tập trung vào impressions, clicks, CTR, vị trí, Cyrillic queries và cơ hội SEO có thể hành động.
-      Traffic/WhatsApp/booking vẫn đọc ở Analytics & Marketing để tránh trùng dữ liệu.
+      Query metrics đo nhu cầu tìm kiếm; Index Coverage đối chiếu trực tiếp sitemap production với URL Yandex đã tải và URL đang trong search.
     </div>
 
     <div className="gva-kpis">
@@ -232,31 +263,14 @@ export default function YandexSeoPanel({ supabase, days }: any) {
       <K label="RU Queries" value={fmt(russianQueries.length)} hint={`${pct(ruStats.share)} impression share`} />
     </div>
 
-    <div style={{
-      display: "flex", gap: 8, flexWrap: "wrap", margin: "14px 0 16px",
-      padding: 6, borderRadius: 12, background: "#f3f6fa"
-    }}>
-      {tabs.map(t => <button
-        key={t.key}
-        onClick={() => setTab(t.key)}
-        style={{
-          border: 0, cursor: "pointer", borderRadius: 9, padding: "10px 14px",
-          fontWeight: 800, fontSize: 13,
-          background: tab === t.key ? "#163f76" : "transparent",
-          color: tab === t.key ? "#fff" : "#344054"
-        }}
-      >{t.label}</button>)}
+    <div style={{ display: "flex", gap: 8, flexWrap: "wrap", margin: "14px 0 16px", padding: 6, borderRadius: 12, background: "#f3f6fa" }}>
+      {tabs.map(t => <button key={t.key} onClick={() => setTab(t.key)} style={{ border: 0, cursor: "pointer", borderRadius: 9, padding: "10px 14px", fontWeight: 800, fontSize: 13, background: tab === t.key ? "#163f76" : "transparent", color: tab === t.key ? "#fff" : "#344054" }}>{t.label}</button>)}
     </div>
 
     {tab === "overview" && <>
       <div className="gva-grid2 gva-seo-grid">
         <div className="gva-card">
-          <div className="gva-section-head">
-            <div>
-              <h3>Russian Market Pulse</h3>
-              <div className="gva-mini">Chỉ các query Cyrillic</div>
-            </div>
-          </div>
+          <div className="gva-section-head"><div><h3>Russian Market Pulse</h3><div className="gva-mini">Chỉ các query Cyrillic</div></div></div>
           <div className="gva-kpis" style={{ gridTemplateColumns: "repeat(2,minmax(0,1fr))" }}>
             <K label="RU Impressions" value={fmt(ruStats.impressions)} hint="Cyrillic queries" />
             <K label="RU Clicks" value={fmt(ruStats.clicks)} hint="Yandex organic" />
@@ -264,159 +278,128 @@ export default function YandexSeoPanel({ supabase, days }: any) {
             <K label="RU Share" value={pct(ruStats.share)} hint="Share of all impressions" />
           </div>
         </div>
-
         <div className="gva-card">
-          <div className="gva-section-head">
-            <div>
-              <h3>SEO Action Queue</h3>
-              <div className="gva-mini">Việc nên ưu tiên trước</div>
-            </div>
-          </div>
+          <div className="gva-section-head"><div><h3>SEO Action Queue</h3><div className="gva-mini">Việc nên ưu tiên trước</div></div></div>
           <div style={{ display: "grid", gap: 10 }}>
             <Action title="Quick wins" value={opportunities.quickWins.length} text="Query Nga vị trí 4–20 có impressions: tối ưu content/internal links." />
             <Action title="CTR opportunities" value={opportunities.ctrWins.length} text="Query top 10 nhưng CTR thấp: sửa title/meta/snippet." />
-            <Action title="Data readiness" value={daily.length ? "LIVE" : "WAIT"} text={daily.length ? "Yandex đã có dữ liệu kỳ này." : "Kết nối đã có; chờ Yandex ghi nhận impressions/clicks."} />
+            <Action title="Index coverage" value={coverage ? `${coverage.crawled}/${coverage.total_sitemap}` : "CHECK"} text={coverage ? `${coverage.missing} URL trong sitemap chưa thấy Yandex crawl.` : "Bấm Kiểm tra Index Coverage để đối chiếu toàn sitemap."} />
           </div>
         </div>
       </div>
-
       <div className="gva-card" style={{ marginTop: 15 }}>
-        <div className="gva-section-head">
-          <h3>Top Russian / Cyrillic Queries</h3>
-          <div className="gva-mini">{russianQueries.length} queries</div>
-        </div>
+        <div className="gva-section-head"><h3>Top Russian / Cyrillic Queries</h3><div className="gva-mini">{russianQueries.length} queries</div></div>
         <QueryTable rows={russianQueries} empty="Chưa có Russian query trong snapshot." limit={20} />
       </div>
     </>}
 
     {tab === "russia" && <>
       <div className="gva-grid2 gva-seo-grid">
-        <div className="gva-card">
-          <div className="gva-section-head">
-            <div>
-              <h3>Quick Wins — Russia</h3>
-              <div className="gva-mini">Vị trí 4–20, ưu tiên theo impressions</div>
-            </div>
-          </div>
-          <QueryTable rows={opportunities.quickWins} empty="Chưa có quick win để ưu tiên." />
-        </div>
-
-        <div className="gva-card">
-          <div className="gva-section-head">
-            <div>
-              <h3>CTR Opportunities — Russia</h3>
-              <div className="gva-mini">Top 10 nhưng CTR &lt; 3%</div>
-            </div>
-          </div>
-          <QueryTable rows={opportunities.ctrWins} empty="Chưa có query CTR thấp trong top 10." />
-        </div>
+        <div className="gva-card"><div className="gva-section-head"><div><h3>Quick Wins — Russia</h3><div className="gva-mini">Vị trí 4–20, ưu tiên theo impressions</div></div></div><QueryTable rows={opportunities.quickWins} empty="Chưa có quick win để ưu tiên." /></div>
+        <div className="gva-card"><div className="gva-section-head"><div><h3>CTR Opportunities — Russia</h3><div className="gva-mini">Top 10 nhưng CTR &lt; 3%</div></div></div><QueryTable rows={opportunities.ctrWins} empty="Chưa có query CTR thấp trong top 10." /></div>
       </div>
-
-      <div className="gva-card" style={{ marginTop: 15 }}>
-        <div className="gva-section-head">
-          <h3>All Russian / Cyrillic Queries</h3>
-          <div className="gva-mini">{russianQueries.length} queries</div>
-        </div>
-        <QueryTable rows={russianQueries} empty="Yandex chưa trả dữ liệu query Cyrillic." limit={100} />
-      </div>
+      <div className="gva-card" style={{ marginTop: 15 }}><div className="gva-section-head"><h3>All Russian / Cyrillic Queries</h3><div className="gva-mini">{russianQueries.length} queries</div></div><QueryTable rows={russianQueries} empty="Yandex chưa trả dữ liệu query Cyrillic." limit={100} /></div>
     </>}
 
     {tab === "queries" && <div className="gva-card">
       <div className="gva-section-head">
-        <div>
-          <h3>Query Explorer</h3>
-          <div className="gva-mini">Tất cả từ khóa Yandex đã ghi nhận</div>
-        </div>
-        <input
-          value={qFilter}
-          onChange={(e) => setQFilter(e.target.value)}
-          placeholder="Lọc từ khóa…"
-          style={{
-            minWidth: 220, border: "1px solid #d0d5dd", borderRadius: 10,
-            padding: "9px 11px", outline: "none", background: "#fff"
-          }}
-        />
+        <div><h3>Query Explorer</h3><div className="gva-mini">Tất cả từ khóa Yandex đã ghi nhận</div></div>
+        <input value={qFilter} onChange={(e) => setQFilter(e.target.value)} placeholder="Lọc từ khóa…" style={{ minWidth: 220, border: "1px solid #d0d5dd", borderRadius: 10, padding: "9px 11px", outline: "none", background: "#fff" }} />
       </div>
       <QueryTable rows={filteredQueries} empty="Chưa có query trong snapshot." limit={200} />
     </div>}
 
     {tab === "daily" && <div className="gva-card">
-      <div className="gva-section-head">
-        <h3>Daily Yandex Search</h3>
-        <div className="gva-mini">{range.startDate} → {range.endDate}</div>
-      </div>
-      <div className="gva-table-wrap">
-        <table className="gva-table">
-          <thead><tr><th>Date</th><th>Impressions</th><th>Clicks</th><th>CTR</th><th>Position</th></tr></thead>
-          <tbody>
-            {daily.slice(0, 180).map((r: any) => {
-              const ctr = n(r.impressions) ? n(r.clicks) * 100 / n(r.impressions) : 0;
-              return <tr key={r.date}>
-                <td><b>{r.date}</b></td>
-                <td>{fmt(r.impressions)}</td>
-                <td>{fmt(r.clicks)}</td>
-                <td>{pct(ctr)}</td>
-                <td>{n(r.avg_show_position) ? n(r.avg_show_position).toFixed(1) : "—"}</td>
-              </tr>;
-            })}
-            {!daily.length && <tr><td colSpan={5}>
-              <div className="gva-empty">{loading ? "Đang tải…" : "Chưa có dữ liệu Webmaster trong kỳ."}</div>
-            </td></tr>}
-          </tbody>
-        </table>
-      </div>
+      <div className="gva-section-head"><h3>Daily Yandex Search</h3><div className="gva-mini">{range.startDate} → {range.endDate}</div></div>
+      <div className="gva-table-wrap"><table className="gva-table">
+        <thead><tr><th>Date</th><th>Impressions</th><th>Clicks</th><th>CTR</th><th>Position</th></tr></thead>
+        <tbody>
+          {daily.slice(0, 180).map((r: any) => {
+            const ctr = n(r.impressions) ? n(r.clicks) * 100 / n(r.impressions) : 0;
+            return <tr key={r.date}><td><b>{r.date}</b></td><td>{fmt(r.impressions)}</td><td>{fmt(r.clicks)}</td><td>{pct(ctr)}</td><td>{n(r.avg_show_position) ? n(r.avg_show_position).toFixed(1) : "—"}</td></tr>;
+          })}
+          {!daily.length && <tr><td colSpan={5}><div className="gva-empty">{loading ? "Đang tải…" : "Chưa có dữ liệu Webmaster trong kỳ."}</div></td></tr>}
+        </tbody>
+      </table></div>
     </div>}
 
-    {tab === "pages" && <div className="gva-card">
-      <div className="gva-section-head">
-        <div>
-          <h3>Landing Page Intelligence</h3>
-          <div className="gva-mini">Không hiển thị dữ liệu giả</div>
+    {tab === "pages" && <>
+      <div className="gva-card">
+        <div className="gva-section-head">
+          <div><h3>Yandex Index Coverage</h3><div className="gva-mini">Sitemap production ↔ Yandex downloaded pages ↔ pages in search</div></div>
+          <button className="gva-btn" onClick={loadCoverage} disabled={coverageLoading}>{coverageLoading ? "Đang kiểm tra…" : coverage ? "Kiểm tra lại" : "Kiểm tra ngay"}</button>
         </div>
-      </div>
 
-      <div style={{
-        border: "1px solid #e4e7ec", borderRadius: 14, padding: 16,
-        background: "#fcfcfd", lineHeight: 1.6
-      }}>
-        <b>Yandex Webmaster có Page Statistics theo URL</b> (impressions, clicks, CTR, average position),
-        nhưng Webmaster API v4 hiện tại không cung cấp endpoint page-performance tương đương để đồng bộ tự động như query metrics.
-        Vì vậy Admin không tự “đoán” landing-page performance.
-        <br /><br />
-        <b>Cách làm khoa học:</b> query metrics tự sync ở đây; Page Statistics xem trong Yandex Webmaster.
-        Khi cần tự động hóa landing pages, bước tiếp theo là import archive/query-by-URL export từ Webmaster vào Supabase.
-        <br /><br />
-        <button
-          className="gva-btn secondary"
-          onClick={() => window.open("https://webmaster.yandex.com/", "_blank", "noopener,noreferrer")}
-        >
-          Mở Yandex Webmaster
-        </button>
+        {!coverage && <div className="gva-empty">Bấm “Kiểm tra ngay” để lấy coverage trực tiếp từ Yandex Webmaster. Không submit hay sửa URL nào tự động.</div>}
+        {coverage?.waiting && <div className="gva-msg">{coverage.warning || "Yandex coverage chưa sẵn sàng."}</div>}
+
+        {coverage && !coverage.waiting && <>
+          <div className="gva-kpis" style={{ marginTop: 12 }}>
+            <K label="Sitemap URLs" value={fmt(coverage.total_sitemap)} hint="Production sitemap" />
+            <K label="Crawled" value={fmt(coverage.crawled)} hint={`${fmt(coverage.healthy)} URL HTTP 2xx`} />
+            <K label="In Search" value={fmt(coverage.in_search)} hint="Yandex search results" />
+            <K label="Missing" value={fmt(coverage.missing)} hint="Chưa thấy trong downloaded samples" />
+            <K label="Crawled, not search" value={fmt(coverage.crawled_not_in_search)} hint="Đã tải nhưng chưa vào search" />
+          </div>
+
+          <div className="gva-analytics-note" style={{ marginTop: 14 }}>
+            Yandex báo tổng <b>{fmt(coverage.yandex_reported_downloaded)}</b> downloaded URLs và <b>{fmt(coverage.yandex_reported_in_search)}</b> URLs in search trên host.
+            Panel đối chiếu theo URL chuẩn hóa với <b>{fmt(coverage.total_sitemap)}</b> URL trong sitemap hiện tại.
+            {coverage.generated_at ? <> · Kiểm tra: <b>{new Date(coverage.generated_at).toLocaleString("vi-VN")}</b></> : null}
+          </div>
+
+          <div className="gva-card" style={{ marginTop: 15, boxShadow: "none" }}>
+            <div className="gva-section-head"><h3>Coverage theo cụm ngôn ngữ</h3><div className="gva-mini">Ưu tiên tìm cụm còn thiếu</div></div>
+            <div className="gva-table-wrap"><table className="gva-table">
+              <thead><tr><th>Cluster</th><th>Total</th><th>Crawled</th><th>2xx</th><th>In Search</th><th>Missing</th></tr></thead>
+              <tbody>
+                {languageRows.map((r: any) => <tr key={r.language}><td><b>/{r.language === "root" ? "" : r.language}</b></td><td>{fmt(r.total)}</td><td>{fmt(r.crawled)}</td><td>{fmt(r.healthy)}</td><td>{fmt(r.in_search)}</td><td><b>{fmt(r.missing)}</b></td></tr>)}
+              </tbody>
+            </table></div>
+          </div>
+
+          <div className="gva-grid2 gva-seo-grid" style={{ marginTop: 15 }}>
+            <div className="gva-card">
+              <div className="gva-section-head"><div><h3>Missing from Yandex crawl</h3><div className="gva-mini">{fmt(coverage.missing)} URL · chỉ đọc, không auto-submit</div></div></div>
+              <CoverageUrlTable rows={coverage.missing_urls || []} empty="Tuyệt vời: không có URL sitemap nào bị thiếu trong downloaded samples." mode="missing" />
+            </div>
+            <div className="gva-card">
+              <div className="gva-section-head"><div><h3>Crawled but not in search</h3><div className="gva-mini">{fmt(coverage.crawled_not_in_search)} URL</div></div></div>
+              <CoverageUrlTable rows={coverage.crawled_not_in_search_urls || []} empty="Không có URL nào ở trạng thái crawled nhưng chưa vào search." mode="search" />
+            </div>
+          </div>
+
+          {n(coverage.crawl_errors) > 0 && <div className="gva-card" style={{ marginTop: 15 }}>
+            <div className="gva-section-head"><div><h3>Crawl errors / non-2xx</h3><div className="gva-mini">{fmt(coverage.crawl_errors)} URL cần kiểm tra kỹ thuật</div></div></div>
+            <CoverageUrlTable rows={coverage.crawl_error_urls || []} empty="Không có lỗi crawl." mode="error" />
+          </div>}
+        </>}
       </div>
-    </div>}
+    </>}
   </>;
 }
 
+function CoverageUrlTable({ rows, empty, mode }: any) {
+  return <div className="gva-table-wrap" style={{ maxHeight: 520, overflow: "auto" }}><table className="gva-table">
+    <thead><tr><th>URL</th><th>Cluster</th><th>Status</th></tr></thead>
+    <tbody>
+      {rows.slice(0, 300).map((r: any, i: number) => <tr key={`${r.url}|${i}`}>
+        <td><a href={r.url} target="_blank" rel="noreferrer" style={{ color: "#175cd3", fontWeight: 700 }}>{shortUrl(r.url)}</a></td>
+        <td>/{r.language === "root" ? "" : r.language}</td>
+        <td>{mode === "missing" ? "Chưa crawl" : mode === "error" ? `${r.http_code || r.crawl_status || "Error"}` : "Chưa vào search"}</td>
+      </tr>)}
+      {!rows.length && <tr><td colSpan={3}><div className="gva-empty">{empty}</div></td></tr>}
+    </tbody>
+  </table></div>;
+}
+
 function K({ label, value, hint }: any) {
-  return <div className="gva-card gva-kpi">
-    <div className="label">{label}</div>
-    <div className="value">{value}</div>
-    <div className="hint">{hint}</div>
-  </div>;
+  return <div className="gva-card gva-kpi"><div className="label">{label}</div><div className="value">{value}</div><div className="hint">{hint}</div></div>;
 }
 
 function Action({ title, value, text }: any) {
-  return <div style={{
-    display: "grid", gridTemplateColumns: "72px 1fr", gap: 12, alignItems: "center",
-    border: "1px solid #e4e7ec", borderRadius: 12, padding: 12, background: "#fff"
-  }}>
-    <div style={{
-      minHeight: 54, borderRadius: 10, display: "grid", placeItems: "center",
-      background: "#f2f4f7", fontWeight: 900, fontSize: 18, color: "#163f76"
-    }}>{value}</div>
-    <div>
-      <div style={{ fontWeight: 900, color: "#101828", marginBottom: 3 }}>{title}</div>
-      <div style={{ fontSize: 12, color: "#667085", lineHeight: 1.45 }}>{text}</div>
-    </div>
+  return <div style={{ display: "grid", gridTemplateColumns: "72px 1fr", gap: 12, alignItems: "center", border: "1px solid #e4e7ec", borderRadius: 12, padding: 12, background: "#fff" }}>
+    <div style={{ minHeight: 54, borderRadius: 10, display: "grid", placeItems: "center", background: "#f2f4f7", fontWeight: 900, fontSize: 18, color: "#163f76" }}>{value}</div>
+    <div><div style={{ fontWeight: 900, color: "#101828", marginBottom: 3 }}>{title}</div><div style={{ fontSize: 12, color: "#667085", lineHeight: 1.45 }}>{text}</div></div>
   </div>;
 }
