@@ -7,8 +7,10 @@ ALTER TABLE public.marketing_channels ENABLE ROW LEVEL SECURITY;
 REVOKE ALL ON TABLE public.marketing_channels FROM PUBLIC, anon, authenticated;
 GRANT SELECT ON TABLE public.marketing_channels TO anon, authenticated;
 GRANT INSERT, UPDATE, DELETE ON TABLE public.marketing_channels TO authenticated;
-CREATE POLICY gvs_marketing_active_read ON public.marketing_channels
-  FOR SELECT TO anon, authenticated USING (is_active OR public.is_govietstay_admin());
+CREATE POLICY gvs_marketing_public_read ON public.marketing_channels
+  FOR SELECT TO anon USING (is_active);
+CREATE POLICY gvs_marketing_staff_read ON public.marketing_channels
+  FOR SELECT TO authenticated USING (is_active OR public.is_govietstay_admin());
 CREATE POLICY gvs_marketing_admin_write ON public.marketing_channels
   FOR ALL TO authenticated USING (public.is_govietstay_admin())
   WITH CHECK (public.is_govietstay_admin());
@@ -30,8 +32,10 @@ ALTER TABLE public.partner_terms_versions ENABLE ROW LEVEL SECURITY;
 REVOKE ALL ON TABLE public.partner_terms_versions FROM PUBLIC, anon, authenticated;
 GRANT SELECT ON TABLE public.partner_terms_versions TO anon, authenticated;
 GRANT INSERT, UPDATE, DELETE ON TABLE public.partner_terms_versions TO authenticated;
-CREATE POLICY gvs_terms_active_read ON public.partner_terms_versions
-  FOR SELECT TO anon, authenticated USING (active OR public.is_govietstay_admin());
+CREATE POLICY gvs_terms_public_read ON public.partner_terms_versions
+  FOR SELECT TO anon USING (active);
+CREATE POLICY gvs_terms_staff_read ON public.partner_terms_versions
+  FOR SELECT TO authenticated USING (active OR public.is_govietstay_admin());
 CREATE POLICY gvs_terms_admin_write ON public.partner_terms_versions
   FOR ALL TO authenticated USING (public.is_govietstay_admin())
   WITH CHECK (public.is_govietstay_admin());
