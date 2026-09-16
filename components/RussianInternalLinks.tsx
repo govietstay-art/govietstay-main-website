@@ -3,6 +3,7 @@
 const links = [
   ["Главная на русском", "/ru"],
   ["Экскурсии в Дананге", "/ru/danang"],
+  ["Морская рыбалка", "/ru/morskaya-rybalka-danang-phu-quoc"],
   ["Что посмотреть в Хойане", "/ru/hoi-an"],
   ["Экскурсия в Хюэ", "/ru/hue"],
   ["Туры на Фукуоке", "/ru/tours/phu-quoc"],
@@ -32,4 +33,3 @@ export default function RussianInternalLinks() {
     </aside>
   );
 }
-
