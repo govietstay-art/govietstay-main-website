@@ -1,4 +1,5 @@
 import AdminV5 from "../../components/admin-v5/AdminV5";
+import "../../components/admin-v5/admin-brand.css";
 
 export const metadata = {
   title: "GoVietStay Admin",

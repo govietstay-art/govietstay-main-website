@@ -1,0 +1,6 @@
+/* Legacy Admin branding only: preserve all existing layouts, navigation, and actions. */
+.gva-shell .gva-side .logo::before{content:"";display:block;width:156px;height:74px;margin:0 0 12px;background:#fff url('/govietstay-logo.jpg') center/contain no-repeat;border:1px solid #dbe7eb;border-radius:12px;box-shadow:0 5px 18px #0002}
+.gva-shell .gva-side .logo::after{content:"Trusted Local Support";display:block;font-size:11px;font-weight:600;line-height:1.5;letter-spacing:.04em;color:#aee3d7;margin-top:6px}
+.gva-login .gva-login-card .gva-brand::before{content:"";display:block;width:156px;height:76px;margin:0 0 14px;background:#fff url('/govietstay-logo.jpg') center/contain no-repeat;border:1px solid #dce6ee;border-radius:12px}
+.gva-login .gva-login-card .gva-brand::after{content:"Trusted Local Support";display:block;color:#277c6c;font-size:11px;letter-spacing:.045em;line-height:1.5;margin:5px 0}
+@media(max-width:780px){.gva-shell .gva-side .logo::before{width:104px;height:50px;margin-bottom:8px}.gva-login .gva-login-card .gva-brand::before{width:125px;height:61px}}
