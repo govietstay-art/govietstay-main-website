@@ -13,6 +13,7 @@ export default function robots(): MetadataRoute.Robots {
       "https://www.govietstay.com/ru/aktualno/sitemap.xml",
       "https://www.govietstay.com/ko/phu-quoc/sitemap.xml",
       "https://www.govietstay.com/fr/sitemap.xml",
+      "https://www.govietstay.com/mn/sitemap.xml",
     ],
     host: "https://www.govietstay.com",
   };
