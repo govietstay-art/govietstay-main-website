@@ -55,11 +55,12 @@ const byPlace: Record<string, Photo> = {
     licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0/",
   },
   sunsetTown: {
-    file: "Sunset-town-phu-quoc-2.jpg",
-    author: "Vivu Vietnam",
-    alt: "Фукуокийн өмнөд эргийн Sunset Town тосгоны өнгөлөг барилгууд",
-    license: "CC BY-SA 4.0",
-    licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0/",
+    // Wikimedia Flickr review explicitly confirmed the license of this photograph in March 2023.
+    file: "Kiss Bridge, Phu Quoc (52680380987).jpg",
+    author: "Kevin Rutherford",
+    alt: "Фукуокийн өмнөд хэсгийн Sunset Town дахь Kiss Bridge-ийн бодит зураг",
+    license: "CC BY-SA 2.0",
+    licenseUrl: "https://creativecommons.org/licenses/by-sa/2.0/",
   },
 };
 
