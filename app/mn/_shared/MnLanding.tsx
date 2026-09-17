@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import type { MnPage } from "../content";
 import { mnPageBySlug, mnUrl } from "../content";
+import MnPhoto from "./MnPhoto";
 
 const contact = (page: MnPage) =>
   "https://wa.me/84937762607?text=" + encodeURIComponent(
@@ -61,6 +62,8 @@ export default function MnLanding({ page }: { page: MnPage }) {
           <p className="mt-4 text-xs text-teal-100">Мэдээлэл үнэгүй. Захиалга, үнэ болон үйлчилгээний олдоцыг тусад нь баталгаажуулна.</p>
         </div>
       </div>
+
+      <div className="px-4 sm:px-6"><MnPhoto slug={page.slug} /></div>
 
       <div className="mx-auto max-w-6xl px-4 py-9 sm:px-6 sm:py-12">
         <nav aria-label="Зам" className="mb-7 flex flex-wrap items-center gap-2 text-xs text-slate-500">
