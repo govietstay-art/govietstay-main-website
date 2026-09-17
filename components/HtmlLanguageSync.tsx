@@ -8,7 +8,9 @@ export default function HtmlLanguageSync() {
 
   useEffect(() => {
     document.documentElement.lang =
-      pathname === "/ru" || pathname.startsWith("/ru/")
+      pathname === "/mn" || pathname.startsWith("/mn/")
+        ? "mn"
+        : pathname === "/ru" || pathname.startsWith("/ru/")
         ? "ru"
         : pathname === "/kz" || pathname.startsWith("/kz/")
           ? "ru-KZ"
