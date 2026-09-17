@@ -13,6 +13,14 @@ const SOURCES: Record<string,string> = {
 };
 
 export function proxy(request: NextRequest) {
+  // Keep /mn isolated: /go remains the original Russian attribution route.
+  const pathname = request.nextUrl.pathname;
+  if (pathname === "/mn" || pathname.startsWith("/mn/")) {
+    const requestHeaders = new Headers(request.headers);
+    requestHeaders.set("x-govietstay-locale", "mn");
+    return NextResponse.next({ request: { headers: requestHeaders } });
+  }
+
   const parts = request.nextUrl.pathname.split("/").filter(Boolean);
   const source = SOURCES[String(parts[1] || "").toLowerCase()];
 
@@ -42,5 +50,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/go/:path*"],
+  matcher: ["/go/:path*", "/mn", "/mn/:path*"],
 };

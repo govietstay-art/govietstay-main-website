@@ -82,7 +82,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const locale = (await headers()).get("x-govietstay-locale") === "ru" ? "ru" : "en";
+  const requestedLocale = (await headers()).get("x-govietstay-locale");
+  const locale = requestedLocale === "mn" ? "mn" : requestedLocale === "ru" ? "ru" : "en";
 
   return (
     <html
@@ -124,10 +125,11 @@ export default async function RootLayout({
               {
                 "@context": "https://schema.org",
                 "@type": "WebSite",
+                "@id": "https://www.govietstay.com/#website",
                 name: "GoVietStay",
                 alternateName: "GoVietStay.com",
                 url: "https://www.govietstay.com",
-                inLanguage: ["en", "ru", "vi", "ko", "zh-TW", "fr"],
+                inLanguage: ["en", "ru", "vi", "ko", "zh-TW", "fr", "mn"],
                 publisher: { "@id": "https://www.govietstay.com/#organization" },
               },
             ]),
