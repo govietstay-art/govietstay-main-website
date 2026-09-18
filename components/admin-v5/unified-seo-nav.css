@@ -1,0 +1,5 @@
+/* The injected unified SEO item is appended to the existing nav DOM by a portal.
+   Explicitly order it after the six preceding business tabs, before Leads. */
+.gva-layout > .gva-side .gva-nav > .gva-unified-seo-button {
+  order: 1 !important;
+}
