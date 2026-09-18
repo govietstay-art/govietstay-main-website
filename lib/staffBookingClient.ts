@@ -13,6 +13,15 @@ export async function submitStaffBookingRequest(p:StaffBookingRequest){
   const {data,error}=await supabase.rpc("staff_submit_booking_request",{
     p_sales_code:p.sales_code,p_booking_code:p.booking_code,p_guest_name:p.guest_name,p_phone:p.phone,p_tour_date:p.tour_date,p_pickup_time:p.pickup_time,p_hotel:p.hotel,p_region:p.region,p_tour_slug:p.tour_slug,p_tour_name:p.tour_name,p_variant_id:p.variant_id,p_variant_name:p.variant_name,p_language:p.language,p_adults:p.adults,p_children:p.children,p_infants:p.infants,p_gross_revenue_vnd:p.gross_revenue_vnd,p_discount_vnd:p.discount_vnd,p_deposit_vnd:p.deposit_vnd,p_notes:p.notes
   });
-  if(error) throw error;
+  if(error){
+    const accessDenied=error.code==="42501"||error.code==="PGRST202"||/permission denied|not authorized|not permitted/i.test(error.message||"");
+    if(accessDenied){
+      if(typeof window!=="undefined"){
+        window.alert("SECURE MODE / БЕЗОПАСНЫЙ РЕЖИМ\n\nThis request has NOT been saved in Admin. Please send the WhatsApp message that opens next to David for manual approval.\n\nЗапрос НЕ сохранён в Admin. Отправьте сообщение WhatsApp, которое откроется далее, Дэвиду для ручного подтверждения.\n\nYêu cầu CHƯA được lưu vào Admin. Hãy gửi tin nhắn WhatsApp vừa tạo cho David để duyệt thủ công.");
+      }
+      return {status:"whatsapp_only",saved_to_admin:false};
+    }
+    throw error;
+  }
   return data;
 }
