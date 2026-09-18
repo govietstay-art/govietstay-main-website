@@ -1,11 +1,7 @@
-import UnifiedSeoCenter from "../../../components/admin-v5/UnifiedSeoCenter";
-import "../../../components/admin-v5/admin-brand.css";
+import { redirect } from "next/navigation";
 
-export const metadata = {
-  title: "SEO Center | GoVietStay Admin",
-  robots: { index: false, follow: false },
-};
-
+/** Keep older preview bookmarks working while showing SEO inside the main
+ * /admin sidebar and its existing authenticated session. */
 export default function SeoCenterPage() {
-  return <UnifiedSeoCenter />;
+  redirect("/admin?seo=center");
 }
