@@ -43,7 +43,8 @@ function number(value: unknown): number {
 function aggregate(rows: any[], field: "Query" | "Page") {
   const results = new Map<string, { label: string; clicks: number; impressions: number; weight: number }>();
   for (const row of rows) {
-    const label = String(row?.[field] || row?.Url || "").trim();
+    // Bing's GetPageStats uses the property name `Query` to hold the PAGE URL.
+    const label = String(row?.[field] || (field === "Page" ? row?.Query : "") || row?.Url || "").trim();
     if (!label) continue;
     const existing = results.get(label) || { label, clicks: 0, impressions: 0, weight: 0 };
     const imp = number(row.Impressions);
