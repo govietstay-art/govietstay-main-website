@@ -1,4 +1,5 @@
 import AdminV5 from "../../components/admin-v5/AdminV5";
+import OwnerPermissionsShortcut from "../../components/admin-v5/OwnerPermissionsShortcut";
 import "../../components/admin-v5/admin-brand.css";
 
 export const metadata = {
@@ -7,5 +8,5 @@ export const metadata = {
 };
 
 export default function AdminPage() {
-  return <AdminV5 />;
+  return <><AdminV5 /><OwnerPermissionsShortcut /></>;
 }
