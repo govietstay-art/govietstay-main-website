@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
 
-const db=createClient("https://vscffgnxaexestnayvae.supabase.co","sb_publishable_BI1rIhiGB5cEUyJbnKGI5w_kCMI--oV",{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+export const db=createClient("https://vscffgnxaexestnayvae.supabase.co","sb_publishable_BI1rIhiGB5cEUyJbnKGI5w_kCMI--oV",{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 
 export default function OwnerPermissionsShortcut(){
   const [role,setRole]=useState<"owner"|"admin"|null>(null);
