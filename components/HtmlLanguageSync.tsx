@@ -12,7 +12,9 @@ export default function HtmlLanguageSync() {
         ? "mn"
         : pathname === "/ru" || pathname.startsWith("/ru/")
         ? "ru"
-        : pathname === "/kz" || pathname.startsWith("/kz/")
+        : pathname === "/it" || pathname.startsWith("/it/")
+          ? "it"
+          : pathname === "/kz" || pathname.startsWith("/kz/")
           ? "ru-KZ"
           : pathname === "/vi" || pathname.startsWith("/vi/")
             ? "vi"
