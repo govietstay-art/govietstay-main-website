@@ -83,7 +83,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const requestedLocale = (await headers()).get("x-govietstay-locale");
-  const locale = requestedLocale === "mn" ? "mn" : requestedLocale === "ru" ? "ru" : "en";
+  const locale = requestedLocale === "mn" ? "mn" : requestedLocale === "ru" ? "ru" : requestedLocale === "it" ? "it" : "en";
 
   return (
     <html
