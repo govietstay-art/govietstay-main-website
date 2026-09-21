@@ -9,6 +9,7 @@ export default function robots(): MetadataRoute.Robots {
     },
     sitemap: [
       "https://www.govietstay.com/sitemap.xml",
+      "https://www.govietstay.com/local-experiences/sitemap.xml",
       "https://www.govietstay.com/ru/phu-quoc/sitemap.xml",
       "https://www.govietstay.com/ru/aktualno/sitemap.xml",
       "https://www.govietstay.com/ko/phu-quoc/sitemap.xml",
