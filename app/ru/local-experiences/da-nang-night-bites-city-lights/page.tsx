@@ -1,3 +1,4 @@
 import NightBitesCityLightsPage, {nightMetadata} from '../../../../components/NightBitesCityLightsPage';
-export const metadata = nightMetadata('ru');
-export default function Page(){return <NightBitesCityLightsPage locale="ru"/>;}
+import LocalExperiencesGuideNotice from '../../../../components/LocalExperiencesGuideNotice';
+export const metadata=nightMetadata('ru');
+export default function Page(){return <><LocalExperiencesGuideNotice locale="ru"/><NightBitesCityLightsPage locale="ru"/><LocalExperiencesGuideNotice locale="ru" placement="bottom"/></>;}
