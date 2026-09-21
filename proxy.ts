@@ -21,10 +21,10 @@ export function proxy(request: NextRequest) {
     return NextResponse.next({ request: { headers: requestHeaders } });
   }
 
-  // New Italian local-experience pages need the correct server-rendered html lang.
-  if (pathname.startsWith("/it/local-experiences/")) {
+  // Keep the server-rendered language correct for both localized tour families.
+  if (pathname.startsWith("/it/local-experiences/") || pathname.startsWith("/ru/local-experiences/")) {
     const requestHeaders = new Headers(request.headers);
-    requestHeaders.set("x-govietstay-locale", "it");
+    requestHeaders.set("x-govietstay-locale", pathname.startsWith("/it/") ? "it" : "ru");
     return NextResponse.next({ request: { headers: requestHeaders } });
   }
 
@@ -57,5 +57,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/go/:path*", "/mn", "/mn/:path*", "/it/local-experiences/:path*"],
+  matcher: ["/go/:path*", "/mn", "/mn/:path*", "/it/local-experiences/:path*", "/ru/local-experiences/:path*"],
 };
