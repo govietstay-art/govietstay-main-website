@@ -1,4 +1,5 @@
 import type {Metadata} from 'next';
 import NewStayLanding,{stayMetadata} from '../../../components/seo/NewStayLanding';
-export const metadata:Metadata=stayMetadata('en','honeymoon');
-export default function Page(){return <NewStayLanding lang="en" topic="honeymoon"/>;}
+import StayPageUpgrade,{upgradedStayMetadata} from '../../../components/seo/StayPageUpgrade';
+export const metadata:Metadata=upgradedStayMetadata(stayMetadata('en','honeymoon'),'en','honeymoon');
+export default function Page(){return <StayPageUpgrade lang="en" topic="honeymoon"><NewStayLanding lang="en" topic="honeymoon"/></StayPageUpgrade>;}
