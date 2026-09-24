@@ -153,7 +153,7 @@ export default async function RootLayout({
           }}
         />
         {children}
-              <script src="/govietstay-partner-tracking.js?v=20260924-wa-ga4-1" defer></script>
+              <script src="/govietstay-partner-tracking.js?v=20260924-wa-ga4-2" defer></script>
         <script src="/govietstay-partner-portal-v2.js?v=20260903-full-i18n" defer></script>
       </body>
     </html>
