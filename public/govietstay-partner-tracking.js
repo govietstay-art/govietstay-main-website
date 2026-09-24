@@ -172,6 +172,46 @@ function send(name,extra){
 function capture(){var q=params();if(q.ref){saveAttr(q.ref);send("partner_visit",{ref_code:q.ref,metadata:{attribution:"url_ref"}})}}
 function view(){if(!allowed())return;var u=pageUrl();if(u===lastUrl)return;lastUrl=u;send("page_view",{ref_code:activeRef(),metadata:{route_change:"true"}})}
 function isWA(h){h=String(h||"").toLowerCase();return h.indexOf("wa.me/")>=0||h.indexOf("api.whatsapp.com/send")>=0||h.indexOf("whatsapp.com/send")>=0}
+var lastWaKey="",lastWaAt=0;
+function ga4WhatsApp(meta){
+ if(!allowed())return;
+ try{
+   window.dataLayer=window.dataLayer||[];
+   window.gtag=window.gtag||function(){window.dataLayer.push(arguments)};
+   window.gtag("event","whatsapp_click",{
+     event_category:"contact",
+     contact_method:"whatsapp",
+     page_path:s(location.pathname||"/",500),
+     traffic_source:s(source(),120),
+     partner_ref:activeRef()||undefined,
+     link_text:s(meta&&meta.link_text||"",200)||undefined,
+     click_method:s(meta&&meta.click_method||"",40)||undefined,
+     gvs_bridge:"gvs_ga4_whatsapp_bridge_v1"
+   });
+ }catch(e){}
+}
+function trackWA(h,linkText,clickMethod){
+ if(!allowed()||!isWA(h))return;
+ var now=Date.now(),r=activeRef(),key=s(location.pathname||"/",500)+"|"+r+"|"+s(String(h||"").split("?")[0],500);
+ if(key===lastWaKey&&now-lastWaAt<1200)return;
+ lastWaKey=key;lastWaAt=now;
+ var text=s(linkText||"",200),method=s(clickMethod||"unknown",40);
+ send("whatsapp_click",{ref_code:r,metadata:{link_text:text,click_method:method}});
+ if(r)send("partner_whatsapp_click",{ref_code:r,metadata:{link_text:text,click_method:method}});
+ ga4WhatsApp({link_text:text,click_method:method});
+}
+function hookWindowOpen(){
+ try{
+   var original=window.open;
+   if(!original||original.__gvsWaTracking)return;
+   function wrapped(url){
+     try{if(isWA(url))trackWA(url,"","window_open")}catch(e){}
+     return original.apply(window,arguments)
+   }
+   wrapped.__gvsWaTracking=true;
+   window.open=wrapped
+ }catch(e){}
+}
 function partner(r){r=ref(r);if(!r)return null;return PARTNERS[r]||{code:r,name:"GoVietStay Partner",city:"Vietnam",privilege:"Partner privilege — please confirm with GoVietStay"}}
 function block(p){return ["","──────────────","GoVietStay Partner","Источник: "+p.name+(p.city?", "+p.city:""),"Код партнёра: "+p.code,"Привилегия: "+p.privilege,"──────────────"].join("\n")}
 function patch(a){
@@ -184,8 +224,8 @@ function nav(){
  addEventListener("popstate",function(){setTimeout(function(){capture();patchAll(document);view()},50)})
 }
 function init(){
- landing();returning();capture();patchAll(document);view();nav();
- document.addEventListener("click",function(e){var a=e.target&&e.target.closest?e.target.closest("a"):null;if(!a||!isWA(a.href))return;patch(a);var r=activeRef();send("whatsapp_click",{ref_code:r,metadata:{link_text:s(a.textContent||a.getAttribute("aria-label")||"",200)}});if(r)send("partner_whatsapp_click",{ref_code:r,metadata:{link_text:s(a.textContent||a.getAttribute("aria-label")||"",200)}})},true);
+ landing();returning();capture();patchAll(document);view();nav();hookWindowOpen();
+ document.addEventListener("click",function(e){var a=e.target&&e.target.closest?e.target.closest("a"):null;if(!a||!isWA(a.href))return;patch(a);trackWA(a.href,a.textContent||a.getAttribute("aria-label")||"","anchor_click")},true);
  if(window.MutationObserver)new MutationObserver(function(){patchAll(document)}).observe(document.documentElement,{childList:true,subtree:true});
  window.GoVietStayTracking={pageView:view,event:send,attribution:loadAttr};
  window.GoVietStayPartner={get:loadAttr,partner:function(){return partner(activeRef())}};
