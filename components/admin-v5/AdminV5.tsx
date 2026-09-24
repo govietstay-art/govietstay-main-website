@@ -29,6 +29,8 @@ type Tour = { id:string; name:string; destination:string|null; adult_price_vnd:n
 type Partner = { id:string; name:string; ref_code:string; active:boolean };
 type Contact = { id:string; full_name:string|null; whatsapp:string|null; country:string|null; preferred_language:string|null };
 type Lead = { id:string; contact_id:string|null; interested_tour_id:string|null; partner_id:string|null; status:string; source:string|null; message:string|null; created_at:string };
+type AdsLabItem = { id:number; section:string; item_key:string; title:string; status:string; notes:string|null; sort_order:number; updated_at:string };
+
 type Booking = {
   id:string;
   booking_code:string|null;
@@ -90,6 +92,8 @@ export default function AdminV5() {
   const [breakdown,setBreakdown]=useState<any[]>([]);
 
   const [marketing,setMarketing]=useState<any[]>([]);
+  const [adsLabItems,setAdsLabItems]=useState<AdsLabItem[]>([]);
+  const [savingAdsLabId,setSavingAdsLabId]=useState<number|null>(null);
   const [analytics,setAnalytics]=useState<Record<string,any[]>>({
     country:[], city:[], source:[], device:[], browser:[], os:[], locale:[], landing:[]
   });
@@ -138,7 +142,32 @@ export default function AdminV5() {
     return()=>{alive=false;sub.subscription.unsubscribe();};
   },[]);
 
-  useEffect(()=>{ if(staff && (staff.role==="owner"||staff.role==="admin")) loadAll(); },[staff,days]);
+  useEffect(()=>{ if(staff && (staff.role==="owner"||staff.role==="admin")) { loadAll(); loadAdsLab(); } },[staff,days]);
+
+  async function loadAdsLab() {
+    const {data,error}=await supabase
+      .from("google_ads_lab_items")
+      .select("id,section,item_key,title,status,notes,sort_order,updated_at")
+      .order("sort_order",{ascending:true});
+    if(error) return setErr(error.message);
+    setAdsLabItems((data||[]) as AdsLabItem[]);
+  }
+
+  function patchAdsLab(id:number,patch:Partial<AdsLabItem>) {
+    setAdsLabItems(prev=>prev.map(x=>x.id===id?{...x,...patch}:x));
+  }
+
+  async function saveAdsLab(item:AdsLabItem) {
+    setSavingAdsLabId(item.id); setErr(""); setMsg("");
+    const {error}=await supabase.from("google_ads_lab_items").update({
+      status:item.status,
+      notes:item.notes||null,
+      updated_at:new Date().toISOString()
+    }).eq("id",item.id);
+    if(error) setErr(error.message);
+    else setMsg("Đã lưu Google Ads Lab.");
+    setSavingAdsLabId(null);
+  }
 
   async function loadAll() {
     setErr("");
@@ -460,6 +489,43 @@ export default function AdminV5() {
         </div>
 
 
+
+        <div className="gva-card" style={{marginBottom:15}}>
+          <div className="gva-section-head">
+            <div>
+              <h2>Google Ads Lab · Research First</h2>
+              <div className="gva-mini">Theo dõi setup, mổ campaign cũ và khóa launch trước khi nạp tiền.</div>
+            </div>
+            <button className="gva-btn secondary" onClick={loadAdsLab}>Làm mới Ads Lab</button>
+          </div>
+          <div className="gva-analytics-note" style={{marginTop:0}}>
+            Account <b>322-701-5278</b> · baseline cũ: <b>2.722 impressions</b> · <b>216 clicks</b> · Avg CPC <b>3.143 ₫</b> · Spend <b>678.832 ₫</b>.
+            WhatsApp conversion hiện là <b>Secondary / chỉ quan sát</b>. Launch gate đang HOLD cho tới khi research hoàn tất.
+          </div>
+          <div className="gva-table-wrap">
+            <table className="gva-table">
+              <thead><tr><th>Nhóm</th><th>Hạng mục</th><th>Trạng thái</th><th>Ghi chú / quyết định</th><th></th></tr></thead>
+              <tbody>
+                {adsLabItems.map(item=><tr key={item.id}>
+                  <td><span className="gva-pill">{item.section}</span></td>
+                  <td><b>{item.title}</b><div className="gva-mini">{item.item_key}</div></td>
+                  <td>
+                    <select className="gva-select" value={item.status} onChange={e=>patchAdsLab(item.id,{status:e.target.value})}>
+                      <option value="todo">Chưa làm</option>
+                      <option value="doing">Đang làm</option>
+                      <option value="waiting">Đang chờ</option>
+                      <option value="blocked">Bị chặn</option>
+                      <option value="done">Đã xong</option>
+                    </select>
+                  </td>
+                  <td><textarea className="gva-input" rows={2} value={item.notes||""} onChange={e=>patchAdsLab(item.id,{notes:e.target.value})}/></td>
+                  <td><button className="gva-btn secondary" onClick={()=>saveAdsLab(item)} disabled={savingAdsLabId===item.id}>{savingAdsLabId===item.id?"Đang lưu…":"Lưu"}</button></td>
+                </tr>)}
+                {!adsLabItems.length&&<tr><td colSpan={5}><div className="gva-empty">Đang chờ dữ liệu Google Ads Lab.</div></td></tr>}
+              </tbody>
+            </table>
+          </div>
+        </div>
 
         <div className="gva-card">
 
