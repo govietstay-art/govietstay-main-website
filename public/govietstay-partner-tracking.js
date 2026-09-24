@@ -177,17 +177,7 @@ function ga4WhatsApp(meta){
  if(!allowed())return;
  try{
    window.dataLayer=window.dataLayer||[];
-   window.dataLayer.push({
-     event:"whatsapp_click",
-     event_category:"contact",
-     contact_method:"whatsapp",
-     page_path:s(location.pathname||"/",500),
-     traffic_source:s(source(),120),
-     partner_ref:activeRef()||undefined,
-     link_text:s(meta&&meta.link_text||"",200)||undefined,
-     click_method:s(meta&&meta.click_method||"",40)||undefined,
-     gvs_bridge:"gvs_ga4_whatsapp_bridge_v2"
-   });
+   window.dataLayer.push({event:"whatsapp_click",gvs_bridge:"gvs_ga4_whatsapp_bridge_v3"});
  }catch(e){}
 }
 function trackWA(h,linkText,clickMethod){
