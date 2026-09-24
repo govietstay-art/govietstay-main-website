@@ -7,7 +7,7 @@ import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import "./admin-v5.css";
 import MarketingTools from "./MarketingTools";
-import GoogleAdsLab from "./GoogleAdsLab";
+import dynamic from "next/dynamic";
 import ReviewRequestTools from "./ReviewRequestTools";
 import PartnerTools from "./PartnerTools";
 import PiPartnerTools from "./PiPartnerTools";
@@ -18,6 +18,8 @@ import YandexSeoPanel from "./YandexSeoPanel";
 // GVS_YANDEX_INTELLIGENCE_V1
 import StaffSalesTeam from "./StaffSalesTeam";
 import PhuQuocSalesHub from "./PhuQuocSalesHub";
+
+const GoogleAdsLab = dynamic(()=>import("./GoogleAdsLab"),{ssr:false});
 
 const SUPABASE_URL = "https://vscffgnxaexestnayvae.supabase.co";
 const SUPABASE_KEY = "sb_publishable_BI1rIhiGB5cEUyJbnKGI5w_kCMI--oV";
