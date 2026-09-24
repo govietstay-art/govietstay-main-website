@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import "./admin-v5.css";
 import MarketingTools from "./MarketingTools";
+import GoogleAdsLab from "./GoogleAdsLab";
 import ReviewRequestTools from "./ReviewRequestTools";
 import PartnerTools from "./PartnerTools";
 import PiPartnerTools from "./PiPartnerTools";
@@ -84,7 +85,7 @@ export default function AdminV5() {
   const [bootstrap,setBootstrap]=useState("");
   const [msg,setMsg]=useState("");
   const [err,setErr]=useState("");
-  const [tab,setTab]=useState<"dashboard"|"analytics"|"marketing"|"partners"|"pi_partners"|"merchant_network"|"seo"|"leads"|"bookings"|"reviews"|"finance"|"team"|"operator_payables"|"yandex"|"phuquoc">("dashboard");
+  const [tab,setTab]=useState<"dashboard"|"analytics"|"marketing"|"google_ads"|"partners"|"pi_partners"|"merchant_network"|"seo"|"leads"|"bookings"|"reviews"|"finance"|"team"|"operator_payables"|"yandex"|"phuquoc">("dashboard");
   const [days,setDays]=useState(7);
   const [metrics,setMetrics]=useState<any>(null);
   const [breakdown,setBreakdown]=useState<any[]>([]);
@@ -375,6 +376,7 @@ export default function AdminV5() {
         <button className={tab==="analytics"?"active":""} onClick={()=>setTab("analytics")}>Analytics</button>
 
         <button className={tab==="marketing"?"active":""} onClick={()=>setTab("marketing")}>Marketing</button>
+        <button className={tab==="google_ads"?"active":""} onClick={()=>setTab("google_ads")}>Google Ads Lab</button>
         <button className={tab==="partners"?"active":""} onClick={()=>setTab("partners")}>Partners thường / QR</button>
         <button className={tab==="pi_partners"?"active":""} onClick={()=>setTab("pi_partners")}>Pi Community</button>
         <button className={tab==="merchant_network"?"active":""} onClick={()=>setTab("merchant_network")}>Merchant Network</button>
@@ -578,6 +580,7 @@ export default function AdminV5() {
 
 
 
+      {tab==="google_ads"&&<GoogleAdsLab supabase={supabase}/>}
 
       {tab==="partners"&&<PartnerTools supabase={supabase} days={days}/>}
       {tab==="pi_partners"&&<PiPartnerTools supabase={supabase} days={days}/>}
@@ -702,7 +705,7 @@ export default function AdminV5() {
 
 
 function adminPageTitle(tab:any){
-  return tab=="operator_payables"?"Công nợ nhà tổ chức tour ghép":tab==="team"?"Sales Team / Payroll":tab==="finance"?"Monthly P&L":tab==="dashboard"?"Dashboard thật":tab==="analytics"?"Analytics khách truy cập":tab==="marketing"?"Marketing Funnel":tab==="partners"?"Partners thường / QR":tab==="pi_partners"?"Pi Community Partners":tab==="merchant_network"?"Merchant Network Lab":tab==="seo"?"SEO Intelligence":tab==="yandex"?"Yandex Search":tab==="leads"?"Quản lý Leads":tab==="reviews"?"Review WhatsApp":"Quản lý Bookings";
+  return tab=="operator_payables"?"Công nợ nhà tổ chức tour ghép":tab==="team"?"Sales Team / Payroll":tab==="finance"?"Monthly P&L":tab==="dashboard"?"Dashboard thật":tab==="analytics"?"Analytics khách truy cập":tab==="marketing"?"Marketing Funnel":tab==="google_ads"?"Google Ads Lab":tab==="partners"?"Partners thường / QR":tab==="pi_partners"?"Pi Community Partners":tab==="merchant_network"?"Merchant Network Lab":tab==="seo"?"SEO Intelligence":tab==="yandex"?"Yandex Search":tab==="leads"?"Quản lý Leads":tab==="reviews"?"Review WhatsApp":"Quản lý Bookings";
 }
 
 function shortPage(value:any){
