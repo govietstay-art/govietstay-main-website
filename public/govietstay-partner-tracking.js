@@ -177,8 +177,8 @@ function ga4WhatsApp(meta){
  if(!allowed())return;
  try{
    window.dataLayer=window.dataLayer||[];
-   window.gtag=window.gtag||function(){window.dataLayer.push(arguments)};
-   window.gtag("event","whatsapp_click",{
+   window.dataLayer.push({
+     event:"whatsapp_click",
      event_category:"contact",
      contact_method:"whatsapp",
      page_path:s(location.pathname||"/",500),
@@ -186,7 +186,7 @@ function ga4WhatsApp(meta){
      partner_ref:activeRef()||undefined,
      link_text:s(meta&&meta.link_text||"",200)||undefined,
      click_method:s(meta&&meta.click_method||"",40)||undefined,
-     gvs_bridge:"gvs_ga4_whatsapp_bridge_v1"
+     gvs_bridge:"gvs_ga4_whatsapp_bridge_v2"
    });
  }catch(e){}
 }
