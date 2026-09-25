@@ -39,21 +39,21 @@ const standardVisas = [
 ];
 
 const urgentHan = [
-  ["1 hour", "US$87"],
-  ["2 hours", "US$57"],
-  ["4 hours", "US$30"],
-  ["1 day", "US$20"],
-  ["2 days", "US$14"],
-  ["3 days", "US$11"],
-  ["4 days", "US$9"],
+  ["1 hour", "US$102"],
+  ["2 hours", "US$72"],
+  ["4 hours", "US$45"],
+  ["1 day", "US$35"],
+  ["2 days", "US$29"],
+  ["3 days", "US$26"],
+  ["4 days", "US$24"],
 ];
 
 const urgentSgn = [
-  ["4 hours", "US$44"],
-  ["1 day", "US$32"],
-  ["2 days", "US$22"],
-  ["3 days", "US$15"],
-  ["4 days", "US$13"],
+  ["4 hours", "US$59"],
+  ["1 day", "US$47"],
+  ["2 days", "US$37"],
+  ["3 days", "US$30"],
+  ["4 days", "US$28"],
 ];
 
 function Logo({ className = "" }: { className?: string }) {
