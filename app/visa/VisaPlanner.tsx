@@ -67,7 +67,7 @@ export default function VisaPlanner() {
     `Departure airport: ${departureAirport || "To confirm"}`,
     `Vietnam accommodation: ${hotel || "To confirm"}`,
     `Application: ${applicationStatus === "new" ? "New application" : applicationStatus === "pending" ? "Already submitted; awaiting result" : "Existing application has an issue"}`,
-    `Processing requested: ${speed === "standard" ? "Standard (approximately 4–5 working days)" : `${speed} via ${location}`}`,
+    `Processing requested: ${speed === "standard" ? "Standard (approximately 5–6 working days)" : `${speed} via ${location}`}`,
     `Airport fast track: ${fastTrack ? `${fastTrackAirport} (US$${fastTrackPrice} per person)` : "No"}`,
     applicationStatus === "new" ? `Estimated total: US$${total} (${travelers} × US$${perPerson}), subject to case review` : "Price: please quote after reviewing the existing application",
     `Contact / WhatsApp: ${contact}`,
@@ -124,7 +124,7 @@ export default function VisaPlanner() {
               {fastTrack && <div className="flex justify-between gap-3"><span>Airport fast track {fastTrackAirport ? `(${fastTrackAirport})` : "(select airport)"}</span><strong>{fastTrackAirport ? `US$${fastTrackPrice * travelers}` : "—"}</strong></div>}
             </div>
             {hoursToEntry !== null && <p className={`mt-6 rounded-xl p-4 text-sm leading-6 ${closeToTravel ? "bg-[#f4d77a] text-[#06251b]" : "bg-white/10 text-white"}`}>{hoursToEntry <= 0 ? "The selected arrival time has passed. Please update it." : `About ${hoursToEntry} hours until your expected arrival in Vietnam.`} {closeToTravel && hoursToEntry > 0 ? "Your trip is close. Send your flight departure details now so we can check what is still possible." : "Processing is counted during applicable working hours; this is not a visa delivery estimate."}</p>}
-            {entryDate && entryDate > vietnamToday && <p className="mt-3 text-sm leading-6 text-white/75">About {weekdaysRemaining} weekdays before arrival, excluding today and arrival day. Public holidays, submission cutoffs and application corrections may reduce the time available. {weekdaysRemaining < 5 ? "Ask us to review urgent options before paying." : "Standard processing may fit; we will confirm after checking your documents."}</p>}
+            {entryDate && entryDate > vietnamToday && <p className="mt-3 text-sm leading-6 text-white/75">About {weekdaysRemaining} weekdays before arrival, excluding today and arrival day. Public holidays, submission cutoffs and application corrections may reduce the time available. {weekdaysRemaining < 6 ? "Ask us to review urgent options before paying." : "Standard processing may fit; we will confirm after checking your documents."}</p>}
             {invalidDates && <p className="mt-4 text-sm font-bold text-[#f4d77a]">Exit date must be on or after entry date.</p>}
             {exceedsVisaPeriod && <p className="mt-4 text-sm font-bold text-[#f4d77a]">The selected trip is longer than 90 days. Adjust the dates or contact us for a different option.</p>}
             {needFlight && <p className="mt-4 text-sm font-bold text-[#f4d77a]">For travel within five days, add your flight date, time, number and departure airport so we can check the check-in deadline.</p>}

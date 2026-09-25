@@ -161,7 +161,7 @@ export default function VisaPage() {
 
               <div className="mt-7 grid gap-3">
                 {[
-                  ["Standard e-Visa", "From US$37", "4–5 working days"],
+                  ["Standard e-Visa", "From US$37", "5–6 working days"],
                   ["Urgent Visa Support", "From +US$24", "1 hour to 4 days"],
                   ["Airport Fast Track", "From US$18", "Arrival assistance"],
                 ].map(([label, value, meta]) => (
@@ -229,7 +229,7 @@ export default function VisaPage() {
             <h2 className="mt-4 text-4xl font-black leading-tight md:text-6xl">Vietnam e-Visa</h2>
           </div>
           <p className="max-w-2xl text-lg leading-8 text-[#06251b]/62">
-            Normal processing time is approximately 4–5 working days. The prices below already include GoVietStay assistance.
+            Normal processing time is approximately 5–6 working days. The prices below already include GoVietStay assistance.
           </p>
         </div>
 
@@ -336,7 +336,7 @@ export default function VisaPage() {
               <div>
                 <h3 className="font-black text-white">Processing Time</h3>
                 <p className="mt-1 leading-6">
-                  Standard e-Visa processing is approximately 4–5 working days. Urgent processing follows
+                  Standard e-Visa processing is approximately 5–6 working days. Urgent processing follows
                   the selected service and official working hours. All timeframes are estimates and may change.
                 </p>
               </div>
