@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import VisaPlanner from "./VisaPlanner";
-import { urgentPrices } from "./prices";
+import { fastTrackPrices, urgentPrices } from "./prices";
 
 export const metadata: Metadata = {
   title: "Vietnam Visa Assistance",
@@ -23,8 +23,11 @@ const WA_GENERAL =
   "https://wa.me/84937762607?text=Hello%20GoVietStay%2C%20I%20need%20support%20with%20a%20Vietnam%20visa.%20My%20nationality%20is%3A%20____.%20My%20expected%20arrival%20date%20is%3A%20____.";
 const WA_URGENT =
   "https://wa.me/84937762607?text=Hello%20GoVietStay%2C%20I%20need%20urgent%20Vietnam%20visa%20support.%20My%20nationality%20is%3A%20____.%20My%20departure%20airport%20is%3A%20HAN%20/%20SGN.%20I%20need%20the%20result%20within%3A%20____.";
-const WA_FAST_TRACK =
-  "https://wa.me/84937762607?text=Hello%20GoVietStay%2C%20I%20would%20like%20to%20book%20Airport%20Fast%20Track%20%28US%2414%29.%20My%20airport%2C%20flight%20number%2C%20arrival%20date%20and%20time%20are%3A%20____.";
+const fastTrackAirports = [
+  { code: "HAN", name: "Hanoi", price: fastTrackPrices.HAN },
+  { code: "DAD", name: "Da Nang", price: fastTrackPrices.DAD },
+  { code: "SGN", name: "Ho Chi Minh City", price: fastTrackPrices.SGN },
+];
 
 const standardVisas = [
   {
@@ -160,7 +163,7 @@ export default function VisaPage() {
                 {[
                   ["Standard e-Visa", "From US$37", "4–5 working days"],
                   ["Urgent Visa Support", "From +US$24", "1 hour to 4 days"],
-                  ["Airport Fast Track", "US$14", "Arrival assistance"],
+                  ["Airport Fast Track", "From US$18", "Arrival assistance"],
                 ].map(([label, value, meta]) => (
                   <div key={label} className="flex items-center justify-between gap-4 rounded-2xl border border-white/12 bg-white/[0.07] px-5 py-4">
                     <div>
@@ -292,12 +295,15 @@ export default function VisaPage() {
                 Meet-and-assist support for a smoother immigration arrival experience. Ideal for families, elderly travelers and first-time visitors.
               </p>
             </div>
-            <div className="rounded-[2rem] border border-white/15 bg-white p-6 text-[#06251b] shadow-xl lg:min-w-72">
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#06251b]/45">Total price</p>
-              <p className="mt-2 text-5xl font-black text-[#0b6b4f]">US$14</p>
-              <a href={WA_FAST_TRACK} target="_blank" rel="noreferrer" className="mt-5 block rounded-full bg-[#d9ad3d] px-6 py-3.5 text-center font-black transition hover:bg-[#f1ca5f]">
-                Book Fast Track
-              </a>
+            <div className="rounded-[2rem] border border-white/15 bg-white p-6 text-[#06251b] shadow-xl lg:min-w-80">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#06251b]/45">Price per person · choose airport</p>
+              <div className="mt-4 space-y-2">
+                {fastTrackAirports.map((airport) => (
+                  <a key={airport.code} href={`https://wa.me/84937762607?text=${encodeURIComponent(`Hello GoVietStay, I would like to book airport fast track at ${airport.name} (${airport.code}) for US$${airport.price} per person. My arrival date, flight number, landing time and number of travelers are: ____.`)}`} target="_blank" rel="noreferrer" className="flex items-center justify-between gap-4 rounded-xl border border-[#0b6b4f]/15 px-4 py-3 font-bold transition hover:bg-[#f7f1df]">
+                    <span>{airport.name} ({airport.code})</span><span className="shrink-0 text-[#0b6b4f]">US${airport.price}</span>
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
         </div>

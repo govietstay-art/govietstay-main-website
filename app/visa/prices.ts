@@ -11,3 +11,5 @@ export const urgentPrices = {
     { label: "4 days", price: 28 },
   ],
 } as const;
+
+export const fastTrackPrices = { HAN: 18, DAD: 18, SGN: 22 } as const;

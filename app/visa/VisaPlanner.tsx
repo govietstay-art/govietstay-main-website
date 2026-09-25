@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { urgentPrices } from "./prices";
+import { fastTrackPrices, urgentPrices } from "./prices";
 
 const field = "w-full rounded-xl border border-[#0b6b4f]/20 bg-white px-4 py-3 text-base text-[#06251b] outline-none focus:border-[#0b6b4f] focus:ring-2 focus:ring-[#0b6b4f]/15";
 const label = "mb-2 block text-sm font-bold text-[#06251b]";
@@ -26,11 +26,13 @@ export default function VisaPlanner() {
   const [speed, setSpeed] = useState("standard");
   const [travelers, setTravelers] = useState(1);
   const [fastTrack, setFastTrack] = useState(false);
+  const [fastTrackAirport, setFastTrackAirport] = useState<"" | keyof typeof fastTrackPrices>("");
 
   const options = urgentPrices[location];
   const urgent = options.find((option) => option.label === speed);
   const visaPrice = entryType === "single" ? 37 : 62;
-  const perPerson = visaPrice + (urgent?.price ?? 0) + (fastTrack ? 14 : 0);
+  const fastTrackPrice = fastTrack && fastTrackAirport ? fastTrackPrices[fastTrackAirport] : 0;
+  const perPerson = visaPrice + (urgent?.price ?? 0) + fastTrackPrice;
   const total = perPerson * travelers;
   const entry = entryDate && entryTime ? new Date(`${entryDate}T${entryTime}:00+07:00`) : null;
   const hoursToEntry = entry && !Number.isNaN(entry.getTime()) ? Math.ceil((entry.getTime() - Date.now()) / 3600000) : null;
@@ -39,7 +41,7 @@ export default function VisaPlanner() {
   const requestedDays = entryDate && exitDate ? Math.round((Date.parse(`${exitDate}T00:00:00Z`) - Date.parse(`${entryDate}T00:00:00Z`)) / 86400000) + 1 : null;
   const exceedsVisaPeriod = requestedDays !== null && requestedDays > 90;
   const needFlight = closeToTravel && (!flightDate || !flightTime || !departureAirport.trim() || !flightNumber.trim());
-  const canSend = Boolean(nationality.trim() && entryDate && entryTime && exitDate && entryPort.trim() && contact.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && !invalidDates && !exceedsVisaPeriod && !needFlight && (hoursToEntry === null || hoursToEntry > 0));
+  const canSend = Boolean(nationality.trim() && entryDate && entryTime && exitDate && entryPort.trim() && contact.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && !invalidDates && !exceedsVisaPeriod && !needFlight && (!fastTrack || fastTrackAirport) && (hoursToEntry === null || hoursToEntry > 0));
   const todayParts = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Ho_Chi_Minh", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(new Date()).map(({ type, value }) => [type, value]));
   const vietnamToday = `${todayParts.year}-${todayParts.month}-${todayParts.day}`;
   let weekdaysRemaining = 0;
@@ -66,7 +68,7 @@ export default function VisaPlanner() {
     `Vietnam accommodation: ${hotel || "To confirm"}`,
     `Application: ${applicationStatus === "new" ? "New application" : applicationStatus === "pending" ? "Already submitted; awaiting result" : "Existing application has an issue"}`,
     `Processing requested: ${speed === "standard" ? "Standard (approximately 4–5 working days)" : `${speed} via ${location}`}`,
-    `Airport fast track: ${fastTrack ? "Yes" : "No"}`,
+    `Airport fast track: ${fastTrack ? `${fastTrackAirport} (US$${fastTrackPrice} per person)` : "No"}`,
     applicationStatus === "new" ? `Estimated total: US$${total} (${travelers} × US$${perPerson}), subject to case review` : "Price: please quote after reviewing the existing application",
     `Contact / WhatsApp: ${contact}`,
     `Email: ${email}`,
@@ -107,7 +109,8 @@ export default function VisaPlanner() {
               <div><label className={label} htmlFor="visa-location">Urgent processing location</label><select id="visa-location" className={field} value={location} onChange={(e) => { setLocation(e.target.value as "HAN" | "SGN"); setSpeed("standard"); }}><option value="HAN">Hanoi (HAN)</option><option value="SGN">Ho Chi Minh City (SGN)</option></select></div>
               <div><label className={label} htmlFor="visa-speed">Processing request</label><select id="visa-speed" className={field} value={speed} onChange={(e) => setSpeed(e.target.value)}><option value="standard">Standard · no urgent surcharge</option>{options.map((option) => <option key={option.label} value={option.label}>{option.label} · +US${option.price} per person</option>)}</select></div>
             </div>
-            <label className="mt-6 flex cursor-pointer items-center gap-3 text-base font-semibold"><input type="checkbox" className="h-5 w-5 accent-[#0b6b4f]" checked={fastTrack} onChange={(e) => setFastTrack(e.target.checked)} /> Add airport fast track (+US$14 per person)</label>
+            <label className="mt-6 flex cursor-pointer items-center gap-3 text-base font-semibold"><input type="checkbox" className="h-5 w-5 accent-[#0b6b4f]" checked={fastTrack} onChange={(e) => setFastTrack(e.target.checked)} /> Add airport fast track (HAN/DAD US$18 · SGN US$22 per person)</label>
+            {fastTrack && <div className="mt-4 max-w-sm"><label className={label} htmlFor="fast-track-airport">Fast track arrival airport *</label><select id="fast-track-airport" className={field} value={fastTrackAirport} onChange={(e) => setFastTrackAirport(e.target.value as "" | keyof typeof fastTrackPrices)}><option value="">Choose an airport</option><option value="HAN">Hanoi (HAN) · US$18</option><option value="DAD">Da Nang (DAD) · US$18</option><option value="SGN">Ho Chi Minh City (SGN) · US$22</option></select></div>}
             <p className="mt-4 text-sm leading-6 text-[#06251b]/65">These prices assume a new e-Visa application. Existing or problematic applications require a separate review. Visa validity is up to 90 days; requested dates and entry points must be checked before submission.</p>
           </div>
 
@@ -118,13 +121,14 @@ export default function VisaPlanner() {
             <div className="mt-6 space-y-3 border-t border-white/20 pt-5 text-sm">
               <div className="flex justify-between gap-3"><span>e-Visa assistance</span><strong>US${visaPrice * travelers}</strong></div>
               {urgent && <div className="flex justify-between gap-3"><span>Urgent request ({location}, {speed})</span><strong>US${urgent.price * travelers}</strong></div>}
-              {fastTrack && <div className="flex justify-between gap-3"><span>Airport fast track</span><strong>US${14 * travelers}</strong></div>}
+              {fastTrack && <div className="flex justify-between gap-3"><span>Airport fast track {fastTrackAirport ? `(${fastTrackAirport})` : "(select airport)"}</span><strong>{fastTrackAirport ? `US$${fastTrackPrice * travelers}` : "—"}</strong></div>}
             </div>
             {hoursToEntry !== null && <p className={`mt-6 rounded-xl p-4 text-sm leading-6 ${closeToTravel ? "bg-[#f4d77a] text-[#06251b]" : "bg-white/10 text-white"}`}>{hoursToEntry <= 0 ? "The selected arrival time has passed. Please update it." : `About ${hoursToEntry} hours until your expected arrival in Vietnam.`} {closeToTravel && hoursToEntry > 0 ? "Your trip is close. Send your flight departure details now so we can check what is still possible." : "Processing is counted during applicable working hours; this is not a visa delivery estimate."}</p>}
             {entryDate && entryDate > vietnamToday && <p className="mt-3 text-sm leading-6 text-white/75">About {weekdaysRemaining} weekdays before arrival, excluding today and arrival day. Public holidays, submission cutoffs and application corrections may reduce the time available. {weekdaysRemaining < 5 ? "Ask us to review urgent options before paying." : "Standard processing may fit; we will confirm after checking your documents."}</p>}
             {invalidDates && <p className="mt-4 text-sm font-bold text-[#f4d77a]">Exit date must be on or after entry date.</p>}
             {exceedsVisaPeriod && <p className="mt-4 text-sm font-bold text-[#f4d77a]">The selected trip is longer than 90 days. Adjust the dates or contact us for a different option.</p>}
             {needFlight && <p className="mt-4 text-sm font-bold text-[#f4d77a]">For travel within five days, add your flight date, time, number and departure airport so we can check the check-in deadline.</p>}
+            {fastTrack && !fastTrackAirport && <p className="mt-4 text-sm font-bold text-[#f4d77a]">Choose the airport to include fast track in the estimate.</p>}
             <p className="mt-6 text-sm leading-6 text-white/70">We confirm nationality, documents, available processing time and final price before requesting payment. Approval and a specific delivery hour cannot be guaranteed.</p>
             <a className={`mt-6 block rounded-full px-5 py-4 text-center font-black ${canSend ? "bg-[#d9ad3d] text-[#06251b] hover:bg-[#f1ca5f]" : "pointer-events-none bg-white/30 text-white/70"}`} aria-disabled={!canSend} href={canSend ? `https://wa.me/84937762607?text=${encodeURIComponent(message)}` : undefined} target="_blank" rel="noreferrer">Send complete request on WhatsApp</a>
             <p className="mt-3 text-center text-xs text-white/60">Attach passport and portrait photos in the WhatsApp chat. No documents are uploaded or stored on this page.</p>
