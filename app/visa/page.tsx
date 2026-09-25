@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
+import VisaPlanner from "./VisaPlanner";
+import { urgentPrices } from "./prices";
 
 export const metadata: Metadata = {
   title: "Vietnam Visa Assistance",
@@ -38,23 +41,8 @@ const standardVisas = [
   },
 ];
 
-const urgentHan = [
-  ["1 hour", "US$102"],
-  ["2 hours", "US$72"],
-  ["4 hours", "US$45"],
-  ["1 day", "US$35"],
-  ["2 days", "US$29"],
-  ["3 days", "US$26"],
-  ["4 days", "US$24"],
-];
-
-const urgentSgn = [
-  ["4 hours", "US$59"],
-  ["1 day", "US$47"],
-  ["2 days", "US$37"],
-  ["3 days", "US$30"],
-  ["4 days", "US$28"],
-];
+const urgentHan = urgentPrices.HAN.map(({ label, price }) => [label, `US$${price}`]);
+const urgentSgn = urgentPrices.SGN.map(({ label, price }) => [label, `US$${price}`]);
 
 function Logo({ className = "" }: { className?: string }) {
   return <img src="/logo.png" alt="GoVietStay" className={className} />;
@@ -142,8 +130,8 @@ export default function VisaPage() {
             </p>
 
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <a href={WA_GENERAL} target="_blank" rel="noreferrer" className="rounded-full bg-[#d9ad3d] px-8 py-4 text-center text-base font-black text-[#06251b] shadow-xl shadow-black/20 transition hover:-translate-y-0.5 hover:bg-[#f1ca5f]">
-                Check My Visa
+              <a href="#plan-visa" className="rounded-full bg-[#d9ad3d] px-8 py-4 text-center text-base font-black text-[#06251b] shadow-xl shadow-black/20 transition hover:-translate-y-0.5 hover:bg-[#f1ca5f]">
+                Plan My Visa
               </a>
               <a href="#prices" className="rounded-full border border-white/25 bg-white/5 px-8 py-4 text-center text-base font-bold text-white backdrop-blur transition hover:bg-white/12">
                 View Prices
@@ -171,7 +159,7 @@ export default function VisaPage() {
               <div className="mt-7 grid gap-3">
                 {[
                   ["Standard e-Visa", "From US$37", "4–5 working days"],
-                  ["Urgent Visa Support", "From US$9", "1 hour to 4 days"],
+                  ["Urgent Visa Support", "From +US$24", "1 hour to 4 days"],
                   ["Airport Fast Track", "US$14", "Arrival assistance"],
                 ].map(([label, value, meta]) => (
                   <div key={label} className="flex items-center justify-between gap-4 rounded-2xl border border-white/12 bg-white/[0.07] px-5 py-4">
@@ -187,7 +175,6 @@ export default function VisaPage() {
           </div>
         </div>
       </section>
-
 
       <section className="relative z-10 mx-auto -mt-7 max-w-6xl px-5 md:-mt-10 md:px-8">
         <div className="grid gap-6 rounded-[2rem] border border-[#d9ad3d]/35 bg-[#fff9e8] p-6 shadow-[0_24px_70px_rgba(6,37,27,0.10)] md:grid-cols-[1fr_auto] md:items-center md:p-8">
@@ -213,6 +200,24 @@ export default function VisaPage() {
           </a>
         </div>
       </section>
+
+      <VisaPlanner />
+
+      <section className="bg-white py-16 md:py-24" id="visa-documents">
+        <div className="mx-auto grid max-w-7xl gap-10 px-5 md:px-8 lg:grid-cols-[.7fr_1fr] lg:items-start">
+          <div>
+            <p className="text-sm font-black uppercase tracking-[.25em] text-[#0b6b4f]">Send everything together</p>
+            <h2 className="mt-4 text-3xl font-black md:text-5xl">Photos and details we need</h2>
+            <p className="mt-5 leading-7 text-[#06251b]/70">For each traveler, send one clear image of the entire passport data page and one recent, front-facing portrait with a light background and no glasses. Make sure all passport information is legible and the edges are visible.</p>
+            <p className="mt-4 leading-7 text-[#06251b]/70">Also include expected entry and exit dates, entry and exit ports, hotel name and address, nationality, email, WhatsApp number, and your exact flight time if travel is close. If you have already applied, tell us the current status and share your application reference privately in WhatsApp.</p>
+            <p className="mt-4 text-sm leading-6 text-[#06251b]/60">Check names, passport numbers, birth dates and travel dates before submission. Send document photos directly in WhatsApp; this website does not collect passport files.</p>
+          </div>
+          <div className="overflow-hidden rounded-[2rem] border border-[#0b6b4f]/10 bg-[#f7f1df] shadow-xl">
+            <Image src="/visa-application-guide.webp" alt="GoVietStay illustrated six-step guide: passport and portrait photos, travel details, hotel, contact information, and sending all items together" width={1024} height={1536} className="h-auto w-full" sizes="(max-width: 1024px) 100vw, 58vw" />
+          </div>
+        </div>
+      </section>
+
 
       <section id="prices" className="relative mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-24">
         <div className="grid gap-10 lg:grid-cols-[.75fr_1.25fr] lg:items-end">
@@ -259,7 +264,7 @@ export default function VisaPage() {
             <p className="text-sm font-black uppercase tracking-[0.28em] text-[#0b6b4f]">Urgent Processing</p>
             <h2 className="mt-4 text-4xl font-black md:text-6xl">Need Your Visa Faster?</h2>
             <p className="mt-5 text-lg leading-8 text-[#06251b]/62">
-              Contact us before payment so our team can confirm nationality, timing and the correct processing location.
+              These are urgent processing add-ons per applicant, in addition to the e-Visa assistance price above. Contact us before payment so our team can confirm nationality, timing and the correct processing location.
             </p>
           </div>
 
