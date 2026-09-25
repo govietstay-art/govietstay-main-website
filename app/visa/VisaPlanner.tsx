@@ -40,6 +40,17 @@ export default function VisaPlanner() {
   const exceedsVisaPeriod = requestedDays !== null && requestedDays > 90;
   const needFlight = closeToTravel && (!flightDate || !flightTime || !departureAirport.trim() || !flightNumber.trim());
   const canSend = Boolean(nationality.trim() && entryDate && entryTime && exitDate && entryPort.trim() && contact.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && !invalidDates && !exceedsVisaPeriod && !needFlight && (hoursToEntry === null || hoursToEntry > 0));
+  const todayParts = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Ho_Chi_Minh", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(new Date()).map(({ type, value }) => [type, value]));
+  const vietnamToday = `${todayParts.year}-${todayParts.month}-${todayParts.day}`;
+  let weekdaysRemaining = 0;
+  if (entryDate && entryDate > vietnamToday) {
+    const cursor = new Date(`${vietnamToday}T00:00:00Z`);
+    cursor.setUTCDate(cursor.getUTCDate() + 1);
+    while (cursor.toISOString().slice(0, 10) < entryDate && weekdaysRemaining <= 365) {
+      if (cursor.getUTCDay() !== 0 && cursor.getUTCDay() !== 6) weekdaysRemaining++;
+      cursor.setUTCDate(cursor.getUTCDate() + 1);
+    }
+  }
 
   const message = [
     "Hello GoVietStay, please check my Vietnam e-Visa request before payment.",
@@ -110,6 +121,7 @@ export default function VisaPlanner() {
               {fastTrack && <div className="flex justify-between gap-3"><span>Airport fast track</span><strong>US${14 * travelers}</strong></div>}
             </div>
             {hoursToEntry !== null && <p className={`mt-6 rounded-xl p-4 text-sm leading-6 ${closeToTravel ? "bg-[#f4d77a] text-[#06251b]" : "bg-white/10 text-white"}`}>{hoursToEntry <= 0 ? "The selected arrival time has passed. Please update it." : `About ${hoursToEntry} hours until your expected arrival in Vietnam.`} {closeToTravel && hoursToEntry > 0 ? "Your trip is close. Send your flight departure details now so we can check what is still possible." : "Processing is counted during applicable working hours; this is not a visa delivery estimate."}</p>}
+            {entryDate && entryDate > vietnamToday && <p className="mt-3 text-sm leading-6 text-white/75">About {weekdaysRemaining} weekdays before arrival, excluding today and arrival day. Public holidays, submission cutoffs and application corrections may reduce the time available. {weekdaysRemaining < 5 ? "Ask us to review urgent options before paying." : "Standard processing may fit; we will confirm after checking your documents."}</p>}
             {invalidDates && <p className="mt-4 text-sm font-bold text-[#f4d77a]">Exit date must be on or after entry date.</p>}
             {exceedsVisaPeriod && <p className="mt-4 text-sm font-bold text-[#f4d77a]">The selected trip is longer than 90 days. Adjust the dates or contact us for a different option.</p>}
             {needFlight && <p className="mt-4 text-sm font-bold text-[#f4d77a]">For travel within five days, add your flight date, time, number and departure airport so we can check the check-in deadline.</p>}
