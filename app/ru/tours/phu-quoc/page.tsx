@@ -4,9 +4,9 @@ import JsonLd from "../../../../components/JsonLd";
 
 const canonical = "https://www.govietstay.com/ru/tours/phu-quoc";
 const english = "https://www.govietstay.com/tours/phu-quoc";
-const seoTitle = "Ð­ÐºÑÐºÑƒÑ€ÑÐ¸Ð¸ Ð½Ð° Ð¤ÑƒÐºÑƒÐ¾ÐºÐµ 2026: Ñ†ÐµÐ½Ñ‹, 3â€“4 Ð¾ÑÑ‚Ñ€Ð¾Ð²Ð° Ð¸ Ñ‚ÑƒÑ€Ñ‹ Ð½Ð° Ñ€ÑƒÑÑÐºÐ¾Ð¼";
+const seoTitle = "Экскурсии на Фукуоке 2026: цены, 3–4 острова и туры на русском";
 const seoDescription =
-  "Ð¡Ñ€Ð°Ð²Ð½Ð¸Ñ‚Ðµ Ñ‚ÑƒÑ€Ñ‹ Ð½Ð° 3 Ð¾ÑÑ‚Ñ€Ð¾Ð²Ð°, 4 Ð¾ÑÑ‚Ñ€Ð¾Ð²Ð° + Ð¥Ð¾Ð½ Ð¢Ñ…Ð¾Ð¼, ÑÐ½Ð¾Ñ€ÐºÐ»Ð¸Ð½Ð³ Ð¸ Ñ‡Ð°ÑÑ‚Ð½Ñ‹Ðµ ÑÐºÑÐºÑƒÑ€ÑÐ¸Ð¸. ÐÐºÑ‚ÑƒÐ°Ð»ÑŒÐ½Ñ‹Ðµ Ñ†ÐµÐ½Ñ‹, Ð¿Ð¾Ð¼Ð¾Ñ‰ÑŒ Ð½Ð° Ñ€ÑƒÑÑÐºÐ¾Ð¼ Ð¸ Ð±Ñ€Ð¾Ð½Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ GoVietStay.";
+  "Сравните туры на 3 острова, 4 острова + Хон Тхом, снорклинг и частные экскурсии. Актуальные цены, помощь на русском и бронирование GoVietStay.";
 
 export const metadata: Metadata = {
   title: seoTitle,
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/tour/phuquoc/johns/trip3-may-rut-trong.jpg",
-        alt: "Ð­ÐºÑÐºÑƒÑ€ÑÐ¸Ð¸ Ð½Ð° Ð¤ÑƒÐºÑƒÐ¾ÐºÐµ: 3 Ð¾ÑÑ‚Ñ€Ð¾Ð²Ð°, 4 Ð¾ÑÑ‚Ñ€Ð¾Ð²Ð° Ð¸ Ð¥Ð¾Ð½ Ð¢Ñ…Ð¾Ð¼",
+        alt: "Экскурсии на Фукуоке: 3 острова, 4 острова и Хон Тхом",
       },
     ],
   },
@@ -48,20 +48,20 @@ export default function Page() {
                 {
                   "@type": "ListItem",
                   position: 1,
-                  name: "GoVietStay Ð½Ð° Ñ€ÑƒÑÑÐºÐ¾Ð¼",
+                  name: "GoVietStay на русском",
                   item: "https://www.govietstay.com/ru",
                 },
                 {
                   "@type": "ListItem",
                   position: 2,
-                  name: "Ð­ÐºÑÐºÑƒÑ€ÑÐ¸Ð¸ Ð½Ð° Ð¤ÑƒÐºÑƒÐ¾ÐºÐµ",
+                  name: "Экскурсии на Фукуоке",
                   item: canonical,
                 },
               ],
             },
             {
               "@type": "CollectionPage",
-              name: "Ð­ÐºÑÐºÑƒÑ€ÑÐ¸Ð¸ Ð½Ð° Ð¤ÑƒÐºÑƒÐ¾ÐºÐµ 2026",
+              name: "Экскурсии на Фукуоке 2026",
               description: seoDescription,
               url: canonical,
               image:
