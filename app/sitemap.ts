@@ -18,6 +18,8 @@ import { germanSeoPages } from "./de/seo";
 const BASE_URL = "https://www.govietstay.com";
 const SITE_UPDATED = new Date("2026-08-22T00:00:00.000Z");
 
+const homepageAlternates={languages:{en:BASE_URL,ru:`${BASE_URL}/ru`,"it-IT":`${BASE_URL}/it`,"x-default":BASE_URL}};
+
 const languageAlternates = (englishPath: string, russianPath: string) => ({
   languages: {
     en: `${BASE_URL}${englishPath}`,
@@ -59,7 +61,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: SITE_UPDATED,
       changeFrequency: "weekly",
       priority: 0.9,
-      alternates: languageAlternates("", "/ru"),
+      alternates: homepageAlternates,
     },
     {
       url: `${BASE_URL}/ko`,
@@ -99,7 +101,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date("2026-08-27T00:00:00.000Z"),
       changeFrequency: "daily",
       priority: 1,
-      alternates: { languages: { "it-IT": `${BASE_URL}/it`, en: `${BASE_URL}/travel` } },
+      alternates: homepageAlternates,
     },    {
       url: `${BASE_URL}/tr`,
       lastModified: new Date("2026-08-29T00:00:00.000Z"),
@@ -169,7 +171,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: SITE_UPDATED,
       changeFrequency: "daily",
       priority: 1,
-      alternates: languageAlternates("", "/ru"),
+      alternates: homepageAlternates,
     },
     {
       url: `${BASE_URL}/ru/tours/ba-na-hills`,
@@ -254,6 +256,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
         "/tours/phu-quoc",
         "/ru/tours/phu-quoc",
       ),
+    },
+    {
+      url: `${BASE_URL}/local-food`,
+      lastModified: new Date("2026-09-27T00:00:00.000Z"),
+      changeFrequency: "monthly", priority: 0.68,
+    },
+    {
+      url: `${BASE_URL}/group-deals`,
+      lastModified: new Date("2026-09-27T00:00:00.000Z"),
+      changeFrequency: "weekly", priority: 0.85,
+      alternates: languageAlternates("/group-deals","/ru/group-deals"),
+    },
+    {
+      url: `${BASE_URL}/ru/group-deals`,
+      lastModified: new Date("2026-09-27T00:00:00.000Z"),
+      changeFrequency: "weekly", priority: 0.85,
+      alternates: languageAlternates("/group-deals","/ru/group-deals"),
     },
     {
       url: `${BASE_URL}/visa`,

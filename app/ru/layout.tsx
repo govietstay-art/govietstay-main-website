@@ -2,13 +2,8 @@ import type { Metadata } from "next";
 import JsonLd from "../../components/JsonLd";
 import RussianInternalLinks from "../../components/RussianInternalLinks";
 
-const canonical = "https://www.govietstay.com/ru";
-
 export const metadata: Metadata = {
-  title: {
-    default: "Экскурсии во Вьетнаме с поддержкой на русском",
-    template: "%s | GoVietStay",
-  },
+  title: "Экскурсии во Вьетнаме с поддержкой на русском",
   description:
     "Туры в Дананге, Хойане, Хюэ и на Фукуоке с понятной программой, подтверждённой ценой и поддержкой GoVietStay на русском языке.",
   keywords: [
@@ -21,18 +16,9 @@ export const metadata: Metadata = {
     "Фукуок экскурсии",
     "Вьетнам для туристов из Казахстана",
   ],
-  alternates: {
-    canonical,
-    languages: {
-      en: "https://www.govietstay.com",
-      ru: canonical,
-      "x-default": "https://www.govietstay.com",
-    },
-  },
   openGraph: {
     type: "website",
     locale: "ru_RU",
-    url: canonical,
     siteName: "GoVietStay",
     title: "Экскурсии во Вьетнаме с поддержкой на русском",
     description:
