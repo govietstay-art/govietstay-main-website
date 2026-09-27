@@ -13,7 +13,7 @@ export async function generateMetadata({params}:{params:Promise<{slug:string}>})
     description:page.desc,
     alternates:{canonical,languages:{"it-IT":canonical}},
     robots:{index:true,follow:true},
-    openGraph:{type:"article",url:canonical,title:page.title,description:page.desc,locale:"it_IT",siteName:"GoVietStay"},
+    openGraph:{type:"article",url:canonical,title:page.title,description:page.desc,locale:"it_IT",siteName:"GoVietStay",images:[{url:"https://www.govietstay.com/hero-hoian-new.png",alt:"GoVietStay Vietnam travel"}]},twitter:{card:"summary_large_image",title:page.title,description:page.desc,images:["https://www.govietstay.com/hero-hoian-new.png"]},
     other:{"content-language":"it-IT","applicable-device":"pc,mobile"}
   };
 }

@@ -29,7 +29,9 @@ export async function generateMetadata({
       description: page.desc,
       locale: "tr_TR",
       siteName: "GoVietStay",
+      images:[{url:"https://www.govietstay.com/hero-hoian-new.png",alt:"GoVietStay Vietnam travel"}],
     },
+    twitter:{card:"summary_large_image",title:page.title,description:page.desc,images:["https://www.govietstay.com/hero-hoian-new.png"]},
     other: { "content-language": "tr-TR", "applicable-device": "pc,mobile" },
   };
 }
