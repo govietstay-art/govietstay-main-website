@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import {getPageLocale,isKnownLocale,isRtlLocale} from "../lib/seo/locales.ts";
 
 const cases={
-  "/":"en","/travel/local-experiences/night-bites":"en",
+  "/":"en","/travel/local-experiences/night-bites":"en","/go/threads":"ru",
   "/ru":"ru","/ru/cruise-port-shore-excursions":"ru",
   "/kz/tour":"ru-KZ","/it":"it","/vi/food":"vi","/cn":"zh-CN",
   "/tw/place":"zh-TW","/ko":"ko-KR","/fr":"fr-FR",

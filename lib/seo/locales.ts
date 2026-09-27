@@ -1,6 +1,6 @@
 /** Shared server and client locale mapping. */
 export const HTML_LOCALE_BY_PREFIX:Record<string,string>={
- ru:"ru",kz:"ru-KZ",it:"it",vi:"vi",cn:"zh-CN",tw:"zh-TW",
+ go:"ru",ru:"ru",kz:"ru-KZ",it:"it",vi:"vi",cn:"zh-CN",tw:"zh-TW",
  ko:"ko-KR",fr:"fr-FR",de:"de-DE",il:"he-IL",ar:"ar",
  tr:"tr-TR",ph:"en-PH",in:"en-IN",mn:"mn",en:"en",
 };
