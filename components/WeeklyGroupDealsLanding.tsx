@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -21,7 +21,7 @@ const fmt=(n:number)=>new Intl.NumberFormat("vi-VN").format(n)+" ₫";
 export default function GroupDealsLanding({locale}:{locale:Locale}){
  const t=words[locale];const [guide,setGuide]=useState<"ru"|"en">("ru");const [selected,setSelected]=useState<{tour:Tour;date:string}|null>(null);
  const [f,setF]=useState({name:"",phone:"",hotel:"",adults:1,children:0,ages:"",notes:"",consent:false});const [error,setError]=useState("");
- function submit(e:React.FormEvent){e.preventDefault();if(!selected||!f.name.trim()||!/^\+?[0-9 ()-]{8,20}$/.test(f.phone.trim())||f.adults+f.children<1||f.adults+f.children>10||!f.consent){setError(t.invalid);return;}const data=[
+ function submit(e:FormEvent){e.preventDefault();if(!selected||!f.name.trim()||!/^\+?[0-9 ()-]{8,20}$/.test(f.phone.trim())||f.adults+f.children<1||f.adults+f.children>10||!f.consent){setError(t.invalid);return;}const data=[
  "GoVietStay Weekly Group Deals — NEW REQUEST",
  "Tour: "+selected.tour.name.en,"Proposed date: "+selected.date,"Guide group: "+(guide==="ru"?"Russian-speaking":"English-speaking"),
  "Customer language: "+locale,"Name: "+f.name.trim(),"WhatsApp: "+f.phone.trim(),"Adults: "+f.adults,"Children: "+f.children,
