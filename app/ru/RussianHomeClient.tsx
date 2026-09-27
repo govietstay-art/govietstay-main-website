@@ -1670,7 +1670,7 @@ function LegacyRussianPage() {
               className="flex items-center gap-2 rounded-full bg-black/25 backdrop-blur-md px-2.5 py-2 border border-white/10 shadow-lg"
             >
               <Image
-                src="/logo.png"
+                src="/ar-assets/logo.webp"
                 alt="GoVietStay"
                 width={44}
                 height={44}
@@ -2651,7 +2651,7 @@ export default function RussianPage() {
           <div className="flex items-center justify-between gap-3">
             <Link href="/" className="flex items-center gap-3 text-white">
               <Image
-                src="/logo.png"
+                src="/ar-assets/logo.webp"
                 alt="GoVietStay"
                 width={48}
                 height={48}

@@ -5641,7 +5641,11 @@ export default function Home() {
               <h2 className="text-4xl md:text-5xl font-bold">Plan Vietnam before you book it.</h2>
               <p className="mt-4 max-w-3xl text-[#06251b]/70">Explore practical English guides for Da Nang, Hoi An, Hue and Phu Quoc.</p>
             </div>
-            <a href="/travel" className="inline-flex rounded-full bg-[#0b6b4f] px-6 py-3 font-semibold text-white">Open English Travel Guides</a>
+            <div className="flex flex-wrap gap-3">
+              <a href="/travel" className="inline-flex rounded-full bg-[#0b6b4f] px-6 py-3 font-semibold text-white">Open English Travel Guides</a>
+              <a href="/en/cruise-port-shore-excursions" className="inline-flex rounded-full border border-[#0b6b4f] px-6 py-3 font-semibold text-[#0b6b4f]">Cruise Shore Excursions</a>
+              <a href="/group-deals" className="inline-flex rounded-full border border-[#0b6b4f] px-6 py-3 font-semibold text-[#0b6b4f]">Small Group Deals</a>
+            </div>
           </div>
         </div>
       </section>
