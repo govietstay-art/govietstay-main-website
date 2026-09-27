@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
 import {spawn} from "node:child_process";
 const port=3987,origin=`http://127.0.0.1:${port}`;
-const server=spawn("npm",["run","start","--","--port",String(port)],{
+const server=spawn(process.execPath,["node_modules/next/dist/bin/next","start","--port",String(port)],{
   env:{...process.env,NEXT_TELEMETRY_DISABLED:"1"},
   stdio:["ignore","pipe","pipe"],
+  detached:true,
 });
 let output="";
 server.stdout.on("data",chunk=>{output+=chunk.toString();});
@@ -53,4 +54,8 @@ try{
  assert.ok(food.includes("og:image"),"Local food social preview is missing");
  console.log(`PASS: ${routes.length} server-rendered locale routes, canonical, sitemap and local food OG.`);
 }catch(error){console.error(error);console.error("Server tail: "+output.slice(-2000));process.exitCode=1;
-}finally{server.kill("SIGTERM");}
+}finally{
+  // Kill the whole process group so detached Next workers cannot keep CI alive.
+  try{if(server.pid)process.kill(-server.pid,"SIGTERM");}catch{server.kill("SIGTERM");}
+  server.stdout.destroy();server.stderr.destroy();
+}
