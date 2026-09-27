@@ -34,7 +34,7 @@ function iso(d:Date){return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"
 const fmt=(n:number)=>new Intl.NumberFormat("vi-VN").format(n)+" ₫";
 // Proposed 30-day pilot adult pricing. Must be cost-approved before accepting payment.
 // Separate pricing and departure decisions for each tour/date/guide-language cohort.
-const pilotPrices:Record<string,{en:{regular:number;tiers:number[]};ru:{regular:number;tiers:number[];proposed?:boolean}}>={
+const pilotPrices:Record<string,{en:{regular:number;tiers:number[];proposed?:boolean};ru:{regular:number;tiers:number[];proposed?:boolean}}>={
   bana:{en:{regular:1550000,tiers:[1490000,1450000,1390000,1350000]},ru:{regular:2200000,tiers:[2100000,2000000,1900000,1800000]}},
   hoian:{en:{regular:1250000,tiers:[1190000,1150000,1100000,1050000]},ru:{regular:1800000,tiers:[1700000,1650000,1550000,1490000],proposed:true}},
   cham:{en:{regular:950000,tiers:[930000,910000,890000,870000]},ru:{regular:1350000,tiers:[1300000,1250000,1200000,1150000],proposed:true}}
