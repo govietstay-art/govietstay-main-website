@@ -3,9 +3,7 @@ import JsonLd from "../../components/JsonLd";
 import RussianInternalLinks from "../../components/RussianInternalLinks";
 
 export const metadata: Metadata = {
-  title: {
-    default: "Экскурсии во Вьетнаме с поддержкой на русском",
-  },
+  title: "Экскурсии во Вьетнаме с поддержкой на русском",
   description:
     "Туры в Дананге, Хойане, Хюэ и на Фукуоке с понятной программой, подтверждённой ценой и поддержкой GoVietStay на русском языке.",
   keywords: [

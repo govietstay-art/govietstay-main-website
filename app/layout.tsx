@@ -19,9 +19,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.govietstay.com"),
 
-  title: {
-    default: "GoVietStay | Da Nang Tours, Hoi An, Hue & Phu Quoc Travel",
-  },
+  title: "GoVietStay | Da Nang Tours, Hoi An, Hue & Phu Quoc Travel",
 
   description:
     "Plan Da Nang, Hoi An, Hue and Phu Quoc with local tours, airport transfers, private cars, tickets and 24/7 WhatsApp support from GoVietStay.",
