@@ -10,6 +10,8 @@ const links = [
   ["Гид по Фукуоку", "/ru/phu-quoc"],
   ["Ba Na Hills", "/ru/tours/ba-na-hills"],
   ["Остров Чам", "/ru/tours/cham-island"],
+  ["Круизные экскурсии", "/ru/cruise-port-shore-excursions"],
+  ["Групповые экскурсии", "/ru/group-deals"],
   ["Актуально во Вьетнаме", "/ru/aktualno"],
   ["Local Point", "/ru/local-point"],
   ["Партнёрам", "/ru/partner"],

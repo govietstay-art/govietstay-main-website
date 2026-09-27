@@ -7,9 +7,9 @@ import styles from "./ItalyHub.module.css";
 export const metadata:Metadata={
   title:{absolute:"Vietnam fai da te e tour privati 2026 | Da Nang, Hoi An, Hue, Phu Quoc | GoVietStay"},
   description:"GoVietStay Italia: Vietnam fai da te, tour privati, auto privata, guide nella lingua richiesta, Da Nang, Hoi An, Hue e Phu Quoc. Prezzi standard uguali al tour English.",
-  alternates:{canonical:"https://www.govietstay.com/it",languages:{"it-IT":"https://www.govietstay.com/it","en":"https://www.govietstay.com/travel","x-default":"https://www.govietstay.com"}},
+  alternates:{canonical:"https://www.govietstay.com/it",languages:{"it-IT":"https://www.govietstay.com/it","en":"https://www.govietstay.com","ru":"https://www.govietstay.com/ru","x-default":"https://www.govietstay.com"}},
   robots:{index:true,follow:true},
-  openGraph:{type:"website",url:"https://www.govietstay.com/it",title:"GoVietStay Italia | Vietnam fai da te e privato",description:"Volo e hotel li scegli tu. In Vietnam hai un team locale quando serve davvero.",locale:"it_IT",siteName:"GoVietStay"}
+  openGraph:{type:"website",url:"https://www.govietstay.com/it",title:"GoVietStay Italia | Vietnam fai da te e privato",description:"Volo e hotel li scegli tu. In Vietnam hai un team locale quando serve davvero.",locale:"it_IT",siteName:"GoVietStay",images:[{url:"https://www.govietstay.com/hero-hoian-new.png",alt:"GoVietStay Italia"}]}
 };
 
 const bySlug=(slug:string)=>italySeoPages.find(x=>x.slug===slug);
