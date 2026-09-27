@@ -1,37 +1,13 @@
 "use client";
-
-import { useEffect } from "react";
-import { usePathname } from "next/navigation";
-
-export default function HtmlLanguageSync() {
-  const pathname = usePathname();
-
-  useEffect(() => {
-    document.documentElement.lang =
-      pathname === "/mn" || pathname.startsWith("/mn/")
-        ? "mn"
-        : pathname === "/ru" || pathname.startsWith("/ru/")
-        ? "ru"
-        : pathname === "/it" || pathname.startsWith("/it/")
-          ? "it"
-          : pathname === "/kz" || pathname.startsWith("/kz/")
-          ? "ru-KZ"
-          : pathname === "/vi" || pathname.startsWith("/vi/")
-            ? "vi"
-            : pathname === "/cn" || pathname.startsWith("/cn/")
-              ? "zh-CN"
-              : pathname === "/tw" || pathname.startsWith("/tw/")
-                ? "zh-TW"
-                : pathname === "/ko" || pathname.startsWith("/ko/")
-                  ? "ko-KR"
-                  : pathname === "/fr" || pathname.startsWith("/fr/")
-                    ? "fr-FR"
-                    : pathname === "/in" || pathname.startsWith("/in/")
-                      ? "en-IN"
-                      : pathname === "/il" || pathname.startsWith("/il/")
-                          ? "he-IL"
-                          : "en";
-  }, [pathname]);
-
-  return null;
+import {useEffect} from "react";
+import {usePathname} from "next/navigation";
+import {getPageLocale,isRtlLocale} from "../lib/seo/locales";
+export default function HtmlLanguageSync(){
+ const pathname=usePathname();
+ useEffect(()=>{
+  const locale=getPageLocale(pathname);
+  document.documentElement.lang=locale;
+  document.documentElement.dir=isRtlLocale(locale)?"rtl":"ltr";
+ },[pathname]);
+ return null;
 }

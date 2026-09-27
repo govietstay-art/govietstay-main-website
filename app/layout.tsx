@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { Geist, Geist_Mono } from "next/font/google";
 import HtmlLanguageSync from "../components/HtmlLanguageSync";
+import {isKnownLocale,isRtlLocale} from "../lib/seo/locales";
 import YandexMetrika from "../components/YandexMetrika";
 import "./globals.css";
 
@@ -20,7 +21,6 @@ export const metadata: Metadata = {
 
   title: {
     default: "GoVietStay | Da Nang Tours, Hoi An, Hue & Phu Quoc Travel",
-    template: "%s | GoVietStay",
   },
 
   description:
@@ -42,28 +42,18 @@ export const metadata: Metadata = {
     "Local Travel Support",
   ],
 
-  alternates: {
-    canonical: "https://www.govietstay.com",
-    languages: {
-      en: "https://www.govietstay.com",
-      ru: "https://www.govietstay.com/ru",
-      "fr-FR": "https://www.govietstay.com/fr",
-      "x-default": "https://www.govietstay.com",
-    },
-  },
-
   openGraph: {
     title: "GoVietStay | Da Nang Tours, Hoi An, Hue & Phu Quoc Travel",
     description:
       "Plan Da Nang, Hoi An, Hue and Phu Quoc with local tours, airport transfers, private cars, tickets and 24/7 WhatsApp support from GoVietStay.",
-    url: "https://www.govietstay.com",
     siteName: "GoVietStay",
-    locale: "en_US",
     type: "website",
+    images:[{url:"/hero-hoian-new.png",alt:"GoVietStay Vietnam travel"}],
   },
 
   twitter: {
     card: "summary_large_image",
+    images:["/hero-hoian-new.png"],
     title: "GoVietStay | Vietnam Tours & Trusted Local Support",
     description:
       "Plan Da Nang, Hoi An, Hue and Phu Quoc with local tours, airport transfers, private cars, tickets and 24/7 WhatsApp support from GoVietStay.",
@@ -83,11 +73,12 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const requestedLocale = (await headers()).get("x-govietstay-locale");
-  const locale = requestedLocale === "mn" ? "mn" : requestedLocale === "ru" ? "ru" : requestedLocale === "it" ? "it" : "en";
+  const locale = isKnownLocale(requestedLocale) ? requestedLocale! : "en";
 
   return (
     <html
       lang={locale}
+      dir={isRtlLocale(locale) ? "rtl" : "ltr"}
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
