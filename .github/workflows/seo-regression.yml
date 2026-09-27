@@ -1,0 +1,28 @@
+name: Critical SEO regression
+on:
+  pull_request:
+    paths:
+      - "app/**"
+      - "lib/seo/**"
+      - "components/HtmlLanguageSync.tsx"
+      - "components/RussianInternalLinks.tsx"
+      - "proxy.ts"
+      - "next.config.ts"
+      - "scripts/check-seo-route-langs.mjs"
+      - ".github/workflows/seo-regression.yml"
+jobs:
+  build-and-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+      - run: npm ci
+      - run: node --experimental-strip-types scripts/check-seo-route-langs.mjs
+      - run: npx tsc --noEmit --pretty false
+      - run: npm run build
