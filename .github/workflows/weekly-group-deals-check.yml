@@ -1,0 +1,21 @@
+name: Weekly Group Deals landing check
+on:
+  push:
+    branches: [feature/weekly-group-deals-landing]
+  pull_request:
+    paths:
+      - 'components/WeeklyGroupDealsLanding.tsx'
+      - 'app/ru/group-deals/**'
+      - 'app/group-deals/**'
+jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npx tsc --noEmit --pretty false
