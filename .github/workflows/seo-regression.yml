@@ -9,6 +9,7 @@ on:
       - "proxy.ts"
       - "next.config.ts"
       - "scripts/check-seo-route-langs.mjs"
+      - "scripts/check-rendered-seo.mjs"
       - ".github/workflows/seo-regression.yml"
 jobs:
   build-and-check:
@@ -26,3 +27,4 @@ jobs:
       - run: node --experimental-strip-types scripts/check-seo-route-langs.mjs
       - run: npx tsc --noEmit --pretty false
       - run: npm run build
+      - run: node scripts/check-rendered-seo.mjs
