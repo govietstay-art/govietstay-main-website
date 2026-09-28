@@ -5,7 +5,7 @@
 
 import { FormEvent, useMemo, useState } from "react";
 import styles from "./VladPage.module.css";
-import { submitStaffBookingRequest } from "../../../lib/staffBookingClient";
+import { staffSalesLogin,submitStaffBookingRequest } from "../../../lib/staffBookingClient";
 
 const cx = (names: string) => names.split(" ").map((name) => styles[name]).filter(Boolean).join(" ");
 
@@ -294,6 +294,7 @@ export default function VladOfficialPage() {
   const [pinOpen, setPinOpen] = useState(false);
   const [pin, setPin] = useState("");
   const [pinError, setPinError] = useState("");
+  const [staffToken, setStaffToken] = useState("");
   const [bookingOpen, setBookingOpen] = useState(false);
   const [bookingResult, setBookingResult] = useState("");
   const [bookingError, setBookingError] = useState("");
@@ -368,14 +369,18 @@ export default function VladOfficialPage() {
     setPinOpen(true);
   }
 
-  function submitPin(event: FormEvent<HTMLFormElement>) {
+  async function submitPin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (pin === "8888") {
+    setPinError("");
+    try {
+      const session=await staffSalesLogin("GVS-RU-VLAD-01",pin);
+      setStaffToken(session.token);
+      setPin("");
       setPinOpen(false);
       openBooking();
-      return;
+    } catch {
+      setPinError("PIN не настроен или неверный. Обратитесь к администратору GoVietStay.");
     }
-    setPinError("Неверный PIN. Попробуйте ещё раз.");
   }
 
   async function submitBooking(event: FormEvent<HTMLFormElement>) {
@@ -470,7 +475,7 @@ export default function VladOfficialPage() {
         discount_vnd: discount,
         deposit_vnd: deposit,
         notes: note + "\nLocal Point: " + localPoint,
-      });
+      }, staffToken);
     } catch (e: any) {
       setBookingError("Не удалось сохранить booking в Admin. Проверьте интернет и попробуйте ещё раз. " + (e?.message || ""));
       return;
@@ -584,7 +589,7 @@ export default function VladOfficialPage() {
             <p>Внутренний инструмент бронирования GoVietStay.</p>
             <form onSubmit={submitPin}>
               <label>PIN менеджера
-                <input autoFocus type="password" inputMode="numeric" maxLength={4} value={pin} onChange={(event) => { setPin(event.target.value); setPinError(""); }} placeholder="••••" />
+                <input autoFocus type="password" inputMode="numeric" maxLength={12} value={pin} onChange={(event) => { setPin(event.target.value); setPinError(""); }} placeholder="••••" />
               </label>
               {pinError && <span className={cx("pin-error")}>{pinError}</span>}
               <button className={cx("button yellow full")} type="submit">Открыть booking</button>
