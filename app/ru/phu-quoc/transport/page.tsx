@@ -19,7 +19,9 @@ export const metadata: Metadata = {
     title: "Транспорт на Фукуоке — трансфер, такси или частный автомобиль | GoVietStay",
     description: "Как передвигаться по Фукуоку: аэропорт, такси, частный автомобиль, север и юг острова. Когда выгоднее заранее заказать трансфер и как построить маршрут без лишних переездов.",
     siteName: "GoVietStay",
+    images: [{ url: "https://www.govietstay.com/tour/phuquoc/tour-01-1.jpg", alt: "Фукуок — GoVietStay" }],
   },
+  twitter: { card: "summary_large_image", images: ["https://www.govietstay.com/tour/phuquoc/tour-01-1.jpg"] },
 };
 
 const config = {

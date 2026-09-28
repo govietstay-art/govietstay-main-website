@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { israelSeoPages } from "../lib/israelSeoPages";
+import {israelSeoEditorial} from "../lib/israelSeoEditorial";
 import { italySeoPages } from "../lib/italySeoPages";
 import { turkeySeoPages } from "../lib/turkeySeoPages";
 import { philippinesSeoPages } from "../lib/philippinesSeoPages";
@@ -68,13 +69,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date("2026-08-26T00:00:00.000Z"),
       changeFrequency: "daily",
       priority: 1,
-      alternates: {
-        languages: {
-          "ko-KR": `${BASE_URL}/ko`,
-          ru: `${BASE_URL}/ru`,
-          "x-default": BASE_URL,
-        },
-      },
+      alternates: { languages: { "ko-KR": `${BASE_URL}/ko` } },
     },
     {
       url: `${BASE_URL}/ko/cham-island-tour`,
@@ -84,8 +79,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: {
         languages: {
           "ko-KR": `${BASE_URL}/ko/cham-island-tour`,
-          ru: `${BASE_URL}/ru/tours/cham-island`,
-          "x-default": `${BASE_URL}/ko/cham-island-tour`,
         },
       },
     },
@@ -94,7 +87,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date("2026-08-27T00:00:00.000Z"),
       changeFrequency: "daily",
       priority: 1,
-      alternates: { languages: { "en-PH": `${BASE_URL}/ph`, en: `${BASE_URL}/travel` } },
+      alternates: { languages: { "en-PH": `${BASE_URL}/ph` } },
     },
     {
       url: `${BASE_URL}/it`,
@@ -107,7 +100,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date("2026-08-29T00:00:00.000Z"),
       changeFrequency: "weekly",
       priority: 1,
-      alternates: { languages: { "tr-TR": `${BASE_URL}/tr`, en: `${BASE_URL}/travel`, "x-default": BASE_URL } },
+      alternates: { languages: { "tr-TR": `${BASE_URL}/tr` } },
     },
     {
       url: `${BASE_URL}/il`,
@@ -120,7 +113,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date("2026-08-26T00:00:00.000Z"),
       changeFrequency: "daily",
       priority: 1,
-      alternates: { languages: { "zh-CN": `${BASE_URL}/cn`, "zh-TW": `${BASE_URL}/tw` } },
+      alternates: { languages: { "zh-CN": `${BASE_URL}/cn` } },
     },
     {
       url: `${BASE_URL}/kz`,
@@ -160,9 +153,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: {
         languages: {
           "en-IN": `${BASE_URL}/in`,
-          "ko-KR": `${BASE_URL}/ko`,
-          ru: `${BASE_URL}/ru`,
-          "x-default": BASE_URL,
         },
       },
     },
@@ -208,12 +198,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
         "/tours/phu-quoc",
         "/ru/tours/phu-quoc",
       ),
-    },
-    {
-      url: `${BASE_URL}/ru/aktualno`,
-      lastModified: SITE_UPDATED,
-      changeFrequency: "daily",
-      priority: 0.85,
     },
     {
       url: `${BASE_URL}/ru/local-point`,
@@ -344,7 +328,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   const israelPages: MetadataRoute.Sitemap = israelSeoPages.map((page) => ({
-    url: `${BASE_URL}/il/${page.slug}`, lastModified: new Date(page.updated),
+    url: `${BASE_URL}/il/${page.slug}`, lastModified: new Date(israelSeoEditorial[page.slug]?.updated ?? page.updated),
     changeFrequency: page.type === "product" || page.type === "private" ? "weekly" : "monthly",
     priority: page.type === "private" ? 0.95 : page.type === "product" ? 0.92 : 0.86,
     alternates: { languages: { "he-IL": `${BASE_URL}/il/${page.slug}` } },
@@ -427,11 +411,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const germanPages: MetadataRoute.Sitemap = germanSeoPages.map((page) => {
     const deUrl = page.path ? `${BASE_URL}/de/${page.path}` : `${BASE_URL}/de`;
-    const languages: Record<string, string> = {
-      "de-DE": deUrl,
-      "x-default": page.en ? `${BASE_URL}${page.en}` : deUrl,
-    };
-    if (page.en) languages.en = `${BASE_URL}${page.en}`;
+    // Self-reference until exact English counterparts explicitly reciprocate.
+    const languages: Record<string, string> = { "de-DE": deUrl };
 
     return {
       url: deUrl,
@@ -441,6 +422,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: { languages },
     };
   });
+  const arabicRoutes = ["","da-nang-hoi-an-private-tour","da-nang-hoi-an-tours","halal-travel-vietnam","phu-quoc-family-tour","phu-quoc-tours","vietnam-11-day-itinerary","vietnam-family-private-tour",] as const;
+  const arabicPages: MetadataRoute.Sitemap = arabicRoutes.map(path => {
+    const url = `${BASE_URL}/ar${path ? `/${path}` : ""}`;
+    return { url, ...(path === "" ? { lastModified: new Date("2026-09-28T00:00:00.000Z") } : {}),
+      changeFrequency: "monthly" as const, priority: path === "" ? 0.84 : 0.78,
+      alternates: { languages: { ar: url } },
+    };
+  });
+
   const secretPages: MetadataRoute.Sitemap = secretGems.map((gem) => ({
     url: `${BASE_URL}/secret/${gem.slug}`,
     lastModified: SITE_UPDATED,
@@ -463,8 +453,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...indiaGuidePages,
     ...koreanGuidePages,
     ...russianLandingPages,
-    ...aktualnoPages,
     ...germanPages,
+    ...arabicPages,
     ...secretPages,
   ];
 }

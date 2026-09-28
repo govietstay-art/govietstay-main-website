@@ -19,7 +19,9 @@ export const metadata: Metadata = {
     title: "Фукуок впервые — что знать до поездки в 2026–2027 | GoVietStay",
     description: "Первый раз на Фукуоке: какой район выбрать, как спланировать трансфер, сколько активностей ставить в день, погода, море, деньги и полезный план до прилёта.",
     siteName: "GoVietStay",
+    images: [{ url: "https://www.govietstay.com/tour/phuquoc/tour-01-1.jpg", alt: "Фукуок — GoVietStay" }],
   },
+  twitter: { card: "summary_large_image", images: ["https://www.govietstay.com/tour/phuquoc/tour-01-1.jpg"] },
 };
 
 const config = {

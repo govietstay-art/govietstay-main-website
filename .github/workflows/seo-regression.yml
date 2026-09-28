@@ -10,6 +10,7 @@ on:
       - "next.config.ts"
       - "scripts/check-seo-route-langs.mjs"
       - "scripts/check-rendered-seo.mjs"
+      - "scripts/audit-seo-geo.mjs"
       - ".github/workflows/seo-regression.yml"
 jobs:
   build-and-check:
@@ -28,3 +29,9 @@ jobs:
       - run: npx tsc --noEmit --pretty false
       - run: npm run build
       - run: node scripts/check-rendered-seo.mjs
+      - run: node scripts/audit-seo-geo.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: multilingual-seo-geo-report
+          path: seo-audit/

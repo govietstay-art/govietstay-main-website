@@ -46,12 +46,12 @@ export const metadata: Metadata = {
       "Plan Da Nang, Hoi An, Hue and Phu Quoc with local tours, airport transfers, private cars, tickets and 24/7 WhatsApp support from GoVietStay.",
     siteName: "GoVietStay",
     type: "website",
-    images:[{url:"/hero-hoian-new.png",alt:"GoVietStay Vietnam travel"}],
+    images:[{url:"/tour/hoian.jpg",alt:"GoVietStay Vietnam travel"}],
   },
 
   twitter: {
     card: "summary_large_image",
-    images:["/hero-hoian-new.png"],
+    images:["/tour/hoian.jpg"],
     title: "GoVietStay | Vietnam Tours & Trusted Local Support",
     description:
       "Plan Da Nang, Hoi An, Hue and Phu Quoc with local tours, airport transfers, private cars, tickets and 24/7 WhatsApp support from GoVietStay.",
@@ -125,7 +125,7 @@ export default async function RootLayout({
                   "@type": "ContactPoint",
                   telephone: "+84937762607",
                   contactType: "customer service",
-                  availableLanguage: ["en", "ru", "vi", "ko", "zh-TW", "fr"],
+                  availableLanguage: ["en", "ru"],
                 },
               },
               {
@@ -135,7 +135,7 @@ export default async function RootLayout({
                 name: "GoVietStay",
                 alternateName: "GoVietStay.com",
                 url: "https://www.govietstay.com",
-                inLanguage: ["en", "ru", "vi", "ko", "zh-TW", "fr", "mn"],
+                inLanguage: ["en", "ru", "it", "vi", "ko-KR", "zh-CN", "zh-TW", "fr-FR", "de-DE", "tr-TR", "ar", "he-IL", "en-PH", "en-IN", "mn", "ru-KZ"],
                 publisher: { "@id": "https://www.govietstay.com/#organization" },
               },
             ]),

@@ -7,9 +7,10 @@ import styles from "./TurkeyFinal.module.css";
 export const metadata: Metadata = {
   title: { absolute: "Vietnam Gezi Rehberi ve Turlar 2026 | Türk Gezginler | GoVietStay" },
   description: "Türk gezginler için Vietnam: e-vize, Da Nang, Hoi An, Hue, Phu Quoc, tur fiyatları, özel tur ve gerçek yerel WhatsApp desteği.",
-  alternates: { canonical: "https://www.govietstay.com/tr", languages: { "tr-TR": "https://www.govietstay.com/tr", en: "https://www.govietstay.com/travel", "x-default": "https://www.govietstay.com" } },
+  alternates: { canonical: "https://www.govietstay.com/tr", languages: { "tr-TR": "https://www.govietstay.com/tr" } },
   robots: { index: true, follow: true },
-  openGraph: { type: "website", url: "https://www.govietstay.com/tr", title: "GoVietStay Türkiye | Vietnam’da yerel destek", description: "Vize, rota, fiyat ve yerel destek: Vietnam seyahatinizi daha az yanlış seçimle planlayın.", locale: "tr_TR", siteName: "GoVietStay" },
+  openGraph: { type: "website", url: "https://www.govietstay.com/tr", title: "GoVietStay Türkiye | Vietnam’da yerel destek", description: "Vize, rota, fiyat ve yerel destek: Vietnam seyahatinizi daha az yanlış seçimle planlayın.", locale: "tr_TR", siteName: "GoVietStay", images:[{url:"https://www.govietstay.com/tour/hoian.jpg",alt:"Hoi An, Vietnam | GoVietStay"}] },
+  twitter:{card:"summary_large_image",images:["https://www.govietstay.com/tour/hoian.jpg"]},
 };
 
 const priceCards = [

@@ -21,8 +21,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: page.description,
     alternates: { canonical: url, languages: { "mn-MN": url } },
     robots: { index: true, follow: true },
-    openGraph: { title: page.title, description: page.description, url, locale: "mn_MN", siteName: "GoVietStay", type: "website" },
-    twitter: { card: "summary_large_image", title: page.title, description: page.description },
+    openGraph: { title: page.title, description: page.description, url, locale: "mn_MN", siteName: "GoVietStay", type: "website", images: [{ url: "https://www.govietstay.com/tour/hoian.jpg", alt: "Вьетнам — GoVietStay" }] },
+    twitter: { card: "summary_large_image", title: page.title, description: page.description, images: ["https://www.govietstay.com/tour/hoian.jpg"] },
   };
 }
 

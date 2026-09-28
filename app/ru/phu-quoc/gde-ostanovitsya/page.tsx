@@ -19,7 +19,9 @@ export const metadata: Metadata = {
     title: "Где остановиться на Фукуоке — районы для первого путешествия | GoVietStay",
     description: "Где лучше жить на Фукуоке: Дыонг Донг и Long Beach, Онг Ланг, Sunset Town и Ан Тхой, Бай Дай и Grand World. Выбор района под пляж, семью, экскурсии и транспорт.",
     siteName: "GoVietStay",
+    images: [{ url: "https://www.govietstay.com/tour/phuquoc/tour-01-1.jpg", alt: "Фукуок — GoVietStay" }],
   },
+  twitter: { card: "summary_large_image", images: ["https://www.govietstay.com/tour/phuquoc/tour-01-1.jpg"] },
 };
 
 const config = {

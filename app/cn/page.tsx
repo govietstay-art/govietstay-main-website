@@ -8,9 +8,10 @@ import WeChatContact from "./_components/WeChatContact";
 export const metadata:Metadata={
   title:{absolute:"中国游客越南自由行 2026 | 岘港·会安·富国岛 | GoVietStay"},
   description:"GoVietStay 中国游客落地服务：岘港、会安、顺化、富国岛，一日游、包车、私人团、亲子、微信中文服务与试运营直客价。",
-  alternates:{canonical:"https://www.govietstay.com/cn",languages:{"zh-CN":"https://www.govietstay.com/cn","zh-TW":"https://www.govietstay.com/tw","x-default":"https://www.govietstay.com"}},
+  alternates:{canonical:"https://www.govietstay.com/cn",languages:{"zh-CN":"https://www.govietstay.com/cn","x-default":"https://www.govietstay.com"}},
   robots:{index:true,follow:true},
-  openGraph:{type:"website",url:"https://www.govietstay.com/cn",title:"GoVietStay 中国游客 | 岘港·富国岛当地服务",description:"机票酒店你自己选，落地越南以后，我们在当地帮你。",locale:"zh_CN",siteName:"GoVietStay"},
+  openGraph:{type:"website",url:"https://www.govietstay.com/cn",title:"GoVietStay 中国游客 | 岘港·富国岛当地服务",description:"机票酒店你自己选，落地越南以后，我们在当地帮你。",locale:"zh_CN",siteName:"GoVietStay",images:[{url:"https://www.govietstay.com/tour/hoian.jpg",alt:"越南会安 · GoVietStay"}]},
+  twitter:{card:"summary_large_image",images:["https://www.govietstay.com/tour/hoian.jpg"]},
 };
 
 const bySlug=(slug:string)=>chinaSeoPages.find(x=>x.slug===slug);

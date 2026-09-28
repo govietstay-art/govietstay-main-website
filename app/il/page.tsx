@@ -3,7 +3,7 @@ import {israelSeoPages} from "../../lib/israelSeoPages";
 import {israelMarketConfig as C} from "../../lib/israelMarketConfig";
 import {getIsraelVisual,israelGuests} from "../../lib/israelVisuals";
 import s from "./Israel.module.css";
-export const metadata:Metadata={title:{absolute:"וייטנאם לישראלים 2026 | טיולים פרטיים | GoVietStay"},description:"טיולים פרטיים, דה נאנג, הוי אן, הואה ופו קווק עם WhatsApp ותמיכה מקומית.",alternates:{canonical:"https://www.govietstay.com/il",languages:{"he-IL":"https://www.govietstay.com/il"}}};
+export const metadata:Metadata={title:{absolute:"וייטנאם לישראלים 2026 | טיולים פרטיים | GoVietStay"},description:"טיולים פרטיים, דה נאנג, הוי אן, הואה ופו קווק עם WhatsApp ותמיכה מקומית.",alternates:{canonical:"https://www.govietstay.com/il",languages:{"he-IL":"https://www.govietstay.com/il"}},openGraph:{type:"website",locale:"he_IL",url:"https://www.govietstay.com/il",title:"וייטנאם לישראלים 2026 | GoVietStay",description:"טיולים פרטיים ותמיכה מקומית בווייטנאם למטיילים מישראל.",images:[{url:"https://www.govietstay.com/tour/hoian.jpg",alt:"הוי אן, וייטנאם"}]},twitter:{card:"summary_large_image",images:["https://www.govietstay.com/tour/hoian.jpg"]}};
 const picks=["bana-hills-golden-bridge","hoi-an-private-evening","cham-island-snorkeling","hue-day-trip","phu-quoc-3-islands","phu-quoc-4-islands-hon-thom"];
 export default function Hub(){return <main className={s.page} dir="rtl">
 <header><a href="/il"><img src="/govietstay-logo.jpg" alt="GoVietStay"/></a><nav><a href="#private">פרטי</a><a href="#price">מחירים</a><a href="/il/phu-quoc-guide-israelis">פו קווק</a><a className={s.wa} href={C.whatsapp}>WhatsApp</a></nav></header>

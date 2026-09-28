@@ -19,7 +19,9 @@ export const metadata: Metadata = {
     title: "Снорклинг на Фукуоке — южные острова, север и частные программы | GoVietStay",
     description: "Снорклинг на Фукуоке: чем отличаются южные острова и север, 3 острова или 4 острова, групповой или частный формат. Погода, море и как выбрать программу.",
     siteName: "GoVietStay",
+    images: [{ url: "https://www.govietstay.com/tour/phuquoc/tour-05-1.jpg", alt: "Фукуок — GoVietStay" }],
   },
+  twitter: { card: "summary_large_image", images: ["https://www.govietstay.com/tour/phuquoc/tour-05-1.jpg"] },
 };
 
 const config = {

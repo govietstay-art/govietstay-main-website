@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import JsonLd from "../../components/JsonLd";
 import RussianInternalLinks from "../../components/RussianInternalLinks";
 
 export const metadata: Metadata = {
@@ -44,35 +43,6 @@ export default function RussianLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <div lang="ru" data-locale="ru">
-      <JsonLd
-        data={{
-          "@context": "https://schema.org",
-          "@type": ["Organization", "TravelAgency"],
-          "@id": "https://www.govietstay.com/#organization",
-          name: "GoVietStay",
-          url: "https://www.govietstay.com/ru",
-          logo: "https://www.govietstay.com/logo.png",
-          image: "https://www.govietstay.com/hero-hoian-new.png",
-          telephone: "+84 937 762 607",
-          areaServed: [
-            { "@type": "City", name: "Da Nang" },
-            { "@type": "City", name: "Hoi An" },
-            { "@type": "City", name: "Hue" },
-            { "@type": "Place", name: "Phu Quoc" },
-          ],
-          availableLanguage: ["ru", "en", "vi"],
-          contactPoint: {
-            "@type": "ContactPoint",
-            telephone: "+84 937 762 607",
-            contactType: "customer service",
-            availableLanguage: ["ru", "en", "vi"],
-          },
-          sameAs: [
-            "https://t.me/GoVietStay",
-            "https://maps.app.goo.gl/znWBmL8zPKEJqnoW6?g_st=ic",
-          ],
-        }}
-      />
       {children}
       <RussianInternalLinks />
     </div>

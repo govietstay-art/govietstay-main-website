@@ -7,6 +7,7 @@ const planningLinks = [
   { href: "/ru/phu-quoc/s-detmi", title: "Фукуок с детьми", desc: "Спокойный темп, парки, море и логистика для семьи." },
   { href: "/ru/phu-quoc/kuda-poehat", title: "Куда поехать", desc: "Север, центр и юг острова — что логично именно вам." },
   { href: "/ru/phu-quoc/10-dney", title: "Фукуок на 10 дней", desc: "Готовая логика поездки с запасом на море и погоду." },
+  { href: "/ru/phu-quoc/from-tashkent", title: "Фукуок из Ташкента", desc: "Как спланировать прилёт, районы острова и первые экскурсии." },
 ];
 
 const experienceLinks = [
@@ -15,6 +16,7 @@ const experienceLinks = [
   { href: "/ru/phu-quoc/hon-thom", title: "Хон Тхом", desc: "Канатная дорога, юг острова и как собрать день." },
   { href: "/ru/phu-quoc/sunset-town", title: "Sunset Town", desc: "Что посмотреть и как совместить с югом Фукуока." },
   { href: "/ru/phu-quoc/individualnye-ekskursii", title: "Индивидуальные экскурсии", desc: "Когда private формат действительно экономит время." },
+  { href: "/ru/phu-quoc/russkiy-gid", title: "Русскоговорящий гид", desc: "Что уточнить до бронирования гида и частной программы." },
   { href: "/ru/tours/phu-quoc", title: "Все экскурсии и цены", desc: "Сравните актуальные программы GoVietStay на одной странице." },
 ];
 

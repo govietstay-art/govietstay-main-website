@@ -7,6 +7,7 @@ export const metadata: Metadata = {
     "Ba Na Hills and Golden Bridge tour from Da Nang with clear inclusions, English-language support options and local GoVietStay booking assistance.",
   alternates: {
     canonical: "https://www.govietstay.com/tours/ba-na-hills",
+    languages: { en: "https://www.govietstay.com/tours/ba-na-hills", ru: "https://www.govietstay.com/ru/tours/ba-na-hills", "x-default": "https://www.govietstay.com/tours/ba-na-hills" },
   },
 };
 

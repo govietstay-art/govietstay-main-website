@@ -15,7 +15,9 @@ export const metadata: Metadata = {
       "Маршруты, подарки и местная поддержка для русскоговорящих гостей во Вьетнаме.",
     url: "https://www.govietstay.com/ru/local-point",
     locale: "ru_RU",
+    images: [{ url: "https://www.govietstay.com/local-point/govietstay-logo.jpg", alt: "GoVietStay Local Point" }],
   },
+  twitter: { card: "summary_large_image", images: ["/local-point/govietstay-logo.jpg"] },
 };
 
 export default function RussianLocalPointPage() {
