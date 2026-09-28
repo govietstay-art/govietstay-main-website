@@ -4,7 +4,7 @@ const BASE_URL = "https://www.govietstay.com";
 
 export async function GET() {
   const urls = [
-    ...russianPhuQuocPages.map((page) => ({ url: `${BASE_URL}${page.path}`, lastModified: page.slug === "index" || page.slug === "sunset-town" ? "2026-09-28" : "2026-09-10" })),
+    ...russianPhuQuocPages.map((page) => ({ url: `${BASE_URL}${page.path}`, lastModified: page.slug === "index" || page.slug === "sunset-town" || page.slug === "chto-posmotret" ? "2026-09-28" : "2026-09-10" })),
     { url: `${BASE_URL}/ru/phu-quoc-help`, lastModified: "2026-09-10" },
     { url: `${BASE_URL}/ru/phu-quoc/hon-thom`, lastModified: "2026-09-28" },
   ];
