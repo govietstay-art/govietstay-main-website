@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "Phú Quốc: Wo übernachten? | GoVietStay",
   description: "Wo auf Phú Quốc übernachten? Vergleich von Dương Đông, Ông Lang, Norden und Süden nach Strand, Restaurants, Ruhe, Familie und Ausflügen.",
   keywords: ["Phu Quoc beste Lage", "wo übernachten Phu Quoc", "Phu Quoc Unterkunft", "Ong Lang Phu Quoc", "Duong Dong Phu Quoc", "Phu Quoc Süden Hotel"],
-  alternates: { canonical: "https://www.govietstay.com/de/phu-quoc/wo-uebernachten" },
+  alternates: { canonical: "https://www.govietstay.com/de/phu-quoc/wo-uebernachten", languages: { "de-DE": "https://www.govietstay.com/de/phu-quoc/wo-uebernachten", en: "https://www.govietstay.com/travel/where-to-stay-phu-quoc" } },
   robots: { index: true, follow: true },
   openGraph: {
     type: "article",

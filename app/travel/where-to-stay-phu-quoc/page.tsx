@@ -3,7 +3,8 @@ import { phuQuocSeoPages } from "../../../lib/phu-quoc-seo-pages";
 
 const data = phuQuocSeoPages["where-to-stay-phu-quoc"];
 
-export const metadata = buildPhuQuocMetadata(data);
+const canonical = "https://www.govietstay.com/travel/where-to-stay-phu-quoc";
+export const metadata = { ...buildPhuQuocMetadata(data), alternates: { canonical, languages: { en: canonical, "de-DE": "https://www.govietstay.com/de/phu-quoc/wo-uebernachten" } } };
 
 export default function Page() {
   return <PhuQuocSeoPage data={data} />;

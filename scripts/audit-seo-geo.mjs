@@ -122,20 +122,20 @@ async function run(){
    }
   }
  }
- const indexable=facts.filter(f=>!f.robotsNoindex),badLang=indexable.filter(f=>f.lang!==f.expectedLang),missingCanonical=indexable.filter(f=>f.canonical!==f.path),
+ const indexable=facts.filter(f=>!f.robotsNoindex),pagesWithoutAnyHreflang=indexable.filter(f=>Object.keys(f.hreflang).length===0),badLang=indexable.filter(f=>f.lang!==f.expectedLang),missingCanonical=indexable.filter(f=>f.canonical!==f.path),
   missingOG=indexable.filter(f=>!f.ogImage),verboseTitle=indexable.filter(f=>f.titleLength>75),
   duplicatedBrand=indexable.filter(f=>/govietstay\s*[|—\-]\s*govietstay/i.test(f.title)),
   thinReview=indexable.filter(f=>f.words<180),orphan=indexable.filter(f=>seen.has(f.path)&&!inbound.get(f.path)&&f.path!=="/"),
   duplicateSitemap=[...seen].filter(([p,s])=>s.length>1).map(([p,s])=>({path:p,in:s}));
  const results={redirects,auditedAt:new Date().toISOString(),note:"Automated editorial signals are review queues, not Google ranking scores.",site:base,sitemapPageCounts,sitemapMissing,summary:{
   uniqueSitemapUrls:seen.size,staticRouteCount:staticUrls.length,scanned:facts.length,httpErrors:errors.length,
-  langMismatch:badLang.length,missingOrIncorrectCanonical:missingCanonical.length,
+  langMismatch:badLang.length,withoutAnyHreflang:pagesWithoutAnyHreflang.length,missingOrIncorrectCanonical:missingCanonical.length,
   missingOgImage:missingOG.length,longTitlesForReview:verboseTitle.length,duplicatedBrandTitles:duplicatedBrand.length,
   thinContentForReview:thinReview.length,orphanSitemapUrls:orphan.length,
   nonreciprocalOrUnverifiedHreflang:reciprocity.length,duplicateSitemapEntries:duplicateSitemap.length,
   conflictingOrganizationNodes:facts.filter(f=>f.orgDefs>1).length,
  },issues:{
-  httpErrors:errors,sitemapMissing,langMismatch:badLang.map(f=>({path:f.path,lang:f.lang,expected:f.expectedLang})),
+  httpErrors:errors,sitemapMissing,withoutAnyHreflang:pagesWithoutAnyHreflang.map(f=>f.path),langMismatch:badLang.map(f=>({path:f.path,lang:f.lang,expected:f.expectedLang})),
   canonical:missingCanonical.map(f=>({path:f.path,canonical:f.canonical})),
   og:missingOG.map(f=>f.path),
   titles:verboseTitle.map(f=>({path:f.path,title:f.title,length:f.titleLength})),
@@ -146,7 +146,7 @@ async function run(){
  },pages:facts.map(({outbound,...rest})=>({...rest,inbound:inbound.get(rest.path)??0}))};
  await mkdir("seo-audit",{recursive:true});
  await writeFile("seo-audit/seo-geo-audit.json",JSON.stringify(results,null,2));
- const summary="# GoVietStay multilingual SEO / GEO crawl\n\n"+Object.entries(results.summary).map(([k,v])=>"- "+k+": "+v).join("\n")+"\n\nSitemaps: "+JSON.stringify(sitemapPageCounts)+"\n";
+ const summary="# GoVietStay multilingual SEO / GEO crawl\n\n> Missing hreflang alone is not an SEO error when a page has no equivalent translation. Verify exact counterparts before linking.\n\n"+Object.entries(results.summary).map(([k,v])=>"- "+k+": "+v).join("\n")+"\n\nSitemaps: "+JSON.stringify(sitemapPageCounts)+"\n";
  await writeFile("seo-audit/summary.md",summary);
  if(process.env.GITHUB_STEP_SUMMARY)await appendFile(process.env.GITHUB_STEP_SUMMARY,summary);
  console.log(summary);

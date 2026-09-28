@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "Phú Quốc: 3 oder 4 Inseln? | GoVietStay",
   description: "Phú Quốc 3 oder 4 Inseln: Unterschiede bei Dauer, Schnorcheln, Hon-Thom-Seilbahn und Familien. Entscheidungshilfe vor einer privaten Inseltour.",
   keywords: ["Phu Quoc 3 Inseln", "Phu Quoc 4 Inseln", "Phu Quoc Inseltour", "Phu Quoc Schnorcheln", "Hon Thom Seilbahn", "An Thoi Inseln"],
-  alternates: { canonical: "https://www.govietstay.com/de/phu-quoc/3-oder-4-inseln" },
+  alternates: { canonical: "https://www.govietstay.com/de/phu-quoc/3-oder-4-inseln", languages: { "de-DE": "https://www.govietstay.com/de/phu-quoc/3-oder-4-inseln", en: "https://www.govietstay.com/travel/phu-quoc-3-islands-vs-4-islands" } },
   robots: { index: true, follow: true },
   openGraph: {
     type: "article",

@@ -16,6 +16,7 @@ import { russianSeoIndexableLandings } from "../lib/russian-seo-landings";
 import { secretGems } from "./secret/data";
 
 import { germanSeoPages } from "./de/seo";
+import { getGermanForEnglish, getEnglishForGerman } from "../lib/seo/germanPairs";
 const BASE_URL = "https://www.govietstay.com";
 const SITE_UPDATED = new Date("2026-08-22T00:00:00.000Z");
 
@@ -368,6 +369,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     alternates: {
       languages: {
         en: `${BASE_URL}/travel/${guide.slug}`,
+        ...(getGermanForEnglish(`/travel/${guide.slug}`) ? { "de-DE": `${BASE_URL}${getGermanForEnglish(`/travel/${guide.slug}`)}` } : {}),
       },
     },
   }));
@@ -387,6 +389,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     alternates: {
       languages: {
         en: `${BASE_URL}/travel/${slug}`,
+        ...(getGermanForEnglish(`/travel/${slug}`) ? { "de-DE": `${BASE_URL}${getGermanForEnglish(`/travel/${slug}`)}` } : {}),
       },
     },
   }));
@@ -413,6 +416,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const deUrl = page.path ? `${BASE_URL}/de/${page.path}` : `${BASE_URL}/de`;
     // Self-reference until exact English counterparts explicitly reciprocate.
     const languages: Record<string, string> = { "de-DE": deUrl };
+    const pairedEnglish = getEnglishForGerman(page.path ? `/de/${page.path}` : "/de");
+    if (pairedEnglish) languages.en = `${BASE_URL}${pairedEnglish}`;
 
     return {
       url: deUrl,

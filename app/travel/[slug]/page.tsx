@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import EnglishSeoGuidePage from "../_seo/EnglishSeoGuidePage";
 import {englishGuideImage} from "../../../lib/seo/guideImages";
+import { getGermanForEnglish } from "../../../lib/seo/germanPairs";
 import {
   getEnglishSeoGuide,
   englishSeoGuides,
@@ -23,6 +24,7 @@ export async function generateMetadata({
 
   const canonical = `https://www.govietstay.com/travel/${guide.slug}`;
   const image = `https://www.govietstay.com${englishGuideImage(guide.slug)}`;
+  const german = getGermanForEnglish(`/travel/${guide.slug}`);
 
   return {
     title: { absolute: guide.title },
@@ -30,7 +32,7 @@ export async function generateMetadata({
     keywords: guide.keywords,
     alternates: {
       canonical,
-      languages: { en: canonical },
+      languages: { en: canonical, ...(german ? { "de-DE": `https://www.govietstay.com${german}` } : {}) },
     },
     robots: { index: true, follow: true },
     openGraph: {

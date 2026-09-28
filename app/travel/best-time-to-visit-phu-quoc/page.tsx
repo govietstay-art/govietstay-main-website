@@ -7,7 +7,7 @@ const data = guidePages["best-time-to-visit-phu-quoc"];
 export const metadata: Metadata = {
   title: data.metaTitle,
   description: data.metaDescription,
-  alternates: { canonical: `https://www.govietstay.com/travel/${data.slug}` },
+  alternates: { canonical: `https://www.govietstay.com/travel/${data.slug}`, languages: { en: `https://www.govietstay.com/travel/${data.slug}`, "de-DE": "https://www.govietstay.com/de/phu-quoc/beste-reisezeit" } },
   openGraph: {
     title: data.metaTitle,
     description: data.metaDescription,

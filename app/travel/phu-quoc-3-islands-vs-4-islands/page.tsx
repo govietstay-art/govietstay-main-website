@@ -11,7 +11,7 @@ const seoData = { ...data, metaTitle: seoTitle, metaDescription: seoDescription 
 export const metadata: Metadata = {
   title: seoTitle,
   description: seoDescription,
-  alternates: { canonical: `https://www.govietstay.com/travel/${data.slug}` },
+  alternates: { canonical: `https://www.govietstay.com/travel/${data.slug}`, languages: { en: `https://www.govietstay.com/travel/${data.slug}`, "de-DE": "https://www.govietstay.com/de/phu-quoc/3-oder-4-inseln" } },
   openGraph: {
     title: seoTitle,
     description: seoDescription,

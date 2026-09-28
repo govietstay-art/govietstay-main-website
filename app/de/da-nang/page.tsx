@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "Đà Nẵng Sehenswürdigkeiten 2026/27 | GoVietStay",
   description: "Đà Nẵng Sehenswürdigkeiten, Ausflüge, Aufenthaltsdauer und Umgebung auf Deutsch. Praktischer Guide für eine Reise zwischen Hội An, Huế und Bà Nà Hills.",
   keywords: ["Da Nang Sehenswürdigkeiten", "Da Nang Urlaub", "Da Nang Ausflüge", "Da Nang Umgebung Sehenswürdigkeiten", "Da Nang mit Kindern", "Da Nang Sightseeing"],
-  alternates: { canonical: "https://www.govietstay.com/de/da-nang" },
+  alternates: { canonical: "https://www.govietstay.com/de/da-nang", languages: { "de-DE": "https://www.govietstay.com/de/da-nang", en: "https://www.govietstay.com/travel/da-nang-travel-guide" } },
   robots: { index: true, follow: true },
   openGraph: {
     type: "article",

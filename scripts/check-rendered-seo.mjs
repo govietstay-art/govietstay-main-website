@@ -50,6 +50,15 @@ try{
  for(const slug of ["/local-food","/group-deals","/ru/group-deals","/ru/cruise-port-shore-excursions"]){
   assert.ok(xml.includes(`https://www.govietstay.com${slug}`),`sitemap missing ${slug}`);
  }
+ const validPairs=[["/de/da-nang","/travel/da-nang-travel-guide"],["/de/phu-quoc/beste-reisezeit","/travel/best-time-to-visit-phu-quoc"],["/de/phu-quoc/3-oder-4-inseln","/travel/phu-quoc-3-islands-vs-4-islands"],["/de/phu-quoc/mit-kindern","/travel/phu-quoc-with-family"],["/de/phu-quoc/wo-uebernachten","/travel/where-to-stay-phu-quoc"]];
+ for (const [german,english] of validPairs) {
+   const [deHtml,enHtml]=await Promise.all([check(german,"de-DE","ltr"),check(english,"en","ltr")]);
+   for (const [p,s] of [[german,deHtml],[english,enHtml]]) {
+     for (const [code,target] of [["de-DE",german],["en",english]]) {
+       assert.ok(s.includes('hrefLang="'+code+'" href="https://www.govietstay.com'+target+'"'),p+": missing reciprocal "+code+" -> "+target);
+     }
+   }
+ }
  const food=await check("/local-food","en","ltr");
  assert.ok(food.includes("og:image"),"Local food social preview is missing");
  for (const path of ["/ar","/cn","/tr","/ph","/mn","/il"]) {
