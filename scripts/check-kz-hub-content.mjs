@@ -6,8 +6,8 @@ const block=source.slice(source.indexOf('"slug": "vietnam-from-kazakhstan"'),sou
 for(const text of ["Вьетнам из Казахстана: что проверить до вылета","Куда из Казахстана поехать: Дананг или Фукуок?","90 дней за 180 дней"]) assert.ok(block.includes(text),"Country guide missing "+text);
 const prices=await readFile("lib/kazakhstanPrices.ts","utf8");
 const ru=await readFile("lib/tour-landing-data.ts","utf8");
-for(const phrase of ['"standardAdult": "от 1,550,000 VND','"standardAdult": "от 950,000 VND'])
- assert.ok(prices.includes(phrase),"Public KZ base price does not match code-reviewed Russian base: "+phrase);
+for(const phrase of ['fmt(baNa.adultPrice)', 'fmt(cham.adultPrice)', 'fmt(PHU_QUOC_PUBLISHED_RATES["TRIP 3"].adult)', 'fmt(PHU_QUOC_PUBLISHED_RATES["CABLE CAR TRIP"].adult)'])
+ assert.ok(prices.includes(phrase),"KZ price must derive from verified shared source: "+phrase);
 const origin="http://127.0.0.1:4004";
 const child=spawn(process.execPath,["node_modules/next/dist/bin/next","start","--port","4004"],{detached:true,stdio:["ignore","pipe","pipe"],env:{...process.env,NEXT_TELEMETRY_DISABLED:"1"}});
 let log="";child.stderr.on("data",x=>log=(log+x.toString()).slice(-1400));const sleep=n=>new Promise(r=>setTimeout(r,n));
@@ -19,6 +19,16 @@ try{
   const r=await fetch(origin+url,{signal:AbortSignal.timeout(30000)});assert.equal(r.status,200,"Route failed "+url);const html=await r.text();
   for(const p of phrases)assert.ok(html.includes(p),"Missing "+p+" from "+url);
   assert.ok(html.includes('href="https://www.govietstay.com'+url+'"'),"Missing canonical "+url);
+ }
+ for(const [path,amounts] of [
+  ["/kz/ba-na-hills-golden-bridge",["1 550 000 VND", "1 450 000 VND"]],
+  ["/kz/cham-island-tour",["950 000 VND", "800 000 VND"]],
+  ["/kz/phu-quoc-three-islands",["820 000 VND", "570 000 VND"]],
+  ["/kz/phu-quoc-four-islands-hon-thom",["1 700 000 VND", "1 190 000 VND"]]
+ ]){
+  const res=await fetch(origin+path,{signal:AbortSignal.timeout(30000)});assert.equal(res.status,200,"Missing KZ product "+path);
+  const html=(await res.text()).replaceAll("&nbsp;"," ").replaceAll(" "," ").replaceAll(" "," ");
+  for(const amount of amounts)assert.ok(html.includes(amount.replaceAll(" "," ")),"Missing verified product amount "+path+" "+amount);
  }
  const xml=await (await fetch(origin+"/sitemap.xml")).text();
  for(const u of ["/kz","/kz/vietnam-from-kazakhstan"]){const n="<loc>https://www.govietstay.com"+u+"</loc>",i=xml.indexOf(n);assert.ok(i>=0&&xml.slice(i,i+220).includes("<lastmod>2026-09-28"),"Missing selective sitemap date "+u);}
