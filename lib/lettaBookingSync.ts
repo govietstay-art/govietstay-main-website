@@ -54,32 +54,61 @@ export async function syncBookingIntakeToLetta(
     "should complete before approving. Never treat this event as a confirmed booking.",
   ].join("\n");
 
-  try {
-    const response = await fetch(
-      `https://api.letta.com/v1/agents/${encodeURIComponent(agentId)}/messages`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          "Content-Type": "application/json",
+  // Letta handles each agent sequentially. A busy agent can return 409 while
+  // it processes another chat. Retry boundedly only for non-approval conflicts.
+  // Never automatically approve or deny tool calls on the owner's agent.
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const response = await fetch(
+        `https://api.letta.com/v1/agents/${encodeURIComponent(agentId)}/messages`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            messages: [{ role: "user", content }],
+            streaming: false,
+          }),
+          signal: AbortSignal.timeout(8_000),
+          cache: "no-store",
         },
-        body: JSON.stringify({
-          messages: [{ role: "user", content }],
-          streaming: false,
-        }),
-        signal: AbortSignal.timeout(10_000),
-        cache: "no-store",
-      },
-    );
-    if (!response.ok) {
-      // Log HTTP status only; never log credentials or customer data.
-      console.error("GoVietStay Letta sync HTTP error:", response.status);
+      );
+
+      if (response.ok) {
+        console.info("GoVietStay Letta intake synced:", booking.bookingCode);
+        return true;
+      }
+
+      if (response.status === 409) {
+        // Only the explicit, non-sensitive diagnostic code is logged.
+        // API error message bodies can contain free text and are never logged.
+        const result = await response.json().catch(() => null);
+        const detail = result?.detail;
+        const rawCode = typeof detail?.code === "string"
+          ? detail.code
+          : typeof result?.code === "string" ? result.code : "UNKNOWN";
+        const code = /^[A-Z_]{3,48}$/.test(rawCode) ? rawCode : "UNKNOWN";
+        console.warn("GoVietStay Letta conflict:", code, "attempt:", attempt);
+        if (code === "PENDING_APPROVAL") {
+          console.warn("GoVietStay Letta sync awaits owner approval:", booking.bookingCode);
+          return false;
+        }
+        if (attempt < 3) {
+          await new Promise((resolve) => setTimeout(resolve, attempt * 1500));
+          continue;
+        }
+      } else {
+        console.error("GoVietStay Letta sync HTTP error:", response.status);
+      }
+      return false;
+    } catch {
+      // An ambiguous network timeout may occur after Letta accepts a message.
+      // Do not auto-retry such cases without a durable idempotency key.
+      console.error("GoVietStay Letta sync transport unavailable");
       return false;
     }
-    console.info("GoVietStay Letta intake synced:", booking.bookingCode);
-    return true;
-  } catch {
-    console.error("GoVietStay Letta sync unavailable");
-    return false;
   }
+  return false;
 }
