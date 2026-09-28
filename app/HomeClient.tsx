@@ -2608,10 +2608,12 @@ export default function Home() {
 
       <section className="relative min-h-screen overflow-hidden">
         <Image
-          src="/hero-hoian-new.png"
+          src="/ar-assets/hero-hoian.webp"
           alt="Hoi An Ancient Town"
           fill
           priority
+          sizes="100vw"
+          quality={75}
           className="object-cover object-center hero-cinematic-image"
         />
 
@@ -2747,9 +2749,10 @@ export default function Home() {
       >
         <div className="absolute inset-0 opacity-70">
           <Image
-            src="/hero-hoian-new.png"
+            src="/ar-assets/hero-hoian.webp"
             alt="Hoi An memories"
             fill
+            sizes="100vw"
             className="object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black via-[#06251b]/90 to-black/70" />
@@ -2848,11 +2851,12 @@ export default function Home() {
                 <article className="relative overflow-hidden rounded-[1.5rem] border border-[#5e3b1f]/15 bg-[#fff8e8] p-2 shadow-2xl shadow-[#073c2c]/15 sm:rounded-[2rem] sm:p-3">
                   <div className="relative min-h-[580px] overflow-hidden rounded-[1.3rem] bg-[#f6e8c9] sm:min-h-[680px] sm:rounded-[1.6rem]">
                     <Image
-                      src="/hero-hoian-new.png"
+                      src="/ar-assets/hero-hoian.webp"
                       alt="My Vietnam Journey cover"
                       fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      quality={75}
                       className="object-cover"
-                      priority
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-[#fff8e8]/78 via-[#fff8e8]/38 to-[#05291d]/95" />
                     <div className="absolute inset-0 bg-black/10 sm:bg-black/5" />
@@ -3671,7 +3675,7 @@ export default function Home() {
                       alt={tour.title}
                       fill
                       sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
-                      quality={95}
+                      quality={75}
                       className="object-cover object-center transition duration-500 hover:scale-105"
                     />
                   </div>
@@ -3751,7 +3755,7 @@ export default function Home() {
                       alt={tour.title}
                       fill
                       sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
-                      quality={90}
+                      quality={75}
                       className="object-cover object-top transition duration-500 group-hover:scale-105"
                     />
                   </div>
@@ -5353,7 +5357,7 @@ export default function Home() {
                   src={(selectedTour.gallery?.length ? selectedTour.gallery : [selectedTour.image])[galleryIndex] || selectedTour.image}
                   alt={`${selectedTour.title} - photo ${galleryIndex + 1}`}
                   fill
-                  quality={90}
+                  quality={75}
                   sizes="100vw"
                   className="object-cover object-center"
                   priority

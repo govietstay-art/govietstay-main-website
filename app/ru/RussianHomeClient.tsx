@@ -1586,7 +1586,7 @@ function GuestExperienceVideoSection() {
               controls
               playsInline
               preload="metadata"
-              poster="/hero-hoian-new.png"
+              poster="/ar-assets/hero-hoian.webp"
               aria-label="Видео GoVietStay о путешествиях по Вьетнаму"
             >
               <source src="/1729838138424853060.mp4" type="video/mp4" />
@@ -1653,10 +1653,11 @@ function LegacyRussianPage() {
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 min-h-[760px] md:min-h-screen">
           <Image
-            src="/hero-hoian-new.png"
+            src="/ar-assets/hero-hoian.webp"
             alt="GoVietStay Russian Page"
             fill
-            priority
+            sizes="100vw"
+            quality={75}
             className="object-cover object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#04140f]/58 via-[#04140f]/48 to-[#04140f]/78 md:bg-gradient-to-r md:from-[#04140f]/86 md:via-[#04140f]/68 md:to-[#04140f]/38" />
@@ -2638,10 +2639,12 @@ export default function RussianPage() {
       <section className="relative overflow-hidden bg-[#04140f]">
         <div className="absolute inset-0">
           <Image
-            src="/hero-hoian-new.png"
+            src="/ar-assets/hero-hoian.webp"
             alt="Туры GoVietStay для русскоговорящих гостей во Вьетнаме"
             fill
             priority
+            sizes="100vw"
+            quality={75}
             className="object-cover object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#04140f]/65 via-[#04140f]/62 to-[#04140f]/92 lg:bg-gradient-to-r lg:from-[#04140f]/92 lg:via-[#04140f]/72 lg:to-[#04140f]/40" />
