@@ -1,5 +1,4 @@
-import { after, NextRequest, NextResponse } from "next/server";
-import { isLettaBookingSyncConfigured, syncBookingIntakeToLetta } from "../../../lib/lettaBookingSync";
+import { NextRequest, NextResponse } from "next/server";
 
 const SUPABASE_URL = "https://vscffgnxaexestnayvae.supabase.co";
 // Legacy anonymous JWT is intentionally public and only authenticates the
@@ -83,23 +82,8 @@ export async function POST(req:NextRequest){
       console.error("Supabase booking intake failed",r.status,typeof result?.code==="string"?result.code:"unknown");
       return NextResponse.json({error:"Could not create booking request"},{status:502});
     }
-    // Optional internal drafting sync after a successful Supabase insert.
-    // Keep the customer-facing response independent of Letta availability.
-    if (isLettaBookingSyncConfigured()) {
-      after(async () => {
-        await syncBookingIntakeToLetta({
-          bookingCode: result?.booking_code || bookingCode,
-          tourCode: text(body.tourCode,40),
-          tourName: item.name,
-          tourDate,
-          language: payload.p_language,
-          adults,
-          children,
-          infants,
-          sellingPriceVnd: gross,
-        });
-      });
-    }
+    // AI-independent intake: do not call Letta from the booking request.
+    // Admin reviews the persisted pending record manually.
     return NextResponse.json({ok:true,booking_code:result?.booking_code || bookingCode,status:result?.status || "pending"});
   }catch{
     return NextResponse.json({error:"Invalid request"},{status:400});
