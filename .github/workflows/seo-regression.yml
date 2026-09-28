@@ -12,6 +12,7 @@ on:
       - "scripts/check-rendered-seo.mjs"
       - "scripts/check-home-performance.mjs"
       - "scripts/check-home-chunks.mjs"
+      - "scripts/check-tracking-defer.mjs"
       - "scripts/audit-seo-geo.mjs"
       - ".github/workflows/seo-regression.yml"
 jobs:
@@ -33,6 +34,7 @@ jobs:
       - run: node scripts/check-rendered-seo.mjs
       - run: node scripts/check-home-performance.mjs
       - run: node scripts/check-home-chunks.mjs
+      - run: node scripts/check-tracking-defer.mjs
       - name: Diagnose canonical-host redirects
         run: |
           for address in "http://govietstay.com/" "https://govietstay.com/" "https://www.govietstay.com/"; do

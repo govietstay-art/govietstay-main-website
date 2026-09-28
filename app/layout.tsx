@@ -1,9 +1,32 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { headers } from "next/headers";
 import HtmlLanguageSync from "../components/HtmlLanguageSync";
 import {isKnownLocale,isRtlLocale} from "../lib/seo/locales";
 import YandexMetrika from "../components/YandexMetrika";
 import "./globals.css";
+
+const gtmBootstrap = String.raw`(function(w,d){
+ w.dataLayer=w.dataLayer||[];
+ if(w.__gvsLoadGtm)return;
+ w.__gvsLoadGtm=function(){
+  if(w.__gvsGtmStarted)return;
+  w.__gvsGtmStarted=true;
+  w.dataLayer.push({'gtm.start':Date.now(),event:'gtm.js'});
+  var tag=d.createElement('script');tag.async=true;
+  tag.src='https://www.googletagmanager.com/gtm.js?id=GTM-WRPCZ9X3';
+  d.head.appendChild(tag);
+ };
+ // Intent signals immediately start analytics for fast booking interactions.
+ // Attribution/GA4 events are queued in dataLayer until GTM is ready.
+ function onLead(e){
+  var a=e.target&&e.target.closest&&e.target.closest('a[href*="wa.me"],a[href*="api.whatsapp.com"],a[href*="whatsapp.com/send"]');
+  if(a)w.__gvsLoadGtm();
+ }
+ d.addEventListener('pointerdown',onLead,true);
+ d.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' ')onLead(e)},true);
+})(window,document);`;
+
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.govietstay.com"),
@@ -70,12 +93,7 @@ export default async function RootLayout({
       className="h-full antialiased"
     >
       <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html:
-              "(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WRPCZ9X3');",
-          }}
-        />
+        <script dangerouslySetInnerHTML={{ __html: gtmBootstrap }} />
       </head>
       <body className="min-h-full flex flex-col">
         <noscript>
@@ -89,6 +107,7 @@ export default async function RootLayout({
         </noscript>
         <HtmlLanguageSync />
         <YandexMetrika />
+        <Script id="govietstay-gtm-lazy" strategy="lazyOnload">{`window.__gvsLoadGtm && window.__gvsLoadGtm();`}</Script>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
