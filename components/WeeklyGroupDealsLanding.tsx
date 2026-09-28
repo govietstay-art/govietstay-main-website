@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import {sendPublicInquiry} from "../lib/publicInquiryClient";
 
 type Locale = "ru" | "en";
 type Tour = {id:string; image:string; weekday:number; name:{ru:string;en:string}; summary:{ru:string;en:string}; baseline:number; notes:{ru:string;en:string}};
@@ -43,15 +44,43 @@ const tierSizes=[5,6,8,10];
 
 export default function GroupDealsLanding({locale}:{locale:Locale}){
  const t=words[locale];const [guide,setGuide]=useState<"ru"|"en">("ru");const [selected,setSelected]=useState<{tour:Tour;date:string}|null>(null);
- const [f,setF]=useState({name:"",phone:"",hotel:"",adults:1,children:0,ages:"",notes:"",consent:false});const [error,setError]=useState("");const [sampleGuests,setSampleGuests]=useState(5);const [selectedMonth,setSelectedMonth]=useState("next");
- function submit(e:FormEvent){e.preventDefault();if(!selected||!f.name.trim()||!/^\+?[0-9 ()-]{8,20}$/.test(f.phone.trim())||f.adults+f.children<1||f.adults+f.children>10||!f.consent){setError(t.invalid);return;}const data=[
- "GoVietStay Weekly Group Deals — NEW REQUEST",
- "Tour: "+selected.tour.name.en,"Proposed date: "+selected.date,"Guide group: "+(guide==="ru"?"Russian-speaking":"English-speaking"),
-  "Requested group rate for 5 adults: "+fmt(pilotPrices[selected.tour.id][guide].tiers[0])+" (at 5 adult commitments; quote and suppliers must be approved before payment)",
- "Customer language: "+locale,"Name: "+f.name.trim(),"WhatsApp: "+f.phone.trim(),"Adults: "+f.adults,"Children: "+f.children,
- "Child ages: "+(f.ages.trim()||"N/A"),"Pickup: "+(f.hotel.trim()||"Not decided"),"Notes: "+(f.notes.trim()||"None"),
- "Free request only. Group operates from 5 confirmed paying adults. Count only genuine confirmed booking commitments; do not display fabricated seat totals. Final discounts use verified paid attendance after confirmation. Confirm approved tier, inclusions, weather, guide and final VND amount before payment."
- ];window.open("https://wa.me/84937762607?text="+encodeURIComponent(data.join("\n")),"_blank","noopener,noreferrer");}
+ const [f,setF]=useState({name:"",phone:"",hotel:"",adults:1,children:0,ages:"",notes:"",consent:false});const [error,setError]=useState("");const [saving,setSaving]=useState(false);const [sampleGuests,setSampleGuests]=useState(5);const [selectedMonth,setSelectedMonth]=useState("next");
+ async function submit(e:FormEvent){
+  e.preventDefault();
+  if(saving||!selected||!f.name.trim()||!/^\+?[0-9 ()-]{8,20}$/.test(f.phone.trim())||
+     f.adults+f.children<1||f.adults+f.children>10||!f.consent){setError(t.invalid);return;}
+  setSaving(true);setError("");
+  const popup=window.open("about:blank","_blank");
+  try{
+    const result=await sendPublicInquiry({
+      product_code:"group-"+selected.tour.id+"-"+guide,
+      product_name:selected.tour.name.en+" (weekly group, "+guide+" guide)",
+      source_page:locale==="ru"?"/ru/group-deals":"/group-deals",
+      full_name:f.name.trim(),whatsapp:f.phone.trim(),tour_date:selected.date,
+      adults:f.adults,children:f.children,hotel:f.hotel.trim(),
+      language:locale,
+      details:"Guide: "+guide+"; ages: "+(f.ages.trim()||"n/a")+"; "+f.notes.trim()
+    });
+    const data=[
+      "GoVietStay Weekly Group Deals — PENDING REQUEST",
+      "Inquiry code: "+result.inquiry_code,
+      "Tour: "+selected.tour.name.en,"Proposed date: "+selected.date,
+      "Guide group: "+(guide==="ru"?"Russian-speaking":"English-speaking"),
+      "Indicative rate for 5 adults: "+fmt(pilotPrices[selected.tour.id][guide].tiers[0]),
+      "Name: "+f.name.trim(),"WhatsApp: "+f.phone.trim(),
+      "Adults: "+f.adults,"Children: "+f.children,
+      "Children ages: "+(f.ages.trim()||"n/a"),"Pickup: "+(f.hotel.trim()||"To confirm"),
+      "Notes: "+(f.notes.trim()||"None"),
+      "This is a free pending inquiry; confirm availability, minimum 5 adults, final discount and supplier costs before any payment."
+    ];
+    const link="https://wa.me/84937762607?text="+encodeURIComponent(data.join("\n"));
+    if(popup)popup.location.href=link;else window.location.href=link;
+    setSelected(null);
+  }catch{
+    if(popup)popup.close();
+    setError(locale==="ru"?"Не удалось сохранить запрос. Напишите GoVietStay в WhatsApp.":"Request not saved. Please contact GoVietStay on WhatsApp.");
+  }finally{setSaving(false);}
+ }
  return <main className="min-h-screen bg-[#f4f9f5] text-slate-900">
  <div className="mx-auto max-w-7xl px-4 pb-16 pt-5 sm:px-6">
  <header className="mb-6 flex flex-wrap items-center justify-between gap-3"><Link href={locale==="ru"?"/ru":"/"} className="flex items-center gap-3"><Image src="/logo.png" width={56} height={56} alt="GoVietStay logo" className="rounded-full bg-white p-1"/><span className="font-black tracking-wide text-emerald-950">GOVIETSTAY<br/><small className="font-semibold text-emerald-700">WEEKLY GROUP DEALS</small></span></Link><Link className="rounded-full bg-white px-5 py-3 text-sm font-bold text-emerald-900 shadow-sm" href={locale==="ru"?"/group-deals":"/ru/group-deals"}>{t.switch}</Link></header>

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import PublicInquiryForm from "./PublicInquiryForm";
 
 const PHONE = "84937762607";
 
@@ -203,6 +204,8 @@ export default function Home() {
           <small>Проверка мест бесплатна. Бронирование подтверждается только после ответа GoVietStay.</small>
         </div>
       </section>
+
+      <section className="mx-auto max-w-4xl px-5 py-10"><PublicInquiryForm productCode="ba-na-hills-ru" productName="Ba Na Hills & Golden Bridge" sourcePage="/ru/tours/ba-na-hills" locale="ru"/></section>
 
       <section className="reviews-section">
         <div className="section reviews-inner">
