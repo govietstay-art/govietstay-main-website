@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { after, NextRequest, NextResponse } from "next/server";
 
 const SUPABASE_URL = "https://vscffgnxaexestnayvae.supabase.co";
 // Legacy anonymous JWT is intentionally public and only authenticates the
@@ -82,8 +82,33 @@ export async function POST(req:NextRequest){
       console.error("Supabase booking intake failed",r.status,typeof result?.code==="string"?result.code:"unknown");
       return NextResponse.json({error:"Could not create booking request"},{status:502});
     }
-    // AI-independent intake: do not call Letta from the booking request.
-    // Admin reviews the persisted pending record manually.
+    // AI-independent intake. Only after the DB acknowledges a pending request,
+    // publish a generic best-effort alert from Vercel: Supabase shared egress
+    // was rate-limited by ntfy (HTTP 429). The authenticated Admin queue remains
+    // the source of truth even if notification delivery fails.
+    after(async () => {
+      try {
+        const push = await fetch("https://ntfy.sh/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            topic: "gvs-inbox-a3fb05701634041bb1f72e25829c20862175b24cde519272",
+            title: "GoVietStay: booking moi",
+            message: "Co booking moi cho duyet. Mo GoVietStay Admin de xem.",
+            priority: 4,
+            tags: ["bell"],
+            click: "https://www.govietstay.com/admin",
+            actions: [{ action: "view", label: "Mo Admin", url: "https://www.govietstay.com/admin" }]
+          }),
+          signal: AbortSignal.timeout(7000),
+          cache: "no-store"
+        });
+        if (push.ok) console.info("GoVietStay pending booking notification accepted");
+        else console.warn("GoVietStay pending booking notification rejected:", push.status);
+      } catch {
+        console.warn("GoVietStay pending booking notification transport unavailable");
+      }
+    });
     return NextResponse.json({ok:true,booking_code:result?.booking_code || bookingCode,status:result?.status || "pending"});
   }catch{
     return NextResponse.json({error:"Invalid request"},{status:400});
