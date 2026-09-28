@@ -6,6 +6,7 @@ export async function GET() {
   const urls = [
     ...russianPhuQuocPages.map((page) => ({ url: `${BASE_URL}${page.path}`, lastModified: page.slug === "index" || page.slug === "sunset-town" ? "2026-09-28" : "2026-09-10" })),
     { url: `${BASE_URL}/ru/phu-quoc-help`, lastModified: "2026-09-10" },
+    { url: `${BASE_URL}/ru/phu-quoc/hon-thom`, lastModified: "2026-09-28" },
   ];
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
