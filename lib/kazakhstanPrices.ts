@@ -26,32 +26,32 @@ export const kazakhstanPrices:Record<string,KazakhstanPrice>={
     "kind": "dual",
     "standardAdult": "от 1,250,000 VND (~$48)",
     "standardChild": "от 1,000,000 VND (~$38)",
-    "russianAdult": "от 1,800,000 VND (~$69)",
-    "russianChild": "от 1,600,000 VND (~$62)",
+    "russianAdult": "По запросу",
+    "russianChild": "По запросу",
     "note": "Для 4+ гостей можно сделать private."
   },
   "memories": {
     "kind": "dual",
     "standardAdult": "от 2,400,000 VND (~$92)",
     "standardChild": "от 1,900,000 VND (~$73)",
-    "russianAdult": "от 3,000,000 VND (~$115)",
-    "russianChild": "от 2,800,000 VND (~$108)",
+    "russianAdult": "По запросу",
+    "russianChild": "По запросу",
     "note": "Private-трансфер доступен по запросу."
   },
   "hue": {
     "kind": "dual",
     "standardAdult": "от 1,450,000 VND (~$56)",
     "standardChild": "от 1,250,000 VND (~$48)",
-    "russianAdult": "от 1,950,000 VND (~$75)",
-    "russianChild": "от 1,750,000 VND (~$67)",
+    "russianAdult": "По запросу",
+    "russianChild": "По запросу",
     "note": "Private удобен для семьи."
   },
   "marble": {
     "kind": "dual",
     "standardAdult": "от 850,000 VND (~$33)",
     "standardChild": "от 650,000 VND (~$25)",
-    "russianAdult": "от 1,350,000 VND (~$52)",
-    "russianChild": "от 1,150,000 VND (~$44)",
+    "russianAdult": "По запросу",
+    "russianChild": "По запросу",
     "note": "Гибкие остановки в private."
   },
   "pq-island-discovery": {
