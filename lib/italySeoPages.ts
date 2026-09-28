@@ -605,34 +605,99 @@ export const italySeoPages:ItalySeoPage[] = [
     "type": "private",
     "destination": "Da Nang · Hoi An · Hue",
     "priceKey": null,
-    "title": "Tour privato Da Nang 2026 | Su misura per coppie e famiglie | GoVietStay",
-    "h1": "Tour privato a Da Nang: non paghi per vedere più cose, paghi per decidere come vederle",
-    "desc": "Scegli il ritmo, le soste, la lingua della guida e ciò che vuoi evitare. GoVietStay costruisce il giorno intorno al tuo gruppo.",
-    "wiifm": "Niente attese per estranei, niente shopping inutile, più controllo sul tempo della tua vacanza.",
+    "title": "Tour privato Da Nang in italiano: Hoi An, Hue e Ba Na Hills",
+    "h1": "Tour privato a Da Nang: itinerari su misura per famiglie e coppie",
+    "desc": "Tour privato da Da Nang con auto e tappe concordate: Hoi An, Ba Na Hills, Hue e Marble Mountains. Guida in italiano su richiesta, costi per gruppo e servizi inclusi da confermare.",
+    "wiifm": "Scegli un solo gruppo — il tuo — e decidi quanto tempo restare in ciascun luogo, senza pagare automaticamente una guida o biglietti che non ti servono.",
     "bullets": [
-      "Itinerario costruito sul gruppo.",
-      "Guida in italiano o altra lingua su richiesta e disponibilità.",
-      "Auto, guida, biglietti e pasti vengono confermati chiaramente."
+      "Privato significa veicolo e programma riservati al gruppo per le componenti confermate.",
+      "Guida in italiano, biglietti e pasti vengono indicati separatamente.",
+      "Il preventivo dipende da data, hotel, durata, auto, età dei bambini e tappe."
     ],
     "faqs": [
       [
-        "Posso scegliere l'orario di partenza?",
-        "Nel privato c'è maggiore flessibilità, rispettando gli orari dei luoghi visitati."
+        "Che cosa include un tour privato a Da Nang?",
+        "Comprende le componenti riportate nella conferma, come auto e autista per il gruppo. Guida italiana, biglietti, pasti e orari extra non sono automaticamente inclusi."
       ],
       [
-        "Posso eliminare tappe commerciali?",
-        "Sì, basta concordarlo."
+        "Quanto costa un tour privato da Da Nang?",
+        "Dipende da numero di persone, hotel, durata, itinerario, veicolo, guida e biglietti. Richiedi un preventivo per il tuo gruppo e la tua data."
       ],
       [
-        "Posso chiedere guida italiana?",
-        "Sì, da verificare sulla data."
+        "Posso fare Hoi An e la foresta di cocco in privato?",
+        "Sì, puoi organizzare Cam Thanh nel pomeriggio e il centro storico di Hoi An verso sera, concordando gli orari e le attività."
       ],
       [
-        "Come viene calcolato il prezzo?",
-        "In base a gruppo, veicolo, guida, biglietti e durata."
+        "Per andare a Hue si può percorrere il passo Hai Van?",
+        "Puoi richiederlo in alternativa al tunnel quando meteo e sicurezza stradale lo permettono. La scelta va concordata perché influisce sui tempi."
+      ],
+      [
+        "È disponibile una guida italiana per i tour privati?",
+        "La guida italiana può essere richiesta ma è soggetta a disponibilità e preventivo. Un autista non è automaticamente una guida turistica."
+      ],
+      [
+        "Posso prenotare soltanto auto privata e autista?",
+        "Sì, se il percorso e la disponibilità lo consentono. La quotazione è distinta da guide, pasti e biglietti opzionali."
       ]
     ],
-    "updated": "2026-08-27"
+    "updated": "2026-09-28",
+    "sections": [
+      {
+        "heading": "Che cosa include un tour privato da Da Nang?",
+        "paragraphs": [
+          "Un itinerario privato si costruisce partendo da hotel, data, numero di ospiti, interessi e tappe. Auto e autista sono dedicati al gruppo secondo le ore e la tratta confermate; non significa automaticamente guida italiana, ingressi, pranzo o disponibilità di ogni spettacolo.",
+          "Il preventivo deve distinguere trasporto, guida, biglietti, pasti ed eventuali supplementi per orari extra o hotel fuori zona."
+        ]
+      },
+      {
+        "heading": "Hoi An privata: foresta di cocco e città delle lanterne",
+        "paragraphs": [
+          "Un pomeriggio può unire la foresta di cocco di Cam Thanh e il centro storico di Hoi An, lasciando più tempo per le lanterne e una cena scelta dal gruppo. Il basket boat è facoltativo; prima di partire concorda quanto vuoi dedicare a ciascuna attività e l'orario di rientro."
+        ]
+      },
+      {
+        "heading": "Hue privata da Da Nang: passo Hai Van o tunnel",
+        "paragraphs": [
+          "Hue richiede un'intera giornata. Per il viaggio panoramico puoi chiedere il passo Hai Van, Lang Co e laguna Lap An quando le condizioni stradali e il meteo lo consentono. Se vuoi visitare con calma Cittadella, tombe imperiali e pagoda Thien Mu, riduci le soste o valuta un pernottamento.",
+          "La disponibilità di una guida italiana per Hue viene verificata separatamente dall'auto."
+        ]
+      },
+      {
+        "heading": "Ba Na Hills privata: orari e biglietti",
+        "paragraphs": [
+          "Un'auto privata offre flessibilità sull'orario di partenza, ma le attrazioni restano soggette agli orari del parco. Verifica che cosa è compreso tra funivia, buffet, guida e trasferimento; il meteo può ridurre la visibilità del Ponte Dorato."
+        ]
+      },
+      {
+        "heading": "Quanto costa un tour privato e come richiedere un preventivo",
+        "paragraphs": [
+          "Non c'è un prezzo unico per tutti i gruppi. Invia data, hotel, numero di adulti, bambini con età, destinazioni preferite, durata e lingua della guida. Se ti serve soltanto un'auto o un transfer, possiamo quotare quel servizio senza aggiungere automaticamente un tour completo.",
+          "La proposta finale deve precisare cosa è incluso, cosa resta a pagamento e le condizioni di annullamento applicabili alla prenotazione."
+        ]
+      }
+    ],
+    "links": [
+      {
+        "href": "/it/tour-privato-hoi-an",
+        "label": "Hoi An privata",
+        "description": "Programma serale con soste a Cam Thanh."
+      },
+      {
+        "href": "/it/hue-da-da-nang",
+        "label": "Hue da Da Nang",
+        "description": "Cittadella, tombe e percorso panoramico."
+      },
+      {
+        "href": "/it/guida-in-italiano-vietnam-centrale",
+        "label": "Guida italiana",
+        "description": "Come richiedere una guida per le giornate culturali."
+      },
+      {
+        "href": "/it/transfer-aeroporto-da-nang",
+        "label": "Transfer aeroporto",
+        "description": "Se ti serve soltanto il trasporto."
+      }
+    ]
   },
   {
     "slug": "vietnam-con-bambini",
@@ -1016,34 +1081,108 @@ export const italySeoPages:ItalySeoPage[] = [
     "type": "guide",
     "destination": "Phu Quoc",
     "priceKey": null,
-    "title": "Phu Quoc fai da te 2026 | Guida per italiani | GoVietStay",
-    "h1": "Phu Quoc fai da te: scegli prima la zona dell'hotel, poi le escursioni",
-    "desc": "L'isola è più grande di quanto sembri. Nord, centro e sud cambiano completamente tempi di spostamento e attività comode.",
-    "wiifm": "Meno ore in macchina e più tempo nel resort o sul mare.",
+    "title": "Phu Quoc fai da te: cosa vedere tra nord, centro e sud",
+    "h1": "Phu Quoc fai da te: dove dormire, cosa vedere e come spostarsi",
+    "desc": "Come organizzare Phu Quoc fai da te: nord per Safari e VinWonders, centro per Duong Dong, sud per Sunset Town e Hon Thom. Itinerario 3–7 giorni, transfer, isole e meteo.",
+    "wiifm": "Scegli un hotel vicino alle attività che ti interessano davvero: meno trasferimenti tra nord e sud e più tempo per spiaggia e famiglia.",
     "bullets": [
-      "Sud: Hon Thom e Sunset Town più comodi.",
-      "Nord: Safari e VinWonders più comodi.",
-      "Centro: buona base intermedia per molti viaggiatori."
+      "Nord: Safari, VinWonders e Grand World; scegli al massimo un parco grande al giorno.",
+      "Centro: Duong Dong, mercati e spiaggia, con collegamenti verso altre zone.",
+      "Sud: Sunset Town, funivia Hon Thom e tour alle isole quando il mare è sicuro."
     ],
     "faqs": [
       [
-        "Quanti giorni a Phu Quoc?",
-        "4–5 giorni sono molto comodi."
+        "Cosa vedere a Phu Quoc fai da te?",
+        "Dividi l'isola tra nord (Safari, VinWonders, Grand World), centro (Duong Dong e spiagge) e sud (Sunset Town e Hon Thom). Dedica una giornata a ciascuna zona principale, senza attraversare continuamente l'isola."
       ],
       [
-        "Serve un'auto privata?",
-        "Utile quando vuoi attraversare l'isola o viaggi in famiglia."
+        "Dove conviene dormire a Phu Quoc, al nord o al sud?",
+        "Il nord è comodo per Safari e VinWonders; il sud per Sunset Town e Hon Thom. Il centro è una base intermedia. Scegli in base alle attività che contano di più per te."
       ],
       [
-        "Meglio nord o sud?",
-        "Dipende dalle attività che contano di più per te."
+        "Quanti giorni servono a Phu Quoc?",
+        "Tre o quattro giorni permettono un primo assaggio dell'isola; cinque o sette giorni consentono di alternare nord, sud, mare e riposo, con margine per il meteo."
       ],
       [
-        "Posso prenotare solo un tour alle isole?",
-        "Sì."
+        "Si può visitare Sunset Town senza un tour?",
+        "Sì, le aree liberamente accessibili si possono esplorare in autonomia. Alcune attrazioni e gli spettacoli richiedono biglietti specifici da verificare."
+      ],
+      [
+        "Qual è la differenza tra tour 3 isole e 4 isole più Hon Thom?",
+        "Sono prodotti distinti per numero di soste, tipo di barca e presenza della funivia. Verifica sempre il pacchetto specifico, i transfer e i biglietti compresi."
+      ],
+      [
+        "Quando è meglio fare snorkeling a Phu Quoc?",
+        "Scegli un giorno con condizioni marine sicure confermate dall'operatore. Con vento forte o allerta non uscire in barca; prevedi una visita terrestre alternativa."
       ]
     ],
-    "updated": "2026-08-27"
+    "updated": "2026-09-28",
+    "sections": [
+      {
+        "heading": "Phu Quoc fai da te: da quale zona iniziare?",
+        "paragraphs": [
+          "Phu Quoc è abbastanza grande da rendere poco pratico attraversarla più volte al giorno. La prima scelta è il quartiere dell'hotel: da lì raggruppa le attività in nord, centro e sud. Per chi visita l'isola per la prima volta, una giornata di parco a nord e una di mare o Sunset Town a sud sono più gestibili di un unico itinerario continuo.",
+          "Se vuoi solo rilassarti in resort non devi acquistare ogni escursione proposta: il team locale può suggerire le attività raggiungibili con meno spostamenti."
+        ]
+      },
+      {
+        "heading": "Nord di Phu Quoc: Safari, VinWonders e Grand World",
+        "paragraphs": [
+          "Il nord è pratico se vuoi dedicare tempo a Safari, VinWonders o Grand World. Safari e VinWonders possono richiedere molte ore; con bambini è meglio scegliere il parco prioritario e tenere la sera libera o riservarla a una breve passeggiata.",
+          "Chi alloggia al sud deve valutare anche il trasferimento di andata e ritorno. Orari e biglietti vanno verificati per la data effettiva."
+        ]
+      },
+      {
+        "heading": "Centro: Duong Dong, spiagge e serate semplici",
+        "paragraphs": [
+          "Il centro e la zona di Duong Dong sono adatti a una serata al mercato, a ristoranti e alle giornate tranquille vicino all'hotel. Una visita autonoma qui è spesso sufficiente, senza guida né tour completo.",
+          "Se hai prenotato un tour al sud o al nord, conferma se il pickup è incluso per il tuo hotel: non tutti i pacchetti coprono le stesse zone."
+        ]
+      },
+      {
+        "heading": "Sud: Sunset Town, Hon Thom e tour delle isole",
+        "paragraphs": [
+          "Sunset Town è una buona passeggiata serale; per Kiss Bridge e alcuni spettacoli possono servire biglietti distinti. La funivia di Hon Thom e i pacchetti per le isole hanno orari, inclusioni e possibili restrizioni specifiche.",
+          "I tour 3 isole in barca e 4 isole con funivia non sono intercambiabili. Confronta il pacchetto identificato, eventuali transfer, pranzo, snorkeling, tariffe per bambini e lingua della guida prima di pagare."
+        ]
+      },
+      {
+        "heading": "Itinerario di 3–7 giorni a Phu Quoc con ritmi realistici",
+        "paragraphs": [
+          "Con tre giorni scegli una zona grande e tieni spazio per la spiaggia. Con quattro o cinque giorni puoi dedicare un giorno al nord, uno al sud e uno o due al riposo. In una settimana lascia anche un giorno di riserva nel caso in cui il mare non permetta un'uscita in barca.",
+          "Per famiglie alterna parchi grandi e giornate lente: chiedi sempre eventuali limiti di altezza per biglietti e attrazioni."
+        ]
+      },
+      {
+        "heading": "Quando prenotare le isole e come organizzare il transfer",
+        "paragraphs": [
+          "Le escursioni in barca si confermano secondo le condizioni del mare e le decisioni operative. Non basta il mese sul calendario a garantire l'uscita; prevedi un'attività terrestre alternativa.",
+          "Per arrivare dall'aeroporto PQC invia numero del volo, hotel, persone, bagagli e richieste per bambini. Il prezzo cambia per zona e veicolo e viene confermato prima del pagamento."
+        ]
+      }
+    ],
+    "links": [
+      {
+        "href": "/it/tour-3-isole-phu-quoc",
+        "label": "Tour 3 isole in barca",
+        "description": "Snorkeling, pranzo e tariffa del pacchetto specifico."
+      },
+      {
+        "href": "/it/tour-4-isole-hon-thom",
+        "label": "4 isole e Hon Thom",
+        "description": "Funivia e giornata di mare secondo programma."
+      },
+      {
+        "href": "/it/phu-quoc-con-bambini",
+        "label": "Phu Quoc con bambini",
+        "description": "Come alternare parchi e riposo."
+      },
+      {
+        "href": "/it/auto-privata-phu-quoc",
+        "label": "Auto privata sull'isola",
+        "description": "Transfer per hotel, nord e sud."
+      }
+    ]
   },
   {
     "slug": "tour-3-isole-phu-quoc",
