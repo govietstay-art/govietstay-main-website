@@ -82,17 +82,23 @@ export async function POST(req:NextRequest){
       console.error("Supabase booking intake failed",r.status,typeof result?.code==="string"?result.code:"unknown");
       return NextResponse.json({error:"Could not create booking request"},{status:502});
     }
+    const notificationTopic = typeof result?.push_topic === "string" &&
+      /^gvs-inbox-[a-f0-9]{48}$/.test(result.push_topic) ? result.push_topic : null;
+    // No ntfy channel name is committed to public GitHub; Supabase Edge
+    // provides it only to the server on successful intake. The ntfy channel
+    // is still a public, unauthenticated notification signal (no guest PII).
+    if (!notificationTopic) console.warn("GoVietStay notification channel unavailable");
     // AI-independent intake. Only after the DB acknowledges a pending request,
     // publish a generic best-effort alert from Vercel: Supabase shared egress
     // was rate-limited by ntfy (HTTP 429). The authenticated Admin queue remains
     // the source of truth even if notification delivery fails.
-    after(async () => {
+    if (notificationTopic) after(async () => {
       try {
         const push = await fetch("https://ntfy.sh/", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            topic: "gvs-inbox-a3fb05701634041bb1f72e25829c20862175b24cde519272",
+            topic: notificationTopic,
             title: "GoVietStay: booking moi",
             message: "Co booking moi cho duyet. Mo GoVietStay Admin de xem.",
             priority: 4,
