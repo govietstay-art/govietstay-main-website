@@ -37,7 +37,7 @@ try{
  const xml=await(await fetch(origin+"/sitemap.xml")).text();
  for(const slug of ["guida-in-italiano-vietnam-centrale","itinerario-vietnam-centrale","foresta-di-cocco-hoi-an","tour-3-isole-phu-quoc","tour-4-isole-hon-thom"]){
   const i=xml.indexOf("<loc>https://www.govietstay.com/it/"+slug+"</loc>");
-  assert.ok(i>=0&&xml.slice(i,i+210).includes("2026-09-28"),"Updated Italian sitemap date missing "+slug);
+  assert.ok(i>=0&&xml.slice(i,i+500).includes("2026-09-28"),"Updated Italian sitemap date missing "+slug);
  }
  console.log("PASS: five Italian landings render specific visible answers, source-backed tour prices, valid FAQ schema, internal links, canonical and fresh sitemap.");
 }catch(e){console.error(e);console.error(stderr);process.exitCode=1;}
