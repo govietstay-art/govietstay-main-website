@@ -20,6 +20,7 @@ on:
       - "scripts/check-kz-landing-content.mjs"
       - "scripts/check-kz-hub-content.mjs"
       - "scripts/check-it-search-content.mjs"
+      - "scripts/check-it-diy-private-content.mjs"
       - "scripts/check-ru-pq-discover-content.mjs"
       - "scripts/check-ru-danang-content.mjs"
       - "scripts/check-home-performance.mjs"
@@ -54,6 +55,7 @@ jobs:
       - run: node scripts/check-kz-landing-content.mjs
       - run: node scripts/check-kz-hub-content.mjs
       - run: node scripts/check-it-search-content.mjs
+      - run: node scripts/check-it-diy-private-content.mjs
       - run: node scripts/check-ru-pq-discover-content.mjs
       - run: node scripts/check-ru-danang-content.mjs
       - run: node scripts/check-home-performance.mjs
