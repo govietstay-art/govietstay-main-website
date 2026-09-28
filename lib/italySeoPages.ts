@@ -90,34 +90,101 @@ export const italySeoPages:ItalySeoPage[] = [
     "type": "guide",
     "destination": "Da Nang",
     "priceKey": null,
-    "title": "Da Nang fai da te 2026 | Guida completa per italiani | GoVietStay",
-    "h1": "Da Nang fai da te: una base comoda per mare, Hoi An, Bà Nà Hills e Hue",
-    "desc": "Da Nang funziona bene per chi non vuole cambiare hotel ogni due giorni. Resti vicino al mare e scegli giorno per giorno quanto muoverti.",
-    "wiifm": "Una sola base, meno valigie, più tempo per vivere davvero il Vietnam centrale.",
+    "title": "Da Nang fai da te: cosa vedere, dove dormire e tour da Da Nang",
+    "h1": "Da Nang fai da te: mare, città e gite a Hoi An e Hue",
+    "desc": "Come visitare Da Nang fai da te: cosa vedere tra My Khe e Marble Mountains, dove alloggiare, tour a Hoi An, Ba Na Hills e Hue, transfer aeroportuali e guida italiana su richiesta.",
+    "wiifm": "Una base a Da Nang ti permette di decidere giorno per giorno se restare al mare o muoverti in un'altra città, senza acquistare un pacchetto completo.",
     "bullets": [
-      "My Khe è comoda per chi vuole mare e resort.",
-      "Hoi An è più bella dal tardo pomeriggio alla sera.",
-      "Bà Nà Hills e Hue meritano giornate separate se non vuoi correre."
+      "My Khe o zona centro: scegli l'hotel secondo la tua routine.",
+      "Hoi An al pomeriggio e alla sera senza cambiare necessariamente alloggio.",
+      "Hue e Ba Na Hills richiedono giornate separate e piani meteo realistici."
     ],
     "faqs": [
       [
+        "Cosa vedere a Da Nang fai da te?",
+        "Puoi visitare My Khe, zone della città e Marble Mountains in autonomia. Hoi An, Ba Na Hills e Hue sono gite possibili da organizzare su giornate separate."
+      ],
+      [
         "Quanti giorni servono a Da Nang?",
-        "Per un primo viaggio, 4–5 giorni sono molto comodi."
+        "Tre giorni consentono una prima visita; quattro o cinque permettono Hoi An, Ba Na Hills e anche del tempo libero. Hue richiede una giornata intera."
       ],
       [
-        "È meglio dormire a Da Nang o Hoi An?",
-        "Dipende dal ritmo: Da Nang è pratica come base, Hoi An è più romantica la sera."
+        "Dove conviene dormire a Da Nang?",
+        "My Khe è pratica se vuoi stare vicino al mare; il centro può facilitare altre attività urbane. Scegli in base alle distanze dal tuo hotel."
       ],
       [
-        "Serve un'auto privata?",
-        "Non sempre, ma è molto utile per famiglia, bagagli e giornate fuori città."
+        "Si può andare a Hoi An da Da Nang senza tour?",
+        "Sì. Puoi organizzare il trasferimento e visitare la città antica autonomamente, verificando il rientro serale."
       ],
       [
-        "Posso organizzare tutto via WhatsApp?",
-        "Sì."
+        "Quando conviene un'auto privata a Da Nang?",
+        "Se viaggi in famiglia, hai varie soste o vuoi una giornata lunga a Hue, l'auto privata aiuta a concordare tempi e percorso."
+      ],
+      [
+        "Il periodo delle piogge rende impossibili le escursioni?",
+        "Non automaticamente, ma può cambiare la visibilità a Ba Na Hills e l'operatività in mare. Controlla le condizioni vicine alla data."
       ]
     ],
-    "updated": "2026-08-27"
+    "updated": "2026-09-28",
+    "sections": [
+      {
+        "heading": "Cosa vedere a Da Nang fai da te in 3–5 giorni",
+        "paragraphs": [
+          "Da Nang combina spiaggia, quartieri cittadini, Marble Mountains e facile accesso a Hoi An. Per il primo giorno scegli attività vicine all'hotel e non mettere un'escursione lunga subito dopo il volo. Con quattro o cinque giorni puoi dedicare giornate separate a Ba Na Hills e Hue.",
+          "Non tutte le attrazioni richiedono una guida: per la città puoi muoverti in autonomia; per la storia e le trasferte lunghe verifica se preferisci un tour organizzato o un'auto privata."
+        ]
+      },
+      {
+        "heading": "Dove dormire a Da Nang: My Khe o centro",
+        "paragraphs": [
+          "My Khe è pratica per passeggiate e tempo al mare; il centro facilita alcuni spostamenti urbani. Per scegliere l'hotel verifica la distanza reale dalla spiaggia, dal centro e dall'aeroporto, oltre alla disponibilità di servizi adatti alla tua famiglia.",
+          "Se programmi più sere a Hoi An valuta il transfer di ritorno prima di partire."
+        ]
+      },
+      {
+        "heading": "Da Nang–Hoi An: cosa fare senza correre",
+        "paragraphs": [
+          "Nel pomeriggio puoi visitare la foresta di cocco di Cam Thanh se ti interessa il basket boat, poi passeggiare nel centro storico di Hoi An al tramonto. Gli ingressi, le attività opzionali e la cena dipendono dal programma acquistato.",
+          "Un'auto privata consente di concordare tappe e rientro. Per un transfer semplice puoi richiedere soltanto il veicolo."
+        ]
+      },
+      {
+        "heading": "Ba Na Hills e Hue da Da Nang: serve prenotare un tour?",
+        "paragraphs": [
+          "Ba Na Hills è un'attività montana di una giornata: controlla il meteo e le inclusioni di funivia e buffet. Hue è una giornata culturale più lunga; valuta il passo Hai Van quando condizioni e orari lo consentono.",
+          "Una guida italiana è disponibile soltanto su verifica preventiva; non è inclusa automaticamente nelle tariffe standard esposte sul sito."
+        ]
+      },
+      {
+        "heading": "Trasporto dall'aeroporto e piano per la stagione delle piogge",
+        "paragraphs": [
+          "Per il transfer dall'aeroporto DAD invia numero del volo, orario di arrivo, hotel e bagagli. Per famiglie con bambini specifica in anticipo i seggiolini.",
+          "Da Nang ha periodi di piogge intense in autunno. Verifica il meteo a breve termine e conserva almeno un giorno flessibile per spostare attività di montagna o in mare."
+        ]
+      }
+    ],
+    "links": [
+      {
+        "href": "/it/vietnam-centrale-fai-da-te",
+        "label": "Vietnam centrale fai da te",
+        "description": "Scegli le tappe principali."
+      },
+      {
+        "href": "/it/transfer-aeroporto-da-nang",
+        "label": "Transfer dall'aeroporto",
+        "description": "Come organizzare l'arrivo a DAD."
+      },
+      {
+        "href": "/it/itinerario-da-nang-4-giorni",
+        "label": "Da Nang in 4 giorni",
+        "description": "Una proposta di programma."
+      },
+      {
+        "href": "/it/tour-privato-da-nang",
+        "label": "Tour privato Da Nang",
+        "description": "Soste, auto e guida su richiesta."
+      }
+    ]
   },
   {
     "slug": "quanti-giorni-a-da-nang",
@@ -640,34 +707,101 @@ export const italySeoPages:ItalySeoPage[] = [
     "type": "guide",
     "destination": "Vietnam centrale",
     "priceKey": null,
-    "title": "Vietnam centrale fai da te 2026 | Da Nang, Hoi An, Hue | GoVietStay",
-    "h1": "Vietnam centrale fai da te: una regione perfetta per viaggiare senza un tour di gruppo",
-    "desc": "Le distanze permettono di usare Da Nang o Hoi An come base e aggiungere giornate private solo quando conviene.",
-    "wiifm": "Più autenticità senza rinunciare alla comodità nei trasferimenti difficili.",
+    "title": "Vietnam centrale: cosa vedere fai da te tra Da Nang, Hoi An e Hue",
+    "h1": "Vietnam centrale fai da te: cosa vedere e come organizzare i trasferimenti",
+    "desc": "Vietnam centrale cosa vedere: Da Nang, Hoi An, Hue, My Son e Ba Na Hills. Guida pratica agli spostamenti fai da te, quando prendere un'auto privata e come evitare giornate troppo piene.",
+    "wiifm": "Puoi viaggiare in autonomia senza cambiare hotel ogni giorno e prenotare un autista o una guida soltanto nelle tappe che lo richiedono.",
     "bullets": [
-      "Da Nang è la base pratica.",
-      "Hoi An è la base più atmosferica.",
-      "Hue richiede più strada e beneficia di un'auto privata."
+      "Da Nang è una base pratica per aeroporto, mare e gite.",
+      "Hoi An si presta a una serata a piedi e a Cam Thanh nel pomeriggio.",
+      "Hue è una giornata intera da Da Nang; My Son richiede una visita a parte."
     ],
     "faqs": [
       [
-        "Serve cambiare hotel tra Da Nang e Hoi An?",
-        "Non necessariamente."
+        "Vietnam centrale: cosa vedere in 5–7 giorni?",
+        "Puoi combinare Da Nang, Hoi An, Ba Na Hills e Hue, aggiungendo My Son o una giornata libera se hai sette giorni. Il ritmo dipende dalla stagione e dalla posizione dell'hotel."
       ],
       [
-        "Posso fare tutto con Grab?",
-        "Per città e brevi tragitti sì; per giornate lunghe il privato è più pratico."
+        "Si può visitare il Vietnam centrale fai da te senza tour di gruppo?",
+        "Sì. Da Nang e Hoi An sono adatte alle visite autonome, mentre puoi acquistare soltanto i transfer o alcune giornate private più complesse."
       ],
       [
-        "Quanto tempo dedicare alla regione?",
-        "5–7 giorni permettono un ritmo molto buono."
+        "Meglio dormire a Da Nang o a Hoi An?",
+        "Da Nang è pratica per aeroporto e gite; Hoi An è comoda se vuoi vivere la città antica la sera. Non è obbligatorio cambiare hotel tra le due."
       ],
       [
-        "Posso chiedere solo supporto locale senza tour?",
-        "Sì."
+        "È possibile visitare Hue in giornata da Da Nang?",
+        "Sì, ma serve un'intera giornata. Se vuoi includere il passo Hai Van e molte visite storiche, riduci le soste oppure valuta una notte a Hue."
+      ],
+      [
+        "Serve la guida italiana per un viaggio fai da te?",
+        "No. Puoi richiederla soltanto per le visite culturali, come Hue e My Son, verificando disponibilità e costo prima di prenotare."
+      ],
+      [
+        "Si può fare tutto con Grab?",
+        "Per alcune tratte urbane e trasferimenti semplici è pratico; per Hue, itinerari con soste multiple o famiglie con bagagli un'auto prenotata può essere più prevedibile."
       ]
     ],
-    "updated": "2026-08-27"
+    "updated": "2026-09-28",
+    "sections": [
+      {
+        "heading": "Vietnam centrale: cosa vedere se viaggi fai da te",
+        "paragraphs": [
+          "Le tappe più pratiche da combinare sono Da Nang, Hoi An e Hue, con possibilità di aggiungere My Son o Ba Na Hills secondo interessi, stagione e giorni disponibili. Puoi visitare Da Nang e il centro storico di Hoi An in autonomia, ma devi organizzare separatamente trasporto e ingresso dove richiesto.",
+          "La scelta di una base conta più del numero di tappe: Da Nang è comoda per aeroporto e mare, Hoi An per l'atmosfera serale. Se vuoi approfondire Hue con calma, valuta di pernottare una notte."
+        ]
+      },
+      {
+        "heading": "Da Nang e Hoi An: come muoversi senza cambiare hotel",
+        "paragraphs": [
+          "Da Nang è una base comoda se vuoi alternare My Khe, Marble Mountains e le escursioni. A Hoi An puoi arrivare con transfer, auto privata o altri mezzi disponibili per le tue esigenze, concordando come tornare dopo le lanterne.",
+          "La foresta di cocco di Cam Thanh si abbina a Hoi An nel pomeriggio; verifica il punto d'imbarco, il tipo di giro in basket boat e ciò che include ogni biglietto."
+        ]
+      },
+      {
+        "heading": "Hue e passo Hai Van: quando scegliere un'auto privata",
+        "paragraphs": [
+          "Hue richiede una vera giornata da Da Nang. Un'auto privata permette di concordare il passo panoramico Hai Van, Lang Co e laguna Lap An quando meteo e sicurezza lo permettono, ma troppe soste riducono il tempo per la Cittadella e gli altri siti.",
+          "Se desideri una spiegazione storica in italiano, richiedi la guida con anticipo: l'autista non è automaticamente una guida turistica."
+        ]
+      },
+      {
+        "heading": "Ba Na Hills e My Son: due giornate diverse",
+        "paragraphs": [
+          "Ba Na Hills, Ponte Dorato e funivia richiedono parecchie ore e vanno pianificati insieme alle condizioni meteo in montagna. My Son è una visita culturale con templi Cham, particolarmente interessante con una guida nella lingua desiderata se disponibile.",
+          "Non comprimere entrambi nello stesso giorno solo per risparmiare un transfer, soprattutto se viaggi con bambini o senior."
+        ]
+      },
+      {
+        "heading": "Come dividere 5–7 giorni nel Vietnam centrale",
+        "paragraphs": [
+          "Con cinque giorni puoi scegliere Da Nang, una giornata a Hoi An, una a Ba Na Hills e una a Hue, lasciando un po' di margine. Con sette giorni puoi aggiungere My Son o tempo libero, senza cambiare alloggio continuamente.",
+          "Se il tuo viaggio coincide con piogge forti o mare mosso, meglio mantenere un giorno flessibile per spostare le attività all'aperto."
+        ]
+      }
+    ],
+    "links": [
+      {
+        "href": "/it/itinerario-vietnam-centrale",
+        "label": "Itinerario di 7 giorni",
+        "description": "Programma giorno per giorno tra Da Nang, Hoi An e Hue."
+      },
+      {
+        "href": "/it/guida-in-italiano-vietnam-centrale",
+        "label": "Guida italiana",
+        "description": "Quando richiederla e come distinguere guida e autista."
+      },
+      {
+        "href": "/it/tour-privato-da-nang",
+        "label": "Tour privato Da Nang",
+        "description": "Solo le giornate per le quali serve un'auto con tappe concordate."
+      },
+      {
+        "href": "/it/foresta-di-cocco-hoi-an",
+        "label": "Foresta di cocco e Hoi An",
+        "description": "Cam Thanh, basket boat e lanterne."
+      }
+    ]
   },
   {
     "slug": "itinerario-vietnam-centrale",
