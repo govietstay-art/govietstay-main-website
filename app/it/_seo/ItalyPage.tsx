@@ -28,6 +28,7 @@ export default function ItalyPage({page,related}:{page:ItalySeoPage;related:Ital
 
     <div className={styles.layout}><article>
       <section className={styles.story}><p>01 · COSA CI GUADAGNI TU</p><h2>{page.wiifm}</h2><p>{page.desc}</p></section>
+      {page.sections?.map((section,i)=><section className={styles.story} key={section.heading}><p>{String(i+2).padStart(2,"0")} · GUIDA PRATICA</p><h2>{section.heading}</h2>{section.paragraphs.map(paragraph=><p key={paragraph}>{paragraph}</p>)}{section.bullets?.map(x=><p key={x}>✓ {x}</p>)}</section>)}{page.links?.length?<section className={styles.story}><h2>Approfondisci e organizza il viaggio</h2>{page.links.map(item=><p key={item.href}><a href={item.href}>{item.label} →</a> — {item.description}</p>)}</section>:null}
       <section className={styles.check}><p>02 · PRIMA DI PRENOTARE</p><h2>Tre dettagli che cambiano davvero l'esperienza</h2>{page.bullets.map(x=><div key={x}>✓ {x}</div>)}</section>
       <section id="prezzo" className={styles.priceSection}><p>03 · PREZZO</p><PriceBox page={page}/></section>
       {page.officialUrl?<section className={styles.official}><p>FONTE UFFICIALE</p><h2>Questa informazione può cambiare.</h2><span>Per visto o regole di ingresso mettiamo la fonte ufficiale direttamente nella pagina.</span><a href={page.officialUrl} target="_blank" rel="noreferrer">Apri la fonte ufficiale ↗</a></section>:null}
