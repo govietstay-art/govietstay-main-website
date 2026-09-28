@@ -1,0 +1,11 @@
+import assert from "node:assert/strict";
+import {readFile} from "node:fs/promises";
+const home=await readFile("app/HomeClient.tsx","utf8");
+const journal=await readFile("components/JourneyModal.tsx","utf8");
+const root=await readFile("app/layout.tsx","utf8");
+assert.ok(home.includes('dynamic(() => import("../components/JourneyModal"), { ssr: false })'),"Journal is not a lazy client chunk");
+assert.ok(!home.includes("const journeyTours ="),"Journal data still in homepage entry chunk");
+assert.ok(!home.includes("JOURNEY_STORAGE_KEY"),"Journal storage still runs on homepage");
+assert.ok(journal.includes("setJourneyReady(true)") && journal.includes("if (!journeyReady) return"),"Saved journal hydration guard missing");
+assert.ok(!root.includes("next/font/google"),"Unused global fonts still requested");
+console.log("PASS: Journal only loads on user click; saved content hydration safeguarded; no unused global Geist preload.");

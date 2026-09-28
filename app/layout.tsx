@@ -1,20 +1,9 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import { Geist, Geist_Mono } from "next/font/google";
 import HtmlLanguageSync from "../components/HtmlLanguageSync";
 import {isKnownLocale,isRtlLocale} from "../lib/seo/locales";
 import YandexMetrika from "../components/YandexMetrika";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.govietstay.com"),
@@ -78,7 +67,7 @@ export default async function RootLayout({
       lang={locale}
       dir={isRtlLocale(locale) ? "rtl" : "ltr"}
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className="h-full antialiased"
     >
       <head>
         <script
