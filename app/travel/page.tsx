@@ -21,7 +21,9 @@ export const metadata: Metadata = {
     title: "Vietnam Travel Guides | GoVietStay",
     description: "Local-first English travel planning for Da Nang, Hoi An, Hue and Phu Quoc.",
     siteName: "GoVietStay",
+    images: [{ url: "/tour/hoian.jpg", alt: "GoVietStay local Vietnam travel guides" }],
   },
+  twitter: { card: "summary_large_image", images: ["/tour/hoian.jpg"] },
 };
 
 export default function EnglishTravelHub() {

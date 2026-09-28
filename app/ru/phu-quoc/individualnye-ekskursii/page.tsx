@@ -19,7 +19,9 @@ export const metadata: Metadata = {
     title: "Индивидуальные экскурсии на Фукуоке — маршрут под вас | GoVietStay",
     description: "Частные экскурсии на Фукуоке: ваш отель, ваш темп, ваш маршрут. Русскоязычная поддержка GoVietStay, частный автомобиль и программа под семью, пару или небольшую группу.",
     siteName: "GoVietStay",
+    images: [{ url: "https://www.govietstay.com/tour/phuquoc/tour-05-1.jpg", alt: "Фукуок — GoVietStay" }],
   },
+  twitter: { card: "summary_large_image", images: ["https://www.govietstay.com/tour/phuquoc/tour-05-1.jpg"] },
 };
 
 const config = {

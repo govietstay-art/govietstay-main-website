@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import EnglishSeoGuidePage from "../_seo/EnglishSeoGuidePage";
+import {englishGuideImage} from "../../../lib/seo/guideImages";
 import {
   getEnglishSeoGuide,
   englishSeoGuides,
@@ -21,6 +22,7 @@ export async function generateMetadata({
   if (!guide) return {};
 
   const canonical = `https://www.govietstay.com/travel/${guide.slug}`;
+  const image = `https://www.govietstay.com${englishGuideImage(guide.slug)}`;
 
   return {
     title: { absolute: guide.title },
@@ -37,7 +39,9 @@ export async function generateMetadata({
       title: guide.title,
       description: guide.description,
       siteName: "GoVietStay",
+      images: [{ url: image, alt: guide.h1 }],
     },
+    twitter: { card: "summary_large_image", images: [image] },
   };
 }
 

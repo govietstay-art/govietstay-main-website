@@ -19,7 +19,9 @@ export const metadata: Metadata = {
     title: "Хон Тхом и канатная дорога Фукуок — как спланировать день | GoVietStay",
     description: "Хон Тхом на Фукуоке: канатная дорога из Ан Тхоя, Aquatopia, Sunset Town и варианты программы с островами. Как выбрать отдельный день или комбо 4 острова + Хон Тхом.",
     siteName: "GoVietStay",
+    images: [{ url: "https://www.govietstay.com/tour/phuquoc/tour-06-1.jpg", alt: "Фукуок — GoVietStay" }],
   },
+  twitter: { card: "summary_large_image", images: ["https://www.govietstay.com/tour/phuquoc/tour-06-1.jpg"] },
 };
 
 const config = {

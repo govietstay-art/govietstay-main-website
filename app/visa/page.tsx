@@ -16,7 +16,9 @@ export const metadata: Metadata = {
     url: "https://www.govietstay.com/visa",
     siteName: "GoVietStay",
     type: "website",
+    images: [{ url: "/brand/govietstay-official-logo.jpg", alt: "GoVietStay Vietnam visa assistance" }],
   },
+  twitter: { card: "summary_large_image", images: ["/brand/govietstay-official-logo.jpg"] },
 };
 
 const WA_GENERAL =
@@ -48,7 +50,7 @@ const urgentHan = urgentPrices.HAN.map(({ label, price }) => [label, `US$${price
 const urgentSgn = urgentPrices.SGN.map(({ label, price }) => [label, `US$${price}`]);
 
 function Logo({ className = "" }: { className?: string }) {
-  return <img src="/logo.png" alt="GoVietStay" className={className} />;
+  return <img src="/ar-assets/logo.webp" alt="GoVietStay" className={className} />;
 }
 
 function PriceTable({
