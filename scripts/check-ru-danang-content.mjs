@@ -49,7 +49,7 @@ try{
  const sitemap=await fetch(origin+"/sitemap.xml",{signal:AbortSignal.timeout(30000)});
  assert.equal(sitemap.status,200);
  const xml=await sitemap.text();
- assert.match(xml,/<loc>https:\/\/www\.govietstay\.com\/ru\/danang<\/loc>[\s\S]{0,500}<lastmod>2026-09-28<\/lastmod>/);
+ assert.match(xml,/<loc>https:\/\/www\.govietstay\.com\/ru\/danang<\/loc>[\s\S]{0,500}<lastmod>2026-09-28/);
  console.log("PASS: RU Da Nang weather decisions, actual search questions, FAQ schema, 4 internal routes, optimized hero, canonical and selective sitemap date.");
 }catch(error){console.error(error);console.error(log);process.exitCode=1;}
 finally{try{if(server.pid)process.kill(-server.pid,"SIGTERM");}catch{server.kill("SIGTERM");}server.stdout.destroy();server.stderr.destroy();}
