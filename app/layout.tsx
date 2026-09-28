@@ -46,12 +46,12 @@ export const metadata: Metadata = {
       "Plan Da Nang, Hoi An, Hue and Phu Quoc with local tours, airport transfers, private cars, tickets and 24/7 WhatsApp support from GoVietStay.",
     siteName: "GoVietStay",
     type: "website",
-    images:[{url:"/hero-hoian-new.png",alt:"GoVietStay Vietnam travel"}],
+    images:[{url:"/tour/hoian.jpg",alt:"GoVietStay Vietnam travel"}],
   },
 
   twitter: {
     card: "summary_large_image",
-    images:["/hero-hoian-new.png"],
+    images:["/tour/hoian.jpg"],
     title: "GoVietStay | Vietnam Tours & Trusted Local Support",
     description:
       "Plan Da Nang, Hoi An, Hue and Phu Quoc with local tours, airport transfers, private cars, tickets and 24/7 WhatsApp support from GoVietStay.",

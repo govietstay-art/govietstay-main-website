@@ -17,7 +17,18 @@
 //   // ...
 // }
 
+import type { Metadata } from "next";
 import Image from "next/image";
+const AR_URL = "https://www.govietstay.com/ar";
+export const metadata: Metadata = {
+ title: { absolute: "رحلات خاصة في فيتنام للعائلات | GoVietStay" },
+ description: "دليل للعائلات: دانانغ، هوي آن، هوي، وفو كوك مع سيارة خاصة، تنسيق الطعام الحلال ودعم محلي قبل الحجز.",
+ alternates: { canonical: AR_URL, languages: { ar: AR_URL } },
+ robots: { index: true, follow: true },
+ openGraph: { type: "website", url: AR_URL, locale: "ar_AR", siteName: "GoVietStay", title: "رحلات خاصة في فيتنام للعائلات | GoVietStay", description: "خطط رحلتك العائلية في فيتنام بمعلومات واضحة ودعم محلي.", images: [{ url: "https://www.govietstay.com/tour/hoian.jpg", alt: "Hoi An, Vietnam — GoVietStay" }] },
+ twitter: { card: "summary_large_image", images: ["https://www.govietstay.com/tour/hoian.jpg"] },
+};
+
 import {
   ArrowLeft,
   BedDouble,

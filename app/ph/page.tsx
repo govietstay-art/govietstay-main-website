@@ -7,9 +7,10 @@ import styles from "./PhilippinesHub.module.css";
 export const metadata:Metadata={
   title:{absolute:"Vietnam DIY & Private Tours for Filipinos 2026 | Da Nang · Hoi An · Phu Quoc | GoVietStay"},
   description:"GoVietStay Philippines: DIY-friendly Vietnam local support, private tours, airport transfer, Ba Na Hills, Hoi An, Cham Island and Phu Quoc with clear from-prices and WhatsApp help.",
-  alternates:{canonical:"https://www.govietstay.com/ph",languages:{"en-PH":"https://www.govietstay.com/ph","en":"https://www.govietstay.com/travel","x-default":"https://www.govietstay.com"}},
+  alternates:{canonical:"https://www.govietstay.com/ph",languages:{"en-PH":"https://www.govietstay.com/ph"}},
   robots:{index:true,follow:true},
-  openGraph:{type:"website",url:"https://www.govietstay.com/ph",title:"GoVietStay for Filipino Travelers | DIY + Private Vietnam",description:"Book your flight and hotel yourself. We handle the part that gets complicated once you arrive.",locale:"en_PH",siteName:"GoVietStay"}
+  openGraph:{type:"website",url:"https://www.govietstay.com/ph",title:"GoVietStay for Filipino Travelers | DIY + Private Vietnam",description:"Book your flight and hotel yourself. We handle the part that gets complicated once you arrive.",locale:"en_PH",siteName:"GoVietStay",images:[{url:"https://www.govietstay.com/tour/hoian.jpg",alt:"Vietnam travel with GoVietStay"}]},
+  twitter:{card:"summary_large_image",images:["https://www.govietstay.com/tour/hoian.jpg"]}
 };
 
 const bySlug=(slug:string)=>philippinesSeoPages.find(p=>p.slug===slug);
