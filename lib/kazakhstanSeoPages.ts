@@ -10,7 +10,7 @@ export const kazakhstanSeoPages:KazakhstanSeoPage[]=[
     "description": "Если перелёт и отель уже куплены, второй турпакет не нужен. GoVietStay помогает на месте: экскурсии, transfer, private и поддержка.",
     "hero": "Если перелёт и отель уже куплены, второй турпакет не нужен. GoVietStay помогает на месте: экскурсии, transfer, private и поддержка.",
     "benefits": [
-      "цены как на русской версии",
+      "цены подтвердим до оплаты",
       "WhatsApp до и во время поездки",
       "можно выбрать private"
     ],
