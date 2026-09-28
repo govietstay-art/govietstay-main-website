@@ -200,12 +200,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       ),
     },
     {
-      url: `${BASE_URL}/ru/aktualno`,
-      lastModified: SITE_UPDATED,
-      changeFrequency: "daily",
-      priority: 0.85,
-    },
-    {
       url: `${BASE_URL}/ru/local-point`,
       lastModified: SITE_UPDATED,
       changeFrequency: "weekly",
@@ -428,7 +422,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: { languages },
     };
   });
-  const arabicRoutes = ["","da-nang-hoi-an-private-tour","da-nang-hoi-an-tours","halal-travel-vietnam","phu-quoc-family-tour","phu-quoc-private-pool-villas","phu-quoc-tours","vietnam-11-day-itinerary","vietnam-family-private-tour","vietnam-honeymoon"] as const;
+  const arabicRoutes = ["","da-nang-hoi-an-private-tour","da-nang-hoi-an-tours","halal-travel-vietnam","phu-quoc-family-tour","phu-quoc-tours","vietnam-11-day-itinerary","vietnam-family-private-tour",] as const;
   const arabicPages: MetadataRoute.Sitemap = arabicRoutes.map(path => {
     const url = `${BASE_URL}/ar${path ? `/${path}` : ""}`;
     return { url, ...(path === "" ? { lastModified: new Date("2026-09-28T00:00:00.000Z") } : {}),
@@ -459,7 +453,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...indiaGuidePages,
     ...koreanGuidePages,
     ...russianLandingPages,
-    ...aktualnoPages,
     ...germanPages,
     ...arabicPages,
     ...secretPages,

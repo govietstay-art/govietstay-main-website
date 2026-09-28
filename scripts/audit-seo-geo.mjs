@@ -30,7 +30,7 @@ function expected(pathname){
 }
 async function fetchLocal(urlPath){
  const res=await fetch(origin+urlPath,{signal:AbortSignal.timeout(30000)});
- return {status:res.status,body:await res.text()};
+ return {status:res.status,body:await res.text(),actualPath:new URL(res.url).pathname};
 }
 function htmlFacts(raw,urlPath,status){
  const head=raw.split(/<\/head>/i)[0]||raw.slice(0,150000);
@@ -97,11 +97,12 @@ async function run(){
  }
  const staticUrls=await findStatic("app");
  const paths=[...new Set([...seen.keys(),...staticUrls])].sort().slice(0,800);
- const facts=[],errors=[];let counter=0;
+ const facts=[],errors=[],redirects=[];let counter=0;
  async function worker(){
   while(counter<paths.length){
    const p=paths[counter++];
-   try{const r=await fetchLocal(p);if(r.status===200)facts.push(htmlFacts(r.body,p,r.status));
+   try{const r=await fetchLocal(p);if(r.actualPath!==p){redirects.push({path:p,destination:r.actualPath});continue;}
+    if(r.status===200)facts.push(htmlFacts(r.body,p,r.status));
     else errors.push({path:p,status:r.status});}
    catch(e){errors.push({path:p,error:String(e).slice(0,200)});}
   }
@@ -126,7 +127,7 @@ async function run(){
   duplicatedBrand=indexable.filter(f=>/govietstay\s*[|—\-]\s*govietstay/i.test(f.title)),
   thinReview=indexable.filter(f=>f.words<180),orphan=indexable.filter(f=>seen.has(f.path)&&!inbound.get(f.path)&&f.path!=="/"),
   duplicateSitemap=[...seen].filter(([p,s])=>s.length>1).map(([p,s])=>({path:p,in:s}));
- const results={auditedAt:new Date().toISOString(),note:"Automated editorial signals are review queues, not Google ranking scores.",site:base,sitemapPageCounts,sitemapMissing,summary:{
+ const results={redirects,auditedAt:new Date().toISOString(),note:"Automated editorial signals are review queues, not Google ranking scores.",site:base,sitemapPageCounts,sitemapMissing,summary:{
   uniqueSitemapUrls:seen.size,staticRouteCount:staticUrls.length,scanned:facts.length,httpErrors:errors.length,
   langMismatch:badLang.length,missingOrIncorrectCanonical:missingCanonical.length,
   missingOgImage:missingOG.length,longTitlesForReview:verboseTitle.length,duplicatedBrandTitles:duplicatedBrand.length,

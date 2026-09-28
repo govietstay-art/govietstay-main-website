@@ -26,9 +26,6 @@ export const metadata: Metadata = {
     canonical: "https://www.govietstay.com/in",
     languages: {
       "en-IN": "https://www.govietstay.com/in",
-      "ko-KR": "https://www.govietstay.com/ko",
-      ru: "https://www.govietstay.com/ru",
-      "x-default": "https://www.govietstay.com/",
     },
   },
   openGraph: {
