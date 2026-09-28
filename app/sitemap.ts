@@ -406,7 +406,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const russianLandingPages: MetadataRoute.Sitemap = russianSeoIndexableLandings.map(
     (landing) => ({
       url: `${BASE_URL}/ru/${landing.slug}`,
-      lastModified: landing.slug === "danang" || landing.slug === "hue" ? new Date("2026-09-28T00:00:00.000Z") : SITE_UPDATED,
+      lastModified: landing.slug === "danang" || landing.slug === "hue" || landing.slug === "visa-vietnam" ? new Date("2026-09-28T00:00:00.000Z") : SITE_UPDATED,
       changeFrequency: "weekly",
       priority: landing.slug === "danang" || landing.slug === "hoi-an" ? 0.9 : 0.82,
     }),
