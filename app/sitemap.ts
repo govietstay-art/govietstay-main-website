@@ -176,7 +176,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${BASE_URL}/ru/tours/cham-island`,
-      lastModified: SITE_UPDATED,
+      lastModified: new Date("2026-09-28T00:00:00.000Z"),
       changeFrequency: "weekly",
       priority: 0.95,
     },

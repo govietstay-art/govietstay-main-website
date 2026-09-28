@@ -56,6 +56,13 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               touristType: ["Families", "Couples", "Russian-speaking travelers"],
               provider: { "@id": "https://www.govietstay.com/#organization" },
             },
+            ...(tour.slug === "cham-island" && tour.faqs ? [{
+              "@type": "FAQPage",
+              mainEntity: tour.faqs.map((item) => ({
+                "@type": "Question", name: item.question,
+                acceptedAnswer: { "@type": "Answer", text: item.answer },
+              })),
+            }] : []),
           ],
         }}
       />
