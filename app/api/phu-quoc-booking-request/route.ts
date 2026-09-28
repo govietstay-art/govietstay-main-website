@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
+import { after, NextRequest, NextResponse } from "next/server";
+import { isLettaBookingSyncConfigured, syncBookingIntakeToLetta } from "../../../lib/lettaBookingSync";
 
 const SUPABASE_URL = "https://vscffgnxaexestnayvae.supabase.co";
 const SUPABASE_ANON = "sb_publishable_BI1rIhiGB5cEUyJbnKGI5w_kCMI--oV";
@@ -64,6 +65,23 @@ export async function POST(req:NextRequest){
     const r=await fetch(`${SUPABASE_URL}/rest/v1/rpc/staff_submit_booking_request`,{method:"POST",headers:{apikey:SUPABASE_ANON,Authorization:`Bearer ${SUPABASE_ANON}`,"Content-Type":"application/json"},body:JSON.stringify(payload),cache:"no-store"});
     const result=await r.json().catch(()=>null);
     if(!r.ok) return NextResponse.json({error:"Could not create booking request"},{status:502});
+    // Optional internal drafting sync after a successful Supabase insert.
+    // Keep the customer-facing response independent of Letta availability.
+    if (isLettaBookingSyncConfigured()) {
+      after(async () => {
+        await syncBookingIntakeToLetta({
+          bookingCode: result?.booking_code || bookingCode,
+          tourCode: text(body.tourCode,40),
+          tourName: item.name,
+          tourDate,
+          language: payload.p_language,
+          adults,
+          children,
+          infants,
+          sellingPriceVnd: gross,
+        });
+      });
+    }
     return NextResponse.json({ok:true,booking_code:result?.booking_code || bookingCode,status:result?.status || "pending"});
   }catch{
     return NextResponse.json({error:"Invalid request"},{status:400});
