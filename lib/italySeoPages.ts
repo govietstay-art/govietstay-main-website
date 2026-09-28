@@ -11,6 +11,8 @@ export type ItalySeoPage = {
   faqs:[string,string][];
   officialUrl?:string|null;
   updated:string;
+  sections?:{heading:string;paragraphs:string[];bullets?:string[]}[];
+  links?:{href:string;label:string;description:string}[];
 };
 
 export const italySeoPages:ItalySeoPage[] = [
@@ -292,34 +294,74 @@ export const italySeoPages:ItalySeoPage[] = [
     "type": "product",
     "destination": "Hoi An",
     "priceKey": "hoian",
-    "title": "Hoi An + foresta di cocco 2026 | Tour standard o privato | GoVietStay",
-    "h1": "Foresta di cocco + Hoi An: un pomeriggio che migliora man mano che arriva la sera",
-    "desc": "Il tour standard mantiene il prezzo pubblico English. Se vuoi più tempo in città antica o viaggi con famiglia, il privato è l'opzione più comoda.",
-    "wiifm": "Un'unica giornata con natura, foto, città antica e lanterne senza partire all'alba.",
+    "title": "Foresta di cocco Hoi An: basket boat e tour da Da Nang",
+    "h1": "Foresta di cocco Hoi An: basket boat e lanterne in un giorno",
+    "desc": "Foresta di cocco Hoi An a Cam Thanh: come arrivare da Da Nang, giro in basket boat tranquillo o con spettacolo, tour standard e privato e serata nella città antica.",
+    "wiifm": "Abbina una navigazione tra le palme a una serata a Hoi An, sapendo in anticipo che cosa è incluso e che lo spettacolo della barca che gira è facoltativo.",
     "bullets": [
-      "Il giro in basket boat può essere tranquillo: non devi fare la rotazione spettacolare.",
-      "Prezzo standard uguale al prodotto English.",
-      "Privato disponibile per coppie, famiglie e piccoli gruppi."
+      "Cam Thanh si trova nell'area di Hoi An: verifica transfer e imbarco.",
+      "Puoi richiedere un giro senza rotazioni acrobatiche.",
+      "Confronta inclusioni della barca, cena, ingressi, guida e rientro."
     ],
     "faqs": [
       [
-        "Devo fare il giro veloce con la barca?",
-        "No, puoi chiedere una navigazione normale."
+        "Dove si trova la foresta di cocco di Hoi An?",
+        "A Cam Thanh, vicino a Hoi An. Da Da Nang puoi arrivare con auto privata o con un tour che includa il transfer."
       ],
       [
-        "La cena è inclusa?",
-        "Solo se specificata nella conferma."
+        "Quanto costa il giro in basket boat?",
+        "Dipende dalla durata, dall'imbarco e se compri solo la barca o un tour con altri servizi. Il costo totale e le inclusioni vengono confermati prima del pagamento."
       ],
       [
-        "La guida può parlare italiano?",
-        "Può essere richiesta e confermata in base alla disponibilità."
+        "È obbligatorio fare il giro acrobatico con la barca?",
+        "No, puoi richiedere una navigazione tranquilla prima di partire. Gli spettacoli sono opzionali."
       ],
       [
-        "Quanto dura?",
-        "Dipende dalla versione standard o privata."
+        "Posso visitare foresta di cocco e Hoi An in un giorno?",
+        "Sì, la foresta nel pomeriggio e il centro storico al tramonto sono una combinazione possibile, con transfer da concordare."
+      ],
+      [
+        "Il tour include cena e biglietti?",
+        "Dipende dal programma. Verifica esattamente basket boat, transfer, ingressi, cena e lingua della guida."
+      ],
+      [
+        "Posso richiedere una guida italiana?",
+        "Sì, soggetta a disponibilità e conferma, con costo distinto dal tour standard."
       ]
     ],
-    "updated": "2026-08-27"
+    "updated": "2026-09-28",
+    "sections": [
+      {
+        "heading": "Dove si trova la foresta di cocco di Hoi An?",
+        "paragraphs": [
+          "La foresta di cocco di Bay Mau è a Cam Thanh, vicino alla città antica di Hoi An. Da Da Nang puoi arrivare in auto privata o con un tour con transfer. Conferma il punto d'imbarco e l'orario di ritorno prima di partire."
+        ]
+      },
+      {
+        "heading": "Basket boat: si può evitare la barca che gira?",
+        "paragraphs": [
+          "Sì, chiedi una navigazione tranquilla prima dell'imbarco. Le rotazioni acrobatiche sono opzionali e dipendono dall'operatore. Con bambini verifica le taglie dei giubbotti salvagente; in caso di maltempo la navigazione può cambiare."
+        ]
+      },
+      {
+        "heading": "Foresta di cocco e centro storico di Hoi An nello stesso giorno",
+        "paragraphs": [
+          "Puoi visitare Cam Thanh nel pomeriggio e proseguire per il centro storico di Hoi An verso il tramonto, con tempo per le lanterne e la cena. Il prezzo del pacchetto non include automaticamente cena, ogni ingresso o guida italiana: verifica la conferma scritta."
+        ]
+      }
+    ],
+    "links": [
+      {
+        "href": "/it/hoi-an-in-un-giorno",
+        "label": "Hoi An in un giorno",
+        "description": "Organizza il pomeriggio e le lanterne."
+      },
+      {
+        "href": "/it/tour-privato-hoi-an",
+        "label": "Tour privato Hoi An",
+        "description": "Un itinerario flessibile."
+      }
+    ]
   },
   {
     "slug": "isole-cham-snorkeling",
@@ -632,34 +674,106 @@ export const italySeoPages:ItalySeoPage[] = [
     "type": "guide",
     "destination": "Vietnam centrale",
     "priceKey": null,
-    "title": "Itinerario Vietnam centrale 7 giorni 2026 | Da Nang, Hoi An, Hue | GoVietStay",
-    "h1": "Vietnam centrale in 7 giorni: abbastanza tempo per vedere molto e non vivere in macchina",
-    "desc": "Un itinerario equilibrato può combinare Da Nang, Hoi An, Bà Nà Hills, Hue e una giornata libera o di mare.",
-    "wiifm": "Un viaggio completo con spazio per recuperare energie e cambiare idea.",
+    "title": "Vietnam centrale in 7 giorni: Da Nang, Hoi An e Hue",
+    "h1": "Vietnam centrale in 7 giorni: cosa vedere giorno per giorno",
+    "desc": "Cosa vedere in Vietnam in 7 giorni se scegli il centro: un itinerario realistico da Da Nang a Hoi An, Ba Na Hills e Hue, con tempi di viaggio, tappe e una giornata flessibile.",
+    "wiifm": "Questo programma copre il Vietnam centrale, non l'intero Paese: una settimana con poche basi permette di visitare senza passare ogni giorno in viaggio.",
     "bullets": [
-      "Prime notti a Da Nang o Hoi An.",
-      "Una giornata lunga per Hue.",
-      "Almeno una giornata flessibile."
+      "Giorni 1–2: arrivo e Da Nang.",
+      "Giorni 3–5: Hoi An, Ba Na Hills e Hue in giornate separate.",
+      "Giorni 6–7: My Son, mare o tempo libero secondo il volo."
     ],
     "faqs": [
       [
-        "7 giorni sono troppi?",
-        "No, se vuoi anche tempo libero."
+        "Cosa vedere in Vietnam in 7 giorni?",
+        "Se scegli il Vietnam centrale puoi visitare Da Nang, Hoi An, Ba Na Hills e Hue, lasciando un giorno flessibile per My Son o il mare. Non è un itinerario per coprire l'intero Vietnam."
       ],
       [
-        "Meglio dormire a Hue?",
-        "Dipende dal viaggio complessivo; per una sola visita si può fare day trip."
+        "7 giorni bastano per Da Nang, Hoi An e Hue?",
+        "Sì, con Da Nang o Hoi An come base e giornate separate per Hue e Ba Na Hills."
       ],
       [
-        "Posso aggiungere Phu Quoc?",
-        "Sì, ma richiede un volo interno e più giorni."
+        "È meglio dormire a Da Nang o Hoi An?",
+        "Da Nang è pratica per aeroporto e visite fuori città; Hoi An offre più tempo per il centro storico la sera. Dipende dal tuo itinerario."
       ],
       [
-        "Potete organizzare solo alcuni giorni privati?",
-        "Sì."
+        "Si può aggiungere Phu Quoc in una settimana?",
+        "Possibile, ma richiede spostamenti aggiuntivi e riduce il tempo nel Vietnam centrale."
+      ],
+      [
+        "La guida italiana serve tutti i giorni?",
+        "No. Puoi richiederla solo per le visite culturali; disponibilità e costo vanno confermati."
+      ],
+      [
+        "Che cosa fare se piove?",
+        "Mantieni un giorno flessibile e verifica il meteo per Ba Na Hills, attività in mare e Isole Cham vicino alla data."
       ]
     ],
-    "updated": "2026-08-27"
+    "updated": "2026-09-28",
+    "sections": [
+      {
+        "heading": "Cosa vedere in Vietnam in 7 giorni: perché concentrarsi sul centro",
+        "paragraphs": [
+          "Visitare nord, centro e sud in una sola settimana richiede trasferimenti continui. Questo itinerario dedica sette giorni a Da Nang, Hoi An e Hue, con una base principale a Da Nang o Hoi An. Puoi organizzare alcune tappe in autonomia e richiedere auto o guida solo quando servono."
+        ]
+      },
+      {
+        "heading": "Giorni 1 e 2: arrivo a Da Nang e prime visite",
+        "paragraphs": [
+          "Giorno 1: transfer dall'aeroporto DAD e una passeggiata vicino all'hotel; non programmare una gita lunga subito dopo il volo.",
+          "Giorno 2: Da Nang e, se ti interessa, Marble Mountains. Adatta le visite alle distanze, al caldo e al meteo."
+        ]
+      },
+      {
+        "heading": "Giorno 3: foresta di cocco e Hoi An",
+        "paragraphs": [
+          "Visita Cam Thanh e la foresta di cocco nel pomeriggio se desideri il giro in basket boat. Prosegui verso il centro storico di Hoi An, dove il tardo pomeriggio e la sera sono ideali per passeggiare tra le lanterne. Concorda il rientro se dormi a Da Nang."
+        ]
+      },
+      {
+        "heading": "Giorno 4: Ba Na Hills e Ponte Dorato",
+        "paragraphs": [
+          "Dedica a Ba Na Hills un giorno intero, tra transfer, funivia, Ponte Dorato e villaggio francese. Buffet, biglietti e lingua della guida dipendono dal pacchetto confermato. Il meteo in montagna può essere diverso da quello costiero."
+        ]
+      },
+      {
+        "heading": "Giorno 5: Hue e passo Hai Van opzionale",
+        "paragraphs": [
+          "Da Da Nang, Hue è una vera giornata intera. In auto privata puoi richiedere il percorso panoramico sul passo Hai Van, compatibilmente con la sicurezza stradale, e le soste a Lang Co o alla laguna Lap An. A Hue scegli Cittadella e uno o due luoghi storici secondo il tempo.",
+          "Se vuoi visitare Hue in modo più approfondito, valuta una notte in città e riduci le soste lungo la strada."
+        ]
+      },
+      {
+        "heading": "Giorni 6 e 7: My Son, mare o partenza",
+        "paragraphs": [
+          "Giorno 6: puoi visitare My Son, scegliere un'esperienza gastronomica o una giornata di mare. Le Isole Cham dipendono dal mare e dall'autorizzazione alla navigazione.",
+          "Giorno 7: mantieni il programma compatibile con il volo e il tempo necessario per il transfer verso l'aeroporto."
+        ]
+      },
+      {
+        "heading": "Quanto costa una settimana nel Vietnam centrale?",
+        "paragraphs": [
+          "Il totale dipende dal tipo di hotel, transfer, numero di escursioni standard e giornate private. Puoi prenotare solo un transfer o le singole giornate che preferisci; una guida italiana va richiesta e quotata separatamente."
+        ]
+      }
+    ],
+    "links": [
+      {
+        "href": "/it/guida-in-italiano-vietnam-centrale",
+        "label": "Guida italiana",
+        "description": "Per le visite culturali."
+      },
+      {
+        "href": "/it/foresta-di-cocco-hoi-an",
+        "label": "Foresta di cocco Hoi An",
+        "description": "Tappa del terzo giorno."
+      },
+      {
+        "href": "/it/hue-da-da-nang",
+        "label": "Hue da Da Nang",
+        "description": "Organizza la giornata storica."
+      }
+    ]
   },
   {
     "slug": "miglior-periodo-da-nang",
@@ -1006,34 +1120,89 @@ export const italySeoPages:ItalySeoPage[] = [
     "type": "guide",
     "destination": "Vietnam centrale",
     "priceKey": null,
-    "title": "Guida in italiano in Vietnam centrale 2026 | Da Nang, Hoi An, Hue | GoVietStay",
-    "h1": "Guida in italiano in Vietnam: richiedila quando aggiunge davvero valore",
-    "desc": "Per Hoi An, Hue, My Son o itinerari privati possiamo verificare guide nella lingua richiesta, incluso italiano, in base alla data e disponibilità.",
-    "wiifm": "Capisci davvero storia e contesto nei giorni culturali, senza pagare una guida ogni giorno per forza.",
+    "title": "Guida italiana in Vietnam: Hoi An, Hue e Da Nang | GoVietStay",
+    "h1": "Guida italiana in Vietnam: disponibilità, itinerari e prezzi",
+    "desc": "Cerchi una guida italiana in Vietnam? Verifichiamo guide per Hoi An, Hue, My Son e tour privati da Da Nang. Scopri disponibilità, differenza fra guida e autista e cosa includere nel preventivo.",
+    "wiifm": "Richiedi una guida in italiano solo nei giorni in cui il contesto culturale conta, con lingua e costo confermati prima di pagare.",
     "bullets": [
-      "Italiano disponibile su richiesta e conferma.",
-      "Altre lingue possono essere richieste allo stesso modo.",
-      "Per transfer o giornate semplici può bastare il supporto WhatsApp + autista."
+      "Italiano su richiesta e soggetto a conferma per la tua data.",
+      "Autista, guida turistica e supporto WhatsApp sono tre servizi distinti.",
+      "Invia data, hotel, numero di ospiti e tappe desiderate."
     ],
     "faqs": [
       [
-        "Avete sempre una guida italiana?",
-        "No: va verificata per la data, come qualsiasi lingua richiesta."
+        "Posso prenotare una guida italiana in Vietnam?",
+        "Sì, possiamo verificarne la disponibilità per Hoi An, Hue, My Son e tour privati nel Vietnam centrale. La presenza di una guida italiana va confermata sulla data."
       ],
       [
-        "La guida italiana costa più del tour standard?",
-        "La guida e il setup privato possono aumentare il costo; il tour standard resta al prezzo pubblico English."
+        "Quanto costa una guida italiana in Vietnam?",
+        "Il costo varia secondo data, ore, destinazione, numero di partecipanti e spostamenti. Serve un preventivo prima della prenotazione."
       ],
       [
-        "Posso avere guida italiana solo a Hue?",
-        "Sì, se disponibile."
+        "La guida italiana è inclusa nei tour standard?",
+        "Non automaticamente. I tour standard possono prevedere una guida in inglese; la lingua italiana è un'opzione da richiedere e confermare."
       ],
       [
-        "Offrite anche altre lingue?",
-        "Sì, su richiesta e disponibilità."
+        "Posso richiedere una guida italiana solo per Hue?",
+        "Sì, è possibile richiedere una giornata a Hue e confermare separatamente il transfer da Da Nang o Hoi An."
+      ],
+      [
+        "L'autista parla italiano ed è anche guida?",
+        "Non necessariamente. Il servizio dell'autista e quello della guida sono distinti, così come l'assistenza WhatsApp."
+      ],
+      [
+        "Che cosa devo inviare per un preventivo?",
+        "Data, hotel, numero di persone, bambini, durata, destinazioni e lingua richiesta. Confermiamo la proposta prima del pagamento."
       ]
     ],
-    "updated": "2026-08-27"
+    "updated": "2026-09-28",
+    "sections": [
+      {
+        "heading": "Dove richiedere una guida italiana in Vietnam centrale",
+        "paragraphs": [
+          "Possiamo verificare una guida in italiano per Hoi An, Hue, My Son e itinerari privati da Da Nang. La disponibilità dipende dalla data, dalla destinazione e dalla durata richiesta; un tour standard con guida inglese non si trasforma automaticamente in tour italiano.",
+          "Per visite culturali a Hue e My Son una guida può fornire il contesto storico. Per brevi spostamenti e giornate di mare può bastare un autista con supporto locale."
+        ]
+      },
+      {
+        "heading": "Guida italiana, autista e assistenza: cosa cambia",
+        "paragraphs": [
+          "Un autista si occupa del veicolo e dei trasferimenti; non è automaticamente guida turistica né parla necessariamente italiano. Una guida confermata accompagna le visite previste e spiega i luoghi nella lingua concordata. L'assistenza GoVietStay organizza il viaggio ma non equivale a una guida presente tutto il giorno.",
+          "Prima della prenotazione riceverai indicazione scritta di lingua, durata, programma, transfer, biglietti, pasti e prezzo totale."
+        ]
+      },
+      {
+        "heading": "Quali visite si prestano a una guida in italiano?",
+        "paragraphs": [
+          "A Hue, Cittadella e tombe imperiali meritano un'intera giornata se parti da Da Nang. A My Son una guida aiuta a comprendere i templi Cham; a Hoi An puoi abbinare una visita culturale e il tempo libero per le lanterne.",
+          "Non garantiamo una guida italiana unica per tutte le destinazioni: verifichiamo la soluzione in base all'itinerario e alla disponibilità."
+        ]
+      },
+      {
+        "heading": "Quanto costa una guida italiana in Vietnam?",
+        "paragraphs": [
+          "Non esiste un prezzo unico: dipende da data, numero di ore, spostamenti, tipo di tour e disponibilità. I prezzi standard dei tour visibili sul sito non includono automaticamente una guida italiana.",
+          "Per ricevere una proposta invia data, hotel, persone, età dei bambini e luoghi desiderati: verificheremo disponibilità e costi prima del pagamento."
+        ]
+      }
+    ],
+    "links": [
+      {
+        "href": "/it/hue-da-da-nang",
+        "label": "Hue da Da Nang",
+        "description": "Cittadella, tombe imperiali e trasporto."
+      },
+      {
+        "href": "/it/my-son-da-hoi-an",
+        "label": "My Son da Hoi An",
+        "description": "Templi Cham e visita culturale."
+      },
+      {
+        "href": "/it/tour-privato-hoi-an",
+        "label": "Hoi An privata",
+        "description": "Visita della città antica con tempi concordati."
+      }
+    ]
   }
 ];
 
