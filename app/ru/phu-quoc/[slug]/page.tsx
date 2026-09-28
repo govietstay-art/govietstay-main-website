@@ -60,7 +60,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         headline: page.title,
         description: page.description,
         inLanguage: "ru",
-        dateModified: page.slug === "sunset-town" || page.slug === "chto-posmotret" ? "2026-09-28" : "2026-09-10",
+        dateModified: page.slug === "sunset-town" || page.slug === "chto-posmotret" || page.slug === "from-moscow" ? "2026-09-28" : "2026-09-10",
         image: `${BASE_URL}${page.image}`,
         about: { "@type": "Place", name: "Phu Quoc, Vietnam" },
         publisher: { "@id": `${BASE_URL}/#organization` },
