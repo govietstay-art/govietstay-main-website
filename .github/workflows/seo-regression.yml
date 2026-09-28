@@ -13,6 +13,7 @@ on:
       - "scripts/check-ru-phu-quoc-content.mjs"
       - "scripts/check-ru-booking-landing.mjs"
       - "scripts/check-ru-hoi-an-content.mjs"
+      - "scripts/check-ru-danang-content.mjs"
       - "scripts/check-home-performance.mjs"
       - "scripts/check-home-chunks.mjs"
       - "scripts/check-tracking-defer.mjs"
@@ -38,6 +39,7 @@ jobs:
       - run: node scripts/check-ru-phu-quoc-content.mjs
       - run: node scripts/check-ru-booking-landing.mjs
       - run: node scripts/check-ru-hoi-an-content.mjs
+      - run: node scripts/check-ru-danang-content.mjs
       - run: node scripts/check-home-performance.mjs
       - run: node scripts/check-home-chunks.mjs
       - run: node scripts/check-tracking-defer.mjs

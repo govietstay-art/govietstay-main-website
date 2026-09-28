@@ -87,6 +87,28 @@ export default function RussianSeoLandingPage({
           </div>
         </section>
 
+        {landing.weatherScenarios && (
+          <section aria-labelledby="danang-rain-options" className="rounded-[2rem] border border-amber-400/35 bg-[#f8efd6] p-6 md:p-10">
+            <p className="text-sm font-black uppercase tracking-[.18em] text-amber-800">План по фактической погоде</p>
+            <h2 id="danang-rain-options" className="mt-3 text-3xl font-black md:text-4xl">Дананг в дождь: три сценария на день</h2>
+            <p className="mt-4 max-w-4xl leading-relaxed text-[#06251b]/80">Ниже не прогноз на сегодня, а способ выбрать безопасный план. Перед поездкой сверяйте текущие предупреждения, погоду в конкретном пункте и условия забронированной программы.</p>
+            <div className="mt-7 grid gap-4 md:grid-cols-3">
+              {landing.weatherScenarios.map((plan) => (
+                <article key={plan.title} className="rounded-3xl bg-white p-6 shadow-sm">
+                  <h3 className="text-xl font-black text-green-900">{plan.title}</h3>
+                  <p className="mt-3 text-sm font-semibold text-[#245746]">{plan.conditions}</p>
+                  <p className="mt-4 leading-relaxed text-[#06251b]/80">{plan.activities}</p>
+                  <p className="mt-4 rounded-xl bg-amber-50 p-3 text-sm leading-relaxed text-amber-900"><strong>Важно:</strong> {plan.caution}</p>
+                </article>
+              ))}
+            </div>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link href="/ru/aktualno/bana-hills-in-rain" className="inline-flex min-h-11 items-center rounded-full bg-green-800 px-5 py-3 font-bold text-white">Бана Хиллс в дождь: подробный разбор →</Link>
+              <Link href="/ru/tours/ba-na-hills" className="inline-flex min-h-11 items-center rounded-full border border-green-800/20 bg-white px-5 py-3 font-bold text-green-800">Условия тура на Бана Хиллс →</Link>
+            </div>
+          </section>
+        )}
+
         <section className="grid gap-6 md:grid-cols-2">
           {landing.sections.map((section) => (
             <article key={section.heading} className="rounded-[2rem] border border-[#06251b]/10 bg-white/70 p-6 md:p-8">
