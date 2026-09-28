@@ -118,7 +118,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${BASE_URL}/kz`,
-      lastModified: new Date("2026-08-26T00:00:00.000Z"),
+      lastModified: new Date("2026-09-28T00:00:00.000Z"),
       changeFrequency: "daily", priority: 1,
       alternates: { languages: { "ru-KZ": `${BASE_URL}/kz` } },
     },
