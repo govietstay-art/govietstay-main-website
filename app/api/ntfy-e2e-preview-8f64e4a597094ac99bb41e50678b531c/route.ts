@@ -20,18 +20,18 @@ export async function GET(req: NextRequest) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      tourCode: "TRIP 2",
+      tourCode: "TRIP 3",
       fullName: "GOVIETSTAY INTERNAL TEST ONLY",
-      whatsapp: "000000125799",
+      whatsapp: "000000725801",
       email: "",
-      tourDate: "2026-12-15",
+      tourDate: "2026-12-16",
       adults: 1,
       children: 0,
       infants: 0,
       hotel: "",
       pickup: "",
       language: "English",
-      request: "AUTOMATED E2E TEST - DO NOT CONTACT OR APPROVE",
+      request: "SECOND AUTOMATED E2E TEST - DO NOT CONTACT OR APPROVE",
       website: ""
     }),
   }));
