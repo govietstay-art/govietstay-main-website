@@ -20,6 +20,16 @@ try{
   for(const p of phrases)assert.ok(html.includes(p),"Missing "+p+" from "+url);
   assert.ok(html.includes('href="https://www.govietstay.com'+url+'"'),"Missing canonical "+url);
  }
+ for(const [path,amounts] of [
+  ["/kz/ba-na-hills-golden-bridge",["1 550 000 VND", "1 450 000 VND"]],
+  ["/kz/cham-island-tour",["950 000 VND", "800 000 VND"]],
+  ["/kz/phu-quoc-three-islands",["820 000 VND", "570 000 VND"]],
+  ["/kz/phu-quoc-four-islands-hon-thom",["1 700 000 VND", "1 190 000 VND"]]
+ ]){
+  const res=await fetch(origin+path,{signal:AbortSignal.timeout(30000)});assert.equal(res.status,200,"Missing KZ product "+path);
+  const html=(await res.text()).replaceAll("&nbsp;"," ").replaceAll(" "," ").replaceAll(" "," ");
+  for(const amount of amounts)assert.ok(html.includes(amount.replaceAll(" "," ")),"Missing verified product amount "+path+" "+amount);
+ }
  const xml=await (await fetch(origin+"/sitemap.xml")).text();
  for(const u of ["/kz","/kz/vietnam-from-kazakhstan"]){const n="<loc>https://www.govietstay.com"+u+"</loc>",i=xml.indexOf(n);assert.ok(i>=0&&xml.slice(i,i+220).includes("<lastmod>2026-09-28"),"Missing selective sitemap date "+u);}
  console.log("PASS: KZ homepage and country guide rendered, intent-specific FAQs, two verified existing base rates and current sitemap dates.");
