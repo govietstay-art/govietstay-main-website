@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { israelSeoPages } from "../lib/israelSeoPages";
+import {israelSeoEditorial} from "../lib/israelSeoEditorial";
 import { italySeoPages } from "../lib/italySeoPages";
 import { turkeySeoPages } from "../lib/turkeySeoPages";
 import { philippinesSeoPages } from "../lib/philippinesSeoPages";
@@ -333,7 +334,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   const israelPages: MetadataRoute.Sitemap = israelSeoPages.map((page) => ({
-    url: `${BASE_URL}/il/${page.slug}`, lastModified: new Date(page.updated),
+    url: `${BASE_URL}/il/${page.slug}`, lastModified: new Date(israelSeoEditorial[page.slug]?.updated ?? page.updated),
     changeFrequency: page.type === "product" || page.type === "private" ? "weekly" : "monthly",
     priority: page.type === "private" ? 0.95 : page.type === "product" ? 0.92 : 0.86,
     alternates: { languages: { "he-IL": `${BASE_URL}/il/${page.slug}` } },
