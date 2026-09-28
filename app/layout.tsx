@@ -125,7 +125,7 @@ export default async function RootLayout({
                   "@type": "ContactPoint",
                   telephone: "+84937762607",
                   contactType: "customer service",
-                  availableLanguage: ["en", "ru", "vi", "ko", "zh-TW", "fr"],
+                  availableLanguage: ["en", "ru"],
                 },
               },
               {
@@ -135,7 +135,7 @@ export default async function RootLayout({
                 name: "GoVietStay",
                 alternateName: "GoVietStay.com",
                 url: "https://www.govietstay.com",
-                inLanguage: ["en", "ru", "vi", "ko", "zh-TW", "fr", "mn"],
+                inLanguage: ["en", "ru", "it", "vi", "ko-KR", "zh-CN", "zh-TW", "fr-FR", "de-DE", "tr-TR", "ar", "he-IL", "en-PH", "en-IN", "mn", "ru-KZ"],
                 publisher: { "@id": "https://www.govietstay.com/#organization" },
               },
             ]),
