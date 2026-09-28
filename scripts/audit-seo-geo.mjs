@@ -56,7 +56,7 @@ function htmlFacts(raw,urlPath,status){
  const locale=attr(htmlTag,"lang")??"";
  const segmenter=new Intl.Segmenter(locale||"en",{granularity:"word"});
  const words=[...segmenter.segment(plain)].filter(x=>x.isWordLike).length;
- return {path:urlPath,status,title,titleLength:[...title].length,lang:locale,expectedLang:expected(urlPath),canonical:selfPath(attr(canonicalTag||"","href")||"",urlPath),
+ return {path:urlPath,status,title,titleLength:[...title].length,lang:locale,expectedLang:expected(urlPath),canonical:canonicalTag?selfPath(attr(canonicalTag,"href")||"",urlPath):null,
   ogImage:attr(ogTag||"","content"),robotsNoindex:/noindex/i.test(robots),hreflang:alternates,h1:(raw.match(/<h1\b/gi)||[]).length,
   words,outbound,orgDefs,websiteDefs};
 }

@@ -52,6 +52,18 @@ try{
  }
  const food=await check("/local-food","en","ltr");
  assert.ok(food.includes("og:image"),"Local food social preview is missing");
+ for (const path of ["/ar","/cn","/tr","/ph","/mn","/il"]) {
+   const source=html[routes.findIndex(row=>row[0]===path)];
+   assert.ok(source.includes('rel="canonical" href="https://www.govietstay.com'+path+'"'),path+": missing self canonical");
+   assert.ok(source.includes('property="og:image"'),path+": missing share image");
+ }
+ for (const slug of ["/ar","/ar/halal-travel-vietnam","/ar/vietnam-family-private-tour","/ar/phu-quoc-tours"]) {
+   assert.ok(xml.includes('https://www.govietstay.com'+slug+"</loc>"),"Sitemap missing Arabic route "+slug);
+ }
+ for (const [path,otherLang] of [["/cn","zh-TW"],["/ko","ru"],["/tr","en"],["/ph","en"]]) {
+   const source=html[routes.findIndex(row=>row[0]===path)];
+   assert.ok(!source.includes('hrefLang="'+otherLang+'"'),path+": nonreciprocal "+otherLang+" alternate still declared");
+ }
  console.log(`PASS: ${routes.length} server-rendered locale routes, canonical, sitemap and local food OG.`);
 }catch(error){console.error(error);console.error("Server tail: "+output.slice(-2000));process.exitCode=1;
 }finally{
