@@ -916,68 +916,68 @@ export const italySeoPages:ItalySeoPage[] = [
     "type": "product",
     "destination": "Phu Quoc",
     "priceKey": "pq3",
-    "title": "Tour 3 isole Phu Quoc 2026 | Prezzo standard + privato | GoVietStay",
-    "h1": "3 isole a Phu Quoc: il tour standard costa come per tutti, il privato compra libertà",
-    "desc": "Il prezzo standard è lo stesso del prodotto English. Se vuoi barca privata, meno persone o orari diversi, il prezzo viene costruito sul gruppo.",
-    "wiifm": "Scegli il risparmio del tour standard oppure paga solo se la privacy ti porta un vantaggio reale.",
+    "title": "3 isole Phu Quoc in barca: prezzi TRIP 3 John’s Tours",
+    "h1": "Tour 3 isole Phu Quoc in barca: snorkeling e pranzo",
+    "desc": "TRIP 3 John’s Tours: 3 isole in barca, snorkeling e pranzo. Tariffa pubblicata 820.000 VND adulto; 570.000 VND bambino, secondo condizioni. Guida inglese; italiano su richiesta.",
+    "wiifm": "Scegli un pacchetto identificato, confrontando il numero di soste e ciò che è incluso prima di pagare.",
     "bullets": [
-      "Prezzo standard identico al prodotto pubblico.",
-      "Mare e ordine delle soste possono cambiare.",
-      "Opzione privata su richiesta."
+      "TRIP 3 in barca: adulto 820.000 VND, bambino 570.000 VND secondo tariffa applicabile.",
+      "La barca privata e la guida italiana richiedono un preventivo separato.",
+      "Soste e ordine delle isole possono cambiare con le condizioni del mare."
     ],
     "faqs": [
       [
-        "Il prezzo italiano è più alto?",
-        "No."
+        "Quanto costa il tour 3 isole in barca a Phu Quoc?",
+        "La tariffa pubblicata di John’s Tours per il pacchetto TRIP 3 è 820.000 VND per adulto e 570.000 VND per bambino. Verifica età, zona del pickup, disponibilità e contenuto della conferma."
       ],
       [
-        "Hotel pickup incluso?",
-        "Dipende dalla zona e dal pacchetto confermato."
+        "Il tour 3 isole include la guida italiana?",
+        "Non automaticamente. Il programma standard pubblicato prevede la guida in inglese; la guida italiana può essere richiesta, in base a disponibilità e preventivo."
       ],
       [
-        "Guida in italiano?",
-        "Richiedibile, soggetta a disponibilità."
+        "Qual è la differenza tra il tour in barca e quello in motoscafo?",
+        "Sono pacchetti distinti per tipo di imbarcazione, itinerario e inclusioni. La tariffa indicata qui si riferisce soltanto al TRIP 3 in barca."
       ],
       [
-        "Barca privata disponibile?",
-        "Da verificare per data e gruppo."
+        "Cosa succede se il mare è mosso?",
+        "Le soste o la partenza possono cambiare secondo le condizioni reali e le decisioni del capitano. Chiedi prima le condizioni di riprogrammazione."
       ]
     ],
-    "updated": "2026-08-27"
+    "updated": "2026-09-28"
   },
   {
     "slug": "tour-4-isole-hon-thom",
     "type": "product",
     "destination": "Phu Quoc",
     "priceKey": "pq4",
-    "title": "Tour 4 isole + Hon Thom 2026 | Funivia Phu Quoc | GoVietStay",
-    "h1": "4 isole + Hon Thom: una giornata piena, poi concediti una mattina lenta",
-    "desc": "Il prezzo standard è uguale al tour English. La versione privata è pensata per chi vuole controllare meglio tempi, barca e spostamenti.",
-    "wiifm": "Un'unica giornata completa invece di spezzare mare e funivia in più giorni.",
+    "title": "4 isole + Hon Thom Phu Quoc: prezzi CABLE CAR TRIP",
+    "h1": "4 isole e funivia Hon Thom: il programma CABLE CAR TRIP",
+    "desc": "John’s Tours CABLE CAR TRIP: 4 isole più funivia Hon Thom. Tariffa pubblicata 1.700.000 VND adulto e 1.190.000 VND bambino, soggetta a condizioni di età e altezza.",
+    "wiifm": "Un pacchetto preciso per chi vuole mare e funivia nello stesso giorno, senza confonderlo con altri programmi di 3 isole o tour privati.",
     "bullets": [
-      "Funivia inclusa solo se indicata nella conferma.",
-      "Sea Walking e attività opzionali normalmente sono extra.",
-      "Famiglie con bambini piccoli devono valutare la durata."
+      "Prezzo pubblico CABLE CAR TRIP: 1.700.000 VND adulto e 1.190.000 VND bambino secondo condizioni.",
+      "Funivia inclusa per il pacchetto indicato; altri biglietti e attività vanno verificati.",
+      "Guida italiana, transfer fuori zona e privato da confermare separatamente."
     ],
     "faqs": [
       [
-        "La funivia è inclusa?",
-        "Solo se scritta nella conferma."
+        "Quanto costa il tour 4 isole più Hon Thom?",
+        "La tariffa pubblicata del pacchetto John’s Tours CABLE CAR TRIP è 1.700.000 VND adulto e 1.190.000 VND bambino secondo condizioni, da confermare per data e composizione del gruppo."
       ],
       [
-        "Il prezzo standard è uguale all'English tour?",
-        "Sì."
+        "La funivia di Hon Thom è inclusa nel pacchetto?",
+        "Sì, nel programma CABLE CAR TRIP indicato. Altre attività e biglietti devono essere verificati nella conferma scritta."
       ],
       [
-        "Posso fare privato?",
-        "Sì, su richiesta e disponibilità."
+        "Il tour è adatto a bambini piccoli?",
+        "Valuta la durata della giornata e comunica età e altezza: il prezzo e l'accesso alle attività possono dipendere da queste condizioni."
       ],
       [
-        "Sea Walking incluso?",
-        "Normalmente no, salvo conferma esplicita."
+        "È possibile prenotare una guida italiana o una barca privata?",
+        "Puoi richiederle, ma non fanno parte automaticamente del pacchetto standard. Disponibilità e tariffa vengono confermate separatamente."
       ]
     ],
-    "updated": "2026-08-27"
+    "updated": "2026-09-28"
   },
   {
     "slug": "auto-privata-phu-quoc",
