@@ -21,7 +21,7 @@ try{
  }
  assert.ok(ok,"Local Next.js not ready: "+tail);
  const h=await (await fetch(origin+"/ru/tours/phu-quoc",{signal:AbortSignal.timeout(30000)})).text();
- for(const phrase of ["Экскурсии на Фукуоке: цены, острова и частные туры","Сколько стоят 3 и 4 острова на Фукуоке?","Групповые экскурсии идут с русскоговорящим гидом?","Стандартный групповой трансфер","phuquoc-booking-form","FAQPage"]){
+ for(const phrase of ["Экскурсии на Фукуоке: цены, острова и частные туры","Сколько стоят 3 и 4 острова на Фукуоке?","Групповые экскурсии идут с русскоговорящим гидом?","Как быстро подтверждают заявку на тур на Фукуоке?","Стандартный групповой трансфер","phuquoc-booking-form","FAQPage"]){
   assert.ok(h.includes(phrase),"Missing rendered SEO content: "+phrase);
  }
  const targets=["/ru/phu-quoc/3-ili-4-ostrova","/ru/phu-quoc/hon-thom","/ru/phu-quoc/russkiy-gid","/ru/phu-quoc/s-detmi"];

@@ -9,7 +9,7 @@ const canonical = "https://www.govietstay.com/ru/tours/phu-quoc";
 const english = "https://www.govietstay.com/tours/phu-quoc";
 const seoTitle = "Экскурсии на Фукуоке: цены, острова и помощь на русском";
 const seoDescription =
-  "Цены на туры по 3–4 островам Фукуока, Хон Тхом, снорклинг и частные экскурсии. Детские тарифы, трансфер, условия бронирования и помощь на русском.";
+  "Экскурсии на Фукуоке: цены на 3–4 острова, Хон Тхом и частные туры. Детские тарифы, трансфер, помощь на русском и заявка через WhatsApp.";
 
 export const metadata: Metadata = {
   title: seoTitle,
@@ -102,6 +102,10 @@ export default function Page() {
             ))}
           </div>
           <p className="mt-5 max-w-5xl text-sm text-[#315b56]">* Детский тариф зависит от программы, возраста и иногда роста. Для отелей вне стандартной зоны посадки и в праздничные даты возможны доплаты.</p>
+          <div className="mt-8 flex flex-wrap items-center gap-4 rounded-[1.4rem] border border-emerald-900/10 bg-emerald-900 p-6 text-white">
+            <p className="max-w-3xl leading-7"><strong>Бронирование через WhatsApp:</strong> отправьте даты поездки, отель и состав семьи. Мы проверим наличие мест и точную стоимость, затем сообщим условия и способ оплаты.</p>
+            <a href="https://wa.me/84937762607?text=%D0%A4%D1%83%D0%BA%D1%83%D0%BE%D0%BA%3A%20%D0%BF%D0%BE%D0%BC%D0%BE%D0%B3%D0%B8%D1%82%D0%B5%20%D0%B2%D1%8B%D0%B1%D1%80%D0%B0%D1%82%D1%8C%20%D0%B8%20%D0%B7%D0%B0%D0%B1%D1%80%D0%BE%D0%BD%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%20%D1%82%D1%83%D1%80" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center rounded-full bg-[#20a65a] px-6 font-black text-white">Спросить в WhatsApp →</a>
+          </div>
           <div className="mt-10 rounded-[1.5rem] bg-white p-6 md:p-9">
             <h2 className="text-2xl font-black md:text-4xl">Частые вопросы перед бронированием</h2>
             <div className="mt-5 divide-y divide-emerald-900/10">
