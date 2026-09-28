@@ -1,8 +1,7 @@
 "use client";
 import { useState,type FormEvent } from "react";
 
-const ENDPOINT="https://vscffgnxaexestnayvae.supabase.co/functions/v1/gvs-public-inquiry";
-const PUBLIC_ANON_JWT="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzY2ZmZ254YWV4ZXN0bmF5dmFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3MTM1MDcsImV4cCI6MjEwMzI4OTUwN30.FhrxtpFiodP-zxmANjNVh5Ujt_DXvNZNHJdHpZ0LxFk";
+import {sendPublicInquiry} from "../lib/publicInquiryClient";
 type Locale="en"|"ru";
 type Props={productCode:string;productName:string;sourcePage:string;locale?:Locale;compact?:boolean};
 export default function PublicInquiryForm({productCode,productName,sourcePage,locale="en",compact=false}:Props){
@@ -23,17 +22,12 @@ export default function PublicInquiryForm({productCode,productName,sourcePage,lo
   e.preventDefault();if(saving)return;
   setSaving(true);setError("");
   try{
-   const response=await fetch(ENDPOINT,{
-    method:"POST",headers:{apikey:PUBLIC_ANON_JWT,Authorization:"Bearer "+PUBLIC_ANON_JWT,"Content-Type":"application/json"},
-    body:JSON.stringify({
+   const result=await sendPublicInquiry({
      product_code:productCode,product_name:productName,source_page:sourcePage,
      full_name:name.trim(),whatsapp:phone.trim(),email:email.trim(),tour_date:date,
      adults:Number(adults),children:Number(children),hotel:hotel.trim(),details:details.trim(),
      language:locale,website
-    }),cache:"no-store"
    });
-   const result=await response.json().catch(()=>null);
-   if(!response.ok||!result?.inquiry_code)throw new Error(ru?"Не удалось сохранить запрос. Напишите нам в WhatsApp.":"Unable to save. Please contact us on WhatsApp.");
    setCode(result.inquiry_code);
   }catch(e:any){setError(e?.message||"Unable to send request.");}
   finally{setSaving(false);}
