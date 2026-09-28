@@ -1656,7 +1656,6 @@ function LegacyRussianPage() {
             src="/ar-assets/hero-hoian.webp"
             alt="GoVietStay Russian Page"
             fill
-            priority
             sizes="100vw"
             quality={75}
             className="object-cover object-center"
@@ -2643,6 +2642,7 @@ export default function RussianPage() {
             src="/ar-assets/hero-hoian.webp"
             alt="Туры GoVietStay для русскоговорящих гостей во Вьетнаме"
             fill
+            priority
             sizes="100vw"
             quality={75}
             className="object-cover object-center"
