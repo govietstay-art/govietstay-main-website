@@ -1,7 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
+import { after, NextRequest, NextResponse } from "next/server";
 
 const SUPABASE_URL = "https://vscffgnxaexestnayvae.supabase.co";
-const SUPABASE_ANON = "sb_publishable_BI1rIhiGB5cEUyJbnKGI5w_kCMI--oV";
+// Legacy anonymous JWT is intentionally public and only authenticates the
+// tightly rate-limited Edge intake gateway (not the privileged booking RPC).
+const SUPABASE_PUBLIC_ANON_JWT = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzY2ZmZ254YWV4ZXN0bmF5dmFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3MTM1MDcsImV4cCI6MjEwMzI4OTUwN30.FhrxtpFiodP-zxmANjNVh5Ujt_DXvNZNHJdHpZ0LxFk";
 const DIRECT_SALES_CODE = "GVS-EN-DAVID-00"; // Owner / Direct Sales profile already enabled in Booking Master flow.
 
 import { PHU_QUOC_PUBLISHED_RATES as PRICE } from "../../../lib/phuQuocPublishedRates";
@@ -61,9 +63,58 @@ export async function POST(req:NextRequest){
       p_notes:notes
     };
 
-    const r=await fetch(`${SUPABASE_URL}/rest/v1/rpc/staff_submit_booking_request`,{method:"POST",headers:{apikey:SUPABASE_ANON,Authorization:`Bearer ${SUPABASE_ANON}`,"Content-Type":"application/json"},body:JSON.stringify(payload),cache:"no-store"});
+    // Authenticated Edge gateway holds the service-role credential in
+    // Supabase, not in Vercel; its SQL RPC constrains input and request rates.
+    const r=await fetch(`${SUPABASE_URL}/functions/v1/phu-quoc-pilot-intake`,{
+      method:"POST",
+      headers:{
+        apikey:SUPABASE_PUBLIC_ANON_JWT,
+        Authorization:`Bearer ${SUPABASE_PUBLIC_ANON_JWT}`,
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify(payload),
+      cache:"no-store",
+      signal:AbortSignal.timeout(10_000)
+    });
     const result=await r.json().catch(()=>null);
-    if(!r.ok) return NextResponse.json({error:"Could not create booking request"},{status:502});
+    if(!r.ok){
+      // Log only upstream status/code; never log guest information or secrets.
+      console.error("Supabase booking intake failed",r.status,typeof result?.code==="string"?result.code:"unknown");
+      return NextResponse.json({error:"Could not create booking request"},{status:502});
+    }
+    const notificationTopic = typeof result?.push_topic === "string" &&
+      /^gvs-inbox-[a-f0-9]{48}$/.test(result.push_topic) ? result.push_topic : null;
+    // No ntfy channel name is committed to public GitHub; Supabase Edge
+    // provides it only to the server on successful intake. The ntfy channel
+    // is still a public, unauthenticated notification signal (no guest PII).
+    if (!notificationTopic) console.warn("GoVietStay notification channel unavailable");
+    // AI-independent intake. Only after the DB acknowledges a pending request,
+    // publish a generic best-effort alert from Vercel: Supabase shared egress
+    // was rate-limited by ntfy (HTTP 429). The authenticated Admin queue remains
+    // the source of truth even if notification delivery fails.
+    if (notificationTopic) after(async () => {
+      try {
+        const push = await fetch("https://ntfy.sh/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            topic: notificationTopic,
+            title: "GoVietStay: booking moi",
+            message: "Co booking moi cho duyet. Mo GoVietStay Admin de xem.",
+            priority: 4,
+            tags: ["bell"],
+            click: "https://www.govietstay.com/admin",
+            actions: [{ action: "view", label: "Mo Admin", url: "https://www.govietstay.com/admin" }]
+          }),
+          signal: AbortSignal.timeout(7000),
+          cache: "no-store"
+        });
+        if (push.ok) console.info("GoVietStay pending booking notification accepted");
+        else console.warn("GoVietStay pending booking notification rejected:", push.status);
+      } catch {
+        console.warn("GoVietStay pending booking notification transport unavailable");
+      }
+    });
     return NextResponse.json({ok:true,booking_code:result?.booking_code || bookingCode,status:result?.status || "pending"});
   }catch{
     return NextResponse.json({error:"Invalid request"},{status:400});
