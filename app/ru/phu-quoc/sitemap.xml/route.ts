@@ -4,17 +4,17 @@ const BASE_URL = "https://www.govietstay.com";
 
 export async function GET() {
   const urls = [
-    ...russianPhuQuocPages.map((page) => `${BASE_URL}${page.path}`),
-    `${BASE_URL}/ru/phu-quoc-help`,
+    ...russianPhuQuocPages.map((page) => ({ url: `${BASE_URL}${page.path}`, lastModified: page.slug === "index" ? "2026-09-28" : "2026-09-10" })),
+    { url: `${BASE_URL}/ru/phu-quoc-help`, lastModified: "2026-09-10" },
   ];
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls
   .map(
-    (url) => `  <url>
+    ({url,lastModified}) => `  <url>
     <loc>${url}</loc>
-    <lastmod>2026-09-10</lastmod>
+    <lastmod>${lastModified}</lastmod>
     <changefreq>weekly</changefreq>
   </url>`,
   )
