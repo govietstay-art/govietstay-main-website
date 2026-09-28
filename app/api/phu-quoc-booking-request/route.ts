@@ -2,7 +2,9 @@ import { after, NextRequest, NextResponse } from "next/server";
 import { isLettaBookingSyncConfigured, syncBookingIntakeToLetta } from "../../../lib/lettaBookingSync";
 
 const SUPABASE_URL = "https://vscffgnxaexestnayvae.supabase.co";
-const SUPABASE_ANON = "sb_publishable_BI1rIhiGB5cEUyJbnKGI5w_kCMI--oV";
+// The intake RPC deliberately denies anon. Only the server may authenticate.
+// Configure this server-only secret in Vercel Preview; never expose to the browser.
+const SUPABASE_SERVER_SECRET = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() || "";
 const DIRECT_SALES_CODE = "GVS-EN-DAVID-00"; // Owner / Direct Sales profile already enabled in Booking Master flow.
 
 import { PHU_QUOC_PUBLISHED_RATES as PRICE } from "../../../lib/phuQuocPublishedRates";
@@ -62,9 +64,17 @@ export async function POST(req:NextRequest){
       p_notes:notes
     };
 
-    const r=await fetch(`${SUPABASE_URL}/rest/v1/rpc/staff_submit_booking_request`,{method:"POST",headers:{apikey:SUPABASE_ANON,Authorization:`Bearer ${SUPABASE_ANON}`,"Content-Type":"application/json"},body:JSON.stringify(payload),cache:"no-store"});
+    if(!SUPABASE_SERVER_SECRET){
+      console.error("Booking intake unavailable: server-side Supabase credential is not configured");
+      return NextResponse.json({error:"Booking intake temporarily unavailable"},{status:503});
+    }
+    const r=await fetch(`${SUPABASE_URL}/rest/v1/rpc/staff_submit_booking_request`,{method:"POST",headers:{apikey:SUPABASE_SERVER_SECRET,Authorization:`Bearer ${SUPABASE_SERVER_SECRET}`,"Content-Type":"application/json"},body:JSON.stringify(payload),cache:"no-store"});
     const result=await r.json().catch(()=>null);
-    if(!r.ok) return NextResponse.json({error:"Could not create booking request"},{status:502});
+    if(!r.ok){
+      // Log only upstream status/code; never log guest information or secrets.
+      console.error("Supabase booking intake failed",r.status,typeof result?.code==="string"?result.code:"unknown");
+      return NextResponse.json({error:"Could not create booking request"},{status:502});
+    }
     // Optional internal drafting sync after a successful Supabase insert.
     // Keep the customer-facing response independent of Letta availability.
     if (isLettaBookingSyncConfigured()) {
