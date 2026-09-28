@@ -5,6 +5,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import "./staff-sales-team.css";
+import PublicInquiryPanel from "./PublicInquiryPanel";
 
 type Props={supabase:any;adminStaff:any};
 type Staff={id:string;display_name:string;sales_code:string;role:string;compensation_plan_code:string;allow_booking_portal:boolean;sales_page:string|null};
@@ -254,6 +255,8 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
         {!staff.length&&<tr><td colSpan={5}><div className="gva-empty">Chưa có sales staff.</div></td></tr>}
       </tbody></table></div>
     </section>
+
+    <PublicInquiryPanel supabase={supabase}/>
 
     <section className="gva-card gvs-team-section">
       <div className="gva-section-head"><div><h2>Staff Booking Requests</h2><div className="gva-mini">Booking Request từ bất kỳ trang nhân viên nào đều vào Pending tại đây → Admin Approve → Booking Master → Operations → Finance → Payroll.</div></div></div>
