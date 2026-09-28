@@ -1,0 +1,27 @@
+name: Mobile JavaScript diagnostics
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/mobile-js-diagnostics.yml"
+      - "scripts/read-lighthouse.mjs"
+  workflow_dispatch:
+jobs:
+  mobile-lighthouse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Diagnose Chrome and PageSpeed
+        run: |
+          google-chrome --version
+          npx --yes lighthouse@13.0.1 https://www.govietstay.com/ --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --only-categories=performance --output=json --output-path=www-mobile.json --quiet
+          npx --yes lighthouse@13.0.1 https://govietstay.com/ --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --only-categories=performance --output=json --output-path=bare-mobile.json --quiet || true
+          node scripts/read-lighthouse.mjs www-mobile.json bare-mobile.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: govietstay-mobile-lighthouse
+          path: "*-mobile.json"
