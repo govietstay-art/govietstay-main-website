@@ -1,3 +1,8 @@
+import {getTour} from "./tour-landing-data";
+import {PHU_QUOC_PUBLISHED_RATES} from "./phuQuocPublishedRates";
+const baNa=getTour("ba-na-hills","ru")!;
+const cham=getTour("cham-island","ru")!;
+
 export type ItalyPrice={
   vnd:number;
   eur:number;
@@ -15,16 +20,16 @@ export const italyMarketConfig={
   },
   prices:{
   "bana": {
-    "vnd": 1550000,
+    "vnd": baNa.adultPrice,
     "eur": 50.9,
     "label": "Tour standard Bà Nà Hills",
-    "note": "Prezzo standard/pubblico. Il tour privato viene quotato in base al gruppo, all'auto e alla guida richiesta."
+    "note": "Tariffa standard derivata dalla pagina russa GoVietStay; buffet, transfer, guida italiana e versione privata da confermare per data e pacchetto."
   },
   "cham": {
-    "vnd": 950000,
+    "vnd": cham.adultPrice,
     "eur": 31.2,
     "label": "Tour standard Isole Cham",
-    "note": "Prezzo standard/pubblico. Operatività soggetta alle condizioni del mare."
+    "note": "Tariffa standard derivata dalla pagina russa GoVietStay. Guida italiana e barca privata su richiesta; partenza soggetta al mare."
   },
   "hoian": {
     "vnd": 1250000,
@@ -45,21 +50,21 @@ export const italyMarketConfig={
     "note": "Prezzo standard/pubblico. Itinerario privato disponibile su richiesta."
   },
   "pq3": {
-    "vnd": 1040000,
+    "vnd": PHU_QUOC_PUBLISHED_RATES["TRIP 3"].adult,
     "eur": 34.2,
-    "label": "Tour standard 3 isole Phu Quoc",
-    "note": "Prezzo standard/pubblico. Hotel pickup, barca e inclusioni vengono confermati prima del pagamento."
+    "label": "John’s Tours: 3 isole in barca (TRIP 3)",
+    "note": "Tariffa pubblicata per TRIP 3 di John’s Tours con guida in inglese. Non confondere con altri tour in motoscafo o pacchetti con drone; transfer e inclusioni da confermare."
   },
   "pq4": {
-    "vnd": 1690000,
+    "vnd": PHU_QUOC_PUBLISHED_RATES["CABLE CAR TRIP"].adult,
     "eur": 55.5,
-    "label": "Tour standard 4 isole + Hon Thom",
-    "note": "Prezzo standard/pubblico. La funivia è inclusa solo se scritta nella conferma finale."
+    "label": "John’s Tours: 4 isole + Hon Thom (CABLE CAR TRIP)",
+    "note": "Tariffa pubblicata per CABLE CAR TRIP di John’s Tours. Comprende la funivia secondo il programma confermato; condizioni bimbi, transfer e altri biglietti da verificare."
   }
 } as Record<string,ItalyPrice>,
-  standardPriceRule:"Il prezzo standard per il mercato italiano è lo stesso del tour pubblico/English GoVietStay. Nessun sovrapprezzo perché sei italiano.",
+  standardPriceRule:"Le tariffe standard condivise sono le stesse per il pacchetto effettivamente indicato, senza maggiorazione in base alla lingua del cliente. La guida italiana e i tour privati si confermano e quotano separatamente.",
   guideRule:"Guida nella lingua richiesta — italiano o altra lingua — soggetta a disponibilità e conferma per la data.",
   privateRule:"Il privato è quotato sul gruppo: persone, veicolo, guida, durata, biglietti e richieste speciali.",
-  priceDisclaimer:"EUR è solo una stima per facilitare il confronto. Il prezzo ufficiale è in VND. Prezzo finale, disponibilità e inclusioni vengono confermati prima del pagamento.",
+  priceDisclaimer:"Il prezzo esposto è in VND per il pacchetto identificato; gli altri prodotti restano indicativi finché riconfermati. La guida italiana non è inclusa automaticamente. Verifichiamo prezzo finale, tariffa bimbi, disponibilità e inclusioni prima del pagamento.",
   positioning:"Volo e hotel li scegli tu. In Vietnam hai un team locale quando serve davvero."
 } as const;

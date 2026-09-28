@@ -6,7 +6,7 @@ import styles from "./ItalyHub.module.css";
 
 export const metadata:Metadata={
   title:{absolute:"Vietnam fai da te e tour privati 2026 | Da Nang, Hoi An, Hue, Phu Quoc | GoVietStay"},
-  description:"GoVietStay Italia: Vietnam fai da te, tour privati, auto privata, guide nella lingua richiesta, Da Nang, Hoi An, Hue e Phu Quoc. Prezzi standard uguali al tour English.",
+  description:"GoVietStay Italia: Vietnam fai da te, tour privati, auto privata, guide nella lingua richiesta, Da Nang, Hoi An, Hue e Phu Quoc. Prezzi in VND per pacchetti specifici; guida italiana su richiesta.",
   alternates:{canonical:"https://www.govietstay.com/it",languages:{"it-IT":"https://www.govietstay.com/it","en":"https://www.govietstay.com","ru":"https://www.govietstay.com/ru","x-default":"https://www.govietstay.com"}},
   robots:{index:true,follow:true},
   openGraph:{type:"website",url:"https://www.govietstay.com/it",title:"GoVietStay Italia | Vietnam fai da te e privato",description:"Volo e hotel li scegli tu. In Vietnam hai un team locale quando serve davvero.",locale:"it_IT",siteName:"GoVietStay",images:[{url:"https://www.govietstay.com/hero-hoian-new.png",alt:"GoVietStay Italia"}]}
@@ -18,7 +18,7 @@ const heroProducts=["ba-na-hills-ponte-dorato","foresta-di-cocco-hoi-an","isole-
 function displayPrice(slug:string){
   const p=bySlug(slug);if(!p?.priceKey)return "Preventivo privato";
   const x=italyMarketConfig.prices[p.priceKey];if(!x)return "Preventivo privato";
-  return `da €${x.eur.toFixed(1).replace(".",",")} · ${new Intl.NumberFormat("it-IT").format(x.vnd)} VND`;
+  return `da ${new Intl.NumberFormat("it-IT").format(x.vnd)} VND`;
 }
 
 export default function ItalyHub(){
@@ -34,7 +34,7 @@ export default function ItalyHub(){
         <h1>Volo e hotel li scegli tu. <em>In Vietnam hai un team locale quando serve davvero.</em></h1>
         <h2>Per coppie, famiglie e piccoli gruppi che non vogliono un viaggio in pullman: auto privata, guida nella lingua richiesta, orari più umani e supporto locale quando il programma cambia.</h2>
         <div className={styles.actions}><a href="#privato">Scopri il privato</a><a href="#prezzi">Vedi prezzi standard</a><a href={italyMarketConfig.whatsapp} target="_blank" rel="noreferrer">WhatsApp</a></div>
-        <div className={styles.proof}><span>✓ Standard = stesso prezzo English</span><span>✓ Guida nella lingua richiesta*</span><span>✓ Nessun estraneo nel privato confermato</span></div>
+        <div className={styles.proof}><span>✓ Tariffe per pacchetto, senza maggiorazioni per nazionalità</span><span>✓ Guida nella lingua richiesta*</span><span>✓ Nessun estraneo nel privato confermato</span></div>
       </div></div>
       <aside className={styles.answer}><small>WIIFM · COSA CAMBIA PER TE?</small><h2>Non compri “più tour”. Compri meno attese.</h2>
         {["Parti quando ha senso","Resti di più dove ti piace","Salti ciò che non interessa","Adatti il ritmo a bambini/senior","Hai un contatto locale quando cambia il piano"].map((x,i)=><div key={x}><b>0{i+1}</b><span>{x}</span></div>)}
