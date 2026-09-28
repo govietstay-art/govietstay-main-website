@@ -2,6 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 import type { Locale, TourLanding } from "../lib/tour-landing-data";
+import PublicInquiryForm from "./PublicInquiryForm";
 
 const PHONE = "84937762607";
 const money = (value: number) => new Intl.NumberFormat("en-US").format(value) + " VND";
@@ -71,6 +72,7 @@ export default function TourLandingPage({ tour, locale }: { tour: TourLanding; l
             {isCham && <BookingFields booking={booking} setBooking={setBooking} addOns={tour.addOns || []} isRu={isRu} />}
             <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="mt-6 block rounded-full bg-[#20a65a] px-5 py-4 text-center font-bold text-white shadow-lg transition hover:bg-[#168849]">{labels.availability}</a>
             <p className="mt-3 text-center text-xs text-[#06251b]/55">{isRu ? "Проверка мест бесплатна. Бронирование подтверждается только после ответа GoVietStay." : "Availability check is free. Booking is confirmed only after GoVietStay replies."}</p>
+            <div className="mt-6"><PublicInquiryForm productCode={tour.slug} productName={tour.title} sourcePage={(isRu?"/ru/tours/":"/tours/")+tour.slug} locale={isRu?"ru":"en"} compact/></div>
             <div className="mt-6 border-t border-[#06251b]/10 pt-5"><h2 className="font-bold">{labels.trust}</h2><p className="mt-2 text-sm leading-relaxed text-[#06251b]/65">{labels.trustText}</p><p className="mt-4 text-sm font-semibold">GoVietStay.com<br />WhatsApp: +84 937 762 607</p></div>
           </div>
         </aside>

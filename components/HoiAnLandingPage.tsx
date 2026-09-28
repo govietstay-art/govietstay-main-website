@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import "./HoiAnLandingPage.css";
+import PublicInquiryForm from "./PublicInquiryForm";
 
 type Language = "en" | "ru";
 const PHONE = "84937762607";
@@ -172,6 +173,8 @@ export default function HoiAnLandingPage({ language }: { language: Language }) {
       <label>{t.hotel}<input placeholder={t.placeholderHotel} value={booking.hotel} onChange={e=>setBooking({...booking,hotel:e.target.value})}/></label>
       <a href={`https://wa.me/${PHONE}?text=${message}`}>{t.whatsapp}</a><small>{t.free}</small>
     </div></section>
+
+    <section className="mx-auto max-w-4xl px-5 py-10"><PublicInquiryForm productCode="hoi-an-coconut-night" productName="Hoi An + Coconut Forest + Lantern Night" sourcePage={language==="ru"?"/ru/tours/hoi-an-coconut-forest":"/tours/hoi-an-coconut-forest"} locale={language}/></section>
 
     <section className="reviews"><div className="section"><p className="label">{t.reviewLabel}</p><h2>{t.reviewTitle}</h2><p className="muted">{t.reviewLead}</p><div className="reviewGrid">{reviews[language].map(r=><article key={r[0]}><div className="stars">★★★★★</div><blockquote>“{r[1]}”</blockquote><footer><strong>{r[0]}</strong><a href={`/tour/hoi-an-coconut-forest/reviews/${r[2]}`}>{t.open}</a></footer></article>)}</div></div></section>
 

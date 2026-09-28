@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import "./ba-na-hills.css";
+import PublicInquiryForm from "../../../components/PublicInquiryForm";
 
 const PHONE = "84937762607";
 
@@ -203,6 +204,8 @@ I understand that Ba Na Hills can be very crowded and that visitor numbers, queu
           <small>The availability check is free. Booking is confirmed only after GoVietStay replies.</small>
         </div>
       </section>
+
+      <section className="mx-auto max-w-4xl px-5 py-10"><PublicInquiryForm productCode="ba-na-hills" productName="Ba Na Hills & Golden Bridge" sourcePage="/tours/ba-na-hills" locale="en"/></section>
 
       <section className="reviews-section">
         <div className="section reviews-inner">
