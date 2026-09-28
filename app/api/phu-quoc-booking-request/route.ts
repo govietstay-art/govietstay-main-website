@@ -2,9 +2,9 @@ import { after, NextRequest, NextResponse } from "next/server";
 import { isLettaBookingSyncConfigured, syncBookingIntakeToLetta } from "../../../lib/lettaBookingSync";
 
 const SUPABASE_URL = "https://vscffgnxaexestnayvae.supabase.co";
-// The intake RPC deliberately denies anon. Only the server may authenticate.
-// Configure this server-only secret in Vercel Preview; never expose to the browser.
-const SUPABASE_SERVER_SECRET = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() || "";
+// Legacy anonymous JWT is intentionally public and only authenticates the
+// tightly rate-limited Edge intake gateway (not the privileged booking RPC).
+const SUPABASE_PUBLIC_ANON_JWT = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzY2ZmZ254YWV4ZXN0bmF5dmFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3MTM1MDcsImV4cCI6MjEwMzI4OTUwN30.FhrxtpFiodP-zxmANjNVh5Ujt_DXvNZNHJdHpZ0LxFk";
 const DIRECT_SALES_CODE = "GVS-EN-DAVID-00"; // Owner / Direct Sales profile already enabled in Booking Master flow.
 
 import { PHU_QUOC_PUBLISHED_RATES as PRICE } from "../../../lib/phuQuocPublishedRates";
@@ -64,11 +64,19 @@ export async function POST(req:NextRequest){
       p_notes:notes
     };
 
-    if(!SUPABASE_SERVER_SECRET){
-      console.error("Booking intake unavailable: server-side Supabase credential is not configured");
-      return NextResponse.json({error:"Booking intake temporarily unavailable"},{status:503});
-    }
-    const r=await fetch(`${SUPABASE_URL}/rest/v1/rpc/staff_submit_booking_request`,{method:"POST",headers:{apikey:SUPABASE_SERVER_SECRET,Authorization:`Bearer ${SUPABASE_SERVER_SECRET}`,"Content-Type":"application/json"},body:JSON.stringify(payload),cache:"no-store"});
+    // Authenticated Edge gateway holds the service-role credential in
+    // Supabase, not in Vercel; its SQL RPC constrains input and request rates.
+    const r=await fetch(`${SUPABASE_URL}/functions/v1/phu-quoc-pilot-intake`,{
+      method:"POST",
+      headers:{
+        apikey:SUPABASE_PUBLIC_ANON_JWT,
+        Authorization:`Bearer ${SUPABASE_PUBLIC_ANON_JWT}`,
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify(payload),
+      cache:"no-store",
+      signal:AbortSignal.timeout(10_000)
+    });
     const result=await r.json().catch(()=>null);
     if(!r.ok){
       // Log only upstream status/code; never log guest information or secrets.
