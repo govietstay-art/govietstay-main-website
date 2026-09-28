@@ -17,6 +17,7 @@ on:
       - "scripts/check-ru-visa-content.mjs"
       - "scripts/check-ru-cham-island-content.mjs"
       - "scripts/check-ru-pq-moscow-content.mjs"
+      - "scripts/check-kz-landing-content.mjs"
       - "scripts/check-ru-pq-discover-content.mjs"
       - "scripts/check-ru-danang-content.mjs"
       - "scripts/check-home-performance.mjs"
@@ -48,6 +49,7 @@ jobs:
       - run: node scripts/check-ru-visa-content.mjs
       - run: node scripts/check-ru-cham-island-content.mjs
       - run: node scripts/check-ru-pq-moscow-content.mjs
+      - run: node scripts/check-kz-landing-content.mjs
       - run: node scripts/check-ru-pq-discover-content.mjs
       - run: node scripts/check-ru-danang-content.mjs
       - run: node scripts/check-home-performance.mjs
