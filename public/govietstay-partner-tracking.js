@@ -176,6 +176,7 @@ var lastWaKey="",lastWaAt=0;
 function ga4WhatsApp(meta){
  if(!allowed())return;
  try{
+   if(typeof window.__gvsLoadGtm==="function")window.__gvsLoadGtm();
    window.dataLayer=window.dataLayer||[];
    window.dataLayer.push({event:"whatsapp_click",gvs_bridge:"gvs_ga4_whatsapp_bridge_v3"});
  }catch(e){}

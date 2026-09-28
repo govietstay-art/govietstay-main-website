@@ -2188,21 +2188,40 @@ export default function Home() {
   };
 
   useEffect(() => {
-    document.title =
-      "GoVietStay | Vietnam Private Tours • Da Nang • Hoi An • Hue • Phu Quoc";
-
-    fetch("/api/happy-travelers")
-      .then((res) => res.json())
-      .then((files) => {
-        if (!Array.isArray(files)) return;
-
-        setHappyTravelers(
-          files.map((file: string) => `/happy-travelers/${file}`),
-        );
-      })
-      .catch(() => {
-        setHappyTravelers([]);
-      });
+    // The guest photo gallery is far below the fold. Wait until visitors
+    // approach it instead of competing with the hero image and initial JS.
+    let active = true;
+    let started = false;
+    const loadGallery = () => {
+      if (started) return;
+      started = true;
+      fetch("/api/happy-travelers")
+        .then((res) => res.json())
+        .then((files) => {
+          if (active && Array.isArray(files)) {
+            setHappyTravelers(
+              files.map((file: string) => `/happy-travelers/${file}`),
+            );
+          }
+        })
+        .catch(() => { if (active) setHappyTravelers([]); });
+    };
+    const section = document.getElementById("happy-travelers");
+    if (!section || !("IntersectionObserver" in window)) {
+      loadGallery();
+      return () => { active = false; };
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((item) => item.isIntersecting)) {
+          observer.disconnect();
+          loadGallery();
+        }
+      },
+      { rootMargin: "650px 0px" },
+    );
+    observer.observe(section);
+    return () => { active = false; observer.disconnect(); };
   }, []);
 
   return (

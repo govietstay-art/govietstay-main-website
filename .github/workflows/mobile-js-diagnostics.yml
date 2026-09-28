@@ -4,6 +4,8 @@ on:
     paths:
       - ".github/workflows/mobile-js-diagnostics.yml"
       - "scripts/read-lighthouse.mjs"
+      - "app/layout.tsx"
+      - "components/YandexMetrika.tsx"
   workflow_dispatch:
 jobs:
   mobile-lighthouse:
