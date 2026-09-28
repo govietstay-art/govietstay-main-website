@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { POST as submitBooking } from "../phu-quoc-booking-request/route";
 
 /**
  * One-time Preview-only smoke test; remove as soon as one test succeeds.
@@ -13,7 +14,9 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
   const target = new URL("/api/phu-quoc-booking-request", req.url);
-  const res = await fetch(target, {
+  // Invoke the real booking route handler directly: Vercel protects Preview
+  // self-HTTP requests with a 401, but this exercises the same production code.
+  const res = await submitBooking(new NextRequest(target, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -31,9 +34,7 @@ export async function GET(req: NextRequest) {
       request: "AUTOMATED E2E TEST - DO NOT CONTACT OR APPROVE",
       website: ""
     }),
-    signal: AbortSignal.timeout(15000),
-    cache: "no-store"
-  });
+  }));
   const data = await res.json().catch(() => null);
   return NextResponse.json(
     { test: true, booking_endpoint_status: res.status,
