@@ -219,6 +219,21 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
     finally{setSaving(false)}
   }
 
+  async function configureStaffPin(person:Staff){
+    const pin=window.prompt("Thiết lập PIN riêng (6–12 chữ số) cho "+person.display_name+":");
+    if(pin===null)return;
+    if(!/^\d{6,12}$/.test(pin)){
+      setError("PIN phải có 6–12 chữ số, riêng cho từng nhân viên.");return;
+    }
+    setSaving(true);setError("");setMessage("");
+    try {
+      const {data,error}=await supabase.rpc("admin_set_staff_sales_pin",{p_staff_id:person.id,p_pin:pin});
+      if(error||data!==true)throw error||new Error("Không đặt được PIN");
+      setMessage("Đã lưu PIN riêng cho "+person.display_name+". Chia sẻ PIN với nhân viên qua kênh riêng; không đăng công khai.");
+    }catch(e:any){setError(e?.message||"Không thể đặt PIN nhân viên.");}
+    finally{setSaving(false);}
+  }
+
   async function saveBaseTier(tier:BaseTier,base:string){
     setSaving(true);setError("");setMessage("");
     try{const {error}=await supabase.from("staff_base_pax_tiers").update({base_salary_vnd:parseMoney(base),updated_at:new Date().toISOString()}).eq("id",tier.id);if(error)throw error;setMessage("Đã cập nhật mức lương cơ bản.");await load();}
@@ -249,9 +264,9 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
 
     <section className="gva-card gvs-team-section">
       <div className="gva-section-head"><div><h2>Sales Staff · Auto Linked</h2><div className="gva-mini">Tạo một lần → Sales Code + sales_pax_v1 + Booking Portal + Monthly Payroll tự có. Không cần tạo Payroll thủ công.</div></div><button className="gva-btn" onClick={()=>setNewStaffOpen(true)}>+ Thêm nhân viên</button></div>
-      <div className="gva-table-wrap"><table className="gva-table"><thead><tr><th>Nhân viên</th><th>Sales Code</th><th>Trang booking</th><th>Payroll plan</th><th>Portal</th></tr></thead><tbody>
-        {staff.map(s=><tr key={s.id}><td><b>{s.display_name}</b></td><td><b>{s.sales_code}</b></td><td>{s.sales_page||"—"}</td><td>{s.compensation_plan_code==="sales_pax_v1"?"✓ sales_pax_v1":s.compensation_plan_code||"—"}</td><td>{s.allow_booking_portal?"✓ Ready":"—"}</td></tr>)}
-        {!staff.length&&<tr><td colSpan={5}><div className="gva-empty">Chưa có sales staff.</div></td></tr>}
+      <div className="gva-table-wrap"><table className="gva-table"><thead><tr><th>Nhân viên</th><th>Sales Code</th><th>Trang booking</th><th>Payroll plan</th><th>Portal</th><th>PIN bảo mật</th></tr></thead><tbody>
+        {staff.map(s=><tr key={s.id}><td><b>{s.display_name}</b></td><td><b>{s.sales_code}</b></td><td>{s.sales_page||"—"}</td><td>{s.compensation_plan_code==="sales_pax_v1"?"✓ sales_pax_v1":s.compensation_plan_code||"—"}</td><td>{s.allow_booking_portal?"✓ Ready":"—"}</td><td><button className="gva-btn secondary" disabled={saving||!s.allow_booking_portal} onClick={()=>configureStaffPin(s)}>Đặt / đổi PIN</button></td></tr>)}
+        {!staff.length&&<tr><td colSpan={6}><div className="gva-empty">Chưa có sales staff.</div></td></tr>}
       </tbody></table></div>
     </section>
 
