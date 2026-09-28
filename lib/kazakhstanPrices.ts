@@ -1,19 +1,25 @@
+import { PHU_QUOC_PUBLISHED_RATES } from "./phuQuocPublishedRates";
+import { getTour } from "./tour-landing-data";
+
+const fmt = (value: number) => `${new Intl.NumberFormat("ru-RU").format(value)} VND`;
+const baNa = getTour("ba-na-hills", "ru")!;
+const cham = getTour("cham-island", "ru")!;
 export type KazakhstanPrice=({kind:"dual";standardAdult:string;standardChild:string;russianAdult:string;russianChild:string;note:string}|{kind:"simple";adult:string;child:string;note:string});
 export const kazakhstanPrices:Record<string,KazakhstanPrice>={
   "bana": {
     "kind": "dual",
-    "standardAdult": "от 1,550,000 VND (~$60)",
-    "standardChild": "от 1,450,000 VND (~$56)",
-    "russianAdult": "от 2,200,000 VND (~$85)",
-    "russianChild": "от 2,000,000 VND (~$77)",
+    "standardAdult": `от ${fmt(baNa.adultPrice)}`,
+    "standardChild": `от ${fmt(baNa.childPrice)}`,
+    "russianAdult": "По запросу",
+    "russianChild": "По запросу",
     "note": "Для 4+ гостей можно обсудить private."
   },
   "cham": {
     "kind": "dual",
-    "standardAdult": "от 950,000 VND (~$37) / чел.",
-    "standardChild": "уточняется",
-    "russianAdult": "от 1,800,000 VND (~$69) / чел.",
-    "russianChild": "от 1,500,000 VND (~$58) / чел.",
+    "standardAdult": `от ${fmt(cham.adultPrice)} / чел.`,
+    "standardChild": `от ${fmt(cham.childPrice)} / чел.`,
+    "russianAdult": "По запросу",
+    "russianChild": "По запросу",
     "note": "Море и private подтверждаются по дате."
   },
   "coconut": {
@@ -74,15 +80,15 @@ export const kazakhstanPrices:Record<string,KazakhstanPrice>={
   },
   "pq-three-islands": {
     "kind": "simple",
-    "adult": "1 040 000 VND",
-    "child": "По возрасту и росту",
-    "note": "Sea Walking отдельно."
+    "adult": fmt(PHU_QUOC_PUBLISHED_RATES["TRIP 3"].adult),
+    "child": fmt(PHU_QUOC_PUBLISHED_RATES["TRIP 3"].child),
+    "note": "John’s Tours TRIP 3: 3 острова на лодке, английский гид. Дрон и русский гид не входят в подтверждённый пакет."
   },
   "pq-four-islands": {
     "kind": "simple",
-    "adult": "1 690 000 VND",
-    "child": "По возрасту и росту",
-    "note": "Канатная дорога включена."
+    "adult": fmt(PHU_QUOC_PUBLISHED_RATES["CABLE CAR TRIP"].adult),
+    "child": fmt(PHU_QUOC_PUBLISHED_RATES["CABLE CAR TRIP"].child),
+    "note": "John’s Tours CABLE CAR TRIP: 4 острова + Хон Тхом. Детский тариф и состав билетов подтверждаем по возрасту/росту."
   },
   "pq-hon-thom-kiss": {
     "kind": "simple",
@@ -103,4 +109,4 @@ export const kazakhstanPrices:Record<string,KazakhstanPrice>={
     "note": "Детский тариф по дате."
   }
 };
-export const kazakhstanPriceNote="Цены на этой странице — ориентиры, а не автоматическое подтверждение тарифа русской версии. Основная валюта — VND, USD — только ориентир. Финальную стоимость, детский тариф, язык гида и включённые услуги подтверждаем письменно перед бронированием.";
+export const kazakhstanPriceNote="Основная валюта — VND. Проверенные тарифы на Бана Хиллс, Чам и указанные пакеты Johns Tours берутся напрямую из соответствующих тарифов сайта; остальные предложения — предварительные ориентиры до сверки с поставщиком. Русскоговорящий гид оплачивается отдельно, если иное не указано. Детские условия, комплект билетов, трансфер и полную стоимость подтверждаем письменно до оплаты.";
