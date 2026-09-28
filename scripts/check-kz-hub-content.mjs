@@ -6,8 +6,8 @@ const block=source.slice(source.indexOf('"slug": "vietnam-from-kazakhstan"'),sou
 for(const text of ["Вьетнам из Казахстана: что проверить до вылета","Куда из Казахстана поехать: Дананг или Фукуок?","90 дней за 180 дней"]) assert.ok(block.includes(text),"Country guide missing "+text);
 const prices=await readFile("lib/kazakhstanPrices.ts","utf8");
 const ru=await readFile("lib/tour-landing-data.ts","utf8");
-for(const phrase of ['"standardAdult": "от 1,550,000 VND','"standardAdult": "от 950,000 VND'])
- assert.ok(prices.includes(phrase),"Public KZ base price does not match code-reviewed Russian base: "+phrase);
+for(const phrase of ['fmt(baNa.adultPrice)', 'fmt(cham.adultPrice)', 'fmt(PHU_QUOC_PUBLISHED_RATES["TRIP 3"].adult)', 'fmt(PHU_QUOC_PUBLISHED_RATES["CABLE CAR TRIP"].adult)'])
+ assert.ok(prices.includes(phrase),"KZ price must derive from verified shared source: "+phrase);
 const origin="http://127.0.0.1:4004";
 const child=spawn(process.execPath,["node_modules/next/dist/bin/next","start","--port","4004"],{detached:true,stdio:["ignore","pipe","pipe"],env:{...process.env,NEXT_TELEMETRY_DISABLED:"1"}});
 let log="";child.stderr.on("data",x=>log=(log+x.toString()).slice(-1400));const sleep=n=>new Promise(r=>setTimeout(r,n));
