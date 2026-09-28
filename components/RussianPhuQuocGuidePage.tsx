@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { RussianPhuQuocPage } from "../lib/russian-phu-quoc-cluster";
+import { phuQuocHubOptions, phuQuocHubBookingChecklist, phuQuocHubFAQs } from "../lib/seo/phuQuocRuHub";
 
 const WHATSAPP_NUMBER = "84937762607";
 
@@ -67,6 +68,46 @@ export default function RussianPhuQuocGuidePage({ page }: { page: RussianPhuQuoc
             ))}
           </div>
         </section>
+
+        {page.slug === "index" ? (
+          <section aria-labelledby="phu-quoc-how-to-choose" className="space-y-7">
+            <div className="max-w-4xl">
+              <p className="text-sm font-black uppercase tracking-[.18em] text-green-800">Сравнение без лишних продаж</p>
+              <h2 id="phu-quoc-how-to-choose" className="mt-3 text-3xl font-black leading-tight md:text-5xl">Как выбрать экскурсию на Фукуоке под свой отпуск</h2>
+              <p className="mt-5 leading-relaxed text-[#08271e]/75">Начните с географии отеля и того, зачем вам нужен организованный маршрут. Иногда удобнее заказать катер или частную машину, а иногда — самостоятельно провести день рядом с гостиницей. Ниже четыре формата, их реальные отличия и вопросы перед оплатой.</p>
+            </div>
+            <div className="grid gap-5 md:grid-cols-2">
+              {phuQuocHubOptions.map((option) => (
+                <article key={option.title} className="flex flex-col rounded-[2rem] border border-[#06251b]/10 bg-white p-6 shadow-sm md:p-8">
+                  <h3 className="text-2xl font-black text-green-900">{option.title}</h3>
+                  <p className="mt-4 leading-relaxed"><strong>Кому подходит:</strong> {option.bestFor}</p>
+                  <p className="mt-4 leading-relaxed text-[#08271e]/75"><strong>Как сравнить:</strong> {option.howToChoose}</p>
+                  <p className="mt-4 rounded-2xl bg-amber-50 p-4 text-sm leading-relaxed text-[#715225]"><strong>Проверьте до оплаты:</strong> {option.important}</p>
+                  <Link href={option.href} className="mt-6 inline-flex min-h-11 items-center font-black text-green-800 underline underline-offset-4">{option.linkText} →</Link>
+                </article>
+              ))}
+            </div>
+            <div className="rounded-[2rem] bg-[#06251b] p-6 text-white md:p-9">
+              <h3 className="text-2xl font-black">Что отправить, чтобы получить точную программу и цену</h3>
+              <p className="mt-3 max-w-4xl leading-relaxed text-white/80">Сначала получите полезный маршрут, а затем сравните полную стоимость. Мы не будем считать групповой катер, частную машину и экскурсию с гидом одинаковыми продуктами.</p>
+              <ul className="mt-5 grid gap-3 md:grid-cols-2">
+                {phuQuocHubBookingChecklist.map((item) => <li key={item} className="flex gap-3 leading-relaxed"><span aria-hidden="true" className="text-amber-300">✓</span><span>{item}</span></li>)}
+              </ul>
+              <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="mt-7 inline-flex min-h-12 items-center rounded-full bg-[#20a65a] px-6 font-black text-white hover:bg-[#168849]">Получить рекомендации на русском</a>
+            </div>
+            <div className="rounded-[2rem] border border-[#06251b]/10 bg-white p-6 md:p-9">
+              <h3 className="text-2xl font-black">Короткие ответы перед выбором</h3>
+              <div className="mt-5 divide-y divide-[#06251b]/10">
+                {phuQuocHubFAQs.map((item) => (
+                  <div key={item.question} className="py-5">
+                    <h4 className="text-lg font-bold">{item.question}</h4>
+                    <p className="mt-3 max-w-4xl leading-relaxed text-[#08271e]/75">{item.answer}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        ) : null}
 
         <section className="grid gap-6 md:grid-cols-2">
           {page.sections.map((section) => (
@@ -137,7 +178,7 @@ export default function RussianPhuQuocGuidePage({ page }: { page: RussianPhuQuoc
               <a key={source.href} href={source.href} target="_blank" rel="noopener noreferrer" className="rounded-2xl bg-white p-4 font-bold text-green-800 shadow-sm hover:underline">{source.label} ↗</a>
             ))}
           </div>
-          <p className="mt-5 text-sm font-semibold text-[#08271e]/55">Обновлено: 10 сентября 2026 года.</p>
+          <p className="mt-5 text-sm font-semibold text-[#08271e]/55">Обновлено: {page.slug === "index" ? "28 сентября 2026 года" : "10 сентября 2026 года"}.</p>
         </section>
 
         <section className="rounded-[2rem] bg-green-800 p-7 text-center text-white md:p-12">

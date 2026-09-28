@@ -10,6 +10,7 @@ on:
       - "next.config.ts"
       - "scripts/check-seo-route-langs.mjs"
       - "scripts/check-rendered-seo.mjs"
+      - "scripts/check-ru-phu-quoc-content.mjs"
       - "scripts/check-home-performance.mjs"
       - "scripts/check-home-chunks.mjs"
       - "scripts/check-tracking-defer.mjs"
@@ -32,6 +33,7 @@ jobs:
       - run: npx tsc --noEmit --pretty false
       - run: npm run build
       - run: node scripts/check-rendered-seo.mjs
+      - run: node scripts/check-ru-phu-quoc-content.mjs
       - run: node scripts/check-home-performance.mjs
       - run: node scripts/check-home-chunks.mjs
       - run: node scripts/check-tracking-defer.mjs

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import JsonLd from "../../../components/JsonLd";
 import RussianPhuQuocGuidePage from "../../../components/RussianPhuQuocGuidePage";
 import { russianPhuQuocIndex } from "../../../lib/russian-phu-quoc-cluster";
+import { phuQuocHubFAQs } from "../../../lib/seo/phuQuocRuHub";
 
 const BASE_URL = "https://www.govietstay.com";
 const page = russianPhuQuocIndex;
@@ -43,14 +44,14 @@ export default function Page() {
         name: page.title,
         description: page.description,
         inLanguage: "ru",
-        dateModified: "2026-09-10",
+        dateModified: "2026-09-28",
         image: `${BASE_URL}${page.image}`,
         about: { "@type": "Place", name: "Phu Quoc, Vietnam" },
         publisher: { "@id": `${BASE_URL}/#organization` },
       },
       {
         "@type": "FAQPage",
-        mainEntity: page.faq.map((item) => ({
+        mainEntity: [...page.faq, ...phuQuocHubFAQs].map((item) => ({
           "@type": "Question",
           name: item.question,
           acceptedAnswer: { "@type": "Answer", text: item.answer },
