@@ -2,7 +2,7 @@
 // GVS-DAVID-DIRECT-BOOKING-PORTAL-V1
 
 import { FormEvent, useMemo, useState } from "react";
-import { submitStaffBookingRequest } from "../../../lib/staffBookingClient";
+import {staffSalesLogin,submitStaffBookingRequest} from "../../../lib/staffBookingClient";
 import styles from "./DavidPage.module.css";
 
 type Variant = {
@@ -125,6 +125,8 @@ export default function DavidBookingPortal(){
   const [deposit,setDeposit]=useState("0");
   const [notes,setNotes]=useState("");
   const [saving,setSaving]=useState(false);
+  const [ownerPin,setOwnerPin]=useState("");
+  const [staffToken,setStaffToken]=useState("");
   const [error,setError]=useState("");
   const [success,setSuccess]=useState<{booking_code:string;status:string}|null>(null);
 
@@ -160,6 +162,14 @@ export default function DavidBookingPortal(){
   const depositVnd=Math.min(num(deposit),net);
   const balance=Math.max(0,net-depositVnd);
 
+  async function ownerLogin(e:FormEvent){
+    e.preventDefault();setError("");
+    try{
+      const session=await staffSalesLogin(SALES_CODE,ownerPin);
+      setStaffToken(session.token);setOwnerPin("");
+    }catch{setError("Owner PIN not configured or invalid. Set your own PIN in Admin → Sales Team.");}
+  }
+
   async function submit(e:FormEvent){
     e.preventDefault();setError("");setSuccess(null);
     if(!guest.trim())return setError("Guest name is required.");
@@ -189,7 +199,7 @@ export default function DavidBookingPortal(){
         discount_vnd:discountVnd,
         deposit_vnd:depositVnd,
         notes:notes.trim()
-      });
+      },staffToken);
       setSuccess({booking_code:result?.booking_code||code,status:result?.status||"pending"});
     }catch(err:any){
       setError(err?.message||"Could not save booking request.");
@@ -216,7 +226,16 @@ export default function DavidBookingPortal(){
       </div>
     </section>
 
-    <form className={styles.layout} onSubmit={submit}>
+    {!staffToken&&<form className={styles.layout} onSubmit={ownerLogin}>
+      <div className={styles.form}>
+        <h2>Owner access</h2>
+        <p>Enter your private PIN to create an Admin Pending request. Your PIN is verified on the server.</p>
+        {error&&<p className={styles.error}>{error}</p>}
+        <label>Private PIN<input type="password" inputMode="numeric" maxLength={12} value={ownerPin} onChange={e=>setOwnerPin(e.target.value)} required /></label>
+        <button type="submit">Unlock booking form</button>
+      </div>
+    </form>}
+    {staffToken&&<form className={styles.layout} onSubmit={submit}>
       <div className={styles.form}>
         {error&&<div className={styles.error}>{error}</div>}
         {success&&<div className={styles.success}>
@@ -297,7 +316,7 @@ export default function DavidBookingPortal(){
         <div className={styles.audit}>Source will be locked to <b>David Direct</b> via {SALES_CODE}. Approval creates the real Booking Master record.</div>
         <button disabled={saving}>{saving?"Saving...":"Save Booking Request to Admin"}</button>
       </aside>
-    </form>
+    </form>}
   </main>
 }
 
