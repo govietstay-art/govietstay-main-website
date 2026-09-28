@@ -1,53 +1,45 @@
-# GoVietStay ↔ Letta: booking intake pilot
+# GoVietStay ↔ Letta: Phu Quoc booking intake pilot
 
-**Status:** Code prepared, OFF by default. A live Letta connection is **not**
-established until Vercel secrets are configured and an end-to-end test passes.
+## State
+- GitHub branch: `feature/letta-booking-intake-pilot-20260928`.
+- Vercel Preview variables already added by the owner:
+  `LETTA_API_KEY`, `LETTA_AGENT_ID`, `LETTA_BOOKING_SYNC_ENABLED=true`.
+- **No Vercel service-role key is needed.**
+- The public booking request is sent from the Next.js server to a Supabase
+  Edge Function `phu-quoc-pilot-intake` (`verify_jwt=true`) using the
+  *public* legacy anon JWT. The Edge runtime obtains its Supabase
+  service-role credential from Supabase's built-in server-only environment.
+- That function calls the service-role-only
+  `submit_phu_quoc_pilot_intake` RPC, which enforces a global 40/hour limit,
+  3/hour per hashed IP, and 5/day per hashed phone. The sensitive RPC and
+  rate-limit table do not grant `anon` or `authenticated` access.
+- On a successful **pending** booking intake, Next.js asynchronously sends
+  Letta only a non-PII summary: booking code, tour, date, group size, language,
+  and published selling price. Letta cannot modify booking status or message
+  customers. Admin approval stays manual.
 
-## Scope
+## Preview acceptance
+1. Confirm the latest Preview branch deployment is READY and generated after
+   Vercel Preview environment variables were saved.
+2. Use the **/tours/phu-quoc** page on *that exact Preview deployment*,
+   choose any join-in tour, and open **Fill booking form**.
+3. Use fake details only; do not click any WhatsApp fallback or approve a test.
+4. Submit once. The page should show a booking request code.
+5. Verify one matching `pending` row in
+   `public.staff_booking_intake`, one success POST to
+   `/api/phu-quoc-booking-request` in Vercel runtime logs, and one Letta
+   summary with matching code. Letta should receive **no guest name, phone,
+   email, hotel, notes, or payment information**.
+6. If Letta fails, intake is still successful: review the Vercel log
+   (status only) and Letta agent. Preview must pass before merging to main.
 
-The existing public Phu Quoc booking form inserts a *pending*
-`staff_booking_intake` record using the existing Supabase RPC. After a
-successful insert, Next.js `after()` best-effort sends a **non-PII** event to the
-specified Letta agent. The public booking request still succeeds if Letta is
-offline. No price, status, payment, Admin approval or customer-facing messaging
-may be changed by Letta. No additional paid orchestration service is needed.
-
-## Vercel configuration (server-only; NEVER commit credentials)
-
-Set these environment variables in the **existing GoVietStay website Vercel project**:
-
-- `LETTA_API_KEY`: secret key created in the existing Letta workspace.
-- `LETTA_AGENT_ID`: intended agent id in `agent-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` format.
-- `LETTA_BOOKING_SYNC_ENABLED`: `true` to enable *after* testing; `false`/unset to disable.
-
-No `NEXT_PUBLIC_` prefix. Redeploy after changing environment variables.
-Never send credentials in chat, screenshots or source control. This integration
-uses the official cloud API endpoint at `https://api.letta.com`; self-hosted
-Letta needs a separately reviewed base-URL implementation.
-
-## Safe acceptance test
-
-1. Confirm the website deployment and the intended Letta agent.
-2. Enable the server-only variables in a Vercel *Preview* deployment first.
-3. Submit one clearly labeled test form with a non-real name and non-real
-   contact details. The existing booking form requires a phone-like field;
-   use a test-only value, not a real traveler's number.
-4. Verify precisely one `pending` row in `staff_booking_intake` and one
-   Letta intake summary with matching booking code and tour/date/group size.
-5. Verify **no** traveler name, phone, email, hotel, special request or
-   payment information appears in the Letta message.
-6. Verify the Admin keeps the request pending; never approve test bookings.
-7. Verify that with Letta disabled or unavailable, booking intake succeeds
-   and a server log shows no new Letta message.
-8. Remove the test intake with an authorized maintenance process after review.
-
-## Limitations
-
-- `after()` is *best-effort*, not a durable queue or guaranteed retry.
-  Missing messages should be reviewed from server logs during pilot.
-- Sending multiple events to the same Letta agent simultaneously may cause
-  interleaving; restrict the pilot to low traffic and implement a serialized
-  queue before production scale.
-- This first integration only forwards **new Phu Quoc public booking requests**.
-  It does not backfill existing customer records, sync Letta memories back to
-  Admin, or authorize Letta to change bookings.
+## Risk controls and limitations
+- The Edge endpoint is available on the live Supabase project but relies on
+  a valid legacy anon JWT plus constrained RPC validation and rate limits.
+  Periodically review invocation volume and auth logs.
+- Sending Letta messages using Next.js `after()` is **best effort**, not
+  a durable queue. Implement durable retry before a high-traffic launch.
+- Supabase stores a hashed network address and hashed normalized phone for
+  abuse prevention (not raw data in the rate-limit ledger).
+- If rolling back, disable `LETTA_BOOKING_SYNC_ENABLED` in Preview and
+  redeploy; the production GoVietStay site has not been changed by this PR.
