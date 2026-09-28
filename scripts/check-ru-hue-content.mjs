@@ -47,14 +47,16 @@ try {
     const x=await fetch(origin+p,{signal:AbortSignal.timeout(30000)});
     assert.equal(x.status,200,"Broken linked route: "+p);
   }
-  const scripts=[...html.matchAll(/<script[^>]*type="application\\/ld\\+json"[^>]*>([\\s\\S]*?)<\\/script>/gi)]
+  const scripts=[...html.matchAll(new RegExp('<script[^>]*type="application/ld\\+json"[^>]*>([\\s\\S]*?)</script>','gi'))]
     .map(x=>{try{return JSON.parse(x[1]);}catch{return null;}}).filter(Boolean);
   const faq=scripts.flatMap(x=>x["@graph"]??[x]).find(x=>x["@type"]==="FAQPage");
   assert.ok(faq && faq.mainEntity.length>=8,"Expected 8 visible-aligned FAQ entities");
   assert.ok(faq.mainEntity.some(x=>x.name==="Как добраться из Дананга в Хюэ самостоятельно?"),"Search-intent FAQ missing from JSON-LD");
   const map=await fetch(origin+"/sitemap.xml",{signal:AbortSignal.timeout(30000)});
   assert.equal(map.status,200);
-  assert.match(await map.text(),/<loc>https:\\/\\/www\\.govietstay\\.com\\/ru\\/hue<\\/loc>[\\s\\S]{0,500}<lastmod>2026-09-28/);
+  const xml=await map.text();
+  const hueEntry=xml.slice(xml.indexOf("<loc>https://www.govietstay.com/ru/hue</loc>"),xml.indexOf("</url>",xml.indexOf("<loc>https://www.govietstay.com/ru/hue</loc>")));
+  assert.ok(hueEntry.includes("<lastmod>2026-09-28"),"RU Hue sitemap date not updated");
   console.log("PASS: RU Hue rendered answers, 8 FAQ schema items, canonical, WhatsApp, 4 linked pages and selective sitemap date.");
 } catch(error) {console.error(error);console.error(stderr);process.exitCode=1;}
 finally {try{if(server.pid)process.kill(-server.pid,"SIGTERM");}catch{server.kill("SIGTERM");}server.stdout.destroy();server.stderr.destroy();}
