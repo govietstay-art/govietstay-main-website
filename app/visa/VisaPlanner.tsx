@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { fastTrackPrices, urgentPrices } from "./prices";
+import PublicInquiryForm from "../../components/PublicInquiryForm";
 
 const field = "w-full rounded-xl border border-[#0b6b4f]/20 bg-white px-4 py-3 text-base text-[#06251b] outline-none focus:border-[#0b6b4f] focus:ring-2 focus:ring-[#0b6b4f]/15";
 const label = "mb-2 block text-sm font-bold text-[#06251b]";
@@ -134,6 +135,7 @@ export default function VisaPlanner() {
             <p className="mt-3 text-center text-xs text-white/60">Attach passport and portrait photos in the WhatsApp chat. No documents are uploaded or stored on this page.</p>
           </aside>
         </div>
+        <div className="mx-auto mt-12 max-w-3xl"><p className="mb-3 text-sm font-semibold text-[#0b6b4f]">Want us to contact you before sending documents? Please do not include passport numbers or upload passport photos here.</p><PublicInquiryForm productCode="vietnam-visa-consultation" productName="Vietnam visa support inquiry" sourcePage="/visa" locale="en" compact/></div>
       </div>
     </section>
   );
