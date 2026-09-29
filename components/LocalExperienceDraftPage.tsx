@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import PublicInquiryForm from './PublicInquiryForm';
 import type { Metadata } from 'next';
 import {
   experienceSlugs, experienceUi, experienceUrl, getExperience,
@@ -165,6 +166,7 @@ export default function LocalExperienceDraftPage({ locale, experience }: {
           <p className="mt-3 max-w-3xl leading-relaxed text-teal-50">{ui.contactHint}</p>
           <div className="mt-6"><AskButton locale={locale} experience={experience} className="bg-white text-teal-900 hover:bg-teal-50" /></div>
         </section>
+        <section className="mt-10 max-w-3xl"><PublicInquiryForm productCode={experience.slug} productName={copy.name} sourcePage={experienceUrl(locale,experience.slug)} locale={locale} /></section>
         <nav aria-label={ui.next} className="mt-14">
           <h2 className="text-2xl font-bold text-teal-950">{ui.next}</h2>
           <div className="mt-5 grid gap-4 md:grid-cols-3">
