@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { GuidePageData } from "./data";
 import "./phu-quoc-guide.css";
+import PublicInquiryForm from "../PublicInquiryForm";
 
 const PHONE = "84937762607";
 const OFFICIAL_LOGO = "/brand/govietstay-official-logo.jpg";
@@ -287,6 +288,10 @@ export default function PhuQuocGuidePage({ data }: { data: GuidePageData }) {
           <Link href="/tours/phu-quoc">See all Phu Quoc experiences</Link>
         </div>
       </section>
+
+      {["phu-quoc-airport-transfer-private-car","phu-quoc-itinerary-3d2n-4d3n","phu-quoc-with-family"].includes(data.slug) && (
+        <section className="mx-auto max-w-4xl px-5 py-10"><PublicInquiryForm productCode={data.slug} productName={data.title} sourcePage={"/travel/"+data.slug} locale="en"/></section>
+      )}
 
       <footer className="pqgFooter">
         <Image src={OFFICIAL_LOGO} alt="GoVietStay official logo" width={54} height={54} />

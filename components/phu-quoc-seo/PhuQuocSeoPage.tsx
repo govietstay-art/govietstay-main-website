@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import "./phu-quoc-seo.css";
+import PublicInquiryForm from "../PublicInquiryForm";
 
 export type PqCard = {
   title: string;
@@ -317,6 +318,10 @@ export default function PhuQuocSeoPage({ data }: { data: PhuQuocSeoPageData }) {
           </section>
         </div>
       </div>
+
+      {["phu-quoc-private-tour","phu-quoc-snorkeling","phu-quoc-rach-vem-starfish-beach"].includes(data.slug) && (
+        <section className="mx-auto max-w-4xl px-5 py-10"><PublicInquiryForm productCode={data.slug} productName={data.title} sourcePage={"/travel/"+data.slug} locale="en"/></section>
+      )}
 
       <footer className="pqSeoFooter">
         <div><strong>GoVietStay</strong><span>Trusted Local Support · Phu Quoc</span></div>
