@@ -59,6 +59,7 @@ export async function POST(req: NextRequest) {
   const kind = claim.value?.kind;
   const message = kind === "staff_intake" ? "Co yeu cau tu nhan vien cho duyet. Mo Admin de xem."
     : kind === "partner_booking" ? "Co booking tu doi tac can kiem tra. Mo Admin de xem."
+    : kind === "public_inquiry" ? "Co yeu cau dich vu moi tu website. Mo Admin de lien he khach."
     : kind === "system_test" ? "THU NGHIEM: ket noi thong bao booking GoVietStay."
     : "Co booking moi can kiem tra. Mo Admin de xem.";
   let delivered = false;
