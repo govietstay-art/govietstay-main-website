@@ -33,6 +33,7 @@ const COMMISSION_TOURS = [
 export default function StaffSalesTeam({supabase,adminStaff}:Props){
   const [month,setMonth]=useState(monthNow());
   const [staff,setStaff]=useState<Staff[]>([]);
+  const [pinStatus,setPinStatus]=useState<Record<string,boolean>>({});
   const [payroll,setPayroll]=useState<Payroll[]>([]);
   const [baseTiers,setBaseTiers]=useState<BaseTier[]>([]);
   const [commissionRates,setCommissionRates]=useState<CommissionRate[]>([]);
@@ -63,10 +64,12 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
         supabase.from("staff_base_pax_tiers").select("id,plan_code,min_monthly_pax,max_monthly_pax,base_salary_vnd,active,notes").eq("plan_code","sales_pax_v1").eq("active",true).order("min_monthly_pax"),
         supabase.from("staff_tour_commission_rates").select("id,plan_code,tour_slug,guide_language,min_monthly_pax,max_monthly_pax,rate_per_pax_vnd,active,notes").eq("plan_code","sales_pax_v1").eq("active",true).order("tour_slug").order("guide_language").order("min_monthly_pax"),
         supabase.from("staff_booking_intake").select("id,submitted_at,sales_code,staff_id,booking_code,guest_name,phone,tour_date,pickup_time,hotel,region,tour_name,variant_name,language,adults,children,infants,gross_revenue_vnd,discount_vnd,deposit_vnd,notes,status,admin_notes").order("submitted_at",{ascending:false}).limit(100),
-        supabase.rpc("admin_staff_sales_bookings",{p_month:pMonth,p_staff_id:null})
+        supabase.rpc("admin_staff_sales_bookings",{p_month:pMonth,p_staff_id:null}),
+        supabase.rpc("admin_staff_pin_status")
       ]);
       for(const r of results) if(r.error) throw r.error;
       setStaff((results[0].data||[]) as Staff[]);
+      setPinStatus(Object.fromEntries(((results[6].data||[]) as Array<{staff_id:string;pin_configured:boolean}>).map(x=>[x.staff_id,x.pin_configured])));
       setPayroll((results[1].data||[]) as Payroll[]);
       setBaseTiers((results[2].data||[]) as BaseTier[]);
       setCommissionRates((results[3].data||[]) as CommissionRate[]);
@@ -230,6 +233,7 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
     try {
       const {data,error}=await supabase.rpc("admin_set_staff_sales_pin",{p_staff_id:person.id,p_pin:pin});
       if(error||data!==true)throw error||new Error("Không đặt được PIN");
+      setPinStatus(prev=>({...prev,[person.id]:true}));
       setMessage("Đã lưu PIN riêng cho "+person.display_name+". Chia sẻ PIN với nhân viên qua kênh riêng; không đăng công khai.");
     }catch(e:any){setError(e?.message||"Không thể đặt PIN nhân viên.");}
     finally{setSaving(false);}
@@ -266,7 +270,7 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
     <section className="gva-card gvs-team-section">
       <div className="gva-section-head"><div><h2>Sales Staff · Auto Linked</h2><div className="gva-mini">Tạo một lần → Sales Code + sales_pax_v1 + Booking Portal + Monthly Payroll tự có. Không cần tạo Payroll thủ công.</div></div><button className="gva-btn" onClick={()=>setNewStaffOpen(true)}>+ Thêm nhân viên</button></div>
       <div className="gva-table-wrap"><table className="gva-table"><thead><tr><th>Nhân viên</th><th>Sales Code</th><th>Trang booking</th><th>Payroll plan</th><th>Portal</th><th>PIN bảo mật</th></tr></thead><tbody>
-        {staff.map(s=><tr key={s.id}><td><b>{s.display_name}</b></td><td><b>{s.sales_code}</b></td><td>{s.sales_page||"—"}</td><td>{s.compensation_plan_code==="sales_pax_v1"?"✓ sales_pax_v1":s.compensation_plan_code||"—"}</td><td>{s.allow_booking_portal?"✓ Ready":"—"}</td><td><button className="gva-btn secondary" disabled={saving||!s.allow_booking_portal} onClick={()=>configureStaffPin(s)}>Đặt / đổi PIN</button></td></tr>)}
+        {staff.map(s=><tr key={s.id}><td><b>{s.display_name}</b></td><td><b>{s.sales_code}</b></td><td>{s.sales_page||"—"}</td><td>{s.compensation_plan_code==="sales_pax_v1"?"✓ sales_pax_v1":s.compensation_plan_code||"—"}</td><td>{s.allow_booking_portal?(pinStatus[s.id]?"✓ Sẵn sàng":"Cần đặt PIN"):"—"}</td><td><button className="gva-btn secondary" disabled={saving||!s.allow_booking_portal} onClick={()=>configureStaffPin(s)}>{pinStatus[s.id]?"Đổi PIN":"Đặt PIN riêng"}</button></td></tr>)}
         {!staff.length&&<tr><td colSpan={6}><div className="gva-empty">Chưa có sales staff.</div></td></tr>}
       </tbody></table></div>
     </section>
