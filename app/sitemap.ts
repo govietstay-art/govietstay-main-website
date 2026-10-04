@@ -60,7 +60,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: BASE_URL,
-      lastModified: SITE_UPDATED,
+      lastModified: new Date("2026-10-04T00:00:00.000Z"),
       changeFrequency: "weekly",
       priority: 0.9,
       alternates: homepageAlternates,

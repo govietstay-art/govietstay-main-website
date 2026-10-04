@@ -31,10 +31,10 @@ const gtmBootstrap = String.raw`(function(w,d){
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.govietstay.com"),
 
-  title: "GoVietStay | Da Nang Tours, Hoi An, Hue & Phu Quoc Travel",
+  title: "Private Tours in Da Nang, Hoi An, Hue & Phu Quoc | GoVietStay",
 
   description:
-    "Plan Da Nang, Hoi An, Hue and Phu Quoc with local tours, airport transfers, private cars, tickets and 24/7 WhatsApp support from GoVietStay.",
+    "GoVietStay provides private tours, airport transfers, attraction tickets and trusted local travel support in Da Nang, Hoi An, Hue & Phu Quoc. WhatsApp 24/7.",
 
   applicationName: "GoVietStay",
 
@@ -53,9 +53,9 @@ export const metadata: Metadata = {
   ],
 
   openGraph: {
-    title: "GoVietStay | Da Nang Tours, Hoi An, Hue & Phu Quoc Travel",
+    title: "Private Tours in Da Nang, Hoi An, Hue & Phu Quoc | GoVietStay",
     description:
-      "Plan Da Nang, Hoi An, Hue and Phu Quoc with local tours, airport transfers, private cars, tickets and 24/7 WhatsApp support from GoVietStay.",
+      "GoVietStay provides private tours, airport transfers, attraction tickets and trusted local travel support in Da Nang, Hoi An, Hue & Phu Quoc. WhatsApp 24/7.",
     siteName: "GoVietStay",
     type: "website",
     images:[{url:"/tour/hoian.jpg",alt:"GoVietStay Vietnam travel"}],
@@ -64,9 +64,9 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     images:["/tour/hoian.jpg"],
-    title: "GoVietStay | Vietnam Tours & Trusted Local Support",
+    title: "Private Tours in Da Nang, Hoi An, Hue & Phu Quoc | GoVietStay",
     description:
-      "Plan Da Nang, Hoi An, Hue and Phu Quoc with local tours, airport transfers, private cars, tickets and 24/7 WhatsApp support from GoVietStay.",
+      "GoVietStay provides private tours, airport transfers, attraction tickets and trusted local travel support in Da Nang, Hoi An, Hue & Phu Quoc. WhatsApp 24/7.",
   },
 };
 
@@ -124,6 +124,55 @@ export default async function RootLayout({
                 telephone: "+84937762607",
                 areaServed: serviceAreas,
                 slogan: "Trusted Local Support",
+                description:
+                  "GoVietStay is a Vietnam travel company providing private tours, airport transfers, attraction tickets and trusted local travel support in Da Nang, Hoi An, Hue and Phu Quoc.",
+                founder: { "@id": "https://www.govietstay.com/#founder" },
+                knowsAbout: [
+                  "Private tours in Vietnam",
+                  "Airport transfers in Vietnam",
+                  "Attraction tickets in Vietnam",
+                  "Da Nang travel",
+                  "Hoi An travel",
+                  "Hue travel",
+                  "Phu Quoc travel",
+                  "Vietnam visa support",
+                ],
+                hasOfferCatalog: {
+                  "@type": "OfferCatalog",
+                  name: "GoVietStay Travel Services",
+                  itemListElement: [
+                    {
+                      "@type": "OfferCatalog",
+                      name: "Private Tours",
+                      url: "https://www.govietstay.com/#experiences",
+                    },
+                    {
+                      "@type": "OfferCatalog",
+                      name: "Airport Transfers & Private Cars",
+                      url: "https://www.govietstay.com/travel/da-nang-airport-transfer",
+                    },
+                    {
+                      "@type": "OfferCatalog",
+                      name: "Attraction Tickets",
+                      url: "https://www.govietstay.com/#tickets",
+                    },
+                    {
+                      "@type": "OfferCatalog",
+                      name: "Vietnam Visa Support",
+                      url: "https://www.govietstay.com/visa",
+                    },
+                    {
+                      "@type": "OfferCatalog",
+                      name: "Phu Quoc Tours",
+                      url: "https://www.govietstay.com/tours/phu-quoc",
+                    },
+                    {
+                      "@type": "OfferCatalog",
+                      name: "Small Group Deals",
+                      url: "https://www.govietstay.com/group-deals",
+                    },
+                  ],
+                },
                 sameAs: [
                   "https://t.me/GoVietStay",
                   "https://maps.app.goo.gl/znWBmL8zPKEJqnoW6?g_st=ic",
@@ -135,6 +184,23 @@ export default async function RootLayout({
                   contactType: "customer service",
                   availableLanguage: ["en", "ru"],
                 },
+              },
+              {
+                "@context": "https://schema.org",
+                "@type": "Person",
+                "@id": "https://www.govietstay.com/#founder",
+                name: "David Tran",
+                jobTitle: "Founder",
+                worksFor: { "@id": "https://www.govietstay.com/#organization" },
+                knowsAbout: [
+                  "Vietnam tourism",
+                  "Private tours",
+                  "Local travel support",
+                  "Da Nang",
+                  "Hoi An",
+                  "Hue",
+                  "Phu Quoc",
+                ],
               },
               {
                 "@context": "https://schema.org",
