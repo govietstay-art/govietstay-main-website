@@ -2435,12 +2435,11 @@ export default function Home() {
             >한국어</a>
 
             <nav className="hidden md:flex gap-8 text-white/90 font-medium">
-              <a href="/secret">Secret Local</a>
-              <a href="/local-food">Local Food</a>
-              <a href="/visa">Visa Service</a>
-              <a href="#experiences">Experiences</a>
-              <a href="#travelers">International Travelers</a>
-              <a href="#local-tips">Local Knowledge</a>
+              <a href="/travel/da-nang-travel-guide">Da Nang</a>
+              <a href="/tours/phu-quoc">Phu Quoc</a>
+              <a href="/travel/da-nang-airport-transfer">Airport Transfer</a>
+              <a href="/visa">Visa Support</a>
+              <a href="/group-deals">Group Deals</a>
               <a href="#contact">Contact</a>
             </nav>
           </div>
@@ -2453,38 +2452,43 @@ export default function Home() {
             </p>
 
             <h1 className="text-white font-bold tracking-[-0.04em] leading-[1.02] text-[clamp(2.35rem,10vw,3.6rem)] sm:text-6xl md:text-7xl lg:text-8xl">
+              <span className="block">Private Tours in Vietnam</span>
               <span className="block whitespace-nowrap">Da Nang • Hoi An</span>
               <span className="block whitespace-nowrap">Hue • Phu Quoc</span>
             </h1>
 
             <div className="mt-5 w-full max-w-full md:mt-6 md:max-w-3xl">
               <p className="break-words text-[14px] leading-[1.55] text-white/90 sm:text-base md:hidden">
-                Private tours across Vietnam with trusted local support,
-                airport transfers and WhatsApp assistance 24/7.
+                GoVietStay provides private tours, airport transfers, attraction
+                tickets and trusted local travel support in Da Nang, Hoi An, Hue
+                and Phu Quoc.
               </p>
               <p className="hidden break-words text-lg leading-relaxed text-white/90 md:block md:text-2xl">
-                Private tours in Da Nang, Hoi An, Hue and Phu Quoc. Discover the
-                Golden Bridge, Cham Island, ancient towns, island experiences and
-                trusted local travel support with WhatsApp assistance 24/7.
+                GoVietStay is a Vietnam travel company providing private tours,
+                airport transfers, attraction tickets and trusted local travel
+                support in Da Nang, Hoi An, Hue and Phu Quoc, with English and
+                Russian support before and during your trip and WhatsApp
+                assistance 24/7.
               </p>
             </div>
 
             <div className="mt-3.5 w-full min-w-0 max-w-full overflow-x-auto overscroll-x-contain pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mt-6">
               <div className="flex w-max max-w-none gap-2 pr-5 text-[10px] text-white/85 md:w-auto md:max-w-full md:flex-wrap md:pr-0 md:text-sm">
                 {[
-                  { mobile: "Da Nang", desktop: "Da Nang Tours" },
-                  { mobile: "Hoi An", desktop: "Hoi An Tours" },
-                  { mobile: "Hue", desktop: "Hue Tours" },
-                  { mobile: "Phu Quoc", desktop: "Phu Quoc Tours" },
-                  { mobile: "Private Tours", desktop: "Private Tours Vietnam" },
+                  { mobile: "Da Nang", desktop: "Da Nang Tours", href: "/travel/da-nang-travel-guide" },
+                  { mobile: "Hoi An", desktop: "Hoi An Tours", href: "/travel/hoi-an-day-trip-from-da-nang" },
+                  { mobile: "Hue", desktop: "Hue Tours", href: "/travel/hue-day-trip-from-da-nang" },
+                  { mobile: "Phu Quoc", desktop: "Phu Quoc Tours", href: "/tours/phu-quoc" },
+                  { mobile: "Private Tours", desktop: "Private Tours Vietnam", href: "#experiences" },
                 ].map((keyword) => (
-                  <span
+                  <a
                     key={keyword.desktop}
-                    className="shrink-0 whitespace-nowrap rounded-full border border-white/25 bg-black/30 px-3 py-1.5 backdrop-blur-sm md:px-3 md:py-2"
+                    href={keyword.href}
+                    className="shrink-0 whitespace-nowrap rounded-full border border-white/25 bg-black/30 px-3 py-1.5 backdrop-blur-sm transition hover:border-yellow-400 hover:text-yellow-300 md:px-3 md:py-2"
                   >
                     <span className="md:hidden">{keyword.mobile}</span>
                     <span className="hidden md:inline">{keyword.desktop}</span>
-                  </span>
+                  </a>
                 ))}
               </div>
             </div>
