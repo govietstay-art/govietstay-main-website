@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
       {protocol:"https",hostname:"minera.vn",pathname:"/static/upload/images/**"},
       {protocol:"https",hostname:"www.angsana.com",pathname:"/assets/**"},
       {protocol:"https",hostname:"vcdn1-dulich.vnecdn.net",pathname:"/**"},
+      {protocol:"https",hostname:"images.pexels.com",pathname:"/photos/**"},
     ],
     formats:["image/avif","image/webp"],
   },
