@@ -83,3 +83,32 @@
   .cta a{justify-self:start}
   .footer{flex-direction:column}
 }
+
+.visualStory{max-width:1220px;margin:0 auto;padding:0 24px 70px;display:grid;grid-template-columns:1.25fr .875fr .875fr;gap:12px}
+.visualCard{margin:0;min-width:0}
+.visualFrame{position:relative;overflow:hidden;border-radius:26px;background:#d9dfd7;aspect-ratio:4/5}
+.visualStory .visualCard:first-child .visualFrame{aspect-ratio:16/11}
+.visualImage{object-fit:cover}
+.visualFrame>span{position:absolute;left:14px;bottom:14px;z-index:2;background:rgba(6,31,24,.82);color:#fff;padding:8px 10px;border-radius:999px;font-size:10px;font-weight:850;letter-spacing:.12em;text-transform:uppercase;backdrop-filter:blur(8px)}
+.visualCard figcaption{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:10px 3px 0}
+.visualCard figcaption b{font-size:13px}
+.visualCard figcaption a{font-size:10px;line-height:1.35;color:inherit;opacity:.55;text-align:right;text-decoration:none}
+.priceSection{max-width:1220px;margin:0 auto;padding:68px 24px;display:grid;grid-template-columns:1fr 1fr;gap:34px;border-top:1px solid var(--line)}
+.priceSection h2{font-size:clamp(24px,3vw,38px);line-height:1.06;letter-spacing:-.035em;margin:14px 0}
+.priceIntro{line-height:1.65;opacity:.7;max-width:540px}
+.priceTable{display:grid;gap:8px}
+.priceTable>div{display:flex;align-items:center;justify-content:space-between;gap:16px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px 15px}
+.priceTable span{font-size:13px}
+.priceTable b{font-size:14px;color:var(--green);text-align:right}
+.priceTable small{display:block;margin-top:8px;line-height:1.55;opacity:.58}
+@media(max-width:860px){
+  .visualStory{grid-template-columns:1fr 1fr;padding:0 16px 52px;gap:9px}
+  .visualStory .visualCard:first-child{grid-column:1/-1}
+  .visualStory .visualCard:first-child .visualFrame{aspect-ratio:4/5}
+  .visualFrame{aspect-ratio:4/5;border-radius:20px}
+  .visualCard figcaption{display:block}
+  .visualCard figcaption a{display:block;text-align:left;margin-top:4px}
+  .priceSection{grid-template-columns:1fr;padding:52px 16px}
+  .priceTable>div{padding:12px}
+  .priceTable b{font-size:13px}
+}
