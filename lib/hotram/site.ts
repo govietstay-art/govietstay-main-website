@@ -16,6 +16,14 @@ export type HotramTour = {
   itinerary: string[];
   notes: string[];
   pickup: string[];
+  visuals?: Array<{
+    src: string;
+    alt: string;
+    label: string;
+    credit: string;
+    sourceUrl: string;
+  }>;
+  pilotPricing?: Array<{ guests: string; perPersonVnd: number }>;
 };
 
 export const localeConfig: Record<HotramLocale, {
@@ -126,6 +134,35 @@ export const tours: HotramTour[] = [
       "The route is adjusted for weather, children, seniors and arrival time.",
     ],
     pickup: ["Ho Tram resort", "Long Thanh Airport", "Central Ho Chi Minh City"],
+    visuals: [
+      {
+        src: "https://vietnamtourism.vn/imguploads/tourist/02Binhchau01.jpg",
+        alt: "Binh Chau Phuoc Buu coastal forest near Ho Tram",
+        label: "Forest",
+        credit: "Reference image · Vietnam National Authority of Tourism",
+        sourceUrl: "https://vietnamtourism.vn/index.php/tourism/items/2124/",
+      },
+      {
+        src: "https://vietnamtourism.vn/imguploads/tourist/02BaibienHococ01.jpg",
+        alt: "Ho Coc beach with natural rocks near Ho Tram",
+        label: "Ocean",
+        credit: "Reference image · Vietnam National Authority of Tourism",
+        sourceUrl: "https://vietnamtourism.vn/index.php/tourism/items/2545",
+      },
+      {
+        src: "https://minera.vn/static/upload/images/SEO/gia-ve/Combo_Khoang_Thoa_Thich/SpringPool--5-1.jpg",
+        alt: "Mineral spring pool at Minera Hot Springs Binh Chau",
+        label: "Hot Spring",
+        credit: "Reference image · Minera Hot Springs Binh Chau",
+        sourceUrl: "https://minera.vn/gia-ve/ve-tam-khoang-110.html",
+      },
+    ],
+    pilotPricing: [
+      { guests: "2 guests", perPersonVnd: 2790000 },
+      { guests: "3 guests", perPersonVnd: 2490000 },
+      { guests: "4 guests", perPersonVnd: 2290000 },
+      { guests: "5–6 guests", perPersonVnd: 2190000 },
+    ],
   },
   {
     slug: "a-day-as-a-local",
