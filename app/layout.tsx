@@ -127,7 +127,7 @@ export default async function RootLayout({
                 areaServed: serviceAreas,
                 slogan: "Trusted Local Support",
                 description:
-                  "GoVietStay is a Vietnam travel company providing private tours, airport transfers, attraction tickets and trusted local travel support in Da Nang, Hoi An, Hue and Phu Quoc.",
+                  "GoVietStay is a Vietnam travel company providing private tours, airport transfers, attraction tickets and trusted local travel support across Central Vietnam, Phu Quoc and Ho Tram.",
                 founder: { "@id": "https://www.govietstay.com/#founder" },
                 knowsAbout: [
                   "Private tours in Vietnam",
@@ -210,6 +210,7 @@ export default async function RootLayout({
                   "Hoi An",
                   "Hue",
                   "Phu Quoc",
+                  "Ho Tram",
                 ],
               },
               {
