@@ -38,12 +38,15 @@ function resolveRoute(raw: string[] | undefined) {
 }
 
 function hreflang(slug?: string) {
-  return {
-    en: publicUrl("en", slug),
-    ru: publicUrl("ru", slug),
-    "it-IT": publicUrl("it", slug),
+  const languages: Record<string, string> = {
     "x-default": publicUrl("en", slug),
   };
+  (Object.keys(localeConfig) as HotramLocale[])
+    .filter((locale) => localeConfig[locale].indexable)
+    .forEach((locale) => {
+      languages[localeConfig[locale].html] = publicUrl(locale, slug);
+    });
+  return languages;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -55,7 +58,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const isIndexable = localeConfig[locale].indexable;
 
   const hubTitle: Record<HotramLocale, string> = {
-    en: "Private Ho Tram Tours from Long Thanh Airport & Ho Chi Minh City | GoVietStay",
+    en: "Private Ho Tram Tours from Long Thanh & HCMC | GoVietStay",
     ru: "Индивидуальные экскурсии Хочам из Лонгтханя и Хошимина | GoVietStay",
     it: "Tour privati a Ho Tram da Long Thanh e Ho Chi Minh City | GoVietStay",
   };
@@ -89,8 +92,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       images: [
         {
           url: `${HOTRAM_BASE}/govietstay-logo.jpg`,
-          width: 1200,
-          height: 630,
           alt: "GoVietStay Ho Tram private travel support",
         },
       ],
