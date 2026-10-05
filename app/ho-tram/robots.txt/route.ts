@@ -5,7 +5,6 @@ export function GET() {
     "User-agent: *",
     "Allow: /",
     "Disallow: /api/",
-    "Disallow: /ho-tram/",
     `Sitemap: ${HOTRAM_BASE}/sitemap.xml`,
     "",
   ].join("\n");
