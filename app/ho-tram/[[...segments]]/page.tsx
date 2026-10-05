@@ -13,7 +13,7 @@ import {
   type HotramLocale,
   ui,
   whatsappUrl,
-} from "../../lib/hotram/site";
+} from "../../../lib/hotram/site";
 
 type PageProps = {
   params: Promise<{ segments?: string[] }>;
