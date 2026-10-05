@@ -45,8 +45,10 @@
 .faqGrid article{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px}
 .faqGrid h3{font-size:20px;margin:0 0 9px;letter-spacing:-.02em}
 .faqGrid p{line-height:1.6;margin:0;opacity:.7}
-.trust,.pickup,.notes,.cta{max-width:1220px;margin:0 auto;padding:68px 24px;display:grid;grid-template-columns:1fr 1fr;gap:34px;border-top:1px solid var(--line)}
+.trust,.pickup,.notes,.confirm,.cta{max-width:1220px;margin:0 auto;padding:68px 24px;display:grid;grid-template-columns:1fr 1fr;gap:34px;border-top:1px solid var(--line)}
 .trust>p,.notes ul{margin:0;line-height:1.75;opacity:.72}
+.confirmGrid{display:grid;gap:9px}
+.confirmGrid span{display:block;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px;font-size:13px;line-height:1.45}
 .footer{max-width:1220px;margin:0 auto;padding:30px 24px 50px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:24px}
 .footer>div{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
 .footer>div:first-child{flex-direction:column;align-items:flex-start;gap:4px}
@@ -73,7 +75,7 @@
   .header{padding-top:18px}
   .hero,.detailHero{grid-template-columns:1fr;padding-top:42px}
   .heroCopy h1,.detailHero h1{font-size:48px}
-  .three,.grid,.faqGrid,.detailGrid,.trust,.pickup,.notes,.cta{grid-template-columns:1fr}
+  .three,.grid,.faqGrid,.detailGrid,.trust,.pickup,.notes,.confirm,.cta{grid-template-columns:1fr}
   .three{padding-bottom:56px}
   .grid{gap:10px}
   .card{min-height:310px}
