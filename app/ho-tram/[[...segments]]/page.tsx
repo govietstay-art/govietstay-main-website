@@ -37,6 +37,11 @@ function resolveRoute(raw: string[] | undefined) {
   return { locale, slug, tour };
 }
 
+function internalHref(locale: HotramLocale, slug?: string) {
+  const prefix = localeConfig[locale].path;
+  return `${prefix}${slug ? `/${slug}` : ""}` || "/";
+}
+
 function hreflang(slug?: string) {
   const languages: Record<string, string> = {
     "x-default": publicUrl("en", slug),
@@ -111,7 +116,7 @@ function LanguageLinks({ slug }: { slug?: string }) {
       {(Object.keys(localeConfig) as HotramLocale[])
         .filter((locale) => localeConfig[locale].indexable)
         .map((locale) => (
-          <a key={locale} href={publicUrl(locale, slug)} hrefLang={localeConfig[locale].html}>
+          <a key={locale} href={internalHref(locale, slug)} hrefLang={localeConfig[locale].html}>
             {localeConfig[locale].label}
           </a>
         ))}
@@ -246,7 +251,7 @@ function Hub({ locale }: { locale: HotramLocale }) {
         </div>
         <div className={styles.grid}>
           {tours.map((tour, index) => (
-            <a className={styles.card} href={publicUrl(locale, tour.slug)} key={tour.slug}>
+            <a className={styles.card} href={internalHref(locale, tour.slug)} key={tour.slug}>
               <div className={styles.cardTop}>
                 <span>{String(index + 1).padStart(2, "0")}</span>
                 <small>{tour.duration}</small>
@@ -355,7 +360,7 @@ function TourPage({ locale, slug }: { locale: HotramLocale; slug: string }) {
     <main className={styles.page} lang={localeConfig[locale].html}>
       <JsonLd data={schema} />
       <header className={styles.header}>
-        <a className={styles.brand} href={publicUrl(locale)}>
+        <a className={styles.brand} href={internalHref(locale)}>
           <span>GoVietStay</span>
           <small>Ho Tram</small>
         </a>
@@ -364,7 +369,7 @@ function TourPage({ locale, slug }: { locale: HotramLocale; slug: string }) {
 
       <section className={styles.detailHero}>
         <div>
-          <a className={styles.back} href={publicUrl(locale)}>← {copy.back}</a>
+          <a className={styles.back} href={internalHref(locale)}>← {copy.back}</a>
           <p className={styles.eyebrow}>PRIVATE · HO TRAM</p>
           <h1>{tour.name}</h1>
           <p className={styles.lead}>{tour.promise}</p>
@@ -518,7 +523,7 @@ function TourPage({ locale, slug }: { locale: HotramLocale; slug: string }) {
           <span>Last content review: {LAST_REVIEWED}</span>
         </div>
         <div>
-          <a href={publicUrl(locale)}>{copy.back}</a>
+          <a href={internalHref(locale)}>{copy.back}</a>
           <a href={MAIN_SITE}>GoVietStay.com</a>
         </div>
       </footer>
