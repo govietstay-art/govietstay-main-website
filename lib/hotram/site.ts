@@ -11,16 +11,16 @@ export const hubVisuals = [
     sourceUrl: "https://www.pexels.com/photo/aerial-view-of-h-tram-beach-in-vietnam-31768446/",
   },
   {
-    src: "https://images.pexels.com/photos/31768451/pexels-photo-31768451.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    alt: "Aerial view of resort buildings in Ho Tram, Vietnam",
+    src: "https://images.pexels.com/photos/31768450/pexels-photo-31768450.jpeg?auto=compress&cs=tinysrgb&w=900",
+    alt: "Aerial view of Ho Tram beach, coastline and resort area in Vietnam",
     label: "Resort Coast",
-    sourceUrl: "https://www.pexels.com/photo/aerial-view-of-resort-buildings-in-h-tram-vietnam-31768451/",
+    sourceUrl: "https://www.pexels.com/photo/aerial-view-of-h-tram-beach-in-vietnam-31768450/",
   },
   {
-    src: "https://images.pexels.com/photos/35621426/pexels-photo-35621426.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    alt: "Fish market workers in the nearby Vung Tau coastal region",
-    label: "Local Coastal Life",
-    sourceUrl: "https://www.pexels.com/photo/fish-processing-workers-at-vung-tau-market-35621426/",
+    src: "https://images.pexels.com/photos/10017046/pexels-photo-10017046.jpeg?auto=compress&cs=tinysrgb&w=900",
+    alt: "Traditional fisherman casting a net on Ho Tram Beach at sunset",
+    label: "Local Fishing Life",
+    sourceUrl: "https://www.pexels.com/photo/a-fisherman-on-the-beach-10017046/",
   },
 ] as const;
 
