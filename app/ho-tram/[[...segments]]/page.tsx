@@ -77,6 +77,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     metadataBase: new URL(HOTRAM_BASE),
     title: { absolute: title },
     description,
+    keywords: tour
+      ? [
+          tour.name,
+          `${tour.name} Ho Tram`,
+          "Ho Tram private tour",
+          "Ho Tram local experience",
+          "private Ho Tram tour from Long Thanh",
+        ]
+      : [
+          "Ho Tram private tours",
+          "Ho Tram local experiences",
+          "Long Thanh Airport to Ho Tram",
+          "Ho Tram tours from Ho Chi Minh City",
+          "Ho Tram private car",
+        ],
     alternates: { canonical, languages: hreflang(tour?.slug) },
     robots: {
       index: isIndexable,
@@ -108,11 +123,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 function LanguageLinks({ slug }: { slug?: string }) {
   return (
     <nav className={styles.languages} aria-label="Languages">
-      {(Object.keys(localeConfig) as HotramLocale[]).map((locale) => (
-        <a key={locale} href={publicUrl(locale, slug)} hrefLang={localeConfig[locale].html}>
-          {localeConfig[locale].label}
-        </a>
-      ))}
+      {(Object.keys(localeConfig) as HotramLocale[])
+        .filter((locale) => localeConfig[locale].indexable)
+        .map((locale) => (
+          <a key={locale} href={publicUrl(locale, slug)} hrefLang={localeConfig[locale].html}>
+            {localeConfig[locale].label}
+          </a>
+        ))}
     </nav>
   );
 }
@@ -410,6 +427,24 @@ function TourPage({ locale, slug }: { locale: HotramLocale; slug: string }) {
           {tour.notes.map((item) => <li key={item}>{item}</li>)}
           <li>{copy.sourceNote}</li>
         </ul>
+      </section>
+
+      <section className={styles.confirm}>
+        <div>
+          <p className={styles.kicker}>CONFIRM BEFORE PAYMENT</p>
+          <h2>One booking should answer the operational questions once.</h2>
+        </div>
+        <div className={styles.confirmGrid}>
+          {[
+            "Exact pickup point and pickup time",
+            "Private vehicle scope and route",
+            "Guide language and availability",
+            "Entrance / activity fees included or excluded",
+            "Meal, drinks and dietary requests",
+            "Children ages, child seat or mobility needs",
+            "Cancellation terms and weather fallback",
+          ].map((item) => <span key={item}>✓ {item}</span>)}
+        </div>
       </section>
 
       <section className={styles.cta}>
