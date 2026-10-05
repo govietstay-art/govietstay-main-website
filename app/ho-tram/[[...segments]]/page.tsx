@@ -69,29 +69,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 
   const title = tour
-    ? `${tour.name} | Private Ho Tram Experience | GoVietStay`
+    ? (tour.seoTitle ?? `${tour.name} | Private Ho Tram Tour | GoVietStay`)
     : hubTitle[locale];
-  const description = tour ? tour.promise : hubDescription[locale];
+  const description = tour ? (tour.seoDescription ?? tour.promise) : hubDescription[locale];
 
   return {
     metadataBase: new URL(HOTRAM_BASE),
     title: { absolute: title },
     description,
-    keywords: tour
-      ? [
-          tour.name,
-          `${tour.name} Ho Tram`,
-          "Ho Tram private tour",
-          "Ho Tram local experience",
-          "private Ho Tram tour from Long Thanh",
-        ]
-      : [
-          "Ho Tram private tours",
-          "Ho Tram local experiences",
-          "Long Thanh Airport to Ho Tram",
-          "Ho Tram tours from Ho Chi Minh City",
-          "Ho Tram private car",
-        ],
     alternates: { canonical, languages: hreflang(tour?.slug) },
     robots: {
       index: isIndexable,
@@ -166,11 +151,14 @@ function Hub({ locale }: { locale: HotramLocale }) {
         inLanguage: localeConfig[locale].html,
         isPartOf: { "@id": `${HOTRAM_BASE}/#website` },
         about: {
-          "@type": "Place",
+          "@type": "TouristDestination",
           name: "Ho Tram",
+          alternateName: "Hồ Tràm",
+          description: "A coastal destination in Ho Chi Minh City, Vietnam; older travel references may list the area under former Ba Ria–Vung Tau administration.",
           containedInPlace: {
-            "@type": "AdministrativeArea",
-            name: "Ho Chi Minh City, Vietnam",
+            "@type": "City",
+            name: "Ho Chi Minh City",
+            addressCountry: "VN",
           },
         },
         mainEntity: { "@id": `${canonical}#six-experiences` },
@@ -401,7 +389,6 @@ function TourPage({ locale, slug }: { locale: HotramLocale; slug: string }) {
                   src={visual.src}
                   alt={visual.alt}
                   fill
-                  priority={index === 0}
                   quality={index === 0 ? 78 : 72}
                   sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 390px"
                   className={styles.visualImage}
