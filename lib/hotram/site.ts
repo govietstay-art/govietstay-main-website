@@ -10,6 +10,8 @@ export type HotramTour = {
   name: string;
   shortName: string;
   promise: string;
+  seoTitle?: string;
+  seoDescription?: string;
   duration: string;
   bestFor: string[];
   highlights: string[];
@@ -116,6 +118,8 @@ export const tours: HotramTour[] = [
   {
     slug: "forest-ocean-hot-spring",
     name: "Forest · Ocean · Hot Spring",
+    seoTitle: "Ho Tram Nature Tour: Forest, Ho Coc & Hot Springs | GoVietStay",
+    seoDescription: "Private Ho Tram nature tour combining Binh Chau–Phuoc Buu forest, Ho Coc coast and mineral bathing, with resort pickup and flexible local support.",
     shortName: "Forest · Ocean · Hot Spring",
     promise: "One private day connecting Ho Tram's three strongest landscapes: coastal forest, wild beach and natural mineral springs.",
     duration: "Full day · about 8–9 hours",
@@ -179,6 +183,8 @@ export const tours: HotramTour[] = [
   {
     slug: "a-day-as-a-local",
     name: "A Day As A Local",
+    seoTitle: "Ho Tram Local Life Tour: Fishing Port, Market & Food | GoVietStay",
+    seoDescription: "Private Ho Tram local-life tour with early fishing activity, local market, countryside and Vietnamese food, designed for couples, families and small groups.",
     shortName: "A Day As A Local",
     promise: "A private morning-to-afternoon route built around fishing life, local markets, countryside and food instead of resort sightseeing.",
     duration: "5–6 hours",
@@ -243,6 +249,8 @@ export const tours: HotramTour[] = [
   {
     slug: "sunrise-to-sunset",
     name: "Sunrise To Sunset",
+    seoTitle: "Ho Tram Sunrise & Sunset Private Tour | GoVietStay",
+    seoDescription: "A split-day private Ho Tram experience: sunrise and local breakfast, resort free time, then a second pickup for coast and sunset.",
     shortName: "Sunrise To Sunset",
     promise: "Two private coastal windows — sunrise and sunset — with the middle of the day left free for the resort instead of being filled with unnecessary stops.",
     duration: "Split day · sunrise + sunset",
@@ -308,6 +316,8 @@ export const tours: HotramTour[] = [
   {
     slug: "hidden-ho-tram-expedition",
     name: "Hidden Ho Tram Expedition",
+    seoTitle: "Hidden Ho Tram Nature & Adventure Tour | GoVietStay",
+    seoDescription: "Private Ho Tram nature and adventure route through forest-side countryside and lesser-known coast, with optional activities only after safety verification.",
     shortName: "Hidden Ho Tram Expedition",
     promise: "The more active private route: primitive forest atmosphere, lesser-known coastal corners and one verified adventure element when conditions allow.",
     duration: "6–8 hours",
@@ -372,6 +382,8 @@ export const tours: HotramTour[] = [
   {
     slug: "omakase-ho-tram",
     name: "Omakase Ho Tram",
+    seoTitle: "Ho Tram Private Food Tour – Omakase Local Experience | GoVietStay",
+    seoDescription: "A private Ho Tram food experience curated around the freshest local seafood, Vietnamese specialties, guest preferences and a clear food allowance.",
     shortName: "Omakase Ho Tram",
     promise: "Tell us your appetite, budget and pace; we curate one private food-led Ho Tram experience around what is freshest and most worthwhile that day.",
     duration: "4–6 hours",
@@ -436,6 +448,8 @@ export const tours: HotramTour[] = [
   {
     slug: "ho-tram-resort-discovery",
     name: "Ho Tram Resort Discovery",
+    seoTitle: "Short Private Ho Tram Tour for Resort Guests | GoVietStay",
+    seoDescription: "A flexible 3–5 hour private Ho Tram tour for resort guests, with one meaningful local experience, an easy food or coffee stop and fast return.",
     shortName: "Ho Tram Resort Discovery",
     promise: "A compact private escape for resort guests: one meaningful local stop, one easy food or coffee stop, then back before the resort day disappears.",
     duration: "3–5 hours",
@@ -499,6 +513,10 @@ export const tours: HotramTour[] = [
 ];
 
 export const faqs = [
+  {
+    q: "Where is Ho Tram in 2026?",
+    a: "Ho Tram is now a coastal commune of Ho Chi Minh City. Many older travel pages still describe it as part of Ba Ria–Vung Tau, so both place names may appear in searches and maps.",
+  },
   {
     q: "Are these group tours?",
     a: "No. The six Ho Tram experiences are designed primarily as private tours for couples, families and small groups.",
