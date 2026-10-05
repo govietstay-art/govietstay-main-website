@@ -1,11 +1,20 @@
 import type { MetadataRoute } from "next";
-import { HOTRAM_BASE, LAST_REVIEWED, localeConfig, publicUrl, tours, type HotramLocale } from "../../lib/hotram/site";
+import { LAST_REVIEWED, localeConfig, publicUrl, tours, type HotramLocale } from "../../lib/hotram/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const updated = new Date(`${LAST_REVIEWED}T00:00:00.000Z`);
   const indexableLocales = (Object.keys(localeConfig) as HotramLocale[]).filter(
     (locale) => localeConfig[locale].indexable,
   );
+  const languageAlternates = (slug?: string) => {
+    const languages: Record<string, string> = {
+      "x-default": publicUrl("en", slug),
+    };
+    indexableLocales.forEach((locale) => {
+      languages[localeConfig[locale].html] = publicUrl(locale, slug);
+    });
+    return { languages };
+  };
 
   return indexableLocales.flatMap((locale) => [
     {
@@ -13,28 +22,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: updated,
       changeFrequency: "weekly" as const,
       priority: 1,
-      alternates: {
-        languages: {
-          en: publicUrl("en"),
-          ru: publicUrl("ru"),
-          "it-IT": publicUrl("it"),
-          "x-default": publicUrl("en"),
-        },
-      },
+      alternates: languageAlternates(),
     },
     ...tours.map((tour) => ({
       url: publicUrl(locale, tour.slug),
       lastModified: updated,
       changeFrequency: "monthly" as const,
       priority: 0.9,
-      alternates: {
-        languages: {
-          en: publicUrl("en", tour.slug),
-          ru: publicUrl("ru", tour.slug),
-          "it-IT": publicUrl("it", tour.slug),
-          "x-default": publicUrl("en", tour.slug),
-        },
-      },
+      alternates: languageAlternates(tour.slug),
     })),
   ]);
 }
