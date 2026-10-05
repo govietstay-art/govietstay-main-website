@@ -3,6 +3,27 @@ export const MAIN_SITE = "https://www.govietstay.com";
 export const WHATSAPP_NUMBER = "84937762607";
 export const LAST_REVIEWED = "2026-10-05";
 
+export const hubVisuals = [
+  {
+    src: "https://images.pexels.com/photos/31768446/pexels-photo-31768446.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    alt: "Aerial view of Ho Tram beach and coastline in Vietnam",
+    label: "Ho Tram Coast",
+    sourceUrl: "https://www.pexels.com/photo/aerial-view-of-h-tram-beach-in-vietnam-31768446/",
+  },
+  {
+    src: "https://images.pexels.com/photos/31768451/pexels-photo-31768451.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    alt: "Aerial view of resort buildings in Ho Tram, Vietnam",
+    label: "Resort Coast",
+    sourceUrl: "https://www.pexels.com/photo/aerial-view-of-resort-buildings-in-h-tram-vietnam-31768451/",
+  },
+  {
+    src: "https://images.pexels.com/photos/35621426/pexels-photo-35621426.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    alt: "Fish market workers in the nearby Vung Tau coastal region",
+    label: "Local Coastal Life",
+    sourceUrl: "https://www.pexels.com/photo/fish-processing-workers-at-vung-tau-market-35621426/",
+  },
+] as const;
+
 export type HotramLocale = "en" | "ru" | "it";
 
 export type HotramTour = {
@@ -45,18 +66,18 @@ export const localeConfig: Record<HotramLocale, {
 export const ui = {
   en: {
     eyebrow: "HO TRAM · PRIVATE EXPERIENCES",
-    h1: "Six private ways to discover Ho Tram — no tour-bus catalog.",
+    h1: "Six private ways to discover Ho Tram, at your own pace.",
     intro:
-      "GoVietStay is building Ho Tram slowly: six core experiences, private transport, flexible pickup, and local support for international travelers arriving from Ho Tram resorts, Long Thanh Airport or Ho Chi Minh City.",
-    principleTitle: "Why only six?",
+      "Six private Ho Tram experiences with flexible pickup and local support for travelers staying in Ho Tram or arriving from Long Thanh Airport or Ho Chi Minh City.",
+    principleTitle: "Choose your Ho Tram",
     principle:
-      "Because depth beats a long catalog. Each experience is designed around a distinct reason to visit Ho Tram: forest, local life, sunrise, hidden places, food, or resort time.",
+      "Nature, local life, sunrise, hidden places, food or a short resort-friendly escape — choose the style that fits your trip.",
     pickupTitle: "Start where you are",
     pickup:
       "Pickup can be arranged from a Ho Tram resort, Long Thanh Airport or central Ho Chi Minh City. Total timing is confirmed from your real flight, hotel and traffic conditions before booking.",
-    localTitle: "Built for international FIT travelers",
+    localTitle: "Private by design",
     local:
-      "Private couples, families and small groups first. No forced shopping stops. Guide language and exact inclusions are confirmed before payment.",
+      "For couples, families and small groups. Flexible timing, no forced shopping stops, and guide language confirmed before booking.",
     toursTitle: "The six core experiences",
     faqTitle: "Quick answers",
     contact: "Ask GoVietStay",
@@ -64,20 +85,20 @@ export const ui = {
     back: "All six Ho Tram experiences",
     bookingNote: "Private booking · schedule confirmed before payment",
     sourceNote:
-      "Local details are reviewed by GoVietStay before sale. Seasonal access, weather and supplier conditions can change.",
+      "Opening hours, weather-sensitive activities and exact inclusions are reconfirmed for your travel date.",
   },
   ru: {
     eyebrow: "ХОЧАМ · ИНДИВИДУАЛЬНЫЕ МАРШРУТЫ",
-    h1: "Шесть способов открыть Хочам — без каталога из десятков одинаковых экскурсий.",
+    h1: "Шесть индивидуальных способов открыть Хочам в своем темпе.",
     intro:
-      "GoVietStay развивает Хочам постепенно: шесть основных маршрутов, индивидуальный транспорт и поддержка для иностранных путешественников.",
-    principleTitle: "Почему только шесть?",
+      "Шесть индивидуальных маршрутов по Хочаму, частный транспорт и местная поддержка для иностранных путешественников.",
+    principleTitle: "Выберите свой Хочам",
     principle:
-      "Мы делаем ставку на глубину, а не на количество. Каждый маршрут отвечает на отдельный интерес: лес, местная жизнь, рассвет, скрытые места, еда или спокойный отдых.",
+      "Лес, местная жизнь, рассвет, скрытые места, гастрономия или короткая поездка из отеля — выбирайте формат под свой отдых.",
     pickupTitle: "Начинаем там, где вы находитесь",
     pickup:
       "Возможен трансфер из отеля в Хочаме, аэропорта Лонгтхань или центра Хошимина. Время подтверждается по вашему рейсу, отелю и дорожной ситуации.",
-    localTitle: "Для самостоятельных международных путешественников",
+    localTitle: "Индивидуальный формат",
     local:
       "В первую очередь пары, семьи и небольшие группы. Без обязательных магазинов. Язык гида и включенные услуги подтверждаются до оплаты.",
     toursTitle: "Шесть основных маршрутов",
@@ -87,20 +108,20 @@ export const ui = {
     back: "Все 6 маршрутов Хочама",
     bookingNote: "Индивидуально · расписание подтверждаем до оплаты",
     sourceNote:
-      "Условия на местах проверяются GoVietStay перед продажей. Погода, сезонность и доступ могут меняться.",
+      "Часы работы, погодные условия и точные включения подтверждаются на вашу дату поездки.",
   },
   it: {
     eyebrow: "HO TRAM · ESPERIENZE PRIVATE",
-    h1: "Sei modi privati per scoprire Ho Tram — non un catalogo infinito.",
+    h1: "Sei modi privati per scoprire Ho Tram, con i tuoi ritmi.",
     intro:
-      "GoVietStay sviluppa Ho Tram con calma: sei esperienze principali, trasporto privato e supporto locale per viaggiatori internazionali.",
-    principleTitle: "Perché solo sei?",
+      "Sei esperienze private a Ho Tram, trasporto privato e supporto locale per viaggiatori internazionali.",
+    principleTitle: "Scegli il tuo Ho Tram",
     principle:
-      "Preferiamo profondità a quantità. Ogni esperienza risponde a un motivo diverso per venire a Ho Tram: foresta, vita locale, alba, luoghi nascosti, cucina o relax.",
+      "Foresta, vita locale, alba, luoghi nascosti, cucina o una breve uscita dal resort: scegli lo stile che si adatta al tuo viaggio.",
     pickupTitle: "Partiamo da dove sei",
     pickup:
       "Possiamo organizzare il pickup dal resort a Ho Tram, dall'aeroporto Long Thanh o dal centro di Ho Chi Minh City. Tempi e percorso vengono confermati sul tuo volo e sul traffico reale.",
-    localTitle: "Pensato per viaggiatori FIT internazionali",
+    localTitle: "Privato per scelta",
     local:
       "Prima di tutto coppie, famiglie e piccoli gruppi. Nessuna sosta shopping obbligatoria. Lingua della guida e inclusioni vengono confermate prima del pagamento.",
     toursTitle: "Le sei esperienze principali",
@@ -110,7 +131,7 @@ export const ui = {
     back: "Tutte le 6 esperienze di Ho Tram",
     bookingNote: "Privato · programma confermato prima del pagamento",
     sourceNote:
-      "GoVietStay ricontrolla le condizioni locali prima della vendita. Meteo, stagionalità e accessi possono cambiare.",
+      "Orari, attività sensibili al meteo e inclusioni esatte vengono riconfermati per la data del viaggio.",
   },
 } as const;
 
@@ -139,7 +160,7 @@ export const tours: HotramTour[] = [
     ],
     notes: [
       "The forest route is kept light; longer trekking is a different product and is not bundled into this day.",
-      "Weekend, holiday and supplier ticket changes are reconfirmed before payment.",
+      "Any weekend or holiday surcharge is confirmed before booking.",
       "Long Thanh Airport same-day pickup is accepted only when the flight arrives early enough for the full route to remain comfortable.",
     ],
     pickup: ["Ho Tram resort", "Long Thanh Airport (early arrivals only)", "Central Ho Chi Minh City (full-day quote)"],
@@ -173,7 +194,7 @@ export const tours: HotramTour[] = [
       { guests: "5–6 guests", perPersonVnd: 2190000 },
     ],
     priceHeadline: "One private day. Full mineral-bath ticket included.",
-    priceNote: "Resort-origin pilot rate. Includes private vehicle, English-speaking guide, forest admission allowance, local lunch allowance and mineral-bath ticket. HCMC / Long Thanh pickup is quoted separately.",
+    priceNote: "Price shown for pickup from the Ho Tram resort area. Includes private vehicle, English-speaking guide, forest access, local lunch and mineral-bath ticket. HCMC / Long Thanh pickup is quoted separately.",
     tourFaqs: [
       { q: "Is this a hard trekking tour?", a: "No. The standard version uses a light forest route so the day still has enough time for the coast and mineral springs." },
       { q: "Is mineral bathing included?", a: "Yes in the pilot rate. The exact ticket category is rechecked for the travel date before payment." },
@@ -206,7 +227,7 @@ export const tours: HotramTour[] = [
     notes: [
       "Early departure matters because fishing activity is strongest around sunrise and boat-landing time.",
       "Farm access is never staged or entered without owner permission.",
-      "No compulsory shopping stop and no commission-driven seafood stop.",
+      "No compulsory shopping stops.",
     ],
     pickup: ["Ho Tram resort", "Central Ho Chi Minh City (full-day quote)"],
     visuals: [
@@ -239,7 +260,7 @@ export const tours: HotramTour[] = [
       { guests: "5–6 guests", perPersonVnd: 1190000 },
     ],
     priceHeadline: "Private local-life route with food and coffee included.",
-    priceNote: "Resort-origin pilot rate. Includes private vehicle, English-speaking guide, breakfast/coffee allowance and local lunch allowance. Boat, farm or paid activity add-ons are included only when separately confirmed.",
+    priceNote: "Price shown for pickup from the Ho Tram resort area. Includes private vehicle, English-speaking guide, breakfast/coffee and local lunch. Optional boat or paid activities are quoted separately.",
     tourFaqs: [
       { q: "Why does this tour start early?", a: "Because the fishing port is most alive around sunrise and the morning landing period. Starting late changes the experience." },
       { q: "Can we buy seafood at the port?", a: "Yes, if guests want to, but purchases are separate and GoVietStay does not route guests to a shop for commission." },
@@ -306,7 +327,7 @@ export const tours: HotramTour[] = [
       { guests: "5–6 guests", perPersonVnd: 1590000 },
     ],
     priceHeadline: "Two private departures in one day, with your resort time protected.",
-    priceNote: "Resort-origin pilot rate. Includes two private transport windows, English-speaking guide for both experience blocks, breakfast/coffee allowance and bottled water. Resort lunch, spa and dinner are not included.",
+    priceNote: "Price shown for pickup from the Ho Tram resort area. Includes two private transport windows, English-speaking guide, breakfast/coffee and bottled water. Resort lunch, spa and dinner are not included.",
     tourFaqs: [
       { q: "Do we stay outside all day?", a: "No. The key idea is sunrise, then resort time, then a second pickup for sunset." },
       { q: "What happens if sunrise is cloudy?", a: "The fishing-life and coastal experience still runs; the exact point can be adjusted based on the latest weather and sea conditions." },
@@ -337,9 +358,9 @@ export const tours: HotramTour[] = [
       "Return via a different local road where practical",
     ],
     notes: [
-      "ATV, horse riding and similar activities are not included in the base rate until supplier safety, age limits and insurance terms are verified.",
-      "The standard tour does not enter restricted forest areas without the correct local permission or guide.",
-      "Weather fallback favors safe forest-edge / countryside and coastal experiences rather than forcing an activity.",
+      "ATV, horse riding and similar activities are optional and depend on date, weather and age requirements.",
+      "Forest access follows local regulations, weather and the route available on the travel date.",
+      "If weather changes, the route is adjusted toward suitable forest-edge, countryside or coastal experiences.",
     ],
     pickup: ["Ho Tram resort", "Central Ho Chi Minh City (full-day quote)"],
     visuals: [
@@ -371,8 +392,8 @@ export const tours: HotramTour[] = [
       { guests: "4 guests", perPersonVnd: 1690000 },
       { guests: "5–6 guests", perPersonVnd: 1590000 },
     ],
-    priceHeadline: "Private expedition base rate — risky add-ons stay optional.",
-    priceNote: "Resort-origin pilot rate. Includes private vehicle, English-speaking guide, local lunch allowance and basic verified entrance allowance. ATV, horse riding, special forest guide, boat or paid adventure activities are quoted separately after verification.",
+    priceHeadline: "Private nature expedition with optional adventure add-ons.",
+    priceNote: "Price shown for pickup from the Ho Tram resort area. Includes private vehicle, English-speaking guide, local lunch and standard entrance fees. ATV, horse riding, boat and other paid adventure activities are quoted separately.",
     tourFaqs: [
       { q: "Is ATV or horse riding included?", a: "No. Those are optional add-ons only after the local operator, safety rules, age limits and date availability are verified." },
       { q: "Is this off-road?", a: "Not by default. The base route uses legal roads and verified nature areas; any true off-road element needs a confirmed supplier." },
@@ -404,7 +425,7 @@ export const tours: HotramTour[] = [
     ],
     notes: [
       "Omakase here means 'leave the curation to us' — it is not a Japanese-food tour.",
-      "A food allowance is included; premium seafood such as large lobster or items priced far above the allowance are confirmed with guests before ordering.",
+      "The tour includes a food-and-drink budget; premium seafood such as large lobster is confirmed with guests before ordering.",
       "Allergies and dietary restrictions must be shared before the tour.",
     ],
     pickup: ["Ho Tram resort"],
@@ -437,8 +458,8 @@ export const tours: HotramTour[] = [
       { guests: "4 guests", perPersonVnd: 1790000 },
       { guests: "5–6 guests", perPersonVnd: 1690000 },
     ],
-    priceHeadline: "Private food curation with a real food allowance — not a fixed buffet.",
-    priceNote: "Resort-origin pilot rate. Includes private transport, English-speaking local host/guide, and a 500,000 VND per guest food-and-drink allowance. Premium seafood above the allowance is only ordered after guest approval.",
+    priceHeadline: "Private food curation with 500,000 VND per guest for food and drinks.",
+    priceNote: "Price shown for pickup from the Ho Tram resort area. Includes private transport, English-speaking local host/guide, and 500,000 VND per guest for food and drinks. Premium seafood above this amount is ordered only with guest approval.",
     tourFaqs: [
       { q: "Is Omakase Ho Tram Japanese food?", a: "No. 'Omakase' describes the curation style: tell us your preferences and let GoVietStay build the route from what is good locally that day." },
       { q: "Is seafood price transparent?", a: "Yes. For market-priced or premium items, the price is confirmed before ordering." },
@@ -503,7 +524,7 @@ export const tours: HotramTour[] = [
       { guests: "5–6 guests", perPersonVnd: 990000 },
     ],
     priceHeadline: "A short private local escape without sacrificing the resort.",
-    priceNote: "Resort-origin pilot rate. Includes private vehicle, English-speaking guide/host, bottled water and a light food/coffee allowance. Paid attraction tickets are included only when the chosen route requires them and are confirmed before payment.",
+    priceNote: "Price shown for pickup from the Ho Tram resort area. Includes private vehicle, English-speaking guide/host, bottled water and a light food or coffee stop. Any paid attraction is confirmed before booking.",
     tourFaqs: [
       { q: "Can we start after breakfast?", a: "Yes. This product is built around resort time and can often start later than a normal day tour." },
       { q: "Is this suitable for seniors or young children?", a: "Yes. The route is deliberately compact and the primary stop is selected for mobility, weather and family needs." },
@@ -530,8 +551,8 @@ export const faqs = [
     a: "Yes. Private car pickup can be included for selected experiences. The total day is planned differently from a resort-origin tour because road time matters.",
   },
   {
-    q: "Why does GoVietStay offer only six Ho Tram experiences?",
-    a: "It is deliberate. We want six products that we can understand, verify and operate deeply instead of publishing a large catalog of near-duplicate tours.",
+    q: "Which Ho Tram experience should I choose?",
+    a: "Choose Forest · Ocean · Hot Spring for a full nature day, A Day As A Local for local life, Sunrise To Sunset for photography and resort time, Hidden Ho Tram Expedition for a more active route, Omakase Ho Tram for food, or Resort Discovery for a short private escape.",
   },
   {
     q: "Are Russian- or Italian-speaking guides guaranteed?",
