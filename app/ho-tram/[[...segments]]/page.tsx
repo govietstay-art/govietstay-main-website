@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import Image from "next/image";\nimport { notFound } from "next/navigation";
 import styles from "./HoTram.module.css";
 import {
   HOTRAM_BASE,
@@ -391,6 +391,31 @@ function TourPage({ locale, slug }: { locale: HotramLocale; slug: string }) {
         </aside>
       </section>
 
+      {tour.visuals?.length ? (
+        <section className={styles.visualStory} aria-label={`${tour.name} visual story`}>
+          {tour.visuals.map((visual, index) => (
+            <figure className={styles.visualCard} key={visual.src}>
+              <div className={styles.visualFrame}>
+                <Image
+                  src={visual.src}
+                  alt={visual.alt}
+                  fill
+                  priority={index === 0}
+                  quality={index === 0 ? 78 : 72}
+                  sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 390px"
+                  className={styles.visualImage}
+                />
+                <span>{String(index + 1).padStart(2, "0")} · {visual.label}</span>
+              </div>
+              <figcaption>
+                <b>{visual.label}</b>
+                <a href={visual.sourceUrl} target="_blank" rel="noreferrer">{visual.credit}</a>
+              </figcaption>
+            </figure>
+          ))}
+        </section>
+      ) : null}
+
       <section className={styles.detailGrid}>
         <article>
           <p className={styles.kicker}>WHY THIS EXPERIENCE</p>
@@ -407,6 +432,30 @@ function TourPage({ locale, slug }: { locale: HotramLocale; slug: string }) {
           </ol>
         </article>
       </section>
+
+      {tour.pilotPricing?.length ? (
+        <section className={styles.priceSection}>
+          <div>
+            <p className={styles.kicker}>2026 PILOT PRIVATE RATE</p>
+            <h2>One private day. Full mineral-bath ticket included.</h2>
+            <p className={styles.priceIntro}>
+              Resort-origin pricing for the first operating version. Weekend/holiday supplier changes are rechecked before payment.
+            </p>
+          </div>
+          <div className={styles.priceTable}>
+            {tour.pilotPricing.map((row) => (
+              <div key={row.guests}>
+                <span>{row.guests}</span>
+                <b>{new Intl.NumberFormat("en-US").format(row.perPersonVnd)} VND / person</b>
+              </div>
+            ))}
+            <small>
+              Includes private vehicle from Ho Tram resort area, English-speaking guide, forest admission allowance,
+              local lunch allowance and Minera mineral-bath ticket. HCMC / Long Thanh pickup is quoted separately.
+            </small>
+          </div>
+        </section>
+      ) : null}
 
       <section className={styles.pickup}>
         <div>
