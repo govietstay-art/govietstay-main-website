@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import Image from "next/image";\nimport { notFound } from "next/navigation";
+import Image from "next/image";
+import { notFound } from "next/navigation";
 import styles from "./HoTram.module.css";
 import {
   HOTRAM_BASE,
