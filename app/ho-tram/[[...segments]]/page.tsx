@@ -263,7 +263,7 @@ function Hub({ locale }: { locale: HotramLocale }) {
 
 
       <section className={styles.homeGallery} aria-label="Ho Tram travel inspiration">
-        {hubVisuals.map((visual) => (
+        {hubVisuals.map((visual, index) => (
           <figure key={visual.src}>
             <div>
               <Image
@@ -273,6 +273,7 @@ function Hub({ locale }: { locale: HotramLocale }) {
                 quality={72}
                 sizes="(max-width: 860px) 92vw, 390px"
                 className={styles.homeGalleryImage}
+                unoptimized={index > 0}
               />
             </div>
             <figcaption>{visual.label}</figcaption>
