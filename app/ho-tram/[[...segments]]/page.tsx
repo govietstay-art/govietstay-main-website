@@ -106,8 +106,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description,
       images: [
         {
-          url: `${HOTRAM_BASE}/govietstay-logo.jpg`,
-          alt: "GoVietStay Ho Tram private travel support",
+          url: tour?.visuals?.[0]?.src ?? `${HOTRAM_BASE}/govietstay-logo.jpg`,
+          alt: tour?.visuals?.[0]?.alt ?? "GoVietStay Ho Tram private travel support",
         },
       ],
     },
@@ -115,7 +115,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       card: "summary_large_image",
       title,
       description,
-      images: [`${HOTRAM_BASE}/govietstay-logo.jpg`],
+      images: [tour?.visuals?.[0]?.src ?? `${HOTRAM_BASE}/govietstay-logo.jpg`],
     },
   };
 }
@@ -333,6 +333,7 @@ function TourPage({ locale, slug }: { locale: HotramLocale; slug: string }) {
         url: canonical,
         provider: { "@id": `${MAIN_SITE}/#organization` },
         touristType: tour.bestFor,
+        image: tour.visuals?.map((item) => item.src),
         itinerary: {
           "@type": "ItemList",
           itemListElement: tour.itinerary.map((name, index) => ({
@@ -437,9 +438,9 @@ function TourPage({ locale, slug }: { locale: HotramLocale; slug: string }) {
         <section className={styles.priceSection}>
           <div>
             <p className={styles.kicker}>2026 PILOT PRIVATE RATE</p>
-            <h2>One private day. Full mineral-bath ticket included.</h2>
+            <h2>{tour.priceHeadline ?? "Private pilot rate for this experience."}</h2>
             <p className={styles.priceIntro}>
-              Resort-origin pricing for the first operating version. Weekend/holiday supplier changes are rechecked before payment.
+              Resort-origin pricing for the first operating version. Exact supplier conditions are rechecked before payment.
             </p>
           </div>
           <div className={styles.priceTable}>
@@ -449,10 +450,7 @@ function TourPage({ locale, slug }: { locale: HotramLocale; slug: string }) {
                 <b>{new Intl.NumberFormat("en-US").format(row.perPersonVnd)} VND / person</b>
               </div>
             ))}
-            <small>
-              Includes private vehicle from Ho Tram resort area, English-speaking guide, forest admission allowance,
-              local lunch allowance and Minera mineral-bath ticket. HCMC / Long Thanh pickup is quoted separately.
-            </small>
+            <small>{tour.priceNote}</small>
           </div>
         </section>
       ) : null}
@@ -460,7 +458,7 @@ function TourPage({ locale, slug }: { locale: HotramLocale; slug: string }) {
       <section className={styles.pickup}>
         <div>
           <p className={styles.kicker}>PICKUP LOGIC</p>
-          <h2>Ho Tram resort, Long Thanh Airport or Ho Chi Minh City — only where the day still makes sense.</h2>
+          <h2>Start point is part of the product — only origins that keep this experience practical are offered.</h2>
         </div>
         <div className={styles.pickupList}>
           {tour.pickup.map((item) => <span key={item}>{item}</span>)}
@@ -477,6 +475,23 @@ function TourPage({ locale, slug }: { locale: HotramLocale; slug: string }) {
           <li>{copy.sourceNote}</li>
         </ul>
       </section>
+
+      {tour.tourFaqs?.length ? (
+        <section className={styles.faq}>
+          <div className={styles.sectionHead}>
+            <p>TOUR-SPECIFIC ANSWERS</p>
+            <h2>Questions before you book</h2>
+          </div>
+          <div className={styles.faqGrid}>
+            {tour.tourFaqs.map((item) => (
+              <article key={item.q}>
+                <h3>{item.q}</h3>
+                <p>{item.a}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <section className={styles.confirm}>
         <div>
