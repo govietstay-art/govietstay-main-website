@@ -90,8 +90,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       googleBot: { index: isIndexable, follow: true },
     },
     icons: {
-      icon: [{ url: "/hotram-icon.webp", type: "image/webp" }],
-      apple: [{ url: "/hotram-icon.webp", type: "image/webp" }],
+      icon: [{ url: "/hotram-logo.webp", type: "image/webp" }],
+      apple: [{ url: "/hotram-logo.webp", type: "image/webp" }],
     },
     openGraph: {
       type: "website",
