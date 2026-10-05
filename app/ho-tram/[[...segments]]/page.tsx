@@ -7,6 +7,7 @@ import {
   LAST_REVIEWED,
   MAIN_SITE,
   faqs,
+  hubVisuals,
   localeConfig,
   publicUrl,
   tours,
@@ -88,6 +89,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       follow: true,
       googleBot: { index: isIndexable, follow: true },
     },
+    icons: {
+      icon: [{ url: "/hotram-icon.webp", type: "image/webp" }],
+      apple: [{ url: "/hotram-icon.webp", type: "image/webp" }],
+    },
     openGraph: {
       type: "website",
       url: canonical,
@@ -96,8 +101,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description,
       images: [
         {
-          url: tour?.visuals?.[0]?.src ?? `${HOTRAM_BASE}/govietstay-logo.jpg`,
-          alt: tour?.visuals?.[0]?.alt ?? "GoVietStay Ho Tram private travel support",
+          url: tour?.visuals?.[0]?.src ?? hubVisuals[0].src,
+          alt: tour?.visuals?.[0]?.alt ?? hubVisuals[0].alt,
         },
       ],
     },
@@ -105,21 +110,22 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       card: "summary_large_image",
       title,
       description,
-      images: [tour?.visuals?.[0]?.src ?? `${HOTRAM_BASE}/govietstay-logo.jpg`],
+      images: [tour?.visuals?.[0]?.src ?? hubVisuals[0].src],
     },
   };
 }
 
 function LanguageLinks({ slug }: { slug?: string }) {
+  const available = (Object.keys(localeConfig) as HotramLocale[])
+    .filter((locale) => localeConfig[locale].indexable);
+  if (available.length <= 1) return null;
   return (
     <nav className={styles.languages} aria-label="Languages">
-      {(Object.keys(localeConfig) as HotramLocale[])
-        .filter((locale) => localeConfig[locale].indexable)
-        .map((locale) => (
-          <a key={locale} href={internalHref(locale, slug)} hrefLang={localeConfig[locale].html}>
-            {localeConfig[locale].label}
-          </a>
-        ))}
+      {available.map((locale) => (
+        <a key={locale} href={internalHref(locale, slug)} hrefLang={localeConfig[locale].html}>
+          {localeConfig[locale].label}
+        </a>
+      ))}
     </nav>
   );
 }
@@ -188,9 +194,15 @@ function Hub({ locale }: { locale: HotramLocale }) {
     <main className={styles.page} lang={localeConfig[locale].html}>
       <JsonLd data={schema} />
       <header className={styles.header}>
-        <a className={styles.brand} href={MAIN_SITE}>
-          <span>GoVietStay</span>
-          <small>Trusted Local Support</small>
+        <a className={styles.brand} href={internalHref(locale)} aria-label="GoVietStay Ho Tram home">
+          <Image
+            src="/hotram-logo.webp"
+            alt="GoVietStay Ho Tram – Trusted Local Support"
+            width={720}
+            height={720}
+            className={styles.brandLogo}
+            priority
+          />
         </a>
         <LanguageLinks />
       </header>
@@ -214,16 +226,21 @@ function Hub({ locale }: { locale: HotramLocale }) {
             </a>
           </div>
         </div>
-        <aside className={styles.promise}>
-          <strong>6</strong>
-          <span>core experiences</span>
-          <hr />
-          <strong>Private</strong>
-          <span>couples · families · small groups</span>
-          <hr />
-          <strong>3</strong>
-          <span>starting points: Ho Tram · Long Thanh · HCMC</span>
-        </aside>
+        <div className={styles.heroVisual}>
+          <Image
+            src={hubVisuals[0].src}
+            alt={hubVisuals[0].alt}
+            fill
+            priority
+            quality={78}
+            sizes="(max-width: 860px) 92vw, 420px"
+            className={styles.heroImage}
+          />
+          <div className={styles.heroBadge}>
+            <b>Private Ho Tram</b>
+            <span>Couples · families · small groups</span>
+          </div>
+        </div>
       </section>
 
       <section className={styles.three}>
@@ -242,6 +259,25 @@ function Hub({ locale }: { locale: HotramLocale }) {
           <h2>{copy.localTitle}</h2>
           <p>{copy.local}</p>
         </article>
+      </section>
+
+
+      <section className={styles.homeGallery} aria-label="Ho Tram travel inspiration">
+        {hubVisuals.map((visual) => (
+          <figure key={visual.src}>
+            <div>
+              <Image
+                src={visual.src}
+                alt={visual.alt}
+                fill
+                quality={72}
+                sizes="(max-width: 860px) 92vw, 390px"
+                className={styles.homeGalleryImage}
+              />
+            </div>
+            <figcaption>{visual.label}</figcaption>
+          </figure>
+        ))}
       </section>
 
       <section className={styles.tours} id="six-experiences">
@@ -269,7 +305,7 @@ function Hub({ locale }: { locale: HotramLocale }) {
 
       <section className={styles.faq}>
         <div className={styles.sectionHead}>
-          <p>ANSWER-FIRST CONTENT</p>
+          <p>PLAN YOUR TRIP</p>
           <h2>{copy.faqTitle}</h2>
         </div>
         <div className={styles.faqGrid}>
@@ -284,16 +320,16 @@ function Hub({ locale }: { locale: HotramLocale }) {
 
       <section className={styles.trust}>
         <div>
-          <p>LOCAL SOURCE DISCIPLINE</p>
-          <h2>What we publish must still be true on the day we operate it.</h2>
+          <p>CURRENT LOCAL INFORMATION</p>
+          <h2>Details checked for your travel date.</h2>
         </div>
         <p>{copy.sourceNote}</p>
       </section>
 
       <footer className={styles.footer}>
-        <div>
-          <b>GoVietStay Ho Tram</b>
-          <span>Part of GoVietStay Vietnam</span>
+        <div className={styles.footerBrand}>
+          <Image src="/hotram-logo.webp" alt="GoVietStay Ho Tram" width={720} height={720} className={styles.footerLogo} />
+          <span>Trusted Local Support · Ho Tram</span>
         </div>
         <div>
           <a href={MAIN_SITE}>GoVietStay.com</a>
@@ -360,9 +396,15 @@ function TourPage({ locale, slug }: { locale: HotramLocale; slug: string }) {
     <main className={styles.page} lang={localeConfig[locale].html}>
       <JsonLd data={schema} />
       <header className={styles.header}>
-        <a className={styles.brand} href={internalHref(locale)}>
-          <span>GoVietStay</span>
-          <small>Ho Tram</small>
+        <a className={styles.brand} href={internalHref(locale)} aria-label="GoVietStay Ho Tram home">
+          <Image
+            src="/hotram-logo.webp"
+            alt="GoVietStay Ho Tram – Trusted Local Support"
+            width={720}
+            height={720}
+            className={styles.brandLogo}
+            priority
+          />
         </a>
         <LanguageLinks slug={tour.slug} />
       </header>
@@ -429,10 +471,10 @@ function TourPage({ locale, slug }: { locale: HotramLocale; slug: string }) {
       {tour.pilotPricing?.length ? (
         <section className={styles.priceSection}>
           <div>
-            <p className={styles.kicker}>2026 PILOT PRIVATE RATE</p>
+            <p className={styles.kicker}>PRIVATE PRICING</p>
             <h2>{tour.priceHeadline ?? "Private pilot rate for this experience."}</h2>
             <p className={styles.priceIntro}>
-              Resort-origin pricing for the first operating version. Exact supplier conditions are rechecked before payment.
+              Prices shown are for pickup from the Ho Tram resort area. Other starting points are quoted separately where available.
             </p>
           </div>
           <div className={styles.priceTable}>
@@ -449,8 +491,8 @@ function TourPage({ locale, slug }: { locale: HotramLocale; slug: string }) {
 
       <section className={styles.pickup}>
         <div>
-          <p className={styles.kicker}>PICKUP LOGIC</p>
-          <h2>Start point is part of the product — only origins that keep this experience practical are offered.</h2>
+          <p className={styles.kicker}>PICKUP</p>
+          <h2>Pickup is tailored to your route and travel time.</h2>
         </div>
         <div className={styles.pickupList}>
           {tour.pickup.map((item) => <span key={item}>{item}</span>)}
@@ -459,8 +501,8 @@ function TourPage({ locale, slug }: { locale: HotramLocale; slug: string }) {
 
       <section className={styles.notes}>
         <div>
-          <p className={styles.kicker}>OPERATING NOTES</p>
-          <h2>We confirm changing conditions before taking payment.</h2>
+          <p className={styles.kicker}>GOOD TO KNOW</p>
+          <h2>A few details before you go.</h2>
         </div>
         <ul>
           {tour.notes.map((item) => <li key={item}>{item}</li>)}
@@ -471,7 +513,7 @@ function TourPage({ locale, slug }: { locale: HotramLocale; slug: string }) {
       {tour.tourFaqs?.length ? (
         <section className={styles.faq}>
           <div className={styles.sectionHead}>
-            <p>TOUR-SPECIFIC ANSWERS</p>
+            <p>QUESTIONS & ANSWERS</p>
             <h2>Questions before you book</h2>
           </div>
           <div className={styles.faqGrid}>
@@ -487,18 +529,18 @@ function TourPage({ locale, slug }: { locale: HotramLocale; slug: string }) {
 
       <section className={styles.confirm}>
         <div>
-          <p className={styles.kicker}>CONFIRM BEFORE PAYMENT</p>
-          <h2>One booking should answer the operational questions once.</h2>
+          <p className={styles.kicker}>BOOKING DETAILS</p>
+          <h2>Clear details before you book.</h2>
         </div>
         <div className={styles.confirmGrid}>
           {[
             "Exact pickup point and pickup time",
-            "Private vehicle scope and route",
-            "Guide language and availability",
-            "Entrance / activity fees included or excluded",
+            "Private vehicle and planned route",
+            "Guide language",
+            "Included and excluded entrance or activity fees",
             "Meal, drinks and dietary requests",
             "Children ages, child seat or mobility needs",
-            "Cancellation terms and weather fallback",
+            "Cancellation terms and weather plan",
           ].map((item) => <span key={item}>✓ {item}</span>)}
         </div>
       </section>
@@ -518,9 +560,9 @@ function TourPage({ locale, slug }: { locale: HotramLocale; slug: string }) {
       </section>
 
       <footer className={styles.footer}>
-        <div>
-          <b>GoVietStay Ho Tram</b>
-          <span>Last content review: {LAST_REVIEWED}</span>
+        <div className={styles.footerBrand}>
+          <Image src="/hotram-logo.webp" alt="GoVietStay Ho Tram" width={720} height={720} className={styles.footerLogo} />
+          <span>Trusted Local Support · Ho Tram</span>
         </div>
         <div>
           <a href={internalHref(locale)}>{copy.back}</a>
