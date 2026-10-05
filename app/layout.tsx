@@ -75,6 +75,8 @@ const serviceAreas = [
   { "@type": "City", name: "Hoi An" },
   { "@type": "City", name: "Hue" },
   { "@type": "Place", name: "Phu Quoc" },
+  { "@type": "TouristDestination", name: "Ho Tram", alternateName: "Hồ Tràm" },
+  { "@type": "City", name: "Ho Chi Minh City" },
 ];
 
 export default async function RootLayout({
@@ -136,6 +138,9 @@ export default async function RootLayout({
                   "Hue travel",
                   "Phu Quoc travel",
                   "Vietnam visa support",
+                  "Ho Tram travel",
+                  "Ho Tram private tours",
+                  "Long Thanh Airport to Ho Tram travel planning",
                 ],
                 hasOfferCatalog: {
                   "@type": "OfferCatalog",
@@ -170,6 +175,11 @@ export default async function RootLayout({
                       "@type": "OfferCatalog",
                       name: "Small Group Deals",
                       url: "https://www.govietstay.com/group-deals",
+                    },
+                    {
+                      "@type": "OfferCatalog",
+                      name: "Ho Tram Private Experiences",
+                      url: "https://hotram.govietstay.com",
                     },
                   ],
                 },
