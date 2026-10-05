@@ -5,6 +5,8 @@ const nextConfig: NextConfig = {
     remotePatterns:[
       {protocol:"https",hostname:"vietnamtourism.vn",pathname:"/imguploads/**"},
       {protocol:"https",hostname:"minera.vn",pathname:"/static/upload/images/**"},
+      {protocol:"https",hostname:"www.angsana.com",pathname:"/assets/**"},
+      {protocol:"https",hostname:"vcdn1-dulich.vnecdn.net",pathname:"/**"},
     ],
     formats:["image/avif","image/webp"],
   },
