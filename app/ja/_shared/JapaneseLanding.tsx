@@ -21,7 +21,7 @@ export type JapaneseLandingConfig = {
 };
 
 const WA = "https://wa.me/84937762607";
-const LINE_ADD = "https://line.me/R/nv/addFriends";
+const LINE_ADD = "https://line.me/ti/p/VWxCn8-3Tz";
 const LINE_PHONE = "+84 937 762 607";
 const EMAIL = "mailto:govietstay@gmail.com";
 
