@@ -33,6 +33,40 @@ const heroByPath: Record<string, string> = {
   "/ja/phu-quoc": "/tour/cham.jpg",
 };
 
+const toursByPath: Record<string, Array<{ title: string; meta: string; price: string; href: string }>> = {
+  "/ja": [
+    { title: "バーナーヒルズ＆ゴールデンブリッジ", meta: "ダナン · 1日", price: "1,550,000 VND〜 / 大人", href: "/tours/ba-na-hills" },
+    { title: "ホイアン旧市街＋ココナッツ村", meta: "ホイアン · 午後〜夜", price: "1,250,000 VND〜 / 大人", href: "/tours/hoi-an-coconut-forest" },
+    { title: "フエ王宮・歴史ツアー", meta: "フエ · 1日", price: "1,450,000 VND〜 / 大人", href: "/travel/hue-day-trip-from-da-nang" },
+    { title: "チャム島スピードボート＆シュノーケリング", meta: "ダナン / ホイアン · 海", price: "950,000 VND〜 / 大人", href: "/travel/cham-island-snorkeling-guide" },
+    { title: "マーブルマウンテン＆ソンチャ", meta: "ダナン · 半日", price: "850,000 VND〜 / 大人", href: "/" },
+    { title: "フーコック 3島ボート", meta: "フーコック · 1日", price: "820,000 VND〜 / 大人", href: "/tours/phu-quoc" },
+  ],
+  "/ja/da-nang": [
+    { title: "バーナーヒルズ＆ゴールデンブリッジ", meta: "1日", price: "1,550,000 VND〜 / 大人", href: "/tours/ba-na-hills" },
+    { title: "マーブルマウンテン＆ソンチャ", meta: "半日", price: "850,000 VND〜 / 大人", href: "/" },
+    { title: "チャム島スピードボート＆シュノーケリング", meta: "海の1日", price: "950,000 VND〜 / 大人", href: "/travel/cham-island-snorkeling-guide" },
+    { title: "ホイアン旧市街＋ココナッツ村", meta: "午後〜夜", price: "1,250,000 VND〜 / 大人", href: "/tours/hoi-an-coconut-forest" },
+  ],
+  "/ja/hoi-an": [
+    { title: "ホイアン旧市街＋ココナッツ村", meta: "午後〜夜", price: "1,250,000 VND〜 / 大人", href: "/tours/hoi-an-coconut-forest" },
+    { title: "バスケットボート＋クッキングクラス", meta: "ローカル体験", price: "900,000 VND〜 / 大人", href: "/" },
+    { title: "チャム島スピードボート＆シュノーケリング", meta: "海の1日", price: "950,000 VND〜 / 大人", href: "/travel/cham-island-snorkeling-guide" },
+    { title: "ホイアン・メモリーズショー", meta: "夜の文化体験", price: "2,400,000 VND〜 / 大人", href: "/" },
+  ],
+  "/ja/hue": [
+    { title: "フエ王宮・歴史ツアー", meta: "車 · 1日", price: "1,450,000 VND〜 / 大人", href: "/travel/hue-day-trip-from-da-nang" },
+    { title: "フエ王宮＋景観列車", meta: "列車＋観光", price: "1,500,000 VND〜 / 大人", href: "/travel/hue-day-trip-from-da-nang" },
+  ],
+  "/ja/phu-quoc": [
+    { title: "南部フィッシング＆シュノーケリング", meta: "ボート", price: "650,000 VND〜 / 大人", href: "/tours/phu-quoc" },
+    { title: "3島ボート", meta: "島巡り＋シュノーケリング", price: "820,000 VND〜 / 大人", href: "/tours/phu-quoc" },
+    { title: "3島＋ホントム・ケーブルカー", meta: "島巡り＋ケーブルカー", price: "1,600,000 VND〜 / 大人", href: "/tours/phu-quoc" },
+    { title: "4島＋ホントム・ケーブルカー", meta: "人気の1日コース", price: "1,700,000 VND〜 / 大人", href: "/tours/phu-quoc" },
+    { title: "2島＋サンセットBBQ", meta: "午後〜夜", price: "1,550,000 VND〜 / 大人", href: "/tours/phu-quoc" },
+  ],
+};
+
 const gallery = [
   "/happy-travelers/3df6b28f-2fa4-448f-9259-8c9d670ca59c.jpg",
   "/happy-travelers/02462467f09771c928865.jpg",
@@ -45,6 +79,7 @@ const gallery = [
 export default function JapaneseLanding({ config }: { config: JapaneseLandingConfig }) {
   const url = `https://www.govietstay.com${config.canonicalPath}`;
   const heroImage = heroByPath[config.canonicalPath] ?? "/hero-hoian-new.png";
+  const tours = toursByPath[config.canonicalPath] ?? toursByPath["/ja"];
   const schema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
@@ -136,6 +171,28 @@ export default function JapaneseLanding({ config }: { config: JapaneseLandingCon
             </div>
           </article>
         ))}
+      </section>
+
+      <section className={styles.tours}>
+        <div className={styles.heading}>
+          <p>TOURS & PRICES</p>
+          <h2>人気ツアーと参考料金</h2>
+          <span>表示料金は現在の公開「〜」料金です。子ども料金、ホテル送迎、空き状況、祝日追加料金、ガイド言語、含まれるサービスは予約前に確認します。</span>
+        </div>
+        <div className={styles.tourGrid}>
+          {tours.map((tour) => (
+            <a className={styles.tourCard} href={tour.href} key={tour.title}>
+              <small>{tour.meta}</small>
+              <h3>{tour.title}</h3>
+              <strong>{tour.price}</strong>
+              <span>詳細を見る →</span>
+            </a>
+          ))}
+        </div>
+        <div className={styles.priceActions}>
+          <a href={LINE_ADD} target="_blank" rel="noreferrer">LINEで料金確認</a>
+          <a href={wa} target="_blank" rel="noreferrer">WhatsAppで空き確認</a>
+        </div>
       </section>
 
       <section className={styles.travelers}>
