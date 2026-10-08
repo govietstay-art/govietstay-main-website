@@ -21,25 +21,38 @@ export type JapaneseLandingConfig = {
 };
 
 const WA = "https://wa.me/84937762607";
+const LINE_ADD = "https://line.me/ti/p/VWxCn8-3Tz";
+const LINE_PHONE = "+84 937 762 607";
+const EMAIL = "mailto:govietstay@gmail.com";
+
+const heroByPath: Record<string, string> = {
+  "/ja": "/hero-hoian-new.png",
+  "/ja/da-nang": "/tour/bana.jpg",
+  "/ja/hoi-an": "/hero-hoian-new.png",
+  "/ja/hue": "/happy-travelers/02462467f09771c928865.jpg",
+  "/ja/phu-quoc": "/tour/cham.jpg",
+};
+
+const gallery = [
+  "/happy-travelers/3df6b28f-2fa4-448f-9259-8c9d670ca59c.jpg",
+  "/happy-travelers/02462467f09771c928865.jpg",
+  "/happy-travelers/02e412c4c634476a1e258.jpg",
+  "/happy-travelers/069ebea8-ccc5-4d79-9db3-9f9f8d52e490.jpg",
+  "/happy-travelers/34290908ddf85ca605e97.jpg",
+  "/happy-travelers/phaohoa%20(1).jpg",
+];
 
 export default function JapaneseLanding({ config }: { config: JapaneseLandingConfig }) {
   const url = `https://www.govietstay.com${config.canonicalPath}`;
+  const heroImage = heroByPath[config.canonicalPath] ?? "/hero-hoian-new.png";
   const schema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
     name: config.title,
     url,
     inLanguage: "ja-JP",
-    isPartOf: {
-      "@type": "WebSite",
-      name: "GoVietStay",
-      url: "https://www.govietstay.com",
-    },
-    about: {
-      "@type": "TravelAgency",
-      name: "GoVietStay",
-      areaServed: ["Da Nang", "Hoi An", "Hue", "Phu Quoc"],
-    },
+    isPartOf: { "@type": "WebSite", name: "GoVietStay", url: "https://www.govietstay.com" },
+    about: { "@type": "TravelAgency", name: "GoVietStay", areaServed: ["Da Nang", "Hoi An", "Hue", "Phu Quoc"] },
   };
   const faqSchema = {
     "@context": "https://schema.org",
@@ -72,29 +85,35 @@ export default function JapaneseLanding({ config }: { config: JapaneseLandingCon
           <a href="/ja/hoi-an">ホイアン</a>
           <a href="/ja/hue">フエ</a>
           <a href="/ja/phu-quoc">フーコック</a>
+          <a className={styles.lineNav} href={LINE_ADD} target="_blank" rel="noreferrer">LINE</a>
           <a className={styles.navCta} href={wa} target="_blank" rel="noreferrer">WhatsApp</a>
         </nav>
       </header>
 
       <section className={styles.hero}>
+        <div className={styles.heroMedia}>
+          <img src={heroImage} alt={config.title} fetchPriority="high" />
+          <div className={styles.heroOverlay} />
+        </div>
         <div className={styles.heroCopy}>
           <p>{config.eyebrow}</p>
           <h1>{config.title}</h1>
           <h2>{config.lead}</h2>
           <div className={styles.actions}>
             <a href="#guide">旅のポイントを見る</a>
-            <a href={wa} target="_blank" rel="noreferrer">旅程を相談する</a>
+            <a href={LINE_ADD} target="_blank" rel="noreferrer">LINEで相談</a>
+            <a href={wa} target="_blank" rel="noreferrer">WhatsApp</a>
           </div>
           <div className={styles.chips}>
             {config.highlights.map((x) => <span key={x}>✓ {x}</span>)}
           </div>
         </div>
-        <aside className={styles.trust}>
-          <small>TRUSTED LOCAL SUPPORT</small>
-          <h2>予約の前に、まず旅程を整理します。</h2>
-          <p>フライト、ホテル、人数、子どもの年齢、行きたい場所を送ってください。移動時間と天候を考え、無理のない順番を一緒に確認します。</p>
-          <a href={wa} target="_blank" rel="noreferrer">WhatsAppで相談 →</a>
-        </aside>
+      </section>
+
+      <section className={styles.contactStrip} aria-label="Contact options">
+        <div><b>LINE</b><span>電話番号検索: {LINE_PHONE}</span><a href={LINE_ADD} target="_blank" rel="noreferrer">LINEを開く →</a></div>
+        <div><b>WhatsApp</b><span>+84 937 762 607</span><a href={wa} target="_blank" rel="noreferrer">メッセージ →</a></div>
+        <div><b>Email</b><span>govietstay@gmail.com</span><a href={EMAIL}>メール →</a></div>
       </section>
 
       <section className={styles.quick}>
@@ -119,10 +138,20 @@ export default function JapaneseLanding({ config }: { config: JapaneseLandingCon
         ))}
       </section>
 
+      <section className={styles.travelers}>
+        <div className={styles.heading}>
+          <p>HAPPY TRAVELLERS</p>
+          <h2>旅先の雰囲気は、実際の写真で見るのがいちばん早い。</h2>
+        </div>
+        <div className={styles.photoGrid}>
+          {gallery.map((src, i) => <img key={src} src={src} alt={`ベトナム旅行の様子 ${i + 1}`} loading="lazy" />)}
+        </div>
+      </section>
+
       <section className={styles.faq}>
         <div className={styles.heading}>
           <p>よくある質問</p>
-          <h2>日本からベトナム旅行を計画するときに確認したいこと</h2>
+          <h2>出発前に確認しておきたいこと</h2>
         </div>
         <div className={styles.faqGrid}>
           {config.faqs.map((f) => <details key={f.q}><summary>{f.q}</summary><p>{f.a}</p></details>)}
@@ -137,17 +166,17 @@ export default function JapaneseLanding({ config }: { config: JapaneseLandingCon
       </section>
 
       <section className={styles.final}>
-        <div>
-          <p>GOVIETSTAY · LOCAL TEAM IN VIETNAM</p>
-          <h2>{config.ctaTitle}</h2>
-          <span>{config.ctaText}</span>
+        <div><h2>{config.ctaTitle}</h2><span>{config.ctaText}</span></div>
+        <div className={styles.finalActions}>
+          <a href={LINE_ADD} target="_blank" rel="noreferrer">LINEで相談</a>
+          <a href={wa} target="_blank" rel="noreferrer">WhatsApp</a>
         </div>
-        <a href={wa} target="_blank" rel="noreferrer">WhatsAppで相談する</a>
       </section>
 
       <div className={styles.mobile}>
-        <a href={wa} target="_blank" rel="noreferrer">旅程相談</a>
-        <a href="/ja">日本語トップ</a>
+        <a href={LINE_ADD} target="_blank" rel="noreferrer">LINE</a>
+        <a href={wa} target="_blank" rel="noreferrer">WhatsApp</a>
+        <a href={EMAIL}>Email</a>
       </div>
     </main>
   );
