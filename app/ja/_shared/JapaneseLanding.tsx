@@ -35,11 +35,11 @@ const heroByPath: Record<string, string> = {
 
 const gallery = [
   "/happy-travelers/3df6b28f-2fa4-448f-9259-8c9d670ca59c.jpg",
-  "/happy-travelers/germany.jpg",
-  "/happy-travelers/korea.jpg",
-  "/happy-travelers/russia.jpg",
+  "/happy-travelers/02462467f09771c928865.jpg",
+  "/happy-travelers/02e412c4c634476a1e258.jpg",
+  "/happy-travelers/069ebea8-ccc5-4d79-9db3-9f9f8d52e490.jpg",
+  "/happy-travelers/34290908ddf85ca605e97.jpg",
   "/happy-travelers/phaohoa%20(1).jpg",
-  "/happy-travelers/australia.jpg",
 ];
 
 export default function JapaneseLanding({ config }: { config: JapaneseLandingConfig }) {
