@@ -145,6 +145,18 @@ export default function JapaneseLanding({ config }: { config: JapaneseLandingCon
         </div>
       </section>
 
+      <section className={styles.privateGuide}>
+        <div>
+          <p>PRIVATE TOUR · JAPANESE-SPEAKING GUIDE</p>
+          <h2>日本語ガイド付きプライベートツアー</h2>
+          <span>ご家族、カップル、小グループ向けに、専用車と日本語ガイドを組み合わせたプライベート旅行を手配できます。ダナン、ホイアン、フエを中心に、日程・人数・訪問先に合わせて調整します。日本語ガイドは事前予約制で、日程と空き状況を確認してから確定します。</span>
+        </div>
+        <div className={styles.privateGuideActions}>
+          <a href={LINE_ADD} target="_blank" rel="noreferrer">LINEで日本語ガイドを確認</a>
+          <a href={wa} target="_blank" rel="noreferrer">WhatsAppで相談</a>
+        </div>
+      </section>
+
       <section className={styles.contactStrip} aria-label="Contact options">
         <div><b>LINE</b><span>電話番号検索: {LINE_PHONE}</span><a href={LINE_ADD} target="_blank" rel="noreferrer">LINEを開く →</a></div>
         <div><b>WhatsApp</b><span>+84 937 762 607</span><a href={wa} target="_blank" rel="noreferrer">メッセージ →</a></div>
@@ -177,6 +189,7 @@ export default function JapaneseLanding({ config }: { config: JapaneseLandingCon
         <div className={styles.heading}>
           <p>TOURS & PRICES</p>
           <h2>人気ツアーと参考料金</h2>
+          <div className={styles.guideBadge}>日本語ガイド付きプライベートツアー対応 · 要事前確認</div>
           <span>表示料金は現在の公開「〜」料金です。子ども料金、ホテル送迎、空き状況、祝日追加料金、ガイド言語、含まれるサービスは予約前に確認します。</span>
         </div>
         <div className={styles.tourGrid}>
