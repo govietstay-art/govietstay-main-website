@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import PublicInquiryForm from "../../../components/PublicInquiryForm";
 
 export const metadata: Metadata = {
- title: "จองทัวร์ส่วนตัวดานัง ฮอยอัน เว้ | GoVietStay",
- description: "ส่งคำขอทัวร์ส่วนตัว แพ็กเกจ 4 วัน 3 คืน หรือคอมโบทัวร์กับ GoVietStay รับใบเสนอราคาก่อนจอง",
+ title: "ทัวร์ส่วนตัวดานัง ฮอยอัน เว้ | ขอราคา GoVietStay",
+ description: "สนใจเที่ยวดานัง ฮอยอัน เว้ หรือฟูก๊วก? บอกวันเดินทางและจำนวนคน แล้วเราช่วยจัดทริปและแจ้งราคาให้ก่อนตัดสินใจ",
  alternates: { canonical: "https://www.govietstay.com/th/request-tour" },
  robots: { index: true, follow: true }
 };
@@ -13,10 +13,10 @@ export default function ThaiTourRequestPage(){
   <nav className="mb-6 text-sm text-slate-600"><a href="/th" className="underline">GoVietStay Thailand</a> / ขอใบเสนอราคา</nav>
   <header className="mb-8">
    <p className="text-sm font-semibold uppercase tracking-wider text-emerald-800">GoVietStay · Trusted Local Support</p>
-   <h1 className="mt-2 text-3xl font-bold">จองทัวร์ส่วนตัวและแพ็กเกจเที่ยวเวียดนาม</h1>
-   <p className="mt-3 leading-7 text-slate-700">เลือกทัวร์ส่วนตัว แพ็กเกจ 4 วัน 3 คืน หรือคอมโบทัวร์ดานัง ฮอยอัน เว้ และฟูก๊วก แจ้งวันที่ จำนวนผู้เดินทาง และความต้องการของคุณ ทีมงานจะตรวจสอบบริการและเสนอราคาก่อนยืนยันการจอง</p>
+   <h1 className="mt-2 text-3xl font-bold">อยากเที่ยวเวียดนามแบบไหน บอกเราได้เลย</h1>
+   <p className="mt-3 leading-7 text-slate-700">เที่ยวดานัง ฮอยอัน เว้ หรือฟูก๊วกกับครอบครัวและเพื่อน ๆ จะเลือกเที่ยววันเดียวหรือให้เราช่วยจัดทริปหลายวันก็ได้ กรอกข้อมูลสั้น ๆ ด้านล่าง แล้วทีมงานจะติดต่อกลับพร้อมรายละเอียดและราคา</p>
   </header>
   <PublicInquiryForm productCode="TH-TOUR-REQUEST" productName="Da Nang / Hoi An / Hue / Phu Quoc private tour or combo" sourcePage="/th/request-tour" locale="th"/>
-  <p className="mt-6 text-sm text-slate-600">แบบฟอร์มนี้เป็นคำขอใบเสนอราคา ไม่ใช่การชำระเงินหรือการจองที่ได้รับการยืนยัน</p>
+  <p className="mt-6 text-sm text-slate-600">ส่งข้อมูลเพื่อสอบถามก่อนได้ ยังไม่ต้องชำระเงิน และยังไม่ถือว่าเป็นการยืนยันการจอง</p>
  </main>;
 }
