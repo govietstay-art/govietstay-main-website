@@ -32,6 +32,14 @@ const languageAlternates = (englishPath: string, russianPath: string) => ({
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const corePages: MetadataRoute.Sitemap = [
+    ...["/th","/th/ba-na-hills-private-tour","/th/hoi-an-private-tour","/th/da-nang-private-package-4d3n","/th/request-tour"].map(path=>({
+      url: `${BASE_URL}${path}`,
+      lastModified: new Date("2026-10-09T00:00:00.000Z"),
+      changeFrequency: "weekly" as const,
+      priority: path === "/th" ? 0.9 : 0.8,
+      alternates: {languages: {"th-TH": `${BASE_URL}${path}`}},
+    })),
+
     {
       url: `${BASE_URL}/en/cruise-port-shore-excursions`,
       lastModified: new Date("2026-09-12T00:00:00.000Z"),
