@@ -5,8 +5,8 @@ import {italyHubVisuals,italyGuestPhotos,getItalyVisual} from "../../lib/italyVi
 import styles from "./ItalyHub.module.css";
 
 export const metadata:Metadata={
-  title:{absolute:"Vietnam fai da te e tour privati 2026 | Da Nang, Hoi An, Hue, Phu Quoc | GoVietStay"},
-  description:"GoVietStay Italia: Vietnam fai da te, tour privati, auto privata, guide nella lingua richiesta, Da Nang, Hoi An, Hue e Phu Quoc. Prezzi in VND per pacchetti specifici; guida italiana su richiesta.",
+  title:{absolute:"Pacchetti viaggio Vietnam e tour privati 2026 | GoVietStay"},
+  description:"Pacchetti viaggio Vietnam personalizzati, tour privati e itinerari su misura per coppie e famiglie: Da Nang, Hoi An, Hue e Phu Quoc. Guida italiana su richiesta e preventivo trasparente.",
   alternates:{canonical:"https://www.govietstay.com/it",languages:{"it-IT":"https://www.govietstay.com/it","en":"https://www.govietstay.com","ru":"https://www.govietstay.com/ru","x-default":"https://www.govietstay.com"}},
   robots:{index:true,follow:true},
   openGraph:{type:"website",url:"https://www.govietstay.com/it",title:"GoVietStay Italia | Vietnam fai da te e privato",description:"Volo e hotel li scegli tu. In Vietnam hai un team locale quando serve davvero.",locale:"it_IT",siteName:"GoVietStay",images:[{url:"https://www.govietstay.com/hero-hoian-new.png",alt:"GoVietStay Italia"}]}
@@ -31,7 +31,7 @@ export default function ItalyHub(){
     <section className={styles.hero}>
       <div className={styles.heroMain}><img src={italyHubVisuals.hero} alt="Hoi An al tramonto" fetchPriority="high"/><div className={styles.shade}/><div className={styles.heroCopy}>
         <p>FAI DA TE QUANDO È SEMPLICE · PRIVATO QUANDO FA LA DIFFERENZA</p>
-        <h1>Volo e hotel li scegli tu. <em>In Vietnam hai un team locale quando serve davvero.</em></h1>
+        <h1>Scegli il tuo pacchetto Vietnam. <em>Organizziamo un viaggio privato su misura, oppure solo i servizi che ti servono.</em></h1>
         <h2>Per coppie, famiglie e piccoli gruppi che non vogliono un viaggio in pullman: auto privata, guida nella lingua richiesta, orari più umani e supporto locale quando il programma cambia.</h2>
         <div className={styles.actions}><a href="#privato">Scopri il privato</a><a href="#prezzi">Vedi prezzi standard</a><a href={italyMarketConfig.whatsapp} target="_blank" rel="noreferrer">WhatsApp</a></div>
         <div className={styles.proof}><span>✓ Tariffe per pacchetto, senza maggiorazioni per nazionalità</span><span>✓ Guida nella lingua richiesta*</span><span>✓ Nessun estraneo nel privato confermato</span></div>
@@ -42,7 +42,7 @@ export default function ItalyHub(){
       </aside>
     </section>
 
-    <section className={styles.quick}>
+    <section className={styles.quick}><a href="/it/tour-su-misura-vietnam-centrale">Pacchetti viaggio Vietnam su misura: date, hotel, transfer e tour privati — chiedi un preventivo</a><a href="/it/itinerario-da-nang-4-giorni">Esempio pacchetto 4 giorni: Da Nang, Hoi An e Ba Na Hills</a>
       <a href="/it/vietnam-senza-visto-45-giorni"><small>VISTO</small><b>45 giorni senza visto*</b><span>Regola ufficiale →</span></a>
       <a href="/it/tour-su-misura-vietnam-centrale"><small>SU MISURA</small><b>Solo ciò che ti serve</b><span>Costruiamo il viaggio →</span></a>
       <a href="/it/guida-in-italiano-vietnam-centrale"><small>LINGUA</small><b>Italiano o altra lingua*</b><span>Su disponibilità →</span></a>
