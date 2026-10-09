@@ -20,7 +20,7 @@ replaceOnce(
 
 replaceOnce(
   'const [tab,setTab]=useState<"dashboard"|"analytics"|"marketing"|"partners"|"seo"|"leads"|"bookings"|"reviews"|"finance"|"team"|"operator_payables"|"yandex"|"phuquoc">("dashboard");',
-  'const [tab,setTab]=useState<"dashboard"|"analytics"|"marketing"|"partners"|"pi_partners"|"merchant_network"|"seo"|"leads"|"bookings"|"reviews"|"finance"|"team"|"operator_payables"|"yandex"|"phuquoc">("dashboard");',
+  'const [tab,setTab]=useState<"dashboard"|"analytics"|"marketing"|"partners"|"pi_partners"|"merchant_network"|"seo"|"leads"|"bookings"|"reviews"|"finance"|"team"|"operator_payables"|"yandex"|"phuquoc"|"web_inquiries">("dashboard");',
   "tab union"
 );
 
