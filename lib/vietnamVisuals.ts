@@ -37,7 +37,7 @@ export const vietnamReviewScreenshots = [
 ];
 
 export const vietnamFeaturedProducts = [
-  { slug: "tour-ba-na-hills", image: "/tour/bana.jpg", tag: "BÀ NÀ HILLS", benefit: "Không phải tự lo vé và xe; giá được xác nhận rõ trước khi đi." },
+  { slug: "tour-ba-na-hills", image: "/tour/bana.jpg", tag: "VÉ BÀ NÀ + BUFFET", benefit: "Vé cáp treo kèm buffet 1.200.000đ/người lớn; xe riêng báo giá riêng khi cần." },
   { slug: "tour-cu-lao-cham", image: "/tour/cham-island/guest-on-island.jpg", tag: "CÙ LAO CHÀM", benefit: "Có cano, snorkeling và kiểm tra tình hình biển sát ngày." },
   { slug: "tour-hoi-an-rung-dua", image: "/tour/hoi-an-coconut-forest/gallery/lantern-boat-guests.webp", tag: "HỘI AN", benefit: "Đi Rừng Dừa buổi chiều, vào phố cổ đúng lúc lên đèn." },
   { slug: "tour-hue-tu-da-nang", image: "/tour/hue.jpg", tag: "HUẾ", benefit: "Một ngày vừa sức để xem di sản mà không phải chạy quá nhiều điểm." },
