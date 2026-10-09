@@ -11,10 +11,11 @@ export const vietnamBusinessConfig = {
   "prices": {
     "bana": {
       "netCost": null,
-      "sellPrice": 1249000,
-      "verified": false,
-      "targetPrice": 1249000,
-      "marginMin": 0.08
+      "sellPrice": 1200000,
+      "publishedPrice": 1300000,
+      "verified": true,
+      "targetPrice": 1200000,
+      "marginMin": 0.04
     },
     "cham": {
       "netCost": null,
@@ -59,5 +60,5 @@ export const vietnamBusinessConfig = {
       "marginMin": 0.1
     }
   },
-  "policyVersion": "VI-2026.08.26"
+  "policyVersion": "VI-2026.10.09"
 } as const;
