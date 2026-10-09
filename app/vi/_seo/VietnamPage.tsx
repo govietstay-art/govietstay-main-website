@@ -8,16 +8,16 @@ type PriceConfig = { sellPrice: number; verified: boolean };
 const priceMap = vietnamBusinessConfig.prices as unknown as Record<string, PriceConfig>;
 
 const typeCopy = {
-  product: ["Tour / dịch vụ", "Xem giá từ, phần bao gồm và những điều cần biết trước khi đặt."],
-  combo: ["Combo", "Phù hợp khi bạn muốn đi nhiều dịch vụ và muốn gom chung cho dễ sắp xếp."],
-  private: ["Tour riêng gia đình", "Không ghép khách khác khi đã xác nhận tour riêng; lịch được sắp theo người đi."],
-  guide: ["Kinh nghiệm", "Đọc trước để biết mình cần gì, sau đó mới quyết định có nên đặt tour hay không."],
+  product: ["Tour / dịch vụ", "Xem lịch đi, giá và những gì đã bao gồm trước khi quyết định."],
+  combo: ["Combo", "Dành cho bạn muốn đi vài nơi trong một chuyến và đặt dịch vụ cho gọn."],
+  private: ["Tour riêng gia đình", "Có lịch riêng cho gia đình, không ghép với nhóm khách khác."],
+  guide: ["Kinh nghiệm", "Một vài lưu ý giúp bạn lên kế hoạch trước khi đặt vé, xe hoặc tour."],
 } as const;
 
 function priceLabel(page: VietnamSeoPage) {
-  if (!page.priceKey) return page.depositPercent === 0 ? "Transfer tiêu chuẩn: không cần cọc" : "Báo giá theo nhóm";
+  if (!page.priceKey) return page.depositPercent === 0 ? "Xe tiêu chuẩn: không cần cọc" : "Báo giá theo nhóm";
   const price = priceMap[page.priceKey];
-  return price?.sellPrice ? `Từ ${new Intl.NumberFormat("vi-VN").format(price.sellPrice)}đ` : "Hỏi giá nhanh";
+  return price?.sellPrice ? `${page.priceKey === "bana" ? "" : "Từ "}${new Intl.NumberFormat("vi-VN").format(price.sellPrice)}đ` : "Hỏi giá nhanh";
 }
 
 export default function VietnamPage({
@@ -55,16 +55,16 @@ export default function VietnamPage({
 
   const faq = [
     ...(isBana ? [
-      ["Vé Bà Nà Hills kèm buffet tại GoVietStay giá bao nhiêu?", "Vé cáp treo kèm buffet trưa cho người lớn đang được chào giá 1.200.000đ, so với giá công bố 1.300.000đ. GoVietStay sẽ kiểm tra ngày sử dụng, loại vé và xác nhận giá trước khi thu tiền."],
-      ["Vé Bà Nà 1.200.000đ có bao gồm xe đưa đón không?", "Không. Đây là giá vé cáp treo kèm buffet trưa. Xe đưa đón và hướng dẫn viên được báo riêng theo nhu cầu, không bắt buộc mua kèm."],
-      ["Trẻ em đi Bà Nà tính giá như thế nào?", "Giá và loại vé trẻ em phụ thuộc quy định chiều cao hoặc độ tuổi của nhà cung cấp tại ngày sử dụng. Vui lòng điền chiều cao hoặc tuổi của từng bé trong form để kiểm tra."],
-      ["Gửi form có được xuất vé ngay không?", "Chưa. Form sẽ lưu yêu cầu vào hệ thống để nhân viên kiểm tra ngày, số khách và tình trạng vé. Sau khi khách đồng ý và hoàn thành thanh toán theo hướng dẫn, GoVietStay mới xác nhận việc xuất vé."],
-      ["Đặt vé Bà Nà cho hè 2027 có giữ giá 1.200.000đ không?", "Không mặc định. Giá này là mức bán đang áp dụng khi trang được cập nhật năm 2026; đặt cho hè 2027 cần được báo giá lại theo chính sách nhà cung cấp."],
+      ["Vé Bà Nà Hills kèm buffet tại GoVietStay giá bao nhiêu?", "Vé cáp treo kèm buffet trưa đang có giá 1.200.000đ/người lớn, so với giá công bố 1.300.000đ. Bạn gửi ngày đi để bên mình kiểm tra đúng loại vé rồi báo lại trước khi thanh toán."],
+      ["Vé Bà Nà 1.200.000đ có bao gồm xe đưa đón không?", "Chưa bạn nhé. Giá 1.200.000đ chỉ gồm vé cáp treo và buffet. Nếu cần xe hoặc hướng dẫn viên, bên mình báo riêng để bạn cân nhắc."],
+      ["Trẻ em đi Bà Nà tính giá như thế nào?", "Bạn cho biết chiều cao hoặc tuổi từng bé trong form nhé. Bên mình sẽ kiểm tra loại vé trẻ em theo quy định ở ngày đi."],
+      ["Gửi form có được xuất vé ngay không?", "Chưa. Form giúp bên mình nhận đủ thông tin để kiểm tra vé. Khi bạn đồng ý giá và thanh toán theo hướng dẫn, bên mình mới xác nhận và xuất vé."],
+      ["Đặt vé Bà Nà cho hè 2027 có giữ giá 1.200.000đ không?", "Chưa thể cam kết giá 1.200.000đ cho hè 2027. Bạn gửi ngày đi dự kiến, bên mình sẽ kiểm tra giá nhà cung cấp ở thời điểm đó rồi báo lại."],
     ] as [string,string][] : []),
-    ["Giá trên website đã là giá cuối cùng chưa?", "Chưa hẳn. Mức “từ” còn phụ thuộc ngày đi, số khách, trẻ em và quyền lợi của từng gói. GoVietStay sẽ xác nhận lại trước khi bạn đặt cọc."],
-    ["Chuyển khoản bằng QR là booking đã chắc chắn chưa?", "Chưa. Ở bước hiện tại GoVietStay vẫn kiểm tra tiền thủ công và gửi xác nhận booking sau."],
-    ["Gia đình tôi có thể đi riêng không?", "Có. Gửi số người, ngày đi, độ tuổi, sở thích và những điều cả nhà không muốn để GoVietStay lên phương án riêng."],
-    ["Tôi muốn xem đánh giá của khách cũ ở đâu?", "Bấm nút Google Reviews trên trang để mở trực tiếp hồ sơ đánh giá của GoVietStay."],
+    ["Giá trên website đã là giá cuối cùng chưa?", "Với các tour có giá “từ”, tổng tiền còn tùy ngày đi, số khách và dịch vụ đi kèm. Bên mình sẽ báo giá cuối cùng trước khi bạn thanh toán."],
+    ["Gửi form rồi có cần thanh toán ngay không?", "Không. Form mới là yêu cầu kiểm tra vé hoặc dịch vụ. Nhân viên sẽ xác nhận tình trạng, giá và hướng dẫn thanh toán trước khi chốt đơn."],
+    ["Gia đình tôi có thể đi riêng không?", "Được bạn nhé. Cứ cho bên mình biết ngày đi, số người, tuổi các bé và những nơi cả nhà muốn ghé để sắp lịch phù hợp."],
+    ["Tôi muốn xem đánh giá của khách cũ ở đâu?", "Bạn bấm Google Reviews trên trang để xem những đánh giá trực tiếp trên Google Maps."],
   ];
 
   const faqSchema = isBana ? { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faq.map(([q,a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) } : null;
@@ -72,18 +72,18 @@ export default function VietnamPage({
   const privateLike = page.type === "private" || page.slug.includes("gia-dinh");
 
   const practicalAdvice = page.slug.includes("cu-lao") || page.slug.includes("cham")
-    ? "Cù Lao Chàm phụ thuộc khá nhiều vào tình hình biển. Trước ngày đi, GoVietStay sẽ kiểm tra lại điều kiện vận hành thay vì hứa chắc một lịch cố định từ quá sớm."
+    ? "Cù Lao Chàm đẹp nhất khi biển êm. Bên mình sẽ kiểm tra tình hình biển gần ngày đi rồi mới xác nhận lịch cano."
     : page.slug.includes("ba-na") || page.slug.includes("bana")
-      ? "Bà Nà thường đông hơn vào cuối tuần và ngày lễ. Nếu nhóm ưu tiên chụp ảnh thoải mái, nên hỏi trước về giờ đi hoặc phương án tour riêng phù hợp."
+      ? "Bà Nà thường đông vào cuối tuần và ngày lễ. Nếu muốn có nhiều thời gian chụp ảnh, bạn nên tính giờ đi sớm và hỏi xe riêng nếu cần."
       : page.slug.includes("hoi-an") || page.slug.includes("rung-dua")
-        ? "Lịch Hội An thường dễ chịu hơn khi đi Rừng Dừa trước, sau đó vào phố cổ lúc nắng đã dịu và ở lại đến khi đèn lồng lên."
+        ? "Nếu đi cả Rừng Dừa và phố cổ Hội An, bạn có thể đi thuyền thúng trước, rồi vào phố cổ lúc chiều mát và ở lại ngắm đèn lồng."
         : page.slug.includes("hue")
-          ? "Huế là lịch đi trong ngày khá dài từ Đà Nẵng, nên đừng cố nhồi quá nhiều điểm. Có thời gian nghỉ và ăn uống tử tế thì chuyến đi sẽ dễ chịu hơn."
+          ? "Đi Huế từ Đà Nẵng mất khá nhiều thời gian ngồi xe. Cả nhà nên chọn vài điểm thật sự muốn xem, chừa thời gian ăn trưa và nghỉ ngơi."
           : page.slug.includes("phu-quoc")
-            ? "Phú Quốc rộng, vì vậy tên resort và khu vực lưu trú ảnh hưởng trực tiếp đến lịch xe. Gửi đúng nơi ở giúp GoVietStay tư vấn sát hơn và bớt thời gian chạy vòng."
+            ? "Phú Quốc rộng, nên ở bắc đảo hay nam đảo sẽ ảnh hưởng khá nhiều đến lịch trình. Bạn gửi tên resort để bên mình tính đường đi cho hợp lý."
             : page.slug.includes("san-bay") || page.slug.includes("thue-xe")
-              ? "Với xe riêng, tên khách sạn, số người, số vali và giờ đi quan trọng hơn một mức giá quảng cáo chung. Gửi đủ thông tin thì báo giá mới sát thực tế."
-              : "Mỗi nhóm khách có một nhịp đi khác nhau. GoVietStay sẽ dựa vào ngày đi, số người và điều bạn ưu tiên để xác nhận phương án phù hợp hơn.";
+              ? "Cần xe riêng thì bạn gửi điểm đón, giờ đi, số người và số vali nhé. Có đủ thông tin, bên mình mới chọn đúng loại xe và báo giá chính xác."
+              : "Mỗi gia đình có cách đi chơi khác nhau. Bạn gửi ngày, số người và những điều mình ưu tiên, bên mình sẽ gợi ý lịch phù hợp.";
 
   return (
     <main className={styles.page}>
@@ -143,8 +143,8 @@ export default function VietnamPage({
 
       <section className={styles.scan}>
         <div><small>BẠN NHẬN ĐƯỢC GÌ?</small><b>{copy[0]}</b><p>{page.description}</p></div>
-        <div><small>TRƯỚC KHI SO GIÁ</small><b>Nhớ xem cùng một quyền lợi.</b><p>Cùng ngày đi, cùng loại vé, cùng phần ăn, xe và chính sách trẻ em thì so giá mới chính xác.</p></div>
-        <div><small>CÓ NGƯỜI HỖ TRỢ TẠI ĐIỂM ĐẾN</small><b>Cần hỏi gì thì nhắn Zalo.</b><p>Thời tiết, giờ đón hoặc tình hình tour có thể thay đổi; có người kiểm tra tại chỗ sẽ đỡ mất công tự tìm nhiều nguồn.</p></div>
+        <div><small>TRƯỚC KHI SO GIÁ</small><b>Nhớ so cùng loại dịch vụ nhé.</b><p>Khi so giá, bạn nhớ xem vé có buffet chưa, có xe không và giá trẻ em tính thế nào. Khác quyền lợi thì giá cũng khác.</p></div>
+        <div><small>CÓ NGƯỜI HỖ TRỢ TẠI ĐIỂM ĐẾN</small><b>Có gì chưa rõ, cứ nhắn Zalo.</b><p>Giờ đón hay thời tiết thay đổi, bên mình sẽ kiểm tra thực tế và trao đổi lại để bạn chủ động sắp lịch.</p></div>
       </section>
 
       {["combo-da-nang-3n2d","combo-da-nang-4n3d","combo-da-nang-gia-dinh","du-lich-da-nang-tu-tuc","tour-rieng-da-nang-gia-dinh","combo-da-nang-3-tour"].includes(page.slug) && (
@@ -162,7 +162,7 @@ export default function VietnamPage({
           </div>
           <div className={styles.privateCopy}>
             <p>TOUR RIÊNG GIA ĐÌNH</p>
-            <h2>Nhà mình đi thế nào thì lịch được sắp như thế.</h2>
+            <h2>Cả nhà thích đi đâu, mình sắp lịch theo đó.</h2>
             <div>
               {[
                 "Số người, ngày đi và độ tuổi",
@@ -183,7 +183,7 @@ export default function VietnamPage({
           <section className={styles.explainer}>
             <div>
               <p>01 · TOUR NÀY HỢP VỚI AI?</p>
-              <h2>Hợp nếu bạn muốn biết rõ trước khi đặt.</h2>
+              <h2>Những điều nên biết trước khi đặt.</h2>
               <ul>
                 <li>Muốn biết giá, phần bao gồm và điều kiện trước khi chuyển tiền.</li>
                 <li>Muốn có người hỗ trợ qua Zalo khi đang ở điểm đến.</li>
@@ -206,14 +206,14 @@ export default function VietnamPage({
             <h2>{page.h1}</h2>
             <p>{page.description}</p>
             <p>{practicalAdvice}</p>
-            <blockquote>“Không cần mua nhiều. Chỉ cần chọn đúng thứ hợp với chuyến đi của mình.”</blockquote>
+            <blockquote>“Chọn đúng vé và lịch đi phù hợp thì chuyến đi sẽ nhẹ nhàng hơn nhiều.”</blockquote>
           </section>
 
           <section className={styles.socialProof}>
             <div>
               <p>04 · XEM KHÁCH CŨ TRƯỚC KHI ĐẶT</p>
-              <h2>Cứ đọc Google Reviews trước cho yên tâm.</h2>
-              <span>Đánh giá của khách cũ là phần bạn có thể tự kiểm tra, không cần chỉ nghe GoVietStay nói.</span>
+              <h2>Xem đánh giá của khách đã đi trước khi quyết định.</h2>
+              <span>Bạn có thể mở Google Maps để xem đánh giá và hình ảnh do khách đã đi chia sẻ.</span>
               <a href={vietnamBusinessConfig.googleReviewsUrl} target="_blank" rel="noreferrer">Mở Google Reviews ↗</a>
             </div>
             <div className={styles.reviewShots}>
@@ -227,15 +227,15 @@ export default function VietnamPage({
 
           <section id="booking" className={styles.booking}>
             <div className={styles.bookingTitle}>
-              <p>05 · GỬI YÊU CẦU VỀ ADMIN · ZALO LUÔN SẴN SÀNG</p>
-              <h2>Điền form để nhận mã yêu cầu thật; GoVietStay kiểm tra giá và ngày trước khi thanh toán.</h2>
+              <p>05 · ĐẶT DỊCH VỤ · CÓ ZALO HỖ TRỢ</p>
+              <h2>Điền ngày đi và số khách, bên mình kiểm tra rồi liên hệ xác nhận.</h2>
             </div>
             <VietnamConversion page={page} />
           </section>
 
           <section className={styles.terms}>
             <p>ĐIỀU KIỆN ĐẶT DỊCH VỤ · {vietnamBusinessConfig.policyVersion}</p>
-            <h2>Đọc trước vài phút để hai bên cùng rõ.</h2>
+            <h2>Bạn xem qua điều kiện đặt và đổi hủy trước khi chốt nhé.</h2>
             {[
               ["Giá và xác nhận booking", "Giá chỉ được chốt sau khi GoVietStay xác nhận ngày đi, số khách và các dịch vụ đi kèm. Các ưu đãi không tự động cộng dồn nếu không ghi rõ."],
               ["Đặt cọc và VietQR", "Tiền cọc dùng để giữ chỗ hoặc thanh toán trước những dịch vụ cần xuất. Ở bước hiện tại, chuyển khoản chưa tự động xác nhận booking; GoVietStay sẽ kiểm tra tiền rồi gửi xác nhận."],
@@ -258,7 +258,7 @@ export default function VietnamPage({
           <div className={styles.sticky}>
             <div className={styles.stickyPhoto}><img src={visual.gallery[0]} alt={visual.label} loading="lazy" /></div>
             <small>TRƯỚC KHI ĐẶT</small>
-            <h3>Kiểm tra ba thứ là đủ.</h3>
+            <h3>Trước khi đặt, bạn nhớ kiểm tra:</h3>
             <ol>
               <li>Google Reviews của khách cũ</li>
               <li>Giá và phần bao gồm của đúng ngày đi</li>
