@@ -49,9 +49,9 @@ const daNangRegionalCalls: string[][] = [
 ];
 
 export const metadata: Metadata = {
-  title: "Chan May & Tien Sa Cruise Port Shore Excursions 2026–2027 | GoVietStay",
+  title: "Vietnam Cruise Shore Excursions 2026–2027 | Chan May, Tien Sa, Phu My, Ha Long",
   description:
-    "Private shore excursions from Chan May and Tien Sa ports with current cruise-call planning, port pickup coordination, Hue, Da Nang, Hoi An, Ba Na Hills and safe return-to-ship timing.",
+    "Private Vietnam shore excursions from Chan May, Tien Sa, Phu My and Ha Long ports. Tailored Hue, Da Nang, Hoi An, Ho Chi Minh City and Ha Long programs, with confirmed pickup instructions and ship return planning.",
   keywords: [
     "Chan May Port shore excursion",
     "Tien Sa Port shore excursion",
@@ -234,7 +234,7 @@ export default function Page() {
             </div>
           </div>
           <p className="mb-4 text-sm font-semibold uppercase tracking-[0.25em] text-sky-300">GoVietStay • Central Vietnam Cruise Support</p>
-          <h1 className="max-w-5xl text-4xl font-black leading-tight md:text-6xl">Chan May & Tien Sa Port Shore Excursions</h1>
+          <h1 className="max-w-5xl text-4xl font-black leading-tight md:text-6xl">Vietnam Cruise Shore Excursions: Chan May, Tien Sa, Phu My &amp; Ha Long</h1>
           <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">Private shore days built around one question: <strong className="text-white">what can you realistically see and still return to your ship safely?</strong></p>
 
           <div className="mt-8 flex flex-wrap gap-3 text-sm">
@@ -258,7 +258,7 @@ export default function Page() {
         </div>
       </section>
 
-      <section id="schedule" className="border-y border-white/10 bg-white/[0.03]">
+      <section className="mx-auto max-w-6xl px-5 py-12"><h2 className="text-3xl font-black">Other Vietnam cruise ports: Phu My and Ha Long</h2><p className="mt-4 text-slate-300">Request a private shore excursion from Phu My for Ho Chi Minh City or from Ha Long for a suitable local itinerary. Exact berth, road or boat transfers, guide language, entrance fees and feasibility are checked for each sailing before a written quote. These are custom enquiries, not confirmed scheduled departures.</p><p className="mt-4 text-slate-300">Send your ship name, cruise date, port, docking and all-aboard times, group size and preferred language. We will propose a realistic route with a return buffer and explain the permitted pickup meeting point.</p><a className="mt-5 inline-block rounded-xl bg-sky-500 px-5 py-3 font-bold text-slate-950" href="https://wa.me/84937762607">Request a private shore excursion quote</a></section><section id="schedule" className="border-y border-white/10 bg-white/[0.03]">
         <div className="mx-auto max-w-6xl px-5 py-14">
           <div className="flex flex-wrap items-end justify-between gap-5">
             <div>
