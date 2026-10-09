@@ -124,3 +124,44 @@
  :global(.gform .gform-grid){grid-template-columns:1fr}
  :global(.gform .gform-grid input),:global(.gform select){font-size:16px}
 }
+
+
+/* Readability refinement: comfortable body text and forms across /vi tour pages. */
+.heroCopy h2{font-size:18px;line-height:1.68}
+.heroCopy>p,.privateCopy>p,.explainer p,.story>p:first-child,.socialProof>div>p,.bookingTitle>p,.terms>p,.faq>p,.related>p{font-size:13px}
+.chips span{font-size:14px}
+.decisionCard>p{font-size:16px;line-height:1.64}
+.decisionCard>div{font-size:15px}
+.scan p{font-size:16px;line-height:1.65;display:block;-webkit-line-clamp:unset;overflow:visible}
+.privateCopy span,.privateCopy .note{font-size:16px}
+.explainer ul{font-size:16px;line-height:1.72}
+.story>p:not(:first-child){font-size:17px}
+.socialProof>div>span{font-size:16px}
+.terms summary,.faq summary{font-size:16px;line-height:1.52}
+.terms details p,.faq details p{font-size:16px;line-height:1.7}
+.sticky ol{font-size:15px}
+.related b{font-size:16px}
+.ticketCrosslink p{font-size:17px}
+.ticketCrosslink a{font-size:16px}
+:global(.gprice span){font-size:15px;line-height:1.62}
+:global(.gform label){font-size:15px;line-height:1.5}
+:global(.gform p){font-size:15px;line-height:1.62}
+:global(.gform .gvi-privacy){font-size:15px}
+:global(.gform .gvi-disclaimer){font-size:14px}
+:global(.gqr p){font-size:16px;line-height:1.62}
+:global(.gqr .gvi-estimate p){font-size:15px}
+.mobile a{font-size:15px}
+@media(max-width:540px){
+  .heroCopy h2{font-size:17px}
+  .chips span{font-size:13px}
+  .decisionCard>p{font-size:16px;display:block;-webkit-line-clamp:unset;overflow:visible}
+  .decisionCard>div{font-size:15px}
+  .scan p{font-size:16px;display:block;-webkit-line-clamp:unset;overflow:visible}
+  .explainer ul,.story>p:not(:first-child),.socialProof>div>span,.terms summary,.faq summary,.terms details p,.faq details p{font-size:16px}
+  :global(.gprice span){font-size:15px}
+  :global(.gform label){font-size:15px}
+  :global(.gform p){font-size:15px}
+  :global(.gqr p){font-size:16px}
+  :global(.gqr .gvi-estimate p){font-size:15px}
+  .mobile a{font-size:15px}
+}
