@@ -55,7 +55,7 @@ export default function PublicInquiryForm({productCode,productName,sourcePage,lo
    <label className="text-sm font-medium">{ru?"Имя":it?"Nome completo":th?"ชื่อ-นามสกุล":"Full name"} *
     <input className={input} value={name} maxLength={160} onChange={e=>setName(e.target.value)} required autoComplete="name"/>
    </label>
-   <label className="text-sm font-medium">WhatsApp *
+   <label className="text-sm font-medium">{th?"เบอร์โทรศัพท์ / LINE / WhatsApp":"WhatsApp"} *
     <input className={input} type="tel" value={phone} maxLength={80} onChange={e=>setPhone(e.target.value)} required autoComplete="tel"/>
    </label>
    <label className="text-sm font-medium">{ru?"Дата":it?"Data del viaggio":th?"วันที่เดินทาง":"Travel date"}
