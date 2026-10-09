@@ -117,3 +117,46 @@
 .ticketAnswers summary{font-weight:800;font-size:16px;cursor:pointer;line-height:1.5}
 .ticketAnswers details p{font-size:15px;line-height:1.65;color:#445b4d}
 @media(max-width:800px){.ticketAnswers{grid-template-columns:1fr;gap:15px;padding:26px 18px}}
+
+
+/* Readability refinement: slightly larger supporting text, not oversized headlines. */
+.whyIntro p{font-size:12px;letter-spacing:.08em}
+.whyIntro span{font-size:16px;line-height:1.7}
+.whyGrid p{font-size:15px;line-height:1.65}
+.whyGrid article>b{font-size:11px}
+.heroCopy h2{font-size:18px;line-height:1.65}
+.heroProof{font-size:14px}
+.quickIntent span{font-size:14px}
+.sectionHead>span{font-size:16px}
+.productBody p{font-size:16px;line-height:1.62}
+.productBody strong{font-size:17px}
+.productBody b{font-size:14px}
+.comboIntro>span{font-size:16px}
+.comboCards p{font-size:15px;line-height:1.6}
+.privateNote{font-size:16px}
+.questions span{font-size:16px}
+.reviewCallout p{font-size:16px}
+.phuCopy>p:not(:first-child){font-size:16px}
+.howGrid p{font-size:16px}
+.directoryGrid a{font-size:14px}
+.facebook p{font-size:16px}
+.ticketAnswers span{font-size:17px}
+.ticketAnswers summary{font-size:17px}
+.ticketAnswers details p{font-size:16px}
+.mobile a{font-size:15px}
+@media(max-width:600px){
+  .heroCopy h2{font-size:17px}
+  .heroProof{font-size:13px}
+  .quickIntent span{font-size:13px}
+  .whyIntro span,.whyGrid p{font-size:16px}
+  .sectionHead>span{font-size:16px}
+  .productBody p{font-size:16px;-webkit-line-clamp:3}
+  .productBody b{font-size:14px}
+  .comboIntro>span{font-size:16px}
+  .comboCards p{font-size:15px;-webkit-line-clamp:3}
+  .privateNote,.questions span,.reviewCallout p,.phuCopy>p:not(:first-child),.howGrid p,.facebook p{font-size:16px}
+  .ticketAnswers span{font-size:16px}
+  .ticketAnswers summary{font-size:17px}
+  .ticketAnswers details p{font-size:16px}
+  .mobile a{font-size:15px}
+}

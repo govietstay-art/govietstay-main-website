@@ -68,8 +68,8 @@ export default function VietnamConversion({page}:{page:VietnamSeoPage}){
         <small>{ticketOnly?"VÉ BÀ NÀ HILLS + BUFFET · KHÁCH VIỆT":"GIÁ THAM KHẢO · KHÁCH VIỆT"}</small>
         <h2>{price?.sellPrice?(ticketOnly?money(price.sellPrice)+"/người lớn":"Từ "+money(price.sellPrice)):"Báo giá theo ngày và nhóm"}</h2>
         <span>{ticketOnly
-          ?"Giá công bố "+money(price?.publishedPrice||1300000)+"; giá GoVietStay "+money(price?.sellPrice||1200000)+" cho vé cáp treo và buffet trưa. Không bao gồm xe, hướng dẫn viên. Giá và quyền lợi được xác nhận theo ngày sử dụng trước khi thanh toán."
-          :"GoVietStay kiểm tra ngày đi, số người và các dịch vụ bao gồm trước khi báo giá cuối cùng."}</span>
+          ?"Giá công bố là "+money(price?.publishedPrice||1300000)+". Bên mình bán vé cáp treo kèm buffet trưa với giá "+money(price?.sellPrice||1200000)+"/người lớn. Giá này chưa gồm xe và hướng dẫn viên. Bạn gửi ngày đi để mình kiểm tra và xác nhận trước khi thanh toán."
+          :"Bạn cho bên mình biết ngày đi và số người, mình sẽ kiểm tra dịch vụ rồi báo giá cụ thể."}</span>
       </div>
       <b>{ticketOnly?"TIẾT KIỆM 100.000Đ SO VỚI GIÁ CÔNG BỐ":"KHÔNG CẦN THANH TOÁN KHI GỬI FORM"}</b>
     </div>
@@ -78,14 +78,14 @@ export default function VietnamConversion({page}:{page:VietnamSeoPage}){
         <div className="gform" role="status" aria-live="polite">
           <h3>Đã nhận yêu cầu của bạn</h3>
           <p>Mã yêu cầu: <strong>{inquiryCode}</strong></p>
-          <p>Thông tin đã được ghi nhận để nhân viên GoVietStay xử lý. Đây chưa phải vé đã xuất hay booking được xác nhận.</p>
-          <p>Bạn có thể mở Zalo và chỉ cần nhắn mã yêu cầu trên để nhân viên tìm đầy đủ thông tin.</p>
+          <p>Bên mình đã nhận được thông tin và sẽ kiểm tra lại. Đây chưa phải vé đã xuất hoặc đơn được xác nhận.</p>
+          <p>Nếu muốn trao đổi nhanh qua Zalo, bạn gửi giúp mã này là bên mình tìm được yêu cầu.</p>
           <a className="gvi-zalo" href={vietnamBusinessConfig.zaloUrl} target="_blank" rel="noreferrer">Mở Zalo GoVietStay</a>
         </div>
       :
         <form className="gform" onSubmit={submit}>
           <h3>{ticketOnly?"Gửi yêu cầu đặt vé Bà Nà + buffet":"Gửi yêu cầu đặt dịch vụ"}</h3>
-          <p>Miễn phí gửi yêu cầu. Chúng tôi kiểm tra chỗ và xác nhận giá trước khi thu tiền.</p>
+          <p>Bạn cứ điền thông tin trước, chưa cần thanh toán. Bên mình sẽ kiểm tra chỗ và báo lại giá.</p>
           <div className="gform-grid">
             <label>Họ và tên *<input required maxLength={160} autoComplete="name" value={name} onChange={e=>setName(e.target.value)} placeholder="Nguyễn Văn A"/></label>
             <label>Số điện thoại / Zalo *<input required type="tel" maxLength={80} autoComplete="tel" value={phone} onChange={e=>setPhone(e.target.value)} placeholder="09xxxxxxxx"/></label>
@@ -95,7 +95,7 @@ export default function VietnamConversion({page}:{page:VietnamSeoPage}){
             <label>Số trẻ em<input type="number" min={0} max={39} value={children} onChange={e=>setChildren(Math.max(0,Number(e.target.value)))}/></label>
           </div>
           {children>0&&<label>Tuổi hoặc chiều cao từng bé *<input required maxLength={250} value={childInfo} onChange={e=>setChildInfo(e.target.value)} placeholder="Ví dụ: 2 bé 95cm và 125cm"/></label>}
-          {ticketOnly&&<label>Gia đình cần gì thêm?
+          {ticketOnly&&<label>Bạn muốn đặt thêm dịch vụ nào không?
             <select value={option} onChange={e=>setOption(e.target.value)}>
               <option value="ticket_only">Chỉ mua vé Bà Nà + buffet</option>
               <option value="private_car">Vé + hỏi giá xe riêng</option>
@@ -107,19 +107,19 @@ export default function VietnamConversion({page}:{page:VietnamSeoPage}){
           <label className="gvi-privacy"><input required type="checkbox" checked={consent} onChange={e=>setConsent(e.target.checked)}/> Tôi đồng ý để GoVietStay dùng thông tin này nhằm xử lý yêu cầu và liên hệ xác nhận dịch vụ.</label>
           <label className="gvi-honeypot" aria-hidden="true">Không điền ô này<input tabIndex={-1} autoComplete="off" value={website} onChange={e=>setWebsite(e.target.value)}/></label>
           {error&&<p role="alert" className="gvi-error">{error}</p>}
-          <button type="submit" disabled={saving}>{saving?"Đang gửi…":"Gửi yêu cầu về GoVietStay"}</button>
-          <p className="gvi-disclaimer">Gửi form không phải là thanh toán hoặc xác nhận đã có vé. GoVietStay sẽ xác nhận giá, tình trạng và điều kiện trước khi xuất vé.</p>
+          <button type="submit" disabled={saving}>{saving?"Đang gửi…":"Gửi thông tin để bên mình kiểm tra"}</button>
+          <p className="gvi-disclaimer">Gửi thông tin chưa phải là đặt vé thành công. Bên mình sẽ xác nhận tình trạng vé, giá và điều kiện trước khi nhận thanh toán.</p>
         </form>}
       <aside className="gqr">
         <small>ZALO HỖ TRỢ TRỰC TIẾP</small>
-        <h3>Muốn hỏi nhanh? Nhắn Zalo ngay bên cạnh.</h3>
-        <p>Nhắn ngày đi, số người và điều bạn cần. Form phía bên trái giúp GoVietStay nhận đủ thông tin và lưu vào hệ thống.</p>
+        <h3>Thích trao đổi qua Zalo hơn?</h3>
+        <p>Bạn có thể gửi ngày đi, số người và câu hỏi qua Zalo. Nếu đã điền form, chỉ cần cho bên mình biết mã yêu cầu là được.</p>
         <a className="gvi-zalo" href={vietnamBusinessConfig.zaloUrl} target="_blank" rel="noreferrer">Nhắn Zalo GoVietStay</a>
         {ticketOnly&&<div className="gvi-estimate">
           <strong>Tham khảo cho {adults} người lớn</strong>
           <h3>{money(adultEstimate)}</h3>
-          <p>Chưa bao gồm vé trẻ em, xe, hướng dẫn viên hay dịch vụ thêm. Giá chỉ được xác nhận sau khi kiểm tra ngày đi và điều kiện vé.</p>
-          <p>Đặt cho hè 2027? Vui lòng yêu cầu báo giá mới theo chính sách mùa hè 2027.</p>
+          <p>Đây mới là tổng vé người lớn. Vé trẻ em, xe hoặc hướng dẫn viên chưa tính vào. Bên mình sẽ xác nhận lại theo ngày đi.</p>
+          <p>Bạn định đi hè 2027? Cứ gửi ngày dự kiến, bên mình kiểm tra giá mới rồi báo lại nhé.</p>
         </div>}
         {inquiryCode&&<p>Đã lưu mã yêu cầu: <strong>{inquiryCode}</strong></p>}
       </aside>

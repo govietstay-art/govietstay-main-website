@@ -49,10 +49,10 @@ export default function VietnamHub() {
   };
 
   const ticketFaq = [
-    ["Giá vé Bà Nà Hills kèm buffet trên GoVietStay là bao nhiêu?", "Giá bán đang công bố trên GoVietStay là 1.200.000đ/người lớn cho vé cáp treo kèm buffet trưa, so với giá công bố 1.300.000đ. Phải xác nhận loại vé và ngày sử dụng trước thanh toán."],
-    ["Giá 1.200.000đ đã gồm xe và hướng dẫn viên chưa?", "Chưa. GoVietStay bán vé riêng; xe riêng hoặc hướng dẫn viên chỉ được báo giá thêm khi khách có nhu cầu."],
-    ["Gia đình có trẻ em mua vé ra sao?", "Hãy cho biết ngày đi, số người lớn và chiều cao hoặc tuổi từng bé. Nhân viên xác nhận đúng loại vé trẻ em trước khi xuất."],
-    ["Vé Bà Nà cho hè 2027 có giữ giá 1.200.000đ không?", "Giá hiển thị được cập nhật theo thời điểm bán năm 2026. Đơn đặt cho hè 2027 cần kiểm tra bảng giá và ưu đãi mới từ nhà cung cấp."],
+    ["Giá vé Bà Nà Hills kèm buffet trên GoVietStay là bao nhiêu?", "Vé cáp treo kèm buffet trưa đang được GoVietStay bán với giá 1.200.000đ/người lớn, thấp hơn giá công bố 1.300.000đ. Bạn gửi ngày đi để bên mình kiểm tra vé và xác nhận lại trước khi thanh toán."],
+    ["Giá 1.200.000đ đã gồm xe và hướng dẫn viên chưa?", "Chưa bạn nhé. Giá này chỉ gồm vé cáp treo và buffet. Nếu cần xe đưa đón hoặc hướng dẫn viên, bạn có thể yêu cầu báo giá riêng."],
+    ["Gia đình có trẻ em mua vé ra sao?", "Bạn cho bên mình biết chiều cao hoặc tuổi của từng bé nhé. Mình sẽ kiểm tra loại vé và giá trẻ em phù hợp trước khi xuất vé."],
+    ["Vé Bà Nà cho hè 2027 có giữ giá 1.200.000đ không?", "Chưa thể giữ giá này cho hè 2027. Khi bạn có ngày đi dự kiến, bên mình sẽ kiểm tra bảng giá mới rồi báo lại trước khi bạn quyết định."],
   ];
   return (
     <main className={styles.page}>
@@ -86,9 +86,9 @@ export default function VietnamHub() {
           <div className={styles.heroShade} />
           <div className={styles.heroCopy}>
             <p>GIÁ TỪ RÕ RÀNG · ẢNH KHÁCH THẬT · CÓ NGƯỜI HỖ TRỢ TẠI ĐIỂM ĐẾN</p>
-            <h1>Đi chơi cho thoải mái. <em>Việc lặt vặt để GoVietStay lo.</em></h1>
+            <h1>Đi chơi theo cách mình thích. <em>Vé, xe hay tour, cần gì cứ hỏi GoVietStay.</em></h1>
             <h2>
-              Không cần mở cả chục tab để so từng tour. Xem giá từ, ảnh thật, combo và điều kiện trước; cần hỏi gì thì nhắn Zalo luôn.
+              Bạn đang tìm vé tham quan, xe riêng hay tour cho cả gia đình? Xem giá và các lựa chọn ngay trên trang. Chỗ nào chưa rõ, cứ nhắn Zalo, bên mình kiểm tra giúp.
             </h2>
             <div className={styles.heroActions}>
               <a href="/vi/tour-ba-na-hills">Vé Bà Nà + buffet 1.200.000đ</a>
@@ -97,7 +97,7 @@ export default function VietnamHub() {
             </div>
             <div className={styles.heroProof}>
               <span>✓ Báo rõ giá trước khi chốt</span>
-              <span>✓ Có đặt cọc VietQR</span>
+              <span>✓ Gửi yêu cầu trước, xác nhận rồi mới thanh toán</span>
               <span>✓ Tour riêng không ghép khách</span>
             </div>
           </div>
@@ -130,24 +130,24 @@ export default function VietnamHub() {
       <section className={styles.why} id="why">
         <div className={styles.whyIntro}>
           <p>GOVIETSTAY KHÁC Ở ĐÂU?</p>
-          <h2>Không phải cứ nhiều tour là khách sẽ dễ chọn.</h2>
-          <span>Điều khách cần trước khi đặt thường đơn giản hơn: biết mình đang mua gì, lịch có hợp với người đi không và khi có thay đổi thì hỏi ai.</span>
+          <h2>Đặt vé hay chọn tour, rõ ràng ngay từ đầu vẫn tốt hơn.</h2>
+          <span>Trước khi đặt, bạn cần biết giá bao gồm những gì, lịch đi có phù hợp với cả nhà không, và nếu phát sinh thay đổi thì ai sẽ hỗ trợ.</span>
         </div>
         <div className={styles.whyGrid}>
           <article>
             <b>01</b>
             <h3>Nói rõ trước khi nhận cọc</h3>
-            <p>Giá từ, phần bao gồm, giờ đón và điều kiện thực tế được tách riêng để bạn dễ kiểm tra.</p>
+            <p>Giá bao nhiêu, có xe hay không, giờ đi thế nào — bên mình nói rõ trước khi bạn quyết định.</p>
           </article>
           <article>
             <b>02</b>
             <h3>Sắp theo người đi</h3>
-            <p>Gia đình có trẻ nhỏ, người lớn tuổi hoặc nhóm bạn không nhất thiết phải đi cùng một lịch trình.</p>
+            <p>Có trẻ nhỏ hoặc người lớn tuổi đi cùng? Mình có thể bàn lại giờ khởi hành và những điểm nên ghé để cả nhà đỡ mệt.</p>
           </article>
           <article>
             <b>03</b>
             <h3>Có người hỗ trợ tại điểm đến</h3>
-            <p>Thời tiết, tình hình biển, giờ đón hay thay đổi trong ngày đều có thể hỏi trực tiếp thay vì tự đoán.</p>
+            <p>Nếu thời tiết đổi hoặc cần hỏi giờ đón, bạn có thể liên hệ trực tiếp với đội ngũ địa phương.</p>
           </article>
         </div>
       </section>
@@ -155,7 +155,7 @@ export default function VietnamHub() {
       <section className={styles.section} id="tour-ban-chay">
         <div className={styles.sectionHead}>
           <div><p>01 · VÉ THAM QUAN & TOUR</p><h2>Vé Bà Nà giá tốt, tour địa phương và combo linh hoạt.</h2></div>
-          <span>Giá bên dưới là mức “từ”. Ngày đi, số khách và quyền lợi cụ thể sẽ được xác nhận lại trước khi bạn đặt cọc.</span>
+          <span>Vé Bà Nà kèm buffet hiện có giá 1.200.000đ/người lớn. Với các tour khác, bên mình sẽ kiểm tra giá theo ngày, số khách và những dịch vụ bạn chọn.</span>
         </div>
         <div className={styles.productGrid}>
           {vietnamFeaturedProducts.map((item) => {
@@ -180,15 +180,15 @@ export default function VietnamHub() {
       </section>
 
       <section className={styles.ticketAnswers} aria-label="Giải đáp đặt vé Bà Nà Hills và combo gia đình">
-        <div><p>GIÁ VÉ RÕ RÀNG · BOOKING VỀ HỆ THỐNG</p><h2>Đặt vé Bà Nà + buffet giá tốt, có Zalo hỗ trợ.</h2><span>Khách có thể chỉ mua vé hoặc yêu cầu thêm xe, tour riêng theo lịch gia đình. Mọi yêu cầu từ form được ghi nhận để đội GoVietStay kiểm tra trước khi thanh toán.</span><a href="/vi/tour-ba-na-hills#booking">Xem vé Bà Nà 1.200.000đ và gửi form →</a></div>
+        <div><p>VÉ BÀ NÀ HILLS · ĐẶT DỄ, CÓ NGƯỜI HỖ TRỢ</p><h2>Mua vé Bà Nà kèm buffet, muốn thêm xe cũng được.</h2><span>Bạn chỉ mua vé cũng được. Nếu cần xe đưa đón hoặc tour riêng cho gia đình, bên mình sẽ báo giá thêm để bạn cân nhắc. Cứ gửi ngày đi và số người qua form, hoặc hỏi nhanh qua Zalo.</span><a href="/vi/tour-ba-na-hills#booking">Xem vé Bà Nà 1.200.000đ và gửi form →</a></div>
         <div>{ticketFaq.map(([q,a])=><details key={q}><summary>{q}</summary><p>{a}</p></details>)}</div>
       </section>
 
       <section className={styles.comboZone} id="combo">
         <div className={styles.comboIntro}>
           <p>02 · ĐI NHIỀU THÌ XEM COMBO</p>
-          <h2>Đã đi vài tour thì gom lại cho đỡ mất công.</h2>
-          <span>Combo phù hợp khi bạn thật sự muốn đi nhiều điểm. Mình gom chung để dễ xếp lịch, dễ theo dõi và thường có tổng giá tốt hơn mua từng phần riêng.</span>
+          <h2>Đi nhiều điểm? Xem thử combo cho tiện sắp lịch.</h2>
+          <span>Nếu dự định đi vài nơi trong cùng chuyến, bạn có thể xem combo để đỡ phải đặt từng dịch vụ. Bên mình sẽ ghi rõ các khoản bao gồm để bạn so sánh trước khi chọn.</span>
           <a href="/vi/combo-da-nang-3-tour">Xem combo Đà Nẵng 3 tour →</a>
         </div>
         <div className={styles.comboCards}>
@@ -213,7 +213,7 @@ export default function VietnamHub() {
         </div>
         <div className={styles.privateCopy}>
           <p>03 · KHÔNG GHÉP KHÁCH KHÁC</p>
-          <h2>Chưa cần chọn tour. Cứ nói cho GoVietStay biết nhà mình đi mấy người.</h2>
+          <h2>Cả nhà muốn đi riêng? Bạn cứ gửi ngày và số người trước.</h2>
           <div className={styles.questions}>
             {[
               ["01","Đi bao nhiêu người?"],
@@ -233,8 +233,8 @@ export default function VietnamHub() {
 
       <section className={styles.reviewZone} id="review">
         <div className={styles.sectionHead}>
-          <div><p>04 · KHÁCH ĐÃ ĐI NÓI GÌ?</p><h2>Anh/chị cứ xem review trước rồi hãy đặt.</h2></div>
-          <span>Đây là ảnh khách thật và ảnh chụp review đang có trong hệ thống GoVietStay. Không cần chỉ nghe lời quảng cáo từ chính chúng tôi.</span>
+          <div><p>04 · KHÁCH ĐÃ ĐI NÓI GÌ?</p><h2>Xem khách cũ đánh giá thế nào rồi hãy chọn.</h2></div>
+          <span>Bên dưới có ảnh những chuyến đi thực tế và đánh giá khách để lại. Bạn có thể mở Google Maps xem trực tiếp trước khi đặt.</span>
         </div>
 
         <div className={styles.realGuestStrip}>
@@ -246,7 +246,7 @@ export default function VietnamHub() {
         <div className={styles.reviewGrid}>
           <div className={styles.reviewCallout}>
             <small>GOOGLE REVIEWS</small>
-            <h3>Muốn biết dịch vụ ra sao, xem khách cũ là nhanh nhất.</h3>
+            <h3>Muốn yên tâm hơn, cứ đọc đánh giá của khách đã đi.</h3>
             <p>Mở Google Maps, đọc các đánh giá gần đây và xem GoVietStay xử lý phản hồi của khách như thế nào.</p>
             <a href={vietnamBusinessConfig.googleReviewsUrl} target="_blank" rel="noreferrer">Mở Google Reviews ↗</a>
           </div>
@@ -262,8 +262,8 @@ export default function VietnamHub() {
         <div className={styles.phuImage}><img src="/tour/phuquoc/tour-06-3.jpg" alt="Phú Quốc GoVietStay" loading="lazy" /></div>
         <div className={styles.phuCopy}>
           <p>05 · PHÚ QUỐC</p>
-          <h2>Phú Quốc rộng, ở sai khu là mỗi ngày mất khá nhiều thời gian đi xe.</h2>
-          <p>Vì vậy GoVietStay sẽ hỏi resort trước rồi mới gợi ý tour đảo, xe riêng hay combo. Đi đúng khu sẽ nhẹ hơn nhiều.</p>
+          <h2>Ở Phú Quốc, chọn đúng khu lưu trú sẽ tiết kiệm nhiều thời gian đi lại.</h2>
+          <p>Bạn ở Bãi Trường, Grand World hay phía Nam đảo? Biết khu vực lưu trú, bên mình sẽ gợi ý lịch đi đảo, xe hoặc combo phù hợp hơn.</p>
           <div>
             <a href="/vi/tour-3-dao-phu-quoc">Tour 3 đảo</a>
             <a href="/vi/tour-4-dao-phu-quoc-cap-treo">4 đảo + Hòn Thơm</a>
@@ -275,19 +275,19 @@ export default function VietnamHub() {
 
       <section className={styles.how}>
         <div className={styles.sectionHead}>
-          <div><p>06 · ĐẶT TOUR KHÔNG CẦN RẮC RỐI</p><h2>Chỉ cần ba bước là đủ.</h2></div>
+          <div><p>06 · ĐẶT TOUR KHÔNG CẦN RẮC RỐI</p><h2>Đặt dịch vụ với GoVietStay như thế nào?</h2></div>
         </div>
         <div className={styles.howGrid}>
           <div><b>01</b><h3>Chọn tour, combo hoặc đi riêng</h3><p>Nếu chưa biết chọn gì, cứ gửi ngày và số người trước.</p></div>
           <div><b>02</b><h3>GoVietStay xác nhận giá</h3><p>Kiểm tra ngày đi, trẻ em, phần bao gồm và điều kiện trước khi thu cọc.</p></div>
-          <div><b>03</b><h3>Giữ chỗ</h3><p>Booking đủ điều kiện có thể đặt cọc bằng VietQR; sau khi kiểm tra tiền, GoVietStay gửi xác nhận.</p></div>
+          <div><b>03</b><h3>Giữ chỗ</h3><p>Sau khi thống nhất chương trình và giá, bên mình hướng dẫn thanh toán rồi gửi xác nhận đặt dịch vụ.</p></div>
         </div>
       </section>
 
       <section className={styles.directory}>
         <div className={styles.sectionHead}>
           <div><p>07 · TÌM NHANH THEO NHU CẦU</p><h2>Tour, combo, đi riêng và kinh nghiệm tự túc.</h2></div>
-          <span>Nếu đang tìm trên Google một câu hỏi cụ thể, phần dưới sẽ giúp đi thẳng đến đúng trang thay vì đọc hết cả website.</span>
+          <span>Bạn có thể chọn ngay điểm đến hoặc loại dịch vụ mình cần, không phải đọc hết các trang.</span>
         </div>
         <div className={styles.directoryGrid}>
           {[
@@ -321,7 +321,7 @@ export default function VietnamHub() {
         <img src="/tour/cham-island/guest-pickup.jpg" alt="GoVietStay đón khách" loading="lazy" />
         <div>
           <p>GOVIETSTAY · HỖ TRỢ TẠI ĐỊA PHƯƠNG</p>
-          <h2>Bạn gửi ngày đi và số người. Phần còn lại mình cùng sắp cho gọn.</h2>
+          <h2>Có ngày đi dự kiến rồi? Gửi bên mình số người và nơi muốn đến, mình tư vấn tiếp nhé.</h2>
           <a href={vietnamBusinessConfig.zaloUrl} target="_blank" rel="noreferrer">Nhắn Zalo cho GoVietStay</a>
         </div>
       </section>
