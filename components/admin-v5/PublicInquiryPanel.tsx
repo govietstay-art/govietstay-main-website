@@ -38,7 +38,10 @@ export default function PublicInquiryPanel({supabase}:{supabase:any}){
   {error&&<div className="gva-msg err" role="alert">{error}</div>}
   {loading?<p>Đang tải yêu cầu…</p>:pending.length===0?<div className="gva-empty">Không có yêu cầu website mới.</div>:(
    <div className="gvs-request-list">{pending.map(x=>{
-    const wa="https://wa.me/"+x.whatsapp.replace(/\D/g,"")+"?text="+encodeURIComponent("GoVietStay: "+x.inquiry_code);
+    const phone=x.whatsapp.replace(/\D/g,"");
+    const zaloPhone=phone.startsWith("0")?"84"+phone.slice(1):phone;
+    const zalo="https://zalo.me/"+zaloPhone;
+    const wa="https://wa.me/"+(phone.startsWith("0")?"84"+phone.slice(1):phone)+"?text="+encodeURIComponent("GoVietStay: "+x.inquiry_code);
     return <article key={x.id} className="gvs-request">
      <div><b>{x.inquiry_code}</b><span>{x.source_page}</span></div>
      <div><strong>{x.full_name}</strong>
@@ -48,7 +51,8 @@ export default function PublicInquiryPanel({supabase}:{supabase:any}){
      </div>
      <div><strong>{x.whatsapp}</strong><small>{x.email||""}</small></div>
      <div className="gvs-request-actions">
-      <a className="gva-btn" href={wa} target="_blank" rel="noreferrer">WhatsApp</a>
+      {x.language==="vi"&&<a className="gva-btn" href={zalo} target="_blank" rel="noreferrer">Zalo</a>}
+      <a className="gva-btn secondary" href={wa} target="_blank" rel="noreferrer">WhatsApp</a>
       <button type="button" className="gva-btn secondary" disabled={saving===x.id} onClick={()=>void change(x.id,"contacted")}>Đã liên hệ</button>
       <button type="button" className="gvs-danger" disabled={saving===x.id} onClick={()=>void change(x.id,"rejected")}>Bỏ qua</button>
      </div>

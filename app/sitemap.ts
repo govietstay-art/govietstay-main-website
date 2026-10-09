@@ -167,7 +167,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${BASE_URL}/vi`,
-      lastModified: new Date("2026-08-26T00:00:00.000Z"),
+      lastModified: new Date("2026-10-09T00:00:00.000Z"),
       changeFrequency: "daily", priority: 1,
       alternates: { languages: { "vi-VN": `${BASE_URL}/vi` } },
     },

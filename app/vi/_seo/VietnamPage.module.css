@@ -98,3 +98,29 @@
   :global(.gqr p),:global(.gcheck),:global(.gqr>strong),:global(.gcode){font-size:14px}
   .mobile a{font-size:14px;min-height:48px;display:grid;place-items:center}
 }
+
+
+/* 2026-10-09 Vietnamese ticket / inquiry conversion */
+.ticketCrosslink{max-width:1120px;margin:42px auto 0;padding:26px;border:1px solid #bcd8c7;background:#f0f8f1;border-radius:20px}
+.ticketCrosslink h2{font-size:clamp(22px,2.8vw,30px);margin:0 0 12px}
+.ticketCrosslink p{font-size:16px;line-height:1.65;color:#375447}
+.ticketCrosslink a{display:inline-block;background:#096b4d;color:#fff!important;padding:13px 17px;border-radius:11px;font-size:15px;font-weight:800;margin-top:8px}
+:global(.gform p){font-size:14px;line-height:1.55}
+:global(.gform select){width:100%;margin-top:5px;border:1px solid #cbd8d0;border-radius:10px;padding:11px;background:#fff;color:#08261d;font-size:16px}
+:global(.gform .gform-grid){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 12px}
+:global(.gform>button[type=submit]){display:block;width:100%;border:0;background:#096b4d;color:#fff;border-radius:12px;padding:15px 12px;font-size:16px;font-weight:900;cursor:pointer;margin-top:20px;min-height:48px}
+:global(.gform>button[type=submit]:disabled){opacity:.6;cursor:wait}
+:global(.gform .gvi-privacy){display:flex;align-items:flex-start;gap:10px;font-weight:500;font-size:14px;line-height:1.5;margin-top:16px}
+:global(.gform .gvi-privacy input){flex:0 0 18px;width:18px;height:18px;margin:2px 0 0}
+:global(.gform .gvi-honeypot){position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;overflow:hidden!important}
+:global(.gform .gvi-error){font-size:14px;color:#b42318;line-height:1.6}
+:global(.gform .gvi-disclaimer){font-size:13px;color:#586f61;line-height:1.5}
+:global(.gform .gvi-zalo){display:inline-flex;background:#096b4d;color:#fff;padding:12px 16px;border-radius:12px;font-size:15px;font-weight:800;margin-top:12px}
+:global(.gqr .gvi-estimate){background:#fff;border-radius:14px;padding:18px;margin-top:24px}
+:global(.gqr .gvi-estimate h3){font-size:24px;color:#096b4d;margin:8px 0}
+:global(.gqr .gvi-estimate p){font-size:14px;line-height:1.5}
+@media(max-width:600px){
+ .ticketCrosslink{margin:30px 16px;padding:18px}
+ :global(.gform .gform-grid){grid-template-columns:1fr}
+ :global(.gform .gform-grid input),:global(.gform select){font-size:16px}
+}

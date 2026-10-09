@@ -28,8 +28,19 @@ export default function VietnamPage({
   related: VietnamSeoPage[];
 }) {
   const canonical = `https://www.govietstay.com/vi/${page.slug}`;
-  const copy = typeCopy[page.type];
+  const isBana = page.slug === "tour-ba-na-hills";
+  const copy = isBana ? ["Vé tham quan", "Vé cáp treo Bà Nà Hills kèm buffet trưa, không gồm xe hoặc hướng dẫn viên."] : typeCopy[page.type];
   const visual = getVietnamVisuals(page.slug, page.destination);
+
+  const ticketSchema = isBana ? {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: "Vé cáp treo Bà Nà Hills kèm buffet trưa",
+    description: "Vé vào Sun World Bà Nà Hills bao gồm cáp treo và buffet trưa. Không bao gồm xe đưa đón và hướng dẫn viên.",
+    url: canonical,
+    brand: { "@type": "Brand", name: "GoVietStay" },
+    offers: { "@type": "Offer", price: priceMap.bana.sellPrice, priceCurrency: "VND", url: canonical, seller: { "@type": "Organization", name: "GoVietStay", url: "https://www.govietstay.com" } },
+  } : null;
 
   const schema = {
     "@context": "https://schema.org",
@@ -43,11 +54,20 @@ export default function VietnamPage({
   };
 
   const faq = [
+    ...(isBana ? [
+      ["Vé Bà Nà Hills kèm buffet tại GoVietStay giá bao nhiêu?", "Vé cáp treo kèm buffet trưa cho người lớn đang được chào giá 1.200.000đ, so với giá công bố 1.300.000đ. GoVietStay sẽ kiểm tra ngày sử dụng, loại vé và xác nhận giá trước khi thu tiền."],
+      ["Vé Bà Nà 1.200.000đ có bao gồm xe đưa đón không?", "Không. Đây là giá vé cáp treo kèm buffet trưa. Xe đưa đón và hướng dẫn viên được báo riêng theo nhu cầu, không bắt buộc mua kèm."],
+      ["Trẻ em đi Bà Nà tính giá như thế nào?", "Giá và loại vé trẻ em phụ thuộc quy định chiều cao hoặc độ tuổi của nhà cung cấp tại ngày sử dụng. Vui lòng điền chiều cao hoặc tuổi của từng bé trong form để kiểm tra."],
+      ["Gửi form có được xuất vé ngay không?", "Chưa. Form sẽ lưu yêu cầu vào hệ thống để nhân viên kiểm tra ngày, số khách và tình trạng vé. Sau khi khách đồng ý và hoàn thành thanh toán theo hướng dẫn, GoVietStay mới xác nhận việc xuất vé."],
+      ["Đặt vé Bà Nà cho hè 2027 có giữ giá 1.200.000đ không?", "Không mặc định. Giá này là mức bán đang áp dụng khi trang được cập nhật năm 2026; đặt cho hè 2027 cần được báo giá lại theo chính sách nhà cung cấp."],
+    ] as [string,string][] : []),
     ["Giá trên website đã là giá cuối cùng chưa?", "Chưa hẳn. Mức “từ” còn phụ thuộc ngày đi, số khách, trẻ em và quyền lợi của từng gói. GoVietStay sẽ xác nhận lại trước khi bạn đặt cọc."],
     ["Chuyển khoản bằng QR là booking đã chắc chắn chưa?", "Chưa. Ở bước hiện tại GoVietStay vẫn kiểm tra tiền thủ công và gửi xác nhận booking sau."],
     ["Gia đình tôi có thể đi riêng không?", "Có. Gửi số người, ngày đi, độ tuổi, sở thích và những điều cả nhà không muốn để GoVietStay lên phương án riêng."],
     ["Tôi muốn xem đánh giá của khách cũ ở đâu?", "Bấm nút Google Reviews trên trang để mở trực tiếp hồ sơ đánh giá của GoVietStay."],
   ];
+
+  const faqSchema = isBana ? { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faq.map(([q,a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) } : null;
 
   const privateLike = page.type === "private" || page.slug.includes("gia-dinh");
 
@@ -68,6 +88,8 @@ export default function VietnamPage({
   return (
     <main className={styles.page}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      {ticketSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ticketSchema) }} />}
+      {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
 
       <header className={styles.nav}>
         <a href="/vi" className={styles.brand}>
@@ -93,7 +115,7 @@ export default function VietnamPage({
             <h2>{page.hero}</h2>
             <div className={styles.chips}>{page.focus.split(",").map((x) => <span key={x}>✓ {x.trim()}</span>)}</div>
             <div className={styles.heroActions}>
-              <a href="#booking">Xem giá & giữ chỗ</a>
+              <a href="#booking">Xem giá & gửi yêu cầu</a>
               <a href={vietnamBusinessConfig.googleReviewsUrl} target="_blank" rel="noreferrer">⭐ Xem đánh giá</a>
             </div>
           </div>
@@ -103,7 +125,7 @@ export default function VietnamPage({
             <h3>{copy[0]}</h3>
             <p>{copy[1]}</p>
             <strong>{priceLabel(page)}</strong>
-            <div><span>Đặt cọc</span><b>{page.depositPercent === 0 ? "0% với transfer tiêu chuẩn" : `${page.depositPercent}% sau khi xác nhận`}</b></div>
+            <div><span>Thanh toán</span><b>{isBana ? "Sau khi xác nhận còn vé và giá" : page.depositPercent === 0 ? "Transfer tiêu chuẩn: không cần cọc" : `${page.depositPercent}% sau khi xác nhận`}</b></div>
             <div><span>Hỗ trợ</span><b>Zalo + đội ngũ tại địa phương</b></div>
             <div><span>Đi riêng</span><b>Không ghép khách nếu đã chốt tour riêng</b></div>
           </aside>
@@ -124,6 +146,14 @@ export default function VietnamPage({
         <div><small>TRƯỚC KHI SO GIÁ</small><b>Nhớ xem cùng một quyền lợi.</b><p>Cùng ngày đi, cùng loại vé, cùng phần ăn, xe và chính sách trẻ em thì so giá mới chính xác.</p></div>
         <div><small>CÓ NGƯỜI HỖ TRỢ TẠI ĐIỂM ĐẾN</small><b>Cần hỏi gì thì nhắn Zalo.</b><p>Thời tiết, giờ đón hoặc tình hình tour có thể thay đổi; có người kiểm tra tại chỗ sẽ đỡ mất công tự tìm nhiều nguồn.</p></div>
       </section>
+
+      {["combo-da-nang-3n2d","combo-da-nang-4n3d","combo-da-nang-gia-dinh","du-lich-da-nang-tu-tuc","tour-rieng-da-nang-gia-dinh","combo-da-nang-3-tour"].includes(page.slug) && (
+        <section className={styles.ticketCrosslink}>
+          <h2>Muốn mua riêng vé Bà Nà Hills kèm buffet?</h2>
+          <p>Vé người lớn từ 1.200.000đ, so với giá công bố 1.300.000đ. Không bắt buộc mua xe hay tour trọn gói; gia đình có thể yêu cầu báo thêm xe riêng.</p>
+          <a href="/vi/tour-ba-na-hills">Xem giá vé Bà Nà và gửi yêu cầu →</a>
+        </section>
+      )}
 
       {privateLike ? (
         <section className={styles.private}>
@@ -197,14 +227,14 @@ export default function VietnamPage({
 
           <section id="booking" className={styles.booking}>
             <div className={styles.bookingTitle}>
-              <p>05 · XÁC NHẬN GIÁ RỒI MỚI ĐẶT CỌC</p>
-              <h2>Chốt ngày, số người và quyền lợi trước; sau đó mới chuyển tiền.</h2>
+              <p>05 · GỬI YÊU CẦU VỀ ADMIN · ZALO LUÔN SẴN SÀNG</p>
+              <h2>Điền form để nhận mã yêu cầu thật; GoVietStay kiểm tra giá và ngày trước khi thanh toán.</h2>
             </div>
             <VietnamConversion page={page} />
           </section>
 
           <section className={styles.terms}>
-            <p>ĐIỀU KIỆN ĐẶT DỊCH VỤ · VI-2026.08.26</p>
+            <p>ĐIỀU KIỆN ĐẶT DỊCH VỤ · {vietnamBusinessConfig.policyVersion}</p>
             <h2>Đọc trước vài phút để hai bên cùng rõ.</h2>
             {[
               ["Giá và xác nhận booking", "Giá chỉ được chốt sau khi GoVietStay xác nhận ngày đi, số khách và các dịch vụ đi kèm. Các ưu đãi không tự động cộng dồn nếu không ghi rõ."],
@@ -262,7 +292,7 @@ export default function VietnamPage({
       <div className={styles.mobile}>
         <a href={vietnamBusinessConfig.zaloUrl} target="_blank" rel="noreferrer">💬 Zalo</a>
         <a href={vietnamBusinessConfig.googleReviewsUrl} target="_blank" rel="noreferrer">⭐ Review</a>
-        <a href="#booking">💳 Giữ chỗ</a>
+        <a href="#booking">📝 Gửi form</a>
       </div>
     </main>
   );
