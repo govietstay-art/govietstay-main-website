@@ -19,12 +19,12 @@ export const vietnamSeoPages: VietnamSeoPage[] = [
     "destination": "Đà Nẵng",
     "priceKey": "bana",
     "depositPercent": 20,
-    "title": "Tour Bà Nà Hills 2026 từ Đà Nẵng | GoVietStay",
-    "h1": "Tour Bà Nà Hills từ Đà Nẵng: đi gọn một ngày, biết rõ chi phí trước",
-    "description": "Nếu không muốn tự lo vé, xe và giờ đón, đây là cách đơn giản nhất. Chỉ cần gửi ngày đi, số người và khách sạn, GoVietStay sẽ kiểm tra rồi báo lại rõ ràng.",
-    "hero": "Nếu không muốn tự lo vé, xe và giờ đón, đây là cách đơn giản nhất. Chỉ cần gửi ngày đi, số người và khách sạn, GoVietStay sẽ kiểm tra rồi báo lại rõ ràng.",
-    "focus": "Bà Nà Hills, trẻ em theo chiều cao, tour ghép, tour riêng gia đình",
-    "updated": "2026-08-26"
+    "title": "Vé Bà Nà Hills kèm buffet 1.200.000đ 2026 | GoVietStay",
+    "h1": "Vé Bà Nà Hills kèm buffet trưa 1.200.000đ/người lớn",
+    "description": "Mua vé cáp treo Bà Nà Hills kèm buffet trưa 1.200.000đ/người lớn tại GoVietStay (giá công bố 1.300.000đ). Không bao gồm xe và hướng dẫn viên. Gửi ngày đi, số khách để kiểm tra vé trước khi thanh toán.",
+    "hero": "Chọn ngày, gửi số khách và nhận xác nhận từ đội ngũ địa phương. Vé cáp treo + buffet được bán riêng; xe đưa đón hoặc tour riêng chỉ thêm khi bạn muốn.",
+    "focus": "Vé cáp treo và buffet, giá rõ ràng, trẻ em theo chiều cao, xe riêng tùy chọn",
+    "updated": "2026-10-09"
   },
   {
     "slug": "tour-cu-lao-cham",
