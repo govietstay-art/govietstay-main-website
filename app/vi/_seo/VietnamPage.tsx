@@ -41,7 +41,6 @@ export default function VietnamPage({
     brand: { "@type": "Brand", name: "GoVietStay" },
     offers: { "@type": "Offer", price: priceMap.bana.sellPrice, priceCurrency: "VND", url: canonical, seller: { "@type": "Organization", name: "GoVietStay", url: "https://www.govietstay.com" } },
   } : null;
-  const faqSchema = isBana ? { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faq.map(([q,a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) } : null;
 
   const schema = {
     "@context": "https://schema.org",
@@ -67,6 +66,8 @@ export default function VietnamPage({
     ["Gia đình tôi có thể đi riêng không?", "Có. Gửi số người, ngày đi, độ tuổi, sở thích và những điều cả nhà không muốn để GoVietStay lên phương án riêng."],
     ["Tôi muốn xem đánh giá của khách cũ ở đâu?", "Bấm nút Google Reviews trên trang để mở trực tiếp hồ sơ đánh giá của GoVietStay."],
   ];
+
+  const faqSchema = isBana ? { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faq.map(([q,a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) } : null;
 
   const privateLike = page.type === "private" || page.slug.includes("gia-dinh");
 
