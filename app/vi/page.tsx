@@ -12,9 +12,9 @@ import {
 import styles from "./VietnamHub.module.css";
 
 export const metadata: Metadata = {
-  title: { absolute: "GoVietStay Việt Nam | Tour Đà Nẵng, Hội An, Huế & Phú Quốc 2026" },
+  title: { absolute: "Vé Bà Nà + buffet giá tốt | Tour Đà Nẵng, Hội An, Phú Quốc | GoVietStay" },
   description:
-    "Tour, combo, xe riêng và kinh nghiệm du lịch cho khách Việt tại Đà Nẵng, Hội An, Huế và Phú Quốc. Giá từ rõ ràng, ảnh khách thật, Google Reviews và hỗ trợ Zalo.",
+    "Vé Bà Nà Hills kèm buffet 1.200.000đ/người lớn, tour riêng, combo gia đình, xe và trải nghiệm Đà Nẵng – Hội An – Huế – Phú Quốc. Đặt vé qua form, nhận mã yêu cầu và hỗ trợ Zalo.",
   alternates: {
     canonical: "https://www.govietstay.com/vi",
     languages: { "vi-VN": "https://www.govietstay.com/vi" },
@@ -84,7 +84,7 @@ export default function VietnamHub() {
               Không cần mở cả chục tab để so từng tour. Xem giá từ, ảnh thật, combo và điều kiện trước; cần hỏi gì thì nhắn Zalo luôn.
             </h2>
             <div className={styles.heroActions}>
-              <a href="#tour-ban-chay">Xem tour nổi bật</a>
+              <a href="/vi/tour-ba-na-hills">Vé Bà Nà + buffet 1.200.000đ</a>
               <a href="#combo">🔥 Xem combo</a>
               <a href={vietnamBusinessConfig.googleReviewsUrl} target="_blank" rel="noreferrer">⭐ Xem đánh giá</a>
             </div>
@@ -113,7 +113,8 @@ export default function VietnamHub() {
       </section>
 
       <section className={styles.quickIntent}>
-        <a href="/vi/du-lich-da-nang-tu-tuc"><b>Tự túc Đà Nẵng</b><span>Xem lịch trình & chi phí →</span></a>
+        <a href="/vi/tour-ba-na-hills"><b>Vé Bà Nà + buffet 1.200.000đ</b><span>Giá công bố 1.300.000đ · hỏi ngày còn vé →</span></a>
+        
         <a href="/vi/combo-da-nang-3-tour"><b>Combo Đà Nẵng</b><span>Gom tour cho đỡ mất công →</span></a>
         <a href="/vi/tour-rieng-da-nang-gia-dinh"><b>Gia đình đi riêng</b><span>Không ghép khách khác →</span></a>
         <a href="/vi/du-lich-phu-quoc-tu-tuc"><b>Đi Phú Quốc</b><span>Tour đảo · resort · xe →</span></a>
@@ -146,7 +147,7 @@ export default function VietnamHub() {
 
       <section className={styles.section} id="tour-ban-chay">
         <div className={styles.sectionHead}>
-          <div><p>01 · TOUR NỔI BẬT</p><h2>Những tour khách Việt thường hỏi nhiều nhất.</h2></div>
+          <div><p>01 · VÉ THAM QUAN & TOUR</p><h2>Vé Bà Nà giá tốt, tour địa phương và combo linh hoạt.</h2></div>
           <span>Giá bên dưới là mức “từ”. Ngày đi, số khách và quyền lợi cụ thể sẽ được xác nhận lại trước khi bạn đặt cọc.</span>
         </div>
         <div className={styles.productGrid}>
