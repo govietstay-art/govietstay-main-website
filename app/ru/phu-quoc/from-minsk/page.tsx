@@ -15,8 +15,8 @@ export const metadata:Metadata={
   keywords:["Минск Фукуок 2026","Белавиа Фукуок Минск","Беларусь Фукуок без визы","трансфер Фукуок аэропорт","Фукуок экскурсии на русском","Фукуок для белорусов"],
   alternates:{canonical,languages:{"ru-BY":canonical}},
   robots:{index:true,follow:true},
-  openGraph:{type:"article",locale:"ru_RU",siteName:"GoVietStay",title,description,url:canonical,images:[{url:BASE+"/tour/phuquoc/johns/cable-car-trip.jpg",alt:"Канатная дорога на Хон Тхом, Фукуок"}]},
-  twitter:{card:"summary_large_image",title,description,images:[BASE+"/tour/phuquoc/johns/cable-car-trip.jpg"]}
+  openGraph:{type:"article",locale:"ru_RU",siteName:"GoVietStay",title,description,url:canonical,images:[{url:BASE+"/guest-photos/belarus-hon-thom-original.avif",alt:"Канатная дорога на Хон Тхом, Фукуок"}]},
+  twitter:{card:"summary_large_image",title,description,images:[BASE+"/guest-photos/belarus-hon-thom-original.avif"]}
 };
 
 const sections=[
@@ -103,7 +103,7 @@ const schema={"@context":"https://schema.org","@graph":[
  datePublished:"2026-10-11",dateModified:"2026-10-11",
  author:{"@type":"Organization",name:"GoVietStay",url:BASE},
  publisher:{"@id":BASE+"/#organization"},
- image:[BASE+"/tour/phuquoc/johns/cable-car-trip.jpg"]},
+ image:[BASE+"/guest-photos/belarus-hon-thom-original.avif"]},
 {"@type":"BreadcrumbList",itemListElement:[
  {"@type":"ListItem",position:1,name:"GoVietStay",item:BASE},
  {"@type":"ListItem",position:2,name:"Фукуок на русском",item:BASE+"/ru/phu-quoc"},
@@ -126,7 +126,7 @@ return <div className="min-h-screen bg-[#f5f7f4] text-slate-900">
  </header>
  <main>
   <section className="relative isolate overflow-hidden bg-emerald-950 text-white">
-   <Image fill priority src="/tour/phuquoc/johns/cable-car-trip.jpg" alt="Канатная дорога Хон Тхом на Фукуоке" sizes="100vw" className="-z-20 object-cover"/>
+   <Image fill priority src="/guest-photos/belarus-hon-thom-original.avif" alt="Канатная дорога Хон Тхом на Фукуоке" sizes="100vw" className="-z-20 object-cover"/>
    <div className="absolute inset-0 -z-10 bg-gradient-to-r from-emerald-950/95 via-emerald-950/80 to-emerald-950/25"/>
    <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28">
     <p className="text-sm font-bold uppercase tracking-[0.14em] text-emerald-100">МИНСК — ФУКУОК · СЕЗОН 2026–2027</p>
@@ -156,8 +156,8 @@ return <div className="min-h-screen bg-[#f5f7f4] text-slate-900">
    </section>
    <section className="mt-16"><h2 className="text-3xl font-bold">Кадры Фукуока</h2><div className="mt-6 grid gap-5 md:grid-cols-3">
     {[
-     ["/tour/phuquoc/tour-01-2.jpg","Побережье острова Фукуок"],
-     ["/tour/phuquoc/johns/cable-car-trip.jpg","Канатная дорога Хон Тхом"],
+     ["/guest-photos/belarus-grand-world-original.avif","Вечерний Гранд-Уорлд: фотография гостя"],
+     ["/guest-photos/belarus-hon-thom-original.avif","Канатная дорога Хон Тхом"],
      ["/tour/phuquoc/johns/trip3-snorkeling.jpg","Снорклинг и острова Ан Тхой"]
     ].map(([src,alt])=><figure key={src} className="overflow-hidden rounded-2xl border border-slate-200 bg-white"><Image src={src} alt={alt} width={700} height={500} className="h-56 w-full object-cover"/><figcaption className="p-4 text-base font-medium">{alt}</figcaption></figure>)}
    </div></section>
