@@ -324,7 +324,7 @@ export const polishGuides: PolishGuide[] = [
     gallery:[
       {src:"/tour/phuquoc/johns/trip3-snorkeling.jpg",alt:"Snorkeling i spokojne przystanki na wyspach"},
       {src:"/tour/phuquoc/johns/trip3-may-rut-trong.jpg",alt:"Jedna z wysp na południu Phu Quoc"},
-      {src:"/tour/phuquoc/johns/cable-car-trip.jpg",alt:"Kolejka linowa na Hon Thom"}
+      {src:"/guest-photos/belarus-hon-thom-original.avif",alt:"Kolejka linowa na Hon Thom – oryginalne zdjęcie z podróży"}
     ],
     related:[
       {href:"/pl/phu-quoc-przewodnik",title:"Pełny przewodnik po Phu Quoc",description:"Pogoda, noclegi, wiza, plan tygodnia i koszty."},
