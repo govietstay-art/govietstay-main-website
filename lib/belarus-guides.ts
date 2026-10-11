@@ -1,5 +1,6 @@
+import { belarusPhuQuocGuides } from "./belarus-phuquoc-guides";
 export type BelarusGuide = {
-  slug: "da-nang-hoi-an" | "hue-central-vietnam";
+  slug: "da-nang-hoi-an" | "hue-central-vietnam" | "phu-quoc" | "phu-quoc-tours" | "vietnam-travel";
   eyebrow: string;
   title: string;
   seoTitle: string;
@@ -458,6 +459,7 @@ export const belarusGuides: BelarusGuide[] = [
     ],
     message: "Здравствуйте! Я из Беларуси. Прочитал(а) путеводитель GoVietStay по Хюэ и Центральному Вьетнаму. Даты: ____. Нас: ____. Отель/круиз: ____. Хочу обсудить маршрут и русскоязычного гида."
   }
+  ...belarusPhuQuocGuides,
 ];
 
 export function getBelarusGuide(slug: string) {
