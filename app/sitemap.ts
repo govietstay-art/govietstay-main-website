@@ -32,6 +32,14 @@ const languageAlternates = (englishPath: string, russianPath: string) => ({
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const corePages: MetadataRoute.Sitemap = [
+    ...["/be/da-nang-hoi-an", "/be/hue-central-vietnam"].map(path => ({
+      url: BASE_URL + path,
+      lastModified: new Date("2026-10-11T00:00:00.000Z"),
+      changeFrequency: "monthly" as const,
+      priority: 0.84,
+      alternates: { languages: { "be-BY": BASE_URL + path } },
+    })),
+
     ...["/th","/th/ba-na-hills-private-tour","/th/hoi-an-private-tour","/th/da-nang-private-package-4d3n","/th/request-tour"].map(path=>({
       url: `${BASE_URL}${path}`,
       lastModified: new Date("2026-10-09T00:00:00.000Z"),
