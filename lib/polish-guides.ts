@@ -482,7 +482,7 @@ export const polishGuides: PolishGuide[] = [
       {q:"Czy z Da Nang do Hoi An da się dojechać tego samego dnia?",a:"Tak. Podróż samochodem trwa zwykle około 45–60 minut, zależnie od lokalizacji hotelu i ruchu."},
       {q:"Czy Hue można zobaczyć podczas jednodniowej wycieczki z Da Nang?",a:"Tak, ale trzeba wyjechać wcześnie i ograniczyć liczbę zabytków. Na spokojniejszy pobyt polecamy nocleg w Hue."},
       {q:"Czy listopad to dobry termin na Da Nang?",a:"Można przyjechać dla kultury i jedzenia, lecz ryzyko mocnych opadów i podtopień jest podwyższone. Plażowanie nie powinno być jedynym celem."},
-      {q:"Czy bilet na Ba Na Hills obejmuje bufet?",a:"Nie w każdym wariancie. Zakres biletu, kanatki, posiłku i dodatkowych atrakcji sprawdź w konkretnej ofercie."},
+      {q:"Czy bilet na Ba Na Hills obejmuje bufet?",a:"Nie w każdym wariancie. Zakres biletu, kolejki linowej, posiłku i dodatkowych atrakcji sprawdź w konkretnej ofercie."},
       {q:"Czy podróż po regionie wymaga prywatnego kierowcy?",a:"Nie. Krótkie trasy da się pokonać taksówką, ale prywatne auto często ułatwia całodniowe wycieczki rodzinne."},
       {q:"Czy Polacy potrzebują wizy na tygodniowy urlop?",a:"Przy obecnych przepisach turystyczne pobyty do 45 dni mogą być objęte zwolnieniem wizowym, pod warunkiem spełnienia wymogów. Zasady sprawdź przed wylotem."},
       {q:"Jak połączyć Hue, Hoi An i Phu Quoc?",a:"Na taką podróż warto przeznaczyć 12–14 dni lub dłużej i osobno zaplanować przelot między centralnym Wietnamem a wyspą."},
