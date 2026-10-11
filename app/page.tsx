@@ -20,6 +20,17 @@ export default function Page(){return <>
         <a className="text-emerald-800 underline underline-offset-4" href="/pl/phu-quoc-wycieczki-prywatne">Phu Quoc – wycieczki prywatne</a>
         <a className="text-emerald-800 underline underline-offset-4" href="/pl/danang-hoi-an-hue">Da Nang · Hoi An · Hue</a>
       </nav>
+      <div className="mt-6 border-t border-emerald-100 pt-5">
+        <p className="text-sm font-bold uppercase tracking-wider text-emerald-900">Vietnam for Belarusian travelers · Давeднікі па-беларуску</p>
+        <nav className="mt-3 flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold leading-7">
+          <a className="text-emerald-800 underline underline-offset-4" href="/be/phu-quoc">Фукуок — даведнік</a>
+          <a className="text-emerald-800 underline underline-offset-4" href="/be/phu-quoc-tours">Экскурсіі Фукуок</a>
+          <a className="text-emerald-800 underline underline-offset-4" href="/be/vietnam-travel">В’етнам — маршруты</a>
+          <a className="text-emerald-800 underline underline-offset-4" href="/be/da-nang-hoi-an">Дананг і Хойан</a>
+          <a className="text-emerald-800 underline underline-offset-4" href="/be/hue-central-vietnam">Хюэ</a>
+          <a className="text-emerald-800 underline underline-offset-4" href="/ru/phu-quoc/from-minsk">Из Минска на Фукуок</a>
+        </nav>
+      </div>
     </div>
   </aside>
 </>;}
