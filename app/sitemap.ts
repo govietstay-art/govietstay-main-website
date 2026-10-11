@@ -40,6 +40,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: { languages: { "pl-PL": BASE_URL + path } },
     })),
 
+    ...["/be/phu-quoc", "/be/phu-quoc-tours", "/be/vietnam-travel"].map(path => ({
+      url: BASE_URL + path,
+      lastModified: new Date("2026-10-11T00:00:00.000Z"),
+      changeFrequency: "monthly" as const,
+      priority: 0.86,
+      alternates: { languages: { "be-BY": BASE_URL + path } },
+    })),
+    {
+      url: BASE_URL + "/ru/phu-quoc/from-minsk",
+      lastModified: new Date("2026-10-11T00:00:00.000Z"),
+      changeFrequency: "monthly" as const,
+      priority: 0.87,
+      alternates: { languages: { "ru-BY": BASE_URL + "/ru/phu-quoc/from-minsk" } },
+    },
     ...["/be/da-nang-hoi-an", "/be/hue-central-vietnam"].map(path => ({
       url: BASE_URL + path,
       lastModified: new Date("2026-10-11T00:00:00.000Z"),

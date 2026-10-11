@@ -20,8 +20,8 @@ export const polishGuides: PolishGuide[] = [
     description: "Praktyczny przewodnik po Phu Quoc dla turystów z Polski: pogoda, plaże, wybór hotelu, transport, wiza do Wietnamu, wycieczki, koszty i gotowe plany na 7–14 dni.",
     kicker: "PHU QUOC · WIETNAM DLA PODRÓŻUJĄCYCH Z POLSKI",
     lead: "Zamiast listy „30 atrakcji, które musisz zobaczyć” dostajesz tu odpowiedzi na ważniejsze pytania: na której części wyspy nocować, kiedy morze jest spokojniejsze, ile dni przeznaczyć na zwiedzanie i czego nie rezerwować w ciemno.",
-    hero: "/tour/phuquoc/tour-01-1.jpg",
-    heroAlt: "Tropikalny krajobraz wyspy Phu Quoc w Wietnamie",
+    hero: "/guest-photos/belarus-hon-thom-original.avif",
+    heroAlt: "Kolejka linowa Hon Thom: autentyczne zdjęcie z podróży po Phu Quoc",
     keywords: ["Phu Quoc 2026", "Phu Quoc 2027", "Phu Quoc na własną rękę", "Phu Quoc co zobaczyć", "Phu Quoc kiedy jechać", "Phu Quoc wiza Polacy", "Phu Quoc gdzie nocować", "Phu Quoc wycieczki"],
     quick: [
       {label:"Najlepszy okres na plażowanie", value:"Zwykle grudzień–marzec; sprawdź prognozę dla konkretnych dni."},
@@ -185,9 +185,10 @@ export const polishGuides: PolishGuide[] = [
       {q:"Czy GoVietStay ma przewodników mówiących po polsku?",a:"Nie gwarantujemy obsługi w języku polskim. Pracujemy głównie po angielsku i rosyjsku; inne języki wyłącznie po potwierdzeniu dostępności."}
     ],
     gallery:[
-      {src:"/tour/phuquoc/johns/cable-car-trip.jpg",alt:"Kolejka linowa na Hon Thom"},
+      {src:"/guest-photos/belarus-hon-thom-original.avif",alt:"Kolejka linowa na Hon Thom, autentyczne zdjęcie"},
       {src:"/tour/phuquoc/johns/trip3-snorkeling.jpg",alt:"Snorkeling podczas wycieczki po wyspach"},
-      {src:"/tour/phuquoc/johns/trip3-may-rut-trong.jpg",alt:"Widoki archipelagu An Thoi"}
+      {src:"/tour/phuquoc/johns/trip3-may-rut-trong.jpg",alt:"Widoki archipelagu An Thoi"},
+      {src:"/guest-photos/belarus-grand-world-original.avif",alt:"Grand World na Phu Quoc wieczorem — zdjęcie przesłane GoVietStay"}
     ],
     related:[
       {href:"/pl/phu-quoc-wycieczki-prywatne",title:"Wycieczki prywatne i rejsy na Phu Quoc",description:"Jak wybrać łódź, snorkeling i wycieczkę rodzinną."},
@@ -323,7 +324,7 @@ export const polishGuides: PolishGuide[] = [
     gallery:[
       {src:"/tour/phuquoc/johns/trip3-snorkeling.jpg",alt:"Snorkeling i spokojne przystanki na wyspach"},
       {src:"/tour/phuquoc/johns/trip3-may-rut-trong.jpg",alt:"Jedna z wysp na południu Phu Quoc"},
-      {src:"/tour/phuquoc/johns/cable-car-trip.jpg",alt:"Kolejka linowa na Hon Thom"}
+      {src:"/guest-photos/belarus-hon-thom-original.avif",alt:"Kolejka linowa na Hon Thom – oryginalne zdjęcie z podróży"}
     ],
     related:[
       {href:"/pl/phu-quoc-przewodnik",title:"Pełny przewodnik po Phu Quoc",description:"Pogoda, noclegi, wiza, plan tygodnia i koszty."},
@@ -345,8 +346,8 @@ export const polishGuides: PolishGuide[] = [
     description:"Da Nang, Hoi An i Hue dla turystów z Polski: pogoda, lotnisko, noclegi, Ba Na Hills, stare miasto Hoi An, cesarskie Hue, prywatny transport i plan 5–7 dni.",
     kicker:"ŚRODKOWY WIETNAM · TRASA POZA UTARTYM SCHEMATEM",
     lead:"Trzy różne miejsca, jeden region i wiele złych planów tworzonych tylko na podstawie zdjęć. Tu znajdziesz realistyczne odległości, wskazówki pogodowe, wybór bazy noclegowej i gotowe warianty podróży bez ciągłego przepakowywania walizek.",
-    hero:"/hero-hoian-new.png",
-    heroAlt:"Stare miasto Hoi An wieczorem, lampiony i historyczne uliczki",
+    hero:"/guest-photos/belarus-danang-beach-original.avif",
+    heroAlt:"Plaża Da Nang z parasolami, zdjęcie z podróży po środkowym Wietnamie",
     keywords:["Da Nang na własną rękę","Hoi An poradnik","Hue Wietnam zwiedzanie","Da Nang Hoi An Hue 7 dni","środkowy Wietnam plan podróży","Ba Na Hills Golden Bridge","Wietnam prywatna wycieczka"],
     quick:[
       {label:"Dobra baza",value:"Da Nang, jeśli chcesz połączyć plaże, Hoi An i Hue."},

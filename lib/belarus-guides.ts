@@ -1,5 +1,6 @@
+import { belarusPhuQuocGuides } from "./belarus-phuquoc-guides";
 export type BelarusGuide = {
-  slug: "da-nang-hoi-an" | "hue-central-vietnam";
+  slug: "da-nang-hoi-an" | "hue-central-vietnam" | "phu-quoc" | "phu-quoc-tours" | "vietnam-travel";
   eyebrow: string;
   title: string;
   seoTitle: string;
@@ -34,9 +35,10 @@ export const belarusGuides: BelarusGuide[] = [
     seoTitle: "Дананг і Хойан 2026–2027: надвор’е, пляжы, маршруты і парады",
     description: "Падрабязны даведнік па Данангу і Хойане па-беларуску: калі ехаць, дзе жыць, як дабрацца, што паглядзець, прыклад маршруту на 3–5 дзён, выдаткі і парады ў сезон дажджоў.",
     lead: "Дананг зручны як база: побач аэрапорт, пляжы, горы і дарога ў Хойан. У гэтым даведніку сабрана тое, што сапраўды патрэбна перад паездкай: як спланаваць дні без спешкі, калі браць экскурсію, а калі лепш проста пагуляць.",
-    cover: "/tour/hoian.jpg",
-    coverAlt: "Стары горад Хойан у Цэнтральным В’етнаме",
+    cover: "/guest-photos/belarus-danang-beach-original.avif",
+    coverAlt: "Пляж Дананга, фота з падарожжа па Цэнтральным В’етнаме",
     gallery: [
+      { src: "/guest-photos/belarus-danang-beach-original.avif", alt: "Пляж Дананга з шэзлонгамі і парасонамі" },
       { src: "/tour/bana.jpg", alt: "Горы Бана-Хілз і Залаты мост каля Дананга" },
       { src: "/tour/coconut.jpg", alt: "Какосавы лес Камтхан і традыцыйныя лодкі" },
       { src: "/tour/marble.jpg", alt: "Мармуровыя горы паміж Данангам і Хойанам" }
@@ -457,7 +459,8 @@ export const belarusGuides: BelarusGuide[] = [
       { href: "https://evisa.gov.vn", label: "Афіцыйны партал электроннай візы В’етнама" }
     ],
     message: "Здравствуйте! Я из Беларуси. Прочитал(а) путеводитель GoVietStay по Хюэ и Центральному Вьетнаму. Даты: ____. Нас: ____. Отель/круиз: ____. Хочу обсудить маршрут и русскоязычного гида."
-  }
+  },
+  ...belarusPhuQuocGuides,
 ];
 
 export function getBelarusGuide(slug: string) {

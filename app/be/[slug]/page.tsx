@@ -24,7 +24,7 @@ export async function generateMetadata({
     title: { absolute: guide.seoTitle + " | GoVietStay" },
     description: guide.description,
     keywords: [
-      "В'етнам для беларусаў", "Дананг", "Хойан", "Хюэ",
+      "В'етнам для беларусаў", "Дананг", "Хойан", "Хюэ", "Фукуок", "Фукуок для беларусаў",
       "падарожжа па В'етнаме", "Цэнтральны В'етнам", "адпачынак у В'етнаме",
     ],
     alternates: {
@@ -73,7 +73,7 @@ export default async function Page({
         "@type": "BreadcrumbList",
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "GoVietStay", item: ORIGIN },
-          { "@type": "ListItem", position: 2, name: "Вандроўкі па Цэнтральным В’етнаме", item: ORIGIN + "/be/da-nang-hoi-an" },
+          { "@type": "ListItem", position: 2, name: "Даведнікі пра В’етнам", item: ORIGIN + "/be/vietnam-travel" },
           { "@type": "ListItem", position: 3, name: guide.title, item: canonical },
         ],
       },
@@ -90,6 +90,7 @@ export default async function Page({
         author: { "@type": "Organization", name: "GoVietStay Local Team", url: ORIGIN },
         publisher: { "@id": ORIGIN + "/#organization" },
         about: [
+          { "@type": "Place", name: "Phu Quoc, Vietnam" },
           { "@type": "Place", name: "Da Nang, Vietnam" },
           { "@type": "Place", name: "Hoi An, Vietnam" },
           { "@type": "Place", name: "Hue, Vietnam" },
@@ -123,7 +124,9 @@ export default async function Page({
           <nav aria-label="Навігацыя" className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-semibold text-slate-700 sm:text-base">
             <a className="hover:text-emerald-800" href="/be/da-nang-hoi-an">Дананг і Хойан</a>
             <a className="hover:text-emerald-800" href="/be/hue-central-vietnam">Хюэ і маршруты</a>
-            <a className="hover:text-emerald-800" href="/ru/tours/phu-quoc">Фукуок</a>
+            <a className="hover:text-emerald-800" href="/be/phu-quoc">Фукуок</a>
+            <a className="hover:text-emerald-800" href="/be/phu-quoc-tours">Экскурсіі</a>
+            <a className="hover:text-emerald-800" href="/be/vietnam-travel">В’етнам</a>
             <a className="rounded-full bg-emerald-900 px-4 py-2.5 text-white hover:bg-emerald-800" href={whatsAppUrl} target="_blank" rel="noreferrer">Напісаць у WhatsApp</a>
           </nav>
         </div>
