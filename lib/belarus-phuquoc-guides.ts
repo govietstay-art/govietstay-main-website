@@ -11,8 +11,8 @@ export const belarusPhuQuocGuides: BelarusGuide[] = [
   lead:"Каб адпачынак на Фукуоку атрымаўся, важна не толькі выбраць прыгожы пляж. Трэба ўлічыць сезон, адлегласці паміж раёнамі, дзіцячыя патрэбы і рэальны час на пераезды. Гэта даведнік для самастойнага планавання — без неабходнасці набываць тур.",
   cover:"/tour/phuquoc/tour-01-1.jpg",coverAlt:"Трапічны востраў Фукуок, В’етнам",
   gallery:[
-   {src:"/tour/phuquoc/johns/cable-car-trip.jpg",alt:"Канатная дарога на Хон-Тхом над морам"},
-   {src:"/tour/phuquoc/tour-05-2.jpg",alt:"Пляжы і ўзбярэжжа Фукуока"},
+   {src:"/guest-photos/belarus-hon-thom-original.avif",alt:"Канатная дарога Хон-Тхом — фота, дасланае GoVietStay"},
+   {src:"/guest-photos/belarus-grand-world-original.avif",alt:"Рэальны фотакадр з Гранд-Уорлд Фукуок увечары"},
    {src:"/tour/phuquoc/tour-02-2.jpg",alt:"Мора і астравы каля Фукуока"}
   ],
   quick:[
@@ -139,9 +139,10 @@ export const belarusPhuQuocGuides: BelarusGuide[] = [
   seoTitle:"Экскурсіі Фукуок: 3–4 астравы, лодкі і сямейныя туры",
   description:"Практычнае параўнанне марскіх экскурсій па Фукуоку для беларусаў: 3 і 4 астравы, прыватная ці групавая лодка, снорклінг, Хон-Тхом, бяспека і што ўваходзіць у кошт.",
   lead:"Назвы «3 астравы» і «4 астравы» самі па сабе мала што кажуць пра якасць паездкі. Значна важней працягласць адпачынку ў вадзе, тып лодкі, бяспека дзяцей, абед і рэальныя прыпынкі. Дапамагаем разабрацца да куплі.",
-  cover:"/tour/phuquoc/johns/cable-car-trip.jpg",coverAlt:"Канатная дарога над астраўным узбярэжжам Фукуока",
+  cover:"/guest-photos/belarus-hon-thom-original.avif",coverAlt:"Канатная дарога над морам на Фукуоку — рэальны фотаздымак",
   gallery:[
    {src:"/tour/phuquoc/johns/luxury-speedboat.jpg",alt:"Хуткасны катэр для марскіх паездак"},
+   {src:"/guest-photos/belarus-hon-thom-original.avif",alt:"Хон-Тхом: фотаздымак канатнай дарогі"},
    {src:"/tour/phuquoc/johns/trip3-snorkeling.jpg",alt:"Снорклінг у водах архіпелага Ан-Тхой"},
    {src:"/tour/phuquoc/johns/trip3-may-rut-trong.jpg",alt:"Астравы і пляжы паблізу Фукуока"}
   ],
@@ -224,6 +225,7 @@ export const belarusPhuQuocGuides: BelarusGuide[] = [
   cover:"/hero-hoian-new.png",coverAlt:"Гістарычны Хойан — адна з галоўных кропак падарожжа па В’етнаме",
   gallery:[
    {src:"/tour/phuquoc/tour-03-1.jpg",alt:"Трапічныя воды Фукуока"},
+   {src:"/guest-photos/belarus-danang-beach-original.avif",alt:"Пляж у Данангу — сапраўднае фота з падарожжа"},
    {src:"/tour/bana.jpg",alt:"Бана-Хілз і Залаты мост каля Дананга"},
    {src:"/tour/hue.jpg",alt:"Гістарычны імператарскі горад Хюэ"}
   ],
