@@ -10,6 +10,18 @@ let output="";
 server.stdout.on("data",chunk=>{output+=chunk.toString();});
 server.stderr.on("data",chunk=>{output+=chunk.toString();});
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+/** Inspect SEO <link> elements, not navigation anchors carrying hrefLang. */
+function linkAttribute(tag,name) {
+ const attributes=[...tag.matchAll(/\s([A-Za-z][\w:-]*)\s*=\s*(["'])(.*?)\2/gi)];
+ return attributes.find(([,key])=>key.toLowerCase()===name.toLowerCase())?.[3]??null;
+}
+function hasSeoLink(source,rel,attributes={}) {
+ return [...source.matchAll(/<link\b[^>]*>/gi)].some(([tag])=>
+  linkAttribute(tag,"rel")?.toLowerCase()===rel &&
+  Object.entries(attributes).every(([name,value])=>linkAttribute(tag,name)===value)
+ );
+}
+
 async function ready(){
   for(let attempt=0;attempt<60;attempt++){
     if(server.exitCode!==null)throw new Error("Next server exited: "+output.slice(-2000));
@@ -30,6 +42,10 @@ async function check(path,lang,dir){
  return html;
 }
 try{
+ // Regression coverage: navigation anchors are not SEO alternates; HTML attribute order and quotes vary.
+ assert.ok(!hasSeoLink('<a href="/ru" hrefLang="ru">Русский</a>',"alternate",{hrefLang:"ru"}));
+ assert.ok(hasSeoLink('<link hrefLang="ru" href="/ru" rel="alternate">',"alternate",{hrefLang:"ru",href:"/ru"}));
+ assert.ok(hasSeoLink("<link rel='alternate' href='/ru' hrefLang='ru'>","alternate",{hrefLang:"ru",href:"/ru"}));
  await ready();
  const routes=[
   ["/","en","ltr"],["/ru","ru","ltr"],["/it","it","ltr"],
@@ -42,7 +58,7 @@ try{
  const html=await Promise.all(routes.map(([path,lang,dir])=>check(path,lang,dir)));
  for(const [path,canonical] of [["/","https://www.govietstay.com"],["/ru","https://www.govietstay.com/ru"],["/it","https://www.govietstay.com/it"]]){
   const source=html[routes.findIndex(row=>row[0]===path)];
-  assert.ok(source.includes(`href="${canonical}"`),`${path}: canonical missing`);
+  assert.ok(hasSeoLink(source,"canonical",{href:canonical}),`${path}: canonical missing`);
  }
  const sitemap=await fetch(origin+"/sitemap.xml",{signal:AbortSignal.timeout(20000)});
  assert.equal(sitemap.status,200,"sitemap.xml inaccessible");
@@ -55,7 +71,7 @@ try{
    const [deHtml,enHtml]=await Promise.all([check(german,"de-DE","ltr"),check(english,"en","ltr")]);
    for (const [p,s] of [[german,deHtml],[english,enHtml]]) {
      for (const [code,target] of [["de-DE",german],["en",english]]) {
-       assert.ok(s.includes('hrefLang="'+code+'" href="https://www.govietstay.com'+target+'"'),p+": missing reciprocal "+code+" -> "+target);
+       assert.ok(hasSeoLink(s,"alternate",{hrefLang:code,href:"https://www.govietstay.com"+target}),p+": missing reciprocal "+code+" -> "+target);
      }
    }
  }
@@ -63,7 +79,7 @@ try{
  assert.ok(food.includes("og:image"),"Local food social preview is missing");
  for (const path of ["/ar","/cn","/tr","/ph","/mn","/il"]) {
    const source=html[routes.findIndex(row=>row[0]===path)];
-   assert.ok(source.includes('rel="canonical" href="https://www.govietstay.com'+path+'"'),path+": missing self canonical");
+   assert.ok(hasSeoLink(source,"canonical",{href:"https://www.govietstay.com"+path}),path+": missing self canonical");
    assert.ok(source.includes('property="og:image"'),path+": missing share image");
  }
  for (const slug of ["/ar","/ar/halal-travel-vietnam","/ar/vietnam-family-private-tour","/ar/phu-quoc-tours"]) {
@@ -71,7 +87,7 @@ try{
  }
  for (const [path,otherLang] of [["/cn","zh-TW"],["/ko","ru"],["/tr","en"],["/ph","en"]]) {
    const source=html[routes.findIndex(row=>row[0]===path)];
-   assert.ok(!source.includes('hrefLang="'+otherLang+'"'),path+": nonreciprocal "+otherLang+" alternate still declared");
+   assert.ok(!hasSeoLink(source,"alternate",{hrefLang:otherLang}),path+": nonreciprocal "+otherLang+" alternate still declared");
  }
  console.log(`PASS: ${routes.length} server-rendered locale routes, canonical, sitemap and local food OG.`);
 }catch(error){console.error(error);console.error("Server tail: "+output.slice(-2000));process.exitCode=1;
