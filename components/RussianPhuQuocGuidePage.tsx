@@ -3,12 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import type { RussianPhuQuocPage } from "../lib/russian-phu-quoc-cluster";
 import { phuQuocHubOptions, phuQuocHubBookingChecklist, phuQuocHubFAQs } from "../lib/seo/phuQuocRuHub";
+import {buildWhatsappInquiryUrl} from "../lib/seo/whatsappInquiry";
 
-const WHATSAPP_NUMBER = "84937762607";
 
 export default function RussianPhuQuocGuidePage({ page }: { page: RussianPhuQuocPage }) {
   const whatsappText = `Здравствуйте! Я читаю страницу «${page.shortTitle}». Подскажите, пожалуйста. Отель: ___. Даты: ___. Нас: ___. Дети: ___.`;
-  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappText)}`;
+  const whatsappUrl = buildWhatsappInquiryUrl(page.whatsappText ?? whatsappText);
 
   return (
     <main className="min-h-screen bg-[#f7f1df] text-[#08271e]">

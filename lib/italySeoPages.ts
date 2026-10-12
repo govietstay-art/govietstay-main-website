@@ -11,6 +11,7 @@ export type ItalySeoPage = {
   faqs:[string,string][];
   officialUrl?:string|null;
   updated:string;
+  whatsappText?:string;
   sections?:{heading:string;paragraphs:string[];bullets?:string[]}[];
   links?:{href:string;label:string;description:string}[];
 };
@@ -1257,34 +1258,102 @@ export const italySeoPages:ItalySeoPage[] = [
     "type": "private",
     "destination": "Phu Quoc",
     "priceKey": null,
-    "title": "Auto privata Phu Quoc 2026 | Nord, sud e Sunset Town | GoVietStay",
-    "h1": "Auto privata a Phu Quoc: raggruppa le tappe per zona e smetti di attraversare l'isola avanti e indietro",
-    "desc": "Invia hotel e wishlist. GoVietStay riordina le tappe in modo logico e quota il veicolo.",
-    "wiifm": "Meno chilometri inutili, più tempo nei luoghi che hai scelto.",
+    "title": "Auto privata a Phu Quoc 2026–2027: itinerari e preventivo | GoVietStay",
+    "h1": "Auto privata a Phu Quoc con autista: nord, sud e Sunset Town senza corse inutili",
+    "desc": "Come organizzare una giornata in auto privata a Phu Quoc: hotel, zone nord e sud, fermate, bambini, costi inclusi ed esclusi e preventivo su misura.",
+    "wiifm": "Un itinerario concreto dal tuo hotel, soste concordate e costi chiari prima della conferma. Nessun obbligo di acquistare escursioni o una guida.",
     "bullets": [
-      "Quotazione per veicolo, durata e percorso.",
-      "Biglietti separati salvo conferma.",
-      "Rientro dopo il tramonto possibile se concordato."
+      "Scegli un itinerario nord oppure sud partendo dalla posizione dell'hotel.",
+      "Indica data, numero di persone, bambini, bagagli e ore richieste per un preventivo per veicolo.",
+      "Biglietti, funivia, pasti e guida in italiano sono da confermare separatamente."
     ],
     "faqs": [
       [
-        "Posso prenotare mezza giornata?",
-        "Dipende dal percorso."
+        "Quanto costa un'auto privata a Phu Quoc per un giorno?",
+        "Dipende da hotel, percorso, durata, passeggeri e veicolo. Invia data e tappe per ricevere un preventivo preciso prima della prenotazione."
       ],
       [
-        "I biglietti sono inclusi?",
-        "Non automaticamente."
+        "Posso prenotare solo l'auto con autista, senza guida?",
+        "Sì, per i percorsi disponibili puoi richiedere solo auto e conducente. La guida italiana è un servizio distinto, su richiesta e disponibilità."
       ],
       [
-        "Posso vedere nord e sud nello stesso giorno?",
-        "Possibile, ma spesso poco efficiente."
+        "Meglio scegliere il nord o il sud di Phu Quoc?",
+        "Dipende dal tuo hotel. Grand World è a nord, Sunset Town e An Thoi sono a sud; organizzare le soste per zona riduce trasferimenti inutili."
       ],
       [
-        "Guida italiana disponibile?",
-        "Su richiesta e disponibilità."
+        "Si può fare un itinerario privato di 4–6 ore?",
+        "Può essere possibile per un percorso limitato a una zona. Indica le tappe e l'hotel per verificare durata e costo."
+      ],
+      [
+        "Biglietti e funivia di Hon Thom sono inclusi?",
+        "Non automaticamente. Funivia, ingressi, pasti e guida sono inclusi soltanto se riportati esplicitamente nel preventivo confermato."
+      ],
+      [
+        "È disponibile un seggiolino per bambini?",
+        "Chiedilo in anticipo indicando l'età del bambino: disponibilità, tipologia e possibile costo saranno verificati prima della conferma."
       ]
     ],
-    "updated": "2026-08-27"
+    "updated": "2026-10-12",
+    "sections": [
+      {
+        "heading": "Nord o sud di Phu Quoc: come costruire la giornata in auto privata",
+        "paragraphs": [
+          "Se soggiorni vicino a Grand World, visita prima le attrazioni del nord: spostarsi più volte fino a Sunset Town o An Thoi sottrae tempo alla giornata. Dal sud è spesso più comodo dedicarsi a Sunset Town e alle attrazioni vicine, verificando gli orari di ciascun luogo.",
+          "Bai Truong e Duong Dong possono essere basi comode, ma la distanza reale dipende dall'indirizzo preciso dell'hotel. Invia la posizione e 2–3 tappe prioritarie: costruiremo un percorso sensato senza promettere di vedere tutta l'isola in poche ore."
+        ],
+        "bullets": [
+          "Nord: Grand World e spiagge vicine, se adatte al tuo gruppo.",
+          "Sud: Sunset Town, An Thoi e attrazioni secondo orari e disponibilità.",
+          "Famiglia: meno tappe, pause e rientro concordato."
+        ]
+      },
+      {
+        "heading": "Auto con autista o tour privato con guida italiana: qual è la differenza?",
+        "paragraphs": [
+          "Con la sola auto prenoti il mezzo e il conducente per l'itinerario concordato; non è automaticamente incluso un accompagnatore turistico. Il servizio con guida aggiunge spiegazioni e assistenza nelle visite, ma lingua e disponibilità vanno verificate per la data.",
+          "Se vuoi soprattutto fare foto, raggiungere spiagge o muoverti tra quartieri, chiedi prima il preventivo solo auto. Se invece vuoi una visita culturale guidata, specifica la lingua desiderata: la guida italiana non è garantita senza conferma."
+        ]
+      },
+      {
+        "heading": "Prezzo: cosa comprende la quotazione e quali spese restano fuori?",
+        "paragraphs": [
+          "La tariffa dipende dalla zona dell'hotel, dalle ore richieste, dalle distanze, dal tipo di veicolo e dal numero di passeggeri. Ti inviamo un preventivo per il percorso reale anziché un prezzo unico che non considera la logistica.",
+          "Chiedi la conferma scritta di orari, punti di ritiro, durata, eventuali soste extra, tempi di attesa e possibili supplementi. Ingresso alle attrazioni, funivia di Hon Thom, pasti, barca e guida non sono automaticamente compresi."
+        ]
+      },
+      {
+        "heading": "Un esempio realistico: mezza giornata o giornata intera?",
+        "paragraphs": [
+          "Per 4–6 ore conviene restare in una stessa zona: partenza dall'hotel, 2–3 tappe e rientro. Una giornata intera può permettere più soste, ma andare dal nord al sud e tornare resta impegnativo soprattutto con bambini o persone anziane.",
+          "Se vuoi la funivia di Hon Thom, controlla che gli orari siano compatibili e verifica i biglietti separatamente. In caso di pioggia o cambi di programma, ogni variazione va concordata con il fornitore."
+        ]
+      },
+      {
+        "heading": "Come richiedere un preventivo utile al primo messaggio",
+        "paragraphs": [
+          "Scrivi data desiderata, nome e zona dell'hotel, adulti e bambini con età, eventuale seggiolino, 2–3 località, ore previste e budget orientativo. Aggiungi se ti basta l'auto con autista o desideri anche una guida in italiano.",
+          "GoVietStay verifica disponibilità e dettagli dell'auto, propone un percorso ragionevole e chiarisce inclusioni e condizioni prima del pagamento. Non sei obbligato a comprare un pacchetto completo."
+        ]
+      }
+    ],
+    "links": [
+      {
+        "href": "/it/phu-quoc-fai-da-te",
+        "label": "Phu Quoc fai da te",
+        "description": "Scegli zona e giornate prima di spostarti."
+      },
+      {
+        "href": "/it/tour-3-isole-phu-quoc",
+        "label": "Tour 3 isole",
+        "description": "Quando vale la pena scegliere una giornata in mare invece dell'auto."
+      },
+      {
+        "href": "/it/phu-quoc-con-bambini",
+        "label": "Phu Quoc con bambini",
+        "description": "Come evitare trasferimenti troppo lunghi per la famiglia."
+      }
+    ],
+    "whatsappText": "Buongiorno GoVietStay! Vorrei un preventivo per auto privata a Phu Quoc.\nData: ____\nHotel e zona: ____\nAdulti: ____; bambini (età): ____\nSeggiolino: sì / no\nTappe preferite: ____\nDurata: 4–6 ore / giornata intera\nServizio: solo auto / anche guida in italiano\nBudget indicativo: ____\nPotete indicare prezzo totale, inclusioni ed eventuali extra?"
   },
   {
     "slug": "phu-quoc-con-bambini",
