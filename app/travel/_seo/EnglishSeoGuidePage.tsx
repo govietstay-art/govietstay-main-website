@@ -13,13 +13,18 @@ export default function EnglishSeoGuidePage({
   related: EnglishSeoGuide[];
 }) {
   const canonical = `https://www.govietstay.com/travel/${guide.slug}`;
+  const isHoTram = guide.slug === "ho-tram-travel-guide";
+  const waHref = isHoTram
+    ? "https://wa.me/84937762607?text=" + encodeURIComponent("Hello GoVietStay, I read your Ho Tram travel guide. My travel dates, guest count and accommodation preference are:")
+    : WA;
 
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: guide.h1,
     description: guide.description,
-    datePublished: "2026-08-26",
+    ...(isHoTram ? { image: "https://images.pexels.com/photos/31768434/pexels-photo-31768434.jpeg?cs=srgb" } : {}),
+    datePublished: isHoTram ? "2026-10-12" : "2026-08-26",
     dateModified: guide.updated,
     inLanguage: "en",
     mainEntityOfPage: canonical,
@@ -66,7 +71,7 @@ export default function EnglishSeoGuidePage({
           <a href="/travel">All guides</a>
           <a href="/tours/ba-na-hills">Ba Na Hills</a>
           <a href="/tours/hoi-an-coconut-forest">Hoi An</a>
-          <a className={styles.navCta} href={WA} target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          <a className={styles.navCta} href={waHref} target="_blank" rel="noopener noreferrer">WhatsApp</a>
         </nav>
       </header>
 
@@ -94,6 +99,21 @@ export default function EnglishSeoGuidePage({
           <div key={item}><span>{String(index+1).padStart(2,"0")}</span><b>{item}</b></div>
         ))}
       </section>
+
+      {isHoTram && (
+        <section className={styles.destinationPhotos} aria-label="Photographs of the Ho Tram coast">
+          <div className={styles.destinationPhotoGrid}>
+            <figure>
+              <img src="https://images.pexels.com/photos/31768434/pexels-photo-31768434.jpeg?cs=srgb&amp;w=1500" alt="Aerial view of the sandy coastline and seaside resorts at Ho Tram, Vietnam" loading="eager" />
+              <figcaption>Ho Tram coastline · Photo: <a href="https://www.pexels.com/photo/scenic-aerial-view-of-h-tram-beach-31768434/" target="_blank" rel="noopener noreferrer">Kushie In Vietnam / Pexels</a></figcaption>
+            </figure>
+            <figure>
+              <img src="https://images.pexels.com/photos/31768458/pexels-photo-31768458.jpeg?cs=srgb&amp;w=1100" alt="The wide beachfront at Ho Tram with the pier and coastal landscape" loading="lazy" />
+              <figcaption>Ho Tram beachfront · Photo: <a href="https://www.pexels.com/photo/aerial-view-of-h-tram-beach-vietnam-31768458/" target="_blank" rel="noopener noreferrer">Kushie In Vietnam / Pexels</a></figcaption>
+            </figure>
+          </div>
+        </section>
+      )}
 
       <div className={styles.layout}>
         <article>
@@ -133,7 +153,7 @@ export default function EnglishSeoGuidePage({
             <p className={styles.kicker}>LOCAL VIETNAM SUPPORT</p>
             <h3>Send four details.</h3>
             <ul><li>Travel dates</li><li>Adults + children</li><li>Hotel / destination</li><li>Must-do experiences</li></ul>
-            <a className={styles.whatsapp} href={WA} target="_blank" rel="noopener noreferrer">Ask on WhatsApp</a>
+            <a className={styles.whatsapp} href={waHref} target="_blank" rel="noopener noreferrer">Ask on WhatsApp</a>
             <a className={styles.internal} href={guide.primaryHref}>{guide.primaryLabel} →</a>
           </div>
         </aside>
@@ -162,7 +182,7 @@ export default function EnglishSeoGuidePage({
     
       <a
         className={styles.mobileCta}
-        href={WA}
+        href={waHref}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Ask GoVietStay on WhatsApp"
