@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title:{absolute:"ホイアン旅行 日本語ガイド｜旧市街・ココナッツ村・夜観光 | GoVietStay"},
   description:"ホイアン旅行を日本語で計画。旧市街、ランタン、ホアイ川、ココナッツ村、ダナンからの移動、雨季の注意点を現地チームが案内。",
   alternates:{canonical:"https://www.govietstay.com/ja/hoi-an"},robots:{index:true,follow:true},
-  openGraph:{type:"article",locale:"ja_JP",url:"https://www.govietstay.com/ja/hoi-an",title:"ホイアン旅行 日本語ガイド | GoVietStay",description:"旧市街と夜の雰囲気を中心に、無理のないホイアン旅程を作る。",siteName:"GoVietStay"}
+  openGraph:{type:"article",locale:"ja_JP",url:"https://www.govietstay.com/ja/hoi-an",title:"ホイアン旅行 日本語ガイド | GoVietStay",description:"旧市街と夜の雰囲気を中心に、無理のないホイアン旅程を作る。",siteName:"GoVietStay",images:[{url:"https://www.govietstay.com/hero-hoian-new.png",alt:"ホイアンのランタンと旧市街"}]}
 };
 const config={
 canonicalPath:"/ja/hoi-an",eyebrow:"HOI AN · 夕方から夜が主役",title:"ホイアンは、昼に急ぐより夕方からゆっくり歩く。",

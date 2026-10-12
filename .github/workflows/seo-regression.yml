@@ -67,7 +67,7 @@ jobs:
             echo "URL: $address"
             curl -sSLI --max-time 20 --max-redirs 5 -o /dev/null -w 'HTTP=%{http_code} redirects=%{num_redirects} final=%{url_effective} total=%{time_total}s\n' "$address" || true
           done
-      - run: node scripts/audit-seo-geo.mjs
+      - run: node --experimental-strip-types scripts/audit-seo-geo.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
