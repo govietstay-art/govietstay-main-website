@@ -10,6 +10,7 @@ on:
       - "next.config.ts"
       - "scripts/check-seo-route-langs.mjs"
       - "scripts/check-rendered-seo.mjs"
+      - "scripts/check-hebrew-depth.mjs"
       - "scripts/check-ru-phu-quoc-content.mjs"
       - "scripts/check-ru-booking-landing.mjs"
       - "scripts/check-ru-hoi-an-content.mjs"
@@ -45,6 +46,7 @@ jobs:
       - run: npx tsc --noEmit --pretty false
       - run: npm run build
       - run: node scripts/check-rendered-seo.mjs
+      - run: node scripts/check-hebrew-depth.mjs
       - run: node scripts/check-ru-phu-quoc-content.mjs
       - run: node scripts/check-ru-booking-landing.mjs
       - run: node scripts/check-ru-hoi-an-content.mjs
