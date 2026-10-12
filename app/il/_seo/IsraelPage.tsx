@@ -12,6 +12,7 @@ const webPage={"@context":"https://schema.org","@type":"WebPage","@id":canonical
 const breadcrumb={"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"GoVietStay ישראל","item":"https://www.govietstay.com/il"},{"@type":"ListItem","position":2,"name":p.h1,"item":`https://www.govietstay.com/il/${p.slug}`}]};const std=p.priceKey?C.standard[p.priceKey as keyof typeof C.standard]:null;const pr=p.privateKey?C.private[p.privateKey as keyof typeof C.private]:null;return <main className={s.page} dir="rtl">
 <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(breadcrumb)}}/>
 <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(webPage)}}/>
+{editorial?.faqs?.length?<script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify({"@context":"https://schema.org","@type":"FAQPage",mainEntity:editorial.faqs.map(f=>({"@type":"Question",name:f.q,acceptedAnswer:{"@type":"Answer",text:f.a}}))})}}/>:null}
 <header><a href="/il"><img src="/govietstay-logo.jpg" alt="GoVietStay"/></a><nav><a href="/il">בית</a><a href="/il/private-vietnam-trip">פרטי</a><a className={s.wa} href={C.whatsapp}>WhatsApp</a></nav></header>
 <section className={s.detailHero}><img src={v.hero} alt={p.h1}/><div><small>{p.destination}</small><h1>{p.h1}</h1><p>{p.desc}</p><blockquote>{p.wiifm}</blockquote></div></section>
 <section className={s.gallery}>{v.gallery.map((x:string)=><img key={x} src={x} alt={p.destination}/>)}</section>

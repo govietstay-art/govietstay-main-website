@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import IndiaSeoGuidePage from "../_seo/IndiaSeoGuidePage";
+import {getIndiaSeoVisual} from "../../../lib/indiaSeoVisuals";
 import {
   getIndiaSeoGuide,
   indiaSeoGuides,
@@ -21,6 +22,7 @@ export async function generateMetadata({
   if (!guide) return {};
 
   const canonical = `https://www.govietstay.com/in/${guide.slug}`;
+  const image = `https://www.govietstay.com${getIndiaSeoVisual(guide.slug)}`;
 
   return {
     title: guide.title,
@@ -41,7 +43,7 @@ export async function generateMetadata({
       description: guide.description,
       images: [
         {
-          url: "https://www.govietstay.com/tour/cham-island/guest-on-island.jpg",
+          url: image,
           width: 1200,
           height: 630,
           alt: `${guide.h1} - GoVietStay`,
@@ -52,7 +54,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: guide.title,
       description: guide.description,
-      images: ["https://www.govietstay.com/tour/cham-island/guest-on-island.jpg"],
+      images: [image],
     },
     robots: {
       index: true,

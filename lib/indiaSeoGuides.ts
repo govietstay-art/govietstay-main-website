@@ -20,7 +20,7 @@ export type IndiaSeoGuide = {
 export const indiaSeoGuides: IndiaSeoGuide[] = [
   {
     "slug": "vietnam-trip-from-india",
-    "title": "Vietnam Trip from India 2026 | Planning, Visa & Da Nang Guide | GoVietStay",
+    "title": "Vietnam Travel from India: Practical Guide | GoVietStay",
     "h1": "Vietnam trip from India: plan the route before you book everything",
     "description": "A practical 2026 Vietnam trip guide for Indian travellers: visa basics, Da Nang routing, family and couple planning, local transport and what to confirm before booking.",
     "keywords": [
@@ -118,7 +118,7 @@ export const indiaSeoGuides: IndiaSeoGuide[] = [
   },
   {
     "slug": "danang-tour-from-india",
-    "title": "Da Nang Tour from India 2026 | Family, Couple & Group Guide | GoVietStay",
+    "title": "Da Nang Tours from India: Local Guide | GoVietStay",
     "h1": "Da Nang tour from India: build the trip around your travel style",
     "description": "Planning Da Nang from India? Compare family, couple and group-friendly routes, Ba Na Hills, Hoi An, Cham Island, transfers and practical local support.",
     "keywords": [
@@ -302,7 +302,7 @@ export const indiaSeoGuides: IndiaSeoGuide[] = [
   },
   {
     "slug": "vietnam-visa-for-indians",
-    "title": "Vietnam Visa for Indians 2026 | Official e-Visa Guide | GoVietStay",
+    "title": "Vietnam e-Visa Guide for Indian Citizens | GoVietStay",
     "h1": "Vietnam visa for Indian travellers: use the official e-visa portal",
     "description": "A clear Vietnam visa guide for Indian passport holders with official e-visa links, validity basics, airport entry notes and application checks for 2026 travel.",
     "keywords": [
@@ -404,7 +404,7 @@ export const indiaSeoGuides: IndiaSeoGuide[] = [
   },
   {
     "slug": "danang-indian-food",
-    "title": "Indian Food in Da Nang 2026 | Vegetarian & Jain Travel Guide | GoVietStay",
+    "title": "Indian and Vegetarian Food in Da Nang | GoVietStay",
     "h1": "Indian food in Da Nang: plan strict dietary needs before the tour starts",
     "description": "A practical guide for Indian travellers looking for Indian food, vegetarian and Jain-friendly planning in Da Nang, including tour meals and what to confirm in advance.",
     "keywords": [
@@ -496,7 +496,7 @@ export const indiaSeoGuides: IndiaSeoGuide[] = [
   },
   {
     "slug": "danang-honeymoon",
-    "title": "Da Nang Honeymoon 2026 | Couple Itinerary for Indian Travellers | GoVietStay",
+    "title": "Da Nang Honeymoon: Couples Itinerary | GoVietStay",
     "h1": "Da Nang honeymoon: leave room for the moments between attractions",
     "description": "A Da Nang honeymoon guide for Indian couples with Golden Bridge, Hoi An evenings, beach time, private transfers and a flexible 4-day couple itinerary.",
     "keywords": [
@@ -588,7 +588,7 @@ export const indiaSeoGuides: IndiaSeoGuide[] = [
   },
   {
     "slug": "ba-na-hills-golden-bridge",
-    "title": "Ba Na Hills & Golden Bridge 2026 | Da Nang Guide for Indians | GoVietStay",
+    "title": "Ba Na Hills & Golden Bridge from Da Nang | GoVietStay",
     "h1": "Ba Na Hills and Golden Bridge: make it a full experience, not only a photo stop",
     "description": "Ba Na Hills and Golden Bridge guide for Indian travellers: cable car, mountain weather, French Village, walking, tickets and Da Nang transfer planning.",
     "keywords": [
@@ -680,7 +680,7 @@ export const indiaSeoGuides: IndiaSeoGuide[] = [
   },
   {
     "slug": "hoi-an-basket-boat",
-    "title": "Hoi An Basket Boat 2026 | Da Nang Day Trip for Indian Travellers | GoVietStay",
+    "title": "Hoi An Basket Boat Tour from Da Nang | GoVietStay",
     "h1": "Hoi An and basket boat: connect the coconut forest to the lantern evening",
     "description": "Hoi An basket boat guide for Indian travellers from Da Nang: Coconut Forest, Ancient Town, dinner, lantern atmosphere, family pacing and return timing.",
     "keywords": [
@@ -772,7 +772,7 @@ export const indiaSeoGuides: IndiaSeoGuide[] = [
   },
   {
     "slug": "cham-island-tour",
-    "title": "Cham Island Tour from Da Nang 2026 | Snorkeling Guide for Indians | GoVietStay",
+    "title": "Cham Island Snorkeling Tour from Da Nang | GoVietStay",
     "h1": "Cham Island from Da Nang: choose it for the sea day, not just another sightseeing stop",
     "description": "Cham Island snorkeling guide for Indian travellers: speedboat, sea conditions, lunch, what to pack, family suitability and Da Nang pickup planning.",
     "keywords": [
@@ -864,7 +864,7 @@ export const indiaSeoGuides: IndiaSeoGuide[] = [
   },
   {
     "slug": "danang-airport-transfer",
-    "title": "Da Nang Airport Transfer 2026 | Pickup Guide for Indian Travellers | GoVietStay",
+    "title": "Da Nang Airport Transfer for Indian Travellers | GoVietStay",
     "h1": "Da Nang airport transfer: send the flight, guests, luggage and hotel",
     "description": "Da Nang airport pickup and transfer guide for Indian travellers, covering luggage, family vehicle size, Hoi An transfers, flight delays and booking information.",
     "keywords": [
