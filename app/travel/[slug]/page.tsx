@@ -23,7 +23,9 @@ export async function generateMetadata({
   if (!guide) return {};
 
   const canonical = `https://www.govietstay.com/travel/${guide.slug}`;
-  const image = `https://www.govietstay.com${englishGuideImage(guide.slug)}`;
+  const image = guide.slug === "ho-tram-travel-guide"
+    ? "https://images.pexels.com/photos/31768434/pexels-photo-31768434.jpeg?cs=srgb"
+    : `https://www.govietstay.com${englishGuideImage(guide.slug)}`;
   const german = getGermanForEnglish(`/travel/${guide.slug}`);
 
   return {
