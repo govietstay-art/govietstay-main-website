@@ -52,6 +52,7 @@ try {
    assert.ok(transferHtml.includes(phrase),"PQC buyer question or prefilled enquiry missing: "+phrase);
  }
  assert.ok(transferHtml.includes(encodeURIComponent("Нужен трансфер из аэропорта Фукуока")), "PQC prefilled WhatsApp must identify product");
+ assert.ok(transferHtml.includes('href="/ru/phu-quoc/from-moscow"'),"Existing Moscow preflight route must stay linked from airport transfer page");
  const transferLoc="<loc>https://www.govietstay.com/ru/phu-quoc/aeroport-transfer</loc>";
  const transferIndex=xml.indexOf(transferLoc);
  assert.ok(transferIndex>=0 && xml.slice(transferIndex,transferIndex+180).includes("<lastmod>2026-10-12</lastmod>"),"Transfer sitemap modification date missing");

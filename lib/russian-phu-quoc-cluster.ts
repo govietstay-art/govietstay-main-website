@@ -1116,6 +1116,11 @@ export const russianPhuQuocPages: RussianPhuQuocPage[] = [
         "href": "/ru/phu-quoc/from-almaty",
         "label": "Из Алматы на Фукуок",
         "text": "Что подготовить к перелёту и прибытию."
+      },
+      {
+        "href": "/ru/phu-quoc/from-moscow",
+        "label": "Из Москвы на Фукуок",
+        "text": "Подготовка к перелёту и встреча в аэропорту PQC."
       }
     ],
     "sources": [
