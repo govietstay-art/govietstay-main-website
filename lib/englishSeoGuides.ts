@@ -1399,12 +1399,178 @@ const RAW_GUIDES = [
     ],
     "primaryHref": "/",
     "primaryLabel": "Explore GoVietStay"
+  },
+  {
+    "slug": "ho-tram-travel-guide",
+    "title": "Ho Tram Travel Guide 2026–2027 | Beaches, Stay & Things to Do | GoVietStay",
+    "h1": "Ho Tram Travel Guide 2026–2027: beaches, forest, hot springs and a slower escape",
+    "description": "Plan a Ho Tram beach escape from Ho Chi Minh City: where to stay, Ho Coc Beach, Binh Chau hot springs, seafood, transport, weather and a realistic 2-day itinerary.",
+    "keywords": [
+      "Ho Tram travel guide",
+      "Ho Tram Vietnam",
+      "things to do in Ho Tram",
+      "Ho Tram from Ho Chi Minh City",
+      "Ho Tram beach",
+      "Ho Coc beach",
+      "Binh Chau hot springs",
+      "Ho Tram itinerary 2 days"
+    ],
+    "eyebrow": "HO TRAM TRAVEL GUIDE · 2026–2027",
+    "summary": "Ho Tram is best for a relaxed beach stay rather than a packed sightseeing schedule. Allow roughly 2.5–3.5 hours by car from central Ho Chi Minh City depending on traffic and your hotel. Choose the accommodation first, then add one outing such as Ho Coc Beach, the Binh Chau forest or hot springs.",
+    "quick": [
+      "Around 2.5–3.5 hours from HCMC",
+      "Best for 1–3 relaxed nights",
+      "Choose resort and transport together",
+      "Add one nature or hot-spring outing"
+    ],
+    "sections": [
+      {
+        "title": "Where is Ho Tram—and is it worth your time?",
+        "body": [
+          "Ho Tram (Hồ Tràm) is a coastal resort area in southern Vietnam, in the former Ba Ria–Vung Tau region, now administratively part of Ho Chi Minh City. From central HCMC it is roughly 120–130 km by road, with journey time affected by the departure point, traffic and the exact resort.",
+          "Unlike a walkable city break, a Ho Tram holiday is mostly about the property you choose, beach time, fresh seafood and a few carefully selected local outings. If you want nightlife and attractions every hour, a central city stay may suit you better."
+        ]
+      },
+      {
+        "title": "Best time to visit Ho Tram in 2026–2027",
+        "body": [
+          "December through April is generally the drier part of southern Vietnam's year and a useful starting window for outdoor plans. May through November is typically wetter; short showers and changing sea conditions can affect beach time.",
+          "A sunny forecast does not guarantee safe swimming. Look at wind and wave conditions, follow your resort's beach flags and lifeguard instructions, and keep a flexible indoor or hot-spring option in your plan. Holiday weekends also deserve earlier accommodation checks."
+        ]
+      },
+      {
+        "title": "Ho Tram Beach versus Ho Coc Beach: which should you choose?",
+        "body": [
+          "Ho Tram is convenient for resort-focused stays, beach walks and relaxed meals. The exact beach experience varies significantly by property—some stretches are private-feeling while others are more accessible to day visitors.",
+          "Ho Coc is another scenic coastal stretch in the same wider area, known for its combination of sand, sea and trees. Rather than switching hotels for the name alone, treat Ho Coc as a possible drive-and-explore stop after confirming local access and weather."
+        ]
+      },
+      {
+        "title": "Binh Chau–Phuoc Buu forest: the nature side of the coast",
+        "body": [
+          "The Binh Chau–Phuoc Buu Nature Reserve protects an important coastal forest landscape of wetlands, dunes and native vegetation. It gives the Ho Tram region a different character from a beach-only destination.",
+          "This is a protected area, not an open adventure playground: use approved routes, check permitted entry and guide requirements, carry drinking water, and avoid disturbing wildlife. Choose the level of walking that actually suits your group."
+        ]
+      },
+      {
+        "title": "Binh Chau hot springs: a different kind of slow day",
+        "body": [
+          "Binh Chau is known for geothermal mineral-water experiences. It is a practical alternative on a day when you want time away from the beach or when the weather is unsettled.",
+          "Compare the current entry packages carefully: hot-pool access, mud-bath experiences, lockers, towels, food and transport may be priced separately. Opening times, age restrictions and conditions should be checked directly with the venue before purchase."
+        ]
+      },
+      {
+        "title": "Fishing villages and seafood without the tourist rush",
+        "body": [
+          "Early mornings can be the most interesting time to observe fishing activity around the Binh Chau coastal area. Harbour access and landing activity change with weather and local operations, so do not assume a particular boat arrival time.",
+          "For seafood, check the menu's unit of pricing (per kilogram, per dish or per portion), confirm preparation charges and ask for the final estimate before ordering. A simple local meal can be a more memorable part of the trip than adding another major attraction."
+        ]
+      },
+      {
+        "title": "Where to stay: beachfront resort, villa or smaller hotel?",
+        "body": [
+          "A beachfront resort suits families and couples who want pools, restaurants and the ocean within easy reach. Private villas can work well for groups who value shared space, but verify the number of usable bedrooms, pool rules and actual walking distance to the beach.",
+          "Smaller hotels or homestays may offer better value for travelers who plan to explore by car. Check real map position rather than relying only on a listing labelled ‘Ho Tram’: facilities can be spread along a long stretch of coastline and taxis may not be waiting outside."
+        ]
+      },
+      {
+        "title": "Getting to Ho Tram from Ho Chi Minh City",
+        "body": [
+          "The most straightforward options are a pre-arranged private vehicle or a shared limousine service with a suitable drop-off location. The drive often takes around 2.5–3.5 hours, but weekends, holiday traffic and the starting point can change this considerably.",
+          "Before booking, confirm the exact hotel address, pickup point, baggage allowance, child seats if needed, waiting conditions and the return schedule. For international arrivals, avoid promising a tight same-day seaside check-in immediately after immigration."
+        ]
+      },
+      {
+        "title": "A realistic Ho Tram itinerary: 2 days and 1 night",
+        "body": [
+          "Day 1: leave Ho Chi Minh City in the morning, arrive for lunch or hotel check-in according to the property's policy, enjoy a relaxed beach or pool afternoon, then finish with seafood and an early evening. Do not stack distant stops onto the travel day.",
+          "Day 2: choose one morning highlight—Ho Coc coastal scenery, a permitted forest experience or a Binh Chau hot-spring visit. Return for luggage and head back to Ho Chi Minh City with a sensible traffic buffer. Add another night if you want both forest and hot springs without rushing."
+        ]
+      },
+      {
+        "title": "Three days and two nights: who benefits from the extra night?",
+        "body": [
+          "A two-night stay gives more room for a full resort day and one carefully chosen excursion, especially with children or older travelers. This usually feels better than spending half the holiday in transfers.",
+          "A simple pattern is arrival and sunset on Day 1; one forest, beach or hot-spring activity on Day 2; and a slow breakfast before returning on Day 3. Leave space for rain or changes in group energy."
+        ]
+      },
+      {
+        "title": "How much should you budget?",
+        "body": [
+          "Your resort or villa will often be the largest expense. Compare total costs including weekend supplements, breakfast, extra beds, transport, meals and resort policies—not just the advertised nightly rate.",
+          "A low-priced room far from the attractions may require more paid driving. For a group, compare one larger vehicle against multiple transfers and confirm which expenses are shared. Current prices should be checked for your travel dates instead of relying on a fixed guide estimate."
+        ]
+      },
+      {
+        "title": "Who will enjoy Ho Tram—and who might not?",
+        "body": [
+          "Ho Tram is a strong fit for couples, families, small friend groups and travelers who want an easy coastal break from Ho Chi Minh City. It is also a useful choice for visitors who have already seen the major city highlights and want a quieter chapter.",
+          "It may be less suitable for a visitor without transport who wants to walk between many cafes, markets and sights. If it is your first and only Vietnam beach destination and island activities are the priority, compare it with Phu Quoc before deciding."
+        ]
+      },
+      {
+        "title": "GoVietStay's approach to future Ho Tram support",
+        "body": [
+          "GoVietStay currently focuses its established travel services on Da Nang, Hoi An, Hue and Phu Quoc. We are developing our Ho Tram destination knowledge step by step, starting with practical information that helps travelers make good decisions.",
+          "For Ho Tram, contact us with your dates, guest count and intended hotel if you would like to discuss future planning options. Specific Ho Tram tour, transfer or hotel services are subject to confirmation; we will not present an unverified product as bookable."
+        ]
+      }
+    ],
+    "checklist": [
+      "Confirm your hotel’s exact location and beach access",
+      "Allow travel-time buffer from Ho Chi Minh City",
+      "Check sea flags, wind and forecast close to departure",
+      "Choose only one excursion on a 1-night stay",
+      "Verify current prices, entry terms and child policies",
+      "Do not assume Ho Tram services are confirmed until quoted"
+    ],
+    "faqs": [
+      {
+        "q": "Where is Ho Tram in Vietnam?",
+        "a": "Ho Tram is a coastal area in southern Vietnam, in the former Ba Ria–Vung Tau region, now administratively part of Ho Chi Minh City."
+      },
+      {
+        "q": "How far is Ho Tram from Ho Chi Minh City?",
+        "a": "It is roughly 120–130 km by road from central Ho Chi Minh City. Plan around 2.5–3.5 hours by car and allow more when traffic is heavy or your hotel is farther along the coast."
+      },
+      {
+        "q": "How many days do I need in Ho Tram?",
+        "a": "Two days and one night works for a short resort break. Three days and two nights is better if you want to add Binh Chau or Ho Coc without rushing."
+      },
+      {
+        "q": "When is the best time to visit Ho Tram?",
+        "a": "December to April usually offers drier conditions. Always check local rainfall, wind, surf and beach safety before a trip."
+      },
+      {
+        "q": "Are Ho Tram and Ho Coc the same place?",
+        "a": "No. They are two coastal areas in the same wider destination. Ho Tram is a popular resort base, while Ho Coc is often visited for its beach-and-forest scenery."
+      },
+      {
+        "q": "Can I visit Binh Chau hot springs from Ho Tram?",
+        "a": "Yes, it is a popular nearby excursion. Check the current hot-spring package, transport and operating hours before visiting."
+      },
+      {
+        "q": "Do I need a car in Ho Tram?",
+        "a": "A car or pre-arranged transfer is useful because many beachfront hotels and attractions are spread out. Your choice depends on the resort location and daily plans."
+      },
+      {
+        "q": "Does GoVietStay currently operate confirmed Ho Tram tours?",
+        "a": "GoVietStay is building its Ho Tram information and future support. Do not assume a tour or transfer is available until the team confirms that specific service and price."
+      }
+    ],
+    "related": [
+      "phu-quoc-travel-guide",
+      "da-nang-travel-guide",
+      "central-vietnam-itinerary"
+    ],
+    "primaryHref": "/travel/phu-quoc-travel-guide",
+    "primaryLabel": "Compare with Phu Quoc"
   }
 ];
 
 export const englishSeoGuides: EnglishSeoGuide[] = RAW_GUIDES.map((guide) => ({
   ...guide,
-  updated: "2026-08-26",
+  updated: guide.slug === "ho-tram-travel-guide" ? "2026-10-12" : "2026-08-26",
 }));
 
 export function getEnglishSeoGuide(slug: string) {
