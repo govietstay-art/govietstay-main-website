@@ -38,9 +38,13 @@ try {
  const xml=await sitemap.text();
  assert.ok(xml.includes('<lastmod>2026-09-28</lastmod>'),"Hub lastmod not updated");
  assert.ok(xml.includes('<loc>https://www.govietstay.com/ru/phu-quoc</loc>'),"Phu Quoc hub absent from sitemap");
- for(const path of ["/ru/phu-quoc/individualnye-ekskursii","/ru/phu-quoc/transport","/ru/phu-quoc/snorkling","/ru/phu-quoc/gde-ostanovitsya","/ru/phu-quoc/pervyy-raz","/ru/phu-quoc/villy-s-chastnym-basseynom"]){
+ for(const path of ["/ru/phu-quoc/individualnye-ekskursii","/ru/phu-quoc/transport","/ru/phu-quoc/snorkling","/ru/phu-quoc/gde-ostanovitsya","/ru/phu-quoc/pervyy-raz"]){
    assert.ok(xml.includes("<loc>https://www.govietstay.com"+path+"</loc>"),"Missing indexable buyer guide from sitemap: "+path);
  }
+ const villaUrl="https://www.govietstay.com/ru/phu-quoc/villy-s-chastnym-basseynom";
+ assert.ok(!xml.includes("<loc>"+villaUrl+"</loc>"),"Villa guide must not be duplicated in Phu Quoc sitemap");
+ const staysXml=await (await fetch(origin+"/stays-sitemap.xml",{signal:AbortSignal.timeout(30000)})).text();
+ assert.ok(staysXml.includes("<loc>"+villaUrl+"</loc>"),"Villa guide must remain in stays sitemap");
  const privateLoc="<loc>https://www.govietstay.com/ru/phu-quoc/individualnye-ekskursii</loc>";
  assert.ok(xml.includes(privateLoc) && xml.slice(xml.indexOf(privateLoc),xml.indexOf(privateLoc)+130).includes("<lastmod>2026-10-12</lastmod>"),"Updated private itinerary sitemap lastmod missing");
  console.log("PASS: Russian Phu Quoc decision guide renders, booking CTA preserved, 4 linked pages serve 200, FAQ visible and sitemap date updated.");

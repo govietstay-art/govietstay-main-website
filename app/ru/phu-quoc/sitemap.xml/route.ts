@@ -13,7 +13,6 @@ export async function GET() {
       "/ru/phu-quoc/snorkling",
       "/ru/phu-quoc/gde-ostanovitsya",
       "/ru/phu-quoc/pervyy-raz",
-      "/ru/phu-quoc/villy-s-chastnym-basseynom",
     ].map((path) => ({ url: `${BASE_URL}${path}`, lastModified: null })),
     { url: `${BASE_URL}/ru/phu-quoc/individualnye-ekskursii`, lastModified: "2026-10-12" },
   ];
