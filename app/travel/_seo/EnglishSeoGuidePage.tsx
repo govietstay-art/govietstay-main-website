@@ -1,4 +1,4 @@
-import type { EnglishSeoGuide } from "../../../lib/englishSeoGuides";
+import { englishSeoGuides, type EnglishSeoGuide } from "../../../lib/englishSeoGuides";
 import styles from "./EnglishSeoGuidePage.module.css";
 
 const WA = "https://wa.me/84937762607?text=" + encodeURIComponent(
@@ -174,7 +174,7 @@ export default function EnglishSeoGuidePage({
           ))}
           <a className={styles.featured} href="/travel">
             <small>ENGLISH TRAVEL HUB</small>
-            <strong>See all 17 practical travel guides</strong>
+            <strong>See all {englishSeoGuides.length} practical travel guides</strong>
             <span>Open hub →</span>
           </a>
         </div>
