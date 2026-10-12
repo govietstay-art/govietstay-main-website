@@ -13,6 +13,7 @@ export type Related = { href: string; title: string; text: string };
 
 export type LandingConfig = {
   eyebrow: string;
+  updated?: string;
   title: string;
   lead: string;
   chips: string[];
@@ -89,7 +90,7 @@ export default function PhuQuocLanding({ config }: { config: LandingConfig }) {
 
       <section className={styles.content}>
         <div className={styles.container}>
-          <div className={styles.updated}>Обновлено: сентябрь 2026 · GoVietStay Phu Quoc</div>
+          <div className={styles.updated}>Обновлено: {config.updated || "сентябрь 2026"} · GoVietStay Phu Quoc</div>
 
           {config.sections.map((section, i) => (
             <article className={styles.section} key={`${section.title}-${i}`}>

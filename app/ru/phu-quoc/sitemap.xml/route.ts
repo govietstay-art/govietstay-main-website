@@ -7,6 +7,15 @@ export async function GET() {
     ...russianPhuQuocPages.map((page) => ({ url: `${BASE_URL}${page.path}`, lastModified: page.slug === "index" || page.slug === "sunset-town" || page.slug === "chto-posmotret" || page.slug === "from-moscow" ? "2026-09-28" : "2026-09-10" })),
     { url: `${BASE_URL}/ru/phu-quoc-help`, lastModified: "2026-09-10" },
     { url: `${BASE_URL}/ru/phu-quoc/hon-thom`, lastModified: "2026-09-28" },
+    // Static Russian buyer guides belong in the cluster sitemap alongside dynamic guides.
+    ...[
+      "/ru/phu-quoc/transport",
+      "/ru/phu-quoc/snorkling",
+      "/ru/phu-quoc/gde-ostanovitsya",
+      "/ru/phu-quoc/pervyy-raz",
+      "/ru/phu-quoc/villy-s-chastnym-basseynom",
+    ].map((path) => ({ url: `${BASE_URL}${path}`, lastModified: null })),
+    { url: `${BASE_URL}/ru/phu-quoc/individualnye-ekskursii`, lastModified: "2026-10-12" },
   ];
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -15,7 +24,7 @@ ${urls
   .map(
     ({url,lastModified}) => `  <url>
     <loc>${url}</loc>
-    <lastmod>${lastModified}</lastmod>
+    ${lastModified ? `<lastmod>${lastModified}</lastmod>` : ""}
     <changefreq>weekly</changefreq>
   </url>`,
   )

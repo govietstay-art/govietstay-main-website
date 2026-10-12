@@ -15,7 +15,8 @@ try{
  for(const [route,phrases,minFaq] of [
   ["/kz/vietnam-visa-free-kazakhstan",["Нужна ли казахстанцам виза во Вьетнам?","90 дней в течение 180","evisa.gov.vn","FAQPage"],6],
   ["/kz/danang-from-almaty",["Из Алматы в Дананг","Как заказать трансфер из аэропорта Дананга","FAQPage"],4],
-  ["/kz/danang-from-astana",["Из Астаны в Дананг","Есть ли прямой рейс Астана","FAQPage"],3]
+  ["/kz/danang-from-astana",["Из Астаны в Дананг","Есть ли прямой рейс Астана","FAQPage"],3],
+  ["/kz/phu-quoc-tours-russian",["Экскурсии на Фукуоке: 3–4 острова","Как понять реальную цену","Всегда ли в экскурсиях есть русскоговорящий гид?","FAQPage"],5]
  ]){
   let r=await fetch(origin+route,{signal:AbortSignal.timeout(30000)});assert.equal(r.status,200,"Route failed: "+route);
   let html=await r.text();
@@ -30,6 +31,9 @@ try{
   let i=sitemap.indexOf("<loc>https://www.govietstay.com/kz/"+slug+"</loc>");
   assert.ok(i>=0&&sitemap.slice(i,i+230).includes("<lastmod>2026-09-28"),"Sitemap date missing "+slug);
  }
- console.log("PASS: 3 KZ pages with relevant answers, official visa sources, visible + JSON-LD FAQs, canonical URLs and updated sitemap.");
+ const buyerLoc="<loc>https://www.govietstay.com/kz/phu-quoc-tours-russian</loc>";
+ const buyerPos=sitemap.indexOf(buyerLoc);
+ assert.ok(buyerPos>=0 && sitemap.slice(buyerPos,buyerPos+240).includes("2026-10-12"),"KZ buyer guide sitemap must reflect actual content update");
+ console.log("PASS: KZ arrival/visa pages plus Phu Quoc buyer guide, source-backed price paths, FAQ and sitemap.");
 }catch(e){console.error(e);console.error(err);process.exitCode=1;}
 finally{try{if(p.pid)process.kill(-p.pid,"SIGTERM");}catch{p.kill("SIGTERM");}p.stdout.destroy();p.stderr.destroy();}
