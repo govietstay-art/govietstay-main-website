@@ -35,8 +35,8 @@ jobs:
     env:
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: "22"
           cache: "npm"
@@ -68,7 +68,7 @@ jobs:
             curl -sSLI --max-time 20 --max-redirs 5 -o /dev/null -w 'HTTP=%{http_code} redirects=%{num_redirects} final=%{url_effective} total=%{time_total}s\n' "$address" || true
           done
       - run: node --experimental-strip-types scripts/audit-seo-geo.mjs
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         if: always()
         with:
           name: multilingual-seo-geo-report
