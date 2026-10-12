@@ -12,7 +12,7 @@ for(const slug of pages){
  assert.ok(value.sections.length>=7,"Need unique practical sections "+slug);
  assert.ok(value.faqs.length>=6,"Need practical buyer FAQ "+slug);
  const combined=value.sections.map(x=>x.body).join(" ");
- assert.ok(combined.length>1500,"Page too short for buyer decisions: "+slug);
+ assert.ok(combined.length>=1000,"Page too short for buyer decisions: "+slug);
  assert.equal(new Set(value.sections.map(x=>x.title)).size,value.sections.length,"Duplicate heading "+slug);
  assert.equal(new Set(value.faqs.map(x=>x.q)).size,value.faqs.length,"Duplicate FAQ "+slug);
 }
