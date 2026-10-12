@@ -9,7 +9,7 @@ const WA = "https://wa.me/84937762607?text=" + encodeURIComponent(
 export const metadata: Metadata = {
   title: { absolute: "Vietnam Travel Guides 2026 | Da Nang, Hoi An, Hue & Phu Quoc | GoVietStay" },
   description:
-    "Practical English travel guides for Da Nang, Hoi An, Hue and Phu Quoc: itineraries, things to do, transfers, private cars, e-Visa and local planning.",
+    "Practical Vietnam travel guides for Da Nang, Hoi An, Hue, Phu Quoc and Ho Tram: itineraries, beaches, transport, weather and local planning.",
   alternates: {
     canonical: "https://www.govietstay.com/travel",
     languages: { en: "https://www.govietstay.com/travel" },
@@ -74,10 +74,10 @@ export default function EnglishTravelHub() {
             <p className={styles.eyebrow}>VIETNAM, PLANNED LIKE A LOCAL</p>
             <h1>Travel guides that help you <span>make a decision.</span></h1>
             <p className={styles.lead}>
-              Da Nang, Hoi An, Hue and Phu Quoc — practical English guides for the questions travellers search before they book.
+              Da Nang, Hoi An, Hue, Phu Quoc and Ho Tram — practical English guides for the questions travellers search before they book.
             </p>
             <div className={styles.actions}>
-              <a className={styles.primary} href="#guides">Explore 17 guides</a>
+              <a className={styles.primary} href="#guides">Explore {englishSeoGuides.length} guides</a>
               <a className={styles.secondary} href={WA} target="_blank" rel="noopener noreferrer">Ask a local team</a>
             </div>
           </div>
@@ -104,7 +104,7 @@ export default function EnglishTravelHub() {
         <div className={styles.sectionHead}>
           <div>
             <p>GLOBAL ENGLISH SEARCH CLUSTER</p>
-            <h2>17 distinct travel decisions. One connected authority hub.</h2>
+            <h2>{englishSeoGuides.length} distinct travel decisions. One connected authority hub.</h2>
           </div>
           <span>
             Each guide answers one search intent, links to related planning pages, and directs booking-ready travellers to a real GoVietStay product or WhatsApp.
