@@ -51,7 +51,7 @@ try {
  for(const phrase of ["Когда взять такси","Grand World","Детское кресло входит в цену?","FAQPage","wa.me/84937762607?text="]){
    assert.ok(transferHtml.includes(phrase),"PQC buyer question or prefilled enquiry missing: "+phrase);
  }
- assert.ok(transferHtml.includes(encodeURIComponent("Трансфер из аэропорта Фукуока")), "PQC prefilled WhatsApp must identify product");
+ assert.ok(transferHtml.includes(encodeURIComponent("Нужен трансфер из аэропорта Фукуока")), "PQC prefilled WhatsApp must identify product");
  const transferLoc="<loc>https://www.govietstay.com/ru/phu-quoc/aeroport-transfer</loc>";
  const transferIndex=xml.indexOf(transferLoc);
  assert.ok(transferIndex>=0 && xml.slice(transferIndex,transferIndex+180).includes("<lastmod>2026-10-12</lastmod>"),"Transfer sitemap modification date missing");
