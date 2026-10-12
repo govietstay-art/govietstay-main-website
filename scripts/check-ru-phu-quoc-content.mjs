@@ -45,6 +45,17 @@ try {
  assert.ok(!xml.includes("<loc>"+villaUrl+"</loc>"),"Villa guide must not be duplicated in Phu Quoc sitemap");
  const staysXml=await (await fetch(origin+"/stays-sitemap.xml",{signal:AbortSignal.timeout(30000)})).text();
  assert.ok(staysXml.includes("<loc>"+villaUrl+"</loc>"),"Villa guide must remain in stays sitemap");
+ const transferResponse=await fetch(origin+"/ru/phu-quoc/aeroport-transfer",{signal:AbortSignal.timeout(30000)});
+ assert.equal(transferResponse.status,200,"PQC transfer RU guide missing");
+ const transferHtml=await transferResponse.text();
+ for(const phrase of ["Когда взять такси","Grand World","Детское кресло входит в цену?","FAQPage","wa.me/84937762607?text="]){
+   assert.ok(transferHtml.includes(phrase),"PQC buyer question or prefilled enquiry missing: "+phrase);
+ }
+ assert.ok(transferHtml.includes(encodeURIComponent("Нужен трансфер из аэропорта Фукуока")), "PQC prefilled WhatsApp must identify product");
+ assert.ok(transferHtml.includes('href="/ru/phu-quoc/from-moscow"'),"Existing Moscow preflight route must stay linked from airport transfer page");
+ const transferLoc="<loc>https://www.govietstay.com/ru/phu-quoc/aeroport-transfer</loc>";
+ const transferIndex=xml.indexOf(transferLoc);
+ assert.ok(transferIndex>=0 && xml.slice(transferIndex,transferIndex+180).includes("<lastmod>2026-10-12</lastmod>"),"Transfer sitemap modification date missing");
  const privateLoc="<loc>https://www.govietstay.com/ru/phu-quoc/individualnye-ekskursii</loc>";
  assert.ok(xml.includes(privateLoc) && xml.slice(xml.indexOf(privateLoc),xml.indexOf(privateLoc)+130).includes("<lastmod>2026-10-12</lastmod>"),"Updated private itinerary sitemap lastmod missing");
  console.log("PASS: Russian Phu Quoc decision guide renders, booking CTA preserved, 4 linked pages serve 200, FAQ visible and sitemap date updated.");

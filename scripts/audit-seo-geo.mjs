@@ -149,6 +149,7 @@ async function run(){
  const blockers={
   httpErrors:errors.length,sitemapMissing:sitemapMissing.length,langMismatch:badLang.length,
   missingOrIncorrectCanonical:missingCanonical.length,missingOgImage:missingOG.length,
+  orphanSitemapUrls:orphan.length,
   nonreciprocalOrUnverifiedHreflang:reciprocity.length,duplicateSitemapEntries:duplicateSitemap.length,
   conflictingOrganizationNodes:results.summary.conflictingOrganizationNodes,
  };

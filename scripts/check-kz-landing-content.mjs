@@ -16,7 +16,8 @@ try{
   ["/kz/vietnam-visa-free-kazakhstan",["Нужна ли казахстанцам виза во Вьетнам?","90 дней в течение 180","evisa.gov.vn","FAQPage"],6],
   ["/kz/danang-from-almaty",["Из Алматы в Дананг","Как заказать трансфер из аэропорта Дананга","FAQPage"],4],
   ["/kz/danang-from-astana",["Из Астаны в Дананг","Есть ли прямой рейс Астана","FAQPage"],3],
-  ["/kz/phu-quoc-tours-russian",["Экскурсии на Фукуоке: 3–4 острова","Как понять реальную цену","Всегда ли в экскурсиях есть русскоговорящий гид?","FAQPage"],5]
+  ["/kz/phu-quoc-tours-russian",["Экскурсии на Фукуоке: 3–4 острова","Как понять реальную цену","Всегда ли в экскурсиях есть русскоговорящий гид?","FAQPage"],5],
+  ["/kz/phu-quoc-from-almaty",["Из Алматы на Фукуок","Как заказать трансфер из аэропорта Фукуока","Есть ли прямые рейсы из Алматы","wa.me/84937762607?text=","FAQPage"],6]
  ]){
   let r=await fetch(origin+route,{signal:AbortSignal.timeout(30000)});assert.equal(r.status,200,"Route failed: "+route);
   let html=await r.text();
@@ -31,6 +32,9 @@ try{
   let i=sitemap.indexOf("<loc>https://www.govietstay.com/kz/"+slug+"</loc>");
   assert.ok(i>=0&&sitemap.slice(i,i+230).includes("<lastmod>2026-09-28"),"Sitemap date missing "+slug);
  }
+ const almatyLoc="<loc>https://www.govietstay.com/kz/phu-quoc-from-almaty</loc>";
+ const almatyIndex=sitemap.indexOf(almatyLoc);
+ assert.ok(almatyIndex>=0 && sitemap.slice(almatyIndex,almatyIndex+200).includes("2026-10-12"),"KZ Almaty guide sitemap date missing");
  const buyerLoc="<loc>https://www.govietstay.com/kz/phu-quoc-tours-russian</loc>";
  const buyerPos=sitemap.indexOf(buyerLoc);
  assert.ok(buyerPos>=0 && sitemap.slice(buyerPos,buyerPos+240).includes("2026-10-12"),"KZ buyer guide sitemap must reflect actual content update");

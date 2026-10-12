@@ -23,7 +23,8 @@ try{
   ["/it/itinerario-vietnam-centrale",["Vietnam centrale in 7 giorni","Giorno 3: foresta di cocco e Hoi An","Cosa vedere in Vietnam in 7 giorni?","/it/foresta-di-cocco-hoi-an"],6],
   ["/it/foresta-di-cocco-hoi-an",["Foresta di cocco Hoi An","Dove si trova la foresta di cocco di Hoi An?","Basket boat: si può evitare","/it/hoi-an-in-un-giorno"],6],
   ["/it/tour-3-isole-phu-quoc",["820.000 VND","John’s Tours","Quanto costa il tour 3 isole"],4],
-  ["/it/tour-4-isole-hon-thom",["1.700.000 VND","CABLE CAR TRIP","La funivia di Hon Thom"],4]
+  ["/it/tour-4-isole-hon-thom",["1.700.000 VND","CABLE CAR TRIP","La funivia di Hon Thom"],4],
+  ["/it/auto-privata-phu-quoc",["Auto privata a Phu Quoc con autista","Auto con autista o tour privato con guida italiana","È disponibile un seggiolino","wa.me/84937762607?text="],6]
  ];
  for(const [path,needles,faqCount] of pages){
   const r=await fetch(origin+path,{signal:AbortSignal.timeout(30000)});assert.equal(r.status,200,"Italian page unreachable "+path);
@@ -39,6 +40,9 @@ try{
   const i=xml.indexOf("<loc>https://www.govietstay.com/it/"+slug+"</loc>");
   assert.ok(i>=0&&xml.slice(i,i+500).includes("2026-09-28"),"Updated Italian sitemap date missing "+slug);
  }
- console.log("PASS: five Italian landings render specific visible answers, source-backed tour prices, valid FAQ schema, internal links, canonical and fresh sitemap.");
+ const carLoc="<loc>https://www.govietstay.com/it/auto-privata-phu-quoc</loc>";
+ const carPos=xml.indexOf(carLoc);
+ assert.ok(carPos>=0&&xml.slice(carPos,carPos+210).includes("2026-10-12"),"Italian private car sitemap date missing");
+ console.log("PASS: Italian buyer-intent Phu Quoc private car and original search landings, FAQ, sources, canonical and sitemap.");
 }catch(e){console.error(e);console.error(stderr);process.exitCode=1;}
 finally{try{if(child.pid)process.kill(-child.pid,"SIGTERM");}catch{child.kill("SIGTERM");}child.stdout.destroy();child.stderr.destroy();}
