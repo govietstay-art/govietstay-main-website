@@ -5,7 +5,7 @@ const cases={
   "/":"en","/travel/local-experiences/night-bites":"en","/go/threads":"ru",
   "/ru":"ru","/ru/cruise-port-shore-excursions":"ru",
   "/kz/tour":"ru-KZ","/it":"it","/vi/food":"vi","/cn":"zh-CN",
-  "/tw/place":"zh-TW","/ko":"ko-KR","/fr":"fr-FR",
+  "/tw/place":"zh-TW","/ko":"ko-KR","/ja/da-nang":"ja-JP","/pl/phu-quoc-przewodnik":"pl-PL","/be/vietnam-travel":"be-BY","/th":"th-TH","/fr":"fr-FR",
   "/de":"de-DE","/il":"he-IL","/ar":"ar","/tr":"tr-TR",
   "/ph":"en-PH","/in":"en-IN","/mn":"mn",
 };

@@ -1,13 +1,10 @@
 import {spawn} from "node:child_process";
 import {readdir,mkdir,writeFile,appendFile} from "node:fs/promises";
 import path from "node:path";
+import {HTML_LOCALE_BY_PREFIX,getPageLocale} from "../lib/seo/locales.ts";
 
 const origin="http://127.0.0.1:3988", base="https://www.govietstay.com";
-const knownLocales={
- ru:"ru",kz:"ru-KZ",it:"it",vi:"vi",cn:"zh-CN",tw:"zh-TW",
- ko:"ko-KR",fr:"fr-FR",de:"de-DE",il:"he-IL",ar:"ar",
- tr:"tr-TR",ph:"en-PH",in:"en-IN",mn:"mn",en:"en",
-};
+const knownLocales=HTML_LOCALE_BY_PREFIX;
 const server=spawn(process.execPath,["node_modules/next/dist/bin/next","start","--port","3988"],{
  env:{...process.env,NEXT_TELEMETRY_DISABLED:"1"},stdio:["ignore","pipe","pipe"],detached:true,
 });
@@ -24,10 +21,7 @@ function selfPath(value,source="/"){
  try{const u=new URL(value,base+source);return u.origin===base?(u.pathname.replace(/\/+$/,"")||"/"):null;}
  catch{return null;}
 }
-function expected(pathname){
- const prefix=pathname.split("/").filter(Boolean)[0]??"";
- return knownLocales[prefix]??"en";
-}
+function expected(pathname){return getPageLocale(pathname);}
 async function fetchLocal(urlPath){
  const res=await fetch(origin+urlPath,{signal:AbortSignal.timeout(30000)});
  return {status:res.status,body:await res.text(),actualPath:new URL(res.url).pathname};
@@ -152,6 +146,15 @@ async function run(){
  console.log(summary);
  console.log("Top orphan URLs: "+JSON.stringify(results.issues.orphan.slice(0,15)));
  console.log("Top hreflang findings: "+JSON.stringify(results.issues.hreflang.slice(0,12)));
+ const blockers={
+  httpErrors:errors.length,sitemapMissing:sitemapMissing.length,langMismatch:badLang.length,
+  missingOrIncorrectCanonical:missingCanonical.length,missingOgImage:missingOG.length,
+  nonreciprocalOrUnverifiedHreflang:reciprocity.length,duplicateSitemapEntries:duplicateSitemap.length,
+  conflictingOrganizationNodes:results.summary.conflictingOrganizationNodes,
+ };
+ const failed=Object.entries(blockers).filter(([,count])=>count>0);
+ if(failed.length)throw new Error("Critical SEO audit failures: "+JSON.stringify(Object.fromEntries(failed))+
+   ". Inspect seo-audit/seo-geo-audit.json artifact for affected pages.");
 }
 try{await run();}catch(e){console.error(e);process.exitCode=1;}finally{
  try{if(server.pid)process.kill(-server.pid,"SIGTERM");}catch{server.kill("SIGTERM");}

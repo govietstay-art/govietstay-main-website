@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title:{absolute:"フーコック旅行 日本語ガイド｜島ツアー・ホントム・空港送迎 | GoVietStay"},
   description:"フーコック旅行を日本語で計画。乾季と雨季、3島・4島ツアー、ホントム、ホテルエリア、空港送迎、家族旅行のポイントを現地チームが案内。",
   alternates:{canonical:"https://www.govietstay.com/ja/phu-quoc"},robots:{index:true,follow:true},
-  openGraph:{type:"article",locale:"ja_JP",url:"https://www.govietstay.com/ja/phu-quoc",title:"フーコック旅行 日本語ガイド | GoVietStay",description:"海、島、リゾート滞在を詰め込みすぎずに楽しむための実用ガイド。",siteName:"GoVietStay"}
+  openGraph:{type:"article",locale:"ja_JP",url:"https://www.govietstay.com/ja/phu-quoc",title:"フーコック旅行 日本語ガイド | GoVietStay",description:"海、島、リゾート滞在を詰め込みすぎずに楽しむための実用ガイド。",siteName:"GoVietStay",images:[{url:"https://www.govietstay.com/tour/phuquoc/tour-01-1.jpg",alt:"フーコックの島々と海"}]}
 };
 const config={
 canonicalPath:"/ja/phu-quoc",eyebrow:"PHU QUOC · 海とリゾートの島",title:"フーコックは、観光日と何もしない日を分ける。",

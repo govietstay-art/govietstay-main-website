@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title:{absolute:"フエ旅行 日本語ガイド｜王宮・カイディン帝廟・ハイヴァン峠 | GoVietStay"},
   description:"ダナン発フエ旅行を日本語で計画。グエン朝王宮、カイディン帝廟、ティエンムー寺、ハイヴァン峠、ランコーを無理なく巡る方法。",
   alternates:{canonical:"https://www.govietstay.com/ja/hue"},robots:{index:true,follow:true},
-  openGraph:{type:"article",locale:"ja_JP",url:"https://www.govietstay.com/ja/hue",title:"フエ旅行 日本語ガイド | GoVietStay",description:"ダナンからフエへ。歴史と景色を一日で無理なくつなぐ。",siteName:"GoVietStay"}
+  openGraph:{type:"article",locale:"ja_JP",url:"https://www.govietstay.com/ja/hue",title:"フエ旅行 日本語ガイド | GoVietStay",description:"ダナンからフエへ。歴史と景色を一日で無理なくつなぐ。",siteName:"GoVietStay",images:[{url:"https://www.govietstay.com/tour/hue.jpg",alt:"フエの歴史観光と王宮"}]}
 };
 const config={
 canonicalPath:"/ja/hue",eyebrow:"HUE · ベトナム王朝の歴史",title:"フエは、移動時間を含めて一日かける価値がある。",

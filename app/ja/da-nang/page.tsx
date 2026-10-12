@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title: { absolute: "ダナン旅行 日本語ガイド｜観光・空港送迎・プライベートツアー | GoVietStay" },
   description: "ダナン旅行を日本語で計画。空港送迎、バーナーヒルズ、ミーケービーチ、ホイアン・フエへの移動、雨季の過ごし方を現地チームが案内。",
   alternates:{canonical:"https://www.govietstay.com/ja/da-nang"},robots:{index:true,follow:true},
-  openGraph:{type:"article",locale:"ja_JP",url:"https://www.govietstay.com/ja/da-nang",title:"ダナン旅行 日本語ガイド | GoVietStay",description:"ダナンを拠点に中部ベトナムを無理なく回るための実用ガイド。",siteName:"GoVietStay"}
+  openGraph:{type:"article",locale:"ja_JP",url:"https://www.govietstay.com/ja/da-nang",title:"ダナン旅行 日本語ガイド | GoVietStay",description:"ダナンを拠点に中部ベトナムを無理なく回るための実用ガイド。",siteName:"GoVietStay",images:[{url:"https://www.govietstay.com/tour/bana.jpg",alt:"ダナン・バーナーヒルズの旅行風景"}]}
 };
 const config={
 canonicalPath:"/ja/da-nang",eyebrow:"DA NANG · 中部ベトナムの拠点",title:"ダナンは「見る街」だけでなく、旅を動かしやすい街。",

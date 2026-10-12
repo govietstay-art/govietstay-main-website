@@ -51,6 +51,7 @@ try{
   ["/","en","ltr"],["/ru","ru","ltr"],["/it","it","ltr"],
   ["/il","he-IL","rtl"],["/ar","ar","rtl"],
   ["/cn","zh-CN","ltr"],["/tw","zh-TW","ltr"],["/ko","ko-KR","ltr"],
+  ["/ja","ja-JP","ltr"],["/ja/da-nang","ja-JP","ltr"],["/ja/hoi-an","ja-JP","ltr"],["/ja/hue","ja-JP","ltr"],["/ja/phu-quoc","ja-JP","ltr"],
   ["/kz","ru-KZ","ltr"],["/fr","fr-FR","ltr"],["/de","de-DE","ltr"],
   ["/tr","tr-TR","ltr"],["/ph","en-PH","ltr"],["/in","en-IN","ltr"],
   ["/mn","mn","ltr"],["/go/threads","ru","ltr"],
@@ -59,6 +60,11 @@ try{
  for(const [path,canonical] of [["/","https://www.govietstay.com"],["/ru","https://www.govietstay.com/ru"],["/it","https://www.govietstay.com/it"]]){
   const source=html[routes.findIndex(row=>row[0]===path)];
   assert.ok(hasSeoLink(source,"canonical",{href:canonical}),`${path}: canonical missing`);
+ }
+ for(const path of ["/ja","/ja/da-nang","/ja/hoi-an","/ja/hue","/ja/phu-quoc"]){
+  const source=html[routes.findIndex(([route])=>route===path)];
+  assert.ok(hasSeoLink(source,"canonical",{href:"https://www.govietstay.com"+path}),path+": missing self canonical");
+  assert.ok(source.includes('property="og:image"'),path+": missing Open Graph image");
  }
  const sitemap=await fetch(origin+"/sitemap.xml",{signal:AbortSignal.timeout(20000)});
  assert.equal(sitemap.status,200,"sitemap.xml inaccessible");
