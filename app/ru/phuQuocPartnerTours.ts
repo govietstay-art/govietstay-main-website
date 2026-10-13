@@ -1,3 +1,4 @@
+import {BW_JOIN,BW_PRIVATE,BW_CHARTER,bwMoney} from "../../lib/blueWavesRetail";
 export type PhuQuocTour = {
   id: string;
   title: string;
@@ -15,9 +16,8 @@ export type PhuQuocTour = {
   notes: string[];
 };
 
-// Supplier 2026 tour-book programmes PQ-01–PQ-17. Supplier B2B rates,
-// partner phone/QR and partner branding are intentionally NOT published.
-// GoVietStay confirms its own retail quote, pickup zone and availability before payment.
+// GoVietStay public retail catalog from Blue Waves 2026 tour book.
+// Supplier contacts, QR codes and branding must not appear on customer-facing pages.
 const raw = [
   {
     code: "PQ-01", title: "Морская прогулка Nautilus: снорклинг и развлечения",
@@ -180,8 +180,8 @@ export const phuQuocTours: PhuQuocTour[] = raw.map((tour) => ({
   category: `${tour.code} · ${tour.format}`,
   duration: tour.time,
   image: tour.code === "PQ-09" ? "/tour/phuquoc/tour-09-1.jpg" : `/tour/phuquoc/partner-2026/${tour.code.toLowerCase()}.${["PQ-02", "PQ-10", "PQ-15"].includes(tour.code) ? "webp" : "jpg"}`,
-  adult: "Цена по запросу",
-  child: "По запросу",
+  adult: (()=>{const code=tour.code; const join=BW_JOIN[code]; if(join)return "от "+bwMoney(Math.min(...Object.values(join.rates).map(v=>v[0])));const priv=BW_PRIVATE[code];if(priv)return "от "+bwMoney(Math.min(...Object.values(priv)))+" / человек";return BW_CHARTER[code]?"от "+bwMoney(Math.min(...Object.values(BW_CHARTER[code])))+" / чартер":"Цена по запросу";})(),
+  child: (()=>{const join=BW_JOIN[tour.code];return join?"от "+bwMoney(Math.min(...Object.values(join.rates).map(v=>v[1]))):"Рассчитывается по составу группы";})(),
   summary: tour.summary,
   included: tour.includedItems.join(", "),
   note: tour.notes[0],
