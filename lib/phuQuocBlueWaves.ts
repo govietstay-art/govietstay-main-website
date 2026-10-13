@@ -396,7 +396,8 @@ export function bwQuote(input:{code:string;mode:BWMode;zone:BWZone;adults:number
     if(input.zone==="north"&&!large)pa=sunset?2300000:2200000;
    }
   }
-  return {total:pa*adults+pc*children,perAdult:pa,perChild:pc,requiresConfirmation:["PQ-09","PQ-14","PQ-15"].includes(input.code)};
+  const upgrade=(input.skyLounge&&["PQ-14","PQ-15"].includes(input.code)?count*500000:0);
+  return {total:pa*adults+pc*children+upgrade,perAdult:pa,perChild:pc,requiresConfirmation:["PQ-09","PQ-14","PQ-15"].includes(input.code)};
  }
  if(input.mode==="private"){
   const entries=Object.entries(rate.privateRates).map(([n,p])=>[Number(n),p] as const).sort((a,b)=>a[0]-b[0]);
