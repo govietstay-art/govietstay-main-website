@@ -1,9 +1,12 @@
+import { BW_RATES } from "../../lib/phuQuocBlueWaves";
+import { BW_GALLERY } from "../../lib/blueWavesGallery";
 export type PhuQuocTour = {
   id: string;
   title: string;
   category: string;
   duration: string;
   image: string;
+  images: string[];
   adult: string;
   child: string;
   summary: string;
@@ -15,9 +18,8 @@ export type PhuQuocTour = {
   notes: string[];
 };
 
-// Supplier 2026 tour-book programmes PQ-01–PQ-17. Supplier B2B rates,
-// partner phone/QR and partner branding are intentionally NOT published.
-// GoVietStay confirms its own retail quote, pickup zone and availability before payment.
+// Blue Waves 2026 PQ-01–PQ-17. The uploaded source prices are public SELLING prices.
+// GoVietStay still confirms pickup zone and availability before payment.
 const raw = [
   {
     code: "PQ-01", title: "Морская прогулка Nautilus: снорклинг и развлечения",
@@ -180,8 +182,9 @@ export const phuQuocTours: PhuQuocTour[] = raw.map((tour) => ({
   category: `${tour.code} · ${tour.format}`,
   duration: tour.time,
   image: tour.code === "PQ-09" ? "/tour/phuquoc/tour-09-1.jpg" : `/tour/phuquoc/partner-2026/${tour.code.toLowerCase()}.${["PQ-02", "PQ-10", "PQ-15"].includes(tour.code) ? "webp" : "jpg"}`,
-  adult: "Цена по запросу",
-  child: "По запросу",
+  images: BW_GALLERY[tour.code] || [],
+  adult: BW_RATES[tour.code].adult ? `От ${Math.min(...BW_RATES[tour.code].adult! ).toLocaleString("ru-RU")} ₫` : `Частный тур от ${Math.min(...Object.values(BW_RATES[tour.code].privateRates)).toLocaleString("ru-RU")} ₫/чел.`,
+  child: BW_RATES[tour.code].child ? `От ${Math.min(...BW_RATES[tour.code].child!).toLocaleString("ru-RU")} ₫` : "Цена зависит от группы",
   summary: tour.summary,
   included: tour.includedItems.join(", "),
   note: tour.notes[0],
