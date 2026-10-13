@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import JsonLd from "../../components/JsonLd";
 import { phuQuocTours, type PhuQuocTour } from "./phuQuocPartnerTours";
+import { BW_RATES, bwQuote, type BWMode, type BWZone } from "../../lib/phuQuocBlueWaves";
 
 type RuTour = {
   id: string;
@@ -2073,82 +2074,112 @@ function LegacyRussianPage() {
   );
 }
 
+
 function PhuQuocTourDetail({ tour }: { tour: PhuQuocTour }) {
+  const code=tour.id.toUpperCase();
+  const rates=BW_RATES[code];
+  const [mode,setMode]=useState<BWMode>(rates.modes[0]);
+  const [zone,setZone]=useState<BWZone>("center");
+  const [session,setSession]=useState<"morning"|"sunset">("morning");
+  const [adults,setAdults]=useState(2);
+  const [children,setChildren]=useState(0);
+  const [infants,setInfants]=useState(0);
+  const [skyLounge,setSkyLounge]=useState(false);
+  const [fullName,setFullName]=useState("");
+  const [whatsapp,setWhatsapp]=useState("");
+  const [email,setEmail]=useState("");
+  const [tourDate,setTourDate]=useState("");
+  const [hotel,setHotel]=useState("");
+  const [childDetails,setChildDetails]=useState("");
+  const [request,setRequest]=useState("");
+  const [saving,setSaving]=useState(false);
+  const [error,setError]=useState("");
+  const [bookingCode,setBookingCode]=useState("");
+  const [galleryIndex,setGalleryIndex]=useState(0);
+  const images=tour.images.length?tour.images:[tour.image];
+  const quote=bwQuote({code,mode,zone,session,adults,children,infants,skyLounge});
+  const money=(value:number)=>new Intl.NumberFormat("ru-RU").format(value)+" ₫";
+  async function submitBooking(event:FormEvent<HTMLFormElement>){
+    event.preventDefault();setError("");setBookingCode("");setSaving(true);
+    try{
+      if(!quote)throw Error("Уточните количество гостей и тип экскурсии.");
+      const response=await fetch("/api/blue-waves-booking-request",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
+        tourCode:code,mode,zone,session,adults,children,infants,skyLounge,fullName,whatsapp,email,tourDate,hotel,
+        childDetails,pickup:hotel,request,language:"Russian",languageKey:"ru",website:""
+      })});
+      const result=await response.json();
+      if(!response.ok)throw Error(result?.error || "Не удалось отправить заявку.");
+      setBookingCode(result.booking_code || "Pending");
+    }catch(err){setError(err instanceof Error?err.message:"Не удалось отправить заявку.");}
+    finally{setSaving(false);}
+  }
   return (
     <article className="overflow-hidden rounded-[2rem] bg-white text-[#06251b] shadow-2xl">
-      <div className="relative aspect-[16/9]">
-        <Image src={tour.image} alt={tour.title} fill className="object-cover" />
+      <div className="relative aspect-[16/9] bg-[#e5ede8]">
+        {/* Drive thumbnail URLs point to the specific supplier tour folder, not unrelated stock photos. */}
+        <img src={images[galleryIndex] || tour.image} alt={tour.title+" — фото "+(galleryIndex+1)} className="h-full w-full object-cover"
+          onError={(event)=>{if(event.currentTarget.src!==new URL(tour.image,window.location.origin).href)event.currentTarget.src=tour.image;}} />
       </div>
+      {images.length>1 && <div className="grid grid-cols-3 gap-2 p-3">
+        {images.slice(0,3).map((src,index)=><button key={src} type="button" onClick={()=>setGalleryIndex(index)}
+          aria-label={"Фото "+(index+1)} className={galleryIndex===index?"rounded-xl border-2 border-green-700":"rounded-xl border border-[#06251b]/15"}>
+          <img src={src} alt={tour.title+" — миниатюра "+(index+1)} loading="lazy" className="aspect-[4/3] w-full rounded-lg object-cover"
+            onError={(event)=>{if(event.currentTarget.src!==new URL(tour.image,window.location.origin).href)event.currentTarget.src=tour.image;}} />
+        </button>)}
+      </div>}
       <div className="p-5 md:p-7">
-        <p className="text-xs font-extrabold uppercase tracking-[2px] text-green-800">
-          {tour.category}
-        </p>
-        <h3 className="mt-2 text-2xl font-extrabold leading-tight md:text-3xl">
-          {tour.title}
-        </h3>
+        <p className="text-xs font-extrabold uppercase tracking-[2px] text-green-800">{tour.category}</p>
+        <h3 className="mt-2 text-2xl font-extrabold leading-tight md:text-3xl">{tour.title}</h3>
         <p className="mt-4 leading-relaxed text-[#06251b]/70">{tour.summary}</p>
-        <div className="mt-5 grid gap-2 sm:grid-cols-3">
-          <div className="rounded-2xl bg-[#f3ead4] p-3">
-            <p className="text-[10px] font-bold uppercase text-[#06251b]/55">Время</p>
-            <p className="mt-1 font-extrabold">{tour.duration}</p>
-          </div>
-          <div className="rounded-2xl bg-[#ecf8f3] p-3">
-            <p className="text-[10px] font-bold uppercase text-[#06251b]/55">Взрослый</p>
-            <p className="mt-1 font-extrabold text-green-800">{tour.adult}</p>
-          </div>
-          <div className="rounded-2xl bg-[#f7f1df] p-3">
-            <p className="text-[10px] font-bold uppercase text-[#06251b]/55">Ребёнок</p>
-            <p className="mt-1 font-extrabold">{tour.child}</p>
-          </div>
-        </div>
+        <p className="mt-4 text-lg font-extrabold text-green-800">{tour.adult}</p>
+        <p className="mt-1 text-sm">{tour.child} · {tour.duration}</p>
         <section className="mt-6 rounded-2xl border border-[#06251b]/10 p-4 md:p-5">
           <h4 className="font-extrabold">Программа тура</h4>
           <ol className="mt-3 space-y-2 text-sm leading-relaxed text-[#06251b]/75">
-            {tour.itinerary.map((item, index) => (
-              <li key={item} className="grid grid-cols-[26px_1fr] gap-2">
-                <span className="grid h-6 w-6 place-items-center rounded-full bg-[#0b6b4f] text-[11px] font-extrabold text-white">
-                  {index + 1}
-                </span>
-                <span>{item}</span>
-              </li>
-            ))}
+            {tour.itinerary.map((item,index)=><li key={index}>{index+1}. {item}</li>)}
           </ol>
         </section>
         <div className="mt-3 grid gap-3 md:grid-cols-2">
-          <section className="rounded-2xl bg-[#ecf8f3] p-4 md:p-5">
-            <h4 className="font-extrabold text-green-800">✓ Что включено</h4>
-            <ul className="mt-3 space-y-1.5 text-sm leading-relaxed">
-              {tour.includedItems.map((item) => <li key={item}>• {item}</li>)}
-            </ul>
-          </section>
-          <section className="rounded-2xl bg-[#f7f1df] p-4 md:p-5">
-            <h4 className="font-extrabold">× Что не включено</h4>
-            <ul className="mt-3 space-y-1.5 text-sm leading-relaxed">
-              {tour.excluded.map((item) => <li key={item}>• {item}</li>)}
-            </ul>
-          </section>
+          <section className="rounded-2xl bg-[#ecf8f3] p-4"><h4 className="font-extrabold">Что включено</h4><ul className="mt-2 text-sm">{tour.includedItems.map(x=><li key={x}>• {x}</li>)}</ul></section>
+          <section className="rounded-2xl bg-[#f7f1df] p-4"><h4 className="font-extrabold">Не включено</h4><ul className="mt-2 text-sm">{tour.excluded.map(x=><li key={x}>• {x}</li>)}</ul></section>
         </div>
-        <section className="mt-3 rounded-2xl bg-amber-50 p-4 text-sm leading-relaxed text-[#06251b]/75 md:p-5">
-          <h4 className="font-extrabold text-[#06251b]">Важно перед бронированием</h4>
-          <ul className="mt-2 space-y-1.5">
-            {tour.notes.map((item) => <li key={item}>• {item}</li>)}
-          </ul>
-        </section>
-        <div className="mt-4 rounded-2xl border border-[#06251b]/10 p-4 text-sm leading-relaxed text-[#06251b]/70">
-          Сообщите дату, отель, количество взрослых, возраст и рост детей, а
-          также нужен ли русскоговорящий гид. GoVietStay подтвердит точную зону
-          трансфера, наличие мест и итоговую стоимость до оплаты.
-        </div>
-        <a
-          href={contactWa(
-            `Здравствуйте! Хочу проверить тур на Фукуоке: ${tour.title}. Дата: … Взрослые: … Дети и возраст/рост: … Отель: … Нужен русскоговорящий гид: да/нет.`,
-          )}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-5 block rounded-full bg-[#ff5a16] px-5 py-4 text-center font-extrabold text-white transition hover:bg-[#e7490b]"
-        >
-          Проверить места и итоговую цену
-        </a>
+        <ul className="mt-4 space-y-2 text-sm text-[#06251b]/70">{tour.notes.map((note,index)=><li key={index}>• {note}</li>)}</ul>
+        <form onSubmit={submitBooking} className="mt-7 grid gap-3 rounded-2xl border border-[#06251b]/10 bg-[#f2f9f5] p-4 md:p-5">
+          <h4 className="text-xl font-extrabold">Заявка на бронирование GoVietStay</h4>
+          <label className="text-sm font-semibold">Тип тура
+            <select value={mode} onChange={e=>setMode(e.target.value as BWMode)} className="mt-1 w-full rounded-lg border bg-white p-3">
+              {rates.modes.map(m=><option key={m} value={m}>{m==="join"?"Групповой":m==="private"?"Индивидуальный":"Чартер яхты"}</option>)}
+            </select>
+          </label>
+          <label className="text-sm font-semibold">Район отеля
+            <select value={zone} onChange={e=>setZone(e.target.value as BWZone)} className="mt-1 w-full rounded-lg border bg-white p-3">
+              <option value="center">Дуонг Донг / Центр</option><option value="north">Северный Фукуок</option><option value="south">Южный Фукуок</option>
+            </select>
+          </label>
+          {code==="PQ-09" && mode==="join" && <label className="text-sm font-semibold">Рейс
+            <select value={session} onChange={e=>setSession(e.target.value as "morning"|"sunset")} className="mt-1 w-full rounded-lg border bg-white p-3">
+              <option value="morning">Утро</option><option value="sunset">Закат</option>
+            </select></label>}
+          {(code==="PQ-14"||code==="PQ-15") && <label className="text-sm"><input type="checkbox" checked={skyLounge} onChange={e=>setSkyLounge(e.target.checked)} /> Sky Lounge (+500 000 ₫ за гостя, по подтверждению)</label>}
+          <div className="grid grid-cols-3 gap-2">
+            <label className="text-xs font-semibold">Взрослые<input type="number" min="0" max="40" value={adults} onChange={e=>setAdults(Number(e.target.value))} className="mt-1 w-full rounded-lg border bg-white p-3"/></label>
+            <label className="text-xs font-semibold">Дети 100–139 см<input type="number" min="0" max="40" value={children} onChange={e=>setChildren(Number(e.target.value))} className="mt-1 w-full rounded-lg border bg-white p-3"/></label>
+            <label className="text-xs font-semibold">Дети до 100 см<input type="number" min="0" max="40" value={infants} onChange={e=>setInfants(Number(e.target.value))} className="mt-1 w-full rounded-lg border bg-white p-3"/></label>
+          </div>
+          <p className="rounded-lg bg-white p-3 text-sm">{quote ? <><strong>Предварительно: {money(quote.total)}</strong><span className="block text-[#06251b]/65">Стоимость уточняется после проверки свободных мест и условий для детей.</span></>:"Этот состав группы или формат требует индивидуального расчёта."}</p>
+          <label className="text-sm font-semibold">Дата тура<input required type="date" value={tourDate} min={new Date().toISOString().slice(0,10)} onChange={e=>setTourDate(e.target.value)} className="mt-1 w-full rounded-lg border bg-white p-3"/></label>
+          <label className="text-sm font-semibold">Имя и фамилия<input required value={fullName} onChange={e=>setFullName(e.target.value)} className="mt-1 w-full rounded-lg border bg-white p-3"/></label>
+          <label className="text-sm font-semibold">WhatsApp<input required type="tel" value={whatsapp} onChange={e=>setWhatsapp(e.target.value)} className="mt-1 w-full rounded-lg border bg-white p-3"/></label>
+          <label className="text-sm font-semibold">Email<input type="email" value={email} onChange={e=>setEmail(e.target.value)} className="mt-1 w-full rounded-lg border bg-white p-3"/></label>
+          <label className="text-sm font-semibold">Отель / адрес подачи<input required value={hotel} onChange={e=>setHotel(e.target.value)} className="mt-1 w-full rounded-lg border bg-white p-3"/></label>
+          <label className="text-sm font-semibold">Возраст и рост каждого ребёнка<input value={childDetails} onChange={e=>setChildDetails(e.target.value)} className="mt-1 w-full rounded-lg border bg-white p-3"/></label>
+          <label className="text-sm font-semibold">Пожелания<textarea value={request} onChange={e=>setRequest(e.target.value)} className="mt-1 w-full rounded-lg border bg-white p-3" rows={3}/></label>
+          {error && <p role="alert" className="text-sm font-bold text-red-700">{error}</p>}
+          {bookingCode && <p role="status" className="rounded-xl bg-emerald-100 p-3 text-sm font-bold text-emerald-900">Заявка принята: {bookingCode}. GoVietStay проверит наличие мест и подтвердит оплату отдельно.</p>}
+          <button type="submit" disabled={saving || !quote} className="rounded-full bg-[#0b6b4f] px-5 py-4 font-extrabold text-white disabled:opacity-50">{saving?"Отправляем…":"Отправить заявку · GoVietStay"}</button>
+          <p className="text-xs text-[#06251b]/65">Оплата сейчас не списывается. Бронирование находится на рассмотрении, пока GoVietStay не подтвердит места.</p>
+          <a href={contactWa("Здравствуйте! Нужна помощь с бронированием "+tour.title)} target="_blank" rel="noopener noreferrer" className="text-center text-sm font-bold text-[#0b6b4f] underline">Помощь в WhatsApp: +84 937 762 607</a>
+        </form>
       </div>
     </article>
   );
@@ -2231,7 +2262,7 @@ function PhuQuocToursSection() {
             })}
           </div>
           <div className="lg:sticky lg:top-5">
-            <PhuQuocTourDetail tour={activeTour} />
+            <PhuQuocTourDetail key={activeTour.id} tour={activeTour} />
           </div>
         </div>
       </div>
