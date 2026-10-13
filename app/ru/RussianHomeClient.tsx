@@ -2062,7 +2062,7 @@ function LegacyRussianPage() {
         rel="noopener noreferrer"
         className="fixed bottom-4 left-4 right-4 z-50 flex items-center justify-center rounded-full bg-green-500 px-5 py-4 text-sm sm:text-base text-white font-extrabold shadow-2xl hover:bg-green-600 transition md:left-1/2 md:right-auto md:w-[min(560px,calc(100%-2rem))] md:-translate-x-1/2"
       >
-        🇷🇺 WhatsApp Anna • Tours / Packages / B2B rates
+        WhatsApp GoVietStay • Туры и поддержка
       </a>
 
       <BookingModal
@@ -2172,10 +2172,7 @@ function PhuQuocToursSection() {
           17 морских и авторских экскурсий на Фукуоке — сезон 2026–2027
         </h2>
         <p className="mt-5 max-w-4xl text-base leading-relaxed text-white/75 md:text-lg">
-          Одна коллекция для разных стилей отдыха: остров, море, закаты,
-          снорклинг, канатная дорога, шоу и частные прогулки. Особенно актуально
-          с декабря 2026 по март 2027 года; на высокий сезон рекомендуем
-          бронировать заранее.
+          Коллекция GoVietStay с новыми морскими программами: яхты, снорклинг, вечерние круизы, индивидуальные поездки и отдых с семьёй. С декабря по март рекомендуем бронировать заранее.
         </p>
         <Link
           href="/ru/tours/phu-quoc"
@@ -2184,18 +2181,17 @@ function PhuQuocToursSection() {
           Посмотреть также другие групповые экскурсии →
         </Link>
         <div className="mt-6 rounded-3xl border border-yellow-300/30 bg-white/10 p-4 text-sm leading-relaxed text-white/80 md:p-5 md:text-base">
-          Цены указаны за одного гостя как ориентир. Наличие мест, зона трансфера,
-          детский тариф, язык гида и итоговая стоимость подтверждаются до оплаты.
+          Стоимость рассчитывается для конкретного запроса: дата, количество взрослых и детей, возраст и рост детей, расположение отеля, желаемый формат. GoVietStay подтвердит итоговую розничную цену до оплаты.
           Морские маршруты могут меняться из-за погоды, состояния моря и правил
           оператора.
         </div>
         <div className="mt-7 grid grid-cols-2 gap-2 text-xs font-bold sm:grid-cols-3 lg:grid-cols-5">
           {[
-            "Первый визит: тур 1",
-            "Море и острова: 2, 5, 6",
-            "Закат и вечер: 3, 4, 7",
-            "Премиум: 8, 9",
-            "Активный север: 10",
+            "Море и снорклинг: 01, 02, 05, 06",
+            "Закаты и вечер: 03, 04, 07, 09",
+            "Север Фукуока: 08, 10, 13",
+            "Премиум-круизы: 11, 14, 15",
+            "Культура и рыбалка: 12, 16, 17",
           ].map((item) => (
             <div key={item} className="rounded-2xl border border-white/10 bg-white/10 p-3 text-white/80">
               {item}
