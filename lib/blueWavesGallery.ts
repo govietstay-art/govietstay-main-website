@@ -43,7 +43,11 @@ export const BW_GALLERY:Record<string,string[]> = {
     "https://drive.google.com/thumbnail?id=1CdwV8PIMXKM4f2DdGGZ_oV7XnWooVy2Q&sz=w1200",
     "https://drive.google.com/thumbnail?id=1sb80wBkae4UMA2ODFAjWZu5Rs9UiK8Q7&sz=w1200"
   ],
-  "PQ-09": [],
+  "PQ-09": [
+    "https://drive.google.com/thumbnail?id=1d_lcWqtxwAocNVRCttJq7emVmxB6uHf3&sz=w1200",
+    "https://drive.google.com/thumbnail?id=1-tm-BGjAaMDMzJjw3HXLLoQMV4dvrz6s&sz=w1200",
+    "https://drive.google.com/thumbnail?id=1PVz9pJxWeQi0gUZs48MSotDrzuLs3EfR&sz=w1200"
+  ],
   "PQ-10": [
     "https://drive.google.com/thumbnail?id=1tJJi4ug_J07G3wRrqoXGc7NL8VU0K08s&sz=w1200",
     "https://drive.google.com/thumbnail?id=1_T8NVo09sB4aSWHyAiam9bIWpxn_vyTk&sz=w1200",
@@ -78,5 +82,10 @@ export const BW_GALLERY:Record<string,string[]> = {
     "https://drive.google.com/thumbnail?id=1u-X4cQ8DQQbD9GyN3QRNjYl46bYnEK1w&sz=w1200",
     "https://drive.google.com/thumbnail?id=16TZrCnYv4kHbspa__izVrlTKgJa5ebf5&sz=w1200",
     "https://drive.google.com/thumbnail?id=1sOewEmjG3LsIk-P9QxFoiXqwsE-UB1AO&sz=w1200"
+  ],
+  "PQ-17": [
+    "https://drive.google.com/thumbnail?id=1osk9pNyDIachIRApcS25x4xnDut8rthh&sz=w1200",
+    "https://drive.google.com/thumbnail?id=1TvEvhuqOm_ElFCR4pBQfy8TLACmMyXW3&sz=w1200",
+    "https://drive.google.com/thumbnail?id=1GQQZ4MyE8XDpDq2jzog-fsVXZp7uPILU&sz=w1200"
   ]
 };
