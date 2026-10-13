@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import JsonLd from "../../components/JsonLd";
 import { phuQuocTours, type PhuQuocTour } from "./phuQuocPartnerTours";
+import BlueWavesBookingForm from "../../components/BlueWavesBookingForm";
 
 type RuTour = {
   id: string;
@@ -2150,6 +2151,7 @@ function PhuQuocTourDetail({ tour }: { tour: PhuQuocTour }) {
           Проверить места и итоговую цену
         </a>
       </div>
+    <BlueWavesBookingForm code={tour.id.toUpperCase()} title={tour.title} />
     </article>
   );
 }
@@ -2181,7 +2183,7 @@ function PhuQuocToursSection() {
           Посмотреть также другие групповые экскурсии →
         </Link>
         <div className="mt-6 rounded-3xl border border-yellow-300/30 bg-white/10 p-4 text-sm leading-relaxed text-white/80 md:p-5 md:text-base">
-          Стоимость рассчитывается для конкретного запроса: дата, количество взрослых и детей, возраст и рост детей, расположение отеля, желаемый формат. GoVietStay подтвердит итоговую розничную цену до оплаты.
+          Цены ниже — публичные цены продажи GoVietStay из турбука 2026. Выберите формат, зону трансфера, дату и состав группы в форме тура, чтобы получить предварительный расчёт. Мы подтвердим наличие мест и итоговую сумму до оплаты.
           Морские маршруты могут меняться из-за погоды, состояния моря и правил
           оператора.
         </div>
