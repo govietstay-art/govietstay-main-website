@@ -75,8 +75,8 @@ export const BW_GALLERY:Record<string,string[]> = {
     "https://drive.google.com/thumbnail?id=1xnCMbt8x5bFA6vrstrvMVNDnIYNv45Oz&sz=w1200"
   ],
   "PQ-16": [
-    "https://drive.google.com/thumbnail?id=1CCgnTsKgNpJh_4x3F-BsD-CCcsWhhxms&sz=w1200",
-    "https://drive.google.com/thumbnail?id=1oHkXLlrVDYv6iCwq2N7YIeq8Qbeh9phl&sz=w1200",
-    "https://drive.google.com/thumbnail?id=1u-X4cQ8DQQbD9GyN3QRNjYl46bYnEK1w&sz=w1200"
+    "https://drive.google.com/thumbnail?id=1u-X4cQ8DQQbD9GyN3QRNjYl46bYnEK1w&sz=w1200",
+    "https://drive.google.com/thumbnail?id=16TZrCnYv4kHbspa__izVrlTKgJa5ebf5&sz=w1200",
+    "https://drive.google.com/thumbnail?id=1sOewEmjG3LsIk-P9QxFoiXqwsE-UB1AO&sz=w1200"
   ]
 };
