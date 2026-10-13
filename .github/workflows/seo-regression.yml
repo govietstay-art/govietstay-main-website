@@ -4,6 +4,7 @@ on:
     paths:
       - "app/**"
       - "lib/seo/**"
+      - "lib/israel*.ts"
       - "components/HtmlLanguageSync.tsx"
       - "components/RussianInternalLinks.tsx"
       - "proxy.ts"
