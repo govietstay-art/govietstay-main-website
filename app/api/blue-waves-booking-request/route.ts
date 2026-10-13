@@ -23,14 +23,12 @@ export async function POST(req:NextRequest){
   const price=blueWavesPrice({code:tourCode,format,zone,adults,children,infants,session,skyLoungeGuests:count(body.skyLoungeGuests)});
   if(!price||!fullName||!whatsapp||!/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(tourDate))
     return NextResponse.json({error:"Missing or invalid booking details"},{status:400});
-  const date=new Date(tourDate+"T00:00:00+07:00");
+  const date=new Date(tourDate+"T12:00:00Z");
   if(!Number.isFinite(date.getTime())||date.toISOString().slice(0,10)!==tourDate||date.getTime()<Date.now()-86400000)
     return NextResponse.json({error:"Invalid booking date"},{status:400});
   if(format==="join"){
     const allowed=BW_JOIN[tourCode].weekdays;
     if(allowed&&!allowed.includes(date.getUTCDay()))return NextResponse.json({error:"This tour does not depart on the selected weekday"},{status:400});
-    if(BW_JOIN[tourCode].minGuests&&(adults+children+infants)<BW_JOIN[tourCode].minGuests)
-      return NextResponse.json({error:"Minimum group size not reached; ask GoVietStay for a shared departure"},{status:400});
   }
   const bookingCode="GVS-BW-"+new Date().toISOString().slice(0,10).replace(/-/g,"")+"-"+Math.random().toString(36).slice(2,8).toUpperCase();
   const notes=[
