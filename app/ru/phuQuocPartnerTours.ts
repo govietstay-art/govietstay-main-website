@@ -179,7 +179,7 @@ export const phuQuocTours: PhuQuocTour[] = raw.map((tour) => ({
   title: tour.title,
   category: `${tour.code} · ${tour.format}`,
   duration: tour.time,
-  image: tour.code === "PQ-09" ? "/tour/phuquoc/tour-09-1.jpg" : tour.code === "PQ-17" ? "/tour/phuquoc/tour-01-1.jpg" : `/tour/phuquoc/partner-2026/${tour.code.toLowerCase()}.jpg`,
+  image: tour.code === "PQ-09" ? "/tour/phuquoc/tour-09-1.jpg" : `/tour/phuquoc/partner-2026/${tour.code.toLowerCase()}.${["PQ-02", "PQ-10", "PQ-15"].includes(tour.code) ? "webp" : "jpg"}`,
   adult: "Цена по запросу",
   child: "По запросу",
   summary: tour.summary,
