@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import {spawn} from "node:child_process";
+import {readFile} from "node:fs/promises";
 const port=3987,origin=`http://127.0.0.1:${port}`;
-const server=spawn(process.execPath,["node_modules/next/dist/bin/next","start","--port",String(port)],{
+const server=spawn(process.execPath,["node_modules/next/dist/bin/next","start","--hostname","127.0.0.1","--port",String(port)],{
   env:{...process.env,NEXT_TELEMETRY_DISABLED:"1"},
   stdio:["ignore","pipe","pipe"],
   detached:true,
@@ -69,6 +70,37 @@ try{
  const sitemap=await fetch(origin+"/sitemap.xml",{signal:AbortSignal.timeout(20000)});
  assert.equal(sitemap.status,200,"sitemap.xml inaccessible");
  const xml=await sitemap.text();
+ // Check the six decision guides in server HTML, not just their source data.
+ const editorialSource=await readFile("lib/israelSeoEditorial.ts","utf8");
+ const editorial=JSON.parse(editorialSource.slice(editorialSource.indexOf("= {",editorialSource.indexOf("export const israelSeoEditorial"))+2).trim().replace(/;\s*$/, ""));
+ const hebrewSlugs=["phu-quoc-guide-israelis","phu-quoc-family","phu-quoc-private-car","danang-private-tour","hoi-an-private-evening","hue-day-trip"];
+ function visibleText(value){
+   return value.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi," ").replace(/<[^>]+>/g," ")
+     .replace(/&(?:amp|quot|apos|lt|gt|#39|#x27);/gi,entity=>({"&amp;":"&","&quot;":'"',"&apos;":"'","&lt;":"<","&gt;":">","&#39;":"'","&#x27;":"'"}[entity.toLowerCase()]??entity))
+     .replace(/\s+/g," ").trim();
+ }
+ for(const slug of hebrewSlugs){
+   const path="/il/"+slug,source=await check(path,"he-IL","rtl"),expected=editorial[slug];
+   assert.ok(hasSeoLink(source,"canonical",{href:"https://www.govietstay.com"+path}),path+": missing self canonical");
+   assert.ok(xml.includes("https://www.govietstay.com"+path+"</loc>"),path+": missing sitemap entry");
+   assert.ok(source.includes('property="og:image"'),path+": missing share image");
+   const main=source.match(/<main\b[^>]*>([\s\S]*?)<\/main>/i)?.[1];
+   assert.ok(main,path+": missing main content");
+   const visible=visibleText(main);
+   for(const section of expected.sections){
+     assert.ok(visible.includes(visibleText(section.title)),path+": missing visible heading "+section.title);
+     assert.ok(visible.includes(visibleText(section.body)),path+": missing visible section "+section.title);
+   }
+   for(const faq of expected.faqs){
+     assert.ok(visible.includes(visibleText(faq.q)),path+": missing visible FAQ question "+faq.q);
+     assert.ok(visible.includes(visibleText(faq.a)),path+": missing visible FAQ answer "+faq.q);
+   }
+   const schemas=[...source.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)].map(([,json])=>JSON.parse(json));
+   const faqSchemas=schemas.filter(schema=>schema["@type"]==="FAQPage");
+   assert.equal(faqSchemas.length,1,path+": expected one FAQPage schema");
+   assert.deepEqual(faqSchemas[0].mainEntity,expected.faqs.map(f=>({"@type":"Question",name:f.q,acceptedAnswer:{"@type":"Answer",text:f.a}})),path+": FAQ schema differs from visible source");
+ }
+ console.log("PASS: six rendered Hebrew guides, visible sections/FAQs, FAQ JSON-LD, canonical, RTL and sitemap.");
  for(const slug of ["/local-food","/group-deals","/ru/group-deals","/ru/cruise-port-shore-excursions"]){
   assert.ok(xml.includes(`https://www.govietstay.com${slug}`),`sitemap missing ${slug}`);
  }
