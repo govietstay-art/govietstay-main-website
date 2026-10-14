@@ -73,7 +73,7 @@ export default function VisaTrustStories() {
                   <p className="mt-1 text-xs text-[#06251b]/55">{message.context}</p>
                 </div>
               </div>
-              <img src={message.image} alt="Anonymized real customer WhatsApp conversation" loading="lazy" className="mt-5 block h-auto w-full rounded-xl" />              <div className="mt-auto flex items-center justify-between gap-3 pt-6 text-xs font-semibold text-[#06251b]/50">
+              <a href={message.image} target="_blank" rel="noopener noreferrer" aria-label="Open anonymized original WhatsApp screenshot"><img src={message.image} alt="Anonymized real customer WhatsApp conversation" loading="lazy" className="mt-5 block h-auto w-full rounded-xl" /></a>              <div className="mt-auto flex items-center justify-between gap-3 pt-6 text-xs font-semibold text-[#06251b]/50">
                 <span>Customer WhatsApp message</span>
                 <span>{message.time}</span>
               </div>
