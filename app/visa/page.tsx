@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import VisaPlanner from "./VisaPlanner";
+import VisaTrustStories from "./VisaTrustStories";
 import { fastTrackPrices, urgentPrices } from "./prices";
 
 export const metadata: Metadata = {
   title: "Vietnam Visa Assistance",
   description:
-    "Vietnam e-Visa assistance, urgent visa processing and airport fast-track support with GoVietStay.",
+    "Vietnam e-Visa and urgent visa assistance from GoVietStay. Real traveler stories, personal support during stressful airport moments and clear next steps.",
   alternates: { canonical: "https://www.govietstay.com/visa" },
   openGraph: {
     title: "Vietnam Visa Assistance | GoVietStay",
@@ -131,7 +132,7 @@ export default function VisaPage() {
               <span className="block text-[#f4d77a]">Assistance</span>
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-white/72 md:text-xl">
-              GoVietStay helps international travelers with Vietnam e-Visas, urgent processing and airport fast-track support — clearly, quickly and personally.
+              When your flight is close and your e-visa is still pending, every minute feels different. GoVietStay provides personal Vietnam visa assistance, realistic urgent options, and steady support throughout the wait.
             </p>
 
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
@@ -205,6 +206,8 @@ export default function VisaPage() {
           </a>
         </div>
       </section>
+
+      <VisaTrustStories />
 
       <VisaPlanner />
 
