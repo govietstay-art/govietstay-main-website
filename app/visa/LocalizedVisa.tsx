@@ -26,7 +26,24 @@ export function localizedVisaMetadata(lang:VisaLang):Metadata {
 export default function LocalizedVisa({lang}:{lang:VisaLang}) {
  const t=visaTranslations[lang];const wa="https://wa.me/84937762607?text="+encodeURIComponent("Hello GoVietStay, please check my Vietnam visa eligibility and urgent support options. My passport nationality: ____; travel date: ____; existing application status: ____.");
  return <main lang={t.language} className="min-h-screen bg-[#f7f1df] text-[#06251b]">
- <header className="sticky top-0 z-40 border-b border-[#0b6b4f]/15 bg-white/95"><div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-5 py-4 md:px-8"><Link href="/" className="text-xl font-black text-[#0b6b4f]">GoVietStay</Link><nav aria-label="Language navigation" className="flex flex-wrap gap-3 text-sm"><Link href="/visa">EN</Link>{locales.map(l=><Link key={l} aria-current={l===lang?"page":undefined} href={"/"+l+"/visa"}>{l.toUpperCase()}</Link>)}</nav><a href={wa} target="_blank" rel="noreferrer" className="rounded-full bg-[#0b6b4f] px-5 py-3 font-bold text-white">WhatsApp</a></div></header>
+ <header className="sticky top-0 z-40 border-b border-[#0b6b4f]/15 bg-white/95 shadow-sm backdrop-blur-xl">
+   <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-x-3 gap-y-2 px-4 py-3 sm:px-5 md:flex-nowrap md:gap-6 md:px-8">
+     <Link href="/" aria-label="GoVietStay home" className="order-1 flex shrink-0 items-center gap-2.5">
+       <img src="/ar-assets/logo.webp" alt="GoVietStay official logo" width={56} height={56} className="h-12 w-12 shrink-0 rounded-full bg-white object-contain sm:h-14 sm:w-14" />
+       <span className="flex flex-col">
+         <span className="text-lg font-black tracking-tight text-[#0b6b4f] sm:text-xl">GoVietStay</span>
+         <span className="hidden text-[11px] font-semibold text-[#06251b]/60 sm:block">Trusted Local Support</span>
+       </span>
+     </Link>
+     <nav aria-label="Visa page language" className="order-3 flex w-full items-center gap-4 overflow-x-auto whitespace-nowrap border-t border-[#0b6b4f]/10 pt-2 text-sm font-bold text-[#06251b]/80 md:order-2 md:w-auto md:justify-center md:gap-3 md:border-0 md:pt-0">
+       <Link href="/visa" className="shrink-0 py-1 hover:text-[#0b6b4f]">EN</Link>
+       {locales.map(l => <Link key={l} href={"/"+l+"/visa"} aria-current={l===lang?"page":undefined} className={`shrink-0 py-1 hover:text-[#0b6b4f] ${l===lang?"text-[#0b6b4f] underline underline-offset-4":""}`}>{l==="uk"?"UA":l.toUpperCase()}</Link>)}
+     </nav>
+     <a href={wa} target="_blank" rel="noopener noreferrer" className="order-2 inline-flex shrink-0 items-center justify-center rounded-full bg-[#0b6b4f] px-4 py-3 text-sm font-extrabold text-white shadow-sm transition hover:bg-[#06432f] md:order-3 md:px-5">
+       WhatsApp
+     </a>
+   </div>
+ </header>
  <section className="bg-[#052e22] px-5 py-16 text-white md:py-24"><div className="mx-auto max-w-6xl"><p className="font-semibold uppercase tracking-widest text-[#e3bc59]">GoVietStay · Trusted Local Support</p><h1 className="mt-5 max-w-4xl text-4xl font-black leading-tight md:text-6xl">{t.title}</h1><p className="mt-6 max-w-3xl text-lg leading-8 text-white/85">{t.subtitle}</p><p className="mt-4 max-w-3xl text-lg leading-8 text-white/80">{t.intro}</p><a href={wa} target="_blank" rel="noreferrer" className="mt-8 inline-flex rounded-full bg-[#d9ad3d] px-7 py-4 font-black text-[#052e22]">{t.contact}</a></div></section>
  <section className="mx-auto max-w-6xl px-5 py-12 md:px-8"><h2 className="text-3xl font-black">{t.eligibility}</h2><p className="mt-4 text-lg leading-8">{t.status}</p><p className="mt-3 text-sm leading-6 text-[#06251b]/70">Official sources: <a className="underline" target="_blank" rel="noreferrer" href="https://mofa.gov.vn/vi/tin-chi-tiet/chi-tiet/danh-muc-mien-thi-thuc-cua-viet-nam-voi-cac-nuoc-57162-172.html">Vietnam Ministry of Foreign Affairs</a> · <a className="underline" target="_blank" rel="noreferrer" href="https://evisa.gov.vn">Vietnam Immigration e-Visa</a>. Check conditions for your specific passport and purpose of travel.</p></section>
  <section className="bg-white px-5 py-14 md:px-8"><div className="mx-auto max-w-6xl"><h2 className="text-3xl font-black">{t.cost}</h2><div className="mt-8 grid gap-5 md:grid-cols-3">{[[t.standard,"US$37","up to 90 days · single entry"],[t.urgent,"Case review","1-hour to 4-day requests where available"],[t.airport,"From US$18","Da Nang, Hanoi, Ho Chi Minh City"]].map(([a,b,c])=><article key={a} className="rounded-2xl border border-[#0b6b4f]/15 bg-[#fff9eb] p-6"><h3 className="text-xl font-bold">{a}</h3><p className="mt-3 text-3xl font-black text-[#0b6b4f]">{b}</p><p className="mt-2 text-sm text-[#06251b]/60">{c}</p></article>)}</div><p className="mt-4 text-sm text-[#06251b]/70">Multiple-entry e-Visa assistance: US$62. Urgent surcharges and availability depend on processing location and timing; eligibility is checked before payment.</p></div></section>
