@@ -58,7 +58,7 @@ export default function VisaTrustStories() {
           </p>
         </div>
 
-        <div className="mt-8 grid gap-5 md:grid-cols-3">
+        <div className="mt-8 grid items-start gap-6 md:grid-cols-3">
           {travelerMessages.map((message) => (
             <article
               key={message.label}
@@ -73,13 +73,7 @@ export default function VisaTrustStories() {
                   <p className="mt-1 text-xs text-[#06251b]/55">{message.context}</p>
                 </div>
               </div>
-              <img src={message.image} alt="Anonymized real customer WhatsApp conversation" loading="lazy" className="mt-5 block h-auto w-full rounded-xl" /><blockquote className="mt-7 text-2xl font-bold leading-snug tracking-tight text-[#06251b]">
-                “{message.quote}”
-              </blockquote>
-              <p className="mt-4 rounded-2xl bg-[#e8f8e6] px-4 py-3 text-base font-medium leading-relaxed text-[#174829]">
-                “{message.followUp}”
-              </p>
-              <div className="mt-auto flex items-center justify-between gap-3 pt-6 text-xs font-semibold text-[#06251b]/50">
+              <img src={message.image} alt="Anonymized real customer WhatsApp conversation" loading="lazy" className="mt-5 block h-auto w-full rounded-xl" />              <div className="mt-auto flex items-center justify-between gap-3 pt-6 text-xs font-semibold text-[#06251b]/50">
                 <span>Customer WhatsApp message</span>
                 <span>{message.time}</span>
               </div>
@@ -88,7 +82,7 @@ export default function VisaTrustStories() {
         </div>
 
         <p className="mt-5 text-sm leading-6 text-[#06251b]/55">
-          Messages excerpted from actual customer conversations. Names, passport numbers, visa numbers and application details are withheld to protect travelers&apos; privacy.
+          Actual customer WhatsApp screenshots. Identifying details were concealed before publication to protect travelers&apos; privacy.
         </p>
 
         <div className="mt-8 flex flex-col gap-4 rounded-[1.7rem] bg-[#052e22] p-6 text-white sm:flex-row sm:items-center sm:justify-between md:p-8">
