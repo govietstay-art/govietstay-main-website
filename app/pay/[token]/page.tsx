@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import CopyTransferDetails from "../../../components/pay/CopyTransferDetails";
 
 export const dynamic = "force-dynamic";
 
@@ -37,14 +38,14 @@ export default async function BookingPaymentPage({ params }: Props) {
         .gvsPayWrap{width:min(680px,100%);margin:0 auto;padding:20px 16px 48px}.brand{text-align:center;padding:20px 0 14px}.brand img{display:block;width:min(220px,64vw);height:auto;max-height:76px;object-fit:contain;margin:0 auto 7px}.brand span{display:block;color:var(--muted);font-size:12px;margin-top:3px}
         .card{background:#fff;border:1px solid var(--line);border-radius:24px;box-shadow:0 18px 50px rgba(23,58,40,.09);overflow:hidden}.hero{padding:26px 22px 20px;background:linear-gradient(135deg,#143f2d,#176946);color:white}.safe{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.85}.hero h1{font-size:34px;line-height:1.05;margin:8px 0 9px}.hero p{margin:0;color:#dcebe2;line-height:1.45}.status{display:inline-flex;margin-top:14px;padding:7px 10px;border-radius:999px;background:#fff0bd;color:#6a4b00;font-size:12px;font-weight:900}.status.paid{background:#d8f4e3;color:#155e38}
         .section{padding:20px 22px;border-top:1px solid var(--line)}.bookingCode{font-size:12px;font-weight:900;letter-spacing:.08em;color:var(--g)}.service{font-size:22px;font-weight:900;margin:5px 0 8px}.meta{color:var(--muted);font-size:14px;line-height:1.55}.numbers{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:16px}.num{background:#f6f8f6;border-radius:14px;padding:12px}.num span,.bank span{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;font-weight:700}.num b{display:block;margin-top:4px;font-size:15px}.amount{margin:18px 0 2px;padding:18px;border-radius:18px;background:#fff7df;border:1px solid #f0d997;text-align:center}.amount span{display:block;font-size:12px;color:#785d11;text-transform:uppercase;font-weight:800}.amount b{display:block;font-size:32px;margin-top:4px;color:#5d4607}
-        .method{border:1px solid var(--line);border-radius:18px;padding:16px}.methodTop{display:flex;justify-content:space-between;gap:10px}.methodTop b{display:block;font-size:17px}.methodTop span{display:block;font-size:12px;color:var(--muted);margin-top:3px}.pill{background:#e5f4eb;color:#17623e;font-size:11px;font-weight:900;border-radius:999px;padding:6px 8px}.qr{display:block;width:min(100%,430px);height:auto;margin:16px auto;border-radius:14px}.bank{display:grid;gap:8px;background:#f6f8f6;border-radius:13px;padding:12px}.bank b{display:block;margin-top:2px;font-size:14px;word-break:break-word}.hint{font-size:12px;color:var(--muted);line-height:1.5;margin:10px 2px 0}.or{display:flex;align-items:center;gap:10px;color:#87938c;font-size:12px;margin:17px 0}.or:before,.or:after{content:"";height:1px;background:var(--line);flex:1}.paypal,.receipt{display:flex;align-items:center;justify-content:center;text-decoration:none;border-radius:14px;padding:14px 16px;font-weight:900}.paypal{background:#083b78;color:white}.receipt{margin-top:12px;background:#1f9d58;color:white}.lock,.footer{text-align:center;color:#64766c;font-size:12px;line-height:1.55}.lock{margin-top:12px}.footer{padding:18px 16px 0}
+        .method{border:1px solid var(--line);border-radius:18px;padding:16px}.methodTop{display:flex;justify-content:space-between;gap:10px}.methodTop b{display:block;font-size:17px}.methodTop span{display:block;font-size:12px;color:var(--muted);margin-top:3px}.pill{background:#e5f4eb;color:#17623e;font-size:11px;font-weight:900;border-radius:999px;padding:6px 8px}.qr{display:block;width:min(100%,430px);height:auto;margin:16px auto;border-radius:14px}.bank{display:grid;gap:8px;background:#f6f8f6;border-radius:13px;padding:12px}.bank b{display:block;margin-top:2px;font-size:14px;word-break:break-word}.hint{font-size:12px;color:var(--muted);line-height:1.5;margin:10px 2px 0}.or{display:flex;align-items:center;gap:10px;color:#87938c;font-size:12px;margin:17px 0}.or:before,.or:after{content:"";height:1px;background:var(--line);flex:1}.paypal,.receipt{display:flex;align-items:center;justify-content:center;text-decoration:none;border-radius:14px;padding:14px 16px;font-weight:900}.paypal{background:#083b78;color:white}.receipt{margin-top:12px;background:#1f9d58;color:white}.revolutSteps{margin:12px 0 13px;padding-left:21px;color:#3b5446;font-size:13px;line-height:1.65}.revolutSteps li{padding:1px 0}.revolutFields{margin-top:14px}.transferCopy{margin-top:13px}.copyTransferButton{display:block;width:100%;background:#176744;color:white;border:0;border-radius:13px;padding:13px 15px;font:inherit;font-size:14px;font-weight:850;cursor:pointer}.copyTransferButton:focus-visible{outline:3px solid #399b6d;outline-offset:3px}.copyNotice{display:block;min-height:18px;margin-top:6px;color:#35634a;font-size:12px;text-align:center}.lock,.footer{text-align:center;color:#64766c;font-size:12px;line-height:1.55}.lock{margin-top:12px}.footer{padding:18px 16px 0}
         @media(max-width:430px){.gvsPayWrap{padding:8px 8px 32px}.card{border-radius:18px}.hero h1{font-size:30px}.hero,.section{padding-left:17px;padding-right:17px}.numbers{grid-template-columns:1fr}.amount b{font-size:28px}}
       `}</style>
       <div className="brand"><img src="/logo.png" alt="GoVietStay" /><span>Trusted Local Support &bull; Vietnam</span></div>
       <article className="card">
         <header className="hero">
           <div className="safe"><span aria-hidden="true">&#128274;</span> Secure booking payment</div><h1>{title}</h1>
-          <p>{paid ? "This payment request has been marked as received." : active ? "Choose VietQR or international card payment below." : `This payment link is ${data.link.status}. Please contact GoVietStay for a new link.`}</p>
+          <p>{paid ? "This payment request has been marked as received." : active ? "Choose VietQR, Revolut bank transfer, or international PayPal/card payment below." : `This payment link is ${data.link.status}. Please contact GoVietStay for a new link.`}</p>
           <div className={`status ${paid ? "paid" : ""}`}>{String(data.link.status).toUpperCase()}</div>
         </header>
         <section className="section">
@@ -62,7 +63,40 @@ export default async function BookingPaymentPage({ params }: Props) {
             <div className="bank"><div><span>Account</span><b>{data.payment.bank_account_name}</b></div><div><span>Account no.</span><b>{data.payment.bank_account_no}</b></div><div><span>Transfer reference</span><b>{data.payment.transfer_reference}</b></div></div>
             <p className="hint">The QR already contains the requested amount and booking reference. Please do not change the reference.</p>
           </div>
-          {data.payment.paypal_url && <><div className="or">OR</div><a className="paypal" href={data.payment.paypal_url} target="_blank" rel="noopener noreferrer" aria-label="International payment by Visa or Mastercard"><span>International Payment&nbsp; &bull; &nbsp;Visa / Mastercard</span></a></>}
+          <div className="or">OR</div>
+          <div className="method">
+            <div className="methodTop">
+              <div><b>Revolut &bull; International bank transfer</b><span>For European and other eligible Revolut customers</span></div>
+              <div className="pill">VND to MB Bank</div>
+            </div>
+            <ol className="revolutSteps">
+              <li>Open your Revolut app and select a bank transfer to Vietnam (if available for your account).</li>
+              <li>Enter the recipient details below and select VND when offered.</li>
+              <li>Send exactly <strong>{money(data.link.amount_vnd)}</strong> to the recipient. Review any exchange rate and sending fees before confirming.</li>
+              <li>Use the booking reference exactly as shown, then send your transfer confirmation to GoVietStay.</li>
+            </ol>
+            <div className="bank revolutFields">
+              <div><span>Recipient / Beneficiary name</span><b>{data.payment.bank_account_name}</b></div>
+              <div><span>Bank</span><b>MB Bank (Military Commercial Joint Stock Bank)</b></div>
+              <div><span>Account number</span><b>{data.payment.bank_account_no}</b></div>
+              <div><span>SWIFT / BIC (if requested)</span><b>MSCBVNVX</b></div>
+              <div><span>Beneficiary address line 1 (if requested)</span><b>01 Le Thanh Nghi Street</b></div>
+              <div><span>Address line 2</span><b>Leave blank</b></div>
+              <div><span>Postcode / ZIP</span><b>50000</b></div>
+              <div><span>City / Region / Country</span><b>Da Nang / Da Nang / Vietnam</b></div>
+              <div><span>Currency</span><b>VND (Vietnamese Dong)</b></div>
+              <div><span>Amount to recipient</span><b>{money(data.link.amount_vnd)}</b></div>
+              <div><span>Transfer reference / Booking code</span><b>{data.payment.transfer_reference}</b></div>
+            </div>
+            <CopyTransferDetails
+              beneficiary={data.payment.bank_account_name}
+              accountNumber={data.payment.bank_account_no}
+              amountVnd={data.link.amount_vnd}
+              reference={data.payment.transfer_reference}
+            />
+            <p className="hint">Revolut transfer availability, fees, exchange rates and delivery time vary by sender and route. This is a bank transfer, not a Revolut checkout. Sending a receipt does not automatically confirm payment; GoVietStay verifies funds received before updating your booking.</p>
+          </div>
+          {data.payment.paypal_url && <><div className="or">OR</div><a className="paypal" href={data.payment.paypal_url} target="_blank" rel="noopener noreferrer" aria-label="International payment by Visa or Mastercard"><span>PayPal / International Card Payment</span></a></>}
           {data.payment.whatsapp_receipt_url && <a className="receipt" href={data.payment.whatsapp_receipt_url} target="_blank" rel="noopener noreferrer">I have paid &mdash; send receipt on WhatsApp</a>}
           <div className="lock"><span aria-hidden="true">&#128272;</span> GoVietStay never asks for passwords, card PINs or OTP codes.</div>
         </section>}
