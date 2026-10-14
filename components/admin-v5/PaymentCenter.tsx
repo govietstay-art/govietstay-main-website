@@ -337,7 +337,7 @@ export default function PaymentCenter() {
       serviceName(b),
       `Amount requested: ${money(link.amount_vnd)}`,
       paymentUrl(link),
-      "You can pay by VietQR or PayPal. Please send us the receipt after payment.",
+      "You can pay by VietQR, Revolut bank transfer to MB Bank, or PayPal/card. Please send us the receipt after payment.",
     ].join("\n");
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
   }
@@ -349,8 +349,8 @@ export default function PaymentCenter() {
     if (raw === null) return;
     const amount = numberOnly(raw);
     if (amount <= 0 || amount > balance(b)) return setError("Số tiền nhận không hợp lệ hoặc lớn hơn balance.");
-    const methodRaw = (window.prompt("Method: vietqr / paypal / bank_transfer / cash / card / other", "vietqr") || "other").trim().toLowerCase();
-    const methods = ["vietqr", "paypal", "bank_transfer", "cash", "card", "other"];
+    const methodRaw = (window.prompt("Method: vietqr / revolut / paypal / bank_transfer / cash / card / other", "vietqr") || "other").trim().toLowerCase();
+    const methods = ["vietqr", "revolut", "paypal", "bank_transfer", "cash", "card", "other"];
     const method = methods.includes(methodRaw) ? methodRaw : "other";
     const reference = window.prompt("Transaction ID / Reference (không bắt buộc):", "") || "";
     if (!window.confirm(`Xác nhận GoVietStay đã THỰC SỰ nhận ${money(amount)}?`)) return;
