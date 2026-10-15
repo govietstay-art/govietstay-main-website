@@ -295,7 +295,7 @@ export default function VisaPage() {
           </div>
 
           <div className="mt-12 grid gap-7 lg:grid-cols-2">
-            <PriceTable title="Hanoi" code="HAN" subtitle="USD per person · Single entry / Multiple entry. 1-hour and 2-hour options are offered only through Hanoi processing, subject to confirmation." rows={urgentHan} />
+            <PriceTable title="Hanoi" code="HAN" subtitle="USD per person · Single entry / Multiple entry. Processing options and timing are confirmed for each individual case." rows={urgentHan} />
             <PriceTable title="Ho Chi Minh City" code="SGN" subtitle="USD per person · Single entry / Multiple entry. Available from 4-hour processing, subject to confirmation." rows={urgentSgn} />
           </div>
 
