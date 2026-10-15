@@ -16,7 +16,7 @@ const questions = [
   },
   {
     question: "How much does a 2-hour urgent Vietnam e-visa service cost?",
-    answer: `GoVietStay's current two-hour Hanoi handling option is US$${urgent2Single} for single-entry or US$${urgent2Multiple} for multiple-entry, including the government fee and assistance. This is an urgent service request, not a guarantee of approval or a fixed delivery deadline. Our team must check working hours and your existing application before accepting a case.`,
+    answer: `GoVietStay's current two-hour urgent processing option is US$${urgent2Single} for single-entry or US$${urgent2Multiple} for multiple-entry, including the government fee and assistance. This is an urgent service request, not a guarantee of approval or a fixed delivery deadline. Our team must check working hours and your existing application before accepting a case.`,
   },
   {
     question: "What is included in GoVietStay visa assistance?",
