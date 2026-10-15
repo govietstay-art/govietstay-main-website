@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import VisaPlanner from "./VisaPlanner";
+import VisaQuickQuote from "./VisaQuickQuote";
 import VisaTrustStories from "./VisaTrustStories";
 import { fastTrackPrices, urgentPrices } from "./prices";
 
@@ -136,7 +137,7 @@ export default function VisaPage() {
             </p>
 
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <a href="#plan-visa" className="rounded-full bg-[#d9ad3d] px-8 py-4 text-center text-base font-black text-[#06251b] shadow-xl shadow-black/20 transition hover:-translate-y-0.5 hover:bg-[#f1ca5f]">
+              <a href="#quick-visa-check" className="rounded-full bg-[#d9ad3d] px-8 py-4 text-center text-base font-black text-[#06251b] shadow-xl shadow-black/20 transition hover:-translate-y-0.5 hover:bg-[#f1ca5f]">
                 Plan My Visa
               </a>
               <a href="#prices" className="rounded-full border border-white/25 bg-white/5 px-8 py-4 text-center text-base font-bold text-white backdrop-blur transition hover:bg-white/12">
@@ -208,6 +209,8 @@ export default function VisaPage() {
       </section>
 
       <VisaTrustStories />
+
+      <VisaQuickQuote />
 
       <VisaPlanner />
 
