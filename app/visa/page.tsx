@@ -4,7 +4,7 @@ import Image from "next/image";
 import VisaPlanner from "./VisaPlanner";
 import VisaQuickQuote from "./VisaQuickQuote";
 import VisaTrustStories from "./VisaTrustStories";
-import { fastTrackPrices, urgentPrices } from "./prices";
+import { fastTrackPrices, urgentPrices, getVisaPrice } from "./prices";
 
 export const metadata: Metadata = {
   title: "Vietnam Visa Assistance",
@@ -36,20 +36,20 @@ const fastTrackAirports = [
 const standardVisas = [
   {
     title: "3-Month Single Entry",
-    price: "US$37",
+    price: "US$47",
     description: "For one entry into Vietnam within the approved visa period.",
-    href: "https://wa.me/84937762607?text=Hello%20GoVietStay%2C%20I%20would%20like%20to%20apply%20for%20a%203-month%20single-entry%20Vietnam%20e-Visa%20%28US%2437%29.%20My%20nationality%20is%3A%20____.%20My%20expected%20arrival%20date%20is%3A%20____.",
+    href: "https://wa.me/84937762607?text=Hello%20GoVietStay%2C%20I%20would%20like%20to%20apply%20for%20a%203-month%20single-entry%20Vietnam%20e-Visa%20%28US%2447%29.%20My%20nationality%20is%3A%20____.%20My%20expected%20arrival%20date%20is%3A%20____.",
   },
   {
     title: "3-Month Multiple Entry",
-    price: "US$62",
+    price: "US$66",
     description: "For travelers who need to enter Vietnam more than once.",
-    href: "https://wa.me/84937762607?text=Hello%20GoVietStay%2C%20I%20would%20like%20to%20apply%20for%20a%203-month%20multiple-entry%20Vietnam%20e-Visa%20%28US%2462%29.%20My%20nationality%20is%3A%20____.%20My%20expected%20arrival%20date%20is%3A%20____.",
+    href: "https://wa.me/84937762607?text=Hello%20GoVietStay%2C%20I%20would%20like%20to%20apply%20for%20a%203-month%20multiple-entry%20Vietnam%20e-Visa%20%28US%2466%29.%20My%20nationality%20is%3A%20____.%20My%20expected%20arrival%20date%20is%3A%20____.",
   },
 ];
 
-const urgentHan = urgentPrices.HAN.map(({ label, price }) => [label, `US$${price}`]);
-const urgentSgn = urgentPrices.SGN.map(({ label, price }) => [label, `US$${price}`]);
+const urgentHan = urgentPrices.HAN.map(({ label }) => [label, `US${getVisaPrice("single", "HAN", label)} / US${getVisaPrice("multiple", "HAN", label)}`]);
+const urgentSgn = urgentPrices.SGN.map(({ label }) => [label, `US${getVisaPrice("single", "SGN", label)} / US${getVisaPrice("multiple", "SGN", label)}`]);
 
 function Logo({ className = "" }: { className?: string }) {
   return <img src="/ar-assets/logo.webp" alt="GoVietStay" className={className} />;
@@ -165,8 +165,8 @@ export default function VisaPage() {
 
               <div className="mt-7 grid gap-3">
                 {[
-                  ["Standard e-Visa", "From US$37", "5–6 working days"],
-                  ["Urgent Visa Support", "From +US$24", "1 hour to 4 days"],
+                  ["Standard e-Visa", "From US$47", "5–6 working days"],
+                  ["Urgent Visa Support", "From +US$14", "1 hour to 4 days"],
                   ["Airport Fast Track", "From US$18", "Arrival assistance"],
                 ].map(([label, value, meta]) => (
                   <div key={label} className="flex items-center justify-between gap-4 rounded-2xl border border-white/12 bg-white/[0.07] px-5 py-4">
@@ -278,13 +278,13 @@ export default function VisaPage() {
             <p className="text-sm font-black uppercase tracking-[0.28em] text-[#0b6b4f]">Urgent Processing</p>
             <h2 className="mt-4 text-4xl font-black md:text-6xl">Need Your Visa Faster?</h2>
             <p className="mt-5 text-lg leading-8 text-[#06251b]/62">
-              These are urgent processing add-ons per applicant, in addition to the e-Visa assistance price above. Contact us before payment so our team can confirm nationality, timing and the correct processing location.
+              Prices below are estimated all-inclusive totals per person (single entry / multiple entry), including the government fee and GoVietStay visa assistance. Processing availability, the appropriate location and the final timing are confirmed for each case before payment.
             </p>
           </div>
 
           <div className="mt-12 grid gap-7 lg:grid-cols-2">
-            <PriceTable title="Hanoi" code="HAN" subtitle="1-hour and 2-hour options are available only through Hanoi processing." rows={urgentHan} />
-            <PriceTable title="Ho Chi Minh City" code="SGN" subtitle="Available from 4-hour processing." rows={urgentSgn} />
+            <PriceTable title="Hanoi" code="HAN" subtitle="USD per person · Single entry / Multiple entry. 1-hour and 2-hour options are offered only through Hanoi processing, subject to confirmation." rows={urgentHan} />
+            <PriceTable title="Ho Chi Minh City" code="SGN" subtitle="USD per person · Single entry / Multiple entry. Available from 4-hour processing, subject to confirmation." rows={urgentSgn} />
           </div>
 
           <div className="mt-10 text-center">
@@ -414,7 +414,7 @@ export default function VisaPage() {
           <a href={WA_GENERAL} target="_blank" rel="noreferrer" className="mt-8 rounded-full bg-[#d9ad3d] px-8 py-4 font-black text-[#06251b] transition hover:bg-[#f1ca5f]">
             WhatsApp +84 937 762 607
           </a>
-          <p className="mt-7 text-sm font-semibold text-white/38">GoVietStay.com · Da Nang · Hoi An · Hue</p>
+          <p className="mt-7 text-sm font-semibold text-white/38">GoVietStay.com · Da Nang · Hoi An · Hue · Phu Quoc</p>
         </div>
       </section>
     </main>
