@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { fastTrackPrices, urgentPrices } from "./prices";
+import { fastTrackPrices, urgentPrices, getVisaPrice } from "./prices";
 import PublicInquiryForm from "../../components/PublicInquiryForm";
 
 const field = "w-full rounded-xl border border-[#0b6b4f]/20 bg-white px-4 py-3 text-base text-[#06251b] outline-none focus:border-[#0b6b4f] focus:ring-2 focus:ring-[#0b6b4f]/15";
@@ -31,9 +31,11 @@ export default function VisaPlanner() {
 
   const options = urgentPrices[location];
   const urgent = options.find((option) => option.label === speed);
-  const visaPrice = entryType === "single" ? 37 : 62;
+  const visaPrice = getVisaPrice(entryType, location, "standard");
+  const quotedVisaPrice = getVisaPrice(entryType, location, speed);
+  const urgentAddOn = quotedVisaPrice - visaPrice;
   const fastTrackPrice = fastTrack && fastTrackAirport ? fastTrackPrices[fastTrackAirport] : 0;
-  const perPerson = visaPrice + (urgent?.price ?? 0) + fastTrackPrice;
+  const perPerson = quotedVisaPrice + fastTrackPrice;
   const total = perPerson * travelers;
   const entry = entryDate && entryTime ? new Date(`${entryDate}T${entryTime}:00+07:00`) : null;
   const hoursToEntry = entry && !Number.isNaN(entry.getTime()) ? Math.ceil((entry.getTime() - Date.now()) / 3600000) : null;
@@ -105,10 +107,10 @@ export default function VisaPlanner() {
 
             <h3 className="mt-9 text-xl font-black">2. Choose the service</h3>
             <div className="mt-5 grid gap-5 sm:grid-cols-2">
-              <div><label className={label} htmlFor="visa-type">Entry type</label><select id="visa-type" className={field} value={entryType} onChange={(e) => setEntryType(e.target.value as "single" | "multiple")}><option value="single">Single entry · US$37</option><option value="multiple">Multiple entry · US$62</option></select></div>
+              <div><label className={label} htmlFor="visa-type">Entry type</label><select id="visa-type" className={field} value={entryType} onChange={(e) => setEntryType(e.target.value as "single" | "multiple")}><option value="single">Single entry · US${getVisaPrice("single", location, "standard")}</option><option value="multiple">Multiple entry · US${getVisaPrice("multiple", location, "standard")}</option></select></div>
               <div><label className={label} htmlFor="visa-status">Current application status</label><select id="visa-status" className={field} value={applicationStatus} onChange={(e) => setApplicationStatus(e.target.value)}><option value="new">New application</option><option value="pending">Already submitted, pending</option><option value="issue">Submitted, correction / issue</option></select></div>
               <div><label className={label} htmlFor="visa-location">Urgent processing location</label><select id="visa-location" className={field} value={location} onChange={(e) => { setLocation(e.target.value as "HAN" | "SGN"); setSpeed("standard"); }}><option value="HAN">Hanoi (HAN)</option><option value="SGN">Ho Chi Minh City (SGN)</option></select></div>
-              <div><label className={label} htmlFor="visa-speed">Processing request</label><select id="visa-speed" className={field} value={speed} onChange={(e) => setSpeed(e.target.value)}><option value="standard">Standard · no urgent surcharge</option>{options.map((option) => <option key={option.label} value={option.label}>{option.label} · +US${option.price} per person</option>)}</select></div>
+              <div><label className={label} htmlFor="visa-speed">Processing request</label><select id="visa-speed" className={field} value={speed} onChange={(e) => setSpeed(e.target.value)}><option value="standard">Standard · no urgent surcharge</option>{options.map((option) => <option key={option.label} value={option.label}>{option.label} · US${getVisaPrice(entryType, location, option.label)} total per person</option>)}</select></div>
             </div>
             <label className="mt-6 flex cursor-pointer items-center gap-3 text-base font-semibold"><input type="checkbox" className="h-5 w-5 accent-[#0b6b4f]" checked={fastTrack} onChange={(e) => setFastTrack(e.target.checked)} /> Add airport fast track (HAN/DAD US$18 · SGN US$22 per person)</label>
             {fastTrack && <div className="mt-4 max-w-sm"><label className={label} htmlFor="fast-track-airport">Fast track arrival airport *</label><select id="fast-track-airport" className={field} value={fastTrackAirport} onChange={(e) => setFastTrackAirport(e.target.value as "" | keyof typeof fastTrackPrices)}><option value="">Choose an airport</option><option value="HAN">Hanoi (HAN) · US$18</option><option value="DAD">Da Nang (DAD) · US$18</option><option value="SGN">Ho Chi Minh City (SGN) · US$22</option></select></div>}
@@ -121,7 +123,7 @@ export default function VisaPlanner() {
             <p className="mt-2 text-sm text-white/65">{applicationStatus === "new" ? `US$${perPerson} per applicant × ${travelers}` : "An existing application needs an individual quote."}</p>
             <div className="mt-6 space-y-3 border-t border-white/20 pt-5 text-sm">
               <div className="flex justify-between gap-3"><span>e-Visa assistance</span><strong>US${visaPrice * travelers}</strong></div>
-              {urgent && <div className="flex justify-between gap-3"><span>Urgent request ({location}, {speed})</span><strong>US${urgent.price * travelers}</strong></div>}
+              {urgent && <div className="flex justify-between gap-3"><span>Urgent request ({location}, {speed})</span><strong>US${urgentAddOn * travelers}</strong></div>}
               {fastTrack && <div className="flex justify-between gap-3"><span>Airport fast track {fastTrackAirport ? `(${fastTrackAirport})` : "(select airport)"}</span><strong>{fastTrackAirport ? `US$${fastTrackPrice * travelers}` : "—"}</strong></div>}
             </div>
             {hoursToEntry !== null && <p className={`mt-6 rounded-xl p-4 text-sm leading-6 ${closeToTravel ? "bg-[#f4d77a] text-[#06251b]" : "bg-white/10 text-white"}`}>{hoursToEntry <= 0 ? "The selected arrival time has passed. Please update it." : `About ${hoursToEntry} hours until your expected arrival in Vietnam.`} {closeToTravel && hoursToEntry > 0 ? "Your trip is close. Send your flight departure details now so we can check what is still possible." : "Processing is counted during applicable working hours; this is not a visa delivery estimate."}</p>}
