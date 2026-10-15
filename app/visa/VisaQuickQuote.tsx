@@ -66,7 +66,7 @@ const speeds = [
   { id: "2 hours", key: "hours2" }, { id: "1 hour", key: "hour1" },
 ] as const;
 
-export default function VisaQuickQuote({ language = "en" }: { language?: Language }) {
+export default function VisaQuickQuote({ language = "en", showDetailedFormLink = true }: { language?: Language; showDetailedFormLink?: boolean }) {
   const t = translations[language];
   const [country, setCountry] = useState("");
   const [stay, setStay] = useState(30);
@@ -178,7 +178,7 @@ export default function VisaQuickQuote({ language = "en" }: { language?: Languag
             {exemption ? t.checkFree : t.action} <span aria-hidden="true" className="ml-2">→</span>
           </a>
           <p className="mt-3 text-center text-sm text-white/70">{t.note}</p>
-          <a href="#plan-visa" className="mt-3 block text-center text-sm font-bold text-[#f0c75a] underline underline-offset-4">{t.form}</a>
+          {showDetailedFormLink && <a href="#plan-visa" onClick={() => document.getElementById("plan-visa")?.setAttribute("open", "")} className="mt-3 block text-center text-sm font-bold text-[#f0c75a] underline underline-offset-4">{t.form}</a>}
           <p className="mt-5 text-xs leading-6 text-white/55">{t.priceNote}</p>
           <p className="mt-2 text-xs leading-5 text-white/55">Sources: <a href="https://evisa.gov.vn" target="_blank" rel="noreferrer" className="underline">Vietnam Immigration</a> · <a href="https://vnembassy-bruxelles.mofa.gov.vn/vi/tin-chi-tiet/chi-tiet/thong-bao-ve-nghi-quyet-cua-chinh-phu-ve-viec-mien-thi-thuc-theo-chuong-trinh-kich-cau-phat-trien-du-lich-59009-1353.html" target="_blank" rel="noreferrer" className="underline">visa exemption policy</a></p>
         </div>
