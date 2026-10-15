@@ -9,6 +9,8 @@ const regionCodes = `AD AE AF AG AI AL AM AO AQ AR AS AT AU AW AX AZ BA BB BD BE
 
 const broadExemption = new Set(["DE", "FR", "IT", "ES", "GB", "RU", "JP", "KR", "DK", "SE", "NO", "FI"]);
 const tourismExemption = new Set(["BE", "BG", "HR", "CZ", "HU", "LU", "NL", "PL", "RO", "SK", "SI", "CH"]);
+// Other published bilateral visa-free stays for ordinary passports. Conditions and dates still require individual verification.
+const bilateralVisaFreeDays: Record<string, number> = { BY: 30, KZ: 30, KG: 30, KH: 30, LA: 30, MY: 30, ID: 30, SG: 30, TH: 30, MM: 30, MN: 30, BN: 14, PH: 21, CL: 90, PA: 90 };
 
 const translations = {
   en: {
@@ -79,7 +81,8 @@ export default function VisaQuickQuote({ language = "en", showDetailedFormLink =
     return regionCodes.map(code => ({ code, name: display.of(code) || code }))
       .sort((a, b) => a.name.localeCompare(b.name, language));
   }, [language]);
-  const exemption = stay <= 45 ? (broadExemption.has(country) ? "broad" : tourismExemption.has(country) ? "tourism" : null) : null;
+  const bilateralDays = bilateralVisaFreeDays[country] || 0;
+  const exemption = country && stay <= 45 && broadExemption.has(country) ? "broad" : country && stay <= 45 && tourismExemption.has(country) ? "tourism" : country && bilateralDays >= stay ? "bilateral" : null;
   const option = urgentPrices.HAN.find(value => value.label === speed);
   const government = entry === "single" ? 25 : 50;
   const service = 12;
@@ -152,7 +155,7 @@ export default function VisaQuickQuote({ language = "en", showDetailedFormLink =
         {exemption && country ? (
           <div role="status" className="mx-5 mb-6 rounded-2xl border border-[#b0d5be] bg-[#edf8f0] px-6 py-6 text-[#0e4c2c] md:mx-10">
             <h3 className="text-xl font-black">{t.exemptionTitle}</h3>
-            <p className="mt-2 leading-7">{exemption === "broad" ? t.exemptionBroad : t.exemptionTourism}</p>
+            <p className="mt-2 leading-7">{exemption === "broad" ? t.exemptionBroad : exemption === "tourism" ? t.exemptionTourism : `${name}: ${bilateralDays} days visa-free for eligible ordinary-passport holders. Conditions and travel dates must be checked.`}</p>
             <p className="mt-2 text-sm opacity-80">{t.exemptionNote}</p>
           </div>
         ) : null}
