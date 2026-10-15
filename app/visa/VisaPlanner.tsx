@@ -77,7 +77,7 @@ export default function VisaPlanner() {
   ].join("\n");
 
   return (
-    <section id="plan-visa" className="bg-[#f7f1df] py-16 md:py-24">
+    <section id="visa-detailed-fields" className="bg-[#f7f1df] py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <p className="text-sm font-black uppercase tracking-[0.25em] text-[#0b6b4f]">Plan your application</p>
         <h2 className="mt-3 text-3xl font-black md:text-5xl">Your travel details & estimated cost</h2>
