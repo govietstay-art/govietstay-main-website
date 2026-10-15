@@ -208,11 +208,14 @@ export default function VisaPage() {
         </div>
       </section>
 
-      <VisaTrustStories />
-
       <VisaQuickQuote />
 
-      <VisaPlanner />
+      <VisaTrustStories />
+
+      <details id="plan-visa" className="group mx-auto max-w-7xl scroll-mt-24 px-5 py-10 md:px-8">
+        <summary className="cursor-pointer rounded-2xl border border-[#0b6b4f]/20 bg-white px-6 py-5 text-lg font-bold text-[#0b6b4f] shadow-sm marker:text-[#0b6b4f]">Optional: detailed visa request form</summary>
+        <VisaPlanner />
+      </details>
 
       <section className="bg-white py-16 md:py-24" id="visa-documents">
         <div className="mx-auto grid max-w-7xl gap-10 px-5 md:px-8 lg:grid-cols-[.7fr_1fr] lg:items-start">
