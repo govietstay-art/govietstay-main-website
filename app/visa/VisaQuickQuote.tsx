@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { urgentPrices } from "./prices";
+import { getVisaPrice } from "./prices";
 
 type Language = "en" | "tr" | "pl" | "nl" | "ro" | "uk";
 
@@ -83,11 +83,9 @@ export default function VisaQuickQuote({ language = "en", showDetailedFormLink =
   }, [language]);
   const bilateralDays = bilateralVisaFreeDays[country] || 0;
   const exemption = country && stay <= 45 && broadExemption.has(country) ? "broad" : country && stay <= 45 && tourismExemption.has(country) ? "tourism" : country && bilateralDays >= stay ? "bilateral" : null;
-  const option = urgentPrices.HAN.find(value => value.label === speed);
-  const government = entry === "single" ? 25 : 50;
-  const service = 12;
-  const urgency = option?.price ?? 0;
-  const each = government + service + urgency;
+  // A single retail price table drives the selector, the detailed form and every language.
+  const urgency = speed === "standard" ? 0 : 1;
+  const each = getVisaPrice(entry, "HAN", speed);
   const total = each * travelers;
   const name = countries.find(c => c.code === country)?.name || country;
 
