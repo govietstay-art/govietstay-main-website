@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import VisaPlanner from "./VisaPlanner";
+import VisaHelpGuide from "./VisaHelpGuide";
 import VisaQuickQuote from "./VisaQuickQuote";
 import VisaTrustStories from "./VisaTrustStories";
 import { fastTrackPrices, urgentPrices, getVisaPrice } from "./prices";
@@ -10,7 +11,18 @@ export const metadata: Metadata = {
   title: "Vietnam Visa Assistance",
   description:
     "Vietnam e-Visa and urgent visa assistance from GoVietStay. Real traveler stories, personal support during stressful airport moments and clear next steps.",
-  alternates: { canonical: "https://www.govietstay.com/visa" },
+  alternates: {
+    canonical: "https://www.govietstay.com/visa",
+    languages: {
+      en: "https://www.govietstay.com/visa",
+      "tr-TR": "https://www.govietstay.com/tr/visa",
+      "pl-PL": "https://www.govietstay.com/pl/visa",
+      "nl-NL": "https://www.govietstay.com/nl/visa",
+      "ro-RO": "https://www.govietstay.com/ro/visa",
+      "uk-UA": "https://www.govietstay.com/uk/visa",
+      "x-default": "https://www.govietstay.com/visa",
+    },
+  },
   openGraph: {
     title: "Vietnam Visa Assistance | GoVietStay",
     description:
@@ -319,6 +331,8 @@ export default function VisaPage() {
           </div>
         </div>
       </section>
+
+      <VisaHelpGuide />
 
       <section className="bg-[#efe5c8] py-20 md:py-24">
         <div className="mx-auto grid max-w-7xl gap-8 px-5 md:px-8 lg:grid-cols-2">
