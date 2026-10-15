@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import VisaPlanner from "./VisaPlanner";
+import VisaQuickQuote from "./VisaQuickQuote";
 import VisaTrustStories from "./VisaTrustStories";
 import { fastTrackPrices, urgentPrices } from "./prices";
 
@@ -136,7 +137,7 @@ export default function VisaPage() {
             </p>
 
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <a href="#plan-visa" className="rounded-full bg-[#d9ad3d] px-8 py-4 text-center text-base font-black text-[#06251b] shadow-xl shadow-black/20 transition hover:-translate-y-0.5 hover:bg-[#f1ca5f]">
+              <a href="#quick-visa-check" className="rounded-full bg-[#d9ad3d] px-8 py-4 text-center text-base font-black text-[#06251b] shadow-xl shadow-black/20 transition hover:-translate-y-0.5 hover:bg-[#f1ca5f]">
                 Plan My Visa
               </a>
               <a href="#prices" className="rounded-full border border-white/25 bg-white/5 px-8 py-4 text-center text-base font-bold text-white backdrop-blur transition hover:bg-white/12">
@@ -207,9 +208,14 @@ export default function VisaPage() {
         </div>
       </section>
 
+      <VisaQuickQuote />
+
       <VisaTrustStories />
 
-      <VisaPlanner />
+      <details id="plan-visa" className="group mx-auto max-w-7xl scroll-mt-24 px-5 py-10 md:px-8">
+        <summary className="cursor-pointer rounded-2xl border border-[#0b6b4f]/20 bg-white px-6 py-5 text-lg font-bold text-[#0b6b4f] shadow-sm marker:text-[#0b6b4f]">Optional: detailed visa request form</summary>
+        <VisaPlanner />
+      </details>
 
       <section className="bg-white py-16 md:py-24" id="visa-documents">
         <div className="mx-auto grid max-w-7xl gap-10 px-5 md:px-8 lg:grid-cols-[.7fr_1fr] lg:items-start">
