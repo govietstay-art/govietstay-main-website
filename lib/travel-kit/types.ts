@@ -1,0 +1,259 @@
+export const LANGS = ["en", "ru", "it"] as const;
+export type Lang = (typeof LANGS)[number];
+
+export const CITY_IDS = ["danang", "hoian", "hue", "phuquoc"] as const;
+export type CityId = (typeof CITY_IDS)[number];
+
+export const SCENARIO_IDS = ["landed", "rain", "evening"] as const;
+export type ScenarioId = (typeof SCENARIO_IDS)[number];
+
+export const UTILITY_IDS = ["esim", "arrival", "currency", "phrases", "weather", "safety"] as const;
+export type UtilityId = (typeof UTILITY_IDS)[number];
+
+export const CURRENCIES = ["VND", "USD", "EUR", "RUB"] as const;
+export type Currency = (typeof CURRENCIES)[number];
+
+export const SKY_IDS = ["clear", "bright", "hazy", "sunny", "rain", "showers", "humid", "warm", "still"] as const;
+export type SkyId = (typeof SKY_IDS)[number];
+
+export type DayPeriod = "morning" | "afternoon" | "evening";
+
+export type Dictionary = {
+  meta: { title: string; description: string };
+  productName: string;
+  skip: string;
+  greeting: Record<DayPeriod, string>;
+  langLabel: string;
+  languageName: Record<Lang, string>;
+  cityLabel: string;
+  cities: Record<CityId, string>;
+  sample: string;
+  scenarioHint: string;
+  scenarios: Record<ScenarioId, string>;
+  todayLabel: string;
+  today: Record<CityId, Record<ScenarioId, { title: string; body: string; cta: string }>>;
+  sky: Record<SkyId, string>;
+  photoAlt: Record<CityId, Record<ScenarioId, string>>;
+  utilitiesLabel: string;
+  utilities: Record<UtilityId, { title: string; glance: string }>;
+  faqTitle: string;
+  faq: { q: string; a: string }[];
+  supportTitle: string;
+  supportHint: string;
+  supportMessage: string;
+  close: string;
+  back: string;
+  esimLead: string;
+  esimFacts: string[];
+  esimButton: string;
+  esimFoot: string;
+  esimMessage: string;
+  arrivalLead: string;
+  arrivalNote: Record<CityId, string>;
+  airportCaption: string;
+  checklist: string[];
+  progress: string;
+  currencyLead: string;
+  amountLabel: string;
+  fromLabel: string;
+  toLabel: string;
+  swap: string;
+  resultLabel: string;
+  emptyAmount: string;
+  currencyName: Record<Currency, string>;
+  rateFoot: string;
+  payNote: string;
+  phrasesLead: string;
+  phraseMeaning: string[];
+  showLarge: string;
+  allPhrases: string;
+  showThis: string;
+  activitiesLead: string;
+  activitiesFoot: string;
+  activities: Record<CityId, { title: string; detail: string }[]>;
+  safetyLead: string;
+  emergencyName: string[];
+  emergencyDetail: string[];
+  safetyFoot: string;
+  driverTitle: string;
+  driverHint: string;
+  driverMeaning: Record<CityId, string>;
+  copyAddress: string;
+  copied: string;
+  copyFailed: string;
+};
+
+export const UTILITY_SLUGS = ["esim", "arrival", "money", "phrases", "weather", "safety", "packing"] as const;
+export const GUIDE_SLUGS = ["da-nang", "hoi-an", "hue", "phu-quoc"] as const;
+export const HUB_SLUGS = ["explore", "tools", "trip"] as const;
+export const TOOL_SLUGS = [...UTILITY_SLUGS, ...GUIDE_SLUGS, ...HUB_SLUGS] as const;
+export type ToolSlug = (typeof TOOL_SLUGS)[number];
+export type GuideSlug = (typeof GUIDE_SLUGS)[number];
+
+export const WEATHER_KINDS = ["clear", "cloud", "fog", "drizzle", "rain", "showers", "thunder"] as const;
+export type WeatherKind = (typeof WEATHER_KINDS)[number];
+
+export type MomentId = "day" | "evening" | "rain";
+
+export type TextBlock = { title: string; paragraphs: string[] };
+export type FaqItem = { q: string; a: string };
+
+export type CityGuideCopy = {
+  kicker: string;
+  title: string;
+  lede: string;
+  blocks: TextBlock[];
+  faq: FaqItem[];
+  elsewhere: string;
+  links: { href: string; label: string }[];
+};
+
+export type SituationCopy = { title: string; body: string; tool: ToolSlug };
+
+export type KitCopy = {
+  meta: { title: string; description: string };
+  pageMeta: Record<ToolSlug, { title: string; description: string }>;
+  brand: string;
+  logoAlt: string;
+  mainSiteHint: string;
+  kitHomeLabel: string;
+  navLabel: string;
+  nav: { home: string; explore: string; tools: string; trip: string };
+  trust: string;
+  skip: string;
+  back: string;
+  homeLabel: string;
+  langLabel: string;
+  languageName: Record<Lang, string>;
+  cityLabel: string;
+  cityOpen: string;
+  cityClose: string;
+  cities: Record<CityId, string>;
+  portalTitle: string;
+  portalLede: string;
+  situationLabel: string;
+  situations: SituationCopy[];
+  destinationLabel: string;
+  supportBlockTitle: string;
+  supportBlockBody: string;
+  supportTitle: string;
+  supportHint: string;
+  supportMessage: string;
+  nowKicker: string;
+  weatherLoading: string;
+  weatherUnavailable: string;
+  weatherSaved: string;
+  weatherSource: string;
+  conditions: Record<WeatherKind, string>;
+  now: Record<CityId, Record<MomentId, { title: string; body: string; cta: string; tool: ToolSlug }>>;
+  giftKicker: string;
+  giftTitle: string;
+  giftBody: string;
+  giftCta: string;
+  toolsLabel: string;
+  tools: Record<ToolSlug, { title: string; glance: string }>;
+  guideNote: string;
+  cityGuide: string;
+  explorePage: { title: string; lede: string; mapTitle: string; mapBody: string };
+  toolsPage: { title: string; lede: string };
+  trip: {
+    title: string;
+    lede: string;
+    stored: string;
+    arrive: string;
+    leave: string;
+    notesTitle: string;
+    notesPlaceholder: string;
+    addNote: string;
+    removeNote: string;
+    esimTitle: string;
+    esimHint: string;
+    esimPlaceholder: string;
+    exportData: string;
+    clearData: string;
+    clearConfirm: string;
+    packingLink: string;
+    addressLink: string;
+    safetyLink: string;
+  };
+  photoAlt: Record<CityId, Record<ScenarioId, string>>;
+  esim: {
+    lead: string;
+    youGet: string[];
+    howTitle: string;
+    how: string[];
+    unknown: string;
+    button: string;
+    foot: string;
+    message: string;
+    faq: FaqItem[];
+  };
+  arrival: {
+    lead: string;
+    blocks: TextBlock[];
+    addressTitle: string;
+    addressHint: string;
+    addressPlaceholder: string;
+    addressShow: string;
+    addressEmpty: string;
+    addressClose: string;
+    checklistTitle: string;
+    checklist: string[];
+    progress: string;
+    storageNote: string;
+  };
+  money: {
+    lead: string;
+    amount: string;
+    from: string;
+    to: string;
+    swap: string;
+    result: string;
+    empty: string;
+    reference: string;
+    unavailable: string;
+    saved: string;
+    refresh: string;
+    sourceName: string;
+    currencyName: Record<Currency, string>;
+    blocks: TextBlock[];
+  };
+  phrases: {
+    lead: string;
+    show: string;
+    close: string;
+    honest: string;
+    items: { vi: string; meaning: string }[];
+  };
+  weatherPage: {
+    lead: string;
+    today: string;
+    ahead: string;
+    rainTitle: string;
+    rain: Record<CityId, { title: string; detail: string }[]>;
+    unavailable: string;
+    saved: string;
+    refresh: string;
+  };
+  safety: {
+    lead: string;
+    call: string;
+    numbers: { name: string; tel: string; detail: string }[];
+    foot: string;
+    blocks: TextBlock[];
+    faq: FaqItem[];
+  };
+  packing: {
+    lead: string;
+    progress: string;
+    storageNote: string;
+    items: { id: string; label: string; note?: string }[];
+  };
+  danang: CityGuideCopy;
+  hoian: CityGuideCopy;
+  hue: CityGuideCopy;
+  phuquoc: CityGuideCopy;
+  homeFaqTitle: string;
+  homeFaq: FaqItem[];
+  otherCities: string;
+};
