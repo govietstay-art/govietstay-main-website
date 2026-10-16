@@ -595,15 +595,15 @@ export default function PartnerTools({supabase,days}:any){
     </div>
 
     <div className="gva-card">
-      <div className="gva-section-head"><div><h2>Partner Deployment Center</h2><div className="gva-mini">V4.1 • Smart Background • một QR, nhiều bề mặt • A3/A4/A5 • xe • sticker • table stand • digital • SVG vector.</div></div><button type="button" className="gva-btn secondary" onClick={loadRows}>{loading?"Đang tải…":"Cập nhật"}</button></div>
+      <div className="gva-section-head"><div><h2>Partner Deployment Center · Commission 12%</h2><div className="gva-mini">V4.1 • Smart Background • một QR, nhiều bề mặt • A3/A4/A5 • xe • sticker • table stand • digital • SVG vector.</div></div><button type="button" className="gva-btn secondary" onClick={loadRows}>{loading?"Đang tải…":"Cập nhật"}</button></div>
       <div className="gva-table-wrap"><table className="gva-table">
-        <thead><tr><th>Partner</th><th>Terms</th><th>Traffic</th><th>Lead</th><th>Booking</th><th>PAX tháng</th><th>Basic</th><th>Commission</th><th>Total</th><th>QR / Kit</th><th>Portal</th></tr></thead>
+        <thead><tr><th>Partner</th><th>Terms</th><th>Traffic</th><th>Lead</th><th>Booking</th><th>PAX hoàn tất/tháng</th><th>Hoa hồng</th><th>Phí</th><th>Total</th><th>QR / Kit</th><th>Portal</th></tr></thead>
         <tbody>
         {rows.map(r=><tr key={r.partner_id}>
           <td><b>{r.partner_name}</b><br/><span className="gva-mini">{r.ref_code} · {r.market||"—"}</span></td>
           <td>{r.terms_accepted_at?<><span className="gva-pill">Accepted v{r.terms_version||"1.0"}</span><div className="gva-mini" style={{marginTop:5}}>{r.terms_accepted_name}<br/>{new Date(r.terms_accepted_at).toLocaleString("vi-VN")}</div></>:<span className="gva-pill" style={{background:"#fff3d8"}}>Pending acceptance</span>}</td>
           <td>{r.visits||0}<div className="gva-mini">{r.whatsapp_clicks||0} WA</div></td><td>{r.leads||0}</td><td><b>{r.bookings||0}</b></td><td><b>{r.month_pax||0}</b></td>
-          <td>{money(r.base_salary_vnd)}</td><td>{money(r.tour_commission_vnd)}</td><td><b>{money(r.total_earning_vnd)}</b></td>
+          <td><b>{money(r.tour_commission_vnd)}</b><div className="gva-mini">12% doanh thu đã chốt</div></td><td>0 ₫ (không lương cơ bản)</td><td><b>{money(r.total_earning_vnd)}</b></td>
           <td><PartnerQR row={r} onQr={(row,qr)=>setQrModal({row,qr})} onKit={(row,qr)=>openKit(row,qr,defaultPosterLang(row),"a4",null)} onMobile={(row,qr)=>setMobileModal({row,qr,lang:defaultPosterLang(row),poster:null})}/></td>
           <td><button className="gva-btn secondary" type="button" onClick={()=>window.open(dashboardUrl(r),"_blank","noopener,noreferrer")}>Mở portal</button><button className="gva-btn secondary" style={{marginTop:6}} type="button" onClick={()=>copy(dashboardUrl(r),"d"+r.partner_id)}>{copied==="d"+r.partner_id?"Đã copy ✓":"Copy portal"}</button>{r.landing_url&&<button className="gva-btn secondary" style={{marginTop:6}} type="button" onClick={()=>copy(r.landing_url!,"s"+r.partner_id)}>{copied==="s"+r.partner_id?"Đã copy ✓":"Copy sales link"}</button>}</td>
         </tr>)}
