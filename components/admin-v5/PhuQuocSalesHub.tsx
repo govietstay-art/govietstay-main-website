@@ -255,12 +255,12 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
     try {
       const code = bookingCode();
       const marker = [
-        "GVS_PQ_7PCT",
+        "GVS_PQ_12PCT",
         `PRODUCT=${selected.code}`,
         `COMMISSION_RATE=${PHU_QUOC_SALES_COMMISSION_RATE}`,
         `COMMISSION_BASE_VND=${netSelling}`,
         `COMMISSION_VND=${commission}`,
-        "BASE_SALARY_POLICY=UNCHANGED",
+        "BASE_SALARY_POLICY=NONE_FROM_2026_10_16",
         "SOURCE=ADMIN_PHU_QUOC_SALES",
       ].join(" | ");
 
@@ -290,8 +290,8 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
       if (error) throw error;
 
       setMessage(
-        `Đã tạo Pending Request ${code}. Hoa hồng Phú Quốc dự kiến ${money(commission)} = 7% giá bán thực thu. ` +
-        `Base salary không thay đổi. Owner vẫn duyệt ở Sales Team / Payroll trước khi vào Booking Master.`
+        `Đã tạo Pending Request ${code}. Hoa hồng dự kiến ${money(commission)} = 12% giá bán thực tế sau giảm giá. ` +
+        `Không có lương căn bản cho booking mới. Owner vẫn duyệt ở Sales Team / Payroll trước khi vào Booking Master.`
       );
 
       setGuestName("");
@@ -322,7 +322,7 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
     <div style={{ display: "grid", gap: 16 }}>
       <div className="gva-analytics-note">
         <b>Phú Quốc Sales Master:</b> 13 join-in tours + private quote programs. Commission mặc định
-        <b> 7% trên giá bán thực thu</b>. Base salary vẫn dùng khung lương hiện tại; không bị thay đổi bởi module này.
+        <b> 12% trên giá bán thực tế sau giảm giá</b> kể cả custom/private tours. Không có lương căn bản cho booking mới.
       </div>
 
       {error && <div className="gva-msg err">{error}</div>}
@@ -384,7 +384,7 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
             <div style={{ border: "1px solid #e4e7ec", borderRadius: 12, padding: 12, background: "#fcfcfd" }}>
               <div><b>Gross:</b> {money(gross)}</div>
               <div><b>Net selling after discount:</b> {money(netSelling)}</div>
-              <div style={{ marginTop: 5, color: "#067647" }}><b>Phú Quốc commission 7%:</b> {money(commission)}</div>
+              <div style={{ marginTop: 5, color: "#067647" }}><b>Phú Quốc commission 12%:</b> {money(commission)}</div>
               <div className="gva-mini">Commission is only earned after the booking is eligible/completed under the existing payroll controls.</div>
             </div>
 
@@ -534,7 +534,7 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
 
             <label><div className="gva-mini">Booking value để kiểm tra commission</div><input className="gva-input" type="number" min="0" value={partnerSale} onChange={(e) => setPartnerSale(Number(e.target.value || 0))} /></label>
             <div style={{ borderRadius: 12, padding: 12, background: "#eff8ff", color: "#175cd3" }}>
-              <b>Partner commission 7%:</b> {money(partnerCommission)}
+              <b>Partner commission 12%:</b> {money(partnerCommission)}
               <div className="gva-mini">Chỉ ghi nhận khi tour hoàn thành/đủ điều kiện theo Commission Master.</div>
             </div>
           </div>
@@ -566,7 +566,7 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
                   <td><b>{t.nameEn}</b><div className="gva-mini">{t.nameRu}</div></td>
                   <td>{t.quoteOnly ? "Quote" : money(t.adultVnd)}</td>
                   <td>{t.quoteOnly ? "Quote" : money(t.childVnd)}</td>
-                  <td><b>7%</b></td>
+                  <td><b>12%</b></td>
                   <td><span className="gva-pill">Staff</span> <span className="gva-pill">Partner QR</span> <span className="gva-pill">RU</span></td>
                 </tr>
               ))}
