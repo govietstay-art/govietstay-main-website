@@ -7,26 +7,9 @@ import PartnerBookingTools from "../../components/partner/PartnerBookingTools";
 const SUPABASE_URL="https://vscffgnxaexestnayvae.supabase.co";
 const SUPABASE_KEY="sb_publishable_BI1rIhiGB5cEUyJbnKGI5w_kCMI--oV";
 const supabase=createClient(SUPABASE_URL,SUPABASE_KEY);
-const TERMS_VERSION="1.0";
+const TERMS_VERSION="2.0";
 
 function money(v:any){return new Intl.NumberFormat("ru-RU").format(Number(v||0))+" ₫";}
-
-const salaryRows = [
-  ["0–9 PAX","0 ₫"],["10–19 PAX","0 ₫"],["20–29 PAX","2 000 000 ₫"],
-  ["30–39 PAX","3 000 000 ₫"],["40–50 PAX","4 000 000 ₫"],["51+ PAX","5 000 000 ₫"]
-];
-
-const commissionRows = [
-  ["Ba Na Hills","EN","1–9: 30k · 10–29: 40k · 30+: 50k"],
-  ["Ba Na Hills","RU","1–9: 80k · 10–29: 100k · 30+: 120k"],
-  ["Cham Island","EN / RU","1–9: 60k · 10–29: 80k · 30+: 100k"],
-  ["Rừng Dừa - Hội An","EN / RU","1–9: 80k · 10–29: 100k · 30+: 120k"],
-  ["Hoi An Memory","EN","1–9: 120k · 10–29: 150k · 30+: 170k"],
-  ["Hoi An Memory","RU","1–9: 60k · 10–29: 80k · 30+: 100k"],
-  ["Huế City Tour","EN / RU","1–9: 120k · 10–29: 150k · 30+: 170k"],
-  ["Linh Ứng - Marble - Hội An","EN","1–9: 120k · 10–29: 150k · 30+: 170k"],
-  ["Linh Ứng - Marble - Hội An","RU","1–9: 40k · 10–29: 50k · 30+: 60k"],
-];
 
 const terms = [
   ["1. Статус сотрудничества","Партнёр действует как независимый партнёр по привлечению клиентов и не является сотрудником или лицом, имеющим право создавать обязательства от имени GoVietStay, если иное не согласовано письменно."],
@@ -35,8 +18,8 @@ const terms = [
   ["4. Обязанности GoVietStay","GoVietStay консультирует переданных клиентов, подтверждает цену и доступность, организует бронирование, транспорт, гидов и согласованные услуги, ведёт учёт заказов и PAX и предоставляет статистику в кабинете."],
   ["5. Обязанности Партнёра","Партнёр использует только свой персональный код/ссылку/QR, предоставляет достоверную информацию, не вводит клиента в заблуждение, соблюдает законы и правила платформ и не выдаёт себя за сотрудника GoVietStay без письменного разрешения."],
   ["6. PAX","Один оплачиваемый пассажир/гость в подтверждённом бронировании = 1 PAX. Отменённые, возвращённые, тестовые, фиктивные, дублирующие или оспоренные бронирования могут быть исключены из расчёта."],
-  ["7. Базовая выплата","Базовая выплата зависит от общего PAX за календарный месяц. Это партнёрское стимулирующее вознаграждение за результат и не является гарантированной заработной платой, если стороны не заключили отдельный трудовой договор."],
-  ["8. Комиссия","Комиссия рассчитывается по каждому подтверждённому PAX в зависимости от тура, языка гида EN/RU и общего PAX за месяц. Изменения ставок применяются только к будущим бронированиям после публикации новой версии условий."],
+  ["7. Без базовой выплаты","В программе партнёрских продаж нет фиксированной базовой выплаты или месячных ступеней. Для новых бронирований действует единая комиссия 12% от фактической согласованной стоимости после скидок. Ранее подтверждённые выплаты не изменяются задним числом."],
+  ["8. Комиссия 12%","За каждый соответствующий условиям оплаченный и завершённый заказ Партнёру начисляется 12% от окончательной стоимости продажи (включая индивидуальные/частные туры и custom price). Комиссия за заказ = 12% × общая стоимость продажи после скидок и корректировок; сумма не зависит от языка гида или количества PAX за месяц."],
   ["9. Выплаты","Вознаграждение начисляется только по завершённым и финансово действительным бронированиям. Возвраты, chargeback, отмены, ошибки, мошенничество и дубли могут корректироваться в текущем или следующем расчёте."],
   ["10. Конфиденциальность","Контакты клиентов, внутренние цены, операционные процессы, партнёрские условия, доступ к кабинету и иная непубличная информация являются конфиденциальными и не должны передаваться третьим лицам."],
   ["11. Бренд GoVietStay","Логотип и материалы GoVietStay можно использовать только для добросовестного продвижения в рамках сотрудничества. Нельзя создавать аккаунты, домены или рекламу, вводящие людей в заблуждение относительно собственности или официального представительства."],
@@ -72,7 +55,7 @@ export default function PartnerDashboard(){
 
   async function acceptTerms(){
     setAccepting(true);setAcceptMsg("");setError("");
-    const {data,error}=await supabase.rpc("partner_accept_terms",{p_token:token,p_terms_version:TERMS_VERSION,p_accepted_name:acceptName.trim()});
+    const {data,error}=await supabase.rpc("partner_accept_terms",{p_token:token,p_terms_version:t.version||TERMS_VERSION,p_accepted_name:acceptName.trim()});
     if(error)setError(error.message);
     else{setAcceptMsg("Условия приняты и зафиксированы в системе.");await load()}
     setAccepting(false);
@@ -115,7 +98,7 @@ export default function PartnerDashboard(){
             <div><b>1.</b> Вы находите клиента и отправляете свою персональную ссылку или QR.</div>
             <div><b>2.</b> GoVietStay принимает клиента и ведёт весь сервис: консультация, подтверждение, транспорт, гид, сопровождение.</div>
             <div><b>3.</b> Система фиксирует переход, обращение, бронирование и PAX за вашим кодом.</div>
-            <div><b>4.</b> Ваш доход = базовая выплата по месячному PAX + комиссия за каждый подтверждённый PAX.</div>
+            <div><b>4.</b> Ваш доход = 12% от фактической стоимости завершённых и оплаченных бронирований по вашему коду, включая индивидуальные туры.</div>
             <div><b>5.</b> Все спорные случаи сверяются по данным системы GoVietStay.</div>
           </div>
         </Box>
@@ -129,29 +112,19 @@ export default function PartnerDashboard(){
         </div>
 
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",gap:12,marginTop:14}}>
-          <Metric label="PAX в этом месяце" value={m.month_pax||0}/><Metric label="Базовая выплата" value={money(m.base_salary_vnd)}/>
-          <Metric label="Комиссия" value={money(m.tour_commission_vnd)}/><Metric label="Итого доход" value={money(m.total_earning_vnd)}/>
+          <Metric label="PAX в этом месяце" value={m.month_pax||0}/><Metric label="Ставка" value="12%"/>
+          <Metric label="Заработанная комиссия" value={money(m.tour_commission_vnd)}/><Metric label="Итого доход" value={money(m.total_earning_vnd)}/>
         </div>
-
         <Box>
-          <h2 style={h2}>Базовая выплата по месячному PAX</h2>
-          <div style={{overflowX:"auto"}}><table style={table}><thead><tr><Th>PAX / месяц</Th><Th>Базовая выплата</Th></tr></thead><tbody>
-            {salaryRows.map((r,i)=><tr key={i}><Td>{r[0]}</Td><Td><b>{r[1]}</b></Td></tr>)}
-          </tbody></table></div>
-        </Box>
-
-        <Box>
-          <h2 style={h2}>Комиссия за туры</h2>
-          <div style={{overflowX:"auto"}}><table style={table}><thead><tr><Th>Тур</Th><Th>Гид</Th><Th>Ставка / PAX</Th></tr></thead><tbody>
-            {commissionRows.map((r,i)=><tr key={i}><Td><b>{r[0]}</b></Td><Td>{r[1]}</Td><Td>{r[2]}</Td></tr>)}
-          </tbody></table></div>
-          <div style={{...muted,marginTop:10}}>Уровень ставки определяется общим количеством PAX Партнёра за календарный месяц.</div>
+          <h2 style={h2}>Единая комиссия — 12% от продажи</h2>
+          <p style={{lineHeight:1.6}}>Любой тур GoVietStay, включая индивидуальный маршрут с согласованной ценой: <b>комиссия = итоговая стоимость бронирования после скидки × 12%</b>. Без базовой выплаты, ступеней PAX и разницы по языку гида.</p>
+          <p style={{...muted,marginTop:8}}>Пример: Чамские острова — 950 000 ₫ / гость → 114 000 ₫ комиссии. Индивидуальный тур 13 900 000 ₫ / 5 гостей → 1 668 000 ₫ за бронирование. Выплата учитывается после завершения тура, полной оплаты и финансовой сверки.</p>
         </Box>
 
         <Box>
           <h2 style={h2}>Расчёт комиссии за текущий месяц</h2>
-          <div style={{overflowX:"auto"}}><table style={table}><thead><tr><Th>Тур</Th><Th>Гид</Th><Th>PAX</Th><Th>Комиссия / PAX</Th><Th>Итого</Th></tr></thead><tbody>
-            {breakdown.map((r:any,i:number)=><tr key={i}><Td><b>{r.tour_name||r.tour_code||"—"}</b></Td><Td>{String(r.guide_language||"—").toUpperCase()}</Td><Td>{r.pax||0}</Td><Td>{money(r.commission_per_pax_vnd)}</Td><Td><b>{money(r.commission_vnd)}</b></Td></tr>)}
+          <div style={{overflowX:"auto"}}><table style={table}><thead><tr><Th>Тур</Th><Th>PAX</Th><Th>Стоимость продажи</Th><Th>Ставка</Th><Th>Комиссия</Th></tr></thead><tbody>
+            {breakdown.map((r:any,i:number)=><tr key={i}><Td><b>{r.tour_name||r.tour_code||"Индивидуальный тур"}</b></Td><Td>{r.pax||0}</Td><Td>{money(r.net_selling_vnd)}</Td><Td>12%</Td><Td><b>{money(r.commission_vnd)}</b></Td></tr>)}
             {!breakdown.length&&<tr><Td colSpan={5}>Пока нет бронирований с рассчитанной комиссией.</Td></tr>}
           </tbody></table></div>
         </Box>
