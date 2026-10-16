@@ -68,6 +68,7 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
   const [infants, setInfants] = useState(0);
   const [manualGross, setManualGross] = useState(0);
   const [discount, setDiscount] = useState(0);
+  const [actualSellingPrice, setActualSellingPrice] = useState("");
   const [deposit, setDeposit] = useState(0);
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
@@ -108,7 +109,9 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
     );
   }, [selected, manualGross, adults, children]);
 
-  const netSelling = Math.max(0, gross - Math.max(0, discount));
+  const hasActualPrice = actualSellingPrice.trim() !== "";
+  const netSelling = hasActualPrice ? Math.max(0, Number(actualSellingPrice)) : Math.max(0, gross - Math.max(0, discount));
+  const effectiveDiscount = gross - netSelling;
   const commission = phuQuocCommissionVnd(netSelling);
   const partnerLink = phuQuocPartnerUrl(partnerCode, partnerLang);
   const partnerCommission = phuQuocCommissionVnd(partnerSale);
@@ -246,6 +249,22 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
       return;
     }
 
+    if (!Number.isFinite(netSelling) || netSelling <= 0 || !Number.isFinite(gross) || gross <= 0) {
+      setError("Giá bán thực tế phải lớn hơn 0 và hợp lệ.");
+      return;
+    }
+    if (!hasActualPrice && discount > gross) {
+      setError("Giảm giá không thể lớn hơn tổng giá niêm yết.");
+      return;
+    }
+    if (hasActualPrice && netSelling > gross) {
+      setError("Giá bán thực tế cao hơn bảng giá; hãy dùng chương trình custom/private và nhập giá đã duyệt.");
+      return;
+    }
+    if (deposit > netSelling) {
+      setError("Tiền đặt cọc không thể vượt quá giá bán thực tế.");
+      return;
+    }
     if (selected.quoteOnly && gross <= 0) {
       setError("Private/quote-only tour cần nhập giá bán đã được duyệt.");
       return;
@@ -282,7 +301,7 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
         p_children: Math.max(0, children),
         p_infants: Math.max(0, infants),
         p_gross_revenue_vnd: gross,
-        p_discount_vnd: Math.max(0, discount),
+        p_discount_vnd: Math.max(0, effectiveDiscount),
         p_deposit_vnd: Math.max(0, deposit),
         p_notes: `${marker}\nPickup: ${pickup.trim() || "TBC"}\n${notes.trim()}`.trim(),
       });
@@ -300,6 +319,7 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
       setPickup("");
       setNotes("");
       setDiscount(0);
+      setActualSellingPrice("");
       setDeposit(0);
       if (selected.quoteOnly) setManualGross(0);
     } catch (e: any) {
@@ -375,7 +395,8 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
             <div className="gva-grid2">
               <label><div className="gva-mini">Hotel</div><input className="gva-input" value={hotel} onChange={(e) => setHotel(e.target.value)} /></label>
               <label><div className="gva-mini">Pickup</div><input className="gva-input" value={pickup} onChange={(e) => setPickup(e.target.value)} /></label>
-              <label><div className="gva-mini">Discount</div><input className="gva-input" type="number" min="0" value={discount} onChange={(e) => setDiscount(Number(e.target.value || 0))} /></label>
+              <label><div className="gva-mini">Discount (VND)</div><input className="gva-input" type="number" min="0" max={gross} disabled={hasActualPrice} value={discount} onChange={(e) => setDiscount(Number(e.target.value || 0))} /></label>
+              <label><div className="gva-mini">Giá bán thực tế đã chốt (VND, tùy chọn)</div><input className="gva-input" type="number" min="1" step="1" value={actualSellingPrice} onChange={(e) => setActualSellingPrice(e.target.value)} placeholder="Để trống = tự lấy giá tour trừ giảm giá" /><div className="gva-mini">Nếu nhập, giá thực tế được ưu tiên và hệ thống tự quy đổi thành giảm giá. Giá cao hơn bảng niêm yết cần được duyệt như custom quote.</div></label>
               <label><div className="gva-mini">Deposit received</div><input className="gva-input" type="number" min="0" value={deposit} onChange={(e) => setDeposit(Number(e.target.value || 0))} /></label>
             </div>
 
@@ -383,7 +404,8 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
 
             <div style={{ border: "1px solid #e4e7ec", borderRadius: 12, padding: 12, background: "#fcfcfd" }}>
               <div><b>Gross:</b> {money(gross)}</div>
-              <div><b>Net selling after discount:</b> {money(netSelling)}</div>
+              <div><b>Net selling / Giá thực tế:</b> {money(netSelling)}</div>
+              <div><b>Discount used:</b> {money(Math.max(0,effectiveDiscount))}</div>
               <div style={{ marginTop: 5, color: "#067647" }}><b>Phú Quốc commission 12%:</b> {money(commission)}</div>
               <div className="gva-mini">Commission is only earned after the booking is eligible/completed under the existing payroll controls.</div>
             </div>
