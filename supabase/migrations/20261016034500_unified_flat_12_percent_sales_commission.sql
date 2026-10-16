@@ -78,7 +78,7 @@ begin
 
   return jsonb_build_object('month_start',v_start,'updated_bookings',v_updated,'tier_basis','completed_tours');
 end;
-$function$
+$function$;
 
 
 CREATE OR REPLACE FUNCTION public.admin_staff_payroll(p_month date DEFAULT CURRENT_DATE)
@@ -137,7 +137,7 @@ begin
   left join public.staff_payroll_overrides po on po.staff_id=t.id and po.month_start=v_start
   order by t.display_name;
 end;
-$function$
+$function$;
 
 
 CREATE OR REPLACE FUNCTION public.partner_monthly_compensation(p_partner_id uuid, p_month date DEFAULT CURRENT_DATE)
@@ -282,7 +282,7 @@ begin
     'commission_breakdown',coalesce(v_breakdown,'[]'::jsonb)
   );
 end;
-$function$
+$function$;
 
 
 
