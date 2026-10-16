@@ -1,0 +1,8 @@
+These WOFF2 files are subset builds from Fontsource 5.2.5. The pages do not request a font server.
+
+Fraunces, IBM Plex Sans, IBM Plex Mono, and Newsreader are each released under the SIL Open Font License 1.1. The license terms are in OFL.txt (the copy shipped with Fraunces; the terms are the same for the other three).
+
+Copyright holders:
+- Fraunces: The Fraunces Project Authors (Undercase)
+- IBM Plex Sans and IBM Plex Mono: IBM Corp.
+- Newsreader: Production Type
