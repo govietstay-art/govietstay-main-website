@@ -257,6 +257,10 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
       setError("Giảm giá không thể lớn hơn tổng giá niêm yết.");
       return;
     }
+    if (hasActualPrice && !selected.quoteOnly && netSelling > gross) {
+      setError("Giá bán thực tế cao hơn bảng giá; hãy dùng chương trình custom/private và nhập giá đã duyệt.");
+      return;
+    }
     if (deposit > netSelling) {
       setError("Tiền đặt cọc không thể vượt quá giá bán thực tế.");
       return;
