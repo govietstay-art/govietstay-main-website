@@ -83,10 +83,14 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
     e.preventDefault();if(!editRequest)return;setSaving(true);setError("");setMessage("");
     try{
       const f=new FormData(e.currentTarget);const v=Object.fromEntries(f.entries()) as any;
+      const grossValue=parseMoney(v.gross_revenue_vnd);
+      const discountValue=parseMoney(v.discount_vnd);
+      if (grossValue<=0 || discountValue>grossValue) throw new Error("Giá bán gốc phải lớn hơn 0 và giảm giá không được vượt giá gốc.");
+      if (parseMoney(v.deposit_vnd)>grossValue-discountValue) throw new Error("Đặt cọc không được vượt giá bán thực tế.");
       const payload={
         staff_id:v.staff_id,sales_code:staffMap[v.staff_id]?.sales_code||editRequest.sales_code,guest_name:String(v.guest_name||"").trim(),phone:String(v.phone||"").trim()||null,tour_date:v.tour_date,pickup_time:String(v.pickup_time||"").trim()||null,hotel:String(v.hotel||"").trim()||null,
         region:String(v.region||"").trim()||null,tour_name:String(v.tour_name||"").trim()||null,variant_name:String(v.variant_name||"").trim()||null,language:String(v.language||"").trim()||null,
-        adults:Math.max(0,Number(v.adults||0)),children:Math.max(0,Number(v.children||0)),infants:Math.max(0,Number(v.infants||0)),gross_revenue_vnd:parseMoney(v.gross_revenue_vnd),discount_vnd:parseMoney(v.discount_vnd),deposit_vnd:parseMoney(v.deposit_vnd),notes:String(v.notes||"").trim()||null,updated_at:new Date().toISOString()
+        adults:Math.max(0,Number(v.adults||0)),children:Math.max(0,Number(v.children||0)),infants:Math.max(0,Number(v.infants||0)),gross_revenue_vnd:grossValue,discount_vnd:discountValue,deposit_vnd:parseMoney(v.deposit_vnd),notes:String(v.notes||"").trim()||null,updated_at:new Date().toISOString()
       };
       const {error}=await supabase.from("staff_booking_intake").update(payload).eq("id",editRequest.id).eq("status","pending");if(error)throw error;
       setEditRequest(null);setMessage("Đã sửa request trước khi duyệt.");await load();
@@ -245,7 +249,7 @@ function RequestModal({row,staff,saving,onClose,onSubmit}:any){return <div class
   <F label="Package"><input className="gva-input" name="variant_name" defaultValue={row.variant_name||""}/></F><F label="Language"><input className="gva-input" name="language" defaultValue={row.language||""}/></F>
   <F label="Adults"><input className="gva-input" name="adults" type="number" min="0" defaultValue={row.adults}/></F><F label="Children"><input className="gva-input" name="children" type="number" min="0" defaultValue={row.children}/></F>
   <F label="Infants"><input className="gva-input" name="infants" type="number" min="0" defaultValue={row.infants}/></F><F label="Gross selling price"><input className="gva-input" name="gross_revenue_vnd" defaultValue={row.gross_revenue_vnd}/></F>
-  <F label="Discount"><input className="gva-input" name="discount_vnd" defaultValue={row.discount_vnd}/></F><F label="Deposit received"><input className="gva-input" name="deposit_vnd" defaultValue={row.deposit_vnd}/></F>
+  <F label="Discount (VND)"><input className="gva-input" name="discount_vnd" type="number" min="0" defaultValue={row.discount_vnd}/><small>Hoa hồng = (Giá bán gốc - giảm giá) × 12%. Với tour custom nhập giá đã chốt vào Gross selling price và để giảm giá = 0.</small></F><F label="Deposit received"><input className="gva-input" name="deposit_vnd" defaultValue={row.deposit_vnd}/></F>
   <F label="Notes" wide><textarea className="gva-input" name="notes" rows={3} defaultValue={row.notes||""}/></F>
 </div><div className="gvs-team-modal-actions"><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button className="gva-btn" disabled={saving}>{saving?"Đang lưu…":"Lưu sửa đổi"}</button></div></form></div>}
 function PayrollModal({row,saving,onClose,onSubmit}:any){return <div className="gva-modal-bg"><form className="gva-modal" onSubmit={onSubmit}><div className="gva-modal-head"><div><h3>Payroll Override · {row.display_name}</h3><div className="gva-mini">Hoa hồng mới = 12% giá bán thực tế. Không áp dụng base salary từ tháng 10/2026.</div></div><button type="button" className="gva-close" onClick={onClose}>✕</button></div><div className="gva-form-grid">
