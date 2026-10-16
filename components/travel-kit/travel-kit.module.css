@@ -214,7 +214,7 @@
 
 .passMedia {
   position: relative;
-  height: 176px;
+  aspect-ratio: 3 / 4;
 }
 
 .passImg {

@@ -42,13 +42,13 @@ export function travelKitMetadata(lang: Lang): Metadata {
       siteName: "GoVietStay",
       locale: OG_LOCALE[lang],
       type: "website",
-      images: [{ url: "/tour/hoian.jpg", alt: copy.photoAltHoiAnEvening }],
+      images: [{ url: "/travel-kit/hoi-an-lantern-boats.webp", alt: copy.photoAlt.hoian.evening }],
     },
     twitter: {
       card: "summary_large_image",
       title: copy.meta.title,
       description: copy.meta.description,
-      images: ["/tour/hoian.jpg"],
+      images: ["/travel-kit/hoi-an-lantern-boats.webp"],
     },
   };
 }

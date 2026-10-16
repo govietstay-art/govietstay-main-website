@@ -33,8 +33,7 @@ export type Dictionary = {
   todayLabel: string;
   today: Record<CityId, Record<ScenarioId, { title: string; body: string; cta: string }>>;
   sky: Record<SkyId, string>;
-  photoAlt: Record<CityId, string>;
-  photoAltHoiAnEvening: string;
+  photoAlt: Record<CityId, Record<ScenarioId, string>>;
   utilitiesLabel: string;
   utilities: Record<UtilityId, { title: string; glance: string }>;
   faqTitle: string;

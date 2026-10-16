@@ -35,12 +35,12 @@ export const en: Dictionary = {
       },
       rain: {
         title: "Rain on the coast",
-        body: "Leave the open beach. The Cham museum is indoors, and cafes along the Han River stay under cover.",
+        body: "The Marble Mountains caves are under cover. The Cham museum is indoors, and cafes along the Han stay under awnings.",
         cta: "See rain ideas",
       },
       evening: {
-        title: "Evening on the Han",
-        body: "Dragon Bridge is an easy address to show a driver. Keep one phrase ready on this screen.",
+        title: "Evening on Son Tra",
+        body: "The Lady Buddha looks over the peninsula. Dragon Bridge is still an easy address to show a driver.",
         cta: "Show a phrase",
       },
     },
@@ -52,7 +52,7 @@ export const en: Dictionary = {
       },
       rain: {
         title: "Rain in the old town",
-        body: "Shophouses and the old wooden houses are the useful plan. The market is covered.",
+        body: "Covered shophouses and a quiet workshop are the useful plan. The market is under a roof.",
         cta: "See rain ideas",
       },
       evening: {
@@ -108,12 +108,27 @@ export const en: Dictionary = {
     still: "Still",
   },
   photoAlt: {
-    danang: "Limestone cliffs of the Marble Mountains above the water near Da Nang",
-    hoian: "Wooden interior of an old house in Hoi An",
-    hue: "A gate and brick walls of the Imperial City in Hue",
-    phuquoc: "Pale sand and wooden boats on a Phu Quoc beach",
+    danang: {
+      landed: "The Golden Bridge at Ba Na Hills, held by giant stone hands, in the mist near Da Nang",
+      rain: "A cavern in the Marble Mountains near Da Nang, with a stone Buddha and daylight from an opening above",
+      evening: "The white Lady Buddha statue on a lotus, on the Son Tra peninsula in Da Nang",
+    },
+    hoian: {
+      landed: "The Japanese Covered Bridge in Hoi An Ancient Town, seen from the river",
+      rain: "A wood-lined tailor workshop in Hoi An, with garments on the racks and no one at the counter",
+      evening: "Lantern-lit wooden boats on the river in Hoi An Ancient Town at blue hour",
+    },
+    hue: {
+      landed: "Ngo Mon, the main gate of the Imperial City in Hue, in red and gold",
+      rain: "Ngo Mon, the main gate of the Imperial City in Hue, in red and gold",
+      evening: "Ngo Mon, the main gate of the Imperial City in Hue, in red and gold",
+    },
+    phuquoc: {
+      landed: "Pale sand and wooden boats on a Phu Quoc beach",
+      rain: "Pale sand and wooden boats on a Phu Quoc beach",
+      evening: "Pale sand and wooden boats on a Phu Quoc beach",
+    },
   },
-  photoAltHoiAnEvening: "Lanterns over a street in Hoi An Ancient Town",
   utilitiesLabel: "In the kit",
   utilities: {
     esim: { title: "Free Vietnam eSIM", glance: "5 GB a day · 10 days" },
@@ -203,12 +218,12 @@ export const en: Dictionary = {
   activitiesFoot: "Sample ideas. Check the door when you arrive.",
   activities: {
     danang: [
-      { title: "Cham Sculpture Museum", detail: "Indoor galleries of Cham stonework. A sound plan when My Khe is raining." },
+      { title: "Marble Mountains caves", detail: "Covered caverns and a stone Buddha. A sound plan when My Khe is raining." },
+      { title: "Cham Sculpture Museum", detail: "Indoor galleries of Cham stonework. A flatter walk than the cave stairs." },
       { title: "Han River cafes", detail: "Many sit under awnings. This is a kind of place, not a named venue." },
-      { title: "Wait on the beach", detail: "My Khe is better after the heavy rain eases." },
     ],
     hoian: [
-      { title: "Old wooden houses", detail: "The ancient-house museums stay useful in the wet. No ticket figure is shown here." },
+      { title: "A covered workshop", detail: "Tailor shophouses in the old town stay open under a roof. This is a kind of place, not a named shop." },
       { title: "Hoi An market", detail: "Chợ Hội An is largely under cover." },
       { title: "Japanese Covered Bridge", detail: "Chùa Cầu is a short walk between showers, not a place to wait out a storm." },
     ],

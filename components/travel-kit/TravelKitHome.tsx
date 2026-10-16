@@ -57,7 +57,7 @@ export function TravelKitHome({ lang, initialCity, initialDay }: Props) {
   const weather = SAMPLE_WEATHER[city][day];
   const today = copy.today[city][day];
   const photo = photoFor(city, day);
-  const photoAlt = city === "hoian" && day === "evening" ? copy.photoAltHoiAnEvening : copy.photoAlt[city];
+  const photoAlt = copy.photoAlt[city][day];
   const greeting = copy.greeting[vietnamDayPeriod()];
 
   useEffect(() => {
@@ -195,7 +195,7 @@ export function TravelKitHome({ lang, initialCity, initialDay }: Props) {
                 fill
                 priority
                 sizes="(min-width: 840px) 390px, 100vw"
-                quality={70}
+                quality={75}
                 className={styles.passImg}
               />
               <div className={styles.passShade} />

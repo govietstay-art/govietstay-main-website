@@ -35,12 +35,12 @@ export const it: Dictionary = {
       },
       rain: {
         title: "Pioggia sulla costa",
-        body: "Lascia la spiaggia aperta. Il museo Cham è al coperto, e i caffè lungo il fiume Han stanno sotto le tettoie.",
+        body: "Le grotte delle Marble Mountains sono al coperto. Il museo Cham è al chiuso, e i caffè lungo il Han stanno sotto le tettoie.",
         cta: "Idee per la pioggia",
       },
       evening: {
-        title: "Sera sul Han",
-        body: "Il ponte del Drago è un indirizzo facile da mostrare. Tieni una frase pronta su questo schermo.",
+        title: "Sera a Son Tra",
+        body: "La statua della Lady Buddha guarda sulla penisola. Il ponte del Drago resta un indirizzo facile da mostrare all'autista.",
         cta: "Mostra una frase",
       },
     },
@@ -52,7 +52,7 @@ export const it: Dictionary = {
       },
       rain: {
         title: "Pioggia nella città vecchia",
-        body: "Le botteghe e le case di legno sono il piano giusto. Il mercato è coperto.",
+        body: "Le botteghe coperte e un laboratorio tranquillo sono il piano giusto. Il mercato è sotto un tetto.",
         cta: "Idee per la pioggia",
       },
       evening: {
@@ -108,12 +108,27 @@ export const it: Dictionary = {
     still: "fermo",
   },
   photoAlt: {
-    danang: "Scogliere di calcare delle Marble Mountains sull'acqua vicino a Da Nang",
-    hoian: "Interno in legno di una casa antica a Hoi An",
-    hue: "Una porta e i muri di mattoni della Città Imperiale a Hue",
-    phuquoc: "Sabbia chiara e barche di legno su una spiaggia di Phu Quoc",
+    danang: {
+      landed: "Il Golden Bridge a Ba Na Hills, sorretto da mani di pietra, nella nebbia vicino a Da Nang",
+      rain: "Una grotta delle Marble Mountains vicino a Da Nang, con un Buddha di pietra e la luce da un'apertura in alto",
+      evening: "La statua bianca della Lady Buddha su un loto, sulla penisola di Son Tra a Da Nang",
+    },
+    hoian: {
+      landed: "Il ponte coperto giapponese nella città vecchia di Hoi An, visto dal fiume",
+      rain: "Un laboratorio di sartoria rivestito di legno a Hoi An, con abiti sulle grucce e nessuno al banco",
+      evening: "Barche di legno illuminate da lanterne sul fiume di Hoi An all'ora blu",
+    },
+    hue: {
+      landed: "Ngo Mon, la porta principale della Città Imperiale a Hue, rossa e oro",
+      rain: "Ngo Mon, la porta principale della Città Imperiale a Hue, rossa e oro",
+      evening: "Ngo Mon, la porta principale della Città Imperiale a Hue, rossa e oro",
+    },
+    phuquoc: {
+      landed: "Sabbia chiara e barche di legno su una spiaggia di Phu Quoc",
+      rain: "Sabbia chiara e barche di legno su una spiaggia di Phu Quoc",
+      evening: "Sabbia chiara e barche di legno su una spiaggia di Phu Quoc",
+    },
   },
-  photoAltHoiAnEvening: "Lanterne su una strada della città vecchia di Hoi An",
   utilitiesLabel: "Nel kit",
   utilities: {
     esim: { title: "eSIM Vietnam gratuita", glance: "5 GB al giorno · 10 giorni" },
@@ -206,12 +221,12 @@ export const it: Dictionary = {
   activitiesFoot: "Idee di esempio. Controlla alla porta se è aperto.",
   activities: {
     danang: [
-      { title: "Museo della scultura Cham", detail: "Sale coperte di pietra Cham. Un piano solido quando a My Khe piove." },
+      { title: "Grotte delle Marble Mountains", detail: "Caverne coperte e un Buddha di pietra. Un piano solido quando a My Khe piove." },
+      { title: "Museo della scultura Cham", detail: "Sale coperte di pietra Cham. Un percorso più piano delle scale nelle grotte." },
       { title: "Caffè sul fiume Han", detail: "Molti stanno sotto le tettoie. È un tipo di posto, non un locale con un nome." },
-      { title: "La spiaggia può aspettare", detail: "My Khe è meglio quando il temporale si calma." },
     ],
     hoian: [
-      { title: "Case antiche di legno", detail: "I musei delle case antiche restano utili con la pioggia. Qui non c'è un prezzo del biglietto." },
+      { title: "Un laboratorio coperto", detail: "Le sartorie della città vecchia restano aperte sotto un tetto. È un tipo di posto, non un negozio con un nome." },
       { title: "Mercato di Hoi An", detail: "Chợ Hội An è in gran parte coperto." },
       { title: "Ponte coperto giapponese", detail: "Chùa Cầu è una passeggiata breve tra un rovescio e l'altro, non un riparo per tutto il temporale." },
     ],
