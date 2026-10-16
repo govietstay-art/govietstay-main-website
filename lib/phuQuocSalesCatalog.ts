@@ -1,4 +1,4 @@
-export const PHU_QUOC_SALES_COMMISSION_RATE = 0.07;
+export const PHU_QUOC_SALES_COMMISSION_RATE = 0.12;
 
 export type PhuQuocSalesTour = {
   code: string;
