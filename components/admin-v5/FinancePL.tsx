@@ -261,7 +261,7 @@ export default function FinancePL({supabase}:Props){
       <PLCard label="Revenue" value={money(summary.revenue_vnd)} hint={`${summary.bookings_completed||0} completed bookings · ${summary.pax_completed||0} pax`} />
       <PLCard label="Direct Cost" value={money(summary.direct_costs_vnd)} hint="Supplier + guide + driver + tickets + meals + commissions…" />
       <PLCard label="Gross Profit" value={money(summary.gross_profit_vnd)} hint={`Gross margin ${Number(summary.gross_margin_pct||0).toFixed(1)}%`} tone={(summary.gross_profit_vnd||0)>=0?"good":"bad"} />
-      <PLCard label="Operating Expenses" value={money(summary.opex_vnd)} hint="Staff base salary + manual OPEX / Ads / Office / Software / Other" />
+      <PLCard label="Operating Expenses" value={money(summary.opex_vnd)} hint="Manual OPEX / Ads / Office / Software / Other (no sales base salary)" />
       <PLCard label="Net Operating Profit" value={money(summary.net_profit_vnd)} hint={`Net margin ${Number(summary.net_margin_pct||0).toFixed(1)}%`} tone={(summary.net_profit_vnd||0)>=0?"good":"bad"} strong />
     </div>
 
