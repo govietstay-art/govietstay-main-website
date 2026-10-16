@@ -71,6 +71,10 @@ Not verified, so not stated as fact:
 - Indoor halls, markets, or rain venues that are not in a verified source or a correctly matched photograph.
 - A machine translator. The phrasebook is a fixed list.
 
+## Map
+
+No coordinates were added. `lib/travel-kit/places.ts` keeps an empty list. A point is shown only after its latitude and longitude are copied from a named source and recorded here with the date. Until then the Explore page says that no map is shown. OpenStreetMap tiles are not loaded.
+
 ## Analytics and offline
 
 - Events are `travel_kit_open`, `city_change`, `tool_open`, `esim_request_click`, `whatsapp_click`.

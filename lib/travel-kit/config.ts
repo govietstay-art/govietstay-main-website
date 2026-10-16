@@ -67,3 +67,23 @@ export function parseCity(value: string | undefined): CityId | undefined {
 export function photoFor(city: CityId, scenario: ScenarioId): string {
   return PHOTOS[city][scenario];
 }
+
+const OPT_NAME: Record<string, string> = {
+  "/travel-kit/da-nang-golden-bridge.webp": "da-nang-golden-bridge",
+  "/travel-kit/da-nang-marble-caves.webp": "da-nang-marble-caves",
+  "/travel-kit/da-nang-lady-buddha.webp": "da-nang-lady-buddha",
+  "/travel-kit/hoi-an-covered-bridge.webp": "hoi-an-covered-bridge",
+  "/travel-kit/hoi-an-tailor.webp": "hoi-an-tailor",
+  "/travel-kit/hoi-an-lantern-boats.webp": "hoi-an-lantern-boats",
+  "/travel-kit/hue-ngo-mon.webp": "hue-ngo-mon",
+  "/tour/phuquoc/partner-2026/pq-15.webp": "phu-quoc-beach",
+};
+
+/** Pre-sized WebP files. The page does not ask the image optimizer for these. */
+export function photoSet(city: CityId, scenario: ScenarioId) {
+  const name = OPT_NAME[PHOTOS[city][scenario]];
+  return {
+    src: `/travel-kit/opt/${name}-960.webp`,
+    srcSet: `/travel-kit/opt/${name}-480.webp 480w, /travel-kit/opt/${name}-640.webp 640w, /travel-kit/opt/${name}-960.webp 960w`,
+  };
+}

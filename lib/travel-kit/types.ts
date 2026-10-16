@@ -85,7 +85,8 @@ export type Dictionary = {
 
 export const UTILITY_SLUGS = ["esim", "arrival", "money", "phrases", "weather", "safety", "packing"] as const;
 export const GUIDE_SLUGS = ["da-nang", "hoi-an", "hue", "phu-quoc"] as const;
-export const TOOL_SLUGS = [...UTILITY_SLUGS, ...GUIDE_SLUGS] as const;
+export const HUB_SLUGS = ["explore", "tools", "trip"] as const;
+export const TOOL_SLUGS = [...UTILITY_SLUGS, ...GUIDE_SLUGS, ...HUB_SLUGS] as const;
 export type ToolSlug = (typeof TOOL_SLUGS)[number];
 export type GuideSlug = (typeof GUIDE_SLUGS)[number];
 
@@ -114,6 +115,10 @@ export type KitCopy = {
   pageMeta: Record<ToolSlug, { title: string; description: string }>;
   brand: string;
   logoAlt: string;
+  mainSiteHint: string;
+  kitHomeLabel: string;
+  navLabel: string;
+  nav: { home: string; explore: string; tools: string; trip: string };
   trust: string;
   skip: string;
   back: string;
@@ -148,6 +153,29 @@ export type KitCopy = {
   toolsLabel: string;
   tools: Record<ToolSlug, { title: string; glance: string }>;
   guideNote: string;
+  cityGuide: string;
+  explorePage: { title: string; lede: string; mapTitle: string; mapBody: string };
+  toolsPage: { title: string; lede: string };
+  trip: {
+    title: string;
+    lede: string;
+    stored: string;
+    arrive: string;
+    leave: string;
+    notesTitle: string;
+    notesPlaceholder: string;
+    addNote: string;
+    removeNote: string;
+    esimTitle: string;
+    esimHint: string;
+    esimPlaceholder: string;
+    exportData: string;
+    clearData: string;
+    clearConfirm: string;
+    packingLink: string;
+    addressLink: string;
+    safetyLink: string;
+  };
   photoAlt: Record<CityId, Record<ScenarioId, string>>;
   esim: {
     lead: string;

@@ -16,6 +16,9 @@ Phase 1 routes, all `noindex`, all under `app/(travel-kit)/`:
 | Hoi An guide | `.../hoi-an` |
 | Hue guide | `.../hue` |
 | Phu Quoc guide | `.../phu-quoc` |
+| Explore | `.../explore` |
+| Tools | `.../tools` |
+| My trip | `.../trip` |
 
 City is `?city=danang|hoian|hue|phuquoc` and is also stored as `gvs-tk-city` on the phone. Canonical URLs omit the query. Weather and the city guides follow that city. The header city control is on every kit page.
 

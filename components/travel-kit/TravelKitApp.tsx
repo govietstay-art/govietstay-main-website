@@ -3,9 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useId, useRef, useState, useSyncExternalStore, type KeyboardEvent as ReactKeyboardEvent } from "react";
+import { useCallback, useEffect, useId, useRef, useState, useSyncExternalStore, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from "react";
 import { track } from "@/lib/travel-kit/analytics";
-import { fillCity, parseAmount, parseCity, photoFor, vietnamDayPeriod, whatsAppHref } from "@/lib/travel-kit/config";
+import { fillCity, parseAmount, parseCity, photoSet, vietnamDayPeriod, whatsAppHref } from "@/lib/travel-kit/config";
 import { dictionaries } from "@/lib/travel-kit/dictionaries";
 import {
   convertRate,
@@ -17,10 +17,13 @@ import {
   type RatesSnapshot,
   type WeatherSnapshot,
 } from "@/lib/travel-kit/live-data";
+import { MAP_POINTS } from "@/lib/travel-kit/places";
 import { readJson, readString, readTicks, subscribeTicks, writeJson, writeString, writeTicks } from "@/lib/travel-kit/ticks";
+import { EMPTY_TRIP, TRIP_KEY, kitStorageKeys, type TripData } from "@/lib/travel-kit/trip";
 import {
   CITY_IDS,
   CURRENCIES,
+  HUB_SLUGS,
   LANGS,
   UTILITY_SLUGS,
   type CityId,
@@ -71,6 +74,18 @@ type Props = {
   weather: WeatherSnapshot | null;
   rates: RatesSnapshot | null;
 };
+
+const HERO_SIZES = "(max-width: 767px) 240px, (min-width: 1024px) 480px, 340px";
+
+function activateOnSpace(event: ReactKeyboardEvent<HTMLAnchorElement>) {
+  if (event.key !== " ") return;
+  event.preventDefault();
+  event.currentTarget.click();
+}
+
+function isUtility(tool?: ToolSlug) {
+  return !!tool && (UTILITY_SLUGS as readonly string[]).includes(tool);
+}
 
 function pathFor(lang: Lang, tool?: ToolSlug, city?: CityId) {
   const path = tool ? `/${lang}/travel-kit/${tool}` : `/${lang}/travel-kit`;
@@ -246,20 +261,30 @@ export function TravelKitApp({ lang, tool, initialCity, weather, rates }: Props)
         <header className={styles.header}>
           <div className={styles.brandRow}>
             <div className={styles.brandLockup}>
-              <span className={styles.logoChip}>
-                <Image
-                  src="/brand/govietstay-official-logo.jpg"
-                  alt={copy.logoAlt}
-                  width={144}
-                  height={144}
-                  sizes="72px"
-                  className={styles.logo}
-                  quality={75}
-                  priority
-                />
-              </span>
+              <a className={styles.logoLink} href="https://govietstay.com" onKeyDown={activateOnSpace}>
+                <span className={styles.logoChip}>
+                  <Image
+                    src="/brand/govietstay-official-logo.jpg"
+                    alt={copy.logoAlt}
+                    width={144}
+                    height={144}
+                    sizes="72px"
+                    className={styles.logo}
+                    quality={75}
+                  />
+                </span>
+                <span className={styles.srOnly}>{copy.mainSiteHint}</span>
+              </a>
               <div>
-                <p className={styles.brand}>{copy.brand}</p>
+                <Link
+                  className={styles.kitHome}
+                  href={pathFor(lang, undefined, city)}
+                  aria-label={copy.kitHomeLabel}
+                  aria-current={tool ? undefined : "page"}
+                  onKeyDown={activateOnSpace}
+                >
+                  {copy.back}
+                </Link>
                 <p className={styles.trust}>{copy.trust}</p>
               </div>
             </div>
@@ -279,11 +304,6 @@ export function TravelKitApp({ lang, tool, initialCity, weather, rates }: Props)
           </div>
           <div className={styles.toolRow}>
             <div className={styles.toolLead}>
-              {tool ? (
-                <Link className={styles.back} href={pathFor(lang, undefined, city)}>
-                  {copy.back}
-                </Link>
-              ) : null}
               <div className={styles.cityWrap} ref={cityWrapRef}>
                 <button
                   ref={cityButtonRef}
@@ -345,7 +365,21 @@ export function TravelKitApp({ lang, tool, initialCity, weather, rates }: Props)
             </p>
           </div>
         </header>
-        <nav className={styles.rail} aria-label={copy.toolsLabel}>
+        <nav className={styles.rail} aria-label={copy.navLabel}>
+          <ul className={styles.railList}>
+            <li>
+              <Link href={pathFor(lang, undefined, city)} aria-current={tool ? undefined : "page"}>
+                {copy.nav.home}
+              </Link>
+            </li>
+            {HUB_SLUGS.map((item) => (
+              <li key={item}>
+                <Link href={pathFor(lang, item, city)} aria-current={tool === item || (item === "explore" && isGuide(tool)) || (item === "tools" && isUtility(tool)) ? "page" : undefined}>
+                  {copy.nav[item]}
+                </Link>
+              </li>
+            ))}
+          </ul>
           <p className={styles.kicker}>{copy.situationLabel}</p>
           <ul className={styles.railList}>
             {copy.situations.map((item) => (
@@ -378,6 +412,7 @@ export function TravelKitApp({ lang, tool, initialCity, weather, rates }: Props)
           </ul>
         </nav>
         <main id="kit-main" className={styles.main}>
+          {isUtility(tool) ? <CityGuideLink copy={copy} lang={lang} city={city} /> : null}
           {!tool ? (
             <Home
               copy={copy}
@@ -403,7 +438,35 @@ export function TravelKitApp({ lang, tool, initialCity, weather, rates }: Props)
           {tool === "safety" ? <Safety copy={copy} /> : null}
           {tool === "packing" ? <Packing copy={copy} /> : null}
           {isGuide(tool) ? <Guide copy={copy} tool={tool} /> : null}
+          {tool === "explore" ? <Explore copy={copy} lang={lang} city={city} /> : null}
+          {tool === "tools" ? <ToolsHub copy={copy} lang={lang} city={city} /> : null}
+          {tool === "trip" ? <Trip copy={copy} lang={lang} city={city} supportHref={supportHref} onSupportClick={onSupportClick} /> : null}
+          {tool && tool !== "trip" ? (
+            <p className={styles.supportLine}>
+              <a href={supportHref} target="_blank" rel="noreferrer" onClick={onSupportClick}>
+                {copy.supportTitle}
+              </a>
+            </p>
+          ) : null}
         </main>
+        <nav className={styles.tabbar} aria-label={copy.navLabel}>
+          <Link href={pathFor(lang, undefined, city)} aria-current={tool ? undefined : "page"} onKeyDown={activateOnSpace}>
+            <HomeIcon />
+            <span>{copy.nav.home}</span>
+          </Link>
+          <Link href={pathFor(lang, "explore", city)} aria-current={tool === "explore" || isGuide(tool) ? "page" : undefined} onKeyDown={activateOnSpace}>
+            <ExploreIcon />
+            <span>{copy.nav.explore}</span>
+          </Link>
+          <Link href={pathFor(lang, "tools", city)} aria-current={tool === "tools" || isUtility(tool) ? "page" : undefined} onKeyDown={activateOnSpace}>
+            <ToolsIcon />
+            <span>{copy.nav.tools}</span>
+          </Link>
+          <Link href={pathFor(lang, "trip", city)} aria-current={tool === "trip" ? "page" : undefined} onKeyDown={activateOnSpace}>
+            <TripIcon />
+            <span>{copy.nav.trip}</span>
+          </Link>
+        </nav>
         <a className={styles.support} href={supportHref} target="_blank" rel="noreferrer" onClick={onSupportClick}>
           <span>
             {copy.supportTitle}
@@ -414,6 +477,262 @@ export function TravelKitApp({ lang, tool, initialCity, weather, rates }: Props)
       </div>
     </div>
   );
+}
+
+function KitPhoto({
+  city,
+  scenario,
+  alt,
+  sizes,
+  priority = false,
+}: {
+  city: CityId;
+  scenario: ScenarioId;
+  alt: string;
+  sizes: string;
+  priority?: boolean;
+}) {
+  const picture = photoSet(city, scenario);
+  return (
+    // Pre-sized WebP. The image optimizer was the slow part of LCP on this page.
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={picture.src}
+      srcSet={picture.srcSet}
+      sizes={sizes}
+      alt={alt}
+      width={960}
+      height={1280}
+      decoding="async"
+      fetchPriority={priority ? "high" : "auto"}
+      loading={priority ? "eager" : "lazy"}
+    />
+  );
+}
+
+function CityGuideLink({ copy, lang, city }: { copy: KitCopy; lang: Lang; city: CityId }) {
+  return (
+    <p className={styles.note}>
+      <Link href={pathFor(lang, GUIDE_FOR[city], city)}>{fillCity(copy.cityGuide, copy.cities[city])}</Link>
+    </p>
+  );
+}
+
+function Explore({ copy, lang, city }: { copy: KitCopy; lang: Lang; city: CityId }) {
+  const places = MAP_POINTS.filter((point) => point.city === city);
+  return (
+    <article>
+      <p className={styles.kicker}>{copy.nav.explore}</p>
+      <h1 className={`${styles.heroTitle} ${styles.serif}`}>{copy.explorePage.title}</h1>
+      <p className={styles.lede}>{copy.explorePage.lede}</p>
+      <section className={styles.supportBlock}>
+        <h2 className={styles.serif}>{copy.explorePage.mapTitle}</h2>
+        <p>{copy.explorePage.mapBody}</p>
+        {places.length ? (
+          <ul className={styles.list}>
+            {places.map((point) => (
+              <li key={point.id}>
+                <p>
+                  <strong>{point.name}</strong>
+                </p>
+                <p className={styles.note}>
+                  {point.source} · {point.verifiedOn}
+                </p>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </section>
+      <section>
+        <h2 className={styles.kicker}>{copy.situationLabel}</h2>
+        <ul className={`${styles.cardGrid} ${styles.situationGrid}`}>
+          {copy.situations.map((item) => (
+            <li key={item.tool}>
+              <Link className={styles.card} href={pathFor(lang, item.tool, city)}>
+                <strong>{item.title}</strong>
+                <span>{item.body}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+      <section>
+        <h2 className={styles.kicker}>{copy.destinationLabel}</h2>
+        <ul className={styles.cardGrid}>
+          {CITY_IDS.map((item) => (
+            <li key={item}>
+              <Link className={styles.card} href={pathFor(lang, GUIDE_FOR[item], item)} aria-current={item === city ? "true" : undefined}>
+                <strong>{copy.cities[item]}</strong>
+                <span>{copy.tools[GUIDE_FOR[item]].glance}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </article>
+  );
+}
+
+function ToolsHub({ copy, lang, city }: { copy: KitCopy; lang: Lang; city: CityId }) {
+  return (
+    <article>
+      <p className={styles.kicker}>{copy.nav.tools}</p>
+      <h1 className={`${styles.heroTitle} ${styles.serif}`}>{copy.toolsPage.title}</h1>
+      <p className={styles.lede}>{copy.toolsPage.lede}</p>
+      <ul className={`${styles.cardGrid} ${styles.toolGrid}`}>
+        {UTILITY_SLUGS.map((item) => (
+          <li key={item}>
+            <Link className={styles.card} href={pathFor(lang, item, city)}>
+              <strong>{copy.tools[item].title}</strong>
+              <span>{copy.tools[item].glance}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+      <CityGuideLink copy={copy} lang={lang} city={city} />
+    </article>
+  );
+}
+
+function Trip({
+  copy,
+  lang,
+  city,
+  supportHref,
+  onSupportClick,
+}: {
+  copy: KitCopy;
+  lang: Lang;
+  city: CityId;
+  supportHref: string;
+  onSupportClick: () => void;
+}) {
+  const page = copy.trip;
+  const saved = useSavedJson<TripData>(TRIP_KEY);
+  const trip = saved ?? EMPTY_TRIP;
+  const [draft, setDraft] = useState("");
+  const address = useSavedString(ADDRESS_KEY);
+
+  function update(next: TripData) {
+    writeJson(TRIP_KEY, next);
+  }
+
+  function exportData() {
+    const dump: Record<string, string> = {};
+    for (const key of kitStorageKeys()) {
+      const value = window.localStorage.getItem(key);
+      if (value !== null) dump[key] = value;
+    }
+    const file = new Blob([JSON.stringify(dump, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(file);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "govietstay-travel-kit.json";
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function clearData() {
+    if (!window.confirm(page.clearConfirm)) return;
+    for (const key of kitStorageKeys()) {
+      window.localStorage.removeItem(key);
+      window.dispatchEvent(new Event(key));
+    }
+    window.dispatchEvent(new Event("storage"));
+  }
+
+  return (
+    <article>
+      <p className={styles.kicker}>{copy.nav.trip}</p>
+      <h1 className={`${styles.heroTitle} ${styles.serif}`}>{page.title}</h1>
+      <p className={styles.lede}>{page.lede}</p>
+      <p className={styles.note}>{page.stored}</p>
+      <p className={styles.note}>
+        {copy.cityLabel}: {copy.cities[city]}
+      </p>
+      <div className={styles.fields}>
+        <label>
+          {page.arrive}
+          <input type="date" value={trip.arrive} onChange={(event) => update({ ...trip, arrive: event.target.value })} />
+        </label>
+        <label>
+          {page.leave}
+          <input type="date" value={trip.leave} onChange={(event) => update({ ...trip, leave: event.target.value })} />
+        </label>
+      </div>
+      <section>
+        <h2 className={styles.serif}>{page.notesTitle}</h2>
+        <ul className={styles.list}>
+          {trip.notes.map((note, index) => (
+            <li key={`${note}-${index}`} className={styles.noteRow}>
+              <span>{note}</span>
+              <button type="button" className={styles.textBtn} onClick={() => update({ ...trip, notes: trip.notes.filter((_, item) => item !== index) })}>
+                {page.removeNote}
+              </button>
+            </li>
+          ))}
+        </ul>
+        <form
+          className={styles.fields}
+          onSubmit={(event) => {
+            event.preventDefault();
+            const text = draft.trim();
+            if (!text) return;
+            update({ ...trip, notes: [...trip.notes, text] });
+            setDraft("");
+          }}
+        >
+          <label>
+            {page.notesTitle}
+            <input value={draft} placeholder={page.notesPlaceholder} onChange={(event) => setDraft(event.target.value)} />
+          </label>
+          <button type="submit" className={styles.ghost}>
+            {page.addNote}
+          </button>
+        </form>
+      </section>
+      <section>
+        <h2 className={styles.serif}>{page.esimTitle}</h2>
+        <p className={styles.note}>{page.esimHint}</p>
+        <label className={styles.fields}>
+          {page.esimTitle}
+          <textarea value={trip.esimNote} placeholder={page.esimPlaceholder} onChange={(event) => update({ ...trip, esimNote: event.target.value })} />
+        </label>
+      </section>
+      <div className={styles.links}>
+        <Link href={pathFor(lang, "packing", city)}>{page.packingLink}</Link>
+        <Link href={pathFor(lang, "arrival", city)}>{page.addressLink}</Link>
+        <Link href={pathFor(lang, "safety", city)}>{page.safetyLink}</Link>
+        <Link href={pathFor(lang, GUIDE_FOR[city], city)}>{fillCity(copy.cityGuide, copy.cities[city])}</Link>
+      </div>
+      {address ? <p className={styles.note}>{address}</p> : null}
+      <div className={styles.actions}>
+        <button type="button" className={styles.ghost} onClick={exportData}>
+          {page.exportData}
+        </button>
+        <button type="button" className={styles.ghost} onClick={clearData}>
+          {page.clearData}
+        </button>
+      </div>
+      <a className={styles.cta} href={supportHref} target="_blank" rel="noreferrer" onClick={onSupportClick}>
+        {copy.supportTitle}
+      </a>
+    </article>
+  );
+}
+
+function useSavedString(key: string) {
+  const subscribe = useCallback((onStoreChange: () => void) => {
+    const handler = () => onStoreChange();
+    window.addEventListener("storage", handler);
+    window.addEventListener(key, handler);
+    return () => {
+      window.removeEventListener("storage", handler);
+      window.removeEventListener(key, handler);
+    };
+  }, [key]);
+  const read = useCallback(() => readString(key), [key]);
+  return useSyncExternalStore(subscribe, read, () => "");
 }
 
 function PinIcon() {
@@ -432,6 +751,50 @@ function ChevronIcon() {
     <svg className={styles.icon} viewBox="0 0 24 24" aria-hidden="true">
       <path fill="currentColor" d="M6.7 9.2a1 1 0 0 1 1.4 0L12 13.1l3.9-3.9a1 1 0 1 1 1.4 1.4l-4.6 4.6a1 1 0 0 1-1.4 0L6.7 10.6a1 1 0 0 1 0-1.4Z" />
     </svg>
+  );
+}
+
+function StrokeIcon({ children }: { children: ReactNode }) {
+  return (
+    <svg className={styles.icon} viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+      {children}
+    </svg>
+  );
+}
+
+function HomeIcon() {
+  return (
+    <StrokeIcon>
+      <path d="M4 11.5 12 4l8 7.5" />
+      <path d="M7 10.5V20h10v-9.5" />
+    </StrokeIcon>
+  );
+}
+
+function ExploreIcon() {
+  return (
+    <StrokeIcon>
+      <circle cx="12" cy="12" r="8" />
+      <path d="m14.5 9.5-1.2 4.8-4.8 1.2 1.2-4.8 4.8-1.2Z" />
+    </StrokeIcon>
+  );
+}
+
+function ToolsIcon() {
+  return (
+    <StrokeIcon>
+      <path d="M14.5 5.5a3.5 3.5 0 0 0-4.6 4.6L4 16l4 4 5.9-5.9a3.5 3.5 0 0 0 4.6-4.6l-2.4 2.4-2-2 2.4-2.4Z" />
+    </StrokeIcon>
+  );
+}
+
+function TripIcon() {
+  return (
+    <StrokeIcon>
+      <rect x="6" y="7" width="12" height="13" rx="2" />
+      <path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7" />
+      <path d="M9 12h6" />
+    </StrokeIcon>
   );
 }
 
@@ -462,7 +825,7 @@ function Home({
           <p className={styles.lede}>{copy.portalLede}</p>
         </div>
         <div className={styles.photo}>
-          <Image src={photoFor(city, scenario)} alt={copy.photoAlt[city][scenario]} fill priority sizes="(min-width: 1024px) 520px, 100vw" quality={75} />
+          <KitPhoto city={city} scenario={scenario} alt={copy.photoAlt[city][scenario]} sizes={HERO_SIZES} priority />
         </div>
       </section>
       <section className={styles.nowCard}>
@@ -957,7 +1320,7 @@ function Guide({ copy, tool }: { copy: KitCopy; tool: keyof typeof GUIDE_CITY })
       <h1 className={`${styles.heroTitle} ${styles.serif}`}>{page.title}</h1>
       <p className={styles.lede}>{page.lede}</p>
       <div className={`${styles.photo} ${styles.guidePhoto}`}>
-        <Image src={photoFor(city, "landed")} alt={copy.photoAlt[city].landed} fill priority sizes="(min-width: 1024px) 720px, 100vw" quality={75} />
+        <KitPhoto city={city} scenario="landed" alt={copy.photoAlt[city].landed} sizes="(min-width: 1024px) 720px, 92vw" />
       </div>
       {page.blocks.map((block) => (
         <section className={styles.block} key={block.title}>

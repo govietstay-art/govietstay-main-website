@@ -31,9 +31,11 @@ The dispatcher is `lib/travel-kit/analytics.ts`. It is off until someone sets `l
 
 Payload: `{ language, city, tool }` where `tool` is a kit slug or `"home"`. Repeats of the two open events are dropped for that page load. Clicks closer than 1.2 seconds with the same payload are dropped. A listener can use `window.addEventListener("gvs-travel-kit-event", ...)`.
 
-## Offline
+## Offline and install
 
-`public/kit-sw.js` is registered as `navigator.serviceWorker.register("/kit-sw.js", { scope: "/{lang}/travel-kit/" })`. The fetch handler ignores every other path, so the main site is not controlled. It caches successful kit HTML for a later offline load. It cannot cache `/_next/static` or `/_next/image`, because those URLs are outside that scope. Checklist ticks, the saved address, the last weather reading and the last rate already live in localStorage.
+`public/kit-sw.js` is registered as `navigator.serviceWorker.register("/kit-sw.js", { scope: "/{lang}/travel-kit/" })`. The fetch handler ignores every other path, so the main site is not controlled. It caches successful kit HTML for a later offline load. It cannot cache `/_next/static` or `/_next/image`, because those URLs are outside that scope. Checklist ticks, the saved address, the last weather reading, the last rate, and My Trip notes already live in localStorage.
+
+A web app manifest and an install button are not shipped. Install was not verified, and the offline shell is not complete, so the pages do not offer “Add to Home Screen” or claim to work offline as an app.
 
 ## Still not part of go-live
 
