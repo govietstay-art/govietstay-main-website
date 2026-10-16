@@ -39,8 +39,21 @@ export const it: KitCopy = {
       title: "Guida di Da Nang per chi è appena arrivato | Kit GoVietStay",
       description: "Spostamenti, pioggia, soldi e sicurezza a Da Nang, per il giorno dell'arrivo.",
     },
+    "hoi-an": {
+      title: "Guida di Hoi An per chi è appena arrivato | Kit GoVietStay",
+      description: "Il centro a piedi, la pioggia, i soldi e la sicurezza. Senza prezzi né orari.",
+    },
+    hue: {
+      title: "Guida di Hue per chi è appena arrivato | Kit GoVietStay",
+      description: "La porta della cittadella, la corsa, la pioggia e la sicurezza. Nessuna tariffa.",
+    },
+    "phu-quoc": {
+      title: "Guida di Phu Quoc per le prime ore | Kit GoVietStay",
+      description: "Connessione, indirizzo, pioggia, e ciò che questa pagina non indovina.",
+    },
   },
   brand: "GoVietStay",
+  logoAlt: "GoVietStay",
   trust: "Supporto locale di cui fidarsi",
   skip: "Vai al passo successivo",
   back: "Kit",
@@ -48,7 +61,21 @@ export const it: KitCopy = {
   langLabel: "Lingua",
   languageName: { en: "Inglese", ru: "Russo", it: "Italiano" },
   cityLabel: "Città",
+  cityOpen: "Scegli la città",
+  cityClose: "Chiudi l'elenco delle città",
   cities: { danang: "Da Nang", hoian: "Hoi An", hue: "Hue", phuquoc: "Phu Quoc" },
+  portalTitle: "Il passo utile, nella città in cui sei.",
+  portalLede: "Sei appena arrivato in Vietnam. Qui trovi la lista dell'aeroporto, un piano per la pioggia, una frase da mostrare e una persona su WhatsApp. Non è una pagina che vende tour.",
+  situationLabel: "La situazione",
+  situations: [
+    { title: "Appena atterrato", body: "Timbro, passaporto, poi un passaggio scelto da te.", tool: "arrival" },
+    { title: "Giorno di pioggia", body: "Un tetto, e il cielo di oggi.", tool: "weather" },
+    { title: "Stasera", body: "Una frase, grande abbastanza da mostrare.", tool: "phrases" },
+    { title: "Emergenza", body: "113, 114 e 115. Chiama prima di scrivere.", tool: "safety" },
+  ],
+  destinationLabel: "Destinazione",
+  supportBlockTitle: "Supporto locale",
+  supportBlockBody: "Scrivi a una persona di GoVietStay su WhatsApp. Premi invio tu. Se c'è pericolo, chiama prima 113, 114 o 115.",
   supportTitle: "Scrivi a una persona del posto",
   supportHint: "WhatsApp · invii tu",
   supportMessage: "Buongiorno GoVietStay. Sono a {city} e mi serve un aiuto locale.",
@@ -102,7 +129,7 @@ export const it: KitCopy = {
       },
       rain: {
         title: "Pioggia a Hoi An. Usa le botteghe coperte.",
-        body: "La guida completa di Hoi An non è in questa versione.",
+        body: "Usa le botteghe coperte. La guida di Hoi An nomina solo ciò che è nelle fotografie.",
         cta: "Apri il piano pioggia",
         tool: "weather",
       },
@@ -122,7 +149,7 @@ export const it: KitCopy = {
       },
       rain: {
         title: "Pioggia a Hue. I cortili sono scivolosi.",
-        body: "Evita la pietra aperta e l'argine. La guida completa di Hue non è in questa versione.",
+        body: "Evita la pietra aperta. Ngo Mon, nella guida di Hue, è la porta: non un riparo e non il tuo hotel.",
         cta: "Apri il piano pioggia",
         tool: "weather",
       },
@@ -130,7 +157,7 @@ export const it: KitCopy = {
     phuquoc: {
       day: {
         title: "A Phu Quoc chiedi la connessione prima di uscire dal terminal.",
-        body: "Apri la eSIM finché la rete dell'aeroporto è comoda, poi la scheda per l'autista. La guida completa dell'isola non è in questa versione.",
+        body: "Apri la eSIM finché la rete dell'aeroporto è comoda, poi la scheda per l'autista. La guida dell'isola è la pagina dopo.",
         cta: "Vedi la eSIM",
         tool: "esim",
       },
@@ -142,7 +169,7 @@ export const it: KitCopy = {
       },
       rain: {
         title: "Pioggia a Phu Quoc. La spiaggia può aspettare.",
-        body: "La guida completa dell'isola non è in questa versione.",
+        body: "Aspetta che la pioggia cali. La guida dell'isola dice cosa è stato verificato e cosa è stato lasciato fuori.",
         cta: "Apri il piano pioggia",
         tool: "weather",
       },
@@ -152,7 +179,7 @@ export const it: KitCopy = {
   giftTitle: "eSIM Vietnam gratuita",
   giftBody: "5 GB al giorno per 10 giorni. La chiedi su WhatsApp e premi invio tu. Da questa pagina non parte nulla.",
   giftCta: "Come richiederla",
-  toolsLabel: "Il passo utile",
+  toolsLabel: "Strumenti utili",
   tools: {
     esim: { title: "eSIM gratuita", glance: "5 GB al giorno · 10 giorni" },
     arrival: { title: "Aeroporto e hotel", glance: "Una lista da spuntare" },
@@ -162,8 +189,11 @@ export const it: KitCopy = {
     safety: { title: "Sicurezza", glance: "113 · 114 · 115" },
     packing: { title: "Bagaglio", glance: "Salvato su questo telefono" },
     "da-nang": { title: "Guida di Da Nang", glance: "La pagina completa" },
+    "hoi-an": { title: "Guida di Hoi An", glance: "Il centro a piedi" },
+    hue: { title: "Guida di Hue", glance: "La porta, poi l'hotel" },
+    "phu-quoc": { title: "Guida di Phu Quoc", glance: "Prima l'indirizzo" },
   },
-  guideNote: "La guida scritta per intero, in questa versione, è Da Nang. Meteo, soldi, frasi e sicurezza seguono già la città che scegli.",
+  guideNote: "Ogni città ha una guida. Meteo, soldi, frasi e sicurezza seguono la città che scegli.",
   photoAlt: {
     danang: {
       landed: "Il Golden Bridge a Ba Na Hills, sorretto da mani di pietra, nella nebbia vicino a Da Nang",
@@ -335,13 +365,13 @@ export const it: KitCopy = {
       ],
       hoian: [
         { title: "Botteghe coperte", detail: "Nella città vecchia i negozi stanno sotto i tetti. È un tipo di posto, non un nome." },
-        { title: "Evita l'argine aperto", detail: "La guida completa di Hoi An, con orari verificati, non è in questa versione." },
+        { title: "Evita l'argine aperto", detail: "Gli orari non sono elencati. Usa le botteghe coperte." },
       ],
       hue: [
-        { title: "Fuori dai cortili", detail: "La pietra aperta è scivolosa. La guida completa di Hue non è in questa versione." },
+        { title: "Fuori dai cortili", detail: "La pietra aperta è scivolosa. La guida di Hue non indica un prezzo del biglietto." },
       ],
       phuquoc: [
-        { title: "Lontano dalla spiaggia aperta", detail: "Aspetta che la pioggia cali. La guida completa dell'isola non è in questa versione." },
+        { title: "Lontano dalla spiaggia aperta", detail: "Aspetta che la pioggia cali. Nessuna sala al coperto è nominata: non è stata verificata." },
       ],
     },
     unavailable: "Open-Meteo non ha risposto e su questo telefono non c'è una lettura salvata per questa città.",
@@ -482,7 +512,181 @@ export const it: KitCopy = {
     ],
     elsewhere: "Altre pagine di GoVietStay",
     links: [
+      { href: "/it/travel-kit/arrival?city=danang", label: "Lista dell'aeroporto" },
+      { href: "/it/travel-kit/weather?city=danang", label: "Meteo a Da Nang" },
+      { href: "/it/travel-kit/hoi-an?city=hoian", label: "Guida di Hoi An" },
+      { href: "/it/travel-kit/hue?city=hue", label: "Guida di Hue" },
+      { href: "/it/travel-kit/phu-quoc?city=phuquoc", label: "Guida di Phu Quoc" },
       { href: "/it/local-experiences/da-nang-night-bites-city-lights", label: "Una sera di cibo a Da Nang" },
+      { href: "/it/da-nang-o-phu-quoc", label: "Da Nang o Phu Quoc, sul sito principale" },
+    ],
+  },
+  hoian: {
+    kicker: "Hoi An",
+    title: "Una città da fare a piedi, quando l'auto si è fermata.",
+    lede: "Hoi An antica, in queste fotografie, è il fiume, il ponte coperto giapponese e le barche con le lanterne. L'ordine qui sotto è per chi è appena arrivato. Non vende un tour e non indica un prezzo o un orario.",
+    blocks: [
+      {
+        title: "Come arrivare",
+        paragraphs: [
+          "La lista dell'aeroporto di questo kit è scritta per l'aeroporto di Da Nang. Se sei atterrato lì, usala, poi scrivi il tuo hotel nel campo indirizzo prima di salire.",
+          "Mostra l'indirizzo in vietnamita prima che l'auto parta. Nessuna tariffa: non ne è stata verificata una.",
+        ],
+      },
+      {
+        title: "A piedi",
+        paragraphs: [
+          "Il centro antico si cammina. Il ponte coperto giapponese è il punto nella fotografia. All'autista serve l'hotel, non il ponte.",
+          "Dopo il buio sul fiume ci sono le barche con le lanterne. Tieni la borsa davanti, dal lato lontano dal traffico. I motivi sono nella pagina sicurezza.",
+        ],
+      },
+      {
+        title: "Se piove",
+        paragraphs: [
+          "Da ottobre a dicembre è la stagione delle piogge che il Foreign Office descrive per il Vietnam centrale, e gli allagamenti possono chiudere le strade. Il cielo di oggi è nella pagina meteo, da Open-Meteo.",
+          "Usa le botteghe coperte. Il laboratorio del sarto nella fotografia è un luogo al coperto. Orari e biglietti non sono indicati.",
+        ],
+      },
+      {
+        title: "Soldi e connessione",
+        paragraphs: [
+          "Cambia il contante solo a uno sportello ufficiale con un'insegna chiara. La pagina soldi ha un cambio di riferimento, il nome della fonte e l'ora.",
+          "Il regalo eSIM è 5 GB al giorno per 10 giorni. Lo chiedi su WhatsApp e premi invio tu. Quali telefoni la installano si conferma in chat.",
+          "In Vietnam le autorità possono bloccare siti e rivedere ciò che c'è sui dispositivi.",
+        ],
+      },
+      {
+        title: "Cosa evitare",
+        paragraphs: [
+          "Non lasciare il passaporto come deposito. In pagoda copri spalle e ginocchia. Compra tu da bere. Non fotografare un sito militare.",
+          "Se c'è pericolo, chiama 113, 114 o 115 prima di scrivere a qualcuno.",
+        ],
+      },
+    ],
+    faq: [
+      { q: "Cosa faccio nella prima ora a Hoi An?", a: "Se sei atterrato a Da Nang, prima la lista dell'aeroporto. Poi scrivi l'hotel di Hoi An e mostralo prima che l'auto parta." },
+      { q: "Dove vado se piove?", a: "Sotto le botteghe coperte, o in un laboratorio come quello della fotografia. Gli orari non ci sono." },
+      { q: "È una pagina per prenotare un tour?", a: "No. È una guida per il giorno in cui arrivi." },
+    ],
+    elsewhere: "Strumenti e le altre città",
+    links: [
+      { href: "/it/travel-kit/arrival?city=hoian", label: "Lista dell'aeroporto" },
+      { href: "/it/travel-kit/weather?city=hoian", label: "Meteo a Hoi An" },
+      { href: "/it/travel-kit/phrases?city=hoian", label: "Una frase da mostrare" },
+      { href: "/it/travel-kit/da-nang?city=danang", label: "Guida di Da Nang" },
+      { href: "/it/travel-kit/hue?city=hue", label: "Guida di Hue" },
+      { href: "/it/travel-kit/phu-quoc?city=phuquoc", label: "Guida di Phu Quoc" },
+    ],
+  },
+  hue: {
+    kicker: "Hue",
+    title: "La porta non è il tuo hotel.",
+    lede: "Ngo Mon è la porta principale della Città Imperiale di Hue, ed è la fotografia di questa pagina. Questo è l'ordine pratico per chi arriva. Nessun prezzo del biglietto, nessun orario e nessuna tariffa di taxi: non sono stati verificati.",
+    blocks: [
+      {
+        title: "La corsa",
+        paragraphs: [
+          "La lista dell'aeroporto è scritta per Da Nang. Se dormi a Hue, scrivi il tuo hotel nel campo indirizzo prima che l'auto parta.",
+          "Ngo Mon è un punto che puoi indicare. Non sostituisce il nome dell'hotel. Nessun tempo di viaggio.",
+        ],
+      },
+      {
+        title: "Alla cittadella",
+        paragraphs: [
+          "La porta rossa e oro nella fotografia è Ngo Mon. Tieni la borsa davanti.",
+          "In un tempio copri spalle e ginocchia. Non consegnare il passaporto come deposito per un biglietto o un noleggio.",
+        ],
+      },
+      {
+        title: "Se piove",
+        paragraphs: [
+          "Da ottobre a dicembre è la stagione delle piogge del Vietnam centrale secondo il Foreign Office, e gli allagamenti possono chiudere le strade. Le condizioni di oggi sono nella pagina meteo.",
+          "La pietra aperta è scivolosa. Sta' fuori dai cortili e da un argine scoperto. Nessuna sala con orari verificati è nominata.",
+        ],
+      },
+      {
+        title: "Soldi e connessione",
+        paragraphs: [
+          "Cambia i soldi solo a uno sportello ufficiale. Il cambio di riferimento è nella pagina soldi, con fonte e ora.",
+          "Per i dati, la pagina eSIM spiega il regalo. Premi invio tu. Un'app di casa può non aprirsi.",
+        ],
+      },
+      {
+        title: "Cosa questa pagina non indovina",
+        paragraphs: [
+          "Il nome dell'aeroporto di Hue, una tariffa di taxi, un prezzo del biglietto e un orario di spettacolo restano fuori.",
+          "Se c'è pericolo, prima 113, 114 o 115.",
+        ],
+      },
+    ],
+    faq: [
+      { q: "Cosa faccio nella prima ora se vado a Hue?", a: "Tieni il passaporto, controlla il timbro se hai appena passato i controlli, e mostra l'indirizzo dell'hotel in vietnamita prima che l'auto parta. Ngo Mon è solo un punto di riferimento." },
+      { q: "Dove vado se piove?", a: "Fuori dai cortili aperti. Nessun biglietto e nessun orario." },
+      { q: "È una pagina per prenotare un tour?", a: "No. È una guida per il giorno in cui arrivi." },
+    ],
+    elsewhere: "Strumenti e le altre città",
+    links: [
+      { href: "/it/travel-kit/arrival?city=hue", label: "Lista dell'aeroporto" },
+      { href: "/it/travel-kit/weather?city=hue", label: "Meteo a Hue" },
+      { href: "/it/travel-kit/safety?city=hue", label: "Numeri di emergenza" },
+      { href: "/it/travel-kit/da-nang?city=danang", label: "Guida di Da Nang" },
+      { href: "/it/travel-kit/hoi-an?city=hoian", label: "Guida di Hoi An" },
+      { href: "/it/travel-kit/phu-quoc?city=phuquoc", label: "Guida di Phu Quoc" },
+    ],
+  },
+  phuquoc: {
+    kicker: "Phu Quoc",
+    title: "La spiaggia può aspettare.",
+    lede: "Phu Quoc è un'isola. La fotografia è sabbia chiara e barche di legno. L'ordine delle prime ore: una connessione, un indirizzo, poi la spiaggia se il cielo lo consente. Nessuna tariffa, nessun prezzo di una barca, nessun orario di negozio.",
+    blocks: [
+      {
+        title: "Prima di uscire dal terminal",
+        paragraphs: [
+          "Chiedi la eSIM finché la rete dell'aeroporto è comoda. Premi invio tu. La compatibilità del telefono si conferma nella chat WhatsApp.",
+          "Il codice dell'aeroporto non è indicato: non è stato verificato. Scrivi il tuo hotel e mostra l'indirizzo prima che l'auto parta.",
+        ],
+      },
+      {
+        title: "Dopo il buio",
+        paragraphs: [
+          "Fuori dai paesi la strada è buia. Accordatevi sull'indirizzo prima della partenza. Se usi Grab o Xanh SM, prenota l'intero tragitto nell'app.",
+          "Tieni la borsa davanti. Non dare il passaporto a un autista o a un noleggio.",
+        ],
+      },
+      {
+        title: "Se piove",
+        paragraphs: [
+          "Lascia la spiaggia aperta finché la pioggia non cala. La fotografia è quella spiaggia, ed è il piano sbagliato con la pioggia forte.",
+          "Nessuna sala al coperto è nominata, perché non ne è stata verificata una. Il cielo di oggi è nella pagina meteo.",
+        ],
+      },
+      {
+        title: "Soldi e regole che viaggiano con te",
+        paragraphs: [
+          "Cambia il contante solo a uno sportello ufficiale. Dichiara le somme grandi: oltre 15 milioni di dong, o oltre 5.000 dollari USA.",
+          "La stagione dei cicloni sulla costa est, nel testo britannico, va da maggio a novembre. La stagione delle inondazioni del Vietnam centrale è ottobre–dicembre. Phu Quoc è un'isola a sud: non prendere la nota sulle inondazioni del centro come una previsione per questa spiaggia. Per oggi usa la pagina meteo.",
+          "Le pene per la droga sono severe. Le sigarette elettroniche sono vietate. Compra tu da bere.",
+        ],
+      },
+      {
+        title: "Se qualcosa non va",
+        paragraphs: [
+          "Chiama 113, 114 o 115. Chi risponde può parlare vietnamita. Nel frasario c'è una riga per l'ambulanza.",
+          "WhatsApp è per l'aiuto locale ordinario, quando sei già al sicuro.",
+        ],
+      },
+    ],
+    faq: [
+      { q: "Cosa faccio nella prima ora a Phu Quoc?", a: "Chiedi la eSIM solo se premi invio, poi mostra l'indirizzo dell'hotel prima che l'auto parta. La spiaggia non è il primo compito." },
+      { q: "Dove vado se piove?", a: "Lontano dalla spiaggia aperta. Nessuna sala sostitutiva è nominata." },
+      { q: "È una pagina per prenotare un tour?", a: "No. Pagine più lunghe esistono sul sito principale e sono collegate sotto. Non sono il passo obbligatorio." },
+    ],
+    elsewhere: "Strumenti, altre città e il sito principale",
+    links: [
+      { href: "/it/travel-kit/esim?city=phuquoc", label: "Richiesta eSIM" },
+      { href: "/it/travel-kit/weather?city=phuquoc", label: "Meteo a Phu Quoc" },
+      { href: "/it/travel-kit/safety?city=phuquoc", label: "Numeri di emergenza" },
+      { href: "/it/travel-kit/da-nang?city=danang", label: "Guida di Da Nang" },
       { href: "/it/da-nang-o-phu-quoc", label: "Da Nang o Phu Quoc, sul sito principale" },
     ],
   },
@@ -501,5 +705,5 @@ export const it: KitCopy = {
       a: "Apri la pagina eSIM e tocca WhatsApp. Il messaggio lo invii tu. L'offerta descritta qui è 5 GB al giorno per 10 giorni. La compatibilità del telefono si conferma in chat.",
     },
   ],
-  otherCities: "Hoi An, Hue e Phu Quoc hanno già meteo, frasario, soldi e sicurezza. Le guide complete di quelle città non sono scritte in questa versione.",
+  otherCities: "La città si sceglie nell'intestazione. La guida, il meteo e il piano pioggia seguono quella scelta.",
 };

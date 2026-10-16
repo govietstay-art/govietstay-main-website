@@ -83,8 +83,11 @@ export type Dictionary = {
   copyFailed: string;
 };
 
-export const TOOL_SLUGS = ["esim", "arrival", "money", "phrases", "weather", "safety", "packing", "da-nang"] as const;
+export const UTILITY_SLUGS = ["esim", "arrival", "money", "phrases", "weather", "safety", "packing"] as const;
+export const GUIDE_SLUGS = ["da-nang", "hoi-an", "hue", "phu-quoc"] as const;
+export const TOOL_SLUGS = [...UTILITY_SLUGS, ...GUIDE_SLUGS] as const;
 export type ToolSlug = (typeof TOOL_SLUGS)[number];
+export type GuideSlug = (typeof GUIDE_SLUGS)[number];
 
 export const WEATHER_KINDS = ["clear", "cloud", "fog", "drizzle", "rain", "showers", "thunder"] as const;
 export type WeatherKind = (typeof WEATHER_KINDS)[number];
@@ -94,10 +97,23 @@ export type MomentId = "day" | "evening" | "rain";
 export type TextBlock = { title: string; paragraphs: string[] };
 export type FaqItem = { q: string; a: string };
 
+export type CityGuideCopy = {
+  kicker: string;
+  title: string;
+  lede: string;
+  blocks: TextBlock[];
+  faq: FaqItem[];
+  elsewhere: string;
+  links: { href: string; label: string }[];
+};
+
+export type SituationCopy = { title: string; body: string; tool: ToolSlug };
+
 export type KitCopy = {
   meta: { title: string; description: string };
   pageMeta: Record<ToolSlug, { title: string; description: string }>;
   brand: string;
+  logoAlt: string;
   trust: string;
   skip: string;
   back: string;
@@ -105,7 +121,16 @@ export type KitCopy = {
   langLabel: string;
   languageName: Record<Lang, string>;
   cityLabel: string;
+  cityOpen: string;
+  cityClose: string;
   cities: Record<CityId, string>;
+  portalTitle: string;
+  portalLede: string;
+  situationLabel: string;
+  situations: SituationCopy[];
+  destinationLabel: string;
+  supportBlockTitle: string;
+  supportBlockBody: string;
   supportTitle: string;
   supportHint: string;
   supportMessage: string;
@@ -196,15 +221,10 @@ export type KitCopy = {
     storageNote: string;
     items: { id: string; label: string; note?: string }[];
   };
-  danang: {
-    kicker: string;
-    title: string;
-    lede: string;
-    blocks: TextBlock[];
-    faq: FaqItem[];
-    elsewhere: string;
-    links: { href: string; label: string }[];
-  };
+  danang: CityGuideCopy;
+  hoian: CityGuideCopy;
+  hue: CityGuideCopy;
+  phuquoc: CityGuideCopy;
   homeFaqTitle: string;
   homeFaq: FaqItem[];
   otherCities: string;

@@ -13,7 +13,10 @@ Phase 1 routes, all `noindex`, all under `app/(travel-kit)/`:
 | Safety | `.../safety` |
 | Packing list | `.../packing` |
 | Da Nang guide | `.../da-nang` |
+| Hoi An guide | `.../hoi-an` |
+| Hue guide | `.../hue` |
+| Phu Quoc guide | `.../phu-quoc` |
 
-City is `?city=danang|hoian|hue|phuquoc`. Weather follows that city. Full written guides for Hoi An, Hue and Phu Quoc are not in this version.
+City is `?city=danang|hoian|hue|phuquoc` and is also stored as `gvs-tk-city` on the phone. Canonical URLs omit the query. Weather and the city guides follow that city. The header city control is on every kit page.
 
 Do not show a sample exchange rate or a sample forecast. Live sources, attribution and the go-live steps are in `SOURCES.md` and `GO-LIVE.md`. Sitemap URLs are prepared in `sitemap-draft.ts` and are not imported by `app/sitemap.ts`.

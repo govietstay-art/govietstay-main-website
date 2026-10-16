@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { dictionaries } from "./dictionaries";
-import type { FaqItem, Lang, ToolSlug } from "./types";
+import type { CityGuideCopy, FaqItem, Lang, ToolSlug } from "./types";
 
 const BASE = "https://www.govietstay.com";
 
@@ -53,11 +53,21 @@ export function travelKitMetadata(lang: Lang, tool?: ToolSlug): Metadata {
   };
 }
 
+function guideCopy(lang: Lang, tool?: ToolSlug): CityGuideCopy | null {
+  const copy = dictionaries[lang];
+  if (tool === "da-nang") return copy.danang;
+  if (tool === "hoi-an") return copy.hoian;
+  if (tool === "hue") return copy.hue;
+  if (tool === "phu-quoc") return copy.phuquoc;
+  return null;
+}
+
 function faqsFor(lang: Lang, tool?: ToolSlug): FaqItem[] {
   const copy = dictionaries[lang];
   if (tool === "esim") return copy.esim.faq;
   if (tool === "safety") return copy.safety.faq;
-  if (tool === "da-nang") return copy.danang.faq;
+  const guide = guideCopy(lang, tool);
+  if (guide) return guide.faq;
   if (!tool) return copy.homeFaq;
   return [];
 }
@@ -106,12 +116,23 @@ export function travelKitJsonLd(lang: Lang, tool?: ToolSlug) {
       })),
     });
   }
-  if (tool === "da-nang") {
+  const guide = guideCopy(lang, tool);
+  const placeName =
+    tool === "da-nang"
+      ? copy.cities.danang
+      : tool === "hoi-an"
+        ? copy.cities.hoian
+        : tool === "hue"
+          ? copy.cities.hue
+          : tool === "phu-quoc"
+            ? copy.cities.phuquoc
+            : "";
+  if (guide && placeName) {
     graph.push({
       "@context": "https://schema.org",
       "@type": "TouristDestination",
-      name: "Da Nang",
-      description: copy.danang.lede,
+      name: placeName,
+      description: guide.lede,
       url,
       inLanguage,
     });

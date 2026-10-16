@@ -57,6 +57,10 @@ The kit tells readers with a non-British passport to read their own government�
 
 See `CREDITS.md` in this folder. Places are named only where the photograph is of that place.
 
+## City guides
+
+Hoi An, Hue and Phu Quoc guides use the same GOV.UK facts as Da Nang, dated 16 October 2026, plus only the places the owner photographs show. Hue uses the Ngo Mon photograph for every scenario. Phu Quoc uses the pale-sand and wooden-boats photograph for every scenario. No extra place is named to fill a missing photo.
+
 ## Left out on purpose
 
 Not verified, so not stated as fact:
@@ -64,8 +68,15 @@ Not verified, so not stated as fact:
 - That Hoi An has no airport, or that Hue’s airport is Phu Bai, or any IATA code.
 - Drive times, taxi fares, ATM fees, opening hours, ticket prices, show times.
 - Whether shops “prefer cash”, or that Duong Dong market is covered.
-- Full guides for Hoi An, Hue and Phu Quoc. The home screen says those guides are not in this version.
+- Indoor halls, markets, or rain venues that are not in a verified source or a correctly matched photograph.
 - A machine translator. The phrasebook is a fixed list.
+
+## Analytics and offline
+
+- Events are `travel_kit_open`, `city_change`, `tool_open`, `esim_request_click`, `whatsapp_click`.
+- Payload is language, city, and tool (`home` on the portal). No name, no phone number, no message text.
+- Nothing is sent until `localStorage["gvs-tk-analytics"]` is `"on"`. No cookie and no third-party script.
+- `public/kit-sw.js` is registered only with scope `/{en|ru|it}/travel-kit/`. It does not control the main site, and it cannot cache `/_next/static`.
 
 ## Pages linked from the Da Nang guide
 
