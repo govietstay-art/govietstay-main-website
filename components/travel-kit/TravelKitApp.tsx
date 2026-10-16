@@ -75,8 +75,6 @@ type Props = {
   rates: RatesSnapshot | null;
 };
 
-const HERO_SIZES = "(max-width: 767px) 240px, (min-width: 1024px) 480px, 340px";
-
 function activateOnSpace(event: ReactKeyboardEvent<HTMLAnchorElement>) {
   if (event.key !== " ") return;
   event.preventDefault();
@@ -102,6 +100,32 @@ function useTicks(key: string, count: number) {
 
 function emptySubscribe() {
   return () => {};
+}
+
+function subscribeClock(onStoreChange: () => void) {
+  const id = window.setInterval(onStoreChange, 10000);
+  return () => window.clearInterval(id);
+}
+
+function readClock() {
+  return new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Asia/Ho_Chi_Minh",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  }).format(new Date());
+}
+
+function DeviceClock({ large = false }: { large?: boolean }) {
+  const time = useSyncExternalStore(subscribeClock, readClock, () => "--:--");
+  const [hour, minute] = time.split(":");
+  return (
+    <p className={large ? styles.clock : styles.clockSmall}>
+      {hour}
+      <span>:</span>
+      {minute}
+    </p>
+  );
 }
 
 function clientTrue() {
@@ -351,6 +375,7 @@ export function TravelKitApp({ lang, tool, initialCity, weather, rates }: Props)
                 ) : null}
               </div>
             </div>
+            {tool ? <DeviceClock /> : null}
             <p className={styles.sky}>
               {headerWeather ? (
                 <>
@@ -493,16 +518,17 @@ function KitPhoto({
   priority?: boolean;
 }) {
   const picture = photoSet(city, scenario);
+  const small = picture.srcSet.split(",")[0].trim().split(" ")[0];
   return (
     // Pre-sized WebP. The image optimizer was the slow part of LCP on this page.
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src={picture.src}
+      src={priority ? small : picture.src}
       srcSet={picture.srcSet}
       sizes={sizes}
       alt={alt}
-      width={960}
-      height={1280}
+      width={priority ? 480 : 960}
+      height={priority ? 640 : 1280}
       decoding="async"
       fetchPriority={priority ? "high" : "auto"}
       loading={priority ? "eager" : "lazy"}
@@ -818,46 +844,47 @@ function Home({
   const now = copy.now[city][moment];
   return (
     <>
-      <section className={styles.hero}>
-        <div>
-          <p className={styles.kicker}>{copy.trust}</p>
-          <h1 className={`${styles.heroTitle} ${styles.serif}`}>{copy.portalTitle}</h1>
-          <p className={styles.lede}>{copy.portalLede}</p>
-        </div>
+      <figure className={styles.opening}>
         <div className={styles.photo}>
-          <KitPhoto city={city} scenario={scenario} alt={copy.photoAlt[city][scenario]} sizes={HERO_SIZES} priority />
+          <KitPhoto city={city} scenario={scenario} alt={copy.photoAlt[city][scenario]} sizes="(max-width: 1023px) 160px, 320px" priority />
         </div>
-      </section>
-      <section className={styles.nowCard}>
-        <p className={styles.kicker}>{copy.nowKicker}</p>
-        <h2 className={`${styles.serif} ${styles.nowTitle}`}>{now.title}</h2>
-        <p className={styles.lede}>{now.body}</p>
-        <Link className={styles.cta} href={pathFor(lang, now.tool, city)}>
-          {now.cta}
-        </Link>
-      </section>
-      <section>
-        <h2 className={styles.kicker}>{copy.situationLabel}</h2>
-        <ul className={`${styles.cardGrid} ${styles.situationGrid}`}>
+        <figcaption className={styles.openingCaption}>{copy.cities[city]}</figcaption>
+      </figure>
+      <div className={styles.homeGrid}>
+        <div className={styles.clockBlock}>
+          <DeviceClock large />
+          <p className={styles.clockNote}>{copy.clockLabel}</p>
+        </div>
+        <section className={styles.nowCard} aria-live="polite">
+          <p className={styles.kicker}>{copy.nowKicker}</p>
+          <h1 className={styles.heroTitle}>{now.title}</h1>
+          <p className={styles.lede}>{now.body}</p>
+          <Link className={styles.cta} href={pathFor(lang, now.tool, city)}>
+            {now.cta}
+          </Link>
+        </section>
+        <ul className={styles.keys}>
           {copy.situations.map((item) => (
             <li key={item.tool}>
-              <Link className={styles.card} href={pathFor(lang, item.tool, city)}>
+              <Link href={pathFor(lang, item.tool, city)} aria-current={item.tool === now.tool ? "true" : undefined} data-kind={item.tool === "safety" ? "emergency" : undefined}>
                 <strong>{item.title}</strong>
-                <span>{item.body}</span>
+                <small>{item.body}</small>
               </Link>
             </li>
           ))}
         </ul>
-      </section>
+        <aside className={styles.why}>
+          <h2 className={styles.whyTitle}>{copy.portalTitle}</h2>
+          <p>{copy.portalLede}</p>
+        </aside>
+      </div>
       <section>
         <h2 className={styles.kicker}>{copy.destinationLabel}</h2>
-        <ul className={styles.cardGrid}>
+        <ul className={styles.chips}>
           {CITY_IDS.map((item) => (
             <li key={item}>
-              <Link className={styles.card} href={pathFor(lang, GUIDE_FOR[item], item)} aria-current={item === city ? "true" : undefined}>
-                <PinIcon />
-                <strong>{copy.cities[item]}</strong>
-                <span>{copy.tools[GUIDE_FOR[item]].glance}</span>
+              <Link href={pathFor(lang, GUIDE_FOR[item], item)} aria-current={item === city ? "true" : undefined}>
+                {copy.cities[item]}
               </Link>
             </li>
           ))}
@@ -873,10 +900,10 @@ function Home({
       </section>
       <section>
         <h2 className={styles.kicker}>{copy.toolsLabel}</h2>
-        <ul className={`${styles.cardGrid} ${styles.toolGrid}`}>
+        <ul className={styles.toolIndex}>
           {UTILITY_SLUGS.map((item) => (
             <li key={item}>
-              <Link className={styles.card} href={pathFor(lang, item, city)}>
+              <Link href={pathFor(lang, item, city)}>
                 <strong>{copy.tools[item].title}</strong>
                 <span>{copy.tools[item].glance}</span>
               </Link>
@@ -885,9 +912,11 @@ function Home({
         </ul>
         <p className={styles.note}>{copy.guideNote}</p>
       </section>
-      <section className={styles.supportBlock}>
+      <section className={`${styles.supportBlock} ${styles.letter}`}>
+        <p className={styles.kicker}>{copy.trust}</p>
         <h2 className={styles.serif}>{copy.supportBlockTitle}</h2>
         <p>{copy.supportBlockBody}</p>
+        <p className={styles.note}>{copy.noReply}</p>
         <a className={styles.cta} href={supportHref} target="_blank" rel="noreferrer" onClick={onSupportClick}>
           {copy.supportTitle}
         </a>

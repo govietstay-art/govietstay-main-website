@@ -123,6 +123,8 @@ export type KitCopy = {
   skip: string;
   back: string;
   homeLabel: string;
+  clockLabel: string;
+  noReply: string;
   langLabel: string;
   languageName: Record<Lang, string>;
   cityLabel: string;

@@ -74,6 +74,8 @@ export const it: KitCopy = {
   skip: "Vai al passo successivo",
   back: "Kit",
   homeLabel: "Adesso",
+  clockLabel: "ICT · l’orologio di questo telefono",
+  noReply: "Non promettiamo un tempo di risposta.",
   langLabel: "Lingua",
   languageName: { en: "Inglese", ru: "Russo", it: "Italiano" },
   cityLabel: "Città",

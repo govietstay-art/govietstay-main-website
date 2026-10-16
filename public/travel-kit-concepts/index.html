@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Travel Kit design concepts · GoVietStay</title>
+<style>
+@font-face { font-family: Newsreader; font-style: normal; font-weight: 500; font-display: swap; src: url("fonts/newsreader-560.woff2") format("woff2"); }
+body { margin: 0; background: #efeae2; color: #1c1914; font: 17px/1.45 "Segoe UI", sans-serif; }
+main { width: min(1100px, calc(100% - 32px)); margin: 0 auto; padding: 32px 0 64px; }
+h1 { font-family: Newsreader, Georgia, serif; font-weight: 500; font-size: clamp(36px, 6vw, 60px); line-height: 1; letter-spacing: -0.03em; margin: 0 0 12px; }
+.lead { max-width: 62ch; margin: 0 0 28px; }
+.grid { display: grid; gap: 14px; }
+@media (min-width: 900px) { .grid { grid-template-columns: 1fr 1fr 1fr; } }
+a.card { display: flex; flex-direction: column; gap: 8px; min-height: 220px; padding: 16px; text-decoration: none; color: inherit; background: #fffdf8; border: 1px solid rgba(28,25,20,0.12); }
+a.card strong { font-size: 20px; }
+a.card span { color: #4e463c; }
+.swatch { display: flex; height: 14px; }
+.swatch i { flex: 1; }
+table { width: 100%; border-collapse: collapse; margin-top: 28px; font-size: 15px; }
+th, td { text-align: left; vertical-align: top; padding: 10px 8px; border-top: 1px solid rgba(28,25,20,0.14); }
+.rec { margin-top: 28px; padding: 16px 18px; background: #143028; color: #f7f1e6; }
+.rec h2 { font-family: Newsreader, Georgia, serif; font-weight: 500; margin: 0 0 8px; }
+a.out { color: #143028; }
+</style>
+</head>
+<body>
+<main>
+  <p>Prototype set · not the product · noindex</p>
+  <h1>Three ways the kit could feel.</h1>
+  <p class="lead">These pages are not wired into the Travel Kit. PR #80 is unchanged. Each concept is a static page with its own layout. The logo goes to the main site. Nothing here is a tour, a price, or a promised reply time.</p>
+  <div class="grid">
+    <a class="card" href="a/">
+      <span class="swatch"><i style="background:#14110e"></i><i style="background:#e0b56a"></i><i style="background:#f4eee4"></i></span>
+      <strong>A · Cinematic</strong>
+      <span>The photograph is the wall. One italic line. Three stills of Da Nang, not a card grid.</span>
+    </a>
+    <a class="card" href="b/">
+      <span class="swatch"><i style="background:#101411"></i><i style="background:#e4ff57"></i><i style="background:#f3f6ef"></i></span>
+      <strong>B · Companion</strong>
+      <span>A real clock, one decision, four situations. Russian is the default, so the long lines have to fit.</span>
+    </a>
+    <a class="card" href="c/">
+      <span class="swatch"><i style="background:#16241f"></i><i style="background:#f6f1e6"></i><i style="background:#8d2f2c"></i></span>
+      <strong>C · Concierge</strong>
+      <span>A letter and a tray of requests. WhatsApp opens only when you tap. No invented face.</span>
+    </a>
+  </div>
+  <table>
+    <thead><tr><th></th><th>A Cinematic</th><th>B Companion</th><th>C Concierge</th></tr></thead>
+    <tbody>
+      <tr><th>First glance</th><td>A place</td><td>A decision</td><td>A person, unnamed</td></tr>
+      <tr><th>Photography</th><td>Full-bleed Da Nang stills</td><td>Almost none. The clock is the image.</td><td>A contact sheet with captions</td></tr>
+      <tr><th>Type</th><td>Fraunces italic</td><td>IBM Plex, including Cyrillic</td><td>Newsreader and Plex Mono</td></tr>
+      <tr><th>Inner screen</th><td>The day, three frames</td><td>My trip, empty on purpose</td><td>First hour, spoken order</td></tr>
+      <tr><th>Risk</th><td>Mood without the tool</td><td>Cold instrument</td><td>Stationery without scale</td></tr>
+    </tbody>
+  </table>
+  <section class="rec">
+    <h2>Recommendation, not a decision</h2>
+    <p>Do not ship A, B, or C whole. The brand line is trusted local support, so C is the right spine: a note, a tray, you press send, no fake person, no promised speed. Give that spine A’s full-bleed photograph for the arrival moment, and B’s single “what now” line plus the real clock. The card grid on PR #80 would be retired, not recoloured.</p>
+    <p>The owner chooses. Nothing here is integrated until then.</p>
+  </section>
+  <p><a class="out" href="/en/travel-kit">The working Travel Kit, unchanged</a></p>
+</main>
+</body>
+</html>

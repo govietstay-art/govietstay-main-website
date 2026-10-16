@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Concept C · Concierge · GoVietStay</title>
+<style>
+@font-face { font-family: Newsreader; font-style: normal; font-weight: 400; font-display: swap; src: url("../fonts/newsreader-400.woff2") format("woff2"); }
+@font-face { font-family: Newsreader; font-style: italic; font-weight: 400; font-display: swap; src: url("../fonts/newsreader-italic.woff2") format("woff2"); }
+@font-face { font-family: Newsreader; font-style: normal; font-weight: 600; font-display: swap; src: url("../fonts/newsreader-560.woff2") format("woff2"); }
+@font-face { font-family: PlexMono; font-style: normal; font-weight: 400; font-display: swap; src: url("../fonts/plex-mono-400.woff2") format("woff2"); }
+:root { --desk: #16241f; --ivory: #f6f1e6; --ink: #241c16; --seal: #8d2f2c; --moss: #2d463c; --dim: #5c5146; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: radial-gradient(1200px 700px at 20% -10%, #24382f, var(--desk)); color: var(--ivory); font-family: "Segoe UI", sans-serif; min-height: 100dvh; }
+button, a { font: inherit; color: inherit; }
+.desk { width: min(100%, 560px); margin: 0 auto; padding: 22px 16px 40px; }
+.letter { background: var(--ivory); color: var(--ink); padding: 22px 20px 20px 24px; box-shadow: 0 24px 50px rgba(0,0,0,0.28); position: relative; }
+.letter:before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--seal); }
+.head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+.logo { background: #fff; border-radius: 10px; padding: 3px; line-height: 0; display: flex; }
+.logo img { width: 56px; height: 56px; object-fit: contain; }
+.brand { margin: 0; font-family: PlexMono, ui-monospace, monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--moss); }
+.trust { margin: 4px 0 0; font-family: Newsreader, Georgia, serif; font-style: italic; font-size: 18px; }
+h1 { font-family: Newsreader, Georgia, serif; font-weight: 500; font-size: clamp(32px, 8vw, 44px); line-height: 1.05; margin: 22px 0 10px; letter-spacing: -0.02em; }
+.letter p { font-size: 17px; line-height: 1.5; margin: 0 0 12px; }
+.sign { margin-top: 18px; display: flex; justify-content: space-between; gap: 12px; align-items: end; border-top: 1px solid rgba(36,28,22,0.15); padding-top: 12px; }
+.sign strong { font-family: Newsreader, Georgia, serif; font-weight: 500; font-size: 20px; }
+.sign span { font-size: 13px; color: var(--dim); max-width: 28ch; }
+.tray { margin-top: 18px; display: flex; flex-direction: column; gap: 8px; }
+.slip { width: 100%; text-align: left; background: #fbf7f0; color: var(--ink); border: 0; border-radius: 4px 12px 12px 4px; padding: 12px 14px; min-height: 72px; cursor: pointer; box-shadow: 0 8px 18px rgba(0,0,0,0.16); transition: transform 160ms ease; }
+.slip b { display: block; font-family: PlexMono, ui-monospace, monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--seal); font-weight: 400; }
+.slip span { display: block; margin-top: 4px; font-size: 16px; }
+.slip.on { transform: translateY(-6px); outline: 2px solid var(--seal); }
+.hand { display: none; margin-top: 14px; background: var(--ivory); color: var(--ink); padding: 16px; }
+.hand.show { display: block; }
+.hand a, .views a, .views button { min-height: 48px; display: inline-flex; align-items: center; padding: 0 16px; background: var(--seal); color: #fff; text-decoration: none; border: 0; cursor: pointer; font-weight: 600; }
+.hand p { margin: 0 0 10px; }
+.views { display: flex; gap: 8px; margin-bottom: 14px; }
+.views button { background: transparent; color: var(--ivory); border: 1px solid rgba(246,241,230,0.35); }
+.views button.on { background: var(--ivory); color: var(--ink); }
+.order { display: none; }
+body[data-view="order"] .letter, body[data-view="order"] .tray, body[data-view="order"] .hand { display: none; }
+body[data-view="order"] .order { display: block; }
+.order { background: var(--ivory); color: var(--ink); padding: 22px 20px 18px 24px; position: relative; }
+.order:before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--seal); }
+.order ol { margin: 0; padding: 0; list-style: none; counter-reset: step; }
+.order li { counter-increment: step; padding: 12px 0; border-top: 1px solid rgba(36,28,22,0.12); display: grid; grid-template-columns: 36px 1fr; gap: 8px; }
+.order li:before { content: counter(step, decimal-leading-zero); font-family: PlexMono, monospace; color: var(--seal); }
+.sheet { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-top: 8px; }
+.sheet figure { margin: 0; }
+.sheet img { width: 100%; height: 92px; object-fit: cover; display: block; }
+.sheet figcaption { font-size: 12px; line-height: 1.3; color: var(--dim); margin-top: 4px; }
+:focus-visible { outline: 2px solid var(--seal); outline-offset: 3px; }
+@media (min-width: 1024px) {
+  .desk { width: min(1120px, calc(100% - 64px)); padding-top: 48px; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.7fr); gap: 28px; align-items: start; }
+  .views { grid-column: 1 / -1; }
+  .letter { padding: 36px 40px 28px 44px; }
+  h1 { font-size: 56px; max-width: 16ch; }
+  .tray { margin-top: 0; }
+  .order { grid-column: 1 / -1; display: none; }
+  body[data-view="order"] .order { display: block; }
+  .sheet img { height: 160px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .slip { transition: none; }
+  .slip.on { transform: none; }
+}
+</style>
+</head>
+<body data-view="note">
+<div class="desk">
+  <nav class="views" aria-label="Screens">
+    <button type="button" id="to-note" class="on">The note</button>
+    <button type="button" id="to-order">First hour</button>
+  </nav>
+  <article class="letter">
+    <header class="head">
+      <div>
+        <p class="brand">GoVietStay</p>
+        <p class="trust">Trusted local support</p>
+      </div>
+      <a class="logo" href="https://govietstay.com"><img src="/brand/govietstay-official-logo.jpg" width="1254" height="1254" alt="GoVietStay, main website"></a>
+    </header>
+    <h1>A note for someone who just landed.</h1>
+    <p>Do not start with the view. Have the hotel address in Vietnamese. If you want a person at GoVietStay, you write the message and you press send.</p>
+    <p>This desk does not promise how soon someone replies. If you are in danger, call 113, 114 or 115 before you message anyone. Operators answer in Vietnamese.</p>
+    <div class="sign">
+      <strong>GoVietStay</strong>
+      <span>No staff portrait is shown. A face we cannot name would be a fiction.</span>
+    </div>
+  </article>
+  <div class="tray" id="tray" role="list">
+    <button type="button" class="slip" data-slip="esim" role="listitem"><b>Request 01</b><span>The eSIM gift. 5 GB a day for 10 days. No charge is shown.</span></button>
+    <button type="button" class="slip" data-slip="driver" role="listitem"><b>Request 02</b><span>A line for the driver. You still press send.</span></button>
+    <button type="button" class="slip" data-slip="urgent" role="listitem"><b>Not a request</b><span>If it is urgent, call first. WhatsApp is the wrong tool.</span></button>
+  </div>
+  <div class="hand" id="hand">
+    <p id="hand-copy"></p>
+    <a id="hand-link" href="#request">Open WhatsApp</a>
+  </div>
+  <article class="order">
+    <p class="brand">First hour · Da Nang</p>
+    <h1>The order a person would say out loud.</h1>
+    <ol>
+      <li><div><strong>Stamp, then the exit.</strong> British passport rules are on the product’s arrival page. They are not repeated here as if they covered every passport.</div></li>
+      <li><div><strong>Address before the car.</strong> The photograph of the Golden Bridge is the city, not the hotel.</div></li>
+      <li><div><strong>A phrase large enough to show.</strong> It is a fixed list in the product, not a translator.</div></li>
+      <li><div><strong>A person, if you still need one.</strong> Same rule: you press send. No reply time is promised.</div></li>
+    </ol>
+    <div class="sheet">
+      <figure><img src="/travel-kit/opt/da-nang-golden-bridge-960.webp" alt="Golden Bridge at Ba Na Hills, near Da Nang"><figcaption>Golden Bridge · Da Nang</figcaption></figure>
+      <figure><img src="/travel-kit/opt/hoi-an-covered-bridge-960.webp" alt="Japanese Covered Bridge in Hoi An, from the river"><figcaption>Covered bridge · Hoi An</figcaption></figure>
+      <figure><img src="/travel-kit/opt/hue-ngo-mon-960.webp" alt="Ngo Mon gate of the Imperial City in Hue"><figcaption>Ngo Mon · Hue</figcaption></figure>
+    </div>
+    <p>Phu Quoc’s photograph is sand and wooden boats. It is not placed in this Da Nang hour.</p>
+  </article>
+</div>
+<script>
+const slips = {
+  esim: {
+    copy: "The draft asks for the Vietnam eSIM gift: 5 GB a day for 10 days. Nothing is installed from this page. The company behind the gift is not named.",
+    href: "https://wa.me/84937762607?text=" + encodeURIComponent("Hello GoVietStay. I would like to request the Vietnam eSIM: 5 GB a day for 10 days. I am in Da Nang.")
+  },
+  driver: {
+    copy: "The draft asks for help with a driver message. You can still edit the words before you send.",
+    href: "https://wa.me/84937762607?text=" + encodeURIComponent("Hello GoVietStay. I am in Da Nang and I need the hotel address written for a driver.")
+  },
+  urgent: {
+    copy: "Call 113, 114 or 115. This button is not a substitute. It stays a WhatsApp draft only if you still choose to write after you have called.",
+    href: "https://wa.me/84937762607?text=" + encodeURIComponent("Hello GoVietStay. I already called the emergency number. I am in Da Nang and I need a person.")
+  }
+};
+let open = null;
+document.getElementById("tray").addEventListener("click", (event) => {
+  const slip = event.target.closest(".slip");
+  if (!slip) return;
+  open = slip.dataset.slip;
+  document.querySelectorAll(".slip").forEach((node) => node.classList.toggle("on", node === slip));
+  const hand = document.getElementById("hand");
+  document.getElementById("hand-copy").textContent = slips[open].copy;
+  document.getElementById("hand-link").href = slips[open].href;
+  hand.classList.add("show");
+});
+function view(name) {
+  document.body.dataset.view = name;
+  document.getElementById("to-note").classList.toggle("on", name === "note");
+  document.getElementById("to-order").classList.toggle("on", name === "order");
+}
+document.getElementById("to-note").onclick = () => view("note");
+document.getElementById("to-order").onclick = () => view("order");
+if (location.hash === "#hour") view("order");
+if (location.hash === "#esim") document.querySelector('[data-slip="esim"]').click();
+</script>
+</body>
+</html>
