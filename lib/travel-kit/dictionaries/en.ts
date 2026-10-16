@@ -2,17 +2,17 @@ import type { KitCopy } from "../types";
 
 export const en: KitCopy = {
   meta: {
-    title: "Travel kit for Vietnam | GoVietStay",
+    title: "Vietnam Travel Kit: Free eSIM, Weather & Local Guides | GoVietStay",
     description:
-      "Trusted local support for a traveler who just arrived in Da Nang, Hoi An, Hue or Phu Quoc: weather, money, phrases, safety and a free eSIM request.",
+      "Free Vietnam Travel Kit for first-time visitors: practical Da Nang, Hoi An, Hue and Phu Quoc guides, weather, airport arrival, money tips and eSIM requests.",
   },
   pageMeta: {
     esim: {
-      title: "Free Vietnam eSIM request | GoVietStay travel kit",
+      title: "Free Vietnam eSIM Request & Setup Guidance | GoVietStay",
       description: "Request 5 GB a day for 10 days on WhatsApp. You send the message yourself. Nothing is installed from this page.",
     },
     arrival: {
-      title: "From the airport to your hotel | GoVietStay travel kit",
+      title: "Vietnam Airport Arrival Checklist for First-Time Visitors | GoVietStay",
       description: "What to do before you leave the terminal in Vietnam, with a checklist saved on this phone.",
     },
     money: {
@@ -48,19 +48,19 @@ export const en: KitCopy = {
       description: "Dates, notes and a packing list saved on this phone. Nothing is sent to a server.",
     },
     "da-nang": {
-      title: "Da Nang guide for a new arrival | GoVietStay travel kit",
+      title: "Da Nang Travel Guide: Arrival, Weather & Local Tips | GoVietStay",
       description: "Getting around, rain, money and safety in Da Nang, written for someone who just landed.",
     },
     "hoi-an": {
-      title: "Hoi An guide for a new arrival | GoVietStay travel kit",
+      title: "Hoi An Travel Guide: Old Town, Rain & Arrival Tips | GoVietStay",
       description: "Walking the old town, rain, money and safety in Hoi An, without prices or opening hours.",
     },
     hue: {
-      title: "Hue guide for a new arrival | GoVietStay travel kit",
+      title: "Hue Travel Guide: Imperial City, Arrival & Local Tips | GoVietStay",
       description: "The Imperial City gate, the ride, rain and safety in Hue. No fare and no ticket price.",
     },
     "phu-quoc": {
-      title: "Phu Quoc guide for a new arrival | GoVietStay travel kit",
+      title: "Phu Quoc Travel Guide: Arrival, Weather & Local Tips | GoVietStay",
       description: "The first hours on the island: a connection, an address, rain, and what this page will not guess.",
     },
   },
