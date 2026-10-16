@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Concept B · Companion · GoVietStay</title>
+<style>
+@font-face { font-family: Plex; font-style: normal; font-weight: 400; font-display: swap; src: url("../fonts/plex-latin-400.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2010-2027, U+20AC; }
+@font-face { font-family: Plex; font-style: normal; font-weight: 500; font-display: swap; src: url("../fonts/plex-latin-500.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2010-2027, U+20AC; }
+@font-face { font-family: Plex; font-style: normal; font-weight: 600; font-display: swap; src: url("../fonts/plex-latin-600.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2010-2027, U+20AC; }
+@font-face { font-family: Plex; font-style: normal; font-weight: 400; font-display: swap; src: url("../fonts/plex-cyr-400.woff2") format("woff2"); unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: Plex; font-style: normal; font-weight: 500; font-display: swap; src: url("../fonts/plex-cyr-500.woff2") format("woff2"); unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: Plex; font-style: normal; font-weight: 600; font-display: swap; src: url("../fonts/plex-cyr-600.woff2") format("woff2"); unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+:root { --bg: #101411; --panel: #171c18; --line: #2c352e; --ink: #f3f6ef; --dim: #a7b2a6; --signal: #e4ff57; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--ink); font-family: Plex, "Segoe UI", sans-serif; }
+button, a { font: inherit; color: inherit; }
+button { background: none; border: 0; cursor: pointer; text-align: left; }
+.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px 0; }
+.logo { background: #fff; border-radius: 10px; padding: 2px; line-height: 0; display: flex; }
+.logo img { width: 44px; height: 44px; object-fit: contain; }
+.langs { display: flex; border: 1px solid var(--line); border-radius: 999px; }
+.langs button { min-width: 44px; min-height: 44px; color: var(--dim); }
+.langs button.on { color: var(--bg); background: var(--signal); border-radius: 999px; }
+.shell { padding: 12px 16px 28px; display: flex; flex-direction: column; gap: 14px; }
+.clock { font-variant-numeric: tabular-nums; font-weight: 500; font-size: clamp(56px, 18vw, 84px); letter-spacing: -0.05em; line-height: 0.9; margin: 8px 0 0; }
+.clock span { color: var(--signal); }
+.meta { margin: 6px 0 0; color: var(--dim); font-size: 14px; }
+.now { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 16px; transition: background 180ms ease; }
+.now.hot { background: #1c2414; }
+.eyebrow { margin: 0; color: var(--signal); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; }
+html[lang="ru"] .eyebrow { letter-spacing: 0; text-transform: none; font-size: 13px; }
+h1 { font-size: clamp(28px, 7vw, 40px); line-height: 1.12; font-weight: 500; margin: 8px 0; text-wrap: pretty; }
+.now p { margin: 0; color: var(--dim); font-size: 16px; line-height: 1.45; }
+.keys { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.keys button { min-height: 72px; padding: 10px 12px; border-radius: 14px; background: var(--panel); border: 1px solid var(--line); color: var(--ink); font-size: 16px; font-weight: 500; line-height: 1.25; }
+.keys button small { display: block; color: var(--dim); font-weight: 400; font-size: 13px; margin-top: 4px; }
+.keys button.on { background: var(--signal); color: #14180d; border-color: var(--signal); }
+.keys button.on small { color: #3d4718; }
+.cities { display: flex; gap: 6px; flex-wrap: wrap; }
+.cities button { min-height: 44px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--line); color: var(--dim); }
+.cities button.on { color: var(--ink); border-color: var(--ink); }
+.fine { color: #7e8a7d; font-size: 13px; line-height: 1.4; margin: 0; }
+.trip { display: none; }
+body[data-view="trip"] .home { display: none; }
+body[data-view="trip"] .trip { display: flex; }
+.trip { flex-direction: column; gap: 0; border-top: 1px solid var(--line); }
+.slot { display: grid; grid-template-columns: 16px 1fr; gap: 12px; padding: 14px 0; }
+.dot { width: 10px; height: 10px; border: 1.5px solid var(--signal); border-radius: 50%; margin-top: 6px; }
+.slot strong { display: block; font-weight: 500; }
+.slot span { color: var(--dim); font-size: 14px; }
+.switch { display: flex; gap: 8px; }
+.switch button { min-height: 44px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--line); }
+.switch button.on { background: var(--ink); color: var(--bg); }
+aside.why { display: block; padding-top: 4px; }
+aside.why p { margin: 0 0 8px; color: var(--dim); line-height: 1.45; }
+:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+@media (min-width: 1024px) {
+  .shell { max-width: 1180px; margin: 0 auto; padding: 20px 28px 36px; min-height: calc(100dvh - 86px); display: grid; grid-template-columns: 280px minmax(0, 1fr) 260px; grid-template-areas: "clock now why" "cities now why" "keys keys why"; grid-template-rows: auto minmax(120px, 1fr) auto; gap: 18px 22px; align-items: stretch; }
+  .clockblock { grid-area: clock; }
+  .now { grid-area: now; min-height: 320px; padding: 28px; }
+  .keys { grid-area: keys; grid-template-columns: repeat(4, 1fr); }
+  .cities { grid-area: cities; }
+  aside.why { grid-area: why; padding-top: 8px; }
+  body[data-view="trip"] .shell { display: block; max-width: 720px; }
+  h1 { font-size: 52px; }
+  .clock { font-size: 76px; }
+  .top { max-width: 1180px; margin: 0 auto; padding: 18px 28px 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .now { transition: none; }
+}
+</style>
+<script data-gvs-preview-boot="1">
+(function () {
+  var BASE = "/govietstay-main-website";
+  var meta = document.querySelector('meta[name="gvs-preview-city"]');
+  var baked = meta ? meta.getAttribute("content") : "";
+  function prefixed(href) {
+    var u;
+    try { u = new URL(href, location.origin); } catch (e) { return null; }
+    if (u.origin !== location.origin) return null;
+    var p = u.pathname;
+    if (p === BASE || p.indexOf(BASE + "/") === 0) return p + u.search + u.hash;
+    if (/^\/(en|ru|it)\/travel-kit(\/|$)/.test(p) || p.indexOf("/travel-kit/") === 0 || p.indexOf("/travel-kit-concepts") === 0 || p.indexOf("/brand/") === 0 || p === "/favicon.ico" || p === "/icon.png") {
+      return BASE + p + u.search + u.hash;
+    }
+    return null;
+  }
+  document.addEventListener("click", function (e) {
+    var a = e.target && e.target.closest ? e.target.closest("a[href]") : null;
+    if (!a || a.target === "_blank" || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    var raw = a.getAttribute("href") || "";
+    if (!raw || raw.charAt(0) === "#") return;
+    var next = prefixed(raw);
+    if (next) a.setAttribute("href", next);
+  }, true);
+  function hijack(name, go) {
+    var orig = history[name];
+    history[name] = function (state, title, url) {
+      if (typeof url === "string") {
+        var abs = new URL(url, location.href);
+        if (abs.origin === location.origin && abs.pathname + abs.search !== location.pathname + location.search) {
+          go(abs.href);
+          return;
+        }
+      }
+      return orig.apply(history, arguments);
+    };
+  }
+  hijack("pushState", function (href) { location.assign(href); });
+  hijack("replaceState", function (href) { location.replace(href); });
+  if (!("serviceWorker" in navigator)) return;
+  navigator.serviceWorker.register(BASE + "/preview-sw.js", { scope: BASE + "/" }).then(function (reg) {
+    if (!/\/(en|ru|it)\/travel-kit(\/|$)/.test(location.pathname)) return;
+    var city = new URLSearchParams(location.search).get("city") || "danang";
+    if (!baked || city === baked) {
+      sessionStorage.removeItem("gvs-tk-reloads");
+      return;
+    }
+    var n = Number(sessionStorage.getItem("gvs-tk-reloads") || "0");
+    if (n >= 2) return;
+    function reload() {
+      sessionStorage.setItem("gvs-tk-reloads", String(n + 1));
+      location.reload();
+    }
+    if (navigator.serviceWorker.controller) { reload(); return; }
+    var worker = reg.installing || reg.waiting || reg.active;
+    if (!worker) return;
+    if (worker.state === "activated") { reload(); return; }
+    worker.addEventListener("statechange", function () {
+      if (worker.state === "activated") reload();
+    });
+  }).catch(function () {});
+})();
+</script>
+</head>
+<body data-view="home">
+<header class="top">
+  <a class="logo" href="https://govietstay.com"><img src="/govietstay-main-website/brand/govietstay-official-logo.jpg" width="1254" height="1254" alt="GoVietStay"></a>
+  <div class="switch" role="group" aria-label="Screen">
+    <button type="button" id="view-home" class="on">Сейчас</button>
+    <button type="button" id="view-trip">Поездка</button>
+  </div>
+  <div class="langs" role="group" aria-label="Language">
+    <button type="button" id="lang-ru" class="on">RU</button>
+    <button type="button" id="lang-en">EN</button>
+  </div>
+</header>
+<div class="shell">
+  <div class="clockblock home">
+    <p class="clock" id="clock">--<span>:</span>--</p>
+    <p class="meta" id="zone">ICT · телефон</p>
+  </div>
+  <div class="cities home" id="cities" role="group" aria-label="City"></div>
+  <section class="now home" id="now" aria-live="polite">
+    <p class="eyebrow" id="eyebrow"></p>
+    <h1 id="title"></h1>
+    <p id="body"></p>
+  </section>
+  <div class="keys home" id="keys" role="group" aria-label="Situation"></div>
+  <aside class="why home">
+    <p class="eyebrow" id="why-label"></p>
+    <p id="why"></p>
+    <p class="fine" id="fine"></p>
+  </aside>
+  <section class="trip" id="trip">
+    <p class="eyebrow" id="trip-kicker"></p>
+    <h1 id="trip-title"></h1>
+    <div id="slots"></div>
+    <p class="fine" id="trip-fine"></p>
+  </section>
+</div>
+<script>
+const dict = {
+  ru: {
+    home: "Сейчас",
+    trip: "Поездка",
+    zone: "ICT · часы этого телефона",
+    whyLabel: "Почему этот шаг",
+    fine: "Погода в этом прототипе не обновляется. В продукте она приходит из Open-Meteo и подписывается. Здесь только схема решения.",
+    situations: [
+      ["landed", "Только прилетел", "Адрес, потом машина"],
+      ["rain", "Дождь", "Сначала крыша"],
+      ["evening", "Вечер", "Фраза водителю"],
+      ["emergency", "Экстренно", "113 · 114 · 115"]
+    ],
+    cities: [["danang", "Дананг"], ["hoian", "Хойан"], ["hue", "Хюэ"], ["phuquoc", "Фукуок"]],
+    why: "Один экран отвечает на один вопрос: что сделать следующим. Остальное не спорит с этой строкой.",
+    tripKicker: "Поездка на этом телефоне",
+    tripTitle: "Пустые поля. Вы их заполните.",
+    tripFine: "Прототип ничего не сохраняет. В продукте даты и заметки остаются в браузере и никуда не отправляются.",
+    slots: [
+      ["Дата приезда", "Поле пустое, пока вы сами не впишете день."],
+      ["Дата отъезда", "Тоже пустое. Прототип не выдумывает маршрут."],
+      ["Заметка про eSIM", "5 ГБ в сутки на 10 дней. Страница не знает, отправили ли вы сообщение."],
+      ["Адрес отеля", "Карточка адреса живёт в продукте, не в этом макете."]
+    ],
+    lines: {
+      danang: {
+        landed: ["Сейчас в Дананге", "Согласуйте адрес отеля до того, как машина тронется.", "Печать в паспорте проверяют на выходе. Этот экран не заменяет правило въезда."],
+        rain: ["Если небо закрыто", "Сначала крыша. Пляж и мост подождут.", "Живой прогноз будет на странице погоды. Здесь его нет."],
+        evening: ["Уже вечер", "Покажите фразу. Паспорт как залог не отдавайте.", "Фраза в продукте крупная, чтобы её было видно водителю."],
+        emergency: ["Сначала звонок", "113, 114 или 115. Сообщение человеку после.", "Операторы отвечают по-вьетнамски. Это из справки МИД Великобритании, сверенной 16 октября 2026."]
+      },
+      hoian: {
+        landed: ["Сейчас в Хойане", "Машина останавливается. Дальше старый город пешком.", "На снимке продукта — крытый мост. Этот прототип снимок не подменяет карточкой."],
+        rain: ["Дождь в Хойане", "Крытая мастерская на снимке — реальное место, не прогноз.", "Часы работы сюда не ставим: их не сверяли."],
+        evening: ["Вечер на реке", "Фонари на лодках — это снимок, не расписание.", "Сначала адрес, потом прогулка."],
+        emergency: ["Сначала звонок", "Те же номера страны: 113, 114, 115.", "Город не меняет экстренный номер."]
+      },
+      hue: {
+        landed: ["Сейчас в Хюэ", "На снимке ворота Нго Мон. Это не ваш отель.", "Адрес гостиницы нужен отдельно, своими словами на вьетнамском."],
+        rain: ["Дождь в Хюэ", "Крыша важнее прогулки вдоль стены.", "Отдельного снимка дождя для Хюэ в наборе нет. Один кадр не выдаём за три."],
+        evening: ["Вечер у ворот", "Ворота не становятся красивее от спешки.", "Фраза водителю — до того, как закроется дверь."],
+        emergency: ["Сначала звонок", "113, 114, 115. Потом человек в WhatsApp.", "Время ответа не обещаем."]
+      },
+      phuquoc: {
+        landed: ["Сейчас на Фукуоке", "Остров. Сначала адрес, потом берег.", "Снимок — песок и деревянные лодки. Не рынок и не зал."],
+        rain: ["Дождь на острове", "Открытый берег подождёт.", "Отдельного кадра дождя нет, и мы его не выдумываем."],
+        evening: ["Темнеет раньше, чем кажется", "Дороги за посёлками без фонарей. Адрес покажите до старта.", "Это осторожность, не измеренное время в пути."],
+        emergency: ["Сначала звонок", "113, 114, 115 и здесь.", "Заметка о сезоне дождей в центре страны — не прогноз для острова."]
+      }
+    }
+  },
+  en: {
+    home: "Now",
+    trip: "My trip",
+    zone: "ICT · this phone’s clock",
+    whyLabel: "Why this step",
+    fine: "Weather does not update in this prototype. In the product it comes from Open-Meteo and is labelled. This is only the decision.",
+    situations: [
+      ["landed", "Just landed", "Address, then the car"],
+      ["rain", "Rain", "A roof first"],
+      ["evening", "Evening", "A phrase for the driver"],
+      ["emergency", "Emergency", "113 · 114 · 115"]
+    ],
+    cities: [["danang", "Da Nang"], ["hoian", "Hoi An"], ["hue", "Hue"], ["phuquoc", "Phu Quoc"]],
+    why: "One screen answers one question: what to do next. Nothing else competes with that line.",
+    tripKicker: "The trip, on this phone",
+    tripTitle: "Empty fields. You fill them.",
+    tripFine: "This prototype stores nothing. In the product, dates and notes stay in the browser and are not uploaded.",
+    slots: [
+      ["Arrival date", "Empty until you type the day."],
+      ["Departure date", "Also empty. The prototype does not invent a route."],
+      ["eSIM note", "5 GB a day for 10 days. The page cannot see if you sent the message."],
+      ["Hotel address", "The address card lives in the product, not in this mock."]
+    ],
+    lines: {
+      danang: {
+        landed: ["Right now in Da Nang", "Agree the hotel address before the car moves.", "The entry stamp is checked on the way out. This screen does not replace the entry rule."],
+        rain: ["If the sky closes", "A roof first. The beach and the bridge can wait.", "The live forecast belongs on the weather page. It is not here."],
+        evening: ["It is evening", "Show the phrase. Do not leave your passport as a deposit.", "In the product the phrase is large enough for a driver to read."],
+        emergency: ["Call first", "113, 114 or 115. Message a person after.", "Operators answer in Vietnamese. That is from UK travel advice checked on 16 October 2026."]
+      },
+      hoian: {
+        landed: ["Right now in Hoi An", "The car stops. The old town is on foot.", "The product photograph is the covered bridge. This prototype does not restyle it into a card."],
+        rain: ["Rain in Hoi An", "The covered workshop in the photograph is a real room, not a forecast.", "Opening hours are not printed here. They were not verified."],
+        evening: ["Evening on the river", "Lanterns on the boats are a photograph, not a timetable.", "The address first, the walk after."],
+        emergency: ["Call first", "The same national numbers: 113, 114, 115.", "The city does not change the emergency number."]
+      },
+      hue: {
+        landed: ["Right now in Hue", "The photograph is Ngo Mon gate. It is not your hotel.", "The hotel address is a separate line, in Vietnamese."],
+        rain: ["Rain in Hue", "A roof matters more than a walk along the wall.", "There is no separate rain photograph for Hue. One frame is not presented as three."],
+        evening: ["Evening at the gate", "The gate does not get easier if you hurry.", "The phrase for the driver comes before the door shuts."],
+        emergency: ["Call first", "113, 114, 115. Then a person on WhatsApp.", "No reply time is promised."]
+      },
+      phuquoc: {
+        landed: ["Right now on Phu Quoc", "An island. The address first, then the beach.", "The photograph is sand and wooden boats. Not a market, not a hall."],
+        rain: ["Rain on the island", "The open beach can wait.", "There is no separate rain frame, and none is invented."],
+        evening: ["It gets dark sooner than it looks", "Roads beyond the towns are unlit. Show the address before you start.", "That is caution, not a measured drive time."],
+        emergency: ["Call first", "113, 114, 115 here too.", "The central-Vietnam flood note is not a forecast for this island."]
+      }
+    }
+  }
+};
+let lang = "ru";
+let city = "danang";
+let situation = "landed";
+function tick() {
+  const text = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Bangkok", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).format(new Date());
+  const [h, m] = text.split(":");
+  document.getElementById("clock").innerHTML = h + "<span>:</span>" + m;
+}
+function paint() {
+  const pack = dict[lang];
+  document.documentElement.lang = lang;
+  document.getElementById("zone").textContent = pack.zone;
+  document.getElementById("why-label").textContent = pack.whyLabel;
+  document.getElementById("why").textContent = pack.why;
+  document.getElementById("fine").textContent = pack.fine;
+  const line = pack.lines[city][situation];
+  document.getElementById("eyebrow").textContent = line[0];
+  document.getElementById("title").textContent = line[1];
+  document.getElementById("body").textContent = line[2];
+  document.getElementById("now").classList.toggle("hot", situation === "emergency");
+  document.getElementById("cities").innerHTML = pack.cities.map(([id, name]) => `<button type="button" data-city="${id}" class="${id === city ? "on" : ""}">${name}</button>`).join("");
+  document.getElementById("keys").innerHTML = pack.situations.map(([id, name, sub]) => `<button type="button" data-sit="${id}" class="${id === situation ? "on" : ""}">${name}<small>${sub}</small></button>`).join("");
+  document.getElementById("trip-kicker").textContent = pack.tripKicker;
+  document.getElementById("trip-title").textContent = pack.tripTitle;
+  document.getElementById("trip-fine").textContent = pack.tripFine;
+  document.getElementById("slots").innerHTML = pack.slots.map(([title, detail]) => `<div class="slot"><i class="dot"></i><div><strong>${title}</strong><span>${detail}</span></div></div>`).join("");
+  document.getElementById("lang-ru").classList.toggle("on", lang === "ru");
+  document.getElementById("lang-en").classList.toggle("on", lang === "en");
+  document.getElementById("view-home").textContent = pack.home;
+  document.getElementById("view-trip").textContent = pack.trip;
+}
+document.body.addEventListener("click", (event) => {
+  const cityBtn = event.target.closest("[data-city]");
+  const sitBtn = event.target.closest("[data-sit]");
+  if (cityBtn) { city = cityBtn.dataset.city; paint(); }
+  if (sitBtn) { situation = sitBtn.dataset.sit; paint(); }
+});
+function view(name) {
+  document.body.dataset.view = name;
+  document.getElementById("view-home").classList.toggle("on", name === "home");
+  document.getElementById("view-trip").classList.toggle("on", name === "trip");
+}
+document.getElementById("view-home").onclick = () => view("home");
+document.getElementById("view-trip").onclick = () => view("trip");
+document.getElementById("lang-ru").onclick = () => { lang = "ru"; paint(); };
+document.getElementById("lang-en").onclick = () => { lang = "en"; paint(); };
+tick();
+setInterval(tick, 10000);
+paint();
+if (location.hash === "#trip") view("trip");
+if (location.hash === "#en") { lang = "en"; paint(); }
+</script>
+</body>
+</html>
