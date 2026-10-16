@@ -20,7 +20,7 @@ import { getGermanForEnglish, getEnglishForGerman } from "../lib/seo/germanPairs
 const BASE_URL = "https://www.govietstay.com";
 const SITE_UPDATED = new Date("2026-08-22T00:00:00.000Z");
 
-const homepageAlternates={languages:{en:BASE_URL,ru:`${BASE_URL}/ru`,"it-IT":`${BASE_URL}/it`,"x-default":BASE_URL}};
+const homepageAlternates={languages:{en:BASE_URL,ru:`${BASE_URL}/ru`,"it-IT":`${BASE_URL}/it`,ar:`${BASE_URL}/ar`,"he-IL":`${BASE_URL}/il`,"ru-KZ":`${BASE_URL}/kz`,"x-default":BASE_URL}};
 
 const languageAlternates = (englishPath: string, russianPath: string) => ({
   languages: {
