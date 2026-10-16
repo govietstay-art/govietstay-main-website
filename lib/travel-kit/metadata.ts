@@ -4,6 +4,12 @@ import type { CityGuideCopy, FaqItem, Lang, ToolSlug } from "./types";
 
 const BASE = "https://www.govietstay.com";
 
+// Public content-rich pages may be indexed. Private/interactive utilities remain noindex.
+export const INDEXABLE_TRAVEL_KIT_SLUGS = ["da-nang", "hoi-an", "hue", "phu-quoc", "arrival", "safety", "esim", "explore", "tools", "phrases", "weather", "money"] as const;
+export function isIndexableTravelKitPage(tool?: ToolSlug): boolean {
+  return tool === undefined || (INDEXABLE_TRAVEL_KIT_SLUGS as readonly string[]).includes(tool);
+}
+
 const OG_LOCALE: Record<Lang, string> = {
   en: "en_US",
   ru: "ru_RU",
