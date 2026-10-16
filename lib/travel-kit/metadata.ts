@@ -10,6 +10,9 @@ export function isIndexableTravelKitPage(tool?: ToolSlug): boolean {
   return tool === undefined || (INDEXABLE_TRAVEL_KIT_SLUGS as readonly string[]).includes(tool);
 }
 
+const INDEXABLE = new Set(["da-nang","hoi-an","hue","phu-quoc","arrival","safety","esim","explore","tools","phrases","weather","money"]);
+const mayIndex = (tool?: ToolSlug) => !tool || INDEXABLE.has(tool);
+
 const OG_LOCALE: Record<Lang, string> = {
   en: "en_US",
   ru: "ru_RU",
