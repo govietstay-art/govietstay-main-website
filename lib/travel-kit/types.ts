@@ -82,3 +82,130 @@ export type Dictionary = {
   copied: string;
   copyFailed: string;
 };
+
+export const TOOL_SLUGS = ["esim", "arrival", "money", "phrases", "weather", "safety", "packing", "da-nang"] as const;
+export type ToolSlug = (typeof TOOL_SLUGS)[number];
+
+export const WEATHER_KINDS = ["clear", "cloud", "fog", "drizzle", "rain", "showers", "thunder"] as const;
+export type WeatherKind = (typeof WEATHER_KINDS)[number];
+
+export type MomentId = "day" | "evening" | "rain";
+
+export type TextBlock = { title: string; paragraphs: string[] };
+export type FaqItem = { q: string; a: string };
+
+export type KitCopy = {
+  meta: { title: string; description: string };
+  pageMeta: Record<ToolSlug, { title: string; description: string }>;
+  brand: string;
+  trust: string;
+  skip: string;
+  back: string;
+  homeLabel: string;
+  langLabel: string;
+  languageName: Record<Lang, string>;
+  cityLabel: string;
+  cities: Record<CityId, string>;
+  supportTitle: string;
+  supportHint: string;
+  supportMessage: string;
+  nowKicker: string;
+  weatherLoading: string;
+  weatherUnavailable: string;
+  weatherSaved: string;
+  weatherSource: string;
+  conditions: Record<WeatherKind, string>;
+  now: Record<CityId, Record<MomentId, { title: string; body: string; cta: string; tool: ToolSlug }>>;
+  giftKicker: string;
+  giftTitle: string;
+  giftBody: string;
+  giftCta: string;
+  toolsLabel: string;
+  tools: Record<ToolSlug, { title: string; glance: string }>;
+  guideNote: string;
+  photoAlt: Record<CityId, Record<ScenarioId, string>>;
+  esim: {
+    lead: string;
+    youGet: string[];
+    howTitle: string;
+    how: string[];
+    unknown: string;
+    button: string;
+    foot: string;
+    message: string;
+    faq: FaqItem[];
+  };
+  arrival: {
+    lead: string;
+    blocks: TextBlock[];
+    addressTitle: string;
+    addressHint: string;
+    addressPlaceholder: string;
+    addressShow: string;
+    addressEmpty: string;
+    addressClose: string;
+    checklistTitle: string;
+    checklist: string[];
+    progress: string;
+    storageNote: string;
+  };
+  money: {
+    lead: string;
+    amount: string;
+    from: string;
+    to: string;
+    swap: string;
+    result: string;
+    empty: string;
+    reference: string;
+    unavailable: string;
+    saved: string;
+    refresh: string;
+    sourceName: string;
+    currencyName: Record<Currency, string>;
+    blocks: TextBlock[];
+  };
+  phrases: {
+    lead: string;
+    show: string;
+    close: string;
+    honest: string;
+    items: { vi: string; meaning: string }[];
+  };
+  weatherPage: {
+    lead: string;
+    today: string;
+    ahead: string;
+    rainTitle: string;
+    rain: Record<CityId, { title: string; detail: string }[]>;
+    unavailable: string;
+    saved: string;
+    refresh: string;
+  };
+  safety: {
+    lead: string;
+    call: string;
+    numbers: { name: string; tel: string; detail: string }[];
+    foot: string;
+    blocks: TextBlock[];
+    faq: FaqItem[];
+  };
+  packing: {
+    lead: string;
+    progress: string;
+    storageNote: string;
+    items: { id: string; label: string; note?: string }[];
+  };
+  danang: {
+    kicker: string;
+    title: string;
+    lede: string;
+    blocks: TextBlock[];
+    faq: FaqItem[];
+    elsewhere: string;
+    links: { href: string; label: string }[];
+  };
+  homeFaqTitle: string;
+  homeFaq: FaqItem[];
+  otherCities: string;
+};

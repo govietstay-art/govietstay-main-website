@@ -1,112 +1,169 @@
-import type { Dictionary } from "../types";
+import type { KitCopy } from "../types";
 
-export const en: Dictionary = {
+export const en: KitCopy = {
   meta: {
-    title: "Travel kit for Da Nang, Hoi An, Hue and Phu Quoc | GoVietStay",
+    title: "Travel kit for Vietnam | GoVietStay",
     description:
-      "A phone utility for visitors in Vietnam: arrival checklist, sample currency converter, Vietnamese phrases, rain-day ideas and emergency numbers. Not a tour shop.",
+      "Trusted local support for a traveler who just arrived in Da Nang, Hoi An, Hue or Phu Quoc: weather, money, phrases, safety and a free eSIM request.",
   },
-  productName: "GoVietStay travel kit",
-  skip: "Skip to utilities",
-  greeting: {
-    morning: "Good morning",
-    afternoon: "Good afternoon",
-    evening: "Good evening",
+  pageMeta: {
+    esim: {
+      title: "Free Vietnam eSIM request | GoVietStay travel kit",
+      description: "Request 5 GB a day for 10 days on WhatsApp. You send the message yourself. Nothing is installed from this page.",
+    },
+    arrival: {
+      title: "From the airport to your hotel | GoVietStay travel kit",
+      description: "What to do before you leave the terminal in Vietnam, with a checklist saved on this phone.",
+    },
+    money: {
+      title: "Money and payments in Vietnam | GoVietStay travel kit",
+      description: "A reference exchange rate with its source and time, plus the cash rules published by the UK Foreign Office.",
+    },
+    phrases: {
+      title: "Vietnamese phrases to show | GoVietStay travel kit",
+      description: "A short phrasebook in large type. It is not a translation app.",
+    },
+    weather: {
+      title: "Weather and a rain plan | GoVietStay travel kit",
+      description: "Current conditions from Open-Meteo for Da Nang, Hoi An, Hue and Phu Quoc, with a plan if it is wet.",
+    },
+    safety: {
+      title: "Safety and emergency numbers | GoVietStay travel kit",
+      description: "113, 114, 115 and 112, plus practical warnings from the UK Foreign Office advice for Vietnam.",
+    },
+    packing: {
+      title: "Packing list for Vietnam | GoVietStay travel kit",
+      description: "A checklist you can tick. It stays on this phone. No account.",
+    },
+    "da-nang": {
+      title: "Da Nang guide for a new arrival | GoVietStay travel kit",
+      description: "Getting around, rain, money and safety in Da Nang, written for someone who just landed.",
+    },
   },
+  brand: "GoVietStay",
+  trust: "Trusted local support",
+  skip: "Skip to the next step",
+  back: "Travel kit",
+  homeLabel: "Right now",
   langLabel: "Language",
   languageName: { en: "English", ru: "Russian", it: "Italian" },
-  cityLabel: "Current city",
-  cities: {
-    danang: "Da Nang",
-    hoian: "Hoi An",
-    hue: "Hue",
-    phuquoc: "Phu Quoc",
+  cityLabel: "City",
+  cities: { danang: "Da Nang", hoian: "Hoi An", hue: "Hue", phuquoc: "Phu Quoc" },
+  supportTitle: "Message a local person",
+  supportHint: "WhatsApp · you press send",
+  supportMessage: "Hello GoVietStay. I am in {city} and I need local help.",
+  nowKicker: "Right now",
+  weatherLoading: "Weather is loading",
+  weatherUnavailable: "Weather is not available right now",
+  weatherSaved: "Last reading saved on this phone. Not a new update.",
+  weatherSource: "Weather data by Open-Meteo.com",
+  conditions: {
+    clear: "Clear",
+    cloud: "Cloudy",
+    fog: "Fog",
+    drizzle: "Drizzle",
+    rain: "Rain",
+    showers: "Showers",
+    thunder: "Thunder",
   },
-  sample: "Sample",
-  scenarioHint: "Sample day",
-  scenarios: { landed: "Landed", rain: "Rain", evening: "Evening" },
-  todayLabel: "Today",
-  today: {
+  now: {
     danang: {
-      landed: {
-        title: "On the ground in Da Nang",
-        body: "Immigration and bags first, then the eSIM, then the hotel name in Vietnamese before you take a car.",
+      day: {
+        title: "You are in Da Nang. Do the airport list before the car.",
+        body: "Check the entry stamp, keep your passport, and show the driver a Vietnamese address. The list on the next screen is the order that matters.",
         cta: "Open the arrival list",
-      },
-      rain: {
-        title: "Rain on the coast",
-        body: "The Marble Mountains caves are under cover. The Cham museum is indoors, and cafes along the Han stay under awnings.",
-        cta: "See rain ideas",
+        tool: "arrival",
       },
       evening: {
-        title: "Evening on Son Tra",
-        body: "The Lady Buddha looks over the peninsula. Dragon Bridge is still an easy address to show a driver.",
+        title: "Evening in Da Nang. Have one phrase ready.",
+        body: "The Lady Buddha on Son Tra is the landmark for this hour. If you need a car, Dragon Bridge is a clear address to show. Agree it before the car moves.",
         cta: "Show a phrase",
+        tool: "phrases",
+      },
+      rain: {
+        title: "It is wet in Da Nang. Stay under a roof.",
+        body: "The Marble Mountains caves are covered. The Cham museum is indoors. Leave My Khe until the rain eases. No opening hours are listed here.",
+        cta: "Open the rain plan",
+        tool: "weather",
       },
     },
     hoian: {
-      landed: {
-        title: "Landed for Hoi An",
-        body: "Hoi An has no airport. You arrive at Da Nang, then travel by road. Save the old-town address before you leave the terminal.",
+      day: {
+        title: "Hoi An can wait one careful hour.",
+        body: "The arrival list in this kit is written for Da Nang airport. Use it if that is where you landed, then put your own hotel on the driver card.",
         cta: "Open the arrival list",
-      },
-      rain: {
-        title: "Rain in the old town",
-        body: "Covered shophouses and a quiet workshop are the useful plan. The market is under a roof.",
-        cta: "See rain ideas",
+        tool: "arrival",
       },
       evening: {
-        title: "Lantern hour",
-        body: "After dark the old town is for walking. Open the driver card before you get in a car.",
-        cta: "Show the address",
+        title: "After dark, Hoi An is a walking town.",
+        body: "Keep the driver card for the ride back. Show the Vietnamese address before you get in.",
+        cta: "Show a phrase",
+        tool: "phrases",
+      },
+      rain: {
+        title: "Rain in Hoi An. Use the covered streets.",
+        body: "Use the covered shophouses. A full Hoi An guide is not in this version yet.",
+        cta: "Open the rain plan",
+        tool: "weather",
       },
     },
     hue: {
-      landed: {
-        title: "Landed at Phu Bai",
-        body: "Hue’s airport is Phu Bai. Check the Imperial City address in Vietnamese before the taxi queue.",
+      day: {
+        title: "If Hue is the plan, settle the ride first.",
+        body: "This kit’s step-by-step arrival is for Da Nang airport. For Hue, put your own hotel address on the driver card before the car moves.",
         cta: "Open the arrival list",
-      },
-      rain: {
-        title: "Rain over the citadel",
-        body: "Courtyards will be wet. Use the indoor halls and leave the riverbank for a drier hour.",
-        cta: "See rain ideas",
+        tool: "arrival",
       },
       evening: {
-        title: "A quiet evening in Hue",
-        body: "Keep the driver card on this screen. Agree the address before the car moves.",
-        cta: "Show the address",
+        title: "A quiet evening needs a clear address.",
+        body: "Ngo Mon is the gate in the photograph. Your hotel, not the gate, is what the driver should see.",
+        cta: "Show a phrase",
+        tool: "phrases",
+      },
+      rain: {
+        title: "Rain in Hue. Courtyards will be slick.",
+        body: "Stay out of open courtyards and off the river path. A full Hue guide is not in this version yet.",
+        cta: "Open the rain plan",
+        tool: "weather",
       },
     },
     phuquoc: {
-      landed: {
-        title: "Landed on Phu Quoc",
-        body: "The airport is small. Request the eSIM while the terminal network is easy, then open the driver card.",
-        cta: "Open the arrival list",
-      },
-      rain: {
-        title: "Rain on the island",
-        body: "The beach can wait. The market and the old prison museum are the steadier plan.",
-        cta: "See rain ideas",
+      day: {
+        title: "On Phu Quoc, get a connection before you leave the terminal.",
+        body: "Request the eSIM while the airport network is easy, then open the driver card. A full island guide is not in this version yet.",
+        cta: "See the eSIM gift",
+        tool: "esim",
       },
       evening: {
-        title: "Evening on the island",
-        body: "Roads are dark outside the towns. Agree the address before the car moves.",
-        cta: "Show the address",
+        title: "Evening on the island. Agree the address first.",
+        body: "Roads outside the towns are dark. Show the Vietnamese address before the car moves.",
+        cta: "Show a phrase",
+        tool: "phrases",
+      },
+      rain: {
+        title: "Rain on Phu Quoc. The beach can wait.",
+        body: "Leave the open beach until the rain eases. A full Phu Quoc guide is not in this version yet.",
+        cta: "Open the rain plan",
+        tool: "weather",
       },
     },
   },
-  sky: {
-    clear: "Clear",
-    bright: "Bright",
-    hazy: "Hazy",
-    sunny: "Sunny",
-    rain: "Rain",
-    showers: "Showers",
-    humid: "Humid",
-    warm: "Warm",
-    still: "Still",
+  giftKicker: "A gift, not a shop",
+  giftTitle: "Free Vietnam eSIM",
+  giftBody: "5 GB a day for 10 days. You request it on WhatsApp and you press send. Nothing is issued from this page.",
+  giftCta: "See how to request it",
+  toolsLabel: "Use this next",
+  tools: {
+    esim: { title: "Free eSIM", glance: "5 GB a day · 10 days" },
+    arrival: { title: "Airport to hotel", glance: "A list you can tick" },
+    money: { title: "Money", glance: "A reference rate" },
+    phrases: { title: "Vietnamese", glance: "Large type to show" },
+    weather: { title: "Weather", glance: "Live, with a rain plan" },
+    safety: { title: "Safety", glance: "113 · 114 · 115" },
+    packing: { title: "Packing list", glance: "Saved on this phone" },
+    "da-nang": { title: "Da Nang guide", glance: "The full city page" },
   },
+  guideNote: "The full written guide in this version is Da Nang. Weather, money, phrases and safety already follow the city you pick.",
   photoAlt: {
     danang: {
       landed: "The Golden Bridge at Ba Na Hills, held by giant stone hands, in the mist near Da Nang",
@@ -129,134 +186,323 @@ export const en: Dictionary = {
       evening: "Pale sand and wooden boats on a Phu Quoc beach",
     },
   },
-  utilitiesLabel: "In the kit",
-  utilities: {
-    esim: { title: "Free Vietnam eSIM", glance: "5 GB a day · 10 days" },
-    arrival: { title: "Airport arrival", glance: "Checklist" },
-    currency: { title: "Currency", glance: "Sample rates" },
-    phrases: { title: "Vietnamese", glance: "Large type" },
-    weather: { title: "Weather", glance: "If it rains" },
-    safety: { title: "Safety", glance: "113 · 114 · 115" },
-  },
-  faqTitle: "Good to know",
-  faq: [
-    {
-      q: "What is the GoVietStay travel kit?",
-      a: "It is a phone utility for visitors in Da Nang, Hoi An, Hue and Phu Quoc. It holds an arrival checklist, a sample currency converter, Vietnamese phrases, a rain-day list and emergency numbers. It does not sell tours.",
-    },
-    {
-      q: "How do I request the free Vietnam eSIM?",
-      a: "Open the eSIM card and tap the WhatsApp button. A chat opens with a message already written for 5 GB a day for 10 days. You send that message yourself. The kit does not send it for you.",
-    },
-    {
-      q: "Which emergency numbers work in Vietnam?",
-      a: "Police is 113, fire is 114 and ambulance is 115. Search and rescue is 112. The UK Foreign, Commonwealth & Development Office and the U.S. Embassy in Vietnam publish these numbers. Operators may answer in Vietnamese.",
-    },
-    {
-      q: "Are the weather and exchange rates live?",
-      a: "No. Weather lines and conversion rates in this kit are labelled samples. The rates sit in one configuration file. They are not a bank quote and not for payments.",
-    },
-  ],
-  supportTitle: "Real local support",
-  supportHint: "WhatsApp · you send the message",
-  supportMessage: "Hello GoVietStay. I am in {city} and I need local help.",
-  close: "Close",
-  back: "Back",
-  esimLead: "5 GB a day for 10 days in Vietnam. The request opens in WhatsApp. You send the message yourself.",
-  esimFacts: ["5 GB a day", "10 days", "For use in Vietnam", "You press send in WhatsApp"],
-  esimButton: "Request on WhatsApp",
-  esimFoot: "Nothing leaves this phone until you press send in the WhatsApp chat.",
-  esimMessage: "Hello GoVietStay. I would like to request the Vietnam eSIM: 5 GB a day for 10 days. I am in {city}.",
-  arrivalLead: "A short list for the terminal. Tick items as you finish them. They stay on this phone.",
-  arrivalNote: {
-    danang: "You are at Da Nang International Airport.",
-    hoian: "Hoi An has no airport. This list starts at Da Nang International Airport, then the road to Hoi An. No drive time is shown here.",
-    hue: "You are at Phu Bai International Airport, the airport for Hue.",
-    phuquoc: "You are at Phu Quoc International Airport.",
-  },
-  airportCaption: "Airport name to show",
-  checklist: [
-    "Finish immigration and collect your bags.",
-    "Request the eSIM while airport Wi-Fi is easy. You send the WhatsApp message yourself.",
-    "Open the driver card and read the Vietnamese address.",
-    "Use the official taxi desk, or the pickup you already arranged.",
-    "Keep 113, 114 and 115 in this kit before you leave the building.",
-  ],
-  progress: "{done} of {total}",
-  currencyLead: "Convert with the sample table stored in this kit. The figures do not update on their own.",
-  amountLabel: "Amount",
-  fromLabel: "From",
-  toLabel: "To",
-  swap: "Swap",
-  resultLabel: "Sample result",
-  emptyAmount: "Enter an amount",
-  currencyName: {
-    VND: "Vietnamese dong",
-    USD: "US dollar",
-    EUR: "Euro",
-    RUB: "Russian ruble",
-  },
-  rateFoot: "Rounded sample dated 16 Oct 2026. Not a live rate, not a bank rate, and not for payments.",
-  payNote: "Many small shops prefer cash in dong. Hotels often take cards. This kit does not know today’s fees or ATM limits.",
-  phrasesLead: "Tap a line to fill the screen. Hold the phone up so the other person can read the Vietnamese.",
-  phraseMeaning: [
-    "Hello.",
-    "Thank you.",
-    "How much is it?",
-    "Please take me to this address.",
-    "I need a doctor.",
-    "Please call an ambulance.",
-    "Not spicy, please.",
-    "Where is the toilet?",
-    "I don’t understand.",
-    "One bottle of water.",
-  ],
-  showLarge: "Show large",
-  allPhrases: "All phrases",
-  showThis: "Show this",
-  activitiesLead: "Ideas for a wet hour in this city. They are not opening hours and not a booking.",
-  activitiesFoot: "Sample ideas. Check the door when you arrive.",
-  activities: {
-    danang: [
-      { title: "Marble Mountains caves", detail: "Covered caverns and a stone Buddha. A sound plan when My Khe is raining." },
-      { title: "Cham Sculpture Museum", detail: "Indoor galleries of Cham stonework. A flatter walk than the cave stairs." },
-      { title: "Han River cafes", detail: "Many sit under awnings. This is a kind of place, not a named venue." },
+  esim: {
+    lead: "GoVietStay offers a Vietnam eSIM as a gift: 5 GB a day for 10 days. This page does not install it and does not send a message for you.",
+    youGet: ["5 GB a day", "10 days", "For use in Vietnam", "You press send in WhatsApp"],
+    howTitle: "How to request it",
+    how: [
+      "Tap the button. WhatsApp opens with a message already written.",
+      "Read it. Add your dates if you want.",
+      "Press send yourself. Until you do, nothing has been requested.",
+      "A person at GoVietStay replies in that chat. That is also where phone compatibility and the start of the 10 days are confirmed.",
     ],
-    hoian: [
-      { title: "A covered workshop", detail: "Tailor shophouses in the old town stay open under a roof. This is a kind of place, not a named shop." },
-      { title: "Hoi An market", detail: "Chợ Hội An is largely under cover." },
-      { title: "Japanese Covered Bridge", detail: "Chùa Cầu is a short walk between showers, not a place to wait out a storm." },
-    ],
-    hue: [
-      { title: "Indoor halls of the citadel", detail: "Đại Nội has covered halls. The courtyards will still be wet." },
-      { title: "Museum of Royal Antiquities", detail: "Bảo tàng Cổ vật Cung đình Huế is an indoor collection." },
-      { title: "Leave the river path", detail: "The Perfume River bank is slick in the rain." },
-    ],
-    phuquoc: [
-      { title: "Duong Dong market", detail: "Chợ Dương Đông is mostly covered." },
-      { title: "Phu Quoc prison museum", detail: "Nhà tù Phú Quốc is a historical site with indoor displays." },
-      { title: "Wait on the beach", detail: "Let the shower pass before you commit to the sand." },
+    unknown:
+      "This page does not list which phones can install an eSIM, how activation works, or the exact clock time the 10 days begin. Those conditions were not published in a form that could be checked here. Ask in the WhatsApp chat before you rely on the gift.",
+    button: "Request on WhatsApp",
+    foot: "Nothing leaves this phone until you press send. There is no review to write and no payment on this page.",
+    message: "Hello GoVietStay. I would like to request the Vietnam eSIM: 5 GB a day for 10 days. I am in {city}.",
+    faq: [
+      {
+        q: "Does the travel kit send the eSIM request for me?",
+        a: "No. The button opens WhatsApp with a draft. You send it.",
+      },
+      {
+        q: "What does the gift include?",
+        a: "5 GB a day for 10 days, for use in Vietnam, as GoVietStay describes the offer. Compatibility and activation are confirmed in the chat, not on this page.",
+      },
     ],
   },
-  safetyLead: "National numbers. Call from any phone in Vietnam.",
-  emergencyName: ["Police", "Fire", "Ambulance", "Search and rescue"],
-  emergencyDetail: [
-    "Công an. Also used for a traffic accident.",
-    "Fire and fire rescue.",
-    "Medical emergency.",
-    "National search and rescue. Not a substitute for 113, 114 or 115.",
-  ],
-  safetyFoot:
-    "Published by the UK Foreign, Commonwealth & Development Office and the U.S. Embassy in Vietnam. Operators may answer in Vietnamese. Use a phrase from this kit if you need to.",
-  driverTitle: "Show this to the driver",
-  driverHint: "Sample landmark. Replace it with your hotel before you get in the car.",
-  driverMeaning: {
-    danang: "Dragon Bridge, Da Nang",
-    hoian: "Hoi An Ancient Town",
-    hue: "Imperial City, Hue",
-    phuquoc: "Duong Dong Market, Phu Quoc",
+  arrival: {
+    lead: "The useful problem at the airport is simple: leave with the right stamp, your passport still in your hands, and a ride you chose. The steps below follow UK Foreign Office advice checked on 16 October 2026. If your passport is not British, read your own government’s entry rules as well.",
+    blocks: [
+      {
+        title: "Before you fly, if you hold a British citizen passport",
+        paragraphs: [
+          "The UK Foreign Office says a British citizen passport needs an expiry date at least six months after arrival, at least two blank pages, and no damage. You enter and leave on the same passport, and you need the entry stamp.",
+          "The same advice says British citizens can visit for up to 45 days for tourism or business without a visa, and should check that the stamp shows 45 days. An e-visa for a longer stay is a different document. This is not a promise for any other passport.",
+          "From 15 April 2026, a digital arrival card is encouraged for foreign nationals using Tan Son Nhat Airport in Ho Chi Minh City. The Foreign Office says it is not currently mandatory there, and that this may change or spread to other airports with little notice. Do not assume Da Nang requires it today.",
+        ],
+      },
+      {
+        title: "Money and medicine in your bag",
+        paragraphs: [
+          "Declare cash over 15 million dong, or over 5,000 US dollars or the same value in other currencies. That threshold is from the UK Foreign Office account of Vietnamese customs rules.",
+          "Carry prescription medicine in hand luggage with a copy of the prescription. The Foreign Office says a total import value over 100 US dollars must be declared.",
+          "Vapes and related products are banned. You cannot bring them in.",
+        ],
+      },
+      {
+        title: "In the terminal",
+        paragraphs: [
+          "Finish immigration and look at the stamp before you walk away. Collect your bags.",
+          "Do not hand your passport to anyone as a deposit for a ride, a fine, or a rental.",
+          "Be wary of a free bus to a hotel that you did not arrange. The Foreign Office warns that unarranged free transfers can be a scam.",
+          "For a taxi, use a ride you arranged, a metered taxi from a larger firm, or an app the Foreign Office names: Grab or Xanh SM. Book the whole journey in the app, and be wary of someone who only claims to be from the company.",
+        ],
+      },
+      {
+        title: "A connection",
+        paragraphs: [
+          "If you want data before you leave the terminal, open the eSIM page. The gift is 5 GB a day for 10 days, and you still press send yourself. This page does not install anything.",
+          "Inside Vietnam, authorities can block websites and can review what is on your devices. Do not assume every app from home will open.",
+        ],
+      },
+      {
+        title: "The address",
+        paragraphs: [
+          "Type your hotel in the box on this page before you sit down. The kit does not choose an address for you.",
+          "The detailed airport sequence above is for a traveler using Da Nang as the arrival airport. It does not invent a fare or a drive time.",
+        ],
+      },
+    ],
+    addressTitle: "Address for the driver",
+    addressHint: "Type it yourself. The box starts empty. The text stays on this phone.",
+    addressPlaceholder: "Hotel name and street, in Vietnamese if you have it",
+    addressShow: "Show this to the driver",
+    addressEmpty: "Type an address first.",
+    addressClose: "Close",
+    checklistTitle: "Tick this on the phone",
+    checklist: [
+      "Passport stamp checked, passport back in your bag.",
+      "Bags collected.",
+      "eSIM requested only if you pressed send in WhatsApp.",
+      "Hotel address ready in Vietnamese.",
+      "Ride is one you arranged, a metered taxi, or Grab or Xanh SM booked in the app.",
+      "113, 114 and 115 saved in the safety page.",
+    ],
+    progress: "{done} of {total}",
+    storageNote: "Ticks stay on this phone. There is no account.",
   },
-  copyAddress: "Copy address",
-  copied: "Address copied",
-  copyFailed: "Copy is blocked on this phone. The address is on the screen to show as it is.",
+  money: {
+    lead: "Convert for reference. This is not a rate you can pay with, and not a promise of what an ATM or a shop will give you.",
+    amount: "Amount",
+    from: "From",
+    to: "To",
+    swap: "Swap currencies",
+    result: "Reference result",
+    empty: "Enter an amount",
+    reference: "For reference only. Not a bank rate and not for payment.",
+    unavailable: "The rate service did not answer, and this phone has no saved rate yet.",
+    saved: "Showing the last rate saved on this phone, not a new update.",
+    refresh: "Try the rate again",
+    sourceName: "Rates By Exchange Rate API",
+    currencyName: { VND: "Vietnamese dong", USD: "US dollar", EUR: "Euro", RUB: "Russian ruble" },
+    blocks: [
+      {
+        title: "Where to change money",
+        paragraphs: [
+          "The UK Foreign Office says you should only change money at official counters with a clear sign. Changing it elsewhere is illegal, and you risk losing the cash.",
+        ],
+      },
+      {
+        title: "Cash you must declare",
+        paragraphs: [
+          "Declare amounts over 15 million dong, or over 5,000 US dollars or the same value in another currency, when you carry them in or out.",
+        ],
+      },
+    ],
+  },
+  phrases: {
+    lead: "Tap a line. Hold the phone up so the other person can read the Vietnamese. This is a phrasebook, not a translator.",
+    show: "Show large",
+    close: "Close",
+    honest: "These lines were written for this kit. They are not a machine translation of whatever you type.",
+    items: [
+      { vi: "Xin chào.", meaning: "Hello." },
+      { vi: "Cảm ơn.", meaning: "Thank you." },
+      { vi: "Bao nhiêu tiền?", meaning: "How much is it?" },
+      { vi: "Đắt quá.", meaning: "That is too expensive." },
+      { vi: "Làm ơn đưa tôi đến địa chỉ này.", meaning: "Please take me to this address." },
+      { vi: "Dừng ở đây, làm ơn.", meaning: "Stop here, please." },
+      { vi: "Tôi bị lạc.", meaning: "I am lost." },
+      { vi: "Giúp tôi với.", meaning: "Please help me." },
+      { vi: "Tôi cần bác sĩ.", meaning: "I need a doctor." },
+      { vi: "Gọi cấp cứu giúp tôi.", meaning: "Please call an ambulance." },
+      { vi: "Không cay, làm ơn.", meaning: "Not spicy, please." },
+      { vi: "Tôi ăn chay.", meaning: "I eat vegetarian food." },
+      { vi: "Nhà vệ sinh ở đâu?", meaning: "Where is the toilet?" },
+      { vi: "Một chai nước suối.", meaning: "One bottle of water." },
+      { vi: "Tôi không hiểu.", meaning: "I don’t understand." },
+    ],
+  },
+  weatherPage: {
+    lead: "Conditions for the area around the city you picked. Not a reading from your hotel door.",
+    today: "Now",
+    ahead: "The next days",
+    rainTitle: "If it is wet",
+    rain: {
+      danang: [
+        { title: "Marble Mountains caves", detail: "Covered caverns. A sound place when the beach is raining. Hours and tickets are not listed here." },
+        { title: "Museum of Cham Sculpture", detail: "Indoor galleries. Go if the caves are enough walking." },
+        { title: "Leave My Khe", detail: "The open beach is the wrong plan in heavy rain." },
+      ],
+      hoian: [
+        { title: "Covered shophouses", detail: "The old town has roofs over the shops. This is a type of place, not a named store." },
+        { title: "Skip the open riverbank", detail: "A full Hoi An guide, with checked hours, is not in this version." },
+      ],
+      hue: [
+        { title: "Out of the courtyards", detail: "Open stone is slick in rain. A full Hue guide is not in this version." },
+      ],
+      phuquoc: [
+        { title: "Off the open beach", detail: "Wait until the rain eases. A full island guide is not in this version." },
+      ],
+    },
+    unavailable: "Open-Meteo did not answer, and this phone has no saved reading for this city.",
+    saved: "Showing the last reading saved on this phone. Not a new update.",
+    refresh: "Try the forecast again",
+  },
+  safety: {
+    lead: "National numbers. They are answered in Vietnamese. Call from any phone in Vietnam.",
+    call: "Call",
+    numbers: [
+      { name: "Police", tel: "113", detail: "Also the number for a traffic accident." },
+      { name: "Fire", tel: "114", detail: "Fire and fire rescue." },
+      { name: "Ambulance", tel: "115", detail: "Medical emergency." },
+      { name: "Search and rescue", tel: "112", detail: "National search and rescue. Not a substitute for 113, 114 or 115." },
+      { name: "Child protection", tel: "111", detail: "Hotline published by the UK Foreign Office for child protection." },
+    ],
+    foot: "Numbers and the warnings below follow the UK Foreign, Commonwealth & Development Office Vietnam advice, read on 16 October 2026. If your passport is not British, also read your own government’s advice.",
+    blocks: [
+      {
+        title: "Your bag and your passport",
+        paragraphs: [
+          "Theft and bag-snatching from motorbikes happen in crowded and tourist places. Hold the bag in front of you, on the side away from the traffic.",
+          "Do not give your passport to a rental shop, a landlord, or a driver as a guarantee. Carry a printed and a digital copy of the photo page. The authorities accept a printed copy of the photo page and visa as photographic ID.",
+        ],
+      },
+      {
+        title: "Rides",
+        paragraphs: [
+          "Use a pre-arranged car, a metered taxi from a larger firm, or Grab or Xanh SM booked inside the app for the whole journey. Be wary of someone who only says they are from the company.",
+          "Motorbike travel is much riskier than at home. Do not hire one unless you already ride well. A helmet is required for the driver and the passenger. To drive a car or motorbike, the Foreign Office tells British licence holders to carry the 1968 international driving permit and the UK licence, plus third-party insurance. Any alcohol is a drink-driving offence.",
+        ],
+      },
+      {
+        title: "Drinks, drugs, temples, photographs",
+        paragraphs: [
+          "Buy your own drink and keep it in sight. There have been methanol poisonings from alcohol sold even in licensed places. Do not buy liquor or cigarettes from street vendors.",
+          "Drug penalties are severe, including for cannabis, and can include a long prison sentence. Vapes are banned.",
+          "At religious sites, cover shoulders and knees. Do not photograph near military bases.",
+        ],
+      },
+      {
+        title: "Rain and storms",
+        paragraphs: [
+          "In central Vietnam the rainy season runs from October to December, and flooding can block roads. The eastern coast can also see tropical cyclones from May to November. Follow local instructions, including any order to leave.",
+        ],
+      },
+    ],
+    faq: [
+      {
+        q: "Which number do I call in an emergency?",
+        a: "Police 113, fire 114, ambulance 115. Search and rescue is 112. The person who answers may speak Vietnamese. Show a phrase from this kit if you need to.",
+      },
+      {
+        q: "Will GoVietStay replace the police?",
+        a: "No. Message the WhatsApp number for ordinary local help. For danger, call 113, 114 or 115 first.",
+      },
+    ],
+  },
+  packing: {
+    lead: "A suggested list for Vietnam, with the legal points marked from UK Foreign Office advice. Tick items as you pack. They stay on this phone.",
+    progress: "{done} of {total}",
+    storageNote: "Saved on this phone only. Clearing the browser data clears the ticks.",
+    items: [
+      { id: "passport", label: "Passport, with time left and blank pages", note: "For a British citizen passport: six months after arrival, and two blank pages." },
+      { id: "copies", label: "Printed and digital copies of the photo page", note: "Carry them. Do not hand over the passport itself as a deposit." },
+      { id: "stamp", label: "Plan to check the entry stamp before you leave the desk" },
+      { id: "meds", label: "Prescription medicine in hand luggage, with the prescription", note: "Declare it if the import value is over 100 US dollars." },
+      { id: "insurance", label: "Insurance details shared with someone at home" },
+      { id: "rain", label: "A light rain layer", note: "Central Vietnam’s rainy season is October to December." },
+      { id: "cover", label: "Clothes that cover shoulders and knees for temples" },
+      { id: "cash", label: "A plan for declaring large amounts of cash", note: "Over 15 million dong, or over 5,000 US dollars." },
+      { id: "vape", label: "No vapes in the bag", note: "Banned to buy or to bring in." },
+      { id: "adapter", label: "A charger you already know works for your phone" },
+    ],
+  },
+  danang: {
+    kicker: "Da Nang",
+    title: "The first day, without a tour.",
+    lede: "Da Nang is a coastal city with an airport, a long beach, and a peninsula. This page is the practical order for someone who just arrived. It does not sell a tour and it does not invent prices or opening hours.",
+    blocks: [
+      {
+        title: "Landing",
+        paragraphs: [
+          "Use the airport list before you take a car. Check the stamp, keep your passport, and decline a free transfer you did not book.",
+          "Put your own hotel on the driver card. Dragon Bridge is only a sample address if you have nothing else to show.",
+        ],
+      },
+      {
+        title: "Getting around",
+        paragraphs: [
+          "Walk is realistic along the beach and the river. For a longer hop, use a ride you arranged, a metered taxi from a larger firm, or Grab or Xanh SM booked in the app.",
+          "Hiring a motorbike is a poor first-day plan unless you already ride well. Helmets are required, and any alcohol is a drink-driving offence. No fare is quoted here because a reliable one was not checked.",
+        ],
+      },
+      {
+        title: "Money and a connection",
+        paragraphs: [
+          "Change cash only at an official counter. The money page has a reference rate and the name of the source.",
+          "If you want data, the eSIM page explains the gift: 5 GB a day for 10 days, requested by you on WhatsApp. The kit cannot promise which phone can install it.",
+          "Inside Vietnam, authorities can block websites and can review what is on your devices. Do not assume every app from home will open.",
+        ],
+      },
+      {
+        title: "If it rains",
+        paragraphs: [
+          "October to December is the rainy season in central Vietnam, and flooding can close roads. Today’s actual sky is on the weather page, from Open-Meteo.",
+          "When it is wet, the Marble Mountains caves and the Museum of Cham Sculpture are indoor plans. My Khe beach is not. Hours and ticket prices are not shown, because they were not verified for this page.",
+        ],
+      },
+      {
+        title: "A place with a name",
+        paragraphs: [
+          "The Lady Buddha stands on the Son Tra peninsula. The Golden Bridge, held by stone hands, is at Ba Na Hills. Ngo Mon is in Hue, not here. The Japanese bridge is in Hoi An, not here.",
+          "None of those names includes a ticket price or a show time. If a driver needs a famous address and you do not yet have the hotel, Dragon Bridge is easy to point at.",
+        ],
+      },
+      {
+        title: "What to skip",
+        paragraphs: [
+          "Do not leave your passport as a deposit. Do not photograph a military site. Cover shoulders and knees at a pagoda. Buy your own drink.",
+          "For danger, call 113, 114 or 115 before you message anyone.",
+        ],
+      },
+    ],
+    faq: [
+      {
+        q: "What should I do in the first hour in Da Nang?",
+        a: "Check your entry stamp, keep your passport, and take a ride you arranged or booked in Grab or Xanh SM. Show the hotel address in Vietnamese before the car moves.",
+      },
+      {
+        q: "Where do I go if it rains?",
+        a: "The Marble Mountains caves or the Museum of Cham Sculpture. This page does not list opening hours or prices.",
+      },
+      {
+        q: "Is this a tour booking page?",
+        a: "No. It is a guide for the day you arrive. Other GoVietStay pages exist, and they are linked at the bottom as other pages, not as the next required step.",
+      },
+    ],
+    elsewhere: "Other pages on GoVietStay",
+    links: [
+      { href: "/travel/local-experiences/da-nang-night-bites-city-lights", label: "An evening food walk in Da Nang" },
+      { href: "/travel/vietnam-local-help", label: "Local help, on the main site" },
+    ],
+  },
+  homeFaqTitle: "Questions people ask first",
+  homeFaq: [
+    {
+      q: "What does this kit do for me in the first hour?",
+      a: "It tells you the next useful step for the city and the sky: the airport list, a phrase to show, or a roof if it is raining. Then it keeps emergency numbers, a phrasebook, a packing list and a reference exchange rate on the phone.",
+    },
+    {
+      q: "Is the weather and the exchange rate live?",
+      a: "Yes, when the source answers. Weather is from Open-Meteo and shows the observation time. Rates are from Exchange Rate API, updated on their side about once a day, and marked for reference only. If a source fails, the page says so instead of inventing a number.",
+    },
+    {
+      q: "How do I get the free eSIM?",
+      a: "Open the eSIM page and tap WhatsApp. You send the message. The offer described here is 5 GB a day for 10 days. Phone compatibility is confirmed in the chat.",
+    },
+  ],
+  otherCities: "Hoi An, Hue and Phu Quoc already have weather, the phrasebook, money and safety. Their full city guides are not written in this version.",
 };

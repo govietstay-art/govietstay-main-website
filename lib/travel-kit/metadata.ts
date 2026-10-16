@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { dictionaries } from "./dictionaries";
-import type { Lang } from "./types";
+import type { FaqItem, Lang, ToolSlug } from "./types";
 
 const BASE = "https://www.govietstay.com";
 
@@ -10,84 +10,111 @@ const OG_LOCALE: Record<Lang, string> = {
   it: "it_IT",
 };
 
-export function travelKitPath(lang: Lang): string {
-  return `/${lang}/travel-kit`;
+export function travelKitPath(lang: Lang, tool?: ToolSlug): string {
+  return tool ? `/${lang}/travel-kit/${tool}` : `/${lang}/travel-kit`;
 }
 
-export function travelKitMetadata(lang: Lang): Metadata {
+export function travelKitMetadata(lang: Lang, tool?: ToolSlug): Metadata {
   const copy = dictionaries[lang];
-  const canonical = `${BASE}${travelKitPath(lang)}`;
+  const meta = tool ? copy.pageMeta[tool] : copy.meta;
+  const canonical = `${BASE}${travelKitPath(lang, tool)}`;
+  const languages = {
+    en: `${BASE}${travelKitPath("en", tool)}`,
+    ru: `${BASE}${travelKitPath("ru", tool)}`,
+    "it-IT": `${BASE}${travelKitPath("it", tool)}`,
+    "x-default": `${BASE}${travelKitPath("en", tool)}`,
+  };
   return {
-    title: { absolute: copy.meta.title },
-    description: copy.meta.description,
+    title: { absolute: meta.title },
+    description: meta.description,
+    keywords: [copy.brand, copy.trust, "Vietnam", copy.cities.danang, copy.cities.hoian, copy.cities.hue, copy.cities.phuquoc],
     robots: {
       index: false,
       follow: false,
       nocache: true,
       googleBot: { index: false, follow: false, noimageindex: true },
     },
-    alternates: {
-      canonical,
-      languages: {
-        en: `${BASE}/en/travel-kit`,
-        ru: `${BASE}/ru/travel-kit`,
-        "it-IT": `${BASE}/it/travel-kit`,
-        "x-default": `${BASE}/en/travel-kit`,
-      },
-    },
+    alternates: { canonical, languages },
     openGraph: {
-      title: copy.meta.title,
-      description: copy.meta.description,
+      title: meta.title,
+      description: meta.description,
       url: canonical,
       siteName: "GoVietStay",
       locale: OG_LOCALE[lang],
       type: "website",
-      images: [{ url: "/travel-kit/hoi-an-lantern-boats.webp", alt: copy.photoAlt.hoian.evening }],
+      images: [{ url: "/travel-kit/da-nang-lady-buddha.webp", alt: copy.photoAlt.danang.evening }],
     },
     twitter: {
       card: "summary_large_image",
-      title: copy.meta.title,
-      description: copy.meta.description,
-      images: ["/travel-kit/hoi-an-lantern-boats.webp"],
+      title: meta.title,
+      description: meta.description,
+      images: ["/travel-kit/da-nang-lady-buddha.webp"],
     },
   };
 }
 
-export function travelKitJsonLd(lang: Lang) {
+function faqsFor(lang: Lang, tool?: ToolSlug): FaqItem[] {
   const copy = dictionaries[lang];
-  const url = `${BASE}${travelKitPath(lang)}`;
+  if (tool === "esim") return copy.esim.faq;
+  if (tool === "safety") return copy.safety.faq;
+  if (tool === "da-nang") return copy.danang.faq;
+  if (!tool) return copy.homeFaq;
+  return [];
+}
+
+export function travelKitJsonLd(lang: Lang, tool?: ToolSlug) {
+  const copy = dictionaries[lang];
+  const url = `${BASE}${travelKitPath(lang, tool)}`;
+  const meta = tool ? copy.pageMeta[tool] : copy.meta;
   const inLanguage = lang === "it" ? "it-IT" : lang;
-  return [
+  const crumbs = [
+    { name: copy.brand, url: `${BASE}${travelKitPath(lang)}` },
+    ...(tool ? [{ name: copy.tools[tool].title, url }] : []),
+  ];
+  const faqs = faqsFor(lang, tool);
+  const graph: Record<string, unknown>[] = [
     {
       "@context": "https://schema.org",
-      "@type": "WebApplication",
-      name: copy.productName,
+      "@type": "WebPage",
+      name: meta.title,
+      description: meta.description,
       url,
-      applicationCategory: "TravelApplication",
-      operatingSystem: "Web",
       inLanguage,
-      isAccessibleForFree: true,
-      description: copy.meta.description,
-      browserRequirements: "Requires a modern mobile browser.",
-      publisher: {
-        "@type": "Organization",
-        name: "GoVietStay",
-        url: BASE,
-      },
-      featureList: (Object.keys(copy.utilities) as (keyof typeof copy.utilities)[]).map(
-        (key) => copy.utilities[key].title,
-      ),
+      isPartOf: { "@type": "WebSite", name: "GoVietStay", url: BASE },
     },
     {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: crumbs.map((crumb, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: crumb.name,
+        item: crumb.url,
+      })),
+    },
+  ];
+  if (faqs.length) {
+    graph.push({
       "@context": "https://schema.org",
       "@type": "FAQPage",
       inLanguage,
       url,
-      mainEntity: copy.faq.map((item) => ({
+      mainEntity: faqs.map((item) => ({
         "@type": "Question",
         name: item.q,
         acceptedAnswer: { "@type": "Answer", text: item.a },
       })),
-    },
-  ];
+    });
+  }
+  if (tool === "da-nang") {
+    graph.push({
+      "@context": "https://schema.org",
+      "@type": "TouristDestination",
+      name: "Da Nang",
+      description: copy.danang.lede,
+      url,
+      inLanguage,
+    });
+  }
+  return graph;
 }

@@ -23,7 +23,7 @@ export function proxy(request:NextRequest){
  const requestHeaders=new Headers(request.headers);
  requestHeaders.set("x-govietstay-locale",getPageLocale(pathname));
  // Isolated Travel Kit surface. No other route sets this header.
- if(/^\/(en|ru|it)\/travel-kit\/?$/.test(pathname)){
+ if(/^\/(en|ru|it)\/travel-kit(\/|$)/.test(pathname)){
   requestHeaders.set("x-govietstay-surface","travel-kit");
  }
  return NextResponse.next({request:{headers:requestHeaders}});
