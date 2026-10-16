@@ -380,7 +380,7 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
 
             <label>
               <div className="gva-mini">Tour</div>
-              <select className="gva-select" value={tourCode} onChange={(e) => setTourCode(e.target.value)}>
+              <select className="gva-select" value={tourCode} onChange={(e) => {const next=e.target.value;setTourCode(next);setBwMode(BW_RATES[next]?.modes[0]??"join");setManualGross(0);setActualSellingPrice("");setDiscount(0);setBwSession("morning");setBwSkyLounge(false);}}>
                 {ALL_SALES_TOURS.filter((t) => t.staffVisible).map((t) => (
                   <option key={t.code} value={t.code}>{t.code} · {t.nameEn}</option>
                 ))}
