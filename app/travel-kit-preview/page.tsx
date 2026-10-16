@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import {
-  ArrowDown, ArrowRight, ArrowUpRight, Check, CheckCircle2, CloudRain,
-  Compass, Copy, Globe2, HeartHandshake, MapPin, MessageCircle,
-  PlaneLanding, ShieldCheck, Smartphone, Sparkles, Sun, Wallet,
+  ArrowDown, ArrowUpRight, Check, CheckCircle2, CloudRain,
+  Compass, Copy, Globe2, HeartHandshake, MessageCircle,
+  PlaneLanding, Smartphone, Sun,
   Wifi, X
 } from "lucide-react";
 import styles from "./travel-kit.module.css";
