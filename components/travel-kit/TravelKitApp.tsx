@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useRef, useState, useSyncExternalStore, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { track } from "@/lib/travel-kit/analytics";
 import { fillCity, parseAmount, parseCity, photoSet, vietnamDayPeriod, whatsAppHref } from "@/lib/travel-kit/config";
 import { dictionaries } from "@/lib/travel-kit/dictionaries";
@@ -510,29 +511,94 @@ function KitPhoto({
   alt,
   sizes,
   priority = false,
+  viewLabel,
+  closeLabel,
 }: {
   city: CityId;
   scenario: ScenarioId;
   alt: string;
   sizes: string;
   priority?: boolean;
+  viewLabel: string;
+  closeLabel: string;
 }) {
   const picture = photoSet(city, scenario);
-  const small = picture.srcSet.split(",")[0].trim().split(" ")[0];
+  const [open, setOpen] = useState(false);
+  const openRef = useRef<HTMLButtonElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const medium = picture.srcSet.split(",")[1]?.trim().split(" ")[0] ?? picture.src;
+  useEffect(() => {
+    if (!open) return;
+    const previous = document.body.style.overflow;
+    const opener = openRef.current;
+    document.body.style.overflow = "hidden";
+    closeRef.current?.focus();
+    function onKey(event: globalThis.KeyboardEvent) {
+      if (event.key === "Escape") {
+        setOpen(false);
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const items = Array.from(dialogRef.current?.querySelectorAll<HTMLElement>("button") ?? []);
+      if (items.length < 2) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = previous;
+      document.removeEventListener("keydown", onKey);
+      opener?.focus();
+    };
+  }, [open]);
+  const dialog = open ? (
+    <div ref={dialogRef} className={styles.lightbox} role="dialog" aria-modal="true" aria-label={alt}>
+      <button type="button" className={styles.lightboxBackdrop} aria-label={closeLabel} onClick={() => setOpen(false)} />
+      <figure className={styles.lightboxFigure}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={picture.src} alt={alt} width={picture.width} height={picture.height} />
+        <figcaption>{alt}</figcaption>
+        <button ref={closeRef} type="button" className={styles.lightboxClose} onClick={() => setOpen(false)}>
+          {closeLabel}
+        </button>
+      </figure>
+    </div>
+  ) : null;
   return (
-    // Pre-sized WebP. The image optimizer was the slow part of LCP on this page.
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={priority ? small : picture.src}
-      srcSet={picture.srcSet}
-      sizes={sizes}
-      alt={alt}
-      width={priority ? 480 : 960}
-      height={priority ? 640 : 1280}
-      decoding="async"
-      fetchPriority={priority ? "high" : "auto"}
-      loading={priority ? "eager" : "lazy"}
-    />
+    <>
+      <button
+        ref={openRef}
+        type="button"
+        className={styles.photoButton}
+        aria-haspopup="dialog"
+        aria-label={`${alt}. ${viewLabel}`}
+        onClick={() => setOpen(true)}
+      >
+        {/* Pre-sized WebP. The image optimizer was the slow part of LCP on this page. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={priority ? medium : picture.src}
+          srcSet={picture.srcSet}
+          sizes={sizes}
+          alt=""
+          width={picture.width}
+          height={picture.height}
+          style={{ objectPosition: picture.position }}
+          decoding="async"
+          fetchPriority={priority ? "high" : "auto"}
+          loading={priority ? "eager" : "lazy"}
+        />
+      </button>
+      {dialog && typeof document !== "undefined" ? createPortal(dialog, document.body) : null}
+    </>
   );
 }
 
@@ -551,6 +617,16 @@ function Explore({ copy, lang, city }: { copy: KitCopy; lang: Lang; city: CityId
       <p className={styles.kicker}>{copy.nav.explore}</p>
       <h1 className={`${styles.heroTitle} ${styles.serif}`}>{copy.explorePage.title}</h1>
       <p className={styles.lede}>{copy.explorePage.lede}</p>
+      <div className={`${styles.photo} ${styles.guidePhoto}`} data-frame={photoSet(city, "landed").frame}>
+        <KitPhoto
+          city={city}
+          scenario="landed"
+          alt={copy.photoAlt[city].landed}
+          sizes="(max-width: 1023px) 92vw, 480px"
+          viewLabel={copy.viewPhoto}
+          closeLabel={copy.closePhoto}
+        />
+      </div>
       <section className={styles.supportBlock}>
         <h2 className={styles.serif}>{copy.explorePage.mapTitle}</h2>
         <p>{copy.explorePage.mapBody}</p>
@@ -672,6 +748,16 @@ function Trip({
       <p className={styles.kicker}>{copy.nav.trip}</p>
       <h1 className={`${styles.heroTitle} ${styles.serif}`}>{page.title}</h1>
       <p className={styles.lede}>{page.lede}</p>
+      <div className={`${styles.photo} ${styles.guidePhoto}`} data-frame={photoSet(city, "landed").frame}>
+        <KitPhoto
+          city={city}
+          scenario="landed"
+          alt={copy.photoAlt[city].landed}
+          sizes="(max-width: 1023px) 92vw, 480px"
+          viewLabel={copy.viewPhoto}
+          closeLabel={copy.closePhoto}
+        />
+      </div>
       <p className={styles.note}>{page.stored}</p>
       <p className={styles.note}>
         {copy.cityLabel}: {copy.cities[city]}
@@ -844,10 +930,20 @@ function Home({
   const now = copy.now[city][moment];
   return (
     <>
+      <div className={styles.homeStage}>
       <figure className={styles.opening}>
-        <div className={styles.photo}>
-          <KitPhoto city={city} scenario={scenario} alt={copy.photoAlt[city][scenario]} sizes="(max-width: 1023px) 160px, 320px" priority />
+        <div className={styles.photo} data-frame={photoSet(city, scenario).frame}>
+          <KitPhoto
+            city={city}
+            scenario={scenario}
+            alt={copy.photoAlt[city][scenario]}
+            sizes="(max-width: 1023px) 220px, 320px"
+            viewLabel={copy.viewPhoto}
+            closeLabel={copy.closePhoto}
+            priority
+          />
         </div>
+        <div className={styles.openingShade} aria-hidden="true" />
         <figcaption className={styles.openingCaption}>{copy.cities[city]}</figcaption>
       </figure>
       <div className={styles.homeGrid}>
@@ -877,6 +973,7 @@ function Home({
           <h2 className={styles.whyTitle}>{copy.portalTitle}</h2>
           <p>{copy.portalLede}</p>
         </aside>
+      </div>
       </div>
       <section>
         <h2 className={styles.kicker}>{copy.destinationLabel}</h2>
@@ -1348,8 +1445,15 @@ function Guide({ copy, tool }: { copy: KitCopy; tool: keyof typeof GUIDE_CITY })
       <p className={styles.kicker}>{page.kicker}</p>
       <h1 className={`${styles.heroTitle} ${styles.serif}`}>{page.title}</h1>
       <p className={styles.lede}>{page.lede}</p>
-      <div className={`${styles.photo} ${styles.guidePhoto}`}>
-        <KitPhoto city={city} scenario="landed" alt={copy.photoAlt[city].landed} sizes="(min-width: 1024px) 720px, 92vw" />
+      <div className={`${styles.photo} ${styles.guidePhoto}`} data-frame={photoSet(city, "landed").frame}>
+        <KitPhoto
+          city={city}
+          scenario="landed"
+          alt={copy.photoAlt[city].landed}
+          sizes="(max-width: 1023px) 92vw, 480px"
+          viewLabel={copy.viewPhoto}
+          closeLabel={copy.closePhoto}
+        />
       </div>
       {page.blocks.map((block) => (
         <section className={styles.block} key={block.title}>

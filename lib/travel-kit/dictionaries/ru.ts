@@ -76,6 +76,8 @@ export const ru: KitCopy = {
   homeLabel: "Сейчас",
   clockLabel: "ICT · часы этого телефона",
   noReply: "Время ответа не обещаем.",
+  viewPhoto: "Открыть фото крупнее",
+  closePhoto: "Закрыть",
   langLabel: "Язык",
   languageName: { en: "Английский", ru: "Русский", it: "Итальянский" },
   cityLabel: "Город",
