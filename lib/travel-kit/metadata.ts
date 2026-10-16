@@ -38,10 +38,9 @@ export function travelKitMetadata(lang: Lang, tool?: ToolSlug): Metadata {
     description: meta.description,
     keywords: [copy.brand, copy.trust, "Vietnam", copy.cities.danang, copy.cities.hoian, copy.cities.hue, copy.cities.phuquoc],
     robots: {
-      index: false,
-      follow: false,
-      nocache: true,
-      googleBot: { index: false, follow: false, noimageindex: true },
+      index: mayIndex(tool),
+      follow: true,
+      googleBot: { index: mayIndex(tool), follow: true },
     },
     alternates: { canonical, languages },
     openGraph: {
