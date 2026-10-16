@@ -1,4 +1,6 @@
 import Link from "next/link";
+import Image from "next/image";
+import styles from "./free-esim.module.css";
 
 type Locale = "en" | "ru" | "it";
 const copy = {
@@ -30,24 +32,30 @@ const copy = {
 } as const;
 export default function FreeEsimLanding({locale}:{locale:Locale}) {
  const t=copy[locale]; const wa="https://wa.me/84937762607?text="+encodeURIComponent("Hello GoVietStay, I'm visiting Vietnam for the first time. I'd like to request the complimentary eSIM. Please tell me the eligibility and activation details.");
- const url="/"+locale+"/free-vietnam-esim";
+
  const faq=t.qa.map(([question,answer])=>({"@type":"Question",name:question,acceptedAnswer:{"@type":"Answer",text:answer}}));
- return <main lang={locale} style={{background:"#f7f6f1",color:"#163128",minHeight:"100vh",fontFamily:"system-ui, sans-serif",padding:"36px 20px"}}>
- <div style={{maxWidth:850,margin:"auto"}}>
- <header style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:12,marginBottom:56}}>
- <Link href="/" style={{color:"#163128",fontWeight:800,textDecoration:"none",fontSize:22}}>GoVietStay</Link>
- <nav aria-label="Languages" style={{display:"flex",gap:16}}>
- <Link href="/en/free-vietnam-esim" hrefLang="en">EN</Link><Link href="/ru/free-vietnam-esim" hrefLang="ru">RU</Link><Link href="/it/free-vietnam-esim" hrefLang="it">IT</Link>
- </nav></header>
- <p style={{textTransform:"uppercase",letterSpacing:2,fontSize:13}}>{t.label}</p>
- <h1 style={{fontSize:"clamp(38px,6vw,65px)",lineHeight:1.12,letterSpacing:"-0.04em",margin:"16px 0 24px"}}>{t.heading}</h1>
- <p style={{fontSize:21,lineHeight:1.7,maxWidth:710}}>{t.intro}</p>
- <p style={{margin:"32px 0"}}><a href={wa} target="_blank" rel="noopener noreferrer" style={{display:"inline-block",padding:"17px 25px",borderRadius:9,background:"#163128",color:"white",textDecoration:"none",fontWeight:700}}>{t.cta}</a></p>
- <section style={{padding:"28px 0",borderTop:"1px solid #cbd5cc"}}><h2 style={{fontSize:30}}>{t.how}</h2><ol style={{lineHeight:2,fontSize:18,paddingLeft:25}}>{t.steps.map((s,i)=><li key={i}>{s}</li>)}</ol></section>
- <section style={{padding:"28px 0",borderTop:"1px solid #cbd5cc"}}><h2 style={{fontSize:30}}>{t.details}</h2><p style={{fontSize:18,lineHeight:1.8}}>{t.detail}</p></section>
- <section style={{padding:"28px 0",borderTop:"1px solid #cbd5cc"}}><h2 style={{fontSize:30}}>{t.questions}</h2>{t.qa.map(([q,a],i)=><details key={i} style={{padding:"16px 0",borderBottom:"1px solid #dbe2d9"}}><summary style={{fontWeight:700,cursor:"pointer",fontSize:18}}>{q}</summary><p style={{lineHeight:1.7}}>{a}</p></details>)}</section>
- <aside style={{background:"#e7eee7",borderRadius:12,padding:22,margin:"32px 0"}}>{t.note}</aside>
- <footer style={{paddingBottom:28}}><Link href={`/${locale}/travel-kit`}>{t.kit}</Link><p>GoVietStay · Da Nang · Hoi An · Hue · Phu Quoc</p></footer></div>
- <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify({"@context":"https://schema.org","@type":"FAQPage",mainEntity:faq}).replace(/</g,"\\u003c")}}/>
+ const words = {en:{hero:"Your Vietnam adventure starts connected.",highlight:"Connected.",benefits:"A thoughtful welcome, not another travel purchase.",benefitTitles:["A genuine gift","Local people, real help","A simple WhatsApp request","A travel companion"],benefitText:["Ask about our complimentary eSIM offer.","Talk directly to GoVietStay in Vietnam.","No automated checkout or surprise purchase.","Travel guides and practical tools in one place."],steps:"Three simple steps before your trip",discover:"Your first days in Vietnam, made easier.",discoverText:"From your airport arrival to exploring the cities, the GoVietStay Travel Kit brings useful local information together.",trust:"More than an eSIM. Trusted local support.",trustText:"We're a local travel team helping visitors experience Da Nang, Hoi An, Hue and Phu Quoc with practical advice and personalized travel services.",ready:"Ready for Vietnam?",readyText:"Message our team before your arrival. We'll explain availability, eligibility and how to get connected.",secondary:"Explore Travel Kit",city:"Da Nang · Hoi An · Hue · Phu Quoc"},
+ ru:{hero:"Начните путешествие по Вьетнаму на связи.",highlight:"на связи.",benefits:"Тёплый приём, а не ещё одна покупка.",benefitTitles:["eSIM в подарок","Местная поддержка","Простой запрос","Помощник в путешествии"],benefitText:["Узнайте об условиях бесплатной eSIM.","Общайтесь с командой GoVietStay во Вьетнаме.","Без автоматических покупок и оплаты.","Полезные советы и инструменты для поездки."],steps:"Три простых шага перед поездкой",discover:"Первые дни во Вьетнаме — проще с нами.",discoverText:"Подготовка к прилёту, полезные советы и информация о городах — всё в Travel Kit.",trust:"Больше чем eSIM. Поддержка местной команды.",trustText:"GoVietStay помогает путешественникам в Дананге, Хойане, Хюэ и на Фукуоке.",ready:"Собираетесь во Вьетнам?",readyText:"Напишите нам до прилёта. Расскажем об условиях, наличии eSIM и подключении.",secondary:"Открыть Travel Kit",city:"Дананг · Хойан · Хюэ · Фукуок"},
+ it:{hero:"Il tuo viaggio in Vietnam inizia connesso.",highlight:"connesso.",benefits:"Un benvenuto speciale, non un altro acquisto.",benefitTitles:["Una eSIM in regalo","Persone del posto","Richiesta semplice","Il tuo Travel Kit"],benefitText:["Scopri come richiedere la eSIM omaggio.","Parla con il team GoVietStay in Vietnam.","Nessun acquisto automatico.","Guide e strumenti utili per il viaggio."],steps:"Tre semplici passi prima della partenza",discover:"I tuoi primi giorni in Vietnam, più semplici.",discoverText:"Dall'arrivo in aeroporto alle città da visitare: trovi consigli pratici nel Travel Kit.",trust:"Più di una eSIM. Supporto locale affidabile.",trustText:"GoVietStay accompagna i viaggiatori a Da Nang, Hoi An, Hue e Phu Quoc.",ready:"Pronto per il Vietnam?",readyText:"Scrivici prima di partire. Ti spiegheremo disponibilità, requisiti e attivazione.",secondary:"Esplora il Travel Kit",city:"Da Nang · Hoi An · Hue · Phu Quoc"}}[locale];
+ return <main lang={locale} className={styles.page}>
+  <header className={styles.header}><div className={styles.headerInner}>
+   <Link href="/" aria-label="GoVietStay main website"><Image src="/brand/govietstay-official-logo.jpg" alt="GoVietStay official logo" width={220} height={76} className={styles.logo} priority /></Link>
+   <nav className={styles.nav} aria-label="Languages"><Link href="/en/free-vietnam-esim" hrefLang="en" aria-current={locale==="en"?"page":undefined}>EN</Link><Link href="/ru/free-vietnam-esim" hrefLang="ru" aria-current={locale==="ru"?"page":undefined}>RU</Link><Link href="/it/free-vietnam-esim" hrefLang="it" aria-current={locale==="it"?"page":undefined}>IT</Link><Link className={styles.kitLink} href={`/${locale}/travel-kit`}>Travel Kit ↗</Link></nav>
+  </div></header>
+  <section className={styles.hero}><div className={styles.heroGrid}>
+   <div className={styles.heroCopy}><span className={styles.eyebrow}>{t.label} · GoVietStay</span><h1>{t.heading}</h1><p className={styles.heroText}>{t.intro}</p>
+    <div className={styles.actions}><a className={styles.primary} href={wa} target="_blank" rel="noopener noreferrer">{t.cta} ↗</a><Link className={styles.secondary} href={`/${locale}/travel-kit`}>{words.secondary} →</Link></div>
+    <p className={styles.heroSmall}>{t.note}</p>
+   </div><div className={styles.heroVisual}><Image src="/travel-kit/da-nang-lady-buddha.webp" alt="Da Nang, Vietnam – travel destination" width={960} height={1150} priority sizes="(max-width: 900px) 100vw, 48vw" style={{objectFit:"cover",width:"100%",height:"100%"}}/><div className={styles.photoLabel}>VIETNAM · {words.city}</div></div>
+  </div></section>
+  <section className={styles.section}><div className={styles.wrap}><div className={styles.sectionHead}><span className={styles.kicker}>GoVietStay welcome gift</span><h2>{words.benefits}</h2></div><div className={styles.benefits}>{words.benefitTitles.map((title,i)=><div className={styles.benefit} key={title}><span className={styles.benefitNum}>0{i+1}</span><h3>{title}</h3><p>{words.benefitText[i]}</p></div>)}</div></div></section>
+  <section className={`${styles.section} ${styles.sectionAlt}`}><div className={styles.wrap}><span className={styles.kicker}>01 / 02 / 03</span><h2>{words.steps}</h2><div className={styles.steps}>{t.steps.map((step,i)=><article className={styles.step} key={i}><span className={styles.stepNo}>0{i+1}</span><h3>{[words.benefitTitles[2],words.benefitTitles[1],t.details][i]}</h3><p>{step}</p></article>)}</div><p style={{marginTop:30}}><a className={styles.primary} style={{background:"#18352d",color:"#fff"}} href={wa} target="_blank" rel="noopener noreferrer">{t.cta} ↗</a></p></div></section>
+  <section className={styles.section}><div className={styles.wrap}><div className={styles.split}><div><span className={styles.kicker}>GoVietStay Digital Travel Kit</span><h2>{words.discover}</h2><p className={styles.lede}>{words.discoverText}</p><div className={styles.tags}>{["Da Nang","Hoi An","Hue","Phu Quoc"].map(city=><span className={styles.tag} key={city}>{city}</span>)}</div><Link href={`/${locale}/travel-kit`} className={styles.primary} style={{background:"#18352d",color:"#fff"}}>{words.secondary} →</Link></div><Image src="/travel-kit/da-nang-lady-buddha.webp" alt="Vietnam city travel inspiration" width={750} height={580} sizes="(max-width: 900px) 100vw, 45vw" className={styles.travelPhoto}/></div></div></section>
+  <section className={styles.dark}><div className={styles.wrap}><span className={styles.eyebrow}>GoVietStay · Trusted local support</span><h2 style={{fontFamily:"Georgia,serif",fontSize:"clamp(30px,4vw,48px)",maxWidth:730}}>{words.trust}</h2><p style={{maxWidth:720}}>{words.trustText}</p><p>{words.city}</p></div></section>
+  <section className={styles.section}><div className={styles.wrap}><div className={styles.faq}><span className={styles.kicker}>Helpful answers</span><h2>{t.questions}</h2>{t.qa.map(([q,a],i)=><details key={i}><summary>{q}</summary><p>{a}</p></details>)}</div></div></section>
+  <section className={styles.final}><div className={styles.wrap}><h2>{words.ready}</h2><p>{words.readyText}</p><a href={wa} target="_blank" rel="noopener noreferrer" className={styles.primary}>{t.cta} ↗</a></div></section>
+  <footer className={styles.footer}><div className={`${styles.wrap} ${styles.footerInner}`}><div><Link href="/" aria-label="GoVietStay home"><Image src="/brand/govietstay-official-logo.jpg" alt="GoVietStay logo" width={200} height={70} className={styles.footerLogo}/></Link><p>More than tours. Trusted local support.</p></div><div><Link href={`/${locale}/travel-kit`}>{t.kit}</Link><p>{words.city}</p></div></div></footer>
+  <div className={styles.mobileBar}><a href={wa} target="_blank" rel="noopener noreferrer" className={styles.primary}>{t.cta} ↗</a></div>
+  <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify({"@context":"https://schema.org","@type":"FAQPage",mainEntity:faq}).replace(/</g,"\\u003c")}}/>
  </main>;
 }
