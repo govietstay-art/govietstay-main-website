@@ -11,6 +11,10 @@ import {
   type PhuQuocSalesTour,
 } from "../../lib/phuQuocSalesCatalog";
 
+import { phuQuocTours } from "../../app/ru/phuQuocPartnerTours";
+import { BW_RATES, bwQuote, type BWMode, type BWZone } from "../../lib/phuQuocBlueWaves";
+const BLUE_WAVES_SALES_TOURS: PhuQuocSalesTour[] = phuQuocTours.map(t => {const code=t.id.toUpperCase(),r=BW_RATES[code];return {code,slug:"blue-waves-"+t.id,nameEn:"Blue Waves "+code,nameRu:t.title,adultVnd:r.adult?.[0]??null,childVnd:r.child?.[0]??null,quoteOnly:!r.adult,category:r.adult?"sea":"private",partnerVisible:true,staffVisible:true};});
+const ALL_SALES_TOURS=[...PHU_QUOC_SALES_TOURS,...BLUE_WAVES_SALES_TOURS];
 type Props = { supabase: any; adminStaff?: any };
 type Staff = { id: string; display_name: string; sales_code: string };
 type PartnerMasterRow = { id: string; name: string; ref_code: string; active: boolean };
@@ -57,6 +61,10 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
   const [staff, setStaff] = useState<Staff[]>([]);
   const [staffId, setStaffId] = useState("");
   const [tourCode, setTourCode] = useState(PHU_QUOC_SALES_TOURS[0].code);
+  const [bwMode,setBwMode]=useState<BWMode>("join");
+  const [bwZone,setBwZone]=useState<BWZone>("center");
+  const [bwSession,setBwSession]=useState<"morning"|"sunset">("morning");
+  const [bwSkyLounge,setBwSkyLounge]=useState(false);
   const [guestName, setGuestName] = useState("");
   const [phone, setPhone] = useState("");
   const [tourDate, setTourDate] = useState("");
@@ -96,18 +104,21 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
   const [filter, setFilter] = useState("");
 
   const selected = useMemo(
-    () => PHU_QUOC_SALES_TOURS.find((t) => t.code === tourCode) || PHU_QUOC_SALES_TOURS[0],
+    () => ALL_SALES_TOURS.find((t) => t.code === tourCode) || PHU_QUOC_SALES_TOURS[0],
     [tourCode]
   );
 
+  const blueWaves=BW_RATES[selected.code];
+  const bwCalculated=blueWaves?bwQuote({code:selected.code,mode:bwMode,zone:bwZone,session:bwSession,adults,children,infants,skyLounge:bwSkyLounge}):null;
   const gross = useMemo(() => {
+    if(blueWaves)return bwCalculated?.total??Math.max(0,Number(manualGross||0));
     if (selected.quoteOnly) return Math.max(0, Number(manualGross || 0));
     return Math.max(
       0,
       Number(selected.adultVnd || 0) * Math.max(0, adults) +
         Number(selected.childVnd || 0) * Math.max(0, children)
     );
-  }, [selected, manualGross, adults, children]);
+  }, [selected, manualGross, adults, children, blueWaves, bwCalculated?.total]);
 
   const hasActualPrice = actualSellingPrice.trim() !== "";
   const netSelling = hasActualPrice ? Math.max(0, Number(actualSellingPrice)) : Math.max(0, gross - Math.max(0, discount));
@@ -118,8 +129,8 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
 
   const filtered = useMemo(() => {
     const q = filter.trim().toLowerCase();
-    if (!q) return PHU_QUOC_SALES_TOURS;
-    return PHU_QUOC_SALES_TOURS.filter((t) =>
+    if (!q) return ALL_SALES_TOURS;
+    return ALL_SALES_TOURS.filter((t) =>
       `${t.code} ${t.nameEn} ${t.nameRu}`.toLowerCase().includes(q)
     );
   }, [filter]);
@@ -249,6 +260,7 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
       return;
     }
 
+    if(blueWaves&&!bwCalculated&&manualGross<=0){setError("Cần giá đã duyệt vì cấu hình nhóm/loại tour này chưa có giá tự động.");return;}
     if (!Number.isFinite(netSelling) || netSelling <= 0 || !Number.isFinite(gross) || gross <= 0) {
       setError("Giá bán thực tế phải lớn hơn 0 và hợp lệ.");
       return;
@@ -276,6 +288,7 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
       const marker = [
         "GVS_PQ_12PCT",
         `PRODUCT=${selected.code}`,
+        ...(blueWaves?[`BW_MODE=${bwMode}`,`BW_ZONE=${bwZone}`,`BW_SESSION=${bwSession}`,`BW_SKY_LOUNGE=${bwSkyLounge}`,`BW_PRICE_SOURCE=${bwCalculated?"PUBLIC_TARIFF":"APPROVED_QUOTE"}`]:[]),
         `COMMISSION_RATE=${PHU_QUOC_SALES_COMMISSION_RATE}`,
         `COMMISSION_BASE_VND=${netSelling}`,
         `COMMISSION_VND=${commission}`,
@@ -295,7 +308,7 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
         p_tour_slug: selected.slug,
         p_tour_name: selected.nameEn,
         p_variant_id: selected.code,
-        p_variant_name: selected.nameRu,
+        p_variant_name: blueWaves ? `${selected.nameRu} · ${bwMode} · ${bwZone}` : selected.nameRu,
         p_language: language,
         p_adults: Math.max(0, adults),
         p_children: Math.max(0, children),
@@ -367,13 +380,20 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
 
             <label>
               <div className="gva-mini">Tour</div>
-              <select className="gva-select" value={tourCode} onChange={(e) => setTourCode(e.target.value)}>
-                {PHU_QUOC_SALES_TOURS.filter((t) => t.staffVisible).map((t) => (
+              <select className="gva-select" value={tourCode} onChange={(e) => {const next=e.target.value;setTourCode(next);setBwMode(BW_RATES[next]?.modes[0]??"join");setManualGross(0);setActualSellingPrice("");setDiscount(0);setBwSession("morning");setBwSkyLounge(false);}}>
+                {ALL_SALES_TOURS.filter((t) => t.staffVisible).map((t) => (
                   <option key={t.code} value={t.code}>{t.code} · {t.nameEn}</option>
                 ))}
               </select>
             </label>
 
+            {blueWaves&&<div className="gva-grid2">
+              <label><div className="gva-mini">Loại tour Blue Waves</div><select className="gva-select" value={bwMode} onChange={e=>{setBwMode(e.target.value as BWMode);setManualGross(0);}}>{blueWaves.modes.map(m=><option key={m} value={m}>{m==="join"?"Join-in":m==="private"?"Private":"Charter"}</option>)}</select></label>
+              <label><div className="gva-mini">Khu vực đón</div><select className="gva-select" value={bwZone} onChange={e=>setBwZone(e.target.value as BWZone)}><option value="center">Trung tâm</option><option value="north">Bắc đảo</option><option value="south">Nam đảo</option></select></label>
+              {bwMode==="join"&&selected.code==="PQ-09"&&<label><div className="gva-mini">Chuyến</div><select className="gva-select" value={bwSession} onChange={e=>setBwSession(e.target.value as "morning"|"sunset")}><option value="morning">Buổi sáng</option><option value="sunset">Hoàng hôn</option></select></label>}
+              {["PQ-14","PQ-15"].includes(selected.code)&&<label><div className="gva-mini">Sky Lounge +500.000đ/khách</div><input type="checkbox" checked={bwSkyLounge} onChange={e=>setBwSkyLounge(e.target.checked)}/></label>}
+              <div className="gva-mini">Giá tự tính từ bảng giá công khai Blue Waves theo vùng, loại tour và số khách. Không có giá hợp lệ thì nhập giá chốt đã được duyệt.</div>
+            </div>}
             <div className="gva-grid2">
               <label><div className="gva-mini">Guest name</div><input className="gva-input" value={guestName} onChange={(e) => setGuestName(e.target.value)} /></label>
               <label><div className="gva-mini">WhatsApp / Phone</div><input className="gva-input" value={phone} onChange={(e) => setPhone(e.target.value)} /></label>
@@ -389,7 +409,7 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
               <label><div className="gva-mini">Adults</div><input className="gva-input" type="number" min="0" value={adults} onChange={(e) => setAdults(Number(e.target.value || 0))} /></label>
               <label><div className="gva-mini">Children</div><input className="gva-input" type="number" min="0" value={children} onChange={(e) => setChildren(Number(e.target.value || 0))} /></label>
               <label><div className="gva-mini">Infants</div><input className="gva-input" type="number" min="0" value={infants} onChange={(e) => setInfants(Number(e.target.value || 0))} /></label>
-              {selected.quoteOnly && <label><div className="gva-mini">Approved selling price</div><input className="gva-input" type="number" min="0" value={manualGross} onChange={(e) => setManualGross(Number(e.target.value || 0))} /></label>}
+              {(selected.quoteOnly || (blueWaves&&!bwCalculated)) && <label><div className="gva-mini">Approved selling price</div><input className="gva-input" type="number" min="0" value={manualGross} onChange={(e) => setManualGross(Number(e.target.value || 0))} /></label>}
             </div>
 
             <div className="gva-grid2">
@@ -573,7 +593,7 @@ export default function PhuQuocSalesHub({ supabase, adminStaff }: Props) {
         <div className="gva-section-head">
           <div>
             <h2>Phú Quốc Tour Catalog</h2>
-            <div className="gva-mini">{PHU_QUOC_SALES_TOURS.length} products · Staff + Partner channels</div>
+            <div className="gva-mini">{ALL_SALES_TOURS.length} products · Staff + Partner channels</div>
           </div>
           <input className="gva-input" style={{ maxWidth: 300 }} placeholder="Search tour…" value={filter} onChange={(e) => setFilter(e.target.value)} />
         </div>
