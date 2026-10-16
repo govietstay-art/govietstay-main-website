@@ -82,8 +82,11 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const requestedLocale = (await headers()).get("x-govietstay-locale");
+  const headerList = await headers();
+  const requestedLocale = headerList.get("x-govietstay-locale");
   const locale = isKnownLocale(requestedLocale) ? requestedLocale! : "en";
+  // Travel Kit opts out of site chrome and analytics. Every other route leaves this false.
+  const travelKit = headerList.get("x-govietstay-surface") === "travel-kit";
 
   return (
     <html
@@ -93,10 +96,10 @@ export default async function RootLayout({
       className="h-full antialiased"
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: gtmBootstrap }} />
+        {travelKit ? null : <script dangerouslySetInnerHTML={{ __html: gtmBootstrap }} />}
       </head>
-      <body className="min-h-full flex flex-col">
-        <noscript>
+      <body className="min-h-full flex flex-col" data-surface={travelKit ? "travel-kit" : undefined}>
+        {travelKit ? null : <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-WRPCZ9X3"
             height="0"
@@ -104,11 +107,11 @@ export default async function RootLayout({
             style={{ display: "none", visibility: "hidden" }}
             title="Google Tag Manager"
           />
-        </noscript>
+        </noscript>}
         <HtmlLanguageSync />
-        <YandexMetrika />
-        <Script id="govietstay-gtm-lazy" strategy="lazyOnload">{`window.__gvsLoadGtm && window.__gvsLoadGtm();`}</Script>
-        <script
+        {travelKit ? null : <YandexMetrika />}
+        {travelKit ? null : <Script id="govietstay-gtm-lazy" strategy="lazyOnload">{`window.__gvsLoadGtm && window.__gvsLoadGtm();`}</Script>}
+        {travelKit ? null : <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify([
@@ -214,9 +217,9 @@ export default async function RootLayout({
               },
             ]),
           }}
-        />
+        />}
         {children}
-        <footer
+        {travelKit ? null : <footer
           aria-label="GoVietStay language travel guides"
           style={{
             borderTop: "1px solid #e7e1d5",
@@ -245,8 +248,8 @@ export default async function RootLayout({
             <a href="/fr" hrefLang="fr-FR" style={{ color: "#315c51" }}>Français</a>
             <a href="/ja" hrefLang="ja-JP" style={{ color: "#315c51" }}>日本語</a>
           </nav>
-        </footer>
-        <script src="/govietstay-partner-tracking.js?v=20260924-wa-ga4-3" defer></script>
+        </footer>}
+        {travelKit ? null : <script src="/govietstay-partner-tracking.js?v=20260924-wa-ga4-3" defer></script>}
       </body>
     </html>
   );
