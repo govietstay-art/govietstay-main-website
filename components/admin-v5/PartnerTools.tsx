@@ -241,6 +241,8 @@ Partner code: ${r.ref_code}
 Customer / QR link:
 ${r.landing_url||"—"}${d>0?`\nGuest benefit: ${d.toFixed(d%1===0?0:1)}%`:""}
 
+Your referral commission: 12% of the final tour selling price after discounts, including private/custom tours. No base salary. Commission is payable after completed, paid and reconciled bookings.
+
 The same partner QR can now be used on posters, hotel desks, restaurants, spas, vehicle stickers, car-seat cards and digital sharing.
 
 Private Partner Portal:
@@ -255,6 +257,8 @@ Mã đối tác: ${r.ref_code}
 Link / QR dành cho khách:
 ${r.landing_url||"—"}${d>0?`\nƯu đãi dành cho khách: ${d.toFixed(d%1===0?0:1)}%`:""}
 
+Hoa hồng giới thiệu: 12% trên giá bán tour thực tế sau giảm giá, kể cả tour riêng/custom giá. Không có lương căn bản. Hoa hồng được xác nhận khi booking hoàn thành, đã thanh toán và đối soát.
+
 Cùng một QR có thể dùng trên poster, quầy lễ tân, nhà hàng, spa, sticker xe, card sau ghế và nội dung digital.
 
 Partner Portal riêng:
@@ -268,6 +272,8 @@ GoVietStay — Trusted Local Support`;
 Код партнёра: ${r.ref_code}
 Ссылка / QR для гостей:
 ${r.landing_url||"—"}${d>0?`\nПривилегия для гостей: ${d.toFixed(d%1===0?0:1)}%`:""}
+
+Ваша комиссия: 12% от окончательной цены тура после скидок, включая индивидуальные туры и согласованные цены. Без фиксированной базовой выплаты. Начисление после завершения, оплаты и сверки бронирования.
 
 Один и тот же QR можно использовать на постерах, стойках отелей, в ресторанах и SPA, в автомобилях и для digital-публикаций.
 
@@ -565,7 +571,7 @@ export default function PartnerTools({supabase,days}:any){
         p_start_date:String(f.get("start_date")||"")||null,p_guest_discount:discount/100
       });
       if(error)throw error;
-      setMsg("Đã tạo đối tác "+code+". Hệ thống đã sinh Partner Code + Sales Link + QR + Portal + Universal Kit V4.1.");
+      setMsg("Đã tạo đối tác "+code+" với hoa hồng 12% trên giá bán thực tế (kể cả custom tour), không có lương căn bản. Đã sinh Partner Code + Sales Link + QR + Portal + Universal Kit V4.1.");
       form.reset();setName("");setRef("");await loadRows();
     }catch(e:any){setError(e?.message||"Không tạo được partner.")}finally{setSaving(false)}
   }
@@ -576,6 +582,11 @@ export default function PartnerTools({supabase,days}:any){
       {error&&<div className="gva-msg err">{error}</div>}
       {msg&&<div className="gva-msg">{msg}</div>}
       {working&&<div className="gva-msg">Đang xử lý {working==="download"?"file in chất lượng cao":"Partner Kit V4"}…</div>}
+      <div className="gva-analytics-note" style={{margin:"12px 0 16px",lineHeight:1.7}}>
+        <b>Chính sách QR đối tác: hoa hồng cố định 12% — không có lương căn bản.</b>
+        <div>Mọi tour (bao gồm private/custom giá) tính 12% trên giá bán thực tế sau giảm giá đã chốt với khách. Ví dụ: Cù Lao Chàm 950.000đ/khách → 114.000đ/khách; tour custom 13.900.000đ/5 khách → 1.668.000đ/booking.</div>
+        <div className="gva-mini">Mã mới tự liên kết Partner Code, QR và Portal. Hoa hồng chỉ ghi nhận cho booking được quy thuộc đúng mã, đã hoàn thành, thanh toán và đối soát; không trả trùng với mã nhân viên.</div>
+      </div>
       <form onSubmit={createPartner}>
         <div className="gva-form-grid">
           <div className="gva-field"><label>Tên đối tác / Website</label><input className="gva-input" name="name" value={name} onChange={e=>{setName(e.target.value);if(!ref)setRef(suggestRef(e.target.value));}} placeholder="Hotel / Driver / Creator / Agency" required/></div>
@@ -595,7 +606,7 @@ export default function PartnerTools({supabase,days}:any){
     </div>
 
     <div className="gva-card">
-      <div className="gva-section-head"><div><h2>Partner Deployment Center</h2><div className="gva-mini">V4.1 • Smart Background • một QR, nhiều bề mặt • A3/A4/A5 • xe • sticker • table stand • digital • SVG vector.</div></div><button type="button" className="gva-btn secondary" onClick={loadRows}>{loading?"Đang tải…":"Cập nhật"}</button></div>
+      <div className="gva-section-head"><div><h2>Partner Deployment Center</h2><div className="gva-mini">Hoa hồng 12% giá bán thực tế cho mọi tour, kể cả custom • không có lương căn bản • V4.1 Smart Background • một QR, nhiều bề mặt.</div></div><button type="button" className="gva-btn secondary" onClick={loadRows}>{loading?"Đang tải…":"Cập nhật"}</button></div>
       <div className="gva-table-wrap"><table className="gva-table">
         <thead><tr><th>Partner</th><th>Terms</th><th>Traffic</th><th>Lead</th><th>Booking</th><th>PAX tháng</th><th>Rate</th><th>Commission</th><th>Total</th><th>QR / Kit</th><th>Portal</th></tr></thead>
         <tbody>
