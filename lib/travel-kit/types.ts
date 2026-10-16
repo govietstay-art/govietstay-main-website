@@ -125,6 +125,8 @@ export type KitCopy = {
   homeLabel: string;
   clockLabel: string;
   noReply: string;
+  viewPhoto: string;
+  closePhoto: string;
   langLabel: string;
   languageName: Record<Lang, string>;
   cityLabel: string;
