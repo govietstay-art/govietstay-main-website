@@ -17,6 +17,7 @@ export default function robots(): MetadataRoute.Robots {
       "https://www.govietstay.com/fr/sitemap.xml",
       "https://www.govietstay.com/mn/sitemap.xml",
       "https://www.govietstay.com/stays-sitemap.xml",
+      "https://www.govietstay.com/free-esim-sitemap.xml",
     ],
     host: "https://www.govietstay.com",
   };
