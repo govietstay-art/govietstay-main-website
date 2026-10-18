@@ -90,7 +90,7 @@ export const chinaSeoPages: ChinaSeoPage[] = [
       ]
     ],
     "officialUrl": "https://new.mofa.gov.vn/vi/tin-chi-tiet/chi-tiet/danh-muc-mien-thi-thuc-cua-viet-nam-voi-cac-nuoc-57162-172.html",
-    "updated": "2026-08-26"
+    "updated": "2026-10-18"
   },
   {
     "slug": "alipay-vietnam",
