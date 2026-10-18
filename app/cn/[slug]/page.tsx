@@ -2,6 +2,7 @@ import type {Metadata} from "next";
 import {notFound} from "next/navigation";
 import {chinaSeoPages,getChinaPage,getChinaRelated} from "../../../lib/chinaSeoPages";
 import ChinaPage from "../_seo/ChinaPage";
+import ChinaVisaService from "../_seo/ChinaVisaService";
 
 export function generateStaticParams(){return chinaSeoPages.map(p=>({slug:p.slug}))}
 
@@ -20,5 +21,6 @@ export async function generateMetadata({params}:{params:Promise<{slug:string}>})
 
 export default async function Page({params}:{params:Promise<{slug:string}>}){
   const {slug}=await params;const page=getChinaPage(slug);if(!page)notFound();
+  if(slug==="vietnam-evisa-chinese-passport")return <ChinaVisaService/>;
   return <ChinaPage page={page} related={getChinaRelated(page)}/>;
 }
