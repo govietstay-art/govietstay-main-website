@@ -34,7 +34,7 @@ export default function ChinaHub(){
     <div className={styles.top}><span>中国游客 · VIỆT NAM</span><b>岘港 · 会安 · 顺化 · 富国岛</b><a href="/tw">繁體中文 / Taiwan →</a></div>
     <header className={styles.nav}>
       <a href="/cn" className={styles.brand}><img src="/govietstay-logo.jpg" alt="GoVietStay"/><span><b>GoVietStay</b><small>中国游客 · 越南当地支持</small></span></a>
-      <nav><a href="#danang">岘港</a><a href="#phuquoc">富国岛</a><a href="#price">价格</a><a href="#wechat">微信</a><a className={styles.navCta} href="#wechat">加微信</a></nav>
+      <nav><a href="/cn/vietnam-evisa-chinese-passport">越南签证</a><a href="#danang">岘港</a><a href="#phuquoc">富国岛</a><a href="#price">价格</a><a href="#wechat">微信</a><a className={styles.navCta} href="#wechat">加微信</a></nav>
     </header>
 
     <section className={styles.hero}>
