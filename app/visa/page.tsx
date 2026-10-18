@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     canonical: "https://www.govietstay.com/visa",
     languages: {
       en: "https://www.govietstay.com/visa",
+      "zh-CN": "https://www.govietstay.com/cn/vietnam-evisa-chinese-passport",
       "tr-TR": "https://www.govietstay.com/tr/visa",
       "pl-PL": "https://www.govietstay.com/pl/visa",
       "nl-NL": "https://www.govietstay.com/nl/visa",
