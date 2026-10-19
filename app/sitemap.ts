@@ -46,6 +46,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
       alternates: { languages: { "id-ID": `${BASE_URL}/id` } },
     },
+    ...["/fi/vietnam-matkaopas", "/fi/da-nang-hoi-an-hue", "/fi/phu-quoc-matkaopas"].map(path => ({
+      url: BASE_URL + path,
+      lastModified: new Date("2026-10-19T00:00:00.000Z"),
+      changeFrequency: "monthly" as const,
+      priority: 0.86,
+      alternates: { languages: { "fi-FI": BASE_URL + path } },
+    })),
     ...["/pl/phu-quoc-przewodnik", "/pl/phu-quoc-wycieczki-prywatne", "/pl/danang-hoi-an-hue"].map(path => ({
       url: BASE_URL + path,
       lastModified: new Date("2026-10-11T00:00:00.000Z"),
