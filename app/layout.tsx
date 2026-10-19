@@ -244,6 +244,7 @@ export default async function RootLayout({
             <strong style={{ color: "#17352e", marginRight: "4px" }}>Vietnam travel guides:</strong>
             <a href="/ru" hrefLang="ru" style={{ color: "#315c51" }}>Русский</a>
             <a href="/it" hrefLang="it-IT" style={{ color: "#315c51" }}>Italiano</a>
+            <a href="/id" hrefLang="id-ID" style={{ color: "#315c51" }}>Bahasa Indonesia</a>
             <a href="/de" hrefLang="de-DE" style={{ color: "#315c51" }}>Deutsch</a>
             <a href="/fr" hrefLang="fr-FR" style={{ color: "#315c51" }}>Français</a>
             <a href="/ja" hrefLang="ja-JP" style={{ color: "#315c51" }}>日本語</a>
