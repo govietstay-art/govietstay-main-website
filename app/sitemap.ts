@@ -33,6 +33,13 @@ const languageAlternates = (englishPath: string, russianPath: string) => ({
 export default function sitemap(): MetadataRoute.Sitemap {
   const corePages: MetadataRoute.Sitemap = [
     {
+      url: `${BASE_URL}/my`,
+      lastModified: new Date("2026-10-19T10:25:00.000Z"),
+      changeFrequency: "weekly",
+      priority: 0.9,
+      alternates: { languages: { "ms-MY": `${BASE_URL}/my` } },
+    },
+    {
       url: `${BASE_URL}/id`,
       lastModified: new Date("2026-10-19T01:30:00.000Z"),
       changeFrequency: "weekly",
