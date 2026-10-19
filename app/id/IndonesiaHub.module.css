@@ -1,0 +1,12 @@
+.page a:focus-visible,.page summary:focus-visible{outline:3px solid #b97e0a;outline-offset:4px}
+.hero{display:flex;align-items:flex-end;min-height:650px}
+.heroCopy{position:relative;bottom:auto;left:auto;padding:40px;max-width:850px}
+.heroCopy h1{font-size:clamp(36px,4vw,54px)}
+.heroCopy h2{display:block;overflow:visible;-webkit-line-clamp:unset}
+.privatePhoto{position:relative}
+.phuCards{grid-template-columns:repeat(2,minmax(0,1fr))}
+.faq details{padding:18px 0;border-bottom:1px solid #dce6df}
+.faq summary{font-weight:800;cursor:pointer;line-height:1.5}
+.faq details p{max-width:850px;color:#526259}
+.faq a{color:#0d6b4f;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:560px){.hero{min-height:0}.heroCopy{padding:40px 20px}.heroCopy h1{font-size:38px}.heroCopy h2{display:block;-webkit-line-clamp:unset}.phuCards{display:flex}}

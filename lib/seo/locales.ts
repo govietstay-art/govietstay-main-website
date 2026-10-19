@@ -2,7 +2,7 @@
 export const HTML_LOCALE_BY_PREFIX:Record<string,string>={
  go:"ru",ru:"ru",kz:"ru-KZ",be:"be-BY",pl:"pl-PL",ja:"ja-JP",it:"it",vi:"vi",cn:"zh-CN",tw:"zh-TW",
  th:"th-TH",ko:"ko-KR",fr:"fr-FR",de:"de-DE",il:"he-IL",ar:"ar",
- tr:"tr-TR",ph:"en-PH",in:"en-IN",mn:"mn",en:"en",
+ tr:"tr-TR",ph:"en-PH",in:"en-IN",id:"id-ID",mn:"mn",en:"en",
 };
 export function getPageLocale(pathname:string):string {
  const prefix=pathname.split("/").filter(Boolean)[0]?.toLowerCase()??"";

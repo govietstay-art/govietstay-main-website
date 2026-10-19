@@ -32,6 +32,13 @@ const languageAlternates = (englishPath: string, russianPath: string) => ({
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const corePages: MetadataRoute.Sitemap = [
+    {
+      url: `${BASE_URL}/id`,
+      lastModified: new Date("2026-10-19T01:30:00.000Z"),
+      changeFrequency: "weekly",
+      priority: 0.9,
+      alternates: { languages: { "id-ID": `${BASE_URL}/id` } },
+    },
     ...["/pl/phu-quoc-przewodnik", "/pl/phu-quoc-wycieczki-prywatne", "/pl/danang-hoi-an-hue"].map(path => ({
       url: BASE_URL + path,
       lastModified: new Date("2026-10-11T00:00:00.000Z"),
