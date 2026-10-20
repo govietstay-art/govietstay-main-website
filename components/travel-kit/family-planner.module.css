@@ -31,3 +31,17 @@
 .day dd { color: #e8eee3; line-height: 1.6; font-size: 13px; margin: 3px 0 0; }
 .secondary { min-height: 44px; display: inline-flex; align-items: center; color: #e4ff57; font-weight: 650; padding: 10px 0; text-decoration: underline; text-underline-offset: 4px; }
 @media (max-width: 380px) { .form { padding: 14px 12px; } .two { grid-template-columns: 1fr; } }
+
+
+.overview { margin: 10px 0 18px; color: #c7d7c4; font-size: 14px; line-height: 1.75; }
+.meal { background: #242c20; border: 1px solid #56673d; margin-top: 3px; border-radius: 12px; padding: 12px !important; }
+.venue { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; border-top: 1px solid #526047; padding-top: 12px; font-size: 13px; line-height: 1.55; color: #dce7d6; }
+.venue strong { font-size: 14px; color: #f1f7d5; }
+.venue span { font-size: 12px; color: #becfb5; }
+.venue a { color: #e4ff57; text-decoration: underline; text-underline-offset: 3px; font-weight: 700; min-height: 35px; display: inline-flex; align-items: center; }
+.venue small { color: #a9b6a8; line-height: 1.55; }
+.sponsor { display: inline-flex; width: fit-content; color: #12180e !important; background: #f3df7f; border-radius: 5px; padding: 3px 7px; font-size: 11px; font-weight: 800; }
+.foodBridge { border: 1px solid #586d43; background: linear-gradient(155deg, #1e3524, #19261d); border-radius: 17px; padding: 17px; display: flex; flex-direction: column; gap: 10px; }
+.foodBridge p { margin: 0; font-size: 14px; line-height: 1.7; }
+.foodBridge h2 { margin: 2px 0; font-size: 20px; line-height: 1.4; }
+.foodBridge a { color: #e4ff57; font-size: 14px; text-decoration: underline; text-underline-offset: 4px; font-weight: 750; min-height: 44px; display: inline-flex; align-items: center; }
