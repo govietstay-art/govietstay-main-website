@@ -37,6 +37,7 @@ import {
 } from "@/lib/travel-kit/types";
 import styles from "./travel-kit.module.css";
 import { FamilyPlanner } from "./FamilyPlanner";
+import { FamilyFoodGuide } from "./FamilyFoodGuide";
 
 const ARRIVAL_KEY = "gvs-travel-kit-arrival-v2";
 const PACKING_KEY = "gvs-travel-kit-packing-v1";
@@ -465,6 +466,7 @@ export function TravelKitApp({ lang, tool, initialCity, weather, rates }: Props)
           {tool === "safety" ? <Safety copy={copy} /> : null}
           {tool === "packing" ? <Packing copy={copy} /> : null}
           {tool === "family-planner" ? <FamilyPlanner lang={lang} city={city} /> : null}
+          {tool === "food" ? <FamilyFoodGuide lang={lang} city={city} /> : null}
           {isGuide(tool) ? <Guide copy={copy} tool={tool} /> : null}
           {tool === "explore" ? <Explore copy={copy} lang={lang} city={city} /> : null}
           {tool === "tools" ? <ToolsHub copy={copy} lang={lang} city={city} /> : null}
