@@ -114,8 +114,8 @@ function validSaved(data:unknown):data is PlannerChoices {
  if(!data||typeof data!=="object")return false;
  const x=data as Partial<PlannerChoices>;
  return destinations.some(d=>d===x.destination)&&[3,5,7,10].includes(Number(x.duration))
-   &&Number.isInteger(x.adults)&&Number(x.adults)>=1&&Number(x.adults)<=8
-   &&Number.isInteger(x.children)&&Number(x.children)>=0&&Number(x.children)<=8
+   &&Number.isInteger(Number(x.adults))&&Number(x.adults)>=1&&Number(x.adults)<=8
+   &&Number.isInteger(Number(x.children))&&Number(x.children)>=0&&Number(x.children)<=8
    &&typeof x.seniors==="boolean"&&paces.some(d=>d===x.pace)
    &&interests.some(d=>d===x.interest)&&foodStyles.some(d=>d===x.foodStyle)
    &&diets.some(d=>d===x.diet)&&typeof x.startDate==="string"&&x.startDate.length<=10;
