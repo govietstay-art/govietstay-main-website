@@ -495,14 +495,14 @@ export default function AdminV5() {
         <div className="gva-card" style={{marginBottom:15}}>
           <div className="gva-section-head">
             <div>
-              <h2>Google Ads Lab · Research First</h2>
-              <div className="gva-mini">Theo dõi setup, mổ campaign cũ và khóa launch trước khi nạp tiền.</div>
+              <h2>Google Ads Lab · Checklist lịch sử</h2>
+              <div className="gva-mini">Checklist nghiên cứu cũ, không điều khiển chiến dịch Google Ads đang hoạt động.</div>
             </div>
             <button className="gva-btn secondary" onClick={loadAdsLab}>Làm mới Ads Lab</button>
           </div>
           <div className="gva-analytics-note" style={{marginTop:0}}>
             Account <b>322-701-5278</b> · baseline cũ: <b>2.722 impressions</b> · <b>216 clicks</b> · Avg CPC <b>3.143 ₫</b> · Spend <b>678.832 ₫</b>.
-            WhatsApp conversion hiện là <b>Secondary / chỉ quan sát</b>. Launch gate đang HOLD cho tới khi research hoàn tất.
+            WhatsApp conversion hiện là <b>Secondary / chỉ quan sát</b>. Trạng thái checklist không phải trạng thái chạy quảng cáo. Xem kết quả Travel Kit theo UTM tại mục bên dưới.
           </div>
           <div className="gva-table-wrap">
             <table className="gva-table">
