@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { FOOD_LISTINGS, foodMapUrl, mealFor, tr, type FamilyCity, type FoodDiet, type FoodListing, type FoodStyle } from "@/lib/travel-kit/family-planner-data";
 import type { Lang, CityId } from "@/lib/travel-kit/types";
@@ -70,6 +71,7 @@ export function FamilyFoodGuide({lang,city}:{lang:Lang;city:CityId}){
  const [style,setStyle]=useState<FoodStyle>("mixed");
  const [diet,setDiet]=useState<FoodDiet>("any");
  const meal=mealFor(selected,lang,diet,style);
+ const hero=selected==="Da Nang"?"/local-food/hero-food.jpg":selected==="Hoi An"?"/local-food/hoi-an-food.jpg":selected==="Hue"?"/travel-kit/opt/hue-ngo-mon-640.webp":"/travel-kit/opt/phu-quoc-beach-640.webp";
  // Do not imply vegetarian or seafood-free compatibility for unverified restaurants.
  const listings=diet==="any"?FOOD_LISTINGS.filter(p=>p.city===selected&&(style==="mixed"||style===p.category)):[];
  const sponsoredActive=FOOD_LISTINGS.some(p=>p.sponsorship?.active);
@@ -78,6 +80,7 @@ export function FamilyFoodGuide({lang,city}:{lang:Lang;city:CityId}){
   <p className={styles.kicker}>GOVIETSTAY · TRAVEL KIT</p>
   <h1 className={styles.title}>{c.title}</h1>
   <p className={styles.intro}>{c.subtitle}</p>
+  <div className={styles.foodHero}><Image alt={selected+" destination guide"} src={hero} width={960} height={440} sizes="(max-width: 600px) 100vw, 440px"/></div>
   {!sponsoredActive&&<div className={styles.chip}>{c.editorial}</div>}
   <div className={styles.form}>
    <label className={styles.field}><span>{c.city}</span>
@@ -111,7 +114,8 @@ export function FamilyFoodGuide({lang,city}:{lang:Lang;city:CityId}){
     <h2>{p.name}</h2>
     <p className={styles.overview}>{tr(p.description,lang)}</p>
     <dl><div><dt>{c.street}</dt><dd>{p.address}</dd></div></dl>
-    <a href={foodMapUrl(p)} target="_blank" rel="noopener noreferrer" className={styles.secondary}>{c.map} ↗</a>
+    <a href={foodMapUrl(p)} target="_blank" rel="noopener noreferrer" className={styles.secondary}
+     onClick={()=>{track("food_listing_click",{language:lang,city,tool:"food",listingId:p.id});if(p.sponsorship?.active)track("sponsored_food_click",{language:lang,city,tool:"food",listingId:p.id});}}>{c.map} ↗</a>
     <p className={styles.hint}>{c.fromSource}</p>
    </div>):<p className={styles.warning}>{c.noListing}</p>}
    <p className={styles.warning}>{c.disclaimer}</p>
