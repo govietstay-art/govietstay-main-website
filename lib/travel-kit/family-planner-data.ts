@@ -35,7 +35,7 @@ export const FOOD_LISTINGS:FoodListing[] = [
 export function foodMapUrl(item:FoodListing):string {
   return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(item.name+", "+item.address);
 }
-export function mealFor(city:FamilyCity,lang:Lang,diet:FoodDiet,style:FoodStyle):{dish:string;detail:string;venue:FoodListing|null} {
+export function mealFor(city:FamilyCity,lang:Lang,diet:FoodDiet,style:FoodStyle,dayIndex=0):{dish:string;detail:string;venue:FoodListing|null} {
   const dishes:Record<FamilyCity,{local:Localized;vegetarian:Localized;noSeafood:Localized;detail:Localized}> = {
     "Da Nang":{
       local:{en:"mì Quảng, bánh xèo or local market dishes",ru:"ми куанг, бань сео или блюда на рынке",it:"mì Quảng, bánh xèo o specialità del mercato"},
@@ -59,10 +59,11 @@ export function mealFor(city:FamilyCity,lang:Lang,diet:FoodDiet,style:FoodStyle)
       detail:{en:"On the island, check family access, food storage, and transport back to the hotel.",ru:"Проверьте удобство для семьи, свежесть продуктов и обратный транспорт.",it:"Verifica accessibilità per la famiglia, conservazione del cibo e rientro in hotel."}}
   };
   const d=dishes[city];
-  const dish=tr(diet==="vegetarian"?d.vegetarian:diet==="no-seafood"?d.noSeafood:d.local,lang);
+  const international:Localized={en:"an international or familiar family meal, if available",ru:"знакомую международную кухню, если она доступна",it:"un pasto internazionale o familiare, se disponibile"};
+  const dish=tr(diet==="vegetarian"?d.vegetarian:diet==="no-seafood"?d.noSeafood:style==="international"?international:d.local,lang);
   const eligible=FOOD_LISTINGS.filter(x=>x.city===city&&(style==="mixed"||x.category===style));
   // Dietary-safe vendors are never inferred from restaurant name or cuisine.
-  const venue=diet==="any"?eligible[0]??null:null;
+  const venue=diet==="any"?eligible[dayIndex%Math.max(1,eligible.length)]??null:null;
   return {dish,detail:tr(d.detail,lang),venue};
 }
 export function dayCity(destination:FamilyDestination, duration:number,index:number):FamilyCity {
@@ -247,7 +248,7 @@ export function buildFamilyItinerary(input:PlannerChoices,lang:Lang):RichDay[] {
   const city=dayCity(input.destination,input.duration,i);
   const arrival=i===0,departure=i===input.duration-1;
   const examples=EXPERIENCES[city][input.interest];const activity=examples[(i+input.duration)%examples.length];
-  const meal=mealFor(city,lang,input.diet,input.foodStyle);
+  const meal=mealFor(city,lang,input.diet,input.foodStyle,i);
   const evening=arrival||departure?c.near:i%2===0?c.sunset:c.evening;
   const familyNote=[c.weather,input.children>0?c.child:"",input.seniors?c.senior:"",!arrival&&!departure?tr(activity.wet,lang):"",c.check].filter(Boolean).join(" ");
   return {
