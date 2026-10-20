@@ -21,6 +21,14 @@ export default function Page(){return <>
         <a className="text-emerald-800 underline underline-offset-4" href="/pl/danang-hoi-an-hue">Da Nang · Hoi An · Hue</a>
       </nav>
       <div className="mt-6 border-t border-emerald-100 pt-5">
+        <p className="text-sm font-bold uppercase tracking-wider text-emerald-900">Vietnam travel guides in Finnish · Matkaoppaat suomeksi</p>
+        <nav aria-label="Suomenkieliset Vietnam-matkaoppaat" className="mt-3 flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold leading-7">
+          <a className="text-emerald-800 underline underline-offset-4" href="/fi/vietnam-matkaopas">Vietnam – matkaopas</a>
+          <a className="text-emerald-800 underline underline-offset-4" href="/fi/da-nang-hoi-an-hue">Da Nang · Hoi An · Hue</a>
+          <a className="text-emerald-800 underline underline-offset-4" href="/fi/phu-quoc-matkaopas">Phu Quoc – matkaopas</a>
+        </nav>
+      </div>
+      <div className="mt-6 border-t border-emerald-100 pt-5">
         <p className="text-sm font-bold uppercase tracking-wider text-emerald-900">Vietnam for Belarusian travelers · Давeднікі па-беларуску</p>
         <nav className="mt-3 flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold leading-7">
           <a className="text-emerald-800 underline underline-offset-4" href="/be/phu-quoc">Фукуок — даведнік</a>
