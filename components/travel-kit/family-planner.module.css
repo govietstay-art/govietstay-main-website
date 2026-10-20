@@ -45,3 +45,8 @@
 .foodBridge p { margin: 0; font-size: 14px; line-height: 1.7; }
 .foodBridge h2 { margin: 2px 0; font-size: 20px; line-height: 1.4; }
 .foodBridge a { color: #e4ff57; font-size: 14px; text-decoration: underline; text-underline-offset: 4px; font-weight: 750; min-height: 44px; display: inline-flex; align-items: center; }
+
+
+.foodHero { position: relative; overflow: hidden; height: 190px; margin: 0 0 18px; border-radius: 17px; border: 1px solid #384639; background: #1c2b20; }
+.foodHero img { display: block; width: 100%; height: 100%; object-fit: cover; }
+@media (min-width: 700px) { .foodHero { height: 230px; } }
