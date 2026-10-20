@@ -31,6 +31,10 @@ export const it: KitCopy = {
       title: "Sicurezza e numeri di emergenza | Kit GoVietStay",
       description: "113, 114, 115 e 112, più gli avvisi pratici del Foreign Office britannico sul Vietnam.",
     },
+    food: {
+      title: "Guida gastronomica Vietnam | Travel Kit GoVietStay",
+      description: "Ristoranti a Da Nang e Hoi An, piatti di Hue e Phu Quoc. Dentro il Travel Kit gratuito.",
+    },
     "family-planner": {
       title: "Organizza un viaggio di famiglia | GoVietStay Travel Kit",
       description: "Crea gratis un itinerario flessibile per Da Nang, Hoi An e Hue. Salva il piano nel browser.",
@@ -211,6 +215,7 @@ export const it: KitCopy = {
     phrases: { title: "Vietnamita", glance: "Caratteri grandi da mostrare" },
     weather: { title: "Meteo", glance: "Dal vivo, con la pioggia" },
     safety: { title: "Sicurezza", glance: "113 · 114 · 115" },
+    food: { title: "Sapori locali", glance: "Cosa e dove mangiare" },
     "family-planner": { title: "Viaggio in famiglia", glance: "Crea il tuo itinerario" },
     packing: { title: "Bagaglio", glance: "Salvato su questo telefono" },
     "da-nang": { title: "Guida di Da Nang", glance: "La pagina completa" },
