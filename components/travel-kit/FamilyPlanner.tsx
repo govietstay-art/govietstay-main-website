@@ -209,7 +209,8 @@ export function FamilyPlanner({lang,city}:{lang:Lang;city:CityId}){
        {day.food.venue.sponsorship?.active&&<span className={styles.sponsor}>{copy.sponsored}</span>}
        <span>{day.food.venue.address}</span>
        <span>{copy.source}</span>
-       <a target="_blank" rel="noopener noreferrer" href={foodMapUrl(day.food.venue)}>{copy.map} ↗</a>
+       <a target="_blank" rel="noopener noreferrer" href={foodMapUrl(day.food.venue)}
+        onClick={()=>{if(day.food.venue){track("food_listing_click",{language:lang,city,tool:"family-planner",listingId:day.food.venue.id});if(day.food.venue.sponsorship?.active)track("sponsored_food_click",{language:lang,city,tool:"family-planner",listingId:day.food.venue.id});}}}>{copy.map} ↗</a>
        <small>{copy.verified}</small>
       </div>}
      </div>
