@@ -750,6 +750,9 @@ function Trip({
       <p className={styles.kicker}>{copy.nav.trip}</p>
       <h1 className={`${styles.heroTitle} ${styles.serif}`}>{page.title}</h1>
       <p className={styles.lede}>{page.lede}</p>
+      <p className={styles.supportLine}>
+        <Link href={pathFor(lang, "family-planner", city)}>{copy.tools["family-planner"].title} →</Link>
+      </p>
       <div className={`${styles.photo} ${styles.guidePhoto}`} data-frame={photoSet(city, "landed").frame}>
         <KitPhoto
           city={city}
