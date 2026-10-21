@@ -15,6 +15,7 @@ const typeCopy = {
 } as const;
 
 function priceLabel(page: VietnamSeoPage) {
+  if (page.slug === "gia-ve-ba-na-hills") return "Từ 960.000đ";
   if (!page.priceKey) return page.depositPercent === 0 ? "Xe tiêu chuẩn: không cần cọc" : "Báo giá theo nhóm";
   const price = priceMap[page.priceKey];
   return price?.sellPrice ? `${page.priceKey === "bana" ? "" : "Từ "}${new Intl.NumberFormat("vi-VN").format(price.sellPrice)}đ` : "Hỏi giá nhanh";
@@ -125,6 +126,7 @@ export default function VietnamPage({
             <h3>{copy[0]}</h3>
             <p>{copy[1]}</p>
             <strong>{priceLabel(page)}</strong>
+            {page.slug === "gia-ve-ba-na-hills" && <p>Vé cáp treo không buffet từ 960.000đ/người lớn. Vé cáp treo kèm buffet: 1.200.000đ/người lớn. Giá và tình trạng vé được xác nhận theo ngày đi.</p>}
             <div><span>Thanh toán</span><b>{isBana ? "Sau khi xác nhận còn vé và giá" : page.depositPercent === 0 ? "Transfer tiêu chuẩn: không cần cọc" : `${page.depositPercent}% sau khi xác nhận`}</b></div>
             <div><span>Hỗ trợ</span><b>Zalo + đội ngũ tại địa phương</b></div>
             <div><span>Đi riêng</span><b>Không ghép khách nếu đã chốt tour riêng</b></div>
