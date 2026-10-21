@@ -3,13 +3,15 @@ import type { CityId, Lang, ToolSlug } from "./types";
 /** localStorage flag. Default off. No cookie, no third-party script. */
 export const ANALYTICS_FLAG = "gvs-tk-analytics";
 
-export const KIT_EVENTS = ["travel_kit_open", "city_change", "tool_open", "esim_request_click", "whatsapp_click"] as const;
+export const KIT_EVENTS = ["travel_kit_open", "city_change", "tool_open", "esim_request_click", "whatsapp_click", "food_listing_click", "sponsored_food_click"] as const;
 export type KitEvent = (typeof KIT_EVENTS)[number];
 
 export type KitPayload = {
   language: Lang;
   city: CityId;
   tool: ToolSlug | "home";
+  /** Optional editorial listing identifier. No personal data. */
+  listingId?: string;
 };
 
 const once = new Set<string>();
@@ -24,7 +26,7 @@ function enabled(): boolean {
 }
 
 function keyOf(name: KitEvent, payload: KitPayload) {
-  return `${name}|${payload.language}|${payload.city}|${payload.tool}`;
+  return `${name}|${payload.language}|${payload.city}|${payload.tool}|${payload.listingId ?? ""}`;
 }
 
 /**

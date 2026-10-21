@@ -83,7 +83,7 @@ export type Dictionary = {
   copyFailed: string;
 };
 
-export const UTILITY_SLUGS = ["esim", "arrival", "money", "phrases", "weather", "safety", "packing"] as const;
+export const UTILITY_SLUGS = ["esim", "arrival", "money", "phrases", "weather", "safety", "family-planner", "food", "packing"] as const;
 export const GUIDE_SLUGS = ["da-nang", "hoi-an", "hue", "phu-quoc"] as const;
 export const HUB_SLUGS = ["explore", "tools", "trip"] as const;
 export const TOOL_SLUGS = [...UTILITY_SLUGS, ...GUIDE_SLUGS, ...HUB_SLUGS] as const;

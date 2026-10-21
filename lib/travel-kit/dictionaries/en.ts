@@ -31,6 +31,14 @@ export const en: KitCopy = {
       title: "Safety and emergency numbers | GoVietStay travel kit",
       description: "113, 114, 115 and 112, plus practical warnings from the UK Foreign Office advice for Vietnam.",
     },
+    food: {
+      title: "Local Food Guide | Vietnam Travel Kit by GoVietStay",
+      description: "Find Da Nang and Hoi An restaurants plus Hue and Phu Quoc food ideas. Part of the free GoVietStay Travel Kit.",
+    },
+    "family-planner": {
+      title: "Family Travel Planner in Central Vietnam | GoVietStay Travel Kit",
+      description: "Build a free, flexible family itinerary for Da Nang, Hoi An and Hue. Save locally and request optional local help.",
+    },
     packing: {
       title: "Packing list for Vietnam | GoVietStay travel kit",
       description: "A checklist you can tick. It stays on this phone. No account.",
@@ -207,6 +215,8 @@ export const en: KitCopy = {
     phrases: { title: "Vietnamese", glance: "Large type to show" },
     weather: { title: "Weather", glance: "Live, with a rain plan" },
     safety: { title: "Safety", glance: "113 · 114 · 115" },
+    food: { title: "Local food", glance: "Dishes and places to eat" },
+    "family-planner": { title: "Family planner", glance: "Build your own trip" },
     packing: { title: "Packing list", glance: "Saved on this phone" },
     "da-nang": { title: "Da Nang guide", glance: "The full city page" },
     "hoi-an": { title: "Hoi An guide", glance: "The old town, on foot" },

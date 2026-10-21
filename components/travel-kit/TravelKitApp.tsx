@@ -36,6 +36,8 @@ import {
   type ToolSlug,
 } from "@/lib/travel-kit/types";
 import styles from "./travel-kit.module.css";
+import { FamilyPlanner } from "./FamilyPlanner";
+import { FamilyFoodGuide } from "./FamilyFoodGuide";
 
 const ARRIVAL_KEY = "gvs-travel-kit-arrival-v2";
 const PACKING_KEY = "gvs-travel-kit-packing-v1";
@@ -463,6 +465,8 @@ export function TravelKitApp({ lang, tool, initialCity, weather, rates }: Props)
           {tool === "weather" ? <Weather copy={copy} lang={lang} city={city} weather={weather} /> : null}
           {tool === "safety" ? <Safety copy={copy} /> : null}
           {tool === "packing" ? <Packing copy={copy} /> : null}
+          {tool === "family-planner" ? <FamilyPlanner lang={lang} city={city} /> : null}
+          {tool === "food" ? <FamilyFoodGuide lang={lang} city={city} /> : null}
           {isGuide(tool) ? <Guide copy={copy} tool={tool} /> : null}
           {tool === "explore" ? <Explore copy={copy} lang={lang} city={city} /> : null}
           {tool === "tools" ? <ToolsHub copy={copy} lang={lang} city={city} /> : null}
@@ -748,6 +752,9 @@ function Trip({
       <p className={styles.kicker}>{copy.nav.trip}</p>
       <h1 className={`${styles.heroTitle} ${styles.serif}`}>{page.title}</h1>
       <p className={styles.lede}>{page.lede}</p>
+      <p className={styles.supportLine}>
+        <Link href={pathFor(lang, "family-planner", city)}>{copy.tools["family-planner"].title} →</Link>
+      </p>
       <div className={`${styles.photo} ${styles.guidePhoto}`} data-frame={photoSet(city, "landed").frame}>
         <KitPhoto
           city={city}
