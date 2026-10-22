@@ -2173,6 +2173,7 @@
 .hybridDestinationOverlay strong { font: 900 clamp(31px,5vw,48px)/1 Impact,'Arial Narrow',sans-serif; letter-spacing: .02em; }
 .hybridDestinationOverlay > span { display: flex; justify-content: space-between; border-top: 1px solid rgba(255,255,255,.58); padding-top: 9px; font: 800 10px 'Kit Plex',sans-serif; }
 .hybridDestinationOverlay > span > span { font-size: 15px; }
+.hybridArtNote { margin: 16px 2px 0; color: #c9e2d8; font: 500 11px/1.5 'Kit Plex',sans-serif; }
 .hybridDestinationCard:focus-visible, .hybridFeature:focus-visible, .hybridPrimary:focus-visible, .hybridSecondary:focus-visible { outline: 3px solid #ffcd6f; outline-offset: 3px; }
 .homeStage { margin-top: 13px; }
 
