@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type ChangeEvent } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import dynamic from "next/dynamic";
 
 const EXCHANGE_RATE = 26000;
@@ -2503,16 +2504,9 @@ export default function Home() {
                 Plan on WhatsApp
               </a>
 
-              <button
-                onClick={() => setDaoOpen(true)}
-                className="min-w-0 rounded-full border border-white/60 px-4 py-3.5 text-center text-sm font-semibold transition hover:bg-white hover:text-black sm:px-7 sm:py-4 sm:text-base"
-              >
-                Ask Đào
-              </button>
-
               <a
                 href="#experiences"
-                className="col-span-2 min-w-0 rounded-full bg-yellow-400 px-4 py-3.5 text-center text-sm font-semibold text-black transition hover:bg-yellow-500 sm:col-span-1 sm:px-7 sm:py-4 sm:text-base"
+                className="min-w-0 rounded-full bg-yellow-400 px-4 py-3.5 text-center text-sm font-semibold text-black transition hover:bg-yellow-500 sm:px-7 sm:py-4 sm:text-base"
               >
                 Explore Vietnam
               </a>
@@ -4049,26 +4043,21 @@ export default function Home() {
 
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 mobile-bottom-safe border-t border-white/10 bg-[#02140f]/95 backdrop-blur-xl px-2 pt-2">
         <div className="grid grid-cols-6 gap-1.5 pb-2 text-[10px] font-semibold text-white">
-          <a
-            href="/secret"
+          <Link
+            href="/en/travel-kit"
             className="rounded-2xl bg-yellow-400 px-1.5 py-2 text-center text-[#06251b] active:scale-95 transition"
+            aria-label="Free GoVietStay Travel Kit"
           >
-            <div className="text-xl">🗺️</div>
-            <div>Secret</div>
-          </a>
+            <div className="text-xl">🎁</div>
+            <div>Free Kit</div>
+          </Link>
           <a
-            href="/local-food"
-            className="rounded-2xl bg-white/8 px-1.5 py-2 text-center active:scale-95 transition"
+            href="/visa"
+            className="rounded-2xl bg-yellow-400 px-1.5 py-2 text-center text-[#06251b] active:scale-95 transition"
+            aria-label="Vietnam Visa Service"
           >
-            <div className="text-xl">🍜</div>
-            <div>Food</div>
-          </a>
-          <a
-            href="#tickets"
-            className="rounded-2xl bg-white/8 px-1.5 py-2 text-center active:scale-95 transition"
-          >
-            <div className="text-xl">🎫</div>
-            <div>Ticket</div>
+            <div className="text-xl">🛂</div>
+            <div>Visa</div>
           </a>
           <a
             href="#experiences"
@@ -4078,12 +4067,18 @@ export default function Home() {
             <div>Tour</div>
           </a>
           <a
-            href="/visa"
-            className="rounded-2xl bg-yellow-400 px-1.5 py-2 text-center text-[#06251b] active:scale-95 transition"
-            aria-label="Vietnam Visa Service"
+            href="#tickets"
+            className="rounded-2xl bg-white/8 px-1.5 py-2 text-center active:scale-95 transition"
           >
-            <div className="text-xl">🛂</div>
-            <div>Visa</div>
+            <div className="text-xl">🎫</div>
+            <div>Ticket</div>
+          </a>
+          <a
+            href="/secret"
+            className="rounded-2xl bg-white/8 px-1.5 py-2 text-center active:scale-95 transition"
+          >
+            <div className="text-xl">🗺️</div>
+            <div>Secret</div>
           </a>
           <a
             href="https://wa.me/84937762607"
