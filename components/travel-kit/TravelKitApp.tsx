@@ -38,6 +38,7 @@ import {
 import styles from "./travel-kit.module.css";
 import { FamilyPlanner } from "./FamilyPlanner";
 import { FamilyFoodGuide } from "./FamilyFoodGuide";
+import { HybridPremiumIntro } from "./HybridPremiumIntro";
 
 const ARRIVAL_KEY = "gvs-travel-kit-arrival-v2";
 const PACKING_KEY = "gvs-travel-kit-packing-v1";
@@ -937,6 +938,7 @@ function Home({
   const now = copy.now[city][moment];
   return (
     <>
+      <HybridPremiumIntro lang={lang} city={city} />
       <div className={styles.homeStage}>
       <figure className={styles.opening}>
         <div className={styles.photo} data-frame={photoSet(city, scenario).frame}>
@@ -960,7 +962,7 @@ function Home({
         </div>
         <section className={styles.nowCard} aria-live="polite">
           <p className={styles.kicker}>{copy.nowKicker}</p>
-          <h1 className={styles.heroTitle}>{now.title}</h1>
+          <h2 className={styles.heroTitle}>{now.title}</h2>
           <p className={styles.lede}>{now.body}</p>
           <Link className={styles.cta} href={pathFor(lang, now.tool, city)}>
             {now.cta}
