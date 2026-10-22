@@ -25,6 +25,7 @@ const INTRO: Record<Lang, {
   discover: string;
   scroll: string;
   items: [string, string, string];
+  artNote: string;
 }> = {
   en: {
     eyebrow: "YOUR FREE VIETNAM TRAVEL COMPANION",
@@ -48,6 +49,7 @@ const INTRO: Record<Lang, {
     discover: "EXPLORE GUIDE",
     scroll: "SCROLL TO EXPLORE",
     items: ["PLAN YOUR TRIP", "STAY CONNECTED", "DISCOVER MORE"],
+    artNote: "Illustrative destination artwork. Explore each guide for practical local information.",
   },
   ru: {
     eyebrow: "ВАШ БЕСПЛАТНЫЙ СПУТНИК ПО ВЬЕТНАМУ",
@@ -71,6 +73,7 @@ const INTRO: Record<Lang, {
     discover: "ПУТЕВОДИТЕЛЬ",
     scroll: "ЛИСТАЙТЕ ДАЛЬШЕ",
     items: ["ПЛАНИРУЙТЕ", "БУДЬТЕ НА СВЯЗИ", "ОТКРЫВАЙТЕ"],
+    artNote: "Художественные иллюстрации. Подробности — в путеводителях по городам.",
   },
   it: {
     eyebrow: "IL TUO COMPAGNO DI VIAGGIO GRATUITO",
@@ -94,14 +97,15 @@ const INTRO: Record<Lang, {
     discover: "SCOPRI LA GUIDA",
     scroll: "SCORRI PER ESPLORARE",
     items: ["ORGANIZZA", "RESTA CONNESSO", "SCOPRI DI PIÙ"],
+    artNote: "Illustrazioni delle destinazioni. Consulta le guide per informazioni locali.",
   },
 };
 
 const DESTINATIONS: { city: CityId; label: string; slug: string; image: string; caption: string }[] = [
-  { city: "danang", label: "DA NANG", slug: "da-nang", image: "/travel-kit/opt/da-nang-golden-bridge-640.webp", caption: "01 / COAST & MOUNTAINS" },
-  { city: "hoian", label: "HOI AN", slug: "hoi-an", image: "/travel-kit/opt/hoi-an-lantern-boats-640.webp", caption: "02 / LANTERN NIGHTS" },
-  { city: "hue", label: "HUE", slug: "hue", image: "/travel-kit/opt/hue-ngo-mon-640.webp", caption: "03 / IMPERIAL HERITAGE" },
-  { city: "phuquoc", label: "PHU QUOC", slug: "phu-quoc", image: "/travel-kit/opt/phu-quoc-beach-640.webp", caption: "04 / ISLAND ESCAPE" },
+  { city: "danang", label: "DA NANG", slug: "da-nang", image: "/travel-kit/hybrid-premium/destination-v2-0.webp", caption: "01 / COAST & MOUNTAINS" },
+  { city: "hoian", label: "HOI AN", slug: "hoi-an", image: "/travel-kit/hybrid-premium/destination-v2-1.webp", caption: "02 / LANTERN NIGHTS" },
+  { city: "hue", label: "HUE", slug: "hue", image: "/travel-kit/hybrid-premium/destination-v2-2.webp", caption: "03 / IMPERIAL HERITAGE" },
+  { city: "phuquoc", label: "PHU QUOC", slug: "phu-quoc", image: "/travel-kit/hybrid-premium/destination-v2-3.webp", caption: "04 / ISLAND ESCAPE" },
 ];
 
 export function HybridPremiumIntro({ lang, city }: { lang: Lang; city: CityId }) {
@@ -183,6 +187,7 @@ export function HybridPremiumIntro({ lang, city }: { lang: Lang; city: CityId })
             <span className={styles.hybridDestinationOverlay}><small>{place.caption}</small><strong>{place.label}</strong><span>{t.discover} <span aria-hidden="true">↗</span></span></span>
           </Link>)}
         </div>
+        <p className={styles.hybridArtNote}>{t.artNote}</p>
       </section>
     </div>
   );
