@@ -2050,3 +2050,193 @@
 @media (prefers-reduced-motion: reduce) {
   .hybridPrimary, .hybridSecondary { transition: none; }
 }
+
+/* V2: a full editorial travel experience, inspired by the kinetic Beer Station page.
+   CSS-only motion keeps the Travel Kit app logic, routes and data stores untouched. */
+.hybridExperience { overflow: hidden; border-radius: 0; }
+.hybridIntro {
+  display: flex;
+  flex-direction: column;
+  isolation: isolate;
+  position: relative;
+  min-height: 740px;
+  margin: 0 -20px;
+  padding: 22px 20px 28px;
+  color: #fffbed;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+  background: #082c2a;
+  box-shadow: none;
+}
+.hybridBackdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  background-image: linear-gradient(90deg, rgba(3,30,29,.93) 3%, rgba(4,39,36,.79) 60%, rgba(4,38,35,.54)), url('/travel-kit/opt/da-nang-golden-bridge-960.webp');
+  background-size: cover;
+  background-position: center 36%;
+  filter: saturate(.8);
+  transform: scale(1.04);
+  animation: hybridBackdropEnter 1.6s cubic-bezier(.2,.7,.2,1) both;
+}
+.hybridGlow {
+  position: absolute;
+  z-index: -2;
+  inset: -10%;
+  background: radial-gradient(circle at 76% 61%, rgba(88,224,166,.30), transparent 29%), radial-gradient(circle at 12% 1%, rgba(255,210,102,.18), transparent 35%);
+  pointer-events: none;
+}
+.hybridIntro::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 480px;
+  height: 480px;
+  border: 1px solid rgba(230,253,199,.22);
+  border-radius: 50%;
+  right: -270px;
+  top: 160px;
+  background: none;
+}
+.hybridHeroTop, .hybridHeroBottom { display: flex; align-items: center; justify-content: space-between; gap: 12px; position: relative; z-index: 5; }
+.hybridHeroTop { border-bottom: 1px solid rgba(255,255,255,.31); padding-bottom: 14px; }
+.hybridEyebrow, .hybridTopYear { font: 750 10px/1.5 'Kit Plex', sans-serif; letter-spacing: .14em; color: #e9fdd7; }
+.hybridEyebrow { display: inline-flex; gap: 7px; align-items: center; margin: 0; }
+.hybridEyebrow span { font-size: 17px; color: #dfff90; }
+.hybridTopYear { white-space: nowrap; font-size: 9px; }
+.hybridTopYear span { color: #dfff90; }
+.hybridHeroGrid { display: grid; grid-template-columns: 1fr; align-items: center; flex: 1; position: relative; z-index: 2; }
+.hybridIntroCopy { position: relative; z-index: 3; max-width: none; padding-top: 34px; }
+.hybridOverline { color: #dbf1c2; font: 700 11px/1.3 'Kit Plex', sans-serif; letter-spacing: .18em; margin: 0 0 13px; animation: hybridRise 650ms .05s ease both; }
+.hybridHeadline { max-width: none; margin: 0; font-family: Impact, 'Arial Narrow', 'Helvetica Neue', sans-serif; font-weight: 900; line-height: .91; font-size: clamp(52px, 12.9vw, 114px); letter-spacing: -.028em; color: #fff8e9; text-wrap: nowrap; }
+.hybridTitleLine { display: block; width: fit-content; white-space: nowrap; animation: hybridRise 850ms .16s cubic-bezier(.15,.75,.25,1) both; }
+.hybridTitleAccent { margin-top: .07em; color: #e3ff9c; font-style: italic; transform-origin: left center; animation-delay: .35s; text-shadow: 0 11px 35px rgba(7,37,30,.26); }
+.hybridDescription { font-size: 15px; max-width: 420px; line-height: 1.62; color: #ecf5e8; margin: 21px 0 0; animation: hybridRise 700ms .55s ease both; }
+.hybridActions { margin-top: 25px; gap: 10px; animation: hybridRise 700ms .65s ease both; }
+.hybridPrimary, .hybridSecondary { min-height: 48px; padding: 0 17px; font: 800 11px/1.2 'Kit Plex', sans-serif; letter-spacing: .045em; text-transform: uppercase; box-shadow: none; }
+.hybridPrimary { background: #e1ff95; color: #153a31; border-color: #e1ff95; }
+.hybridSecondary { background: rgba(255,255,255,.11); color: #ffffff; border: 1px solid rgba(255,255,255,.57); backdrop-filter: blur(8px); }
+.hybridPrimary:hover, .hybridSecondary:hover { transform: translateY(-4px); box-shadow: 0 10px 25px rgba(0,0,0,.18); }
+.hybridAssurance { max-width: none; margin: 15px 0 0; color: #dbeedb; font-size: 10px; letter-spacing: .015em; }
+.hybridArtStage { min-height: 300px; height: 300px; position: relative; z-index: 2; margin-top: -8px; }
+.hybridArtHalo { position: absolute; width: 81%; aspect-ratio: 1; border-radius: 50%; right: 7%; top: 7%; background: radial-gradient(circle, rgba(220,255,146,.38) 0, rgba(105,225,174,.20) 45%, transparent 67%); filter: blur(11px); animation: hybridPulse 5s ease-in-out infinite; }
+.hybridOrbit { position: absolute; width: 80%; aspect-ratio: 1; right: 10%; top: 5%; bottom: auto; border: 1px dashed rgba(243,255,201,.54); border-radius: 50%; animation: hybridSpin 38s linear infinite; }
+.hybridOrbit::before, .hybridOrbit::after { content: '✦'; position: absolute; color: #e8ff9d; font-size: 22px; }
+.hybridOrbit::before { left: 6%; top: 18%; }
+.hybridOrbit::after { right: 8%; bottom: 12%; }
+.hybridArtwork { position: absolute; z-index: 3; display: block; width: min(113%, 490px); max-width: none; height: auto; left: 50%; right: auto; bottom: -30px; transform: translateX(-50%); filter: drop-shadow(0 28px 20px rgba(0,0,0,.25)); animation: hybridFloat 5.4s ease-in-out infinite; pointer-events: none; }
+.hybridFloatTicket { z-index: 5; position: absolute; top: 15px; left: 1%; display: grid; gap: 4px; padding: 12px 14px; border: 1px solid rgba(255,255,255,.6); border-radius: 13px; background: rgba(255,252,235,.93); box-shadow: 0 15px 40px rgba(0,0,0,.16); color: #154b3e; transform: rotate(-9deg); animation: hybridTicketFloat 4.2s ease-in-out infinite; }
+.hybridFloatTicket span { font-size: 11px; letter-spacing: .08em; font-weight: 900; }
+.hybridFloatTicket small { font-size: 8px; color: #39766b; }
+.hybridFloatSeal { z-index: 5; position: absolute; right: 2%; bottom: 20px; width: 86px; height: 86px; border-radius: 50%; display: flex; align-items: center; justify-content: center; gap: 5px; background: #e2ff93; color: #10473c; font-size: 24px; transform: rotate(10deg); box-shadow: 0 7px 21px rgba(0,0,0,.15); }
+.hybridFloatSeal small { font: 900 11px/1.08 Impact, sans-serif; letter-spacing: .02em; }
+.hybridHeroBottom { padding-top: 20px; border-top: 1px solid rgba(255,255,255,.29); font: 700 9px/1.2 'Kit Plex',sans-serif; letter-spacing: .14em; color: #dcf4df; }
+.hybridHeroBottom span:nth-child(2) { display: none; }
+.hybridTicker { margin: 0 -20px; overflow: hidden; background: #dcff89; color: #103c33; border-top: 1px solid rgba(255,255,255,.35); border-bottom: 1px solid rgba(12,68,56,.13); }
+.hybridTickerTrack { display: flex; width: max-content; padding: 16px 0; will-change: transform; animation: hybridTickerRun 28s linear infinite; }
+.hybridTickerGroup { display: flex; align-items: center; gap: 32px; padding-right: 32px; white-space: nowrap; }
+.hybridTickerGroup > span { display: inline-flex; align-items: center; gap: 32px; font: 900 20px/.98 Impact,'Arial Narrow',sans-serif; letter-spacing: .03em; }
+.hybridTickerGroup b { font-size: 18px; font-weight: 700; }
+.hybridStory { padding: 53px 0 57px; background: #f8f5e9; color: #103e36; }
+.hybridSectionTop { display: flex; justify-content: space-between; align-items: center; gap: 12px; color: #267563; font: 800 10px/1.4 'Kit Plex',sans-serif; letter-spacing: .11em; }
+.hybridSectionTop span:nth-child(2) { white-space: nowrap; font-size: 9px; color: #659a89; }
+.hybridStatement { display: flex; flex-direction: column; margin: 29px 0 15px; font: 900 clamp(46px,10vw,100px)/.97 Impact,'Arial Narrow',sans-serif; letter-spacing: -.018em; }
+.hybridStatement em { color: #0a9f78; font-style: italic; }
+.hybridStatementBody { font-size: 16px; line-height: 1.6; max-width: 520px; color: #53796c; }
+.hybridFeatureGrid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 30px; }
+.hybridFeature { color: #144f42; text-decoration: none; display: flex; flex-direction: column; min-height: 198px; padding: 23px; border-radius: 18px; background: #d9f5de; border: 1px solid #c1e8cc; transition: transform 300ms cubic-bezier(.2,.8,.2,1), box-shadow 300ms ease; overflow: hidden; position: relative; }
+.hybridFeature:nth-child(2) { background: #fbe4bf; border-color: #f2d8a8; }
+.hybridFeature:nth-child(3) { background: #d5e7ff; border-color: #bad6f6; }
+.hybridFeature::after { content: ''; position: absolute; inset: auto -45px -105px auto; width: 190px; height: 190px; border: 1px solid rgba(18,100,78,.16); border-radius: 50%; }
+.hybridFeature:hover, .hybridFeature:focus-visible { transform: translateY(-8px); box-shadow: 0 16px 30px rgba(17,83,72,.15); }
+.hybridFeatureTop { display: flex; align-items: center; justify-content: space-between; font: 900 11px 'Kit Plex', sans-serif; letter-spacing: .07em; }
+.hybridFeatureTop span { font-size: 19px; }
+.hybridFeatureGlyph { font-size: 44px; margin: 8px 0 2px; line-height: 1; color: #1b9673; }
+.hybridFeature:nth-child(2) .hybridFeatureGlyph { color: #d1853e; }
+.hybridFeature:nth-child(3) .hybridFeatureGlyph { color: #467fcc; }
+.hybridFeature strong { font: 850 18px/1.17 'Kit Plex', sans-serif; letter-spacing: -.03em; }
+.hybridFeatureGo { margin-top: auto; padding-top: 17px; display: flex; justify-content: space-between; font: 850 10px 'Kit Plex',sans-serif; letter-spacing: .05em; }
+.hybridDestinations { padding: 51px 0 35px; background: #0b3c36; color: #f9fff0; }
+.hybridDestinationIntro { display: flex; flex-direction: column; gap: 14px; }
+.hybridSectionKicker { font: 850 11px/1.4 'Kit Plex',sans-serif; letter-spacing: .13em; color: #c5f6a6; }
+.hybridDestinationHeading { display: flex; flex-direction: column; margin: 20px 0 0; font: 900 clamp(45px,9.5vw,96px)/.98 Impact,'Arial Narrow',sans-serif; letter-spacing: -.018em; }
+.hybridDestinationHeading em { font-style: italic; color: #dfff91; }
+.hybridDestinationIntro p { font-size: 15px; line-height: 1.5; max-width: 440px; color: #cae3d5; }
+.hybridDestinationGrid { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(220px,76%); gap: 13px; margin-top: 29px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 20px; padding: 0 0 15px; scrollbar-width: thin; }
+.hybridDestinationCard { display: block; aspect-ratio: 3/4; border-radius: 17px; position: relative; overflow: hidden; text-decoration: none; color: #fff; scroll-snap-align: start; isolation: isolate; background: #356c61; }
+.hybridDestinationCard img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 650ms cubic-bezier(.2,.8,.2,1); }
+.hybridDestinationCard:hover img, .hybridDestinationCard:focus-visible img { transform: scale(1.09); }
+.hybridDestinationCard::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg,rgba(0,0,0,.1) 20%,rgba(0,0,0,.74) 100%); z-index: 0; }
+.hybridDestinationOverlay { position: absolute; inset: auto 16px 19px; z-index: 1; display: grid; gap: 9px; }
+.hybridDestinationOverlay small { font: 700 10px 'Kit Plex',sans-serif; letter-spacing: .10em; }
+.hybridDestinationOverlay strong { font: 900 clamp(31px,5vw,48px)/1 Impact,'Arial Narrow',sans-serif; letter-spacing: .02em; }
+.hybridDestinationOverlay > span { display: flex; justify-content: space-between; border-top: 1px solid rgba(255,255,255,.58); padding-top: 9px; font: 800 10px 'Kit Plex',sans-serif; }
+.hybridDestinationOverlay > span > span { font-size: 15px; }
+.hybridDestinationCard:focus-visible, .hybridFeature:focus-visible, .hybridPrimary:focus-visible, .hybridSecondary:focus-visible { outline: 3px solid #ffcd6f; outline-offset: 3px; }
+.homeStage { margin-top: 13px; }
+
+@keyframes hybridRise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes hybridBackdropEnter { from { opacity: .2; transform: scale(1.13); } to { opacity: 1; transform: scale(1.04); } }
+@keyframes hybridFloat { 0%,100% { transform: translate(-50%,0) rotate(-1deg); } 50% { transform: translate(-50%,-15px) rotate(1deg); } }
+@keyframes hybridTicketFloat { 0%,100% { transform: rotate(-9deg) translateY(0); } 50% { transform: rotate(-6deg) translateY(-9px); } }
+@keyframes hybridPulse { 0%,100% { opacity: .8; transform: scale(1); } 50% { opacity: 1; transform: scale(1.08); } }
+@keyframes hybridSpin { to { transform: rotate(360deg); } }
+@keyframes hybridTickerRun { to { transform: translateX(-50%); } }
+
+@media (min-width: 580px) {
+  .hybridIntro { min-height: 750px; padding: 30px 35px 26px; margin: 0; border-radius: 24px 24px 0 0; }
+  .hybridTicker { margin: 0; border-radius: 0 0 15px 15px; }
+  .hybridHeadline { font-size: clamp(75px, 11vw, 100px); }
+  .hybridArtStage { min-height: 380px; height: 380px; }
+  .hybridArtwork { width: 520px; bottom: -30px; }
+  .hybridFloatTicket { left: 18%; }
+  .hybridStory, .hybridDestinations { padding: 55px 24px; }
+  .hybridFeatureGrid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+  .hybridFeature { min-height: 222px; padding: 17px; }
+  .hybridFeature strong { font-size: 16px; }
+  .hybridDestinationGrid { grid-auto-columns: minmax(180px,42%); }
+}
+@media (min-width: 960px) {
+  .hybridIntro { min-height: 605px; padding: 32px 42px 27px; }
+  .hybridBackdrop { background-image: linear-gradient(90deg, rgba(3,30,29,.92) 0%, rgba(3,37,35,.85) 46%, rgba(4,38,35,.37) 100%), url('/travel-kit/opt/da-nang-golden-bridge-960.webp'); background-position: center 44%; }
+  .hybridHeroGrid { grid-template-columns: minmax(0,1.05fr) minmax(300px,.95fr); }
+  .hybridIntroCopy { padding-top: 25px; }
+  .hybridHeadline { font-size: clamp(75px,6.75vw,103px); }
+  .hybridDescription { max-width: 510px; font-size: 16px; }
+  .hybridArtStage { min-height: 455px; height: 455px; margin-top: 0; }
+  .hybridArtwork { width: 123%; max-width: 620px; left: 50%; bottom: -5px; }
+  .hybridFloatTicket { top: 34px; left: 3%; }
+  .hybridFloatSeal { right: 3%; bottom: 55px; }
+  .hybridHeroBottom span:nth-child(2) { display: block; }
+  .hybridTickerTrack { padding: 20px 0; }
+  .hybridTickerGroup > span { font-size: 26px; }
+  .hybridStory { padding: 70px 46px 78px; }
+  .hybridStatement { font-size: clamp(63px,7.3vw,104px); }
+  .hybridStatementBody { font-size: 18px; }
+  .hybridFeature { min-height: 270px; padding: 23px; }
+  .hybridFeatureGlyph { font-size: 62px; margin-top: 16px; }
+  .hybridFeature strong { font-size: 22px; }
+  .hybridDestinations { padding: 71px 40px 53px; }
+  .hybridDestinationIntro { flex-direction: row; align-items: end; justify-content: space-between; }
+  .hybridDestinationIntro p { max-width: 250px; }
+  .hybridDestinationHeading { font-size: clamp(55px,6.4vw,94px); }
+  .hybridDestinationGrid { grid-auto-flow: unset; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px; overflow-x: visible; padding: 0; }
+  .hybridDestinationCard { aspect-ratio: 3/4.2; }
+  .hybridDestinationOverlay { inset: auto 12px 18px; }
+  .hybridDestinationOverlay strong { font-size: clamp(26px,3vw,40px); }
+}
+@media (min-width: 1320px) {
+  .hybridHeadline { font-size: 108px; }
+  .hybridIntro { min-height: 665px; }
+}
+@media (max-width: 389px) {
+  .hybridIntro { margin: 0 -16px; padding: 19px 16px 24px; }
+  .hybridTicker { margin: 0 -16px; }
+  .hybridHeadline { font-size: clamp(41px, 12.7vw, 53px); }
+  .hybridTopYear { display: none; }
+  .hybridArtwork { width: 112%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hybridExperience *, .hybridExperience *::before, .hybridExperience *::after { animation: none !important; transition: none !important; }
+}
