@@ -1,11 +1,18 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  async headers(){
+  async headers() {
     return [
-      {source:"/logo.png",headers:[{key:"Cache-Control",value:"public, max-age=86400, stale-while-revalidate=604800"}]},
-      {source:"/ar-assets/logo.webp",headers:[{key:"Cache-Control",value:"public, max-age=604800, stale-while-revalidate=2592000"}]},
-      {source:"/ar-assets/hero-hoian.webp",headers:[{key:"Cache-Control",value:"public, max-age=604800, stale-while-revalidate=2592000"}]},
+      { source: "/logo.png", headers: [{ key: "Cache-Control", value: "public, max-age=86400, stale-while-revalidate=604800" }] },
+      { source: "/ar-assets/logo.webp", headers: [{ key: "Cache-Control", value: "public, max-age=604800, stale-while-revalidate=2592000" }] },
+      { source: "/ar-assets/hero-hoian.webp", headers: [{ key: "Cache-Control", value: "public, max-age=604800, stale-while-revalidate=2592000" }] },
+    ];
+  },
+  // Serve the independent tropical-brand microsite on GoVietStay's own domain.
+  // Existing GoVietStay pages and their Next.js layouts are unchanged.
+  async rewrites() {
+    return [
+      { source: "/the-coolest-beer-station", destination: "/beer-station/index.html" },
     ];
   },
 };
