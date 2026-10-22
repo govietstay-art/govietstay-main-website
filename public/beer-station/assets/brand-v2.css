@@ -1,0 +1,93 @@
+/* Brand direction based on the three supplied Tropical Chill Station concept boards. */
+:root { --cream:#fff9ed; --navy:#004e5b; --night:#004e5b; --yellow:#f4b000; --gold:#f4b000; --orange:#f38b26; --teal:#007c8e; --ink:#004e5b; --white:#fffaf1; --font-body:'Montserrat',Arial,sans-serif; }
+body{font-family:var(--font-body);background:#fff9ed;color:var(--ink)}
+.wrap{width:min(1240px,calc(100% - 8vw))}
+.topline{background:#007c8e;color:#fff7e6;letter-spacing:.12em;font-size:9px}
+.topline::before,.topline::after{color:#ffbc31}
+.nav{background:#fffaf0f5;border-bottom:1px solid #004e5b2c;box-shadow:0 3px 30px #001b2412}
+.nav-inner{height:94px}
+.brand{gap:12px;color:#004e5b}
+.brand-icon{border:none;box-shadow:none;background:linear-gradient(160deg,#ffad33,#ffc931);width:57px;height:57px;border-radius:16px;transform:rotate(-7deg);position:relative}
+.brand-icon::after{content:'✳';position:absolute;right:-13px;top:-13px;color:#007c8e;font-size:25px}
+.brand-copy b{font-family:'Kaushan Script',cursive;font-size:23px;font-weight:400;line-height:1.04;letter-spacing:-.02em;text-transform:none;color:#004e5b;white-space:nowrap}
+.brand-copy small{font:700 8px 'Montserrat',sans-serif;letter-spacing:.11em;color:#007c8e;margin-top:5px;text-transform:none}
+.nav-links{color:#004e5b;font-size:11px;gap:30px;letter-spacing:.02em}
+.nav-links a:hover{color:#ed8a15}
+.nav-cta{color:#073942!important;border:0;background:#ffc62f;padding:14px 20px;box-shadow:0 4px 0 #e6a414;transition:transform .2s}
+.nav-cta:hover{transform:translateY(-2px);background:#ffd451}
+.hero{min-height:845px;background:#002d36}
+.hero-art{background-image:linear-gradient(90deg,#002c36d9 0%,#0036448a 33%,#002b2c1a 67%),linear-gradient(0deg,#003b42 0%,transparent 25%,#012e3245 100%),url('./tropical-hero-v2.webp');background-position:center;background-size:cover}
+.hero-content{padding-top:185px;padding-bottom:125px}
+.hero .eyebrow{font-size:11px;color:#ffce40;letter-spacing:.1em}
+.hero h1{font-family:'Kaushan Script',cursive;text-transform:none;line-height:1.13;letter-spacing:-.055em;font-size:clamp(56px,7.9vw,105px);max-width:650px;margin:18px 0 10px;text-shadow:0 5px 15px #00191d93;color:#fff8e8}
+.hero h1 span{display:block}
+.hero h1 .warm{color:#ffc232;filter:none;transform:rotate(-3deg);transform-origin:left center;margin-top:-8px}
+.hero h1 .thin{font-weight:400;font-size:.83em;color:#fffef5;letter-spacing:-.055em;margin-top:-7px}
+.hero-script{font-family:'Kaushan Script',cursive;color:#ffca39;font-size:clamp(20px,2.5vw,34px);margin:12px 0 14px;transform:rotate(-2deg);transform-origin:left}
+.hero-desc{font-size:14px;max-width:500px;line-height:1.8;color:#f6f3e8}
+.btn{letter-spacing:0;text-transform:none;font-size:12px;font-weight:800;box-shadow:none}
+.btn-primary{background:#ffcb28;color:#004e5b;box-shadow:0 5px 0 #f18d1d}
+.btn-primary:hover{box-shadow:0 8px 0 #f18d1d}
+.btn-ghost{background:#ffffff17;border-color:#fff5cfad}
+.hero-stamp{width:141px;height:141px;bottom:115px;right:4%;background:#004e5bcc;border:2px dashed #f6c23a;box-shadow:0 0 0 7px #004e5b4c;color:#fff9e9}
+.hero-stamp span{font-family:'Kaushan Script',cursive;text-transform:none;font-size:20px;font-weight:400;line-height:1.3}
+.hero-stamp span b{color:#ffd444}
+.hero-bottom{background:#fff8e8ed;border-top:2px solid #f2ba38;color:#004e5b}
+.hero-bottom-item{font-size:10px;letter-spacing:.04em}
+.hero-bottom-item span span{color:#c07b21;letter-spacing:.08em}
+.hero-bottom .star{color:#f2a72b}
+.marquee{background:#007d86;color:#fff8ea;border:0;border-block:3px solid #f5ae27}
+.marquee-track{font-family:'Kaushan Script',cursive;text-transform:none;font-weight:400;font-size:28px;padding:12px 0}
+.marquee-track i{color:#ffb32a}
+.intro{background:#fffaec;color:#004e5b;padding:110px 0 125px}
+.intro .eyebrow,.plan .eyebrow{color:#cc792d}
+.big-type{font-family:'Kaushan Script',cursive;font-weight:400;line-height:1.22;font-size:clamp(45px,6.2vw,82px);text-transform:none;letter-spacing:-.06em}
+.big-type em{color:#e9951c}
+.intro-copy{color:#42636c;font-size:15px;line-height:1.92}
+.highlight-words span{border-color:#007c8e40;background:#e5f5f1;color:#00505b}
+.intro-visual{min-height:430px;background:#007c8e;border:9px solid #007c8e;box-shadow:22px 24px 0 #f5b622;border-radius:11px}
+.intro-visual::before{background-image:url('./tropical-hero-v2.webp');background-position:58% center;background-size:auto 100%;border-radius:4px}
+.intro-visual .splash{background:#ffb92e;border-color:#004e5b;font-size:42px}
+.intro-visual .label-card{background:#fff7e2;border:3px solid #004e5b;box-shadow:6px 6px 0 #004e5b;left:-23px}
+.label-card b{font-family:'Kaushan Script',cursive;font-weight:400;text-transform:none;font-size:27px;color:#007c8e;line-height:1.3}
+.label-card small{color:#bd811f}
+.experiences{padding:105px 0 116px;background:#e9f5f1;color:#004e5b}
+.experiences::before{background:#a2efe1;opacity:.3}
+.exp-heading .eyebrow{color:#bf7928}
+.exp-heading h2{font-size:clamp(42px,6vw,80px);margin:13px 0 20px}
+.exp-heading p{color:#4f6970}
+.exp-card{min-height:355px;border:1px solid #007c8e1f;border-radius:13px;box-shadow:0 8px 0 #007c8e1c;padding:29px;background:#fffdf5!important;color:#004e5b!important}
+.exp-card.one{border-top:7px solid #f4b000}.exp-card.two{border-top:7px solid #ff6b68}.exp-card.three{border-top:7px solid #2e7d32}
+.exp-number{font-size:10px;color:#34717a;border-color:#a6cecb}
+.exp-emoji{font-size:88px;margin:10px auto 20px;transform:none;filter:drop-shadow(6px 8px 0 #c7e6df)}
+.exp-card:hover .exp-emoji{transform:rotate(-6deg) scale(1.08)}
+.exp-card h3{font-family:'Kaushan Script',cursive;font-weight:400;text-transform:none;font-size:27px;line-height:1.28;margin-bottom:10px;color:#00677b}
+.exp-card p{font-size:12px;color:#546d6f;opacity:1}
+.concept-note{color:#557c84}
+.location{background:#fff9ec;color:#004e5b;padding:108px 0}
+.location .eyebrow{color:#bd7924}.location h2{font-size:clamp(48px,6.5vw,86px)}
+.location h2 em{color:#f5a517;text-shadow:none}
+.location-lead{font-size:16px;line-height:1.88;color:#45666f}
+.location-visual .dragon{filter:drop-shadow(8px 9px 0 #e9ac38)}
+.location-circle{background:#ddf3ec;border-color:#007c8e;box-shadow:17px 20px 0 #f6bd2c}
+.location-circle::before{border-color:#007c8e60}
+.location-visual .bubble{background:#ffbd27;border-color:#007c8e;box-shadow:9px 9px 0 #007c8e;font-family:'Kaushan Script',cursive;text-transform:none;font-size:29px}
+.location-visual .bubble b{color:#fa6e40}
+.location .btn{background:#ffcb2d;border-color:transparent;box-shadow:0 4px 0 #efa12b;color:#004e5b}
+.plan{background:#fffaf0}.plan-top>p,.step p{color:#537079}.step{border-top-color:#007c8e}.step-num{color:#ff9f23}.step h3{font-family:'Kaushan Script',cursive;font-size:26px;text-transform:none;font-weight:400}
+.faq{background:#00545e;color:#fff9ef}.faq h2 em{color:#ffc333}.faq summary{font-family:'Montserrat',sans-serif;font-size:14px}.faq details p{color:#d5ece9}
+.footer{background:#004e5b;color:#fff9eb}.footer h2{font-family:'Kaushan Script',cursive;text-transform:none;font-weight:400;font-size:clamp(43px,5.5vw,76px);line-height:1.21}.footer .btn{background:#ffbf27;color:#004e5b}.footer-top{border-color:#ffffff40}.footer-bottom{color:#e5f6ee}.foot-logo{font-family:'Kaushan Script',cursive;font-weight:400;font-size:22px}
+.ecosystem{padding:95px 0;background:#f1ebe0;color:#004e5b;position:relative}
+.eco-heading{text-align:center;max-width:800px;margin:auto}
+.eco-heading .eyebrow{color:#bd791c}
+.eco-heading h2{font-family:'Kaushan Script',cursive;font-size:clamp(38px,5.3vw,68px);line-height:1.25;font-weight:400;margin:16px 0;color:#004e5b}
+.eco-heading p{line-height:1.85;color:#59717a;font-size:14px}
+.eco-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:43px}
+.eco-card{background:#fffcf2;border-radius:13px;overflow:hidden;box-shadow:0 12px 25px #00515d17}
+.eco-photo{height:180px;background:linear-gradient(135deg,#007c8e,#22b29e);display:grid;place-items:center;font-size:78px;position:relative}
+.eco-photo.beer{background:linear-gradient(135deg,#fad35c,#ffa34a)}.eco-photo.massage{background:linear-gradient(135deg,#f7bec0,#f7d5c8)}.eco-photo.tour{background:linear-gradient(135deg,#007c8e,#81d8c6)}
+.eco-info{padding:25px}.eco-info h3{font-family:'Kaushan Script',cursive;font-size:26px;font-weight:400;margin:0 0 10px;color:#006b76}.eco-info p{font-size:12px;line-height:1.75;margin:0;color:#5c767b}
+.eco-small{text-align:center;font-size:11px;opacity:.7;margin-top:26px}
+.brand-preview{background:#fffbf2;padding:90px 0}.brand-preview h2{font:400 48px/1.2 'Kaushan Script',cursive;color:#004e5b;margin:12px 0 15px}.brand-preview p{max-width:640px;line-height:1.7;color:#527078;font-size:13px;margin:0 0 25px}.brand-preview .boards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}.brand-preview .boards img{width:100%;aspect-ratio:1.2;object-fit:cover;object-position:top;display:block;border:6px solid #fff;border-radius:8px;box-shadow:0 10px 30px #00535e1b}.brand-preview figcaption{color:#657b7d;text-align:center;padding:13px 5px;font-size:11px;font-weight:700}.brand-preview figure{margin:0}
+@media(max-width:760px){.wrap{width:calc(100% - 36px)}.topline{font-size:7.5px;padding:0 5px}.nav-inner{height:76px}.brand-icon{width:45px;height:45px}.brand-copy b{font-size:18px}.brand-copy small{font-size:7px}.menu-btn{border-color:#007c8e;background:#00606d;color:#fff8eb}.nav-links{top:76px;background:#fffaf5f6;color:#004e5b;box-shadow:0 15px 30px #00515d20}.nav-links a{border-bottom-color:#007c8e24}.hero{min-height:790px}.hero-art{background-image:linear-gradient(180deg,#00313e7c 0%,#003543a5 50%,#003a41dd 100%),url('./tropical-hero-v2.webp');background-position:60% center}.hero-content{padding-top:172px;padding-bottom:205px}.hero h1{font-size:clamp(57px,11vw,83px);max-width:520px}.hero h1 .thin{font-size:.82em}.hero-script{font-size:21px}.hero-desc{font-size:12px;max-width:390px}.hero-stamp{bottom:101px;right:13px;width:105px;height:105px}.hero-stamp span{font-size:14px}.hero-bottom-item{font-size:9px}.intro,.experiences,.location,.plan,.faq,.ecosystem,.brand-preview{padding:74px 0}.big-type,.exp-heading h2{font-size:clamp(44px,10vw,66px)}.intro-visual{min-height:390px}.exp-grid,.eco-grid,.brand-preview .boards{grid-template-columns:1fr}.exp-card{min-height:320px}.exp-emoji{font-size:80px}.location h2{font-size:clamp(48px,10vw,75px)}.eco-photo{height:150px}.brand-preview .boards img{aspect-ratio:16/10}.footer h2{font-size:clamp(40px,9vw,65px)}}
+@media(max-width:420px){.hero h1{font-size:14vw}.hero{min-height:785px}.intro-visual{min-height:345px}.hero-script{font-size:19px}.hero-stamp{width:95px;height:95px;bottom:103px}.brand-preview .boards img{aspect-ratio:1.4}}
