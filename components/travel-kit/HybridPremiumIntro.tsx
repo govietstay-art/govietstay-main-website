@@ -165,7 +165,7 @@ export function HybridPremiumIntro({ lang, city }: { lang: Lang; city: CityId })
             <span className={styles.hybridFeatureTop}>0{i+1} / {item} <span aria-hidden="true">↗</span></span>
             <span className={styles.hybridFeatureGlyph} aria-hidden="true">{["✳", "◉", "✦"][i]}</span>
             <strong>{[t.planner, t.esim, t.chapterTop][i]}</strong>
-            <span className={styles.hybridFeatureGo}>EXPLORE <span aria-hidden="true">→</span></span>
+            <span className={styles.hybridFeatureGo}>{lang === "ru" ? "ОТКРЫТЬ" : lang === "it" ? "SCOPRI" : "EXPLORE"} <span aria-hidden="true">→</span></span>
           </Link>)}
         </div>
       </section>
