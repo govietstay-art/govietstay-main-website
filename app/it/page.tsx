@@ -7,7 +7,7 @@ import styles from "./ItalyHub.module.css";
 export const metadata:Metadata={
   title:{absolute:"Pacchetti viaggio Vietnam e tour privati 2026 | GoVietStay"},
   description:"Pacchetti viaggio Vietnam personalizzati, tour privati e itinerari su misura per coppie e famiglie: Da Nang, Hoi An, Hue e Phu Quoc. Guida italiana su richiesta e preventivo trasparente.",
-  alternates:{canonical:"https://www.govietstay.com/it",languages:{"it-IT":"https://www.govietstay.com/it","en":"https://www.govietstay.com","ru":"https://www.govietstay.com/ru","x-default":"https://www.govietstay.com"}},
+  alternates:{canonical:"https://www.govietstay.com/it",languages:{"it-IT":"https://www.govietstay.com/it","en":"https://www.govietstay.com","ru":"https://www.govietstay.com/ru","ar":"https://www.govietstay.com/ar","he-IL":"https://www.govietstay.com/il","ru-KZ":"https://www.govietstay.com/kz","x-default":"https://www.govietstay.com"}},
   robots:{index:true,follow:true},
   openGraph:{type:"website",url:"https://www.govietstay.com/it",title:"GoVietStay Italia | Vietnam fai da te e privato",description:"Volo e hotel li scegli tu. In Vietnam hai un team locale quando serve davvero.",locale:"it_IT",siteName:"GoVietStay",images:[{url:"https://www.govietstay.com/hero-hoian-new.png",alt:"GoVietStay Italia"}]}
 };

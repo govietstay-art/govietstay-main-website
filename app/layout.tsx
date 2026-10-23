@@ -249,6 +249,9 @@ export default async function RootLayout({
             <a href="/de" hrefLang="de-DE" style={{ color: "#315c51" }}>Deutsch</a>
             <a href="/fr" hrefLang="fr-FR" style={{ color: "#315c51" }}>Français</a>
             <a href="/ja" hrefLang="ja-JP" style={{ color: "#315c51" }}>日本語</a>
+            <a href="/ar" hrefLang="ar" dir="rtl" style={{ color: "#315c51" }}>العربية</a>
+            <a href="/il" hrefLang="he-IL" dir="rtl" style={{ color: "#315c51" }}>עברית</a>
+            <a href="/kz" hrefLang="ru-KZ" style={{ color: "#315c51" }}>Русский (Казахстан)</a>
           </nav>
         </footer>}
         {travelKit ? null : <script src="/govietstay-partner-tracking.js?v=20260924-wa-ga4-3" defer></script>}

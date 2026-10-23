@@ -171,6 +171,17 @@ function send(name,extra){
 }
 function capture(){var q=params();if(q.ref){saveAttr(q.ref);send("partner_visit",{ref_code:q.ref,metadata:{attribution:"url_ref"}})}}
 function view(){if(!allowed())return;var u=pageUrl();if(u===lastUrl)return;lastUrl=u;send("page_view",{ref_code:activeRef(),metadata:{route_change:"true"}})}
+function isTelegram(h){try{var u=new URL(String(h||""),location.href);return /^(t\.me|telegram\.me|telegram\.dog)$/i.test(u.hostname)}catch(e){return false}}
+var lastTelegramKey="",lastTelegramAt=0;
+function trackTelegram(h,linkText,method){
+ if(!allowed()||!isTelegram(h))return;
+ var now=Date.now(),key=s(location.pathname,500)+"|"+s(String(h).split("?")[0],500);
+ if(key===lastTelegramKey&&now-lastTelegramAt<1200)return;
+ lastTelegramKey=key;lastTelegramAt=now;
+ var label=s(linkText||"",200),clickMethod=s(method||"unknown",40);
+ send("telegram_click",{ref_code:activeRef(),metadata:{link_text:label,click_method:clickMethod}});
+ try{if(typeof window.__gvsLoadGtm==="function")window.__gvsLoadGtm();window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:"telegram_click",gvs_bridge:"gvs_ga4_telegram_bridge_v1",page_path:location.pathname});}catch(e){}
+}
 function isWA(h){h=String(h||"").toLowerCase();return h.indexOf("wa.me/")>=0||h.indexOf("api.whatsapp.com/send")>=0||h.indexOf("whatsapp.com/send")>=0}
 var lastWaKey="",lastWaAt=0;
 function ga4WhatsApp(meta){
@@ -196,7 +207,7 @@ function hookWindowOpen(){
    var original=window.open;
    if(!original||original.__gvsWaTracking)return;
    function wrapped(url){
-     try{if(isWA(url))trackWA(url,"","window_open")}catch(e){}
+     try{if(isWA(url))trackWA(url,"","window_open");else if(isTelegram(url))trackTelegram(url,"","window_open")}catch(e){}
      return original.apply(window,arguments)
    }
    wrapped.__gvsWaTracking=true;
@@ -216,7 +227,7 @@ function nav(){
 }
 function init(){
  landing();returning();capture();patchAll(document);view();nav();hookWindowOpen();
- document.addEventListener("click",function(e){var a=e.target&&e.target.closest?e.target.closest("a"):null;if(!a||!isWA(a.href))return;patch(a);trackWA(a.href,a.textContent||a.getAttribute("aria-label")||"","anchor_click")},true);
+ document.addEventListener("click",function(e){var a=e.target&&e.target.closest?e.target.closest("a"):null;if(!a)return;if(isWA(a.href)){patch(a);trackWA(a.href,a.textContent||a.getAttribute("aria-label")||"","anchor_click")}else if(isTelegram(a.href)){trackTelegram(a.href,a.textContent||a.getAttribute("aria-label")||"","anchor_click")}},true);
  if(window.MutationObserver)new MutationObserver(function(){patchAll(document)}).observe(document.documentElement,{childList:true,subtree:true});
  window.GoVietStayTracking={pageView:view,event:send,attribution:loadAttr};
  window.GoVietStayPartner={get:loadAttr,partner:function(){return partner(activeRef())}};
