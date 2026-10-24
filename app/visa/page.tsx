@@ -5,6 +5,7 @@ import VisaPlanner from "./VisaPlanner";
 import VisaHelpGuide from "./VisaHelpGuide";
 import VisaQuickQuote from "./VisaQuickQuote";
 import VisaTrustStories from "./VisaTrustStories";
+import VisaEntryApproval from "./VisaEntryApproval";
 import { fastTrackPrices, urgentPrices, getVisaPrice } from "./prices";
 
 export const metadata: Metadata = {
@@ -209,6 +210,9 @@ export default function VisaPage() {
               Send us your nationality and expected travel date. GoVietStay will confirm eligibility,
               estimated processing time and the most suitable service before you make any payment.
             </p>
+            <a href="#complex-entry-approval" className="mt-3 inline-block text-sm font-bold text-[#0b6b4f] underline underline-offset-4">
+              Complex passport case? See the official entry-approval checklist →
+            </a>
           </div>
           <a
             href={WA_GENERAL}
@@ -245,6 +249,7 @@ export default function VisaPage() {
         </div>
       </section>
 
+      <VisaEntryApproval />
 
       <section id="prices" className="relative mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-24">
         <div className="grid gap-10 lg:grid-cols-[.75fr_1.25fr] lg:items-end">
