@@ -3,7 +3,7 @@ import HomeClient from "./HomeClient";
 export const metadata:Metadata={
  title:{absolute:"Private Tours in Da Nang, Hoi An, Hue & Phu Quoc | GoVietStay"},
  description:"GoVietStay provides private tours, airport transfers, attraction tickets and trusted local travel support in Da Nang, Hoi An, Hue & Phu Quoc. WhatsApp 24/7.",
- alternates:{canonical:"https://www.govietstay.com",languages:{en:"https://www.govietstay.com",ru:"https://www.govietstay.com/ru","it-IT":"https://www.govietstay.com/it","x-default":"https://www.govietstay.com"}},
+ alternates:{canonical:"https://www.govietstay.com",languages:{en:"https://www.govietstay.com",ru:"https://www.govietstay.com/ru","it-IT":"https://www.govietstay.com/it",ar:"https://www.govietstay.com/ar","he-IL":"https://www.govietstay.com/il","ru-KZ":"https://www.govietstay.com/kz","x-default":"https://www.govietstay.com"}},
  openGraph:{type:"website",locale:"en_US",url:"https://www.govietstay.com",siteName:"GoVietStay",
   title:"Private Tours in Da Nang, Hoi An, Hue & Phu Quoc | GoVietStay",
   description:"GoVietStay provides private tours, airport transfers, attraction tickets and trusted local travel support in Da Nang, Hoi An, Hue & Phu Quoc. WhatsApp 24/7.",

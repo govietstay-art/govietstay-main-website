@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 const SUPABASE_URL = "https://vscffgnxaexestnayvae.supabase.co";
 const SUPABASE_KEY = "sb_publishable_BI1rIhiGB5cEUyJbnKGI5w_kCMI--oV";
 const ALLOWED_EVENTS = new Set([
-  "page_view","whatsapp_click","partner_visit","partner_whatsapp_click","review_click","other",
+  "page_view","whatsapp_click","telegram_click","partner_visit","partner_whatsapp_click","review_click","other",
 ]);
 
 function clean(value: unknown, max = 500) {
