@@ -1,0 +1,43 @@
+name: Legacy Admin security isolation
+on:
+  pull_request:
+    paths:
+      - 'supabase/staged/20260916_*REVIEW_ONLY.sql'
+      - 'tests/legacy-access/**'
+      - '.github/workflows/legacy-access-isolated-checks.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  authorization-contract:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: legacy_access_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: synthetic-only
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d legacy_access_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      PGPASSWORD: synthetic-only
+      PGHOST: localhost
+      PGPORT: '5432'
+      PGUSER: postgres
+      PGDATABASE: legacy_access_test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create isolated fixture (no production data)
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/legacy-access/schema-fixture.sql
+      - name: Compile staged RLS, Finance grant and compensation-scope migrations
+        run: |
+          psql -X -v ON_ERROR_STOP=1 -f supabase/staged/20260916_legacy_access_hardening_REVIEW_ONLY.sql
+          psql -X -v ON_ERROR_STOP=1 -f supabase/staged/20260916_finance_compensation_RBAC_REVIEW_ONLY.sql
+      - name: Assert roles, anonymous boundaries, revoke and audit
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/legacy-access/verify.sql
