@@ -6,7 +6,7 @@
 (function(){
 "use strict";
 var ATTR="gvs_partner_attribution_v2",COOKIE="gvs_partner_ref",VISITOR="gvs_visitor_id_v1",SESSION="gvs_session_id_v1";
-var FIRST="gvs_first_seen_v1",LANDING="gvs_session_landing_v1",UTM="gvs_utm_session_v1",MARKETING_COOKIE="gvs_marketing_attribution_v1",DAYS=90,lastUrl="";
+var FIRST="gvs_first_seen_v1",LANDING="gvs_session_landing_v1",UTM="gvs_utm_session_v1",PARTNER_SESSION="gvs_partner_session_v1",MARKETING_COOKIE="gvs_marketing_attribution_v1",DAYS=90,lastUrl="";
 var PARTNERS={DUYTINH01:{code:"DUYTINH01",name:"Duy Tịnh Rooftop – Dragon Bridge",city:"Da Nang",privilege:"Скидка 5% на услуги GoVietStay"}};
 
 function s(v,n){return String(v==null?"":v).trim().slice(0,n||500)}
@@ -133,10 +133,27 @@ function os(){
  if(/Linux/.test(u))return"Linux";
  return"Other"
 }
+function canonicalSource(raw){
+ var value=s(raw,200).toLowerCase();
+ try{value=decodeURIComponent(value)}catch(e){}
+ value=value.split(/[|?&#]/)[0].trim();
+ if(!value)return"";
+ if(/^(tiktok|www\.tiktok\.com|tiktok\.com)$/.test(value))return"tiktok";
+ if(/^(facebook|fb|fb\.com|facebook\.com)$/.test(value))return"facebook";
+ if(/^(instagram|ig|instagram\.com)$/.test(value))return"instagram";
+ if(/^(google|google\.com|google_maps|google-maps|gbp)$/.test(value))return"google";
+ if(/^(chatgpt|chatgpt\.com|openai)$/.test(value))return"chatgpt.com";
+ if(/^(twitter|x|x\.com)$/.test(value))return"x";
+ return value.slice(0,120)
+}
 function source(){
  var q=params(),r=referrer().toLowerCase();
- if(activeRef()||q.ref)return"partner";
- if(q.utm_source)return q.utm_source.toLowerCase();
+ if(q.ref){try{sessionStorage.setItem(PARTNER_SESSION,"1")}catch(e){}return"partner"}
+ if(q.utm_source)return canonicalSource(q.utm_source);
+ try{if(sessionStorage.getItem(PARTNER_SESSION)==="1")return"partner"}catch(e){}
+ if(r.indexOf("chatgpt.com")>=0||r.indexOf("chat.openai.com")>=0)return"chatgpt.com";
+ if(r.indexOf("perplexity.ai")>=0)return"perplexity";
+ if(r.indexOf("claude.ai")>=0)return"claude";
  if(r.indexOf("google.")>=0)return"google";
  if(r.indexOf("naver.")>=0)return"naver";
  if(r.indexOf("yandex.")>=0)return"yandex";
