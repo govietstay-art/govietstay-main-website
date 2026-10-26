@@ -82,7 +82,7 @@ const serviceAreas = [
 // Set GVS_TRAVELPAYOUTS_VERIFY_HOME=1 only for a supervised verification window.
 const travelpayoutsVerificationEnabled = process.env.GVS_TRAVELPAYOUTS_VERIFY_HOME === "1";
 const travelpayoutsVerificationBootstrap = String.raw`(function () {
-  if (location.pathname !== "/" || !/^(www\\.)?govietstay\\.com$/.test(location.hostname)) return;
+  if (location.pathname !== "/" || (location.hostname !== "www.govietstay.com" && location.hostname !== "govietstay.com")) return;
   if (window.__gvsTravelpayoutsVerificationLoaded) return;
   window.__gvsTravelpayoutsVerificationLoaded = true;
   var script = document.createElement("script");
