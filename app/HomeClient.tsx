@@ -4074,11 +4074,12 @@ export default function Home() {
             <div>Ticket</div>
           </a>
           <a
-            href="/secret"
+            href="/flights"
             className="rounded-2xl bg-white/8 px-1.5 py-2 text-center active:scale-95 transition"
+            aria-label="Search flights with GoVietStay"
           >
-            <div className="text-xl">🗺️</div>
-            <div>Secret</div>
+            <div className="text-xl">✈️</div>
+            <div>Flights</div>
           </a>
           <a
             href="https://wa.me/84937762607"
