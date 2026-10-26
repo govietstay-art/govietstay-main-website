@@ -77,6 +77,21 @@ const serviceAreas = [
   { "@type": "Place", name: "Phu Quoc" },
 ];
 
+// Travelpayouts Drive verification is opt-in and homepage-only. It must never
+// be enabled site-wide: Drive can rewrite affiliate links and open offers.
+// Set GVS_TRAVELPAYOUTS_VERIFY_HOME=1 only for a supervised verification window.
+const travelpayoutsVerificationEnabled = process.env.GVS_TRAVELPAYOUTS_VERIFY_HOME === "1";
+const travelpayoutsVerificationBootstrap = String.raw`(function () {
+  if (location.pathname !== "/" || !/^(www\\.)?govietstay\\.com$/.test(location.hostname)) return;
+  if (window.__gvsTravelpayoutsVerificationLoaded) return;
+  window.__gvsTravelpayoutsVerificationLoaded = true;
+  var script = document.createElement("script");
+  script.async = 1;
+  script.setAttribute("data-cmp-ab", "2");
+  script.src = "https://tpembars.com/NTkxMjk2.js?t=591296";
+  document.head.appendChild(script);
+})();`;
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -96,6 +111,17 @@ export default async function RootLayout({
       className="h-full antialiased"
     >
       <head>
+        {travelpayoutsVerificationEnabled && !travelKit ? (
+          <script
+            id="gvs-travelpayouts-drive-verification"
+            data-noptimize="1"
+            data-cfasync="false"
+            data-wpfc-render="false"
+            data-no-defer="1"
+            data-cmp-ab="2"
+            dangerouslySetInnerHTML={{ __html: travelpayoutsVerificationBootstrap }}
+          />
+        ) : null}
         {travelKit ? null : <script dangerouslySetInnerHTML={{ __html: gtmBootstrap }} />}
       </head>
       <body className="min-h-full flex flex-col" data-surface={travelKit ? "travel-kit" : undefined}>
