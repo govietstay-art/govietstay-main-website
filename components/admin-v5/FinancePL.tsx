@@ -85,6 +85,8 @@ type Expense = {
   payment_method:string|null;
   notes:string|null;
 };
+type CancellationSummary = {count:number;supplier_fees_vnd:number;recovered_vnd:number;net_loss_vnd:number;paid_vnd:number;payable_vnd:number};
+type CancellationRow = {booking_id:string;cancelled_at:string;reason:string;supplier_fee_vnd:number;customer_recovery_vnd:number;fee_paid_vnd:number;bookings?:{booking_code:string;custom_tour_name:string|null;pax:number}|null};
 
 function money(v:any){
   return new Intl.NumberFormat("vi-VN").format(Number(v||0))+" ₫";
@@ -124,6 +126,9 @@ export default function FinancePL({supabase}:Props){
   const [message,setMessage]=useState("");
   const [editBooking,setEditBooking]=useState<BookingRow|null>(null);
   const [expenseOpen,setExpenseOpen]=useState(false);
+  const [cancelBooking,setCancelBooking]=useState<BookingRow|null>(null);
+  const [cancellationSummary,setCancellationSummary]=useState<CancellationSummary>({count:0,supplier_fees_vnd:0,recovered_vnd:0,net_loss_vnd:0,paid_vnd:0,payable_vnd:0});
+  const [cancellations,setCancellations]=useState<CancellationRow[]>([]);
 
   async function load(){
     setLoading(true); setError("");
@@ -138,7 +143,10 @@ export default function FinancePL({supabase}:Props){
         supabase.from("monthly_operating_expenses")
           .select("id,expense_date,category,description,amount_vnd,payment_method,notes")
           .gte("expense_date",start).lt("expense_date",end)
-          .order("expense_date",{ascending:false}).order("created_at",{ascending:false})
+          .order("expense_date",{ascending:false}).order("created_at",{ascending:false}),
+        supabase.rpc("admin_monthly_cancellation_summary",{p_month:pMonth}),
+        supabase.from("booking_cancellations").select("booking_id,cancelled_at,reason,supplier_fee_vnd,customer_recovery_vnd,fee_paid_vnd,bookings(booking_code,custom_tour_name,pax)")
+          .gte("cancelled_at",start).lt("cancelled_at",end).order("cancelled_at",{ascending:false})
       ]);
       for(const r of results) if(r.error) throw r.error;
       setSummary((results[0].data||{}) as Summary);
@@ -147,6 +155,8 @@ export default function FinancePL({supabase}:Props){
       setBreakdowns(next);
       setBookings((results[5].data||[]) as BookingRow[]);
       setExpenses((results[6].data||[]) as Expense[]);
+      setCancellationSummary((results[7].data||{}) as CancellationSummary);
+      setCancellations((results[8].data||[]) as CancellationRow[]);
     }catch(e:any){
       setError(e?.message||"Không tải được P&L tháng.");
     }finally{setLoading(false)}
@@ -215,6 +225,32 @@ export default function FinancePL({supabase}:Props){
     finally{setSaving(false)}
   }
 
+  async function submitCancellation(e:any){
+    e.preventDefault(); if(!cancelBooking)return;
+    const vals=Object.fromEntries(new FormData(e.currentTarget).entries()) as Record<string,string>;
+    const fee=parseMoney(vals.supplier_fee_vnd), paid=parseMoney(vals.fee_paid_vnd), recovery=parseMoney(vals.customer_recovery_vnd);
+    if(paid>fee){setError("Số đã trả không thể vượt phí nhà cung cấp.");return;}
+    if(!window.confirm(`Xác nhận hủy ${cancelBooking.booking_code||"booking"}? Phí nhà cung cấp ${money(fee)}, thu hồi ${money(recovery)}, lỗ ${money(fee-recovery)}. Booking sẽ không được ghi doanh thu tour.`))return;
+    setSaving(true);setError("");setMessage("");
+    try{
+      const {error}=await supabase.rpc("admin_cancel_booking",{p_booking_id:cancelBooking.booking_id,p_reason:vals.reason.trim(),p_supplier_fee_vnd:fee,p_customer_recovery_vnd:recovery,p_fee_paid_vnd:paid});
+      if(error)throw error;
+      setCancelBooking(null);setMessage("Đã hủy booking và ghi nhận tổn thất vào P&L tháng hủy.");await load();
+    }catch(e:any){setError(e?.message||"Không thể hủy booking.");}finally{setSaving(false);}
+  }
+  async function updateCancellationPayment(row:CancellationRow){
+    const input=window.prompt(`Đã thanh toán nhà cung cấp cho ${row.bookings?.booking_code||row.booking_id} (VND):`,String(row.fee_paid_vnd));
+    if(input===null)return;
+    const amount=parseMoney(input);
+    if(amount>row.supplier_fee_vnd){setError("Số đã trả vượt quá phí hủy.");return;}
+    setSaving(true);setError("");setMessage("");
+    try{
+      const {error}=await supabase.rpc("admin_update_cancellation_payment",{p_booking_id:row.booking_id,p_fee_paid_vnd:amount});
+      if(error)throw error;
+      setMessage("Đã cập nhật số đã trả, không tạo thêm chi phí P&L.");await load();
+    }catch(e:any){setError(e?.message||"Không cập nhật được thanh toán phí hủy.");}finally{setSaving(false);}
+  }
+
   async function addExpense(e:any){
     e.preventDefault(); setSaving(true); setError(""); setMessage("");
     try{
@@ -245,7 +281,7 @@ export default function FinancePL({supabase}:Props){
     <div className="gvs-finance-head">
       <div>
         <h2>Monthly P&amp;L · {monthLabel(month)}</h2>
-        <p>Doanh thu thực tế chỉ ghi nhận booking <b>COMPLETED/CLOSED</b>. Booking đã xác nhận nhưng chưa đi tour được giữ ở phần Forecast.</p>
+        <p>Doanh thu tour chỉ ghi nhận booking <b>COMPLETED/CLOSED</b>. Phí hủy không thu hồi được ghi lỗ vào tháng hủy, kể cả chưa đặt cọc.</p>
       </div>
       <div className="gvs-finance-head-actions">
         <input className="gva-input" type="month" value={month} onChange={e=>setMonth(e.target.value)} />
@@ -259,14 +295,14 @@ export default function FinancePL({supabase}:Props){
 
     <div className="gvs-pl-kpis">
       <PLCard label="Revenue" value={money(summary.revenue_vnd)} hint={`${summary.bookings_completed||0} completed bookings · ${summary.pax_completed||0} pax`} />
-      <PLCard label="Direct Cost" value={money(summary.direct_costs_vnd)} hint="Supplier + guide + driver + tickets + meals + commissions…" />
-      <PLCard label="Gross Profit" value={money(summary.gross_profit_vnd)} hint={`Gross margin ${Number(summary.gross_margin_pct||0).toFixed(1)}%`} tone={(summary.gross_profit_vnd||0)>=0?"good":"bad"} />
+      <PLCard label="Direct Cost + cancellation losses" value={money(Number(summary.direct_costs_vnd||0)+Number(cancellationSummary.net_loss_vnd||0))} hint={`Tour costs + cancellation loss ${money(cancellationSummary.net_loss_vnd)}`} />
+      <PLCard label="Gross Profit" value={money(Number(summary.gross_profit_vnd||0)-Number(cancellationSummary.net_loss_vnd||0))} hint="Đã trừ lỗ do hủy tour" tone={(Number(summary.gross_profit_vnd||0)-Number(cancellationSummary.net_loss_vnd||0))>=0?"good":"bad"} />
       <PLCard label="Operating Expenses" value={money(summary.opex_vnd)} hint="Manual OPEX / Ads / Office / Software / Other (no sales base salary)" />
-      <PLCard label="Net Operating Profit" value={money(summary.net_profit_vnd)} hint={`Net margin ${Number(summary.net_margin_pct||0).toFixed(1)}%`} tone={(summary.net_profit_vnd||0)>=0?"good":"bad"} strong />
+      <PLCard label="Net Operating Profit" value={money(Number(summary.net_profit_vnd||0)-Number(cancellationSummary.net_loss_vnd||0))} hint="Đã trừ lỗ hủy tour" tone={(Number(summary.net_profit_vnd||0)-Number(cancellationSummary.net_loss_vnd||0))>=0?"good":"bad"} strong />
     </div>
 
     <div className="gvs-finance-note">
-      <b>Actual P&amp;L:</b> Revenue − Direct Cost = Gross Profit; Gross Profit − OPEX = Net Operating Profit.
+      <b>Actual P&amp;L:</b> Revenue − Tour Direct Cost − Net Cancellation Loss = Gross Profit; Gross Profit − OPEX = Net Operating Profit.
       {(summary.missing_finance_count||0)>0&&<span className="warn"> ⚠ {summary.missing_finance_count} completed booking chưa có finance record; lợi nhuận có thể đang bị tính cao.</span>}
     </div>
 
@@ -277,6 +313,7 @@ export default function FinancePL({supabase}:Props){
       <MiniStat label="Direct cost committed" value={money(summary.committed_direct_cost_vnd)} hint="Chi phí đã nhập" />
       <MiniStat label="Direct cost paid" value={money(summary.direct_cost_paid_vnd)} hint="Đã thanh toán" />
       <MiniStat label="Direct cost payable" value={money(summary.direct_cost_payable_vnd)} hint="Còn phải trả" />
+      <MiniStat label="Cancellation payable" value={money(cancellationSummary.payable_vnd)} hint={`${cancellationSummary.count||0} booking hủy · Lỗ ${money(cancellationSummary.net_loss_vnd)}`} />
     </div>
 
     <div className="gvs-finance-insights">
@@ -306,6 +343,7 @@ export default function FinancePL({supabase}:Props){
             </div>
             <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
               <button className="gva-btn secondary" onClick={()=>setEditBooking(row)}>Edit P&amp;L</button>
+              <button className="gva-btn secondary" disabled={saving||row.recognized} onClick={()=>setCancelBooking(row)}>Hủy booking</button>
               {row.status==="completed"&&row.finance_finalized&&row.balance_vnd<=0
                 ? <button className="gva-btn secondary" disabled>✓ Đã chốt</button>
                 : <button className="gva-btn" disabled={saving||String(row.status||"").toLowerCase()==="cancelled"} onClick={()=>finalizeBookingOneClick(row)}>✓ Hoàn tất & chốt</button>}
@@ -326,6 +364,21 @@ export default function FinancePL({supabase}:Props){
     </div>
 
     <div className="gva-card gvs-finance-section">
+      <div className="gva-section-head"><div><h2>Cancellation Losses</h2><div className="gva-mini">Ngày hủy quyết định kỳ P&amp;L. Phí phải trả dù chưa thanh toán vẫn được ghi nhận.</div></div></div>
+      <div className="gvs-finance-balance-grid">
+        <MiniStat label="Supplier cancellation fees" value={money(cancellationSummary.supplier_fees_vnd)} />
+        <MiniStat label="Customer recovery" value={money(cancellationSummary.recovered_vnd)} />
+        <MiniStat label="Net loss" value={money(cancellationSummary.net_loss_vnd)} />
+        <MiniStat label="Fee paid" value={money(cancellationSummary.paid_vnd)} />
+        <MiniStat label="Fee payable" value={money(cancellationSummary.payable_vnd)} />
+      </div>
+      <div className="gva-table-wrap"><table className="gva-table"><thead><tr><th>Cancelled</th><th>Booking</th><th>Reason</th><th>Supplier fee</th><th>Recovered</th><th>Loss</th><th>Payable</th><th></th></tr></thead><tbody>
+        {cancellations.map(x=><tr key={x.booking_id}><td>{x.cancelled_at.slice(0,10)}</td><td>{x.bookings?.booking_code||x.booking_id}</td><td>{x.reason}</td><td>{money(x.supplier_fee_vnd)}</td><td>{money(x.customer_recovery_vnd)}</td><td>{money(x.supplier_fee_vnd-x.customer_recovery_vnd)}</td><td>{money(x.supplier_fee_vnd-x.fee_paid_vnd)}</td><td><button className="gva-btn secondary" disabled={saving} onClick={()=>updateCancellationPayment(x)}>Đã trả</button></td></tr>)}
+        {!cancellations.length&&<tr><td colSpan={8}>Chưa có booking hủy trong tháng.</td></tr>}
+      </tbody></table></div>
+    </div>
+
+    <div className="gva-card gvs-finance-section">
       <div className="gva-section-head">
         <div><h2>Operating Expenses (OPEX)</h2><div className="gva-mini">Chi phí công ty không gắn riêng với một booking.</div></div>
         <button className="gva-btn" onClick={()=>setExpenseOpen(true)}>+ Thêm chi phí</button>
@@ -340,6 +393,17 @@ export default function FinancePL({supabase}:Props){
     </div>
 
     {editBooking&&<FinanceModal row={editBooking} saving={saving} onClose={()=>setEditBooking(null)} onSubmit={saveBookingFinance} onFinalize={()=>finalizeBookingOneClick(editBooking)}/>}    
+    {cancelBooking&&<div className="gva-modal-bg"><form className="gva-modal" onSubmit={submitCancellation}>
+      <div className="gva-modal-head"><h3>Hủy booking · {cancelBooking.booking_code}</h3><button type="button" className="gva-close" onClick={()=>setCancelBooking(null)}>✕</button></div>
+      <p>{cancelBooking.product} · {cancelBooking.pax} khách. Không xóa booking và không ghi doanh thu tour.</p>
+      <div className="gva-form-grid">
+        <Field label="Lý do hủy" wide><textarea className="gva-input" name="reason" required rows={2} placeholder="Khách hủy sát giờ, chưa đặt cọc…"/></Field>
+        <MoneyField name="supplier_fee_vnd" label="Phí nhà cung cấp (VND)" value={0}/>
+        <MoneyField name="customer_recovery_vnd" label="Tiền giữ lại / thu hồi (VND)" value={0}/>
+        <MoneyField name="fee_paid_vnd" label="Đã trả nhà cung cấp (VND)" value={0}/>
+      </div>
+      <div className="gvs-modal-actions"><button type="button" className="gva-btn secondary" onClick={()=>setCancelBooking(null)}>Quay lại</button><button className="gva-btn" disabled={saving}>{saving?"Đang lưu…":"Xác nhận hủy & ghi lỗ"}</button></div>
+    </form></div>}
     {expenseOpen&&<ExpenseModal month={month} saving={saving} onClose={()=>setExpenseOpen(false)} onSubmit={addExpense}/>}    
   </div>;
 }
