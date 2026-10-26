@@ -251,7 +251,7 @@ export default async function RootLayout({
             <a href="/ja" hrefLang="ja-JP" style={{ color: "#315c51" }}>日本語</a>
           </nav>
         </footer>}
-        {travelKit ? null : <script src="/govietstay-partner-tracking.js?v=20260924-wa-ga4-3" defer></script>}
+        {travelKit ? null : <script src="/govietstay-partner-tracking.js?v=20261026-source-attribution" defer></script>}
       </body>
     </html>
   );
