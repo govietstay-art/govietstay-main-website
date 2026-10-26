@@ -57,30 +57,30 @@ export default function HotelsClient() {
       <header className="relative z-10 border-b border-white/10 bg-[#083b42] text-white">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-5 py-3 sm:px-8">
           <Link href="/" className="flex items-center gap-3" aria-label="GoVietStay homepage">
-            <span className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white p-1.5 shadow-lg">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white p-1 shadow-lg sm:h-14 sm:w-14 sm:rounded-2xl sm:p-1.5">
               <Image src="/brand/govietstay-official-logo.jpg" alt="GoVietStay official logo" width={100} height={100} className="h-full w-full object-contain" priority />
             </span>
             <span className="flex flex-col">
-              <span className="text-xl font-black tracking-tight sm:text-2xl">GoVietStay</span>
-              <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#b6ede5]">Trusted local support</span>
+              <span className="text-lg font-black tracking-tight sm:text-2xl">GoVietStay</span>
+              <span className="hidden text-[10px] font-bold uppercase tracking-[0.16em] text-[#b6ede5] sm:inline">Trusted local support</span>
             </span>
           </Link>
           <nav className="flex items-center gap-4 text-sm font-bold sm:gap-6" aria-label="Hotel page navigation">
-            <Link href="/flights" className="hover:text-[#ffe095]">✈ Flights</Link>
+            <Link href="/flights" className="hidden hover:text-[#ffe095] sm:inline">✈ Flights</Link>
             <Link href="/hotel-alliance" className="hidden hover:text-[#ffe095] sm:inline">Hotel partners</Link>
-            <Link href="/#experiences" className="hover:text-[#ffe095]">Tours</Link>
-            <a href={makeWhatsappUrl("Hello GoVietStay, I have a question about hotels in Vietnam.")} target="_blank" rel="noopener noreferrer" className="rounded-full bg-[#23b973] px-4 py-2.5 shadow-lg transition hover:bg-[#189c60]">WhatsApp ↗</a>
+            <Link href="/#experiences" className="hidden hover:text-[#ffe095] sm:inline">Tours</Link>
+            <a href={makeWhatsappUrl("Hello GoVietStay, I have a question about hotels in Vietnam.")} target="_blank" rel="noopener noreferrer" className="rounded-full bg-[#23b973] px-3 py-2 text-xs shadow-lg transition hover:bg-[#189c60] sm:px-4 sm:py-2.5 sm:text-sm">WhatsApp ↗</a>
           </nav>
         </div>
       </header>
 
       <section className="relative isolate overflow-hidden bg-[#084c4b] text-white">
-        <Image src="/hero-hoian-new.png" alt="Hoi An old town glowing by the river" fill priority sizes="100vw" className="-z-20 object-cover object-center" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#052e3bf2] via-[#07434bdc] to-[#074b4870]" />
-        <div className="mx-auto max-w-7xl px-5 pb-32 pt-14 sm:px-8 sm:pb-36 sm:pt-20">
+        <Image src="/hotels-boutique-stay.webp" alt="Illustrative boutique hotel suite opening onto a lush tropical pool courtyard" fill priority sizes="100vw" className="-z-20 object-cover object-[58%_center]" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#15352beb] via-[#1e5141cb] to-[#173a3140]" />
+        <div className="mx-auto max-w-7xl px-5 pb-28 pt-12 sm:px-8 sm:pb-36 sm:pt-20">
           <span className="inline-flex items-center rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-black uppercase tracking-[0.15em] backdrop-blur-sm">🏨 Stay well · Explore more</span>
           <h1 className="mt-7 max-w-3xl text-4xl font-black leading-[1.12] tracking-tight sm:text-5xl lg:text-[3.9rem]">
-            Find your place in Vietnam. <span className="text-[#bdf3df]">Feel at home, far from home.</span>
+            Stay somewhere special. <span className="text-[#c3f3dd]">Feel at home in Vietnam.</span>
           </h1>
           <p className="mt-6 max-w-2xl text-base font-medium leading-8 text-white/90 sm:text-lg">
             From a peaceful Hoi An hideaway to a beachfront stay in Phu Quoc, tell us what matters to you. Our local team can help you explore accommodation options.
