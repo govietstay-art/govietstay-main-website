@@ -91,6 +91,7 @@ export default function FlightsSearch() {
             </span>
           </Link>
           <nav className="flex flex-wrap items-center gap-3 text-sm font-bold sm:gap-6" aria-label="Flights page navigation">
+            <Link href="/hotels" className="text-sky-50 hover:text-[#a9ebfa]">🏨 Hotels</Link>
             <Link href="/#experiences" className="text-sky-50 hover:text-[#a9ebfa]">Our tours</Link>
             <Link href="/travel" className="hidden text-sky-50 hover:text-[#a9ebfa] sm:inline">Travel guides</Link>
             <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="rounded-full bg-[#23b973] px-4 py-2.5 text-white shadow-lg shadow-black/10 transition hover:bg-[#159861]">✆ Talk to a local</a>
