@@ -10,6 +10,7 @@ create table if not exists public.booking_cancellations (
 );
 create index if not exists booking_cancellations_date_idx on public.booking_cancellations(cancelled_at);
 alter table public.booking_cancellations enable row level security;
+drop policy if exists "admin_read_cancellations" on public.booking_cancellations;
 create policy "admin_read_cancellations" on public.booking_cancellations for select to authenticated using ((select public.is_govietstay_admin()));
 revoke all on public.booking_cancellations from anon, authenticated;
 grant select on public.booking_cancellations to authenticated;
