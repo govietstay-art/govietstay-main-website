@@ -73,7 +73,7 @@ const highlights = [
 const destinations = [
   { name: "Da Nang & Hoi An", caption: "Beaches, lanterns & local discoveries", image: "/tour/hoian.jpg", href: "/travel/da-nang-travel-guide" },
   { name: "Phu Quoc", caption: "Island days, snorkeling & sunsets", image: "/tour/phuquoc/tour-01-1.jpg", href: "/tours/phu-quoc" },
-  { name: "Hue", caption: "Heritage, royal history & cuisine", image: "/tour/hoianmemories.jpg", href: "/travel/hue-day-trip-from-da-nang" },
+  { name: "Hue", caption: "Heritage, royal history & cuisine", image: "/tour/hue.jpg", href: "/travel/hue-day-trip-from-da-nang" },
 ];
 
 export default function FlightsSearch() {
