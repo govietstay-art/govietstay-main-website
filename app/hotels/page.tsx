@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     description: "Tell us where you want to stay in Vietnam. A local GoVietStay team member can help you explore suitable accommodation options.",
     url: "https://www.govietstay.com/hotels",
     type: "website",
-    images: [{ url: "https://www.govietstay.com/hero-hoian-new.png", alt: "Hoi An Vietnam by GoVietStay" }],
+    images: [{ url: "https://www.govietstay.com/hotels-boutique-stay.webp", alt: "Illustration of a distinctive boutique hotel stay in Vietnam" }],
   },
 };
 
