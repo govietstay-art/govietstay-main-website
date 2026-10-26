@@ -67,6 +67,7 @@ export default function HotelsClient() {
           </Link>
           <nav className="flex items-center gap-4 text-sm font-bold sm:gap-6" aria-label="Hotel page navigation">
             <Link href="/flights" className="hover:text-[#ffe095]">✈ Flights</Link>
+            <Link href="/hotel-alliance" className="hidden hover:text-[#ffe095] sm:inline">Hotel partners</Link>
             <Link href="/#experiences" className="hover:text-[#ffe095]">Tours</Link>
             <a href={makeWhatsappUrl("Hello GoVietStay, I have a question about hotels in Vietnam.")} target="_blank" rel="noopener noreferrer" className="rounded-full bg-[#23b973] px-4 py-2.5 shadow-lg transition hover:bg-[#189c60]">WhatsApp ↗</a>
           </nav>
@@ -176,6 +177,12 @@ export default function HotelsClient() {
             <Link href="/#experiences" className="rounded-full border border-white/50 px-6 py-3.5 text-sm font-black hover:bg-white/10">Explore tours</Link>
             <a href={makeWhatsappUrl("Hello GoVietStay! Could you help me plan flights, hotels and tours in Vietnam?")} target="_blank" rel="noopener noreferrer" className="rounded-full border border-white/50 px-6 py-3.5 text-sm font-black hover:bg-white/10">Talk to our team</a>
           </div>
+        </div>
+      </section>
+      <section className="border-t border-[#cfe4db] bg-[#e7f3ed] px-5 py-10 sm:px-8">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-5">
+          <div><p className="text-xs font-black uppercase tracking-[0.18em] text-[#16856b]">For independent hotels</p><h2 className="mt-2 text-2xl font-black text-[#154e45]">Own or manage a small hotel in Vietnam?</h2><p className="mt-2 max-w-xl text-sm leading-6 text-[#4f756a]">Apply to our founding Hotel Alliance: a quality-focused, two-way collaboration for independent properties.</p></div>
+          <Link href="/hotel-alliance" className="rounded-full bg-[#0d9471] px-6 py-3.5 text-sm font-black text-white shadow-lg hover:bg-[#0b765b]">Join the Hotel Alliance ↗</Link>
         </div>
       </section>
       <footer className="bg-[#062c32] px-5 py-6 text-center text-xs leading-6 text-[#bdd8d8]">© 2026 GoVietStay. Hotel assistance is by enquiry; availability, final rates, payment and cancellation terms are confirmed before any booking.</footer>
