@@ -68,39 +68,63 @@ export default function HotelAllianceClient() {
       <header className="border-b border-white/10 bg-[#082e30] text-white">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-5 py-3 sm:px-8">
           <Link href="/" className="flex items-center gap-3" aria-label="GoVietStay home">
-            <span className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-2xl bg-white p-1.5">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white p-1.5 sm:h-14 sm:w-14">
               <Image src="/brand/govietstay-official-logo.jpg" alt="GoVietStay official logo" width={100} height={100} priority className="h-full w-full object-contain" />
             </span>
-            <span><span className="block text-xl font-black tracking-tight sm:text-2xl">GoVietStay</span><span className="block text-[10px] font-bold uppercase tracking-[0.15em] text-[#ace5d2]">Independent Hotel Alliance</span></span>
+            <span><span className="block text-lg font-black tracking-tight sm:text-2xl">GoVietStay</span><span className="block text-[10px] font-bold uppercase tracking-[0.15em] text-[#ace5d2]">Independent Hotel Alliance</span></span>
           </Link>
           <nav aria-label="Alliance navigation" className="flex items-center gap-3 text-sm font-bold sm:gap-6">
-            <Link href="/hotels" className="hover:text-[#fbd47b]">Hotels</Link>
+            <Link href="/hotels" className="hidden hover:text-[#fbd47b] sm:inline">Hotels</Link>
             <Link href="/flights" className="hidden hover:text-[#fbd47b] sm:inline">Flights</Link>
-            <a href="#apply" className="rounded-full bg-[#f5bd54] px-5 py-3 font-black text-[#143d35] hover:bg-[#ffda87]">Become a partner ↗</a>
+            <a href="#apply" className="rounded-full bg-[#f5bd54] px-3 py-2.5 text-xs font-black text-[#143d35] hover:bg-[#ffda87] sm:px-5 sm:py-3 sm:text-sm">Become a partner ↗</a>
           </nav>
         </div>
       </header>
 
-      <section className="relative isolate overflow-hidden bg-[#064842] text-white">
-        <Image src="/hero-hoian-new.png" alt="Hoi An at night, Vietnam" fill priority sizes="100vw" className="-z-20 object-cover object-center" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#052a2af5] via-[#064b49dc] to-[#073d4688]" />
-        <div className="mx-auto max-w-7xl px-5 pb-32 pt-16 sm:px-8 sm:pb-40 sm:pt-24">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-black uppercase tracking-[0.15em] backdrop-blur-sm">🌱 Applications open · Founding partner pilot</div>
-          <h1 className="mt-7 max-w-4xl text-4xl font-black leading-[1.12] tracking-tight sm:text-5xl lg:text-[4.1rem]">
-            Independent hotels.<br /><span className="text-[#b7f5d5]">Stronger together.</span>
-          </h1>
-          <p className="mt-7 max-w-2xl text-lg leading-8 text-white/90">
-            A growing community for independent, quality small and mid-sized hotels in Vietnam. We believe great hospitality does not depend on how big you are.
-          </p>
-          <p className="mt-3 max-w-2xl text-base font-semibold text-[#e9d7a8]">We grow when our partners grow.</p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <a href="#apply" className="rounded-full bg-[#f9c65a] px-7 py-3.5 text-sm font-black text-[#103a35] shadow-xl hover:bg-[#ffe29b]">Apply for founding membership ↗</a>
-            <a href="#how-it-works" className="rounded-full border border-white/50 bg-white/15 px-7 py-3.5 text-sm font-black backdrop-blur-sm hover:bg-white/25">How the alliance works</a>
+      <section className="relative overflow-hidden bg-[#f8f7ef]">
+        <div className="pointer-events-none absolute -right-20 -top-36 h-[480px] w-[480px] rounded-full bg-[#e3efe3] blur-3xl" aria-hidden="true" />
+        <div className="pointer-events-none absolute bottom-0 left-0 h-48 w-full bg-gradient-to-t from-[#ecf4e9] to-transparent" aria-hidden="true" />
+        <div className="relative mx-auto grid max-w-7xl items-center gap-11 px-5 pb-16 pt-14 sm:px-8 sm:pb-20 sm:pt-20 lg:grid-cols-[0.94fr_1.06fr] lg:gap-16 lg:py-24">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#bfdccd] bg-white px-4 py-2.5 text-xs font-black uppercase tracking-[0.12em] text-[#15775e] shadow-sm">
+              <span className="h-2 w-2 rounded-full bg-[#28b47c]" aria-hidden="true" />
+              Founding partner applications are open
+            </div>
+            <p className="mt-8 text-xs font-black uppercase tracking-[0.23em] text-[#1a9371]">GoVietStay Independent Hotel Alliance</p>
+            <h1 className="mt-4 max-w-2xl text-[2.65rem] font-black leading-[1.07] tracking-[-0.04em] text-[#103c33] sm:text-6xl lg:text-[4.25rem]">
+              Small hotels.<br /><span className="text-[#148a69]">Big possibilities.</span>
+            </h1>
+            <p className="mt-6 max-w-xl text-base leading-8 text-[#49665c] sm:text-lg">
+              Your hotel has its own story. Let&apos;s help more travellers discover it — and build a stronger future together with independent hospitality businesses across Vietnam.
+            </p>
+            <p className="mt-4 max-w-xl text-sm font-bold text-[#206d58]">Independent hotels. Shared growth. Stronger together.</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a href="#apply" className="inline-flex items-center justify-center gap-2 rounded-full bg-[#f3bd50] px-7 py-4 text-sm font-black text-[#183b30] shadow-[0_12px_28px_rgba(191,131,33,0.22)] transition hover:-translate-y-0.5 hover:bg-[#ffda88]">
+                Apply to be a founding partner <span aria-hidden="true">↗</span>
+              </a>
+              <a href="#how-it-works" className="rounded-full border border-[#98b6a7] bg-white px-6 py-4 text-sm font-black text-[#295f4f] transition hover:bg-[#e6f4e9]">Discover the partnership</a>
+            </div>
+            <p className="mt-6 text-xs leading-6 text-[#779087]">No application fee · Independent review · No automatic membership</p>
+          </div>
+          <div className="relative">
+            <div className="absolute -right-3 -top-4 z-10 rounded-2xl bg-[#f3c45a] px-5 py-3 text-xs font-black uppercase tracking-[0.1em] text-[#174d3b] shadow-lg sm:-right-5 sm:-top-5">Together we thrive ✦</div>
+            <div className="relative aspect-[4/4.25] overflow-hidden rounded-[2.1rem] bg-[#164a3e] shadow-[0_30px_75px_-25px_rgba(14,65,49,0.36)] sm:aspect-[5/4] lg:aspect-[4/4.5]">
+              <Image src="/hotel-alliance-partners.webp" alt="Illustrative photograph of independent boutique hotel owners sharing business ideas" fill priority sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover object-[65%_center]" />
+              <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#082f2ae6] to-transparent" aria-hidden="true" />
+              <div className="absolute inset-x-0 bottom-0 p-6 text-white sm:p-8">
+                <p className="text-[11px] font-black uppercase tracking-[0.22em] text-[#d0e9db]">People first · Partnership always</p>
+                <p className="mt-2 max-w-sm text-xl font-black leading-snug sm:text-2xl">A community built by people who care about hospitality.</p>
+              </div>
+            </div>
+            <div className="absolute -bottom-6 -left-4 hidden rounded-2xl border border-[#d4e6d8] bg-white px-5 py-4 shadow-xl sm:block">
+              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#1a9070]">Founding pilot</p>
+              <p className="mt-1 text-lg font-black text-[#164c3c]">Da Nang · Hoi An</p>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="relative z-10 mx-auto -mt-16 grid max-w-7xl gap-4 px-5 sm:grid-cols-3 sm:px-8">
+      <section className="relative z-10 mx-auto grid max-w-7xl gap-4 px-5 pb-4 pt-8 sm:grid-cols-3 sm:px-8 sm:pt-10">
         {[
           { eyebrow: "Founding cohort target", value: "10 hotels", detail: "Starting in Da Nang & Hoi An" },
           { eyebrow: "Membership application", value: "Free", detail: "No upfront joining fee in the pilot" },
