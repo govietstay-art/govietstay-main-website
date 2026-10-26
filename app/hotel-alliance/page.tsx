@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     description: "Independent hotels. Shared growth. Stronger together. Apply for GoVietStay's founding hotel partner pilot.",
     url: "https://www.govietstay.com/hotel-alliance",
     type: "website",
-    images: [{ url: "https://www.govietstay.com/hero-hoian-new.png", alt: "Hoi An Vietnam | GoVietStay" }],
+    images: [{ url: "https://www.govietstay.com/hotel-alliance-partners.webp", alt: "Independent hotel professionals connecting through GoVietStay" }],
   },
 };
 
