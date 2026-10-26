@@ -2439,6 +2439,7 @@ export default function Home() {
               <a href="/travel/da-nang-travel-guide">Da Nang</a>
               <a href="/tours/phu-quoc">Phu Quoc</a>
               <a href="/travel/da-nang-airport-transfer">Airport Transfer</a>
+              <a href="/hotels">Hotels</a>
               <a href="/visa">Visa Support</a>
               <a href="/group-deals">Group Deals</a>
               <a href="#contact">Contact</a>
