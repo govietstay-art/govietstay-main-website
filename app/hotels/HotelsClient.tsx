@@ -144,6 +144,17 @@ export default function HotelsClient() {
         </section>
       </div>
 
+      <section className="mx-auto max-w-7xl px-5 pb-16 sm:px-8" aria-labelledby="featured-naraco">
+        <div className="mb-7 flex flex-wrap items-end justify-between gap-4"><div><p className="text-xs font-black uppercase tracking-[0.2em] text-[#128769]">GoVietStay Hotel Collection</p><h2 className="mt-2 text-3xl font-black text-[#123f41] sm:text-4xl">Handpicked places to stay</h2></div><p className="max-w-lg text-sm leading-6 text-[#507373]">Our founding hotel collection starts in Hoi An and will grow as more independent hotel partners in Da Nang join GoVietStay. Each property will have its own room types, photos and direct booking offer.</p></div>
+        <div className="rounded-[2rem] border border-[#cce5d7] bg-white p-6 shadow-lg sm:p-9">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div><p className="text-xs font-black uppercase tracking-[0.2em] text-[#128769]">Our first featured hotel · Hoi An</p><h2 id="featured-naraco" className="mt-2 text-3xl font-black text-[#123f41]">Discover Naraco Hoi An</h2><p className="mt-3 max-w-2xl leading-7 text-[#557571]">Explore five room categories, from Superior Double to Family Room, with breakfast and a welcome drink included.</p></div>
+            <div className="rounded-2xl bg-[#e6f8e9] px-6 py-4 text-center"><p className="text-xs font-black uppercase text-[#147451]">Book directly with us</p><p className="mt-1 text-4xl font-black text-[#0f7f5f]">Save 10%</p></div>
+          </div>
+          <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-[#e4efea] pt-6"><p className="text-sm text-[#567772]">Rooms from <span className="text-xl font-black text-[#0c8469]">585.000 ₫ / night</span> after the 10% offer. Rates and availability subject to confirmation.</p><Link href="/hotels/naraco" className="rounded-full bg-[#0e8e70] px-6 py-3.5 text-sm font-black text-white hover:bg-[#087359]">Explore Naraco rooms & prices ↗</Link></div>
+        </div>
+      </section>
+
       <section className="mx-auto max-w-7xl px-5 pb-16 sm:px-8">
         <div className="mb-7 flex flex-wrap items-end justify-between gap-3">
           <div>
