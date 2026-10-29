@@ -33,6 +33,18 @@ const languageAlternates = (englishPath: string, russianPath: string) => ({
 export default function sitemap(): MetadataRoute.Sitemap {
   const corePages: MetadataRoute.Sitemap = [
     {
+      url: `${BASE_URL}/tours/heritage-train-da-nang-hue`,
+      lastModified: new Date("2026-10-29T00:00:00.000Z"),
+      changeFrequency: "weekly",
+      priority: 0.95,
+      alternates: {
+        languages: {
+          en: `${BASE_URL}/tours/heritage-train-da-nang-hue`,
+          "x-default": `${BASE_URL}/tours/heritage-train-da-nang-hue`,
+        },
+      },
+    },
+    {
       url: `${BASE_URL}/my`,
       lastModified: new Date("2026-10-19T10:25:00.000Z"),
       changeFrequency: "weekly",
