@@ -6,7 +6,7 @@ const BASE="https://www.govietstay.com";
 const path="/ru/phu-quoc/from-minsk";
 const canonical=BASE+path;
 const title="Из Минска на Фукуок в 2026–2027: рейсы, виза, отели, трансферы и экскурсии";
-const description="Практический гид для туристов из Беларуси: Минск — Фукуок, сезонные рейсы Belavia, безвизовый въезд до 30 дней, районы отелей, трансфер из аэропорта и частные экскурсии.";
+const description="Честный путеводитель для гостей из Беларуси: рейсы Минск — Фукуок, виза, сезон, пляжи, районы отелей, трансферы, реальные фотографии и экскурсии с местной поддержкой.";
 const wa="https://wa.me/84937762607?text="+encodeURIComponent("Здравствуйте! Я лечу из Минска на Фукуок. Даты: ____. Рейс: ____. Отель: ____. Взрослые/дети: ____. Нужен трансфер или экскурсии.");
 
 export const metadata:Metadata={
@@ -15,8 +15,8 @@ export const metadata:Metadata={
   keywords:["Минск Фукуок 2026","Белавиа Фукуок Минск","Беларусь Фукуок без визы","трансфер Фукуок аэропорт","Фукуок экскурсии на русском","Фукуок для белорусов"],
   alternates:{canonical,languages:{"ru-BY":canonical}},
   robots:{index:true,follow:true},
-  openGraph:{type:"article",locale:"ru_RU",siteName:"GoVietStay",title,description,url:canonical,images:[{url:BASE+"/guest-photos/belarus-hon-thom-original.avif",alt:"Канатная дорога на Хон Тхом, Фукуок"}]},
-  twitter:{card:"summary_large_image",title,description,images:[BASE+"/guest-photos/belarus-hon-thom-original.avif"]}
+  openGraph:{type:"article",locale:"ru_RU",siteName:"GoVietStay",title,description,url:canonical,images:[{url:BASE+"/tour/phuquoc/partner-2026/pq-06.jpg",alt:"Канатная дорога Хон Тхом и море Фукуока"}]},
+  twitter:{card:"summary_large_image",title,description,images:[BASE+"/tour/phuquoc/partner-2026/pq-06.jpg"]}
 };
 
 const sections=[
@@ -91,6 +91,7 @@ const faq=[
 ["Если на море волны, экскурсию перенесут?","Перенос или возврат зависит от условий конкретного предложения; согласуйте их до оплаты."]
 ];
 const refs=[
+{href:"https://mofa.gov.vn/vi/tin-chi-tiet/chi-tiet/uy-vien-bo-chinh-tri-bo-truong-ngoai-giao-le-hoai-trung-hoi-dam-voi-bo-truong-ngoai-giao-belarus-63103-1073.html",name:"МИД Вьетнама: переговоры Вьетнама и Беларуси 28 октября 2026 года"},
 {href:"https://lanhsuvietnam.gov.vn/Lists/BaiViet/B%C3%A0i%20vi%E1%BA%BFt/DispForm.aspx?ID=1176&List=dc7c7d75-6a32-4215-afeb-47d4bee70eee",name:"МИД Вьетнама: соглашение о безвизовых поездках граждан Беларуси"},
 {href:"https://evisa.gov.vn",name:"Официальный портал электронной визы"},
 {href:"https://www.belavia.by",name:"Belavia: действующее расписание и билеты"},
@@ -100,19 +101,19 @@ const refs=[
 export default function Page(){
 const schema={"@context":"https://schema.org","@graph":[
 {"@type":"Article",headline:title,description,mainEntityOfPage:canonical,inLanguage:"ru-BY",
- datePublished:"2026-10-11",dateModified:"2026-10-11",
+ datePublished:"2026-10-11",dateModified:"2026-10-29",
  author:{"@type":"Organization",name:"GoVietStay",url:BASE},
  publisher:{"@id":BASE+"/#organization"},
- image:[BASE+"/guest-photos/belarus-hon-thom-original.avif"]},
+ image:[BASE+"/tour/phuquoc/partner-2026/pq-06.jpg"]},
 {"@type":"BreadcrumbList",itemListElement:[
  {"@type":"ListItem",position:1,name:"GoVietStay",item:BASE},
  {"@type":"ListItem",position:2,name:"Фукуок на русском",item:BASE+"/ru/phu-quoc"},
  {"@type":"ListItem",position:3,name:"Из Минска на Фукуок",item:canonical}]},
 {"@type":"FAQPage",mainEntity:faq.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))}
 ]};
-return <div className="min-h-screen bg-[#f5f7f4] text-slate-900">
+return <div className="min-h-screen bg-[#f5f8f7] text-slate-900">
  <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/>
- <div className="bg-emerald-950 px-5 py-3 text-center text-sm font-medium text-white">GoVietStay · Помощь на русском · Фукуок · Дананг · Хойан · Хюэ</div>
+ <div className="bg-emerald-950 px-5 py-2.5 text-center text-xs font-semibold tracking-wide text-white sm:text-sm">МЕСТНАЯ КОМАНДА ВО ВЬЕТНАМЕ · РУССКОЯЗЫЧНАЯ КОНСУЛЬТАЦИЯ ПО ЗАПРОСУ · СВЯЗЬ 24/7</div>
  <header className="border-b border-emerald-100 bg-white">
   <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-5 py-4 sm:px-8">
    <a href="/" className="text-2xl font-extrabold text-emerald-950">GoVietStay<span className="block text-xs font-medium text-slate-500">Trusted Local Support</span></a>
@@ -125,14 +126,17 @@ return <div className="min-h-screen bg-[#f5f7f4] text-slate-900">
   </div>
  </header>
  <main>
-  <section className="relative isolate overflow-hidden bg-emerald-950 text-white">
-   <Image fill priority src="/guest-photos/belarus-hon-thom-original.avif" alt="Канатная дорога Хон Тхом на Фукуоке" sizes="100vw" className="-z-20 object-cover"/>
-   <div className="absolute inset-0 -z-10 bg-gradient-to-r from-emerald-950/95 via-emerald-950/80 to-emerald-950/25"/>
-   <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28">
-    <p className="text-sm font-bold uppercase tracking-[0.14em] text-emerald-100">МИНСК — ФУКУОК · СЕЗОН 2026–2027</p>
-    <h1 className="mt-5 max-w-4xl text-4xl font-extrabold leading-tight sm:text-5xl lg:text-6xl">{title}</h1>
-    <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-100 sm:text-xl">Подробные ответы на вопросы о рейсах, въезде, выборе отеля и отдыхе на острове. Можно спланировать поездку самостоятельно, а местная команда поможет с отдельными услугами по необходимости.</p>
-    <div className="mt-8 flex flex-wrap gap-3"><a href="#guide" className="rounded-full bg-white px-6 py-3.5 font-bold text-emerald-950">Читать путеводитель ↓</a><a href="#contact" className="rounded-full border border-white px-6 py-3.5 font-bold text-white">Задать вопрос</a></div>
+ <section className="relative isolate overflow-hidden bg-emerald-950 text-white">
+   <Image fill priority src="/tour/phuquoc/partner-2026/pq-06.jpg" alt="Канатная дорога Хон Тхом над бирюзовым морем Фукуока" sizes="100vw" className="-z-20 object-cover object-center"/>
+   <div className="absolute inset-0 -z-10 bg-gradient-to-r from-emerald-950/95 via-emerald-950/75 to-emerald-950/15"/>
+   <div className="absolute inset-0 -z-10 bg-gradient-to-t from-emerald-950/55 via-transparent to-transparent"/>
+   <div className="mx-auto max-w-7xl px-5 pb-24 pt-16 sm:px-8 sm:pb-28 sm:pt-24 lg:pt-32">
+    <div className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] backdrop-blur-sm">🇧🇾 ДЛЯ ПУТЕШЕСТВЕННИКОВ ИЗ БЕЛАРУСИ</div>
+    <p className="mt-8 text-sm font-bold uppercase tracking-[0.16em] text-emerald-100">МИНСК → ФУКУОК · ЗИМА 2026–2027</p>
+    <h1 className="mt-4 max-w-4xl text-4xl font-extrabold leading-[1.12] sm:text-5xl lg:text-[4.2rem]">Из Минска на Фукуок: <span className="text-emerald-200">от первого вопроса до тёплого моря</span></h1>
+    <p className="mt-6 max-w-2xl text-lg leading-8 text-white/90 sm:text-xl">Рейсы, правила въезда, лучшие районы, честные советы по расходам и идеи отдыха. Бесплатный путеводитель от местной команды GoVietStay — даже если вы всё бронируете самостоятельно.</p>
+    <div className="mt-9 flex flex-wrap gap-3"><a href="#guide" className="rounded-full bg-white px-6 py-3.5 font-bold text-emerald-950 transition hover:bg-emerald-50">Изучить путеводитель ↓</a><a href={wa} target="_blank" rel="noopener noreferrer" className="rounded-full border border-white/80 bg-emerald-950/30 px-6 py-3.5 font-bold text-white transition hover:bg-emerald-900">Спросить местного эксперта ↗</a></div>
+    <p className="mt-6 text-sm font-medium text-white/80">Без обязательной покупки тура · Помощь на русском по запросу</p>
    </div>
   </section>
   <div className="mx-auto max-w-7xl px-5 pb-20 sm:px-8">
@@ -142,7 +146,23 @@ return <div className="min-h-screen bg-[#f5f7f4] text-slate-900">
     ["Погода","Для пляжного отдыха обычно выбирают декабрь–март"],
     ["Местная помощь","Трансферы, частные экскурсии и поддержка по-русски"]
    ].map(([a,b])=><div key={a} className="rounded-2xl border border-emerald-100 bg-white p-5 shadow-sm"><h2 className="text-lg font-bold text-emerald-900">{a}</h2><p className="mt-2 text-base leading-7 text-slate-700">{b}</p></div>)}</div>
-   <p className="mt-9 rounded-2xl border border-amber-200 bg-amber-50 p-6 text-base leading-8 text-amber-950"><strong>Перед поездкой:</strong> сезонные рейсы и цены зависят от авиакомпании и туроператора, а правила въезда могут меняться. Проверьте актуальные условия на дату вылета. Материал подготовлен 11 октября 2026 года.</p>
+   <p className="mt-9 rounded-2xl border border-amber-200 bg-amber-50 p-6 text-base leading-8 text-amber-950"><strong>Перед поездкой:</strong> сезонные рейсы и цены зависят от авиакомпании и туроператора, а правила въезда могут меняться. Проверьте актуальные условия на дату вылета. Путеводитель обновлён 29 октября 2026 года.</p>
+   <section className="mt-12 overflow-hidden rounded-[2rem] bg-white shadow-[0_20px_70px_-35px_rgba(6,78,59,0.28)] lg:grid lg:grid-cols-2">
+    <div className="relative min-h-[320px] lg:min-h-[480px]"><Image src="/tour/phuquoc/partner-2026/pq-07.jpg" alt="Закат над районом Сансет-Таун на Фукуоке" fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover"/></div>
+    <div className="flex flex-col justify-center p-7 sm:p-10 lg:p-12">
+     <p className="text-xs font-extrabold uppercase tracking-[0.19em] text-emerald-700">ПУТЕШЕСТВУЙТЕ СВОИМ ТЕМПОМ</p>
+     <h2 className="mt-4 text-3xl font-extrabold leading-tight text-emerald-950 sm:text-4xl">Не нужно покупать большой пакет, чтобы получить помощь на месте.</h2>
+     <p className="mt-5 text-lg leading-8 text-slate-700">У вас уже есть перелёт и отель? Отлично. Мы подскажем, где удобнее жить, как добраться после долгого рейса и какие экскурсии действительно подходят вашей семье.</p>
+     <div className="mt-7 grid gap-3 text-base font-semibold text-slate-800 sm:grid-cols-2"><span>✓ Советы без обязательств</span><span>✓ Маршрут под ваши даты</span><span>✓ Прозрачная стоимость</span><span>✓ Поддержка во Вьетнаме</span></div>
+     <a href="#plans" className="mt-8 inline-flex self-start border-b-2 border-emerald-700 pb-1 font-extrabold text-emerald-800">Посмотреть примеры маршрутов →</a>
+    </div>
+   </section>
+   <section className="mt-12 rounded-3xl border border-sky-100 bg-sky-50 p-6 sm:p-8">
+    <p className="text-xs font-extrabold uppercase tracking-[0.17em] text-sky-800">НОВОСТИ · 28 ОКТЯБРЯ 2026</p>
+    <h2 className="mt-3 text-2xl font-extrabold text-slate-900">Вьетнам и Беларусь обсудили развитие авиасообщения и туризма</h2>
+    <p className="mt-3 text-base leading-8 text-slate-700">Министры иностранных дел двух стран обсудили сотрудничество, в том числе туристические связи. Маршруты из Минска в Камрань и на Фукуок уже были открыты ранее. Это позитивный сигнал для путешественников, но не подтверждение новых дат или дополнительных рейсов.</p>
+    <a href="https://mofa.gov.vn/vi/tin-chi-tiet/chi-tiet/uy-vien-bo-chinh-tri-bo-truong-ngoai-giao-le-hoai-trung-hoi-dam-voi-bo-truong-ngoai-giao-belarus-63103-1073.html" target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex text-sm font-bold text-sky-900 underline underline-offset-4">Официальное сообщение МИД Вьетнама ↗</a>
+   </section>
    <div id="guide" className="mt-12 grid gap-10 lg:grid-cols-[260px_minmax(0,1fr)]">
     <aside className="self-start lg:sticky lg:top-7"><nav aria-label="Содержание" className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><h2 className="text-xl font-bold">Содержание</h2><div className="mt-4 flex flex-col gap-3">{sections.map((s,i)=><a className="text-sm leading-6 text-emerald-900 hover:underline" href={"#"+s.id} key={s.id}>{i+1}. {s.h}</a>)}<a href="#plans" className="font-semibold text-emerald-900">Планы поездки</a><a href="#faq" className="font-semibold text-emerald-900">Частые вопросы</a></div></nav></aside>
     <article className="min-w-0 space-y-8">{sections.map(s=><section id={s.id} key={s.id} className="scroll-mt-8 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-9">
@@ -154,15 +174,18 @@ return <div className="min-h-screen bg-[#f5f7f4] text-slate-900">
    <section id="plans" className="mt-16 scroll-mt-8"><h2 className="text-3xl font-extrabold sm:text-4xl">Примеры маршрутов на 7 и 14 дней</h2><p className="mt-4 max-w-3xl text-lg leading-8 text-slate-700">Примеры можно адаптировать под погоду, отель и возраст детей. Это не жёсткий график и не оплаченная программа.</p>
     <div className="mt-7 grid gap-6 lg:grid-cols-2">{itinerary.map(it=><section className="overflow-hidden rounded-3xl border border-emerald-100 bg-white" key={it.title}><h3 className="bg-emerald-900 p-6 text-2xl font-extrabold text-white">{it.title}</h3><ol className="divide-y divide-slate-100 px-6 py-2">{it.items.map(([when,activity])=><li key={when} className="grid gap-2 py-4 text-base leading-7 sm:grid-cols-[115px_1fr]"><strong className="text-emerald-900">{when}</strong><span>{activity}</span></li>)}</ol></section>)}</div>
    </section>
-   <section className="mt-16"><h2 className="text-3xl font-bold">Кадры Фукуока</h2><div className="mt-6 grid gap-5 md:grid-cols-3">
-    {[
-     ["/guest-photos/belarus-grand-world-original.avif","Вечерний Гранд-Уорлд: фотография гостя"],
-     ["/guest-photos/belarus-hon-thom-original.avif","Канатная дорога Хон Тхом"],
-     ["/tour/phuquoc/johns/trip3-snorkeling.jpg","Снорклинг и острова Ан Тхой"]
-    ].map(([src,alt])=><figure key={src} className="overflow-hidden rounded-2xl border border-slate-200 bg-white"><Image src={src} alt={alt} width={700} height={500} className="h-56 w-full object-cover"/><figcaption className="p-4 text-base font-medium">{alt}</figcaption></figure>)}
-   </div></section>
+   <section className="mt-20">
+    <div className="flex flex-wrap items-end justify-between gap-4"><div><p className="text-xs font-extrabold uppercase tracking-[0.18em] text-emerald-700">ФУКУОК В КАДРЕ</p><h2 className="mt-3 text-3xl font-extrabold sm:text-4xl">Остров, который стоит увидеть самому</h2><p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">Фотографии из материалов местных партнёров и снимки гостей GoVietStay. Море, закаты и живые впечатления — без обещаний идеальной погоды каждый день.</p></div><a href="/ru/tours/phu-quoc" className="rounded-full border border-emerald-700 px-5 py-3 font-bold text-emerald-900 hover:bg-emerald-50">Посмотреть экскурсии →</a></div>
+    <div className="mt-7 grid gap-4 md:grid-cols-12">
+     <figure className="overflow-hidden rounded-3xl bg-white shadow-sm md:col-span-7"><div className="relative h-72 sm:h-96"><Image src="/tour/phuquoc/partner-2026/pq-05.jpg" alt="Пара путешественников на солнечном пляже Фукуока" fill sizes="(max-width: 768px) 100vw, 58vw" className="object-cover"/></div><figcaption className="p-5 text-base font-semibold">Пляжи и тихие острова · юг Фукуока</figcaption></figure>
+     <figure className="overflow-hidden rounded-3xl bg-white shadow-sm md:col-span-5"><div className="relative h-72 sm:h-96"><Image src="/tour/phuquoc/partner-2026/pq-14.jpg" alt="Морская прогулка среди островов Ан Тхой" fill sizes="(max-width: 768px) 100vw, 42vw" className="object-cover"/></div><figcaption className="p-5 text-base font-semibold">Морские прогулки и снорклинг · Ан Тхой</figcaption></figure>
+     <figure className="overflow-hidden rounded-3xl bg-white shadow-sm md:col-span-4"><Image src="/guest-photos/belarus-grand-world-original.avif" alt="Гранд-Уорлд вечером, снимок гостя" width={512} height={288} sizes="(max-width: 768px) 100vw, 33vw" className="aspect-video w-full object-cover"/><figcaption className="p-5 text-sm font-semibold">Гранд-Уорлд · фото гостя</figcaption></figure>
+     <figure className="overflow-hidden rounded-3xl bg-white shadow-sm md:col-span-4"><Image src="/guest-photos/belarus-hon-thom-original.avif" alt="Канатная дорога Хон Тхом, снимок гостя" width={512} height={288} sizes="(max-width: 768px) 100vw, 33vw" className="aspect-video w-full object-cover"/><figcaption className="p-5 text-sm font-semibold">Хон Тхом · фото гостя</figcaption></figure>
+     <figure className="overflow-hidden rounded-3xl bg-white shadow-sm md:col-span-4"><Image src="/tour/phuquoc/partner-2026/pq-13.jpg" alt="Поездка на джипе через лес Фукуока" width={720} height={405} sizes="(max-width: 768px) 100vw, 33vw" className="aspect-video w-full object-cover"/><figcaption className="p-5 text-sm font-semibold">Природа острова · поездка на джипе</figcaption></figure>
+    </div>
+   </section>
    <section id="faq" className="mt-16 scroll-mt-8 rounded-3xl bg-white p-6 sm:p-9"><h2 className="text-3xl font-extrabold">Частые вопросы</h2><div className="mt-6 divide-y divide-slate-200">{faq.map(([q,a])=><details key={q} className="py-5"><summary className="cursor-pointer text-lg font-bold text-emerald-950">{q}</summary><p className="mt-3 text-base leading-8 text-slate-700">{a}</p></details>)}</div></section>
-   <section id="contact" className="mt-14 scroll-mt-8 rounded-3xl bg-emerald-950 p-8 text-white sm:p-12"><h2 className="text-3xl font-extrabold">Нужен только трансфер или хотите частную экскурсию?</h2><p className="mt-5 max-w-3xl text-lg leading-8">Напишите даты, отель, количество взрослых и возраст детей. Мы проверим программу и стоимость, ничего не навязывая. Команда GoVietStay работает на Фукуоке и в Центральном Вьетнаме.</p><a href={wa} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex rounded-full bg-white px-6 py-3.5 font-bold text-emerald-950">Написать в WhatsApp →</a></section>
+   <section id="contact" className="relative mt-16 scroll-mt-8 overflow-hidden rounded-[2rem] bg-emerald-950 p-8 text-white sm:p-12 lg:p-16"><div className="absolute -right-20 -top-24 h-72 w-72 rounded-full border-[50px] border-white/5"/><div className="relative max-w-3xl"><p className="text-xs font-extrabold uppercase tracking-[0.18em] text-emerald-200">GO VIET STAY · TRUSTED LOCAL SUPPORT</p><h2 className="mt-4 text-3xl font-extrabold leading-tight sm:text-4xl">Есть вопросы о Фукуоке? Спросите человека, который работает здесь.</h2><p className="mt-5 text-lg leading-8 text-emerald-50">Напишите даты, отель, количество взрослых и возраст детей. Мы поможем подобрать трансфер, отдельную экскурсию или спокойный маршрут для всей семьи. Можно задать один вопрос — покупать ничего не обязательно.</p><div className="mt-8 flex flex-wrap gap-3"><a href={wa} target="_blank" rel="noopener noreferrer" className="inline-flex rounded-full bg-white px-6 py-3.5 font-extrabold text-emerald-950 hover:bg-emerald-50">Написать в WhatsApp →</a><a href="https://maps.app.goo.gl/znWBmL8zPKEJqnoW6" target="_blank" rel="noopener noreferrer" className="inline-flex rounded-full border border-white/60 px-6 py-3.5 font-bold text-white hover:bg-white/10">Посмотреть отзывы гостей ↗</a></div><p className="mt-5 text-sm text-emerald-100">WhatsApp: +84 937 762 607 · Ответ по-русски — по возможности или с переводом</p></div></section>
    <section className="mt-10 grid gap-8 rounded-3xl border border-slate-200 bg-white p-6 sm:p-9 lg:grid-cols-2"><div><h2 className="text-2xl font-extrabold">Отправьте запрос команде GoVietStay</h2><p className="mt-4 text-base leading-8 text-slate-700">Бесплатная заявка: подтверждаем цену, расписание и доступность до оплаты. Отправка формы ещё не означает бронь.</p></div><PublicInquiryForm productCode="RU-BY-MINSK-PQ-2026" productName="Минск — Фукуок: трансфер и частные экскурсии" sourcePage={path} locale="ru" compact /></section>
    <section className="mt-14"><h2 className="text-2xl font-extrabold">Полезные страницы</h2><div className="mt-5 grid gap-4 md:grid-cols-3">{[
     ["/be/phu-quoc","Фукуок на белорусском"],
@@ -173,6 +196,7 @@ return <div className="min-h-screen bg-[#f5f7f4] text-slate-900">
    <section className="mt-12 border-t border-slate-200 pt-8"><h2 className="text-xl font-bold">Официальные источники</h2><ul className="mt-4 space-y-2">{refs.map(r=><li key={r.href}><a href={r.href} target="_blank" rel="noopener noreferrer" className="text-base text-emerald-800 underline">{r.name}</a></li>)}</ul></section>
   </div>
  </main>
+ <a href={wa} target="_blank" rel="noopener noreferrer" className="fixed inset-x-4 bottom-4 z-40 rounded-full bg-emerald-800 px-5 py-4 text-center text-sm font-extrabold text-white shadow-[0_8px_30px_rgba(6,78,59,0.4)] sm:hidden">Задать вопрос о поездке · WhatsApp ↗</a>
  <footer className="bg-slate-950 p-8 text-slate-100"><div className="mx-auto max-w-7xl text-base leading-8"><strong>GoVietStay · Trusted Local Support</strong><br/>Дананг · Хойан · Хюэ · Фукуок · WhatsApp +84 937 762 607<br/><small>Сведения о рейсах, правилах въезда и погоде могут меняться. © 2026 GoVietStay.</small></div></footer>
  </div>
 }
