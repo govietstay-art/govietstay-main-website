@@ -22,6 +22,7 @@ import BookingPanel from "./BookingPanel";
 import styles from "./page.module.css";
 
 const URL = "https://www.govietstay.com/tours/heritage-train-da-nang-hue";
+const RUSSIAN_URL = "https://www.govietstay.com/ru/tours/heritage-train-da-nang-hue";
 const MEDIA = "/heritage-train";
 const VIDEO = `${MEDIA}/da-nang-hue-heritage-train-journey.mp4`;
 
@@ -38,7 +39,7 @@ export const metadata: Metadata = {
     "Central Vietnam heritage train",
     "Kết nối di sản miền Trung",
   ],
-  alternates: { canonical: URL, languages: { en: URL, "x-default": URL } },
+  alternates: { canonical: URL, languages: { en: URL, ru: RUSSIAN_URL, "x-default": URL } },
   openGraph: {
     type: "website",
     url: URL,
@@ -236,6 +237,7 @@ export default function HeritageTrainPage() {
           <a href="#itinerary">Itinerary</a>
           <a href="#faq">FAQ</a>
         </nav>
+        <a href={RUSSIAN_URL} className={styles.headerLang} hrefLang="ru" lang="ru" aria-label="Русская версия">RU</a>
         <a className={styles.headerCta} href="#plan">Plan my journey <ArrowUpRight size={16} /></a>
       </header>
 
@@ -403,7 +405,7 @@ export default function HeritageTrainPage() {
       <footer className={styles.footer}>
         <a href="/" className={styles.footerBrand}>GoVietStay<span>Trusted Local Support</span></a>
         <p>Da Nang · Hoi An · Hue · Phu Quoc</p>
-        <div><a href="/">Home</a><a href="/tours/phu-quoc">More tours</a><a href="/travel/da-nang-airport-transfer">Airport transfers</a></div>
+        <div><a href="/">Home</a><a href="/tours/phu-quoc">More tours</a><a href="/travel/da-nang-airport-transfer">Airport transfers</a><a href={RUSSIAN_URL} hrefLang="ru" lang="ru">Русская версия</a></div>
         <small>© 2026 GoVietStay. Independent local travel planning; not the railway operator. Timetables and services subject to confirmation.</small>
       </footer>
       <a className={styles.mobileSticky} href="#plan"><MessageCircle size={18} /> Plan my Hue train day <ArrowUpRight size={17} /></a>

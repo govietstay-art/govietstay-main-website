@@ -40,6 +40,8 @@
 .nav { display: flex; align-items: center; gap: clamp(18px, 2.4vw, 38px); margin-left: auto; margin-right: 52px; }
 .nav a { font-size: 12px; font-weight: 700; letter-spacing: .35px; color: #3c5357; transition: color .2s; }
 .nav a:hover { color: #be7d37; }
+.headerLang { color: #895e2e; border: 1px solid #d8c4a7; min-width: 39px; height: 34px; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; letter-spacing: .6px; margin-right: 15px; transition: background .2s; }
+.headerLang:hover { background: #f3ebdc; }
 .headerCta { display: flex; align-items: center; justify-content: center; gap: 14px; background: var(--navy); color: white; padding: 14px 19px; font-size: 12px; font-weight: 800; letter-spacing: .15px; transition: background .2s; }
 .headerCta:hover { background: #234b51; }
 
@@ -268,6 +270,7 @@
   .brand strong { font-size: 19px; }
   .brand small { font-size: 7px; letter-spacing: 1.5px; }
   .headerCta { font-size: 10px; gap: 8px; padding: 12px; }
+  .headerLang { margin-left: auto; margin-right: 8px; min-width: 34px; height: 30px; }
   .headerCta svg { width: 14px; }
   .heroText { padding: 61px 23px 42px; min-height: unset; }
   .heroEyebrow { font-size: 8px; letter-spacing: 1.5px; gap: 8px; }
