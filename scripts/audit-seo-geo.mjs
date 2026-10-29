@@ -1,10 +1,67 @@
 import {spawn} from "node:child_process";
-import {readdir,mkdir,writeFile,appendFile} from "node:fs/promises";
+import {existsSync} from "node:fs";
+import {readdir,mkdir,writeFile,appendFile,readFile} from "node:fs/promises";
 import path from "node:path";
 import {HTML_LOCALE_BY_PREFIX,getPageLocale} from "../lib/seo/locales.ts";
 
 const origin="http://127.0.0.1:3988", base="https://www.govietstay.com";
 const knownLocales=HTML_LOCALE_BY_PREFIX;
+const publicRoot=path.resolve("public");
+const imageExtension=/\.(?:avif|gif|ico|jpe?g|png|svg|webp)$/i;
+const imageExistsCache=new Map();
+function missingLocalImage(value,source="/"){
+ if(!value||/^(?:data:|blob:|#)/i.test(value))return null;
+ try{
+  let url=new URL(value.replaceAll("&amp;","&"),base+source);
+  if(url.origin!==base)return null;
+  if(url.pathname==="/_next/image"){
+   const original=url.searchParams.get("url");
+   if(!original)return null;
+   url=new URL(original,base);
+   if(url.origin!==base)return null;
+  }
+  const asset=decodeURIComponent(url.pathname);
+  if(!imageExtension.test(asset)||asset.startsWith("/_next/")||asset.startsWith("/api/"))return null;
+  const absolute=path.resolve(publicRoot,"."+asset);
+  if(!absolute.startsWith(publicRoot+path.sep))return null;
+  if(!imageExistsCache.has(asset))imageExistsCache.set(asset,existsSync(absolute));
+  return imageExistsCache.get(asset)?null:asset;
+ }catch{return null;}
+}
+function referencedImages(raw,source){
+ const found=[];
+ for(const tag of raw.match(/<(?:img|source|video|meta)\b[^>]*>/gi)??[]){
+  for(const name of ["src","poster","content"]){
+   if(name==="content"&&!/\b(?:property|name)=["'](?:og:image|twitter:image)["']/i.test(tag))continue;
+   const value=attr(tag,name);
+   if(value)found.push(value);
+  }
+  const srcset=attr(tag,"srcset");
+  if(srcset)found.push(...srcset.split(",").map(part=>part.trim().split(/\s+/)[0]));
+ }
+ for(const match of raw.matchAll(/url\(\s*["']?([^)'"\s]+)["']?\s*\)/gi))found.push(match[1]);
+ return [...new Set(found.map(value=>missingLocalImage(value,source)).filter(Boolean))];
+}
+async function sourceImageReferences(){
+ const broken=[];
+ async function visit(folder){
+  for(const entry of await readdir(folder,{withFileTypes:true})){
+   const target=path.join(folder,entry.name);
+   if(entry.isDirectory()){
+    if(!["node_modules",".next","seo-audit"].includes(entry.name))await visit(target);
+   }else if(/\.(?:tsx?|jsx?|css)$/.test(entry.name)){
+    const contents=await readFile(target,"utf8");
+    const literal=/["'](\/[^"'<>\s?#]+\.(?:avif|gif|ico|jpe?g|png|svg|webp))["']/gi;
+    for(const match of contents.matchAll(literal)){
+     const missing=missingLocalImage(match[1]);
+     if(missing)broken.push({source:target,asset:missing});
+    }
+   }
+  }
+ }
+ await Promise.all([visit("app"),visit("components"),visit("lib")]);
+ return broken;
+}
 const server=spawn(process.execPath,["node_modules/next/dist/bin/next","start","--port","3988"],{
  env:{...process.env,NEXT_TELEMETRY_DISABLED:"1"},stdio:["ignore","pipe","pipe"],detached:true,
 });
@@ -52,7 +109,7 @@ function htmlFacts(raw,urlPath,status){
  const words=[...segmenter.segment(plain)].filter(x=>x.isWordLike).length;
  return {path:urlPath,status,title,titleLength:[...title].length,lang:locale,expectedLang:expected(urlPath),canonical:canonicalTag?selfPath(attr(canonicalTag,"href")||"",urlPath):null,
   ogImage:attr(ogTag||"","content"),robotsNoindex:/noindex/i.test(robots),hreflang:alternates,h1:(raw.match(/<h1\b/gi)||[]).length,
-  words,outbound,orgDefs,websiteDefs};
+  words,outbound,orgDefs,websiteDefs,missingLocalImages:referencedImages(raw,urlPath)};
 }
 async function findStatic(dir,segments=[]){
  const files=await readdir(dir,{withFileTypes:true}),out=[];
@@ -102,6 +159,10 @@ async function run(){
   }
  }
  await Promise.all(Array.from({length:9},worker));
+ const brokenLocalImages=[...new Map([
+  ...facts.flatMap(f=>f.missingLocalImages.map(asset=>({page:f.path,asset}))),
+  ...(await sourceImageReferences()).map(({source,asset})=>({page:source,asset})),
+ ].map(item=>[item.page+"|"+item.asset,item])).values()];
  const lookup=new Map(facts.map(f=>[f.path,f])),inbound=new Map(facts.map(f=>[f.path,0]));
  for(const f of facts){for(const href of f.outbound){if(href!==f.path&&inbound.has(href))inbound.set(href,inbound.get(href)+1);}}
  const reciprocity=[];
@@ -126,6 +187,7 @@ async function run(){
   langMismatch:badLang.length,withoutAnyHreflang:pagesWithoutAnyHreflang.length,missingOrIncorrectCanonical:missingCanonical.length,
   missingOgImage:missingOG.length,longTitlesForReview:verboseTitle.length,duplicatedBrandTitles:duplicatedBrand.length,
   thinContentForReview:thinReview.length,orphanSitemapUrls:orphan.length,
+  brokenLocalImages:brokenLocalImages.length,
   nonreciprocalOrUnverifiedHreflang:reciprocity.length,duplicateSitemapEntries:duplicateSitemap.length,
   conflictingOrganizationNodes:facts.filter(f=>f.orgDefs>1).length,
  },issues:{
@@ -136,6 +198,7 @@ async function run(){
   duplicatedBrand:duplicatedBrand.map(f=>({path:f.path,title:f.title})),
   thinReview:thinReview.map(f=>({path:f.path,words:f.words})),
   orphan:orphan.map(f=>f.path),hreflang:reciprocity,duplicateSitemap,
+  brokenLocalImages,
   schemaDuplicates:facts.filter(f=>f.orgDefs>1).map(f=>({path:f.path,nodes:f.orgDefs})),
  },pages:facts.map(({outbound,...rest})=>({...rest,inbound:inbound.get(rest.path)??0}))};
  await mkdir("seo-audit",{recursive:true});
@@ -149,6 +212,7 @@ async function run(){
  const blockers={
   httpErrors:errors.length,sitemapMissing:sitemapMissing.length,langMismatch:badLang.length,
   missingOrIncorrectCanonical:missingCanonical.length,missingOgImage:missingOG.length,
+  brokenLocalImages:brokenLocalImages.length,
   orphanSitemapUrls:orphan.length,
   nonreciprocalOrUnverifiedHreflang:reciprocity.length,duplicateSitemapEntries:duplicateSitemap.length,
   conflictingOrganizationNodes:results.summary.conflictingOrganizationNodes,

@@ -380,12 +380,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: languageAlternates("/group-deals","/ru/group-deals"),
     },
     {
-      url: `${BASE_URL}/visa`,
-      lastModified: SITE_UPDATED,
-      changeFrequency: "monthly",
-      priority: 0.55,
-    },
-    {
       url: `${BASE_URL}/secret`,
       lastModified: SITE_UPDATED,
       changeFrequency: "monthly",

@@ -305,7 +305,7 @@ export const guidePages: Record<string, GuidePageData> = {
     heroAccent: "Know who is taking you to the hotel.",
     heroText:
       "Pre-arranged transfer is most useful when you have children, large luggage, a late flight, a remote resort or simply do not want to negotiate transport after landing.",
-    heroImage: "/tour/phuquoc/phuquoc-01.png",
+    heroImage: "/tour/phuquoc/tour-01-3.jpg",
     heroImageAlt: "Phu Quoc island transport and travel planning",
     quickAnswer:
       "Phu Quoc International Airport (PQC) is roughly 10 km by road from central Duong Dong, so central transfers can be short. Travel time rises quickly when your hotel is in the far south or north. Send your flight number and exact hotel before arrival so the vehicle and pickup plan match the real route.",

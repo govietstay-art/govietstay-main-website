@@ -32,7 +32,7 @@ const sections = [
   {
     title: "Da Nang Local Food",
     icon: "🍜",
-    cover: img("mi-quang.jpg"),
+    cover: img("my-quang.jpg"),
     subtitle: "Mì Quảng • Bún Chả Cá • Bánh Xèo • Seafood • Chợ Cồn",
     places: [
       ["Mỳ Quảng Sứa Hồng Vân", "59 Lê Hồng Phong, Hải Châu", "⭐ Michelin Bib Gourmand", 16.06751, 108.2215],
@@ -87,7 +87,7 @@ const journey = [
   {
     title: "☀️ Morning",
     desc: "Start with real local breakfast.",
-    photo: img("mi-quang.jpg"),
+    photo: img("my-quang.jpg"),
     places: ["Mì Quảng 1A", "Bún Chả Cá 109", "Bún Chả Cá Hờn", "Salt Coffee"],
     search: "best local breakfast Da Nang Mi Quang Bun Cha Ca Salt Coffee",
   },

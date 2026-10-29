@@ -63,6 +63,7 @@ export default function EnglishTravelHub() {
           <a href="/tours/ba-na-hills">Ba Na Hills</a>
           <a href="/tours/hoi-an-coconut-forest">Hoi An</a>
           <a href="/tours/phu-quoc">Phu Quoc</a>
+          <a href="/tours/heritage-train-da-nang-hue">Hue Heritage Train</a>
           <a className={styles.navCta} href={WA} target="_blank" rel="noopener noreferrer">WhatsApp</a>
         </nav>
       </header>

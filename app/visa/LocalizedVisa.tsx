@@ -22,7 +22,7 @@ export type VisaLang= keyof typeof visaTranslations;
 const BASE="https://www.govietstay.com";
 const locales=Object.keys(visaTranslations) as VisaLang[];
 export function localizedVisaMetadata(lang:VisaLang):Metadata {
- const t=visaTranslations[lang];const url=BASE+"/"+lang+"/visa";return {title:t.title+" | GoVietStay",description:t.subtitle,alternates:{canonical:url,languages:{en:BASE+"/visa",...Object.fromEntries(locales.map(l=>[visaTranslations[l].language,BASE+"/"+l+"/visa"])),"x-default":BASE+"/visa"}},robots:{index:true,follow:true},openGraph:{title:t.title,description:t.subtitle,url,siteName:"GoVietStay",type:"website"}};
+ const t=visaTranslations[lang];const url=BASE+"/"+lang+"/visa";return {title:t.title+" | GoVietStay",description:t.subtitle,alternates:{canonical:url,languages:{en:BASE+"/visa",...Object.fromEntries(locales.map(l=>[visaTranslations[l].language,BASE+"/"+l+"/visa"])),"x-default":BASE+"/visa"}},robots:{index:true,follow:true},openGraph:{title:t.title,description:t.subtitle,url,siteName:"GoVietStay",type:"website",images:[{url:BASE+"/visa-application-guide.webp",alt:"GoVietStay Vietnam visa application assistance"}]},twitter:{card:"summary_large_image",images:[BASE+"/visa-application-guide.webp"]}};
 }
 export default function LocalizedVisa({lang}:{lang:VisaLang}) {
  const t=visaTranslations[lang];const wa="https://wa.me/84937762607?text="+encodeURIComponent("Hello GoVietStay, please check my Vietnam visa eligibility and urgent support options. My passport nationality: ____; travel date: ____; existing application status: ____.");
