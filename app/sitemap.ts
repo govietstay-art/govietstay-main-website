@@ -40,6 +40,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: {
         languages: {
           en: `${BASE_URL}/tours/heritage-train-da-nang-hue`,
+          ru: `${BASE_URL}/ru/tours/heritage-train-da-nang-hue`,
+          "x-default": `${BASE_URL}/tours/heritage-train-da-nang-hue`,
+        },
+      },
+    },
+    {
+      url: `${BASE_URL}/ru/tours/heritage-train-da-nang-hue`,
+      lastModified: new Date("2026-10-29T00:00:00.000Z"),
+      changeFrequency: "weekly",
+      priority: 0.95,
+      alternates: {
+        languages: {
+          en: `${BASE_URL}/tours/heritage-train-da-nang-hue`,
+          ru: `${BASE_URL}/ru/tours/heritage-train-da-nang-hue`,
           "x-default": `${BASE_URL}/tours/heritage-train-da-nang-hue`,
         },
       },
