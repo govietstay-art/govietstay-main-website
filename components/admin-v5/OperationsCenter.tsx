@@ -77,7 +77,9 @@ type Contact = { id: string; full_name: string | null; whatsapp: string | null; 
 type Assignment = { id: string; booking_id: string; guide_id: string; status: string; agreed_fee_vnd: number; notes: string | null };
 type BookingCost = { id: string; booking_id: string; cost_type: string; description: string | null; amount_vnd: number };
 type BookingFinancial = { booking_id: string; amount_received_vnd: number };
-type Modal = null | "guide" | "availability" | "booking" | "cost" | "quick";
+type TransportSupplier = { id: string; name: string; contact_name: string | null; phone: string | null; whatsapp: string | null; service_area: string | null; notes: string | null; active: boolean; payment_terms_days: number };
+type TransportBooking = { id: string; booking_id: string; supplier_id: string; description: string | null; amount_vnd: number; status: string; notes: string | null };
+type Modal = null | "guide" | "availability" | "booking" | "cost" | "quick" | "transport" | "transport_booking";
 
 const LANGUAGES = [
   ["en", "🇬🇧 English"],
@@ -176,7 +178,7 @@ export default function OperationsCenter() {
   const [modal, setModal] = useState<Modal>(null);
   const [selectedBooking, setSelectedBooking] = useState<string | null>(null);
   const [shareBookingId, setShareBookingId] = useState<string | null>(null);
-  const [view, setView] = useState<"calendar" | "dispatch" | "guides" | "bookings">("calendar");
+  const [view, setView] = useState<"calendar" | "dispatch" | "guides" | "bookings" | "transport">("calendar");
   const [focusDate, setFocusDate] = useState(localISO());
   const [calendarMonth, setCalendarMonth] = useState(monthValue());
   const [mobileCalendarFilter, setMobileCalendarFilter] = useState<"today" | "tomorrow" | "7days" | "month">("month");
@@ -190,6 +192,8 @@ export default function OperationsCenter() {
   const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [costs, setCosts] = useState<BookingCost[]>([]);
   const [financials, setFinancials] = useState<BookingFinancial[]>([]);
+  const [transportSuppliers, setTransportSuppliers] = useState<TransportSupplier[]>([]);
+  const [transportBookings, setTransportBookings] = useState<TransportBooking[]>([]);
 
   const tourMap = useMemo(() => Object.fromEntries(tours.map((x) => [x.id, x])), [tours]);
   const guideMap = useMemo(() => Object.fromEntries(guides.map((x) => [x.id, x])), [guides]);
@@ -260,6 +264,8 @@ export default function OperationsCenter() {
         supabase.from("booking_guides").select("id,booking_id,guide_id,status,agreed_fee_vnd,notes").limit(2000),
         supabase.from("booking_costs").select("id,booking_id,cost_type,description,amount_vnd").limit(3000),
         supabase.from("booking_financials").select("booking_id,amount_received_vnd").limit(3000),
+        supabase.from("suppliers").select("id,name,contact_name,phone,whatsapp,service_area,notes,active,payment_terms_days").eq("supplier_type", "transport").order("name"),
+        supabase.from("booking_supplier_payables").select("id,booking_id,supplier_id,description,amount_vnd,status,notes").eq("source", "transport_operations").limit(2000),
       ]);
       for (const r of results) if (r.error) throw r.error;
       setTours((results[0].data || []) as Tour[]);
@@ -270,6 +276,8 @@ export default function OperationsCenter() {
       setAssignments((results[5].data || []) as Assignment[]);
       setCosts((results[6].data || []) as BookingCost[]);
       setFinancials((results[7].data || []) as BookingFinancial[]);
+      setTransportSuppliers((results[8].data || []) as TransportSupplier[]);
+      setTransportBookings((results[9].data || []) as TransportBooking[]);
     } catch (e: any) {
       setError(e.message || "Không tải được Operations Center.");
     }
@@ -509,6 +517,40 @@ export default function OperationsCenter() {
     if (b.status === "pending") return "pending";
     if (b.status === "completed") return "completed";
     return "confirmed";
+  }
+
+  async function createTransportSupplier(e: any) {
+    e.preventDefault(); setSaving(true); setError("");
+    const v = Object.fromEntries(new FormData(e.currentTarget).entries()) as Record<string, string>;
+    try {
+      const { error: insertError } = await supabase.from("suppliers").insert({
+        name: v.name.trim(), contact_name: v.contact_name.trim() || null,
+        phone: v.phone.trim() || null, whatsapp: v.whatsapp.trim() || null,
+        service_area: v.service_area.trim() || null, supplier_type: "transport",
+        notes: [`Loại xe: ${v.vehicle_types || "Chưa cập nhật"}`, `Giá tham khảo: ${v.reference_rates || "Chưa cập nhật"}`, v.notes].filter(Boolean).join("\n"),
+        payment_terms_days: Number(v.payment_terms_days || 0), active: true,
+      });
+      if (insertError) throw insertError;
+      setModal(null); setMessage("Đã lưu nhà xe vào danh bạ đối tác."); await loadAll();
+    } catch (err: any) { setError(err.message || "Không lưu được nhà xe."); }
+    finally { setSaving(false); }
+  }
+
+  async function assignTransport(e: any) {
+    e.preventDefault(); setSaving(true); setError("");
+    const v = Object.fromEntries(new FormData(e.currentTarget).entries()) as Record<string, string>;
+    try {
+      const { error: insertError } = await supabase.from("booking_supplier_payables").insert({
+        booking_id: v.booking_id, supplier_id: v.supplier_id,
+        description: `Vận chuyển · ${v.vehicle_type || "Xe theo yêu cầu"}`,
+        amount_vnd: Number(v.amount_vnd || 0), status: "open",
+        notes: [v.pickup_details, v.notes].filter(Boolean).join(" · ") || null,
+        source: "transport_operations", auto_managed: false,
+      });
+      if (insertError) throw insertError;
+      setModal(null); setMessage("Đã nối nhà xe với booking và công nợ nhà cung cấp."); await loadAll();
+    } catch (err: any) { setError(err.message || "Không gán được nhà xe."); }
+    finally { setSaving(false); }
   }
 
   async function createGuide(e: any) {
@@ -823,6 +865,7 @@ export default function OperationsCenter() {
       {isAdmin && <button type="button" onClick={() => window.open("/admin/payments", "_blank", "noopener,noreferrer")}>💳 Payment Center</button>}
       {isAdmin && <button className={view === "bookings" ? "active" : ""} onClick={() => setView("bookings")}>Bookings</button>}
       {isAdmin && <button className={view === "guides" ? "active" : ""} onClick={() => setView("guides")}>Hướng dẫn viên</button>}
+      {isAdmin && <button className={view === "transport" ? "active" : ""} onClick={() => setView("transport")}>Nhà xe & tài xế</button>}
     </nav>
 
     {view === "calendar" && <section className="gvo-card gvo-month-card">
@@ -964,6 +1007,12 @@ export default function OperationsCenter() {
                 </div>
                 {b.booking_mode === "custom" && b.custom_itinerary && <div className="gvo-itinerary">{b.custom_itinerary}</div>}
                 <div className="gvo-assignment">
+                  {transportBookings.filter((x) => x.booking_id === b.id).map((x) => {
+                    const supplier = transportSuppliers.find((s) => s.id === x.supplier_id);
+                    return <div className="gvo-assigned" key={x.id}><span>🚐 Nhà xe: <b>{supplier?.name || "Đối tác vận chuyển"}</b> · {x.description}{isAdmin ? ` · ${money(x.amount_vnd)}` : ""}</span>
+                      {supplier?.phone && <a href={`tel:${supplier.phone.replace(/[^\d+]/g, "")}`}>Gọi nhà xe</a>}
+                    </div>;
+                  })}
                   {ass.length ? ass.map((a) => <div className="gvo-assigned" key={a.id}>
                     <span>HDV: <b>{guideMap[a.guide_id]?.full_name || "—"}</b>{isAdmin ? ` · ${money(a.agreed_fee_vnd)}` : ""}</span>
                     {canOperate && <select className="gva-select" value={a.status} onChange={(e) => updateAssignment(a.id, e.target.value)} disabled={saving}>
@@ -1016,6 +1065,30 @@ export default function OperationsCenter() {
       </div>
     </>}
 
+    {view === "transport" && isAdmin && <section className="gvo-card">
+      <div className="gvo-card-head">
+        <div><h2>Danh bạ nhà xe & tài xế</h2><p>Đối tác vận chuyển dùng chung với Finance. Mỗi chuyến gắn Booking ID để dễ tra cứu và đối soát.</p></div>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <button className="gva-btn secondary" onClick={() => setModal("transport_booking")}>+ Gán xe cho booking</button>
+          <button className="gva-btn" onClick={() => setModal("transport")}>+ Thêm nhà xe</button>
+        </div>
+      </div>
+      <div className="gvo-table-wrap"><table className="gvo-table"><thead><tr><th>Nhà xe / người phụ trách</th><th>Khu vực</th><th>Liên hệ nhanh</th><th>Loại xe / giá / ghi chú</th><th>Booking liên quan</th></tr></thead><tbody>
+        {transportSuppliers.map((s) => {
+          const linked = transportBookings.filter((x) => x.supplier_id === s.id);
+          const phone = (s.whatsapp || s.phone || "").replace(/[^\d+]/g, "");
+          return <tr key={s.id}>
+            <td><b>{s.name}</b><div className="gvo-small">{s.contact_name || "Chưa có người phụ trách"}{!s.active ? " · Ngừng hợp tác" : ""}</div></td>
+            <td>{s.service_area || "—"}</td>
+            <td>{s.phone && <div><a href={`tel:${s.phone.replace(/[^\d+]/g, "")}`}>{s.phone}</a></div>}{s.whatsapp && <div><a href={`https://wa.me/${phone.replace(/^0/, "84").replace(/^\+/, "")}`} target="_blank" rel="noopener noreferrer">WhatsApp ↗</a></div>}{!s.phone && !s.whatsapp && "—"}</td>
+            <td style={{ whiteSpace: "pre-line", minWidth: 210 }}>{s.notes || "—"}</td>
+            <td>{linked.length ? linked.map((a) => <div key={a.id} style={{ marginBottom: 5 }}><b>{bookings.find((b) => b.id === a.booking_id)?.booking_code || "Booking"}</b> · {money(a.amount_vnd)}<div className="gvo-small">{a.description} · {a.status}</div></div>) : "Chưa gán"}</td>
+          </tr>;
+        })}
+        {!transportSuppliers.length && <tr><td colSpan={5}><div className="gvo-empty">Chưa có nhà xe. Bấm “+ Thêm nhà xe” để tạo hồ sơ đầu tiên.</div></td></tr>}
+      </tbody></table></div>
+    </section>}
+
     {view === "guides" && isAdmin && <section className="gvo-card">
       <div className="gvo-card-head"><div><h2>Database hướng dẫn viên</h2><p>Mỗi HDV một hồ sơ; lịch rảnh lưu riêng theo ngày/khung giờ.</p></div><button className="gva-btn" onClick={() => setModal("guide")}>+ Thêm HDV</button></div>
       <div className="gvo-table-wrap"><table className="gvo-table"><thead><tr><th>HDV</th><th>Ngôn ngữ</th><th>Khu vực</th><th>Liên hệ</th><th>Nửa ngày</th><th>Cả ngày</th><th>License</th></tr></thead><tbody>
@@ -1048,6 +1121,29 @@ export default function OperationsCenter() {
         {!bookings.length && <tr><td colSpan={9}><div className="gvo-empty">Chưa có booking.</div></td></tr>}
       </tbody></table></div>
     </section>}
+
+    {modal === "transport" && isAdmin && <ModalFrame title="Thêm đối tác nhà xe" onClose={() => setModal(null)}><form onSubmit={createTransportSupplier} className="gvo-form-grid">
+      <Field label="Tên nhà xe / công ty"><input name="name" className="gva-input" required /></Field>
+      <Field label="Người phụ trách"><input name="contact_name" className="gva-input" /></Field>
+      <Field label="Số điện thoại"><input name="phone" className="gva-input" type="tel" /></Field>
+      <Field label="WhatsApp"><input name="whatsapp" className="gva-input" type="tel" /></Field>
+      <Field label="Khu vực phục vụ"><input name="service_area" className="gva-input" placeholder="Đà Nẵng, Hội An, Huế" /></Field>
+      <Field label="Loại xe"><input name="vehicle_types" className="gva-input" placeholder="4, 7, 16, 29, 45 chỗ" /></Field>
+      <Field label="Giá tham khảo"><input name="reference_rates" className="gva-input" placeholder="Sân bay 7 chỗ: 300.000đ..." /></Field>
+      <Field label="Hạn thanh toán (ngày)"><input name="payment_terms_days" className="gva-input" type="number" min="0" defaultValue="0" /></Field>
+      <Field label="Ghi chú / tài xế dự phòng / điều khoản" wide><textarea name="notes" className="gva-input" rows={3} /></Field>
+      <ModalActions saving={saving} onClose={() => setModal(null)} label="Lưu nhà xe" />
+    </form></ModalFrame>}
+
+    {modal === "transport_booking" && isAdmin && <ModalFrame title="Gán nhà xe cho booking" onClose={() => setModal(null)}><form onSubmit={assignTransport} className="gvo-form-grid">
+      <Field label="Booking"><select name="booking_id" className="gva-select" required><option value="">Chọn booking</option>{bookings.filter((b) => b.status !== "cancelled").map((b) => <option value={b.id} key={b.id}>{b.booking_code || b.id.slice(0, 8)} · {b.tour_date} · {bookingName(b)}</option>)}</select></Field>
+      <Field label="Nhà xe"><select name="supplier_id" className="gva-select" required><option value="">Chọn nhà xe</option>{transportSuppliers.filter((s) => s.active).map((s) => <option value={s.id} key={s.id}>{s.name} · {s.service_area || "Toàn quốc"}</option>)}</select></Field>
+      <Field label="Loại xe"><input name="vehicle_type" className="gva-input" placeholder="16 chỗ" /></Field>
+      <Field label="Chi phí thỏa thuận (VND)"><input name="amount_vnd" className="gva-input" type="number" min="0" required /></Field>
+      <Field label="Điểm đón / giờ đón" wide><input name="pickup_details" className="gva-input" placeholder="08:00 · Khách sạn..." /></Field>
+      <Field label="Ghi chú điều phối" wide><textarea name="notes" className="gva-input" rows={3} /></Field>
+      <ModalActions saving={saving} onClose={() => setModal(null)} label="Lưu phân xe" />
+    </form></ModalFrame>}
 
     {modal === "guide" && isAdmin && <ModalFrame title="Thêm hướng dẫn viên" onClose={() => setModal(null)}><form onSubmit={createGuide} className="gvo-form-grid">
       <Field label="Tên HDV"><input name="full_name" className="gva-input" required /></Field>
