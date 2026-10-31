@@ -124,12 +124,12 @@ export default function AdminV5() {
   const bookingGroups=useMemo(()=>{
     const today=new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Ho_Chi_Minh",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date());
     const finished=(b:Booking)=>["completed","closed"].includes(b.status);
-    const active=(b:Booking)=>!finished(b)&&b.status!=="cancelled";
+    const active=(b:Booking)=>!finished(b)&&!["cancelled","refunded"].includes(b.status);
     const upcoming=(b:Booking)=>active(b)&&!!b.tour_date&&b.tour_date>=today;
-    const counts={active:bookings.filter(active).length,upcoming:bookings.filter(upcoming).length,completed:bookings.filter(finished).length,cancelled:bookings.filter(b=>b.status==="cancelled").length,all:bookings.length};
+    const counts={active:bookings.filter(active).length,upcoming:bookings.filter(upcoming).length,completed:bookings.filter(finished).length,cancelled:bookings.filter(b=>["cancelled","refunded"].includes(b.status)).length,all:bookings.length};
     const q=bookingSearch.trim().toLocaleLowerCase();
     const rows=bookings.filter(b=>{
-      const match=bookingView==="all"||bookingView==="active"&&active(b)||bookingView==="upcoming"&&upcoming(b)||bookingView==="completed"&&finished(b)||bookingView==="cancelled"&&b.status==="cancelled";
+      const match=bookingView==="all"||bookingView==="active"&&active(b)||bookingView==="upcoming"&&upcoming(b)||bookingView==="completed"&&finished(b)||bookingView==="cancelled"&&["cancelled","refunded"].includes(b.status);
       return match&&(!q||[b.booking_code,contactMap[b.contact_id||""]?.full_name,bookingTourName(b,tourMap),b.hotel,b.tour_date].some(v=>String(v||"").toLocaleLowerCase().includes(q)));
     }).sort((a,b)=>{
       const aDate=a.tour_date||"9999-12-31",bDate=b.tour_date||"9999-12-31";
@@ -458,7 +458,7 @@ export default function AdminV5() {
         const today=new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Ho_Chi_Minh",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date());
         const weekEnd=new Date(today+"T00:00:00+07:00");weekEnd.setDate(weekEnd.getDate()+7);
         const until=new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Ho_Chi_Minh",year:"numeric",month:"2-digit",day:"2-digit"}).format(weekEnd);
-        const open=bookings.filter(b=>!["completed","closed","cancelled"].includes(b.status));
+        const open=bookings.filter(b=>!["completed","closed","cancelled","refunded"].includes(b.status));
         const todayTours=open.filter(b=>b.tour_date===today);
         const upcoming=open.filter(b=>b.tour_date&&b.tour_date>=today&&b.tour_date<until).sort((a,b)=>(a.tour_date||"").localeCompare(b.tour_date||""));
         const overdue=open.filter(b=>b.tour_date&&b.tour_date<today);
