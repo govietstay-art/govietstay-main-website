@@ -104,6 +104,7 @@ export default function AdminV5() {
   const [contacts,setContacts]=useState<Contact[]>([]);
   const [leads,setLeads]=useState<Lead[]>([]);
   const [bookings,setBookings]=useState<Booking[]>([]);
+  const [financials,setFinancials]=useState<any[]>([]);
   const [bookingView,setBookingView]=useState<"active"|"upcoming"|"completed"|"cancelled"|"all">("active");
   const [bookingSearch,setBookingSearch]=useState("");
   const [seoOverview,setSeoOverview]=useState<any>(null);
@@ -214,13 +215,14 @@ export default function AdminV5() {
         supabase.from("partners").select("id,name,ref_code,active").eq("active",true).order("name"),
         supabase.from("contacts").select("id,full_name,whatsapp,country,preferred_language").order("created_at",{ascending:false}).limit(300),
         supabase.from("leads").select("id,contact_id,interested_tour_id,partner_id,status,source,message,created_at").order("created_at",{ascending:false}).limit(100),
-        supabase.from("bookings").select("id,booking_code,contact_id,tour_id,partner_id,status,payment_status,tour_date,adults,children,pax,gross_revenue_vnd,net_revenue_vnd,booking_mode,custom_tour_name,guide_language,hotel,notes,internal_itinerary_vi,source,created_at").order("created_at",{ascending:false}).limit(100),
+        supabase.from("bookings").select("id,booking_code,contact_id,tour_id,partner_id,status,payment_status,tour_date,adults,children,pax,gross_revenue_vnd,net_revenue_vnd,booking_mode,custom_tour_name,guide_language,hotel,notes,internal_itinerary_vi,source,created_at").order("created_at",{ascending:false}).limit(1000),
+        supabase.from("booking_financials").select("booking_id,amount_received_vnd,total_direct_cost_vnd,finance_finalized").limit(1000),
         ...dimPromises,
         ...seoPromises
       ]);
 
       for(const r of results) if(r.error) throw r.error;
-      const [m,b,mk,t,p,c,l,bo,...rest] = results;
+      const [m,b,mk,t,p,c,l,bo,fin,...rest] = results;
       setMetrics(m.data);
       setBreakdown((b.data||[]) as any);
 
@@ -230,6 +232,7 @@ export default function AdminV5() {
       setContacts((c.data||[]) as any);
       setLeads((l.data||[]) as any);
       setBookings((bo.data||[]) as any);
+      setFinancials((fin.data||[]) as any);
 
       const dimResults = rest.slice(0,dims.length);
       const seoResults = rest.slice(dims.length);
@@ -461,7 +464,9 @@ export default function AdminV5() {
         const overdue=open.filter(b=>b.tour_date&&b.tour_date<today);
         const pending=open.filter(b=>b.status==="pending");
         const missingItinerary=upcoming.filter(b=>!b.internal_itinerary_vi?.trim());
-        const unpaidDone=bookings.filter(b=>["completed","closed"].includes(b.status)&&b.payment_status!=="paid");
+        const moneyMap=Object.fromEntries(financials.map(f=>[f.booking_id,f]));
+        const unpaidDone=bookings.filter(b=>["completed","closed"].includes(b.status)&&Number(moneyMap[b.id]?.amount_received_vnd||0)<Number(b.net_revenue_vnd||0));
+        const unpaidBalance=unpaidDone.reduce((n,b)=>n+Math.max(0,Number(b.net_revenue_vnd||0)-Number(moneyMap[b.id]?.amount_received_vnd||0)),0);
         return <>
           <div className="gva-section-head"><div><h2>Điều hành hôm nay</h2><div className="gva-mini">Ưu tiên công việc và lịch khởi hành · {today}</div></div><button className="gva-btn secondary" onClick={()=>{setBookingView("active");setTab("bookings")}}>Mở Bookings</button></div>
           <div className="gva-kpis">
@@ -475,7 +480,8 @@ export default function AdminV5() {
             <div className="gva-card"><h3>Việc cần xử lý</h3>
               <div className="gva-booking-hint">Các cảnh báo được tính từ booking hiện có. Phân công xe và hướng dẫn viên cần kiểm tra ở Điều hành.</div>
               <div className="gva-booking-hint">{overdue.length} tour đã qua ngày chưa chốt · {pending.length} booking đang chờ xác nhận</div>
-              <div className="gva-booking-hint">{missingItinerary.length} tour sắp tới thiếu lịch trình tiếng Việt · {unpaidDone.length} tour hoàn thành cần kiểm tra thanh toán</div>
+              <div className="gva-booking-hint">{missingItinerary.length} tour sắp tới thiếu lịch trình tiếng Việt · {unpaidDone.length} tour hoàn thành còn số dư theo dữ liệu tài chính</div>
+              <div className="gva-booking-hint">Tổng số dư cần kiểm tra: <b>{money(unpaidBalance)}</b>. Số liệu dựa trên khoản đã thu được ghi nhận, cần đối chiếu Finance.</div>
               <button className="gva-btn secondary" onClick={()=>{setBookingView("active");setTab("bookings")}}>Xử lý booking</button>
               <button className="gva-btn secondary" style={{marginLeft:8}} onClick={()=>setTab("finance")}>Mở tài chính</button>
             </div>
