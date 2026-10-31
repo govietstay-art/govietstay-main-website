@@ -57,7 +57,10 @@ export async function POST(req: NextRequest) {
   }
 
   const kind = claim.value?.kind;
-  const message = kind === "staff_intake" ? "Co yeu cau tu nhan vien cho duyet. Mo Admin de xem."
+  const isReminder = typeof kind === "string" && /^booking_reminder_(7|3|1)$/.test(kind);
+  const reminderDays = isReminder ? kind!.split("_").pop() : null;
+  const message = isReminder ? `Có tour khởi hành sau ${reminderDays} ngày. Mở Operations Center để kiểm tra lịch trình tiếng Việt, HDV, xe, vé và giờ đón.`
+    : kind === "staff_intake" ? "Co yeu cau tu nhan vien cho duyet. Mo Admin de xem."
     : kind === "partner_booking" ? "Co booking tu doi tac can kiem tra. Mo Admin de xem."
     : kind === "public_inquiry" ? "Co yeu cau dich vu moi tu website. Mo Admin de lien he khach."
     : kind === "system_test" ? "THU NGHIEM: ket noi thong bao booking GoVietStay."
@@ -69,10 +72,10 @@ export async function POST(req: NextRequest) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        topic, title: "GoVietStay: booking moi",
-        message, priority: 4, tags: ["bell"],
-        click: "https://www.govietstay.com/admin",
-        actions: [{ action: "view", label: "Mo Admin", url: "https://www.govietstay.com/admin" }]
+        topic, title: isReminder ? `GoVietStay: nhắc tour D-${reminderDays}` : "GoVietStay: booking mới",
+        message, priority: isReminder && reminderDays === "1" ? 5 : 4, tags: ["bell"],
+        click: isReminder ? "https://www.govietstay.com/admin/operations" : "https://www.govietstay.com/admin",
+        actions: [{ action: "view", label: isReminder ? "Mở điều hành" : "Mở Admin", url: isReminder ? "https://www.govietstay.com/admin/operations" : "https://www.govietstay.com/admin" }]
       }),
       cache: "no-store",
       signal: AbortSignal.timeout(7000)
