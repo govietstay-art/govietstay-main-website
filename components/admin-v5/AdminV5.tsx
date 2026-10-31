@@ -51,6 +51,7 @@ type Booking = {
   guide_language:string|null;
   hotel:string|null;
   notes:string|null;
+  internal_itinerary_vi:string|null;
   source:string|null;
   created_at:string;
 };
@@ -195,7 +196,7 @@ export default function AdminV5() {
         supabase.from("partners").select("id,name,ref_code,active").eq("active",true).order("name"),
         supabase.from("contacts").select("id,full_name,whatsapp,country,preferred_language").order("created_at",{ascending:false}).limit(300),
         supabase.from("leads").select("id,contact_id,interested_tour_id,partner_id,status,source,message,created_at").order("created_at",{ascending:false}).limit(100),
-        supabase.from("bookings").select("id,booking_code,contact_id,tour_id,partner_id,status,payment_status,tour_date,adults,children,pax,gross_revenue_vnd,net_revenue_vnd,booking_mode,custom_tour_name,guide_language,hotel,notes,source,created_at").order("created_at",{ascending:false}).limit(100),
+        supabase.from("bookings").select("id,booking_code,contact_id,tour_id,partner_id,status,payment_status,tour_date,adults,children,pax,gross_revenue_vnd,net_revenue_vnd,booking_mode,custom_tour_name,guide_language,hotel,notes,internal_itinerary_vi,source,created_at").order("created_at",{ascending:false}).limit(100),
         ...dimPromises,
         ...seoPromises
       ]);
@@ -321,7 +322,7 @@ export default function AdminV5() {
         staff_id:staff?.id, tour_date:vals.tour_date||null, adults, children, gross_revenue_vnd:revenue, guide_language:vals.guide_language||null,
         booking_mode:isCustom?"custom":"catalog", custom_tour_name:isCustom?customTourName:null,
         discount_vnd:0, deposit_required_vnd:0, status:"confirmed", payment_status:"unpaid",
-        hotel:vals.hotel||null, notes:vals.notes||null, source:vals.source||"manual", ref_code:partner?.ref_code||null
+        hotel:vals.hotel||null, notes:vals.notes||null, internal_itinerary_vi:String(vals.internal_itinerary_vi||"").trim()||null, source:vals.source||"manual", ref_code:partner?.ref_code||null
       });
       if(error) throw error;
       setModal(null); await loadAll();
@@ -354,6 +355,7 @@ export default function AdminV5() {
         guide_language:vals.guide_language||null,
         hotel:vals.hotel||null,
         notes:vals.notes||null,
+        internal_itinerary_vi:String(vals.internal_itinerary_vi||"").trim()||null,
         payment_status:vals.payment_status,
         status:vals.status
       }).eq("id",booking.id);
@@ -747,8 +749,11 @@ export default function AdminV5() {
 
       {tab==="bookings"&&<>
         <div className="gva-section-head"><div><h2>Bookings</h2><div className="gva-mini">Custom Tour được đặt tên tự do. PAX có thể sửa sau mà không tự đổi Revenue.</div></div><button className="gva-btn" onClick={()=>setModal("booking")}>+ Tạo Booking</button></div>
+        <div className="gva-analytics-note" style={{marginBottom:12}}>
+          🇻🇳 <b>Lịch trình nội bộ:</b> Lưu bằng tiếng Việt trong từng booking. Phần này không được chèn vào tin nhắn xác nhận của khách. Bấm <b>Sửa</b> để bổ sung hoặc điều chỉnh.
+        </div>
         <div className="gva-card"><div className="gva-table-wrap"><table className="gva-table"><thead><tr><th>Code</th><th>Ngày tour</th><th>Khách</th><th>Tour</th><th>Pax</th><th>Revenue</th><th>Payment</th><th>Status</th><th></th></tr></thead><tbody>
-          {bookings.map(b=><tr key={b.id}><td><b>{b.booking_code||"—"}</b></td><td>{b.tour_date||"—"}</td><td>{contactMap[b.contact_id||""]?.full_name||"—"}</td><td>{bookingTourName(b,tourMap)}{(b.booking_mode==="custom"||b.custom_tour_name)&&<div className="gva-mini">Custom Tour</div>}</td><td>{b.pax}</td><td>{money(b.net_revenue_vnd)}</td><td><span className="gva-pill">{b.payment_status}</span></td><td><span className="gva-pill">{b.status}</span></td><td><button type="button" className="gva-btn secondary" style={{padding:"7px 10px"}} onClick={()=>setEditingBooking(b)}>Sửa</button></td></tr>)}
+          {bookings.map(b=><tr key={b.id}><td><b>{b.booking_code||"—"}</b></td><td>{b.tour_date||"—"}</td><td>{contactMap[b.contact_id||""]?.full_name||"—"}</td><td>{bookingTourName(b,tourMap)}{(b.booking_mode==="custom"||b.custom_tour_name)&&<div className="gva-mini">Custom Tour</div>}{b.internal_itinerary_vi?<div className="gva-mini">🇻🇳 Đã có lịch trình tiếng Việt</div>:<div className="gva-mini">⚠ Thiếu lịch trình tiếng Việt</div>}</td><td>{b.pax}</td><td>{money(b.net_revenue_vnd)}</td><td><span className="gva-pill">{b.payment_status}</span></td><td><span className="gva-pill">{b.status}</span></td><td><button type="button" className="gva-btn secondary" style={{padding:"7px 10px"}} onClick={()=>setEditingBooking(b)}>Sửa</button></td></tr>)}
           {!bookings.length&&<tr><td colSpan={9}><div className="gva-empty">Chưa có Booking thật.</div></td></tr>}
         </tbody></table></div></div>
       </>}
@@ -841,6 +846,7 @@ function BookingModal({tours,partners,onClose,onSubmit,saving}:any){
     {GVS_BOOKING_LANGUAGES.filter(([value])=>value).map(([value,label])=><option key={value} value={value}>{label} Guide</option>)}
   </select></F><F label="Nguồn"><select name="source" className="gva-select"><option>whatsapp</option><option>website</option><option>google_maps</option><option>partner_qr</option><option>desk</option><option>direct</option></select></F>
   <F label="Partner"><select name="partner_id" className="gva-select"><option value="">Không có</option>{partners.map((x:any)=><option value={x.id} key={x.id}>{x.name} · {x.ref_code}</option>)}</select></F><F label="Khách sạn"><input name="hotel" className="gva-input" /></F>
+  <F label="🇻🇳 Lịch trình nội bộ tiếng Việt" wide><textarea name="internal_itinerary_vi" className="gva-input" rows={6} placeholder={"08:00 Đón khách tại khách sạn\n09:00 Tham quan...\n12:00 Ăn trưa..."} /></F>
   <F label="Ghi chú" wide><textarea name="notes" className="gva-input" rows={3} /></F>
 </div><div style={{display:"flex",gap:8,justifyContent:"flex-end",marginTop:16}}><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button className="gva-btn" disabled={saving}>{saving?"Đang lưu…":"Lưu Booking"}</button></div></form></div>}
 
@@ -858,6 +864,7 @@ function EditBookingModal({booking,contact,tours,partners,onClose,onSubmit,savin
     <F label="Payment"><select name="payment_status" className="gva-select" defaultValue={booking.payment_status||"unpaid"}><option value="unpaid">unpaid</option><option value="deposit">deposit</option><option value="paid">paid</option><option value="refunded">refunded</option><option value="partial_refund">partial_refund</option></select></F><F label="Status"><select name="status" className="gva-select" defaultValue={booking.status||"confirmed"}><option value="pending">pending</option><option value="confirmed">confirmed</option><option value="completed">completed</option><option value="cancelled">cancelled</option><option value="refunded">refunded</option></select></F>
     <F label="Guide language"><select name="guide_language" className="gva-select" defaultValue={booking.guide_language||""}><option value="">—</option>{GVS_BOOKING_LANGUAGES.filter(([value])=>value).map(([value,label])=><option key={value} value={value}>{label} Guide</option>)}</select></F><F label="Partner"><select name="partner_id" className="gva-select" defaultValue={booking.partner_id||""}><option value="">Không có</option>{partners.map((x:any)=><option value={x.id} key={x.id}>{x.name} · {x.ref_code}</option>)}</select></F>
     <F label="Khách sạn"><input name="hotel" className="gva-input" defaultValue={booking.hotel||""} /></F><F label="Lưu ý Revenue"><div className="gva-analytics-note" style={{margin:0}}>Đổi PAX không tự tính lại doanh thu. Revenue chỉ thay đổi khi anh sửa ô Revenue.</div></F>
+    <F label="🇻🇳 Lịch trình nội bộ tiếng Việt" wide><textarea name="internal_itinerary_vi" className="gva-input" rows={8} defaultValue={booking.internal_itinerary_vi||""} placeholder={"08:00 Đón khách\n09:00 Tham quan..."} /></F>
     <F label="Ghi chú" wide><textarea name="notes" className="gva-input" rows={3} defaultValue={booking.notes||""} /></F>
   </div><div style={{display:"flex",gap:8,justifyContent:"flex-end",marginTop:16}}><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button className="gva-btn" disabled={saving}>{saving?"Đang lưu…":"Lưu thay đổi"}</button></div></form></div>
 }
