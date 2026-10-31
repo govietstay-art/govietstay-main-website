@@ -47,3 +47,13 @@
 .gva-seo-opportunity{margin-bottom:15px;border-left:4px solid #1657a6}
 .gva-seo-opportunity .gva-section-head{margin-bottom:8px}
 @media(max-width:1250px){.gva-seo-grid{grid-template-columns:1fr}}
+.gva-booking-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:12px 0}
+.gva-booking-filters{display:flex;gap:7px;flex-wrap:wrap}
+.gva-booking-filters button{border:1px solid #dce5f0;background:#fff;color:#344763;border-radius:10px;padding:10px 12px;font-size:12px;font-weight:800;cursor:pointer}
+.gva-booking-filters button.active{background:#173f78;border-color:#173f78;color:#fff}
+.gva-booking-filters span{display:inline-block;margin-left:8px;padding:2px 6px;border-radius:7px;background:#e9f0f8;color:#23446d}
+.gva-booking-filters button.active span{background:#ffffff30;color:#fff}
+.gva-booking-search{max-width:300px;min-width:220px}
+.gva-booking-hint{font-size:12px;color:#53657d;margin-bottom:12px}
+.gva-booking-overdue{color:#b45309;font-size:11px;font-weight:800;margin-top:5px}
+@media(max-width:760px){.gva-booking-search{max-width:none;width:100%}.gva-booking-filters{width:100%}.gva-booking-filters button{flex:1 1 auto}}
