@@ -883,6 +883,26 @@ export default function OperationsCenter() {
       <MiniKPI label={isAdmin ? "Custom tours" : "Ready 7 ngày"} value={isAdmin ? customCount : sevenDayBookings.filter((b) => b.status === "ready").length} hint={isAdmin ? "Tour nhập thủ công" : "Sẵn sàng vận hành"} />
     </section>
 
+    <section className="gvo-card">
+      <div className="gvo-card-head"><div><h2>🔔 Booking sắp khởi hành trong 7 ngày</h2><p>Nhắc tự động D-7, D-3, D-1 · 09:00 Việt Nam trên điện thoại và 09:15 email.</p></div><b>{sevenDayBookings.length} booking</b></div>
+      <div className="gvo-stack">
+        {sevenDayBookings
+          .filter((b) => !["completed","closed"].includes(b.status))
+          .sort((a,b) => String(a.tour_date).localeCompare(String(b.tour_date)))
+          .map((b) => <div className="gvo-booking" key={b.id}>
+            <div className="gvo-booking-top">
+              <div><b>{b.tour_date} · {bookingName(b)}</b><div className="gvo-small">{b.booking_code || "—"} · {b.pax ?? b.adults+b.children} khách · {langLabel(b.guide_language)}</div></div>
+              <span className="gvo-pill">{b.internal_itinerary_vi ? "✓ Có lịch Việt" : "⚠ Thiếu lịch trình Việt"}</span>
+            </div>
+            <div style={{ display:"flex", gap:8, flexWrap:"wrap", marginTop:9 }}>
+              <button type="button" className="gvo-cost-btn" onClick={() => { setFocusDate(b.tour_date!); setView("dispatch"); }}>Xem điều phối</button>
+              {isAdmin && <button type="button" className="gvo-cost-btn" onClick={() => openInternalItinerary(b)}>{b.internal_itinerary_vi ? "Sửa lịch trình Việt" : "+ Nhập lịch trình Việt"}</button>}
+            </div>
+          </div>)}
+        {!sevenDayBookings.length && <div className="gvo-empty">Không có booking khởi hành trong 7 ngày tới.</div>}
+      </div>
+    </section>
+
     <nav className="gvo-tabs">
       <button className={view === "calendar" ? "active" : ""} onClick={() => setView("calendar")}>Lịch tháng</button>
       <button className={view === "dispatch" ? "active" : ""} onClick={() => setView("dispatch")}>Điều phối ngày</button>
