@@ -71,6 +71,7 @@ type Booking = {
   custom_tour_name: string | null;
   custom_destination: string | null;
   custom_itinerary: string | null;
+  internal_itinerary_vi: string | null;
   created_at: string;
 };
 type Contact = { id: string; full_name: string | null; whatsapp: string | null; country: string | null; preferred_language: string | null };
@@ -79,7 +80,7 @@ type BookingCost = { id: string; booking_id: string; cost_type: string; descript
 type BookingFinancial = { booking_id: string; amount_received_vnd: number };
 type TransportSupplier = { id: string; name: string; contact_name: string | null; phone: string | null; whatsapp: string | null; service_area: string | null; notes: string | null; active: boolean; payment_terms_days: number };
 type TransportBooking = { id: string; booking_id: string; supplier_id: string; description: string | null; amount_vnd: number; status: string; notes: string | null };
-type Modal = null | "guide" | "availability" | "booking" | "cost" | "quick" | "transport" | "transport_booking";
+type Modal = null | "guide" | "availability" | "booking" | "cost" | "quick" | "transport" | "transport_booking" | "internal_itinerary";
 
 const LANGUAGES = [
   ["en", "🇬🇧 English"],
@@ -258,7 +259,7 @@ export default function OperationsCenter() {
         supabase.from("guides").select("*").order("active", { ascending: false }).order("full_name"),
         supabase.from("guide_availability").select("*").gte("work_date", from).lte("work_date", to).order("work_date"),
         supabase.from("bookings")
-          .select("id,booking_code,contact_id,tour_id,staff_id,tour_date,adults,children,pax,gross_revenue_vnd,net_revenue_vnd,deposit_required_vnd,status,payment_status,pickup_time,start_time,end_time,hotel,hotel_address,room,notes,guide_language,booking_mode,custom_tour_name,custom_destination,custom_itinerary,created_at")
+          .select("id,booking_code,contact_id,tour_id,staff_id,tour_date,adults,children,pax,gross_revenue_vnd,net_revenue_vnd,deposit_required_vnd,status,payment_status,pickup_time,start_time,end_time,hotel,hotel_address,room,notes,guide_language,booking_mode,custom_tour_name,custom_destination,custom_itinerary,internal_itinerary_vi,created_at")
           .gte("tour_date", from).lte("tour_date", to).order("tour_date", { ascending: true }).order("start_time", { ascending: true }),
         supabase.from("contacts").select("id,full_name,whatsapp,country,preferred_language").order("created_at", { ascending: false }).limit(1000),
         supabase.from("booking_guides").select("id,booking_id,guide_id,status,agreed_fee_vnd,notes").limit(2000),
@@ -643,6 +644,7 @@ export default function OperationsCenter() {
         custom_tour_name: mode === "custom" ? String(v.custom_tour_name || "").trim() : null,
         custom_destination: mode === "custom" ? String(v.custom_destination || "").trim() || null : null,
         custom_itinerary: mode === "custom" ? String(v.custom_itinerary || "").trim() || null : null,
+        internal_itinerary_vi: String(v.internal_itinerary_vi || "").trim() || null,
       }).select("id").single();
       if (insertError) throw insertError;
       setFocusDate(v.tour_date || focusDate); setModal(null); setView("dispatch");
@@ -680,6 +682,28 @@ export default function OperationsCenter() {
     const { error: updateError } = await supabase.rpc("ops_update_booking_guide_status", { p_assignment_id: id, p_status: status });
     if (updateError) setError(updateError.message); else await loadAll();
     setSaving(false);
+  }
+
+  function openInternalItinerary(b: Booking) {
+    setSelectedBooking(b.id);
+    setModal("internal_itinerary");
+  }
+
+  async function saveInternalItinerary(e: any) {
+    e.preventDefault();
+    if (!selectedBooking || !isAdmin) return;
+    setSaving(true); setError("");
+    const v = Object.fromEntries(new FormData(e.currentTarget).entries()) as Record<string, string>;
+    try {
+      const { data, error: updateError } = await supabase.from("bookings")
+        .update({ internal_itinerary_vi: String(v.internal_itinerary_vi || "").trim() || null })
+        .eq("id", selectedBooking).select("id").single();
+      if (updateError || !data) throw updateError || new Error("Không thể lưu lịch trình.");
+      setModal(null); setSelectedBooking(null);
+      setMessage("Đã lưu lịch trình tiếng Việt nội bộ, không gửi cho khách.");
+      await loadAll();
+    } catch (err: any) { setError(err.message || "Không lưu được lịch trình."); }
+    finally { setSaving(false); }
   }
 
   function openQuick(b: Booking) {
@@ -943,6 +967,8 @@ export default function OperationsCenter() {
                         {isAdmin ? <><small>Thu {money(revenue)} · Chi {money(cost)} · Lãi {money(revenue - cost)}</small><small>Cọc YC {money(bookingDeposit(b))} · Đã nhận {money(bookingReceived(b))} · Còn {money(bookingBalance(b))}</small></> : <small>Cọc YC {money(bookingDeposit(b))} · Đã nhận {money(bookingReceived(b))} · Còn {money(bookingBalance(b))}</small>}
                       </div>
                     </div>
+                    {b.internal_itinerary_vi && <div className="gvo-itinerary" style={{ whiteSpace: "pre-wrap" }}><b>🇻🇳 Lịch trình nội bộ</b><div>{b.internal_itinerary_vi}</div></div>}
+                    {isAdmin && <button type="button" className="gvo-cost-btn" onClick={() => openInternalItinerary(b)}>✎ {b.internal_itinerary_vi ? "Sửa lịch Việt" : "+ Lịch trình tiếng Việt"}</button>}
                     {renderNextAction(b)}
                     {shareButtons(b)}
                     <div className="gvo-mobile-tour-actions">
@@ -1005,7 +1031,9 @@ export default function OperationsCenter() {
                   <span>🏨 {b.hotel || "—"}</span>
                   {b.hotel_address && <span>📍 {b.hotel_address}</span>}
                 </div>
-                {b.booking_mode === "custom" && b.custom_itinerary && <div className="gvo-itinerary">{b.custom_itinerary}</div>}
+                {b.internal_itinerary_vi && <div className="gvo-itinerary" style={{ whiteSpace: "pre-wrap", border: "1px solid #bfdbfe", background: "#eff6ff" }}><b>🇻🇳 LỊCH TRÌNH NỘI BỘ</b><div>{b.internal_itinerary_vi}</div></div>}
+                {b.booking_mode === "custom" && b.custom_itinerary && <div className="gvo-itinerary"><b>Lịch trình gốc</b><div>{b.custom_itinerary}</div></div>}
+                {isAdmin && <button type="button" className="gvo-cost-btn" onClick={() => openInternalItinerary(b)}>✎ {b.internal_itinerary_vi ? "Sửa lịch Việt" : "+ Lịch trình tiếng Việt"}</button>}
                 <div className="gvo-assignment">
                   {transportBookings.filter((x) => x.booking_id === b.id).map((x) => {
                     const supplier = transportSuppliers.find((s) => s.id === x.supplier_id);
@@ -1106,7 +1134,7 @@ export default function OperationsCenter() {
           return <tr key={b.id}>
             <td>{b.tour_date || "—"}<div className="gvo-small">{timeShort(b.start_time)}</div></td>
             <td><b>{b.booking_code || "—"}</b></td>
-            <td>{bookingName(b)}{b.booking_mode === "custom" && <div className="gvo-small">Custom</div>}</td>
+            <td>{bookingName(b)}{b.booking_mode === "custom" && <div className="gvo-small">Custom</div>}<div><button type="button" className="gvo-cost-btn" onClick={() => openInternalItinerary(b)}>{b.internal_itinerary_vi ? "🇻🇳 Xem / sửa lịch Việt" : "+ Lịch trình tiếng Việt"}</button></div></td>
             <td>{contactMap[b.contact_id || ""]?.full_name || "—"}</td>
             <td>{langLabel(b.guide_language)}</td>
             <td>{activeAssignments(b.id).map((a) => guideMap[a.guide_id]?.full_name).filter(Boolean).join(", ") || "⚠️ Chưa gán"}</td>
@@ -1172,6 +1200,15 @@ export default function OperationsCenter() {
 
     {modal === "booking" && <BookingModal tours={tours} saving={saving} onClose={() => setModal(null)} onSubmit={createBooking} />}
 
+    {modal === "internal_itinerary" && isAdmin && selectedBooking && bookings.find((b) => b.id === selectedBooking) && <ModalFrame title="🇻🇳 Lịch trình nội bộ — Tiếng Việt" onClose={() => { setModal(null); setSelectedBooking(null); }}>
+      <form onSubmit={saveInternalItinerary} className="gvo-form-grid">
+        <div className="gva-analytics-note" style={{ gridColumn: "1/-1" }}>Chỉ dùng nội bộ. Nội dung này không nằm trong xác nhận booking gửi khách và không tự động gửi cho tài xế.</div>
+        <Field label="Lịch trình chi tiết bằng tiếng Việt" wide>
+          <textarea name="internal_itinerary_vi" className="gva-input" rows={12} defaultValue={bookings.find((b) => b.id === selectedBooking)?.internal_itinerary_vi || ""} placeholder={"08:00 Đón khách tại khách sạn\n09:00 Tham quan...\n12:00 Ăn trưa..."} />
+        </Field>
+        <ModalActions saving={saving} onClose={() => { setModal(null); setSelectedBooking(null); }} label="Lưu lịch trình nội bộ" />
+      </form>
+    </ModalFrame>}
     {modal === "quick" && selectedBooking && bookings.find((b) => b.id === selectedBooking) && <QuickBookingModal
       booking={bookings.find((b) => b.id === selectedBooking)!}
       received={bookingReceived(bookings.find((b) => b.id === selectedBooking)!)}
@@ -1358,8 +1395,9 @@ function BookingModal({ tours, saving, onClose, onSubmit }: any) {
     {mode === "catalog" ? <Field label="Tour GoVietStay" wide><select name="tour_id" className="gva-select" required><option value="">Chọn tour</option>{tours.map((t: Tour) => <option key={t.id} value={t.id}>{t.name}{t.destination ? ` · ${t.destination}` : ""}</option>)}</select></Field> : <>
       <Field label="Tên tour thủ công" wide><input name="custom_tour_name" className="gva-input" placeholder="Private Marble Mountains + Linh Ung" required /></Field>
       <Field label="Điểm đến"><input name="custom_destination" className="gva-input" placeholder="Da Nang" /></Field>
-      <Field label="Lịch trình" wide><textarea name="custom_itinerary" className="gva-input" rows={4} placeholder="08:00 đón khách..." /></Field>
+      <Field label="Lịch trình khách / ngôn ngữ gốc" wide><textarea name="custom_itinerary" className="gva-input" rows={4} placeholder="Lịch trình đã xác nhận với khách..." /></Field>
     </>}
+    <Field label="🇻🇳 Lịch trình nội bộ tiếng Việt" wide><textarea name="internal_itinerary_vi" className="gva-input" rows={6} placeholder={"08:00 Đón khách\n09:00 Tham quan\n12:00 Ăn trưa..."} /></Field>
     <Field label="Ngày tour"><input name="tour_date" type="date" className="gva-input" defaultValue={localISO()} required /></Field>
     <Field label="Trạng thái"><select name="status" className="gva-select" defaultValue="pending"><option value="pending">Draft / nháp</option><option value="confirmed">Confirmed</option></select></Field>
     <Field label="Giờ bắt đầu"><input name="start_time" type="time" className="gva-input" /></Field>
