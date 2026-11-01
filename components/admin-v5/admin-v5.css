@@ -57,3 +57,29 @@
 .gva-booking-hint{font-size:12px;color:#53657d;margin-bottom:12px}
 .gva-booking-overdue{color:#b45309;font-size:11px;font-weight:800;margin-top:5px}
 @media(max-width:760px){.gva-booking-search{max-width:none;width:100%}.gva-booking-filters{width:100%}.gva-booking-filters button{flex:1 1 auto}}
+
+/* Operations-first CRM: mobile responsive status and task surfaces */
+.gva-status{display:inline-block;border-radius:8px;font-weight:800;font-size:11px;padding:6px 9px;white-space:nowrap}
+.gva-status-pending{background:#fff1cb;color:#875400}
+.gva-status-confirmed{background:#dbeafe;color:#1d4ed8}
+.gva-status-completed,.gva-status-closed{background:#dcfce7;color:#166534}
+.gva-status-cancelled,.gva-status-refunded{background:#e5e7eb;color:#4b5563}
+.gva-status-other{background:#e6f0fb;color:#34557e}
+.gva-booking-row.pending{box-shadow:inset 3px 0 #e8a600}
+.gva-booking-row.confirmed{box-shadow:inset 3px 0 #2a65c7}
+.gva-booking-row.completed,.gva-booking-row.closed{box-shadow:inset 3px 0 #23965f}
+.gva-booking-row.cancelled,.gva-booking-row.refunded{opacity:.78}
+.gva-operations-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.gva-operation-card{display:flex;flex-direction:column;gap:4px}
+.gva-operation-top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.gva-operation-top b{font-size:15px;line-height:1.45}
+.gva-operation-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:auto;padding-top:12px}
+.gva-operation-actions .gva-btn{padding:8px 10px;font-size:12px}
+.gva-customer-layout{display:grid;grid-template-columns:minmax(220px,310px) 1fr;align-items:start;gap:14px}
+.gva-customer-list{display:flex;flex-direction:column;gap:6px;max-height:65vh;overflow:auto}
+.gva-customer-list button{border:1px solid #e1e7f0;background:#fff;border-radius:10px;text-align:left;padding:10px;cursor:pointer;display:flex;flex-direction:column;gap:4px;color:#263b56}
+.gva-customer-list button.selected{border-color:#1657a6;background:#eef5fe}
+.gva-customer-list button span{font-size:11px;color:#687d98}
+.gva-customer-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:900px){.gva-operations-grid,.gva-customer-layout{grid-template-columns:1fr}.gva-customer-list{max-height:220px}.gva-customer-kpis{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.gva-operation-top{flex-direction:column}.gva-customer-kpis{grid-template-columns:1fr 1fr}.gva-customer-kpis .gva-kpi .value{font-size:18px;overflow-wrap:anywhere}}
