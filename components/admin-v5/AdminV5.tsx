@@ -145,7 +145,8 @@ export default function AdminV5() {
     const visible=new Map<string,Contact>();
     for(const c of contacts){
       const phone=String(c.whatsapp||"").trim();
-      const key=phone?"phone:"+phone:"id:"+c.id;
+      const name=String(c.full_name||"").trim().toLowerCase().replace(/\s+/g," ");
+      const key=phone&&name?"phone:"+phone+"|name:"+name:"id:"+c.id;
       if(!visible.has(key))visible.set(key,c);
     }
     return [...visible.values()].filter(c=>
@@ -154,9 +155,12 @@ export default function AdminV5() {
   const focusedCustomer=selectedContact?contactMap[selectedContact]:null;
   const focusedBookings=useMemo(()=>{
     const phone=String(focusedCustomer?.whatsapp||"").trim();
-    return bookings.filter(b=>b.contact_id===selectedContact||
-      (phone&&String(contactMap[b.contact_id||""]?.whatsapp||"").trim()===phone)
-    ).sort((a,b)=>String(b.tour_date||"").localeCompare(String(a.tour_date||"")));
+    const name=String(focusedCustomer?.full_name||"").trim().toLowerCase().replace(/\s+/g," ");
+    return bookings.filter(b=>{
+      const contact=contactMap[b.contact_id||""];
+      return b.contact_id===selectedContact||
+        (phone&&name&&String(contact?.whatsapp||"").trim()===phone&&String(contact?.full_name||"").trim().toLowerCase().replace(/\s+/g," ")===name);
+    }).sort((a,b)=>String(b.tour_date||"").localeCompare(String(a.tour_date||"")));
   },[bookings,selectedContact,focusedCustomer,contactMap]);
   const bookingGroups=useMemo(()=>{
     const today=new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Ho_Chi_Minh",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date());
@@ -378,9 +382,11 @@ export default function AdminV5() {
     const whatsapp=String(values.whatsapp||"").trim();
     if(whatsapp){
       const {data:existing,error:lookupError}=await supabase.from("contacts")
-        .select("id").eq("whatsapp",whatsapp).order("created_at",{ascending:true}).limit(1);
+        .select("id,full_name").eq("whatsapp",whatsapp).order("created_at",{ascending:true}).limit(100);
       if(lookupError)throw lookupError;
-      if(existing?.length)return existing[0].id as string;
+      const name=String(values.full_name||"").trim().toLowerCase().replace(/\s+/g," ");
+      const match=existing?.find((c:any)=>name&&String(c.full_name||"").trim().toLowerCase().replace(/\s+/g," ")===name);
+      if(match)return match.id as string;
     }
     const {data,error}=await supabase.from("contacts").insert({
       full_name:values.full_name.trim(), whatsapp:whatsapp||null, country:values.country.trim()||null,
@@ -906,7 +912,7 @@ export default function AdminV5() {
         </div>
       </>}
       {tab==="customers"&&<>
-        <div className="gva-section-head"><div><h2>Hồ sơ khách hàng</h2><div className="gva-mini">Xem chung lịch sử booking theo số WhatsApp trùng khớp. Hồ sơ nguồn không bị xóa hoặc gộp tự động.</div></div><input className="gva-input gva-booking-search" placeholder="Tìm khách hoặc WhatsApp..." value={customerSearch} onChange={e=>setCustomerSearch(e.target.value)}/></div>
+        <div className="gva-section-head"><div><h2>Hồ sơ khách hàng</h2><div className="gva-mini">Xem chung lịch sử khi cả tên và WhatsApp khớp nhau. Cùng số liên hệ nhưng khác tên vẫn tách riêng; hồ sơ gốc không bị gộp hoặc xóa.</div></div><input className="gva-input gva-booking-search" placeholder="Tìm khách hoặc WhatsApp..." value={customerSearch} onChange={e=>setCustomerSearch(e.target.value)}/></div>
         <div className="gva-customer-layout">
           <div className="gva-card"><h3>Danh sách khách ({customerRows.length})</h3><div className="gva-customer-list">{customerRows.map(c=><button type="button" className={selectedContact===c.id?"selected":""} key={c.id} onClick={()=>setSelectedContact(c.id)}><b>{c.full_name||"Khách chưa đặt tên"}</b><span>{c.whatsapp||"Chưa có WhatsApp"} · {c.country||"—"}</span></button>)}</div></div>
           <div className="gva-card">{focusedCustomer?<><h3>{focusedCustomer.full_name||"Hồ sơ khách"}</h3><div className="gva-mini">WhatsApp: {focusedCustomer.whatsapp||"Chưa có"} · Quốc gia: {focusedCustomer.country||"—"} · Ngôn ngữ: {focusedCustomer.preferred_language||"—"}</div>
