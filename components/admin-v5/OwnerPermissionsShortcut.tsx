@@ -65,9 +65,8 @@ export default function OwnerPermissionsShortcut(){
     <style>{`
       /* One SEO entry in the original Admin menu: Google + Bing + Yandex. */
       .gva-layout > .gva-side .gva-nav {display:flex;flex-direction:column}
-      .gva-layout > .gva-side .gva-nav > button:nth-child(7),
-      .gva-layout > .gva-side .gva-nav > button:nth-child(8){display:none!important}
-      .gva-layout > .gva-side .gva-nav > button:nth-child(n+9){order:2}
+      .gva-layout > .gva-side .gva-nav > button[data-section="legacy-seo"]{display:none!important}
+      .gva-layout > .gva-side .gva-nav > button:not([data-section="legacy-seo"]):not(.gva-unified-seo-button){order:0}
       .gva-nav > .gva-unified-seo-button{order:1;width:100%;text-align:left;margin:5px 0;background:transparent;border:0;color:#dbe5f5;padding:11px 12px;border-radius:9px;font-weight:700;cursor:pointer}
       .gva-nav > .gva-unified-seo-button:hover,.gva-nav > .gva-unified-seo-button.active{background:#1d3f70;color:#fff}
       .gva-layout > .gva-main:has(> .gva-seo-embedded-root) > :not(.gva-seo-embedded-root){display:none!important}
