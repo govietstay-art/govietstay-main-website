@@ -17,7 +17,7 @@ type BackgroundPreset = {
 };
 
 const BACKGROUND_PRESETS:BackgroundPreset[] = [
-  {key:"danang-dragon",label:"Đà Nẵng / Dragon Bridge",short:"Dragon",src:"/partner-assets/hero-danang-pavel-standard.jpg",focus:"center",fit:"cover",overlay:"medium"},
+  {key:"danang-dragon",label:"Đà Nẵng / Dragon Bridge",short:"Dragon",src:"/brand/editorial-danang-dragon-bridge-v2.webp",focus:"center",fit:"cover",overlay:"medium"},
   {key:"danang-beach",label:"Đà Nẵng / Beach",short:"Beach",src:"https://images.unsplash.com/photo-1530789253388-582c481c54b0?auto=format&fit=crop&w=2400&q=88",focus:"center",fit:"cover",overlay:"medium"},
   {key:"hoian-lantern",label:"Hội An / Lantern Town",short:"Hội An",src:"/hero-hoian-new.png",focus:"center",fit:"cover",overlay:"medium"},
   {key:"hue-heritage",label:"Huế / Heritage",short:"Huế",src:"https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=2400&q=88",focus:"center",fit:"cover",overlay:"medium"},
@@ -422,7 +422,7 @@ function buildSvg(r:PartnerRow,qr:string,lang:PosterLang,format:FormatKey,hero:s
 }
 async function buildArtwork(r:PartnerRow,qr:string,lang:PosterLang,format:FormatKey,partnerLogo:string|null,heroOverride:string|null,full=false,bgFit:BackgroundFit="cover",bgFocus:BackgroundFocus="center",overlay:OverlayLevel="medium"){
   const [defaultHero,gvsLogo]=await Promise.all([
-    heroOverride?Promise.resolve(heroOverride):fetchAsDataUrl("/partner-assets/hero-danang-pavel-standard.jpg"),
+    heroOverride?Promise.resolve(heroOverride):fetchAsDataUrl("/brand/editorial-danang-dragon-bridge-v2.webp"),
     fetchAsDataUrl("/govietstay-logo.jpg")
   ]);
   const hero=heroOverride||defaultHero;

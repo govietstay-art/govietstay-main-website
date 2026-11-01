@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const WA_NUMBER = "84937762607";
 const destinations = [
-  { name: "Da Nang", caption: "Coastal stays & easy airport access", image: "/tour/hoian.jpg" },
+  { name: "Da Nang", caption: "Coastal stays & easy airport access", image: "/brand/editorial-danang-dragon-bridge-v2.webp" },
   { name: "Hoi An", caption: "Lantern-lit streets & charming retreats", image: "/hero-hoian-new.png" },
   { name: "Phu Quoc", caption: "Island resorts & beach escapes", image: "/tour/phuquoc/tour-01-1.jpg" },
   { name: "Hue", caption: "Heritage, gardens & quiet stays", image: "/tour/hue.jpg" },
