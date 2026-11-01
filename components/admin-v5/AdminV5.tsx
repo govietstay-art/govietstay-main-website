@@ -886,12 +886,14 @@ export default function AdminV5() {
             const supplier= b.operator_supplier_id?supplierMap[b.operator_supplier_id]:null;
             const finance=financeMap[b.id];
             const balance=Math.max(0,Number(b.net_revenue_vnd||0)-Number(finance?.amount_received_vnd||0));
+            const daysToTour=b.tour_date?Math.round((Date.parse(b.tour_date+"T00:00:00+07:00")-Date.parse(bookingGroups.today+"T00:00:00+07:00"))/86400000):null;
             return <div className="gva-card gva-operation-card" key={b.id}>
               <div className="gva-operation-top"><div><div className="gva-mini">{b.tour_date||"Chưa có ngày"} · {b.pickup_time||b.start_time||"Chưa có giờ đón"}</div><b>{bookingTourName(b,tourMap)}</b></div><span className={bookingStatusClass(b.status)}>{bookingStatusLabel(b.status)}</span></div>
               <div className="gva-mini" style={{marginTop:8}}>{contactMap[b.contact_id||""]?.full_name||"Khách chưa ghi tên"} · {b.pax} khách · {b.hotel||"Chưa ghi khách sạn"}</div>
               <div className="gva-mini" style={{marginTop:8}}>Hướng dẫn viên: {guideAssignments.length?guideAssignments.map(x=>guideMap[x.guide_id]?.full_name||"Đã phân công").join(", "):"Chưa ghi nhận phân công"}</div>
               <div className="gva-mini">Đơn vị tổ chức: {supplier?.name||"Chưa ghi nhận trong booking"}</div>
               <div className="gva-mini">Lịch trình nội bộ: {b.internal_itinerary_vi?.trim()?"Đã có":"Chưa có"}</div>
+              {[1,3,7].includes(Number(daysToTour))&&<div className="gva-booking-overdue">Đến mốc kiểm tra nhắc tour trước {daysToTour} ngày (chưa xác nhận đã gửi)</div>
               <div className="gva-mini">Số dư cần đối chiếu: <b>{money(balance)}</b></div>
               <div className="gva-operation-actions">
                 <button className="gva-btn secondary" onClick={()=>setEditingBooking(b)}>Mở booking</button>
