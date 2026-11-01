@@ -58,12 +58,12 @@ export const metadata: Metadata = {
       "GoVietStay provides private tours, airport transfers, attraction tickets and trusted local travel support in Da Nang, Hoi An, Hue & Phu Quoc. WhatsApp 24/7.",
     siteName: "GoVietStay",
     type: "website",
-    images:[{url:"/tour/hoian.jpg",alt:"GoVietStay Vietnam travel"}],
+    images:[{url:"/brand/editorial-vietnam-v2-social.jpg",width:1200,height:630,type:"image/jpeg",alt:"GoVietStay illustrated Vietnam travel inspiration"}],
   },
 
   twitter: {
     card: "summary_large_image",
-    images:["/tour/hoian.jpg"],
+    images:["/brand/editorial-vietnam-v2-social.jpg"],
     title: "Private Tours in Da Nang, Hoi An, Hue & Phu Quoc | GoVietStay",
     description:
       "GoVietStay provides private tours, airport transfers, attraction tickets and trusted local travel support in Da Nang, Hoi An, Hue & Phu Quoc. WhatsApp 24/7.",

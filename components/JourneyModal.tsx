@@ -83,7 +83,7 @@ const GVSLogo = ({ className = "" }: { className?: string }) => (
     className={className}
     onError={(event) => {
       const image = event.currentTarget;
-      if (!image.src.endsWith("/logo.jpg")) image.src = "/logo.jpg";
+      if (!image.src.endsWith("/govietstay-logo.jpg")) image.src = "/govietstay-logo.jpg";
     }}
   />
 );

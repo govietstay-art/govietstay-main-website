@@ -16,9 +16,9 @@ export const metadata: Metadata = {
     description:
       "Local dishes, restaurant suggestions and map directions from the GoVietStay team.",
     url: "https://www.govietstay.com/local-food",
-    images:[{url:"/local-food/mi-quang.jpg",alt:"Local food in Da Nang and Hoi An"}],
+    images:[{url:"/local-food/my-quang.jpg",alt:"Local food in Da Nang and Hoi An"}],
   },
-  twitter:{card:"summary_large_image",images:["/local-food/mi-quang.jpg"]},
+  twitter:{card:"summary_large_image",images:["/local-food/my-quang.jpg"]},
 };
 
 export default function LocalFoodLayout({

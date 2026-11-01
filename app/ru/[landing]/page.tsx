@@ -25,7 +25,7 @@ export async function generateMetadata({
   if (!landing) return {};
 
   const canonical = `${BASE_URL}/ru/${landing.slug}`;
-  const image = `${BASE_URL}${landing.image}`;
+  const image = `${BASE_URL}${landing.socialImage ?? landing.image}`;
 
   return {
     title: landing.metaTitle,
@@ -43,7 +43,9 @@ export async function generateMetadata({
       siteName: "GoVietStay",
       title: `${landing.metaTitle} | GoVietStay`,
       description: landing.description,
-      images: [{ url: image, alt: landing.imageAlt }],
+      images: landing.socialImage
+        ? [{ url: image, width: 1200, height: 630, type: "image/jpeg", alt: landing.imageAlt }]
+        : [{ url: image, alt: landing.imageAlt }],
     },
     twitter: {
       card: "summary_large_image",

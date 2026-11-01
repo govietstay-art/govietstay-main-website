@@ -14,6 +14,7 @@ export type RussianSeoLanding = {
   description: string;
   keywords: string[];
   image: string;
+  socialImage?: string;
   imageAlt: string;
   lead: string;
   quickAnswer: string;
@@ -58,8 +59,9 @@ export const russianSeoLandings: RussianSeoLanding[] = [
       "куда сходить в дананге в дождь",
       "стоит ли ехать на бана хиллс в дождь",
     ],
-    image: "/partner-assets/hero-danang-pavel-standard.jpg",
-    imageAlt: "Дананг, Центральный Вьетнам: отправная точка экскурсий",
+    image: "/brand/editorial-danang-dragon-bridge-v2.webp",
+    socialImage: "/brand/editorial-danang-dragon-bridge-v2-social.jpg",
+    imageAlt: "Иллюстрация: мост Дракона и вечерний Дананг — отправная точка экскурсий",
     lead:
       "Дананг удобно использовать как базу для путешествий по Центральному Вьетнаму. За один день можно увидеть горы Ba Na Hills, старый Хойан, императорский Хюэ или отправиться к морю на остров Чам.",
     quickAnswer:
@@ -578,8 +580,9 @@ export const russianSeoLandings: RussianSeoLanding[] = [
       "трансфер Дананг Хюэ",
       "трансфер во Вьетнаме на русском",
     ],
-    image: "/updates/car-price.jpg",
-    imageAlt: "Частный автомобиль для трансфера из аэропорта Дананга",
+    image: "/brand/editorial-airport-transfer-v2.webp",
+    socialImage: "/brand/editorial-airport-transfer-v2-social.jpg",
+    imageAlt: "Иллюстрация: водитель встречает путешественников у аэропорта Дананга для частного трансфера",
     lead:
       "Частный трансфер подходит для прилёта, переезда между отелями и самостоятельных маршрутов. Водитель получает данные рейса и адрес, а стоимость, класс автомобиля и возможные доплаты подтверждаются до поездки.",
     quickAnswer:
