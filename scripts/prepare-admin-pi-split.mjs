@@ -5,6 +5,8 @@ const file = path.join(process.cwd(), "components", "admin-v5", "AdminV5.tsx");
 let source = fs.readFileSync(file, "utf8");
 
 function replaceOnce(find, replacement, label) {
+  // The dashboard can add more tabs after Pi/Merchant. Accept an extended union.
+  if (label === "tab union" && source.includes('"pi_partners"|"merchant_network"')) return;
   if (source.includes(replacement)) return;
   const first = source.indexOf(find);
   if (first < 0) throw new Error(`Admin partner platform anchor not found: ${label}`);

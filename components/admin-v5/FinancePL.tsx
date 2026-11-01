@@ -212,6 +212,10 @@ export default function FinancePL({supabase}:Props){
   }
 
   async function finalizeBookingOneClick(row:BookingRow){
+    if(Number(row.balance_vnd||0)>0){
+      setError("Booking còn số dư chưa ghi nhận thanh toán. Hãy đối chiếu và cập nhật số tiền đã thu trong P&L trước khi dùng Hoàn tất & chốt. Nếu tour đã kết thúc nhưng khách chưa trả đủ, hãy chuyển trạng thái Completed tại Bookings, không tự xác nhận Paid.");
+      return;
+    }
     if(!window.confirm(`Hoàn tất & chốt ${row.booking_code||"booking"}?\n\nTự động:\n• Completed\n• Paid\n• Amount Received = ${money(row.revenue_vnd)}\n• Finance Finalized\n• Payroll recalculated\n\nChi phí hiện tại được giữ nguyên.`))return;
     setSaving(true);setError("");setMessage("");
     try{
@@ -346,7 +350,7 @@ export default function FinancePL({supabase}:Props){
               <button className="gva-btn secondary" disabled={saving||row.recognized} onClick={()=>setCancelBooking(row)}>Hủy booking</button>
               {row.status==="completed"&&row.finance_finalized&&row.balance_vnd<=0
                 ? <button className="gva-btn secondary" disabled>✓ Đã chốt</button>
-                : <button className="gva-btn" disabled={saving||String(row.status||"").toLowerCase()==="cancelled"} onClick={()=>finalizeBookingOneClick(row)}>✓ Hoàn tất & chốt</button>}
+                : <button className="gva-btn" disabled={saving||Number(row.balance_vnd||0)>0||String(row.status||"").toLowerCase()==="cancelled"} title={Number(row.balance_vnd||0)>0?"Cần đối chiếu tiền đã thu trước khi chốt":undefined} onClick={()=>finalizeBookingOneClick(row)}>✓ Hoàn tất & chốt</button>}
             </div>
           </div>
           <div className="gvs-booking-numbers">
@@ -450,7 +454,7 @@ function FinanceModal({row,saving,onClose,onSubmit,onFinalize}:any){
       <Field label="Finance notes" wide><textarea className="gva-input" name="notes" rows={3} defaultValue={row.finance_notes||""}/></Field>
     </div>
     <div className="gvs-modal-summary"><span>Current revenue <b>{money(row.revenue_vnd)}</b></span><span>Direct cost <b>{money(row.total_direct_cost_vnd)}</b></span><span>Profit <b>{money(row.gross_profit_vnd)}</b></span></div>
-    <div className="gvs-modal-actions"><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button type="button" className="gva-btn" disabled={saving||String(row.status||"").toLowerCase()==="cancelled"} onClick={onFinalize}>✓ Hoàn tất & chốt</button><button className="gva-btn secondary" disabled={saving}>{saving?"Đang lưu…":"Lưu P&L"}</button></div>
+    <div className="gvs-modal-actions"><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button type="button" className="gva-btn" disabled={saving||Number(row.balance_vnd||0)>0||String(row.status||"").toLowerCase()==="cancelled"} title={Number(row.balance_vnd||0)>0?"Cần đối chiếu thanh toán":undefined} onClick={onFinalize}>✓ Hoàn tất & chốt</button><button className="gva-btn secondary" disabled={saving}>{saving?"Đang lưu…":"Lưu P&L"}</button></div>
   </form></div>;
 }
 
