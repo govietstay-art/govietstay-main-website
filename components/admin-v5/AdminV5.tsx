@@ -141,11 +141,23 @@ export default function AdminV5() {
     for(const a of assignedGuides){(result[a.booking_id] ||= []).push(a);}
     return result;
   },[assignedGuides]);
-  const customerRows=useMemo(()=>contacts.filter(c=>
-    !customerSearch.trim()||[c.full_name,c.whatsapp,c.country].some(x=>String(x||"").toLowerCase().includes(customerSearch.trim().toLowerCase()))
-  ),[contacts,customerSearch]);
+  const customerRows=useMemo(()=>{
+    const visible=new Map<string,Contact>();
+    for(const c of contacts){
+      const phone=String(c.whatsapp||"").trim();
+      const key=phone?"phone:"+phone:"id:"+c.id;
+      if(!visible.has(key))visible.set(key,c);
+    }
+    return [...visible.values()].filter(c=>
+      !customerSearch.trim()||[c.full_name,c.whatsapp,c.country].some(x=>String(x||"").toLowerCase().includes(customerSearch.trim().toLowerCase())));
+  },[contacts,customerSearch]);
   const focusedCustomer=selectedContact?contactMap[selectedContact]:null;
-  const focusedBookings=useMemo(()=>bookings.filter(b=>b.contact_id===selectedContact).sort((a,b)=>String(b.tour_date||"").localeCompare(String(a.tour_date||""))),[bookings,selectedContact]);
+  const focusedBookings=useMemo(()=>{
+    const phone=String(focusedCustomer?.whatsapp||"").trim();
+    return bookings.filter(b=>b.contact_id===selectedContact||
+      (phone&&String(contactMap[b.contact_id||""]?.whatsapp||"").trim()===phone)
+    ).sort((a,b)=>String(b.tour_date||"").localeCompare(String(a.tour_date||"")));
+  },[bookings,selectedContact,focusedCustomer,contactMap]);
   const bookingGroups=useMemo(()=>{
     const today=new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Ho_Chi_Minh",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date());
     const finished=(b:Booking)=>["completed","closed"].includes(b.status);
@@ -892,7 +904,7 @@ export default function AdminV5() {
         </div>
       </>}
       {tab==="customers"&&<>
-        <div className="gva-section-head"><div><h2>Hồ sơ khách hàng</h2><div className="gva-mini">Một hồ sơ liên kết các booking và lịch sử giao dịch.</div></div><input className="gva-input gva-booking-search" placeholder="Tìm khách hoặc WhatsApp..." value={customerSearch} onChange={e=>setCustomerSearch(e.target.value)}/></div>
+        <div className="gva-section-head"><div><h2>Hồ sơ khách hàng</h2><div className="gva-mini">Xem chung lịch sử booking theo số WhatsApp trùng khớp. Hồ sơ nguồn không bị xóa hoặc gộp tự động.</div></div><input className="gva-input gva-booking-search" placeholder="Tìm khách hoặc WhatsApp..." value={customerSearch} onChange={e=>setCustomerSearch(e.target.value)}/></div>
         <div className="gva-customer-layout">
           <div className="gva-card"><h3>Danh sách khách ({customerRows.length})</h3><div className="gva-customer-list">{customerRows.map(c=><button type="button" className={selectedContact===c.id?"selected":""} key={c.id} onClick={()=>setSelectedContact(c.id)}><b>{c.full_name||"Khách chưa đặt tên"}</b><span>{c.whatsapp||"Chưa có WhatsApp"} · {c.country||"—"}</span></button>)}</div></div>
           <div className="gva-card">{focusedCustomer?<><h3>{focusedCustomer.full_name||"Hồ sơ khách"}</h3><div className="gva-mini">WhatsApp: {focusedCustomer.whatsapp||"Chưa có"} · Quốc gia: {focusedCustomer.country||"—"} · Ngôn ngữ: {focusedCustomer.preferred_language||"—"}</div>
