@@ -83,3 +83,123 @@
 .gva-customer-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media(max-width:900px){.gva-operations-grid,.gva-customer-layout{grid-template-columns:1fr}.gva-customer-list{max-height:220px}.gva-customer-kpis{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.gva-operation-top{flex-direction:column}.gva-customer-kpis{grid-template-columns:1fr 1fr}.gva-customer-kpis .gva-kpi .value{font-size:18px;overflow-wrap:anywhere}}
+
+/* Status-first visual system: tour lifecycle is separate from collection status. */
+.gva-shell {
+  --gva-navy:#142a48;
+  --gva-ink:#172942;
+  --gva-border:#e4ebf4;
+  --gva-pending:#d89416;
+  --gva-confirmed:#2768ca;
+  --gva-completed:#16906b;
+  --gva-cancelled:#778396;
+  --gva-overdue:#cf4e52;
+  background:#f4f7fc;
+  color:var(--gva-ink);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif
+}
+.gva-main{max-width:1650px;margin:0 auto}
+.gva-top{background:#fff;border:1px solid #e5ebf3;border-radius:17px;padding:15px 18px;box-shadow:0 7px 25px rgba(30,53,93,.035)}
+.gva-title h1{color:#152c4b;letter-spacing:-.025em}
+.gva-card{border-radius:16px;border:1px solid var(--gva-border);box-shadow:0 5px 20px rgba(33,59,101,.045)}
+.gva-section-head h2{color:#182e4d;letter-spacing:-.015em}
+.gva-btn{transition:background .18s ease,transform .18s ease,box-shadow .18s ease}
+.gva-btn:not(:disabled):hover{filter:brightness(.96);box-shadow:0 4px 12px rgba(26,64,107,.11)}
+.gva-nav button.active{background:#214f7d;box-shadow:inset 3px 0 #5dc6c4}
+.gva-kpi{position:relative;overflow:hidden;min-height:111px}
+.gva-kpi:before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:#b6c7dc}
+.gva-kpi .value{font-variant-numeric:tabular-nums;font-size:29px;letter-spacing:-.03em}
+.gva-kpi .label{color:#61718a}
+.gva-kpi-today{background:#f4f9ff;border-color:#dce8fb}
+.gva-kpi-today:before{background:#5489cb}
+.gva-kpi-upcoming{background:#f0f7ff;border-color:#d3e5fc}
+.gva-kpi-upcoming:before{background:var(--gva-confirmed)}
+.gva-kpi-pending{background:#fff9eb;border-color:#f4e1ae}
+.gva-kpi-pending:before{background:var(--gva-pending)}
+.gva-kpi-pending .value{color:#986107}
+.gva-kpi-overdue{background:#fff3f3;border-color:#f4d9db}
+.gva-kpi-overdue:before{background:var(--gva-overdue)}
+.gva-kpi-overdue .value{color:#bb363f}
+.gva-kpi-missing{background:#fff7ed;border-color:#f8e2c9}
+.gva-kpi-missing:before{background:#c57d3e}
+.gva-status-board{margin:0 0 18px;border:1px solid #e1e9f2;background:#fff;border-radius:17px;padding:17px;box-shadow:0 5px 22px rgba(31,54,89,.04)}
+.gva-status-board-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:14px}
+.gva-status-board-head>div{display:flex;flex-direction:column;gap:3px}
+.gva-status-board-head b{font-size:15px;color:#183250}
+.gva-status-board-head span{font-size:12px;color:#708099}
+.gva-status-overview{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+.gva-status-tile{--tile:#8090a6;--tile-ink:#47556b;--tile-bg:#f3f5f8;appearance:none;border:1px solid color-mix(in srgb,var(--tile) 28%,white);background:var(--tile-bg);border-radius:14px;padding:14px 14px 13px;min-width:0;cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:7px;position:relative;transition:transform .15s ease,box-shadow .15s ease}
+.gva-status-tile:before{content:"";position:absolute;left:0;top:15px;bottom:15px;width:4px;background:var(--tile);border-radius:0 6px 6px 0}
+.gva-status-tile:hover{transform:translateY(-2px);box-shadow:0 7px 18px rgba(36,68,100,.1)}
+.gva-status-tile:focus-visible,.gva-booking-filters button:focus-visible{outline:3px solid #5fb3d1;outline-offset:2px}
+.gva-status-tile-label{display:flex;gap:7px;align-items:center;font-size:12px;font-weight:800;color:var(--tile-ink)}
+.gva-status-dot{display:inline-block;flex:0 0 9px;width:9px;height:9px;border-radius:50%;background:var(--tile)}
+.gva-status-tile strong{font-size:33px;line-height:1.05;color:var(--tile-ink);letter-spacing:-.045em;font-variant-numeric:tabular-nums}
+.gva-status-tile small{font-size:10px;color:#697890}
+.gva-status-tile-pending{--tile:#ce8c12;--tile-ink:#855809;--tile-bg:#fff8e8}
+.gva-status-tile-confirmed{--tile:#306fce;--tile-ink:#2155a2;--tile-bg:#edf5ff}
+.gva-status-tile-completed{--tile:#19936a;--tile-ink:#126d50;--tile-bg:#edfbf4}
+.gva-status-tile-cancelled{--tile:#7b8899;--tile-ink:#566173;--tile-bg:#f3f5f8}
+.gva-status-legend{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:9px 0 16px}
+.gva-status-legend small{color:#718097;font-size:11px}
+.gva-status{display:inline-flex;align-items:center;gap:7px;border:1px solid transparent;border-radius:999px;font-size:11px;font-weight:800;line-height:1.3;padding:6px 10px}
+.gva-status:before{content:"";display:inline-block;width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:currentColor}
+.gva-status-pending{background:#fff5da;color:#8c5b00;border-color:#f4dfac}
+.gva-status-confirmed{background:#e9f2ff;color:#225cba;border-color:#d0e1fb}
+.gva-status-completed,.gva-status-closed{background:#e5f8ee;color:#13734f;border-color:#c9ebd8}
+.gva-status-cancelled,.gva-status-refunded{background:#eff1f4;color:#5d6877;border-color:#e0e4ea}
+.gva-status-other{background:#edf2fa;color:#3b577e;border-color:#dce4f1}
+.gva-operation-card{border-left:5px solid #a9b9cc;position:relative;overflow:hidden;min-height:215px;transition:box-shadow .16s ease,transform .16s ease}
+.gva-operation-card:hover{transform:translateY(-1px);box-shadow:0 8px 23px rgba(29,55,88,.075)}
+.gva-operation-pending{border-left-color:var(--gva-pending);background:linear-gradient(115deg,#fffaf0 0%,#fff 43%)}
+.gva-operation-confirmed{border-left-color:var(--gva-confirmed);background:linear-gradient(115deg,#f0f6ff 0%,#fff 43%)}
+.gva-operation-overdue{border-left-color:var(--gva-overdue);background:linear-gradient(115deg,#fff4f5 0%,#fff 45%)}
+.gva-operation-alert{background:#fff1f2;border:1px solid #f9d5d8;color:#b12d3c;padding:8px 10px;border-radius:9px;font-weight:700;font-size:12px;margin-top:6px}
+.gva-operation-top .gva-mini{margin-bottom:5px;color:#64748b}
+.gva-operation-top b{font-size:16px;color:#1e3552}
+.gva-operation-card>.gva-mini{line-height:1.45}
+.gva-booking-filters button{display:inline-flex;align-items:center;gap:2px;transition:background .16s ease,border-color .16s ease,box-shadow .16s ease}
+.gva-booking-filters button.gva-filter-pending{border-color:#f1dfb7;color:#90600c;background:#fffaf0}
+.gva-booking-filters button.gva-filter-confirmed{border-color:#d9e6f9;color:#205fb5;background:#f1f7ff}
+.gva-booking-filters button.gva-filter-completed{border-color:#d1e9da;color:#16724f;background:#f0fbf5}
+.gva-booking-filters button.gva-filter-cancelled{border-color:#e4e8ee;color:#596777;background:#f5f7fa}
+.gva-booking-filters button.active{box-shadow:0 2px 9px rgba(27,65,102,.12)}
+.gva-booking-filters button.gva-filter-pending.active{border-color:#b8801b;background:#a46d0e;color:white}
+.gva-booking-filters button.gva-filter-confirmed.active{border-color:#225caf;background:#225caf;color:white}
+.gva-booking-filters button.gva-filter-completed.active{border-color:#16835d;background:#16835d;color:white}
+.gva-booking-filters button.gva-filter-cancelled.active{border-color:#6b788a;background:#6b788a;color:white}
+.gva-booking-filters button.active span{background:rgba(255,255,255,.2);color:white}
+.gva-booking-row td:first-child{border-left:4px solid transparent;padding-left:12px}
+.gva-booking-row.pending td:first-child{border-left-color:var(--gva-pending)}
+.gva-booking-row.confirmed td:first-child{border-left-color:var(--gva-confirmed)}
+.gva-booking-row.completed td:first-child,.gva-booking-row.closed td:first-child{border-left-color:var(--gva-completed)}
+.gva-booking-row.cancelled td:first-child,.gva-booking-row.refunded td:first-child{border-left-color:var(--gva-cancelled)}
+.gva-table tbody tr.gva-booking-row.pending{background:#fffdf8}
+.gva-table tbody tr.gva-booking-row.confirmed{background:#f7faff}
+.gva-table tbody tr.gva-booking-row.completed,.gva-table tbody tr.gva-booking-row.closed{background:#f8fdf9}
+.gva-table tbody tr.gva-booking-row.cancelled,.gva-table tbody tr.gva-booking-row.refunded{background:#f7f8fa}
+.gva-table tbody tr.gva-booking-row:hover{filter:brightness(.975)}
+.gva-payment{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:800;padding:5px 9px;border-radius:7px;white-space:nowrap;border:1px solid transparent}
+.gva-payment-paid{background:#e4f7ef;color:#14744f;border-color:#c4e6d6}
+.gva-payment-unpaid{background:#fff1e7;color:#ad5b13;border-color:#f7d9c3}
+.gva-payment-partial{background:#ebf3ff;color:#265da7;border-color:#d6e4fa}
+.gva-payment-neutral{background:#eef2f7;color:#5c6f86}
+@media(max-width:1100px){.gva-status-overview{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){
+ .gva-top{padding:13px}
+ .gva-title h1{font-size:22px}
+ .gva-status-board{padding:13px;margin-bottom:14px}
+ .gva-status-board-head{align-items:flex-start;flex-direction:column}
+ .gva-status-board-head .gva-btn{padding:8px 12px}
+ .gva-status-overview{gap:8px}
+ .gva-status-tile{padding:13px 11px 12px;min-height:112px}
+ .gva-status-tile strong{font-size:28px}
+ .gva-status-tile-label{font-size:11px}
+ .gva-status-legend{gap:6px}
+ .gva-booking-filters button{flex:1 0 auto;justify-content:center;padding:10px}
+ .gva-operation-card{min-height:0}
+ .gva-kpi{min-height:97px}
+ .gva-kpi .value{font-size:24px}
+ .gva-booking-row .gva-status{white-space:nowrap}
+}
+@media(prefers-reduced-motion:reduce){.gva-status-tile,.gva-operation-card,.gva-btn{transition:none}}
