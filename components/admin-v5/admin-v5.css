@@ -203,3 +203,60 @@
  .gva-booking-row .gva-status{white-space:nowrap}
 }
 @media(prefers-reduced-motion:reduce){.gva-status-tile,.gva-operation-card,.gva-btn{transition:none}}
+
+/* Operations V2 – compact, status-aware control centre */
+.gva-ops-heading{margin-bottom:12px}
+.gva-ops-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin:12px 0 18px}
+.gva-ops-summary-item{--ops:#2868bd;--ops-tint:#f0f7ff;--ops-stroke:#d9e8fb;appearance:none;cursor:pointer;position:relative;display:flex;align-items:flex-start;flex-direction:column;min-width:0;padding:14px 15px;gap:4px;background:var(--ops-tint);border:1px solid var(--ops-stroke);border-radius:14px;text-align:left;color:#304963}
+.gva-ops-summary-item:before{content:"";position:absolute;top:12px;bottom:12px;left:0;width:4px;border-radius:0 4px 4px 0;background:var(--ops)}
+.gva-ops-summary-item span{font-size:12px;font-weight:800}
+.gva-ops-summary-item strong{font-size:30px;line-height:1.2;color:var(--ops);font-weight:900;font-variant-numeric:tabular-nums}
+.gva-ops-summary-item small{font-size:11px;color:#65768e}
+.gva-ops-summary-item.selected{outline:2px solid var(--ops);outline-offset:1px;box-shadow:0 5px 16px rgba(42,75,107,.08)}
+.gva-ops-summary-today{--ops:#296ac2;--ops-tint:#eff6ff;--ops-stroke:#d7e6fb}
+.gva-ops-summary-week{--ops:#158b72;--ops-tint:#eafaf3;--ops-stroke:#d1eee0}
+.gva-ops-summary-pending{--ops:#a97311;--ops-tint:#fff7e5;--ops-stroke:#f1e0b6}
+.gva-ops-summary-attention{--ops:#bd5453;--ops-tint:#fff2f2;--ops-stroke:#f1d7da}
+.gva-ops-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:0 0 12px}
+.gva-ops-tabs{display:flex;align-items:center;gap:6px;flex-wrap:wrap;min-width:0}
+.gva-ops-tabs button{appearance:none;cursor:pointer;white-space:nowrap;border-radius:9px;padding:9px 10px;border:1px solid #dce5f0;background:#fff;color:#455d79;font-size:12px;font-weight:800}
+.gva-ops-tabs button.active{background:#1b477d;color:#fff;border-color:#1b477d}
+.gva-ops-tabs button span{display:inline-block;min-width:17px;padding:2px 5px;margin-left:6px;background:#eef2f7;color:#2d5075;border-radius:6px;font-size:10px}
+.gva-ops-tabs button.active span{background:#ffffff30;color:#fff}
+.gva-ops-search{flex:1 1 190px;max-width:290px;min-width:170px}
+.gva-ops-help{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:0 0 8px}
+.gva-ops-help small{font-size:11px;color:#64758f}
+.gva-ops-result-count{font-size:12px;color:#6b7d97;margin-bottom:12px}
+.gva-ops-list{display:flex;flex-direction:column;gap:12px}
+.gva-ops-tour{border-left:5px solid #8096b0;overflow:hidden;padding:15px 17px}
+.gva-ops-tour-pending{border-left-color:#ce8c12;background:linear-gradient(105deg,#fffaf0,#fff 40%)}
+.gva-ops-tour-confirmed{border-left-color:#306fce;background:linear-gradient(105deg,#f3f8ff,#fff 40%)}
+.gva-ops-tour.is-overdue{border-left-color:#be4c56;background:linear-gradient(105deg,#fff4f5,#fff 40%)}
+.gva-ops-tour-head{display:flex;align-items:center;gap:16px;min-width:0}
+.gva-ops-date{display:flex;flex:0 0 140px;flex-direction:column;gap:2px}
+.gva-ops-date strong{font-size:15px;color:#1e3857;font-variant-numeric:tabular-nums}
+.gva-ops-date span{font-size:11px;color:#627a93}
+.gva-ops-tour-title{min-width:0;flex:1 1 auto}
+.gva-ops-tour-title strong{display:block;font-size:15px;line-height:1.4;color:#203650;overflow-wrap:anywhere}
+.gva-ops-code{font-size:10px;font-weight:800;letter-spacing:.045em;color:#71849d;margin-bottom:2px}
+.gva-ops-tour-head>.gva-status{flex-shrink:0;align-self:flex-start}
+.gva-ops-primary{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.65fr) minmax(0,1.2fr);gap:13px;margin:15px 0 9px;padding:12px 14px;background:#f7f9fc;border:1px solid #e8eef6;border-radius:11px}
+.gva-ops-primary>div{min-width:0;display:flex;flex-direction:column;gap:4px}
+.gva-ops-primary span,.gva-ops-detail span{font-size:11px;color:#7788a0}
+.gva-ops-primary b,.gva-ops-detail b{font-size:13px;font-weight:750;color:#213752;line-height:1.45;overflow-wrap:anywhere}
+.gva-ops-issues{display:flex;flex-wrap:wrap;gap:6px;margin:3px 0 10px}
+.gva-ops-issue{display:inline-flex;border:1px solid #f0dbb2;background:#fff6e6;color:#8e620d;border-radius:7px;padding:5px 8px;font-size:11px;font-weight:800}
+.gva-ops-issue.urgent{background:#fff0f1;border-color:#f3cdd2;color:#b23845}
+.gva-ops-tour-actions{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.gva-ops-tour-actions button{padding:9px 12px;font-size:12px}
+.gva-ops-confirm{background:#2367bb}
+.gva-ops-expand{margin-left:auto}
+.gva-ops-detail{border-top:1px solid #e8edf4;margin-top:15px;padding:14px 2px 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.gva-ops-detail>div:not(.gva-ops-detail-actions){display:flex;flex-direction:column;gap:3px;min-width:0}
+.gva-ops-reminder{grid-column:1/-1;background:#fff7e7;border:1px solid #f5e3b8;color:#916514;padding:10px;border-radius:9px;font-size:12px;margin:0}
+.gva-ops-detail-actions{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap}
+.gva-ops-detail-actions button{font-size:12px;padding:9px 12px}
+.gva-ops-empty{display:flex;align-items:center;gap:12px;color:#526b87;flex-wrap:wrap}
+@media(max-width:1060px){.gva-ops-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.gva-ops-primary{grid-template-columns:repeat(2,minmax(0,1fr))}.gva-ops-primary>div:last-child{grid-column:1/-1}}
+@media(max-width:760px){.gva-ops-heading{align-items:flex-start}.gva-ops-summary{gap:8px;margin:10px 0 14px}.gva-ops-summary-item{padding:12px}.gva-ops-summary-item strong{font-size:27px}.gva-ops-toolbar{display:block}.gva-ops-tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;padding:3px 1px 9px}.gva-ops-tabs button{flex:0 0 auto}.gva-ops-search{width:100%;max-width:none;margin-top:4px}.gva-ops-tour{padding:13px 12px}.gva-ops-tour-head{gap:8px;align-items:flex-start;flex-wrap:wrap}.gva-ops-date{flex:0 0 100px}.gva-ops-date strong{font-size:12px}.gva-ops-tour-title{flex:1 1 calc(100% - 112px)}.gva-ops-tour-title strong{font-size:14px}.gva-ops-tour-head>.gva-status{margin-top:3px}.gva-ops-primary{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:11px;margin:12px 0}.gva-ops-primary>div:last-child{grid-column:1/-1}.gva-ops-tour-actions .gva-ops-expand{margin-left:0}.gva-ops-detail{grid-template-columns:repeat(2,minmax(0,1fr))}.gva-ops-help small{flex-basis:100%}}
+@media(max-width:380px){.gva-ops-date{flex-basis:95px}.gva-ops-tour-title{flex-basis:calc(100% - 103px)}.gva-ops-tour-actions button{flex:1 1 auto}.gva-ops-detail{grid-template-columns:1fr}}

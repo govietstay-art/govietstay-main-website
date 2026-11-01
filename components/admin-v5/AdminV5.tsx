@@ -119,6 +119,9 @@ export default function AdminV5() {
   const [selectedContact,setSelectedContact]=useState<string|null>(null);
   const [bookingView,setBookingView]=useState<"active"|"upcoming"|"pending"|"confirmed"|"completed"|"cancelled"|"all">("active");
   const [bookingSearch,setBookingSearch]=useState("");
+  const [opsFilter,setOpsFilter]=useState<"all"|"today"|"week"|"pending"|"attention"|"overdue">("all");
+  const [opsSearch,setOpsSearch]=useState("");
+  const [opsExpandedId,setOpsExpandedId]=useState<string|null>(null);
   const [seoOverview,setSeoOverview]=useState<any>(null);
   const [seoPages,setSeoPages]=useState<any[]>([]);
   const [seoQueries,setSeoQueries]=useState<any[]>([]);
@@ -178,6 +181,68 @@ export default function AdminV5() {
     });
     return {today,counts,rows};
   },[bookings,bookingView,bookingSearch,contactMap,tourMap]);
+
+  // All operations filters are read-only projections of existing booking records.
+  const operationRows=useMemo(()=>{
+    const today=bookingGroups.today;
+    return bookings.filter(b=>!["completed","closed","cancelled","refunded"].includes(b.status)).map(b=>{
+      const daysToTour=b.tour_date?Math.round((Date.parse(b.tour_date+"T00:00:00+07:00")-Date.parse(today+"T00:00:00+07:00"))/86400000):null;
+      const assigned=(guidesByBooking[b.id]||[]).filter(a=>!["cancelled","rejected"].includes(a.status));
+      const guideNames=assigned.map(a=>guideMap[a.guide_id]?.full_name||"Đã phân công");
+      const supplier=b.operator_supplier_id?supplierMap[b.operator_supplier_id]:null;
+      const balance=Math.max(0,Number(b.net_revenue_vnd||0)-Number(financeMap[b.id]?.amount_received_vnd||0));
+      const near=daysToTour!==null&&daysToTour>=0&&daysToTour<=7, issues:string[]=[];
+      if(b.status==="pending")issues.push("Chờ xác nhận");
+      if(daysToTour!==null&&daysToTour<0)issues.push("Quá ngày tour");
+      if(!b.tour_date)issues.push("Chưa có ngày tour");
+      if(near&&b.status==="confirmed"){
+        if(!b.pickup_time&&!b.start_time)issues.push("Thiếu giờ đón");
+        if(!b.hotel)issues.push("Thiếu khách sạn / điểm đón");
+        if(!b.internal_itinerary_vi?.trim())issues.push("Thiếu lịch trình tiếng Việt");
+        if(b.guide_language&&!assigned.length&&!b.operator_supplier_id)issues.push("Chưa ghi nhận HDV");
+      }
+      return {booking:b,daysToTour,guideNames,supplier,balance,issues};
+    }).sort((a,b)=>String(a.booking.tour_date||"9999-12-31").localeCompare(String(b.booking.tour_date||"9999-12-31"))||
+      Number(a.booking.status!=="pending")-Number(b.booking.status!=="pending"));
+  },[bookings,bookingGroups.today,guidesByBooking,guideMap,supplierMap,financeMap]);
+  const operationsSummary=useMemo(()=>({
+    all:operationRows.length,
+    today:operationRows.filter(r=>r.daysToTour===0).length,
+    week:operationRows.filter(r=>r.daysToTour!==null&&r.daysToTour>=0&&r.daysToTour<=7).length,
+    pending:operationRows.filter(r=>r.booking.status==="pending").length,
+    attention:operationRows.filter(r=>r.issues.length>0).length,
+    overdue:operationRows.filter(r=>r.daysToTour!==null&&r.daysToTour<0).length
+  }),[operationRows]);
+  const visibleOperations=useMemo(()=>{
+    const q=opsSearch.trim().toLocaleLowerCase();
+    return operationRows.filter(r=>{
+      const matches=opsFilter==="all"||
+        opsFilter==="today"&&r.daysToTour===0||
+        opsFilter==="week"&&r.daysToTour!==null&&r.daysToTour>=0&&r.daysToTour<=7||
+        opsFilter==="pending"&&r.booking.status==="pending"||
+        opsFilter==="attention"&&r.issues.length>0||
+        opsFilter==="overdue"&&r.daysToTour!==null&&r.daysToTour<0;
+      if(!matches)return false;
+      const b=r.booking,c=contactMap[b.contact_id||""];
+      return !q||[b.booking_code,bookingTourName(b,tourMap),c?.full_name,c?.whatsapp,b.hotel,r.supplier?.name,b.tour_date]
+        .some(v=>String(v||"").toLocaleLowerCase().includes(q));
+    });
+  },[operationRows,opsFilter,opsSearch,contactMap,tourMap]);
+
+  async function confirmOperationBooking(booking:Booking){
+    if(booking.status!=="pending")return;
+    if(!window.confirm("Xác nhận tour "+(booking.booking_code||"")+"?\\n\\nChỉ đổi trạng thái tour, không ghi nhận thanh toán và không gửi tin nhắn cho khách."))return;
+    setSaving(true);setErr("");setMsg("");
+    try{
+      const {data,error}=await supabase.from("bookings").update({status:"confirmed"})
+        .eq("id",booking.id).eq("status","pending").select("id");
+      if(error)throw error;
+      if(!data?.length)throw new Error("Booking có thể đã được người khác cập nhật. Hãy làm mới và kiểm tra lại.");
+      setMsg("Đã xác nhận tour "+(booking.booking_code||"")+". Trạng thái thanh toán giữ nguyên.");
+      await loadAll();
+    }catch(e:any){setErr(e?.message||"Không xác nhận được tour.");}
+    finally{setSaving(false);}
+  }
 
   async function resolveStaff(userId:string) {
     const {data,error}=await supabase.from("staff_profiles").select("id,display_name,role,active,auth_user_id").eq("auth_user_id",userId).eq("active",true).maybeSingle();
@@ -893,38 +958,67 @@ export default function AdminV5() {
       </>}
 
       {tab==="operations"&&<>
-        <div className="gva-section-head"><div><h2>Lịch điều hành tour</h2><div className="gva-mini">Các tour chưa hoàn thành, sắp xếp theo ngày khởi hành. Dữ liệu liên kết trực tiếp với Bookings và nhà cung cấp.</div></div><button className="gva-btn secondary" onClick={loadAll}>Làm mới</button></div>
-        <div className="gva-status-legend" aria-label="Quy ước màu trạng thái">
-          <span className="gva-status gva-status-pending">Chờ xác nhận</span>
-          <span className="gva-status gva-status-confirmed">Đã xác nhận</span>
-          <span className="gva-status gva-status-completed">Hoàn thành</span>
-          <span className="gva-status gva-status-cancelled">Đã hủy</span>
-          <small>Công nợ và tiền đã thu được theo dõi riêng.</small>
+        <div className="gva-section-head gva-ops-heading">
+          <div><h2>Trung tâm điều hành tour</h2><div className="gva-mini">Lịch khởi hành, xác nhận booking và checklist chuẩn bị · Giờ Việt Nam</div></div>
+          <button className="gva-btn secondary" onClick={loadAll}>Làm mới</button>
         </div>
-        <div className="gva-operations-grid">
-          {bookings.filter(b=>!["completed","closed","cancelled","refunded"].includes(b.status)).sort((a,b)=>String(a.tour_date||"9999-12-31").localeCompare(String(b.tour_date||"9999-12-31"))).map(b=>{
-            const guideAssignments=(guidesByBooking[b.id]||[]).filter(a=>!["cancelled","rejected"].includes(a.status));
-            const supplier= b.operator_supplier_id?supplierMap[b.operator_supplier_id]:null;
-            const finance=financeMap[b.id];
-            const balance=Math.max(0,Number(b.net_revenue_vnd||0)-Number(finance?.amount_received_vnd||0));
-            const daysToTour=b.tour_date?Math.round((Date.parse(b.tour_date+"T00:00:00+07:00")-Date.parse(bookingGroups.today+"T00:00:00+07:00"))/86400000):null;
-            return <div className={"gva-card gva-operation-card gva-operation-"+b.status+(daysToTour!==null&&daysToTour<0?" gva-operation-overdue":"")} key={b.id}>
-              <div className="gva-operation-top"><div><div className="gva-mini">{b.tour_date||"Chưa có ngày"} · {b.pickup_time||b.start_time||"Chưa có giờ đón"}</div><b>{bookingTourName(b,tourMap)}</b></div><span className={bookingStatusClass(b.status)}>{bookingStatusLabel(b.status)}</span></div>
-              <div className="gva-mini" style={{marginTop:8}}>{contactMap[b.contact_id||""]?.full_name||"Khách chưa ghi tên"} · {b.pax} khách · {b.hotel||"Chưa ghi khách sạn"}</div>
-              <div className="gva-mini" style={{marginTop:8}}>Hướng dẫn viên: {guideAssignments.length?guideAssignments.map(x=>guideMap[x.guide_id]?.full_name||"Đã phân công").join(", "):"Chưa ghi nhận phân công"}</div>
-              <div className="gva-mini">Đơn vị tổ chức: {supplier?.name||"Chưa ghi nhận trong booking"}</div>
-              <div className="gva-mini">Lịch trình nội bộ: {b.internal_itinerary_vi?.trim()?"Đã có":"Chưa có"}</div>
-              {daysToTour!==null&&daysToTour<0&&<div className="gva-operation-alert">Quá ngày tour — cần kiểm tra trạng thái</div>}
-              {[1,3,7].includes(Number(daysToTour))&&<div className="gva-booking-overdue">Đến mốc kiểm tra nhắc tour trước {daysToTour} ngày (chưa xác nhận đã gửi)</div>}
-              <div className="gva-mini">Số dư cần đối chiếu: <b>{money(balance)}</b></div>
-              <div className="gva-operation-actions">
-                <button className="gva-btn secondary" onClick={()=>setEditingBooking(b)}>Mở booking</button>
-                <button className="gva-btn secondary" onClick={()=>setTab("operator_payables")}>Nhà cung cấp</button>
-                <button className="gva-btn secondary" onClick={()=>setTab("finance")}>Tài chính</button>
+        <div className="gva-ops-summary">
+          {([["today","Hôm nay"],["week","7 ngày tới"],["pending","Chờ xác nhận"],["attention","Cần kiểm tra"]] as const).map(([key,label])=><button type="button" key={key}
+            className={"gva-ops-summary-item gva-ops-summary-"+key+(opsFilter===key?" selected":"")}
+            onClick={()=>setOpsFilter(key)} aria-pressed={opsFilter===key}>
+            <span>{label}</span><strong>{operationsSummary[key]}</strong><small>Chạm để xem</small>
+          </button>)}
+        </div>
+        <div className="gva-ops-toolbar">
+          <div className="gva-ops-tabs" aria-label="Bộ lọc điều hành">
+            {([["all","Tất cả"],["today","Hôm nay"],["week","7 ngày"],["pending","Chờ xác nhận"],["attention","Cần kiểm tra"],["overdue","Quá ngày"]] as const).map(([key,label])=>
+              <button type="button" key={key} aria-pressed={opsFilter===key} className={opsFilter===key?"active":""} onClick={()=>setOpsFilter(key)}>{label}<span>{operationsSummary[key]}</span></button>)}
+          </div>
+          <input className="gva-input gva-ops-search" value={opsSearch} onChange={e=>setOpsSearch(e.target.value)}
+            placeholder="Tìm mã, khách, tour, khách sạn..." aria-label="Tìm tour điều hành"/>
+        </div>
+        <div className="gva-ops-help"><span className="gva-status gva-status-pending">Chờ xác nhận</span><span className="gva-status gva-status-confirmed">Đã xác nhận</span>
+          <small>Checklist chỉ dựa trên dữ liệu đã nhập, không xác nhận nhân sự đã được liên hệ.</small>
+        </div>
+        <div className="gva-ops-result-count">Đang hiển thị <b>{visibleOperations.length}</b> / {operationsSummary.all} tour chưa hoàn thành</div>
+        <div className="gva-ops-list">
+          {visibleOperations.map(({booking:b,daysToTour,guideNames,supplier,balance,issues})=>{
+            const contact=contactMap[b.contact_id||""],open=opsExpandedId===b.id;
+            const dateLabel=b.tour_date?b.tour_date.slice(8,10)+"/"+b.tour_date.slice(5,7)+"/"+b.tour_date.slice(0,4):"Chưa có ngày";
+            const relativeLabel=daysToTour===0?"Hôm nay":daysToTour===1?"Ngày mai":daysToTour!==null&&daysToTour<0?"Quá "+Math.abs(daysToTour)+" ngày":daysToTour!==null?"Còn "+daysToTour+" ngày":"Chưa xếp lịch";
+            return <div key={b.id} className={"gva-card gva-ops-tour gva-ops-tour-"+b.status+(daysToTour!==null&&daysToTour<0?" is-overdue":"")}>
+              <div className="gva-ops-tour-head">
+                <div className="gva-ops-date"><strong>{dateLabel}</strong><span>{relativeLabel}</span></div>
+                <div className="gva-ops-tour-title"><div className="gva-ops-code">{b.booking_code||"Chưa có mã booking"}</div><strong>{bookingTourName(b,tourMap)}</strong></div>
+                <span className={bookingStatusClass(b.status)}>{bookingStatusLabel(b.status)}</span>
               </div>
+              <div className="gva-ops-primary">
+                <div><span>Khách</span><b>{contact?.full_name||"Chưa có tên"} · {b.pax||0} khách</b></div>
+                <div><span>Giờ đón</span><b>{b.pickup_time||b.start_time||"Chưa cập nhật"}</b></div>
+                <div><span>Khách sạn / điểm đón</span><b>{b.hotel||"Chưa cập nhật"}</b></div>
+              </div>
+              {issues.length>0&&<div className="gva-ops-issues">{issues.map((issue,i)=><span key={i} className={"gva-ops-issue"+(issue==="Quá ngày tour"?" urgent":"")}>{issue}</span>)}</div>}
+              <div className="gva-ops-tour-actions">
+                {b.status==="pending"&&<button type="button" className="gva-btn gva-ops-confirm" disabled={saving} onClick={()=>void confirmOperationBooking(b)}>✓ Xác nhận tour</button>}
+                <button type="button" className="gva-btn secondary" onClick={()=>setEditingBooking(b)}>Sửa booking</button>
+                <button type="button" className="gva-btn secondary gva-ops-expand" aria-expanded={open} onClick={()=>setOpsExpandedId(open?null:b.id)}>{open?"Thu gọn ▲":"Chi tiết ▼"}</button>
+              </div>
+              {open&&<div className="gva-ops-detail">
+                <div><span>Hướng dẫn viên</span><b>{guideNames.length?guideNames.join(", "):"Chưa ghi nhận phân công"}</b></div>
+                <div><span>Ngôn ngữ HDV</span><b>{GVS_BOOKING_LANGUAGES.find(([code])=>code===b.guide_language)?.[1]||"Chưa cập nhật"}</b></div>
+                <div><span>Nhà tổ chức</span><b>{supplier?.name||"Chưa ghi nhận"}</b></div>
+                <div><span>WhatsApp khách</span><b>{contact?.whatsapp||"Chưa có"}</b></div>
+                <div><span>Lịch trình tiếng Việt</span><b>{b.internal_itinerary_vi?.trim()?"Đã lưu":"Chưa có"}</b></div>
+                <div><span>Số dư cần đối chiếu</span><b>{money(balance)}</b></div>
+                {[1,3,7].includes(Number(daysToTour))&&<p className="gva-ops-reminder">Mốc kiểm tra nhắc tour trước {daysToTour} ngày, chưa xác nhận đã gửi.</p>}
+                <div className="gva-ops-detail-actions">
+                  <button type="button" className="gva-btn secondary" onClick={()=>setTab("finance")}>Tài chính</button>
+                  <button type="button" className="gva-btn secondary" onClick={()=>setTab("operator_payables")}>Công nợ tour ghép</button>
+                </div>
+              </div>}
             </div>;
           })}
-          {!bookings.some(b=>!["completed","closed","cancelled","refunded"].includes(b.status))&&<div className="gva-card">Không có tour đang chờ thực hiện.</div>}
+          {!visibleOperations.length&&<div className="gva-card gva-ops-empty">Không có tour phù hợp bộ lọc. <button type="button" className="gva-btn secondary" onClick={()=>{setOpsFilter("all");setOpsSearch("")}}>Xem tất cả</button></div>}
         </div>
       </>}
       {tab==="customers"&&<>
@@ -987,7 +1081,9 @@ export default function AdminV5() {
       </>}
 
 
-            {tab==="phuquoc"&&<PhuQuocSalesHub supabase={supabase} adminStaff={staff}/>}\n\n            {tab==="team"&&<StaffSalesTeam supabase={supabase} adminStaff={staff}/>}
+            {tab==="phuquoc"&&<PhuQuocSalesHub supabase={supabase} adminStaff={staff}/>}
+
+            {tab==="team"&&<StaffSalesTeam supabase={supabase} adminStaff={staff}/>}
             {tab=="operator_payables"&&<OperatorPayables supabase={supabase}/>}
             {tab==="finance"&&<FinancePL supabase={supabase}/>} 
 
