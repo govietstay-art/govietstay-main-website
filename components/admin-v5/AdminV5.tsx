@@ -92,7 +92,7 @@ export default function AdminV5() {
   const [bootstrap,setBootstrap]=useState("");
   const [msg,setMsg]=useState("");
   const [err,setErr]=useState("");
-  const [tab,setTab]=useState<"dashboard"|"operations"|"customers"|"analytics"|"marketing"|"partners"|"pi_partners"|"merchant_network"|"seo"|"leads"|"bookings"|"reviews"|"finance"|"team"|"operator_payables"|"yandex"|"phuquoc"|"web_inquiries">("dashboard");
+  const [tab,setTab]=useState<"dashboard"|"operations"|"customers"|"supplier_directory"|"analytics"|"marketing"|"partners"|"pi_partners"|"merchant_network"|"seo"|"leads"|"bookings"|"reviews"|"finance"|"team"|"operator_payables"|"yandex"|"phuquoc"|"web_inquiries">("dashboard");
   const [days,setDays]=useState(7);
   const [metrics,setMetrics]=useState<any>(null);
   const [breakdown,setBreakdown]=useState<any[]>([]);
@@ -113,6 +113,9 @@ export default function AdminV5() {
   const [guideDirectory,setGuideDirectory]=useState<any[]>([]);
   const [supplierDirectory,setSupplierDirectory]=useState<any[]>([]);
   const [customerSearch,setCustomerSearch]=useState("");
+  const [supplierSearch,setSupplierSearch]=useState("");
+  const [supplierEditing,setSupplierEditing]=useState<any|null>(null);
+  const [supplierFormOpen,setSupplierFormOpen]=useState(false);
   const [selectedContact,setSelectedContact]=useState<string|null>(null);
   const [bookingView,setBookingView]=useState<"active"|"upcoming"|"completed"|"cancelled"|"all">("active");
   const [bookingSearch,setBookingSearch]=useState("");
@@ -253,7 +256,7 @@ export default function AdminV5() {
         loadAllRows("booking_financials","booking_id,amount_received_vnd,total_direct_cost_vnd,finance_finalized","created_at"),
         loadAllRows("booking_guides","booking_id,guide_id,status","created_at"),
         supabase.from("guides").select("id,full_name,languages,active").limit(1000),
-        supabase.from("suppliers").select("id,name,supplier_type,service_area,active").limit(1000),
+        supabase.from("suppliers").select("id,name,supplier_type,service_area,contact_name,phone,whatsapp,payment_terms_days,notes,active").order("name").limit(1000),
         ...dimPromises,
         ...seoPromises
       ]);
@@ -336,6 +339,28 @@ export default function AdminV5() {
   }
 
   async function logout() { await supabase.auth.signOut(); }
+
+  async function saveSupplier(e:any){
+    e.preventDefault();setSaving(true);setErr("");setMsg("");
+    try{
+      const vals=Object.fromEntries(new FormData(e.currentTarget).entries()) as Record<string,string>;
+      const name=String(vals.name||"").trim();
+      if(!name) throw new Error("Cần nhập tên nhà cung cấp.");
+      const payload={
+        name, supplier_type:vals.supplier_type||"other", service_area:vals.service_area?.trim()||null,
+        contact_name:vals.contact_name?.trim()||null, phone:vals.phone?.trim()||null,
+        whatsapp:vals.whatsapp?.trim()||null, notes:vals.notes?.trim()||null,
+        payment_terms_days:Math.max(0,Math.trunc(Number(vals.payment_terms_days||0)))
+      };
+      const q=supplierEditing?supabase.from("suppliers").update(payload).eq("id",supplierEditing.id):
+        supabase.from("suppliers").insert({...payload,active:true,settlement_mode:"after_tour"});
+      const {error}=await q;
+      if(error)throw error;
+      setSupplierFormOpen(false);setSupplierEditing(null);
+      setMsg("Đã lưu hồ sơ nhà cung cấp.");await loadAll();
+    }catch(e:any){setErr(e.message||"Không lưu được nhà cung cấp.");}
+    finally{setSaving(false);}
+  }
 
   async function createContact(values:any) {
     const whatsapp=String(values.whatsapp||"").trim();
@@ -478,6 +503,7 @@ export default function AdminV5() {
         <button className={tab==="dashboard"?"active":""} onClick={()=>setTab("dashboard")}>Tổng quan</button>
         <button className={tab==="operations"?"active":""} onClick={()=>setTab("operations")}>Điều hành</button>
         <button className={tab==="customers"?"active":""} onClick={()=>setTab("customers")}>Khách hàng</button>
+        <button className={tab==="supplier_directory"?"active":""} onClick={()=>setTab("supplier_directory")}>Nhà cung cấp</button>
         <button className={tab==="analytics"?"active":""} onClick={()=>setTab("analytics")}>Analytics</button>
 
         <button className={tab==="marketing"?"active":""} onClick={()=>setTab("marketing")}>Marketing</button>
@@ -876,6 +902,31 @@ export default function AdminV5() {
           </>:<div className="gva-empty">Chọn một khách để xem lịch sử booking.</div>}</div>
         </div>
       </>}
+      {tab==="supplier_directory"&&<>
+        <div className="gva-section-head"><div><h2>Nhà cung cấp</h2><div className="gva-mini">Danh bạ dùng chung cho Điều hành và Công nợ tour ghép.</div></div><button className="gva-btn" onClick={()=>{setSupplierEditing(null);setSupplierFormOpen(true)}}>+ Thêm nhà cung cấp</button></div>
+        <div className="gva-booking-toolbar"><input className="gva-input gva-booking-search" placeholder="Tìm tên, khu vực hoặc số điện thoại..." value={supplierSearch} onChange={e=>setSupplierSearch(e.target.value)}/><button className="gva-btn secondary" onClick={()=>setTab("operator_payables")}>Công nợ tour ghép</button></div>
+        <div className="gva-operations-grid">
+          {supplierDirectory.filter(x=>[x.name,x.service_area,x.phone,x.whatsapp].some(v=>String(v||"").toLowerCase().includes(supplierSearch.trim().toLowerCase()))).map(x=><div className="gva-card" key={x.id}>
+            <div className="gva-operation-top"><div><b>{x.name}</b><div className="gva-mini">{x.supplier_type||"other"} · {x.service_area||"Chưa có khu vực"}</div></div><span className={x.active?"gva-status gva-status-completed":"gva-status gva-status-cancelled"}>{x.active?"Đang hợp tác":"Ngưng"}</span></div>
+            <div className="gva-mini" style={{marginTop:10}}>Liên hệ: {x.contact_name||"—"} · {x.phone||x.whatsapp||"Chưa có số"}</div>
+            <div className="gva-mini">Điều khoản thanh toán: {x.payment_terms_days||0} ngày</div>
+            <div className="gva-operation-actions"><button className="gva-btn secondary" onClick={()=>{setSupplierEditing(x);setSupplierFormOpen(true)}}>Chỉnh sửa</button></div>
+          </div>)}
+          {!supplierDirectory.length&&<div className="gva-card">Chưa có hồ sơ nhà cung cấp.</div>}
+        </div>
+        {supplierFormOpen&&<div className="gva-modal-bg"><form className="gva-modal" onSubmit={saveSupplier}><div className="gva-modal-head"><h3>{supplierEditing?"Chỉnh sửa":"Thêm"} nhà cung cấp</h3><button className="gva-close" type="button" onClick={()=>setSupplierFormOpen(false)}>✕</button></div>
+          <div className="gva-form-grid">
+            <F label="Tên nhà cung cấp"><input name="name" className="gva-input" required defaultValue={supplierEditing?.name||""}/></F>
+            <F label="Loại dịch vụ"><select name="supplier_type" className="gva-select" defaultValue={supplierEditing?.supplier_type||"transport"}><option value="transport">Nhà xe</option><option value="hotel">Khách sạn</option><option value="tour">Tour</option><option value="group_tour_operator">Tour ghép</option><option value="ticket">Vé tham quan</option><option value="other">Khác</option></select></F>
+            <F label="Khu vực"><input className="gva-input" name="service_area" defaultValue={supplierEditing?.service_area||""}/></F>
+            <F label="Người liên hệ"><input className="gva-input" name="contact_name" defaultValue={supplierEditing?.contact_name||""}/></F>
+            <F label="Điện thoại"><input className="gva-input" name="phone" defaultValue={supplierEditing?.phone||""}/></F>
+            <F label="WhatsApp"><input className="gva-input" name="whatsapp" defaultValue={supplierEditing?.whatsapp||""}/></F>
+            <F label="Hạn thanh toán (ngày)"><input type="number" min="0" step="1" className="gva-input" name="payment_terms_days" defaultValue={supplierEditing?.payment_terms_days||0}/></F>
+            <F label="Ghi chú" wide><textarea className="gva-input" name="notes" rows={3} defaultValue={supplierEditing?.notes||""}/></F>
+          </div><div className="gva-operation-actions" style={{justifyContent:"flex-end"}}><button type="button" className="gva-btn secondary" onClick={()=>setSupplierFormOpen(false)}>Hủy</button><button className="gva-btn" disabled={saving}>{saving?"Đang lưu…":"Lưu nhà cung cấp"}</button></div>
+        </form></div>}
+      </>}
       {tab==="bookings"&&<>
         <div className="gva-section-head"><div><h2>Bookings · Điều hành</h2><div className="gva-mini">Tour chưa hoàn thành được ưu tiên. Dữ liệu hoàn thành/hủy vẫn lưu để tra cứu, Finance và Reviews.</div></div><button className="gva-btn" onClick={()=>setModal("booking")}>+ Tạo Booking</button></div>
         <div className="gva-analytics-note" style={{marginBottom:12}}>
@@ -916,7 +967,7 @@ function bookingStatusLabel(s:string){return ({pending:"Chờ xác nhận",confi
 function bookingStatusClass(s:string){return "gva-status gva-status-"+(["pending","confirmed","completed","closed","cancelled","refunded"].includes(s)?s:"other");}
 function bookingRowClass(s:string){return "gva-booking-row "+(["pending","confirmed","completed","closed","cancelled","refunded"].includes(s)?s:"other");}
 function adminPageTitle(tab:any){
-  return tab==="operations"?"Điều hành tour":tab==="customers"?"Khách hàng":tab==="web_inquiries"?"Yêu cầu đặt vé / tour từ website":tab=="operator_payables"?"Công nợ nhà tổ chức tour ghép":tab==="team"?"Sales Team / Payroll":tab==="finance"?"Monthly P&L":tab==="dashboard"?"Tổng quan":tab==="analytics"?"Analytics khách truy cập":tab==="marketing"?"Marketing Funnel":tab==="partners"?"Partners thường / QR":tab==="pi_partners"?"Pi Community Partners":tab==="merchant_network"?"Merchant Network Lab":tab==="seo"?"SEO Intelligence":tab==="yandex"?"Yandex Search":tab==="leads"?"Quản lý Leads":tab==="reviews"?"Review WhatsApp":"Quản lý Bookings";
+  return tab==="operations"?"Điều hành tour":tab==="customers"?"Khách hàng":tab==="supplier_directory"?"Nhà cung cấp":tab==="web_inquiries"?"Yêu cầu đặt vé / tour từ website":tab=="operator_payables"?"Công nợ nhà tổ chức tour ghép":tab==="team"?"Sales Team / Payroll":tab==="finance"?"Monthly P&L":tab==="dashboard"?"Tổng quan":tab==="analytics"?"Analytics khách truy cập":tab==="marketing"?"Marketing Funnel":tab==="partners"?"Partners thường / QR":tab==="pi_partners"?"Pi Community Partners":tab==="merchant_network"?"Merchant Network Lab":tab==="seo"?"SEO Intelligence":tab==="yandex"?"Yandex Search":tab==="leads"?"Quản lý Leads":tab==="reviews"?"Review WhatsApp":"Quản lý Bookings";
 }
 
 function shortPage(value:any){
