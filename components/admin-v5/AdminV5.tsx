@@ -502,24 +502,23 @@ export default function AdminV5() {
       <div className="gva-nav">
         <button className={tab==="dashboard"?"active":""} onClick={()=>setTab("dashboard")}>Tổng quan</button>
         <button className={tab==="operations"?"active":""} onClick={()=>setTab("operations")}>Điều hành</button>
+        <button className={tab==="bookings"?"active":""} onClick={()=>setTab("bookings")}>Bookings</button>
         <button className={tab==="customers"?"active":""} onClick={()=>setTab("customers")}>Khách hàng</button>
         <button className={tab==="supplier_directory"?"active":""} onClick={()=>setTab("supplier_directory")}>Nhà cung cấp</button>
-        <button className={tab==="analytics"?"active":""} onClick={()=>setTab("analytics")}>Analytics</button>
-
+        <button className={tab=="finance"?"active":""} onClick={()=>setTab("finance")}>P&L / Finance</button>
+        <button className={tab==="leads"?"active":""} onClick={()=>setTab("leads")}>Leads</button>
+        <button className={tab==="web_inquiries"?"active":""} onClick={()=>setTab("web_inquiries")}>Yêu cầu từ website</button>
+        <button className={tab=="operator_payables"?"active":""} onClick={()=>setTab("operator_payables")}>Công nợ Tour Ghép</button>
+        <button className={tab==="reviews"?"active":""} onClick={()=>setTab("reviews")}>Reviews</button>
+        <button className={tab=="team"?"active":""} onClick={()=>setTab("team")}>Sales Team / Payroll</button>
+        <button className={tab==="phuquoc"?"active":""} onClick={()=>setTab("phuquoc")}>Phú Quốc Sales</button>
         <button className={tab==="marketing"?"active":""} onClick={()=>setTab("marketing")}>Marketing</button>
+        <button className={tab==="analytics"?"active":""} onClick={()=>setTab("analytics")}>Analytics</button>
+        <button className={tab==="seo"?"active":""} onClick={()=>setTab("seo")}>Phân tích tìm kiếm</button>
+        <button className={tab==="yandex"?"active":""} onClick={()=>setTab("yandex")}>Yandex Search</button>
         <button className={tab==="partners"?"active":""} onClick={()=>setTab("partners")}>Partners thường / QR</button>
         <button className={tab==="pi_partners"?"active":""} onClick={()=>setTab("pi_partners")}>Pi Community</button>
         <button className={tab==="merchant_network"?"active":""} onClick={()=>setTab("merchant_network")}>Merchant Network</button>
-        <button className={tab==="seo"?"active":""} onClick={()=>setTab("seo")}>Phân tích tìm kiếm</button>
-        <button className={tab==="yandex"?"active":""} onClick={()=>setTab("yandex")}>Yandex Search</button>
-        <button className={tab==="leads"?"active":""} onClick={()=>setTab("leads")}>Leads</button>
-        <button className={tab==="web_inquiries"?"active":""} onClick={()=>setTab("web_inquiries")}>Yêu cầu từ website</button>
-        <button className={tab==="phuquoc"?"active":""} onClick={()=>setTab("phuquoc")}>Phú Quốc Sales</button>
-        <button className={tab==="bookings"?"active":""} onClick={()=>setTab("bookings")}>Bookings</button>
-        <button className={tab=="team"?"active":""} onClick={()=>setTab("team")}>Sales Team / Payroll</button>
-        <button className={tab=="operator_payables"?"active":""} onClick={()=>setTab("operator_payables")}>Công nợ Tour Ghép</button>
-        <button className={tab=="finance"?"active":""} onClick={()=>setTab("finance")}>P&L / Finance</button>
-        <button className={tab==="reviews"?"active":""} onClick={()=>setTab("reviews")}>Reviews</button>
       </div>
     </aside>
     <main className="gva-main">
