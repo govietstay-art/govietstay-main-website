@@ -240,7 +240,7 @@ export default function AdminV5() {
         supabase.from("search_console_sync_runs").select("id,started_at,completed_at,start_date,end_date,rows_received,rows_upserted,status,error_message").order("started_at",{ascending:false}).limit(1).maybeSingle()
       ];
 
-      const results = await Promise.all([
+      const results:any[] = await Promise.all([
         supabase.rpc("admin_dashboard_metrics",{p_days:days}),
         supabase.rpc("admin_tracking_breakdown",{p_days:days}),
 
