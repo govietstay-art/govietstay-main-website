@@ -893,7 +893,7 @@ export default function AdminV5() {
               <div className="gva-mini" style={{marginTop:8}}>Hướng dẫn viên: {guideAssignments.length?guideAssignments.map(x=>guideMap[x.guide_id]?.full_name||"Đã phân công").join(", "):"Chưa ghi nhận phân công"}</div>
               <div className="gva-mini">Đơn vị tổ chức: {supplier?.name||"Chưa ghi nhận trong booking"}</div>
               <div className="gva-mini">Lịch trình nội bộ: {b.internal_itinerary_vi?.trim()?"Đã có":"Chưa có"}</div>
-              {[1,3,7].includes(Number(daysToTour))&&<div className="gva-booking-overdue">Đến mốc kiểm tra nhắc tour trước {daysToTour} ngày (chưa xác nhận đã gửi)</div>
+              {[1,3,7].includes(Number(daysToTour))&&<div className="gva-booking-overdue">Đến mốc kiểm tra nhắc tour trước {daysToTour} ngày (chưa xác nhận đã gửi)</div>}
               <div className="gva-mini">Số dư cần đối chiếu: <b>{money(balance)}</b></div>
               <div className="gva-operation-actions">
                 <button className="gva-btn secondary" onClick={()=>setEditingBooking(b)}>Mở booking</button>
