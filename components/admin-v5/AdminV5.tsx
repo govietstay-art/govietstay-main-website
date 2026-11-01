@@ -409,6 +409,10 @@ export default function AdminV5() {
       const customTourName=String(vals.custom_tour_name||"").trim();
       if(isCustom&&!customTourName) throw new Error("Vui lòng nhập tên Custom Tour.");
       if(!isCustom&&!vals.tour_id) throw new Error("Vui lòng chọn tour hoặc chọn Custom Tour.");
+      if(vals.payment_status==="paid"&&booking.payment_status!=="paid")
+        throw new Error("Không đánh dấu đã thu đủ trực tiếp tại Bookings. Vào Tài chính để ghi nhận tiền khách thực trả, sau đó chốt booking.");
+      if(["cancelled","refunded"].includes(vals.status)&&!["cancelled","refunded"].includes(booking.status))
+        throw new Error("Hủy/hoàn tiền phải thực hiện tại mục Tài chính để ghi nhận phí hủy và tránh sai công nợ.");
       const partner=partners.find(x=>x.id===vals.partner_id);
       const {error}=await supabase.from("bookings").update({
         tour_id:isCustom?null:vals.tour_id||null,
