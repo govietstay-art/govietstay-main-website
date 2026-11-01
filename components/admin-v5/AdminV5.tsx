@@ -526,8 +526,8 @@ export default function AdminV5() {
         <button className={tab==="phuquoc"?"active":""} onClick={()=>setTab("phuquoc")}>Phú Quốc Sales</button>
         <button className={tab==="marketing"?"active":""} onClick={()=>setTab("marketing")}>Marketing</button>
         <button className={tab==="analytics"?"active":""} onClick={()=>setTab("analytics")}>Analytics</button>
-        <button className={tab==="seo"?"active":""} onClick={()=>setTab("seo")}>Phân tích tìm kiếm</button>
-        <button className={tab==="yandex"?"active":""} onClick={()=>setTab("yandex")}>Yandex Search</button>
+        <button data-section="legacy-seo" className={tab==="seo"?"active":""} onClick={()=>setTab("seo")}>Phân tích tìm kiếm</button>
+        <button data-section="legacy-seo" className={tab==="yandex"?"active":""} onClick={()=>setTab("yandex")}>Yandex Search</button>
         <button className={tab==="partners"?"active":""} onClick={()=>setTab("partners")}>Partners thường / QR</button>
         <button className={tab==="pi_partners"?"active":""} onClick={()=>setTab("pi_partners")}>Pi Community</button>
         <button className={tab==="merchant_network"?"active":""} onClick={()=>setTab("merchant_network")}>Merchant Network</button>
