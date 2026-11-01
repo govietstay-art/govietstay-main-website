@@ -119,6 +119,9 @@ export default function AdminV5() {
   const [selectedContact,setSelectedContact]=useState<string|null>(null);
   const [bookingView,setBookingView]=useState<"active"|"upcoming"|"pending"|"confirmed"|"completed"|"cancelled"|"all">("active");
   const [bookingSearch,setBookingSearch]=useState("");
+  const [opsFilter,setOpsFilter]=useState<"all"|"today"|"week"|"pending"|"attention"|"overdue">("all");
+  const [opsSearch,setOpsSearch]=useState("");
+  const [opsExpandedId,setOpsExpandedId]=useState<string|null>(null);
   const [seoOverview,setSeoOverview]=useState<any>(null);
   const [seoPages,setSeoPages]=useState<any[]>([]);
   const [seoQueries,setSeoQueries]=useState<any[]>([]);
@@ -178,6 +181,68 @@ export default function AdminV5() {
     });
     return {today,counts,rows};
   },[bookings,bookingView,bookingSearch,contactMap,tourMap]);
+
+  // All operations filters are read-only projections of existing booking records.
+  const operationRows=useMemo(()=>{
+    const today=bookingGroups.today;
+    return bookings.filter(b=>!["completed","closed","cancelled","refunded"].includes(b.status)).map(b=>{
+      const daysToTour=b.tour_date?Math.round((Date.parse(b.tour_date+"T00:00:00+07:00")-Date.parse(today+"T00:00:00+07:00"))/86400000):null;
+      const assigned=(guidesByBooking[b.id]||[]).filter(a=>!["cancelled","rejected"].includes(a.status));
+      const guideNames=assigned.map(a=>guideMap[a.guide_id]?.full_name||"Đã phân công");
+      const supplier=b.operator_supplier_id?supplierMap[b.operator_supplier_id]:null;
+      const balance=Math.max(0,Number(b.net_revenue_vnd||0)-Number(financeMap[b.id]?.amount_received_vnd||0));
+      const near=daysToTour!==null&&daysToTour>=0&&daysToTour<=7, issues:string[]=[];
+      if(b.status==="pending")issues.push("Chờ xác nhận");
+      if(daysToTour!==null&&daysToTour<0)issues.push("Quá ngày tour");
+      if(!b.tour_date)issues.push("Chưa có ngày tour");
+      if(near&&b.status==="confirmed"){
+        if(!b.pickup_time&&!b.start_time)issues.push("Thiếu giờ đón");
+        if(!b.hotel)issues.push("Thiếu khách sạn / điểm đón");
+        if(!b.internal_itinerary_vi?.trim())issues.push("Thiếu lịch trình tiếng Việt");
+        if(b.guide_language&&!assigned.length&&!b.operator_supplier_id)issues.push("Chưa ghi nhận HDV");
+      }
+      return {booking:b,daysToTour,guideNames,supplier,balance,issues};
+    }).sort((a,b)=>String(a.booking.tour_date||"9999-12-31").localeCompare(String(b.booking.tour_date||"9999-12-31"))||
+      Number(a.booking.status!=="pending")-Number(b.booking.status!=="pending"));
+  },[bookings,bookingGroups.today,guidesByBooking,guideMap,supplierMap,financeMap]);
+  const operationsSummary=useMemo(()=>({
+    all:operationRows.length,
+    today:operationRows.filter(r=>r.daysToTour===0).length,
+    week:operationRows.filter(r=>r.daysToTour!==null&&r.daysToTour>=0&&r.daysToTour<=7).length,
+    pending:operationRows.filter(r=>r.booking.status==="pending").length,
+    attention:operationRows.filter(r=>r.issues.length>0).length,
+    overdue:operationRows.filter(r=>r.daysToTour!==null&&r.daysToTour<0).length
+  }),[operationRows]);
+  const visibleOperations=useMemo(()=>{
+    const q=opsSearch.trim().toLocaleLowerCase();
+    return operationRows.filter(r=>{
+      const matches=opsFilter==="all"||
+        opsFilter==="today"&&r.daysToTour===0||
+        opsFilter==="week"&&r.daysToTour!==null&&r.daysToTour>=0&&r.daysToTour<=7||
+        opsFilter==="pending"&&r.booking.status==="pending"||
+        opsFilter==="attention"&&r.issues.length>0||
+        opsFilter==="overdue"&&r.daysToTour!==null&&r.daysToTour<0;
+      if(!matches)return false;
+      const b=r.booking,c=contactMap[b.contact_id||""];
+      return !q||[b.booking_code,bookingTourName(b,tourMap),c?.full_name,c?.whatsapp,b.hotel,r.supplier?.name,b.tour_date]
+        .some(v=>String(v||"").toLocaleLowerCase().includes(q));
+    });
+  },[operationRows,opsFilter,opsSearch,contactMap,tourMap]);
+
+  async function confirmOperationBooking(booking:Booking){
+    if(booking.status!=="pending")return;
+    if(!window.confirm("Xác nhận tour "+(booking.booking_code||"")+"?\\n\\nChỉ đổi trạng thái tour, không ghi nhận thanh toán và không gửi tin nhắn cho khách."))return;
+    setSaving(true);setErr("");setMsg("");
+    try{
+      const {data,error}=await supabase.from("bookings").update({status:"confirmed"})
+        .eq("id",booking.id).eq("status","pending").select("id");
+      if(error)throw error;
+      if(!data?.length)throw new Error("Booking có thể đã được người khác cập nhật. Hãy làm mới và kiểm tra lại.");
+      setMsg("Đã xác nhận tour "+(booking.booking_code||"")+". Trạng thái thanh toán giữ nguyên.");
+      await loadAll();
+    }catch(e:any){setErr(e?.message||"Không xác nhận được tour.");}
+    finally{setSaving(false);}
+  }
 
   async function resolveStaff(userId:string) {
     const {data,error}=await supabase.from("staff_profiles").select("id,display_name,role,active,auth_user_id").eq("auth_user_id",userId).eq("active",true).maybeSingle();
