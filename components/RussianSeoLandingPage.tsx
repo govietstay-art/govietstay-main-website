@@ -10,21 +10,70 @@ export default function RussianSeoLandingPage({
   landing: RussianSeoLanding;
 }) {
   const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(landing.whatsappText)}`;
+  const isDanang = landing.slug === "danang";
+
+  const heroCopy = (
+    <>
+      <nav aria-label="Хлебные крошки" className="mb-5 text-sm text-white/70">
+        <Link href="/ru" className="hover:text-white">Главная</Link>
+        <span aria-hidden="true" className="mx-2">/</span>
+        <span aria-current="page">{landing.shortTitle}</span>
+      </nav>
+      <p className="text-sm font-bold uppercase tracking-[.22em] text-amber-300">
+        {landing.eyebrow}
+      </p>
+      <h1 className={isDanang
+        ? "mt-4 text-[clamp(2.6rem,5vw,4.4rem)] font-black leading-[1.07] tracking-tight"
+        : "mt-4 max-w-4xl text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl md:text-7xl"
+      }>
+        {isDanang ? "Экскурсии в Дананге на русском" : landing.title}
+      </h1>
+      {isDanang && (
+        <p className="mt-5 text-lg font-bold text-amber-200 sm:text-xl">
+          Маршруты, погода и план на дождь
+        </p>
+      )}
+      <p className={isDanang
+        ? "mt-5 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg"
+        : "mt-6 max-w-3xl text-lg leading-relaxed text-white/85 md:text-xl"
+      }>
+        {landing.lead}
+      </p>
+      <a
+        href={whatsappUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-7 inline-flex rounded-full bg-[#20a65a] px-6 py-4 font-bold text-white shadow-lg transition hover:bg-[#168849]"
+      >
+        Задать вопрос в WhatsApp
+      </a>
+    </>
+  );
 
   return (
     <main className="min-h-screen bg-[#f7f1df] text-[#06251b]">
-      <section className="relative isolate min-h-[72svh] overflow-hidden bg-[#06251b] text-white">
-        <Image
-          src={landing.image}
-          alt={landing.imageAlt}
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
-        <div className="absolute inset-0 -z-0 bg-gradient-to-t from-[#031b14] via-[#031b14]/65 to-black/25" />
+      <section className={isDanang
+        ? "relative isolate overflow-hidden bg-[#08251f] text-white"
+        : "relative isolate min-h-[72svh] overflow-hidden bg-[#06251b] text-white"
+      }>
+        {!isDanang && (
+          <>
+            <Image
+              src={landing.image}
+              alt={landing.imageAlt}
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 -z-0 bg-gradient-to-t from-[#031b14] via-[#031b14]/65 to-black/25" />
+          </>
+        )}
 
-        <div className="relative z-10 mx-auto flex min-h-[72svh] max-w-6xl flex-col px-5 py-6 md:px-10 md:py-9">
+        <div className={isDanang
+          ? "relative z-10 mx-auto max-w-7xl px-5 pb-12 pt-6 md:px-10 md:pb-20 md:pt-9"
+          : "relative z-10 mx-auto flex min-h-[72svh] max-w-6xl flex-col px-5 py-6 md:px-10 md:py-9"
+        }>
           <header className="flex flex-wrap items-center justify-between gap-4">
             <Link href="/ru" className="text-xl font-black tracking-tight">
               GoVietStay
@@ -42,30 +91,28 @@ export default function RussianSeoLandingPage({
             </nav>
           </header>
 
-          <div className="mt-auto max-w-4xl pb-7 pt-20">
-            <nav aria-label="Хлебные крошки" className="mb-5 text-sm text-white/70">
-              <Link href="/ru" className="hover:text-white">Главная</Link>
-              <span aria-hidden="true" className="mx-2">/</span>
-              <span aria-current="page">{landing.shortTitle}</span>
-            </nav>
-            <p className="text-sm font-bold uppercase tracking-[.22em] text-amber-300">
-              {landing.eyebrow}
-            </p>
-            <h1 className="mt-4 max-w-4xl text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl md:text-7xl">
-              {landing.title}
-            </h1>
-            <p className="mt-6 max-w-3xl text-lg leading-relaxed text-white/85 md:text-xl">
-              {landing.lead}
-            </p>
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-7 inline-flex rounded-full bg-[#20a65a] px-6 py-4 font-bold text-white shadow-lg transition hover:bg-[#168849]"
-            >
-              Задать вопрос в WhatsApp
-            </a>
-          </div>
+          {isDanang ? (
+            <div className="mt-8 grid items-center gap-9 lg:mt-12 lg:grid-cols-[.92fr_1.08fr] lg:gap-12">
+              <div className="order-2 lg:order-1">{heroCopy}</div>
+              <figure className="relative order-1 overflow-hidden rounded-[1.75rem] border border-white/15 bg-[#103d38] shadow-[0_30px_80px_-35px_rgba(0,0,0,.65)] lg:order-2 lg:rounded-[2.25rem]">
+                <div className="relative aspect-[16/10] lg:aspect-[5/4]">
+                  <Image
+                    src={landing.image}
+                    alt={landing.imageAlt}
+                    fill
+                    priority
+                    sizes="(max-width: 1023px) 100vw, 55vw"
+                    className="object-cover object-right"
+                  />
+                </div>
+                <figcaption className="absolute bottom-4 left-4 rounded-full border border-white/20 bg-[#06251b]/75 px-4 py-2 text-xs font-semibold tracking-wide text-white backdrop-blur-md sm:bottom-6 sm:left-6 sm:text-sm">
+                  Дананг · Мост Дракона
+                </figcaption>
+              </figure>
+            </div>
+          ) : (
+            <div className="mt-auto max-w-4xl pb-7 pt-20">{heroCopy}</div>
+          )}
         </div>
       </section>
 
