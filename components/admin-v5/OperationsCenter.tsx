@@ -892,7 +892,7 @@ export default function OperationsCenter() {
           .map((b) => <div className="gvo-booking" key={b.id}>
             <div className="gvo-booking-top">
               <div><b>{b.tour_date} · {bookingName(b)}</b><div className="gvo-small">{b.booking_code || "—"} · {b.pax ?? b.adults+b.children} khách · {langLabel(b.guide_language)}</div></div>
-              <span className="gvo-pill">{b.internal_itinerary_vi ? "✓ Có lịch Việt" : "⚠ Thiếu lịch trình Việt"}</span>
+              {b.internal_itinerary_vi?.trim()&&<span className="gvo-pill">✓ Có lịch Việt</span>}
             </div>
             <div style={{ display:"flex", gap:8, flexWrap:"wrap", marginTop:9 }}>
               <button type="button" className="gvo-cost-btn" onClick={() => { setFocusDate(b.tour_date!); setView("dispatch"); }}>Xem điều phối</button>
@@ -1417,7 +1417,6 @@ function BookingModal({ tours, saving, onClose, onSubmit }: any) {
       <Field label="Điểm đến"><input name="custom_destination" className="gva-input" placeholder="Da Nang" /></Field>
       <Field label="Lịch trình khách / ngôn ngữ gốc" wide><textarea name="custom_itinerary" className="gva-input" rows={4} placeholder="Lịch trình đã xác nhận với khách..." /></Field>
     </>}
-    <Field label="🇻🇳 Lịch trình nội bộ tiếng Việt" wide><textarea name="internal_itinerary_vi" className="gva-input" rows={6} placeholder={"08:00 Đón khách\n09:00 Tham quan\n12:00 Ăn trưa..."} /></Field>
     <Field label="Ngày tour"><input name="tour_date" type="date" className="gva-input" defaultValue={localISO()} required /></Field>
     <Field label="Trạng thái"><select name="status" className="gva-select" defaultValue="pending"><option value="pending">Draft / nháp</option><option value="confirmed">Confirmed</option></select></Field>
     <Field label="Giờ bắt đầu"><input name="start_time" type="time" className="gva-input" /></Field>
@@ -1432,6 +1431,13 @@ function BookingModal({ tours, saving, onClose, onSubmit }: any) {
     <Field label="Deposit required / Cọc yêu cầu"><input name="deposit" inputMode="numeric" className="gva-input" placeholder="0" value={deposit} onChange={(e) => setDeposit(e.target.value)} /></Field>
     <Field label="Balance after deposit paid / Còn sau khi cọc" wide><input className="gva-input" value={money(balance)} readOnly /></Field>
     <Field label="Ghi chú" wide><textarea name="notes" className="gva-input" rows={3} /></Field>
+    <div className="gva-field wide">
+      <details style={{ border: "1px solid #cbd5e1", borderRadius: 12, padding: "12px 14px", background: "#f8fafc" }}>
+        <summary style={{ cursor: "pointer", fontWeight: 700, color: "#175cd3" }}>🇻🇳 + Thêm lịch trình tiếng Việt (nếu cần)</summary>
+        <p className="gva-mini" style={{ margin: "9px 0" }}>Tùy chọn cho tour riêng hoặc lịch trình phức tạp. Tour ghép hằng ngày có thể bỏ qua.</p>
+        <textarea name="internal_itinerary_vi" className="gva-input" rows={8} placeholder={"08:00 Đón khách\n09:00 Tham quan..."} />
+      </details>
+    </div>
     <ModalActions saving={saving} onClose={onClose} label="Lưu booking" />
   </form></ModalFrame>;
 }
