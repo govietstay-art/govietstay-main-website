@@ -519,8 +519,25 @@ export default function AdminV5() {
       if(!isCustom&&!vals.tour_id) throw new Error("Vui lòng chọn tour hoặc chọn Custom Tour.");
       if(vals.payment_status==="paid"&&booking.payment_status!=="paid")
         throw new Error("Không đánh dấu đã thu đủ trực tiếp tại Bookings. Vào Tài chính để ghi nhận tiền khách thực trả, sau đó chốt booking.");
-      if(["cancelled","refunded"].includes(vals.status)&&!["cancelled","refunded"].includes(booking.status))
-        throw new Error("Hủy/hoàn tiền phải thực hiện tại mục Tài chính để ghi nhận phí hủy và tránh sai công nợ.");
+      if(vals.status==="refunded"&&booking.status!=="refunded")
+        throw new Error("Hoàn tiền phải thực hiện tại mục Tài chính để đối chiếu tiền khách đã nhận.");
+      if(vals.status==="cancelled") {
+        const reason=String(vals.cancellation_reason||"").trim();
+        const supplierFee=Number(String(vals.supplier_fee_vnd||"0").replace(/[^0-9]/g,""));
+        const customerDue=Number(String(vals.customer_fee_due_vnd||"0").replace(/[^0-9]/g,""));
+        const feePaid=Number(String(vals.fee_paid_vnd||"0").replace(/[^0-9]/g,""));
+        if(!reason) throw new Error("Anh cần nhập lý do hủy.");
+        if(feePaid>supplierFee) throw new Error("Tiền đã trả nhà cung cấp không được lớn hơn phí phạt.");
+        const {error:cancelError}=await supabase.rpc("admin_save_cancellation_details",{
+          p_booking_id:booking.id,p_reason:reason,p_supplier_fee_vnd:supplierFee,
+          p_customer_fee_due_vnd:customerDue,p_fee_paid_vnd:feePaid
+        });
+        if(cancelError) throw cancelError;
+        setEditingBooking(null);
+        setMsg(`Đã hủy ${booking.booking_code||"booking"}; ghi nhận phí hủy khách phải trả ${money(customerDue)} (chưa mặc định là đã thu).`);
+        await loadAll();
+        return;
+      }
       const partner=partners.find(x=>x.id===vals.partner_id);
       const {error}=await supabase.from("bookings").update({
         tour_id:isCustom?null:vals.tour_id||null,
@@ -1184,13 +1201,30 @@ function EditBookingModal({booking,contact,tours,partners,onClose,onSubmit,savin
   const [tourChoice,setTourChoice]=useState(initialTourChoice);
   const [adults,setAdults]=useState(Math.max(0,Number(booking.adults||0)));
   const [children,setChildren]=useState(Math.max(0,Number(booking.children||0)));
+  const [status,setStatus]=useState(booking.status||"confirmed");
+  const [cancellation,setCancellation]=useState<any>(null);
+  useEffect(()=>{
+    let active=true;
+    if(booking.status==="cancelled") supabase.from("booking_cancellations")
+      .select("reason,supplier_fee_vnd,customer_fee_due_vnd,fee_paid_vnd")
+      .eq("booking_id",booking.id).maybeSingle()
+      .then(({data})=>{if(active)setCancellation(data||{});});
+    return ()=>{active=false};
+  },[booking.id,booking.status]);
   return <div className="gva-modal-bg"><form className="gva-modal" onSubmit={onSubmit}><div className="gva-modal-head"><div><h3>Sửa Booking</h3><div className="gva-mini">{booking.booking_code||"—"} · {contact?.full_name||"Khách"}</div></div><button type="button" className="gva-close" onClick={onClose}>✕</button></div><div className="gva-form-grid">
     <F label="Booking code"><input className="gva-input" value={booking.booking_code||""} readOnly /></F><F label="Khách"><input className="gva-input" value={contact?.full_name||""} readOnly /></F>
     <F label="Tour"><select name="tour_id" className="gva-select" required value={tourChoice} onChange={e=>setTourChoice(e.target.value)}><option value="">Chọn tour</option><option value="__custom__">+ Tour khác / Custom Tour</option>{tours.map((x:any)=><option value={x.id} key={x.id}>{x.name}</option>)}</select></F><F label="Ngày đi"><input name="tour_date" type="date" className="gva-input" defaultValue={booking.tour_date||""} required /></F>
     {tourChoice==="__custom__"&&<F label="Tên Custom Tour" wide><input name="custom_tour_name" className="gva-input" defaultValue={booking.custom_tour_name||""} placeholder="VD: Private City Tour + Dinner" required /></F>}
     <F label="Adults"><input name="adults" type="number" min="0" step="1" value={adults} onChange={e=>setAdults(Math.max(0,Number(e.target.value||0)))} className="gva-input" /></F><F label="Children"><input name="children" type="number" min="0" step="1" value={children} onChange={e=>setChildren(Math.max(0,Number(e.target.value||0)))} className="gva-input" /></F>
     <F label="Tổng PAX"><input className="gva-input" value={adults+children} readOnly /></F><F label="Revenue VND"><input name="revenue" inputMode="numeric" className="gva-input" defaultValue={booking.gross_revenue_vnd||0} required /></F>
-    <F label="Payment"><select name="payment_status" className="gva-select" defaultValue={booking.payment_status||"unpaid"}><option value="unpaid">unpaid</option><option value="deposit">deposit</option><option value="paid">paid</option><option value="refunded">refunded</option><option value="partial_refund">partial_refund</option></select></F><F label="Status"><select name="status" className="gva-select" defaultValue={booking.status||"confirmed"}><option value="pending">pending</option><option value="confirmed">confirmed</option><option value="completed">completed</option><option value="cancelled">cancelled</option><option value="refunded">refunded</option></select></F>
+    <F label="Payment"><select name="payment_status" className="gva-select" defaultValue={booking.payment_status||"unpaid"}><option value="unpaid">unpaid</option><option value="deposit">deposit</option><option value="paid">paid</option><option value="refunded">refunded</option><option value="partial_refund">partial_refund</option></select></F><F label="Status"><select name="status" className="gva-select" value={status} onChange={e=>setStatus(e.target.value)}><option value="pending">pending</option><option value="confirmed">confirmed</option><option value="completed">completed</option><option value="cancelled">cancelled</option><option value="refunded">refunded</option></select></F>
+    {status==="cancelled"&&<>
+      <F label="Lý do hủy" wide><textarea key={cancellation?.reason||"new"} name="cancellation_reason" className="gva-input" rows={2} required defaultValue={cancellation?.reason||""} placeholder="Khách yêu cầu hủy tour…" /></F>
+      <F label="Phí hủy phải thu khách (VND)"><input key={"due"+(cancellation?.customer_fee_due_vnd??"new")} name="customer_fee_due_vnd" type="number" min="0" step="1" className="gva-input" required defaultValue={cancellation?.customer_fee_due_vnd||0}/></F>
+      <F label="Phí phạt nhà cung cấp (VND)"><input key={"supplier"+(cancellation?.supplier_fee_vnd??"new")} name="supplier_fee_vnd" type="number" min="0" step="1" className="gva-input" required defaultValue={cancellation?.supplier_fee_vnd||0}/></F>
+      <F label="Đã trả nhà cung cấp (VND)"><input key={"paid"+(cancellation?.fee_paid_vnd??"new")} name="fee_paid_vnd" type="number" min="0" step="1" className="gva-input" required defaultValue={cancellation?.fee_paid_vnd||0}/></F>
+      <F label="Công nợ phí hủy" wide><div className="gva-analytics-note">Số phải thu được nhập thủ công, không tự tính theo %. Chưa ghi nhận là tiền đã nhận. Khi hủy, các ô chỉnh sửa tour khác không được cập nhật; hãy lưu các thay đổi đó trước.</div></F>
+    </>}
     <F label="Guide language"><select name="guide_language" className="gva-select" defaultValue={booking.guide_language||""}><option value="">—</option>{GVS_BOOKING_LANGUAGES.filter(([value])=>value).map(([value,label])=><option key={value} value={value}>{label} Guide</option>)}</select></F><F label="Partner"><select name="partner_id" className="gva-select" defaultValue={booking.partner_id||""}><option value="">Không có</option>{partners.map((x:any)=><option value={x.id} key={x.id}>{x.name} · {x.ref_code}</option>)}</select></F>
     <F label="Khách sạn"><input name="hotel" className="gva-input" defaultValue={booking.hotel||""} /></F><F label="Lưu ý Revenue"><div className="gva-analytics-note" style={{margin:0}}>Đổi PAX không tự tính lại doanh thu. Revenue chỉ thay đổi khi anh sửa ô Revenue.</div></F>
     <F label="🇻🇳 Lịch trình nội bộ tiếng Việt" wide><textarea name="internal_itinerary_vi" className="gva-input" rows={8} defaultValue={booking.internal_itinerary_vi||""} placeholder={"08:00 Đón khách\n09:00 Tham quan..."} /></F>
