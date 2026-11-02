@@ -86,7 +86,7 @@ type Expense = {
   notes:string|null;
 };
 type CancellationSummary = {count:number;supplier_fees_vnd:number;recovered_vnd:number;net_loss_vnd:number;paid_vnd:number;payable_vnd:number};
-type CancellationRow = {booking_id:string;cancelled_at:string;reason:string;supplier_fee_vnd:number;customer_recovery_vnd:number;fee_paid_vnd:number;bookings?:{booking_code:string;custom_tour_name:string|null;pax:number}|null};
+type CancellationRow = {booking_id:string;cancelled_at:string;reason:string;supplier_fee_vnd:number;customer_fee_due_vnd:number;customer_recovery_vnd:number;fee_paid_vnd:number;bookings?:{booking_code:string;custom_tour_name:string|null;pax:number}|null};
 
 function money(v:any){
   return new Intl.NumberFormat("vi-VN").format(Number(v||0))+" ₫";
@@ -145,7 +145,7 @@ export default function FinancePL({supabase}:Props){
           .gte("expense_date",start).lt("expense_date",end)
           .order("expense_date",{ascending:false}).order("created_at",{ascending:false}),
         supabase.rpc("admin_monthly_cancellation_summary",{p_month:pMonth}),
-        supabase.from("booking_cancellations").select("booking_id,cancelled_at,reason,supplier_fee_vnd,customer_recovery_vnd,fee_paid_vnd,bookings(booking_code,custom_tour_name,pax)")
+        supabase.from("booking_cancellations").select("booking_id,cancelled_at,reason,supplier_fee_vnd,customer_fee_due_vnd,customer_recovery_vnd,fee_paid_vnd,bookings(booking_code,custom_tour_name,pax)")
           .gte("cancelled_at",start).lt("cancelled_at",end).order("cancelled_at",{ascending:false})
       ]);
       for(const r of results) if(r.error) throw r.error;
@@ -232,14 +232,14 @@ export default function FinancePL({supabase}:Props){
   async function submitCancellation(e:any){
     e.preventDefault(); if(!cancelBooking)return;
     const vals=Object.fromEntries(new FormData(e.currentTarget).entries()) as Record<string,string>;
-    const fee=parseMoney(vals.supplier_fee_vnd), paid=parseMoney(vals.fee_paid_vnd), recovery=parseMoney(vals.customer_recovery_vnd);
+    const fee=parseMoney(vals.supplier_fee_vnd), paid=parseMoney(vals.fee_paid_vnd), due=parseMoney(vals.customer_fee_due_vnd);
     if(paid>fee){setError("Số đã trả không thể vượt phí nhà cung cấp.");return;}
-    if(!window.confirm(`Xác nhận hủy ${cancelBooking.booking_code||"booking"}? Phí nhà cung cấp ${money(fee)}, thu hồi ${money(recovery)}, lỗ ${money(fee-recovery)}. Booking sẽ không được ghi doanh thu tour.`))return;
+    if(!window.confirm(`Xác nhận hủy ${cancelBooking.booking_code||"booking"}? Phí nhà cung cấp ${money(fee)}, phí phải thu khách ${money(due)}. Chưa mặc định khách đã thanh toán.`))return;
     setSaving(true);setError("");setMessage("");
     try{
-      const {error}=await supabase.rpc("admin_cancel_booking",{p_booking_id:cancelBooking.booking_id,p_reason:vals.reason.trim(),p_supplier_fee_vnd:fee,p_customer_recovery_vnd:recovery,p_fee_paid_vnd:paid});
+      const {error}=await supabase.rpc("admin_save_cancellation_details",{p_booking_id:cancelBooking.booking_id,p_reason:vals.reason.trim(),p_supplier_fee_vnd:fee,p_customer_fee_due_vnd:due,p_fee_paid_vnd:paid});
       if(error)throw error;
-      setCancelBooking(null);setMessage("Đã hủy booking và ghi nhận tổn thất vào P&L tháng hủy.");await load();
+      setCancelBooking(null);setMessage("Đã hủy booking; phí phải thu khách được theo dõi riêng, chưa tính là tiền đã thu.");await load();
     }catch(e:any){setError(e?.message||"Không thể hủy booking.");}finally{setSaving(false);}
   }
   async function updateCancellationPayment(row:CancellationRow){
@@ -253,6 +253,19 @@ export default function FinancePL({supabase}:Props){
       if(error)throw error;
       setMessage("Đã cập nhật số đã trả, không tạo thêm chi phí P&L.");await load();
     }catch(e:any){setError(e?.message||"Không cập nhật được thanh toán phí hủy.");}finally{setSaving(false);}
+  }
+  async function updateCancellationRecovery(row:CancellationRow){
+    const input=window.prompt(`TỔNG tiền phí hủy đã thực thu từ khách cho ${row.bookings?.booking_code||row.booking_id} (VND):`,String(row.customer_recovery_vnd));
+    if(input===null)return;
+    const received=parseMoney(input);
+    if(received>row.customer_fee_due_vnd){setError("Tiền đã thu không được vượt phí hủy phải thu.");return;}
+    if(!window.confirm(`Xác nhận tổng tiền phí hủy THỰC NHẬN từ khách là ${money(received)}? Không nhập số tiền khách chỉ hứa trả.`))return;
+    setSaving(true);setError("");setMessage("");
+    try{
+      const {error}=await supabase.rpc("admin_record_cancellation_recovery",{p_booking_id:row.booking_id,p_received_total_vnd:received});
+      if(error)throw error;
+      setMessage("Đã ghi nhận tổng tiền phí hủy thực thu.");await load();
+    }catch(e:any){setError(e?.message||"Không lưu được tiền phí hủy thực thu.");}finally{setSaving(false);}
   }
 
   async function addExpense(e:any){
@@ -368,7 +381,7 @@ export default function FinancePL({supabase}:Props){
     </div>
 
     <div className="gva-card gvs-finance-section">
-      <div className="gva-section-head"><div><h2>Cancellation Losses</h2><div className="gva-mini">Ngày hủy quyết định kỳ P&amp;L. Phí phải trả dù chưa thanh toán vẫn được ghi nhận.</div></div></div>
+      <div className="gva-section-head"><div><h2>Cancellation Finance</h2><div className="gva-mini">Phí phải thu khách là công nợ; chỉ số Recovered phản ánh số đã thu hồi, không mặc định bằng số phải thu.</div></div></div>
       <div className="gvs-finance-balance-grid">
         <MiniStat label="Supplier cancellation fees" value={money(cancellationSummary.supplier_fees_vnd)} />
         <MiniStat label="Customer recovery" value={money(cancellationSummary.recovered_vnd)} />
@@ -376,9 +389,9 @@ export default function FinancePL({supabase}:Props){
         <MiniStat label="Fee paid" value={money(cancellationSummary.paid_vnd)} />
         <MiniStat label="Fee payable" value={money(cancellationSummary.payable_vnd)} />
       </div>
-      <div className="gva-table-wrap"><table className="gva-table"><thead><tr><th>Cancelled</th><th>Booking</th><th>Reason</th><th>Supplier fee</th><th>Recovered</th><th>Loss</th><th>Payable</th><th></th></tr></thead><tbody>
-        {cancellations.map(x=><tr key={x.booking_id}><td>{x.cancelled_at.slice(0,10)}</td><td>{x.bookings?.booking_code||x.booking_id}</td><td>{x.reason}</td><td>{money(x.supplier_fee_vnd)}</td><td>{money(x.customer_recovery_vnd)}</td><td>{money(x.supplier_fee_vnd-x.customer_recovery_vnd)}</td><td>{money(x.supplier_fee_vnd-x.fee_paid_vnd)}</td><td><button className="gva-btn secondary" disabled={saving} onClick={()=>updateCancellationPayment(x)}>Đã trả</button></td></tr>)}
-        {!cancellations.length&&<tr><td colSpan={8}>Chưa có booking hủy trong tháng.</td></tr>}
+      <div className="gva-table-wrap"><table className="gva-table"><thead><tr><th>Cancelled</th><th>Booking</th><th>Reason</th><th>Supplier fee</th><th>Phải thu khách</th><th>Đã thu hồi</th><th>Còn phải thu</th><th>Net loss / gain</th><th>Supplier payable</th><th></th></tr></thead><tbody>
+        {cancellations.map(x=><tr key={x.booking_id}><td>{x.cancelled_at.slice(0,10)}</td><td>{x.bookings?.booking_code||x.booking_id}</td><td>{x.reason}</td><td>{money(x.supplier_fee_vnd)}</td><td>{money(x.customer_fee_due_vnd)}</td><td>{money(x.customer_recovery_vnd)}</td><td>{money(Math.max(0,x.customer_fee_due_vnd-x.customer_recovery_vnd))}</td><td>{money(x.supplier_fee_vnd-x.customer_recovery_vnd)}</td><td>{money(x.supplier_fee_vnd-x.fee_paid_vnd)}</td><td><div style={{display:"flex",gap:5,flexWrap:"wrap"}}><button className="gva-btn secondary" disabled={saving} onClick={()=>updateCancellationRecovery(x)}>Thu khách</button><button className="gva-btn secondary" disabled={saving} onClick={()=>updateCancellationPayment(x)}>Trả NCC</button></div></td></tr>)}
+        {!cancellations.length&&<tr><td colSpan={10}>Chưa có booking hủy trong tháng.</td></tr>}
       </tbody></table></div>
     </div>
 
@@ -403,7 +416,7 @@ export default function FinancePL({supabase}:Props){
       <div className="gva-form-grid">
         <Field label="Lý do hủy" wide><textarea className="gva-input" name="reason" required rows={2} placeholder="Khách hủy sát giờ, chưa đặt cọc…"/></Field>
         <MoneyField name="supplier_fee_vnd" label="Phí nhà cung cấp (VND)" value={0}/>
-        <MoneyField name="customer_recovery_vnd" label="Tiền giữ lại / thu hồi (VND)" value={0}/>
+        <MoneyField name="customer_fee_due_vnd" label="Phí hủy phải thu khách (VND)" value={0}/>
         <MoneyField name="fee_paid_vnd" label="Đã trả nhà cung cấp (VND)" value={0}/>
       </div>
       <div className="gvs-modal-actions"><button type="button" className="gva-btn secondary" onClick={()=>setCancelBooking(null)}>Quay lại</button><button className="gva-btn" disabled={saving}>{saving?"Đang lưu…":"Xác nhận hủy & ghi lỗ"}</button></div>
