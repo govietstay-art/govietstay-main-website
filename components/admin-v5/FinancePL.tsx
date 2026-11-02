@@ -129,6 +129,13 @@ export default function FinancePL({supabase}:Props){
   const [cancelBooking,setCancelBooking]=useState<BookingRow|null>(null);
   const [cancellationSummary,setCancellationSummary]=useState<CancellationSummary>({count:0,supplier_fees_vnd:0,recovered_vnd:0,net_loss_vnd:0,paid_vnd:0,payable_vnd:0});
   const [cancellations,setCancellations]=useState<CancellationRow[]>([]);
+  const cancellationRevenue=Number(cancellationSummary.recovered_vnd||0);
+  const cancellationCost=Number(cancellationSummary.supplier_fees_vnd||0);
+  const cancellationProfit=cancellationRevenue-cancellationCost;
+  const totalActualRevenue=Number(summary.revenue_vnd||0)+cancellationRevenue;
+  const totalDirectCosts=Number(summary.direct_costs_vnd||0)+cancellationCost;
+  const totalGrossProfit=totalActualRevenue-totalDirectCosts;
+  const totalNetProfit=totalGrossProfit-Number(summary.opex_vnd||0);
 
   async function load(){
     setLoading(true); setError("");
@@ -298,7 +305,7 @@ export default function FinancePL({supabase}:Props){
     <div className="gvs-finance-head">
       <div>
         <h2>Monthly P&amp;L · {monthLabel(month)}</h2>
-        <p>Doanh thu tour chỉ ghi nhận booking <b>COMPLETED/CLOSED</b>. Phí hủy không thu hồi được ghi lỗ vào tháng hủy, kể cả chưa đặt cọc.</p>
+        <p>Doanh thu gồm tour <b>COMPLETED/CLOSED</b> và phí hủy thực thu trong tháng. Phí hủy khách còn nợ được theo dõi riêng, chưa tính vào doanh thu.</p>
       </div>
       <div className="gvs-finance-head-actions">
         <input className="gva-input" type="month" value={month} onChange={e=>setMonth(e.target.value)} />
@@ -311,15 +318,15 @@ export default function FinancePL({supabase}:Props){
     {message&&<div className="gva-msg">{message}</div>}
 
     <div className="gvs-pl-kpis">
-      <PLCard label="Revenue" value={money(summary.revenue_vnd)} hint={`${summary.bookings_completed||0} completed bookings · ${summary.pax_completed||0} pax`} />
-      <PLCard label="Direct Cost + cancellation losses" value={money(Number(summary.direct_costs_vnd||0)+Number(cancellationSummary.net_loss_vnd||0))} hint={`Tour costs + cancellation loss ${money(cancellationSummary.net_loss_vnd)}`} />
-      <PLCard label="Gross Profit" value={money(Number(summary.gross_profit_vnd||0)-Number(cancellationSummary.net_loss_vnd||0))} hint="Đã trừ lỗ do hủy tour" tone={(Number(summary.gross_profit_vnd||0)-Number(cancellationSummary.net_loss_vnd||0))>=0?"good":"bad"} />
+      <PLCard label="Total Revenue" value={money(totalActualRevenue)} hint={`Tour ${money(summary.revenue_vnd)} + phí hủy đã thu ${money(cancellationRevenue)}`} />
+      <PLCard label="Total Direct Cost" value={money(totalDirectCosts)} hint={`Chi phí tour ${money(summary.direct_costs_vnd)} + phí hủy NCC ${money(cancellationCost)}`} />
+      <PLCard label="Gross Profit" value={money(totalGrossProfit)} hint={`Lãi/lỗ phí hủy ${cancellationProfit>=0?"+":"−"}${money(Math.abs(cancellationProfit))}`} tone={totalGrossProfit>=0?"good":"bad"} />
       <PLCard label="Operating Expenses" value={money(summary.opex_vnd)} hint="Manual OPEX / Ads / Office / Software / Other (no sales base salary)" />
-      <PLCard label="Net Operating Profit" value={money(Number(summary.net_profit_vnd||0)-Number(cancellationSummary.net_loss_vnd||0))} hint="Đã trừ lỗ hủy tour" tone={(Number(summary.net_profit_vnd||0)-Number(cancellationSummary.net_loss_vnd||0))>=0?"good":"bad"} strong />
+      <PLCard label="Net Operating Profit" value={money(totalNetProfit)} hint="Đã cộng doanh thu phí hủy thực thu và trừ chi phí hủy" tone={totalNetProfit>=0?"good":"bad"} strong />
     </div>
 
     <div className="gvs-finance-note">
-      <b>Actual P&amp;L:</b> Revenue − Tour Direct Cost − Net Cancellation Loss = Gross Profit; Gross Profit − OPEX = Net Operating Profit.
+      <b>Actual P&amp;L:</b> (Doanh thu tour + phí hủy đã thu) − (chi phí tour + phí nhà cung cấp khi hủy) = Gross Profit; Gross Profit − OPEX = Net Operating Profit.
       {(summary.missing_finance_count||0)>0&&<span className="warn"> ⚠ {summary.missing_finance_count} completed booking chưa có finance record; lợi nhuận có thể đang bị tính cao.</span>}
     </div>
 
@@ -330,7 +337,7 @@ export default function FinancePL({supabase}:Props){
       <MiniStat label="Direct cost committed" value={money(summary.committed_direct_cost_vnd)} hint="Chi phí đã nhập" />
       <MiniStat label="Direct cost paid" value={money(summary.direct_cost_paid_vnd)} hint="Đã thanh toán" />
       <MiniStat label="Direct cost payable" value={money(summary.direct_cost_payable_vnd)} hint="Còn phải trả" />
-      <MiniStat label="Cancellation payable" value={money(cancellationSummary.payable_vnd)} hint={`${cancellationSummary.count||0} booking hủy · Lỗ ${money(cancellationSummary.net_loss_vnd)}`} />
+      <MiniStat label="Cancellation payable" value={money(cancellationSummary.payable_vnd)} hint={`${cancellationSummary.count||0} booking hủy · Lãi/lỗ ${money(cancellationProfit)}`} />
     </div>
 
     <div className="gvs-finance-insights">
@@ -385,12 +392,12 @@ export default function FinancePL({supabase}:Props){
       <div className="gvs-finance-balance-grid">
         <MiniStat label="Supplier cancellation fees" value={money(cancellationSummary.supplier_fees_vnd)} />
         <MiniStat label="Customer recovery" value={money(cancellationSummary.recovered_vnd)} />
-        <MiniStat label="Net loss" value={money(cancellationSummary.net_loss_vnd)} />
+        <MiniStat label="Net gain / loss" value={money(cancellationProfit)} />
         <MiniStat label="Fee paid" value={money(cancellationSummary.paid_vnd)} />
         <MiniStat label="Fee payable" value={money(cancellationSummary.payable_vnd)} />
       </div>
-      <div className="gva-table-wrap"><table className="gva-table"><thead><tr><th>Cancelled</th><th>Booking</th><th>Reason</th><th>Supplier fee</th><th>Phải thu khách</th><th>Đã thu hồi</th><th>Còn phải thu</th><th>Net loss / gain</th><th>Supplier payable</th><th></th></tr></thead><tbody>
-        {cancellations.map(x=><tr key={x.booking_id}><td>{x.cancelled_at.slice(0,10)}</td><td>{x.bookings?.booking_code||x.booking_id}</td><td>{x.reason}</td><td>{money(x.supplier_fee_vnd)}</td><td>{money(x.customer_fee_due_vnd)}</td><td>{money(x.customer_recovery_vnd)}</td><td>{money(Math.max(0,x.customer_fee_due_vnd-x.customer_recovery_vnd))}</td><td>{money(x.supplier_fee_vnd-x.customer_recovery_vnd)}</td><td>{money(x.supplier_fee_vnd-x.fee_paid_vnd)}</td><td><div style={{display:"flex",gap:5,flexWrap:"wrap"}}><button className="gva-btn secondary" disabled={saving} onClick={()=>updateCancellationRecovery(x)}>Thu khách</button><button className="gva-btn secondary" disabled={saving} onClick={()=>updateCancellationPayment(x)}>Trả NCC</button></div></td></tr>)}
+      <div className="gva-table-wrap"><table className="gva-table"><thead><tr><th>Cancelled</th><th>Booking</th><th>Reason</th><th>Supplier fee</th><th>Phải thu khách</th><th>Đã thu hồi</th><th>Còn phải thu</th><th>Lãi / lỗ hủy</th><th>Supplier payable</th><th></th></tr></thead><tbody>
+        {cancellations.map(x=><tr key={x.booking_id}><td>{x.cancelled_at.slice(0,10)}</td><td>{x.bookings?.booking_code||x.booking_id}</td><td>{x.reason}</td><td>{money(x.supplier_fee_vnd)}</td><td>{money(x.customer_fee_due_vnd)}</td><td>{money(x.customer_recovery_vnd)}</td><td>{money(Math.max(0,x.customer_fee_due_vnd-x.customer_recovery_vnd))}</td><td><b style={{color:x.customer_recovery_vnd>=x.supplier_fee_vnd?"#067647":"#b42318"}}>{money(x.customer_recovery_vnd-x.supplier_fee_vnd)}</b></td><td>{money(x.supplier_fee_vnd-x.fee_paid_vnd)}</td><td><div style={{display:"flex",gap:5,flexWrap:"wrap"}}><button className="gva-btn secondary" disabled={saving} onClick={()=>updateCancellationRecovery(x)}>Thu khách</button><button className="gva-btn secondary" disabled={saving} onClick={()=>updateCancellationPayment(x)}>Trả NCC</button></div></td></tr>)}
         {!cancellations.length&&<tr><td colSpan={10}>Chưa có booking hủy trong tháng.</td></tr>}
       </tbody></table></div>
     </div>
