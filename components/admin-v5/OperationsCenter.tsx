@@ -92,7 +92,62 @@ const LANGUAGES = [
   ["he", "🇮🇱 Hebrew"],
   ["ar", "🇸🇦 Arabic"],
   ["vi", "🇻🇳 Vietnamese"],
+  ["de", "🇩🇪 German"],
+  ["fr", "🇫🇷 French"],
+  ["pt", "🇵🇹 Portuguese"],
+  ["ja", "🇯🇵 Japanese"],
+  ["es", "🇪🇸 Spanish"],
 ] as const;
+
+// Guide records were imported from different sources with inconsistent spelling.
+// Normalize for searching/filtering without changing any saved profile data.
+function guideKey(value: string) {
+  return String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/gi, "d").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim();
+}
+const GUIDE_AREAS: Record<string, string> = {
+  "phu quoc": "Phú Quốc", phuquoc: "Phú Quốc", pq: "Phú Quốc", "dao phu quoc": "Phú Quốc",
+  "da nang": "Đà Nẵng", danang: "Đà Nẵng", dn: "Đà Nẵng",
+  "hoi an": "Hội An", hoian: "Hội An", hue: "Huế",
+  "ha noi": "Hà Nội", hanoi: "Hà Nội", hn: "Hà Nội",
+  "ho tram": "Hồ Tràm", hotram: "Hồ Tràm",
+  "ho chi minh": "TP. Hồ Chí Minh", hcm: "TP. Hồ Chí Minh", "tp hcm": "TP. Hồ Chí Minh", saigon: "TP. Hồ Chí Minh", "sai gon": "TP. Hồ Chí Minh",
+  "nha trang": "Nha Trang", "da lat": "Đà Lạt", dalat: "Đà Lạt", "ha long": "Hạ Long", "quy nhon": "Quy Nhơn", "can tho": "Cần Thơ",
+};
+function guideArea(value: string) {
+  const key = guideKey(value);
+  const label = GUIDE_AREAS[key] || value.trim();
+  return { key: guideKey(label), label };
+}
+function guideAreaLabels(guide: Guide) {
+  return Array.from(new Map((guide.service_areas || [])
+    .flatMap((value) => String(value || "").split(/[,;|/]+/))
+    .map(guideArea).filter((item) => item.key).map((item) => [item.key, item.label] as const)).values());
+}
+function guideAreas(guide: Guide) {
+  return guideAreaLabels(guide).map(guideKey);
+}
+const GUIDE_LANGUAGE_ALIASES: Record<string, string> = {
+  en: "en", eng: "en", english: "en", anh: "en", "tieng anh": "en",
+  ru: "ru", rus: "ru", russian: "ru", nga: "ru", "tieng nga": "ru",
+  zh: "zh", cn: "zh", chinese: "zh", mandarin: "zh", trung: "zh", "tieng trung": "zh", "中文": "zh",
+  it: "it", italian: "it", italy: "it", italia: "it", "tieng y": "it",
+  de: "de", german: "de", germany: "de", duc: "de", "tieng duc": "de",
+  fr: "fr", french: "fr", france: "fr", phap: "fr", "tieng phap": "fr",
+  pt: "pt", portuguese: "pt", portugal: "pt", "bo dao nha": "pt",
+  vi: "vi", vn: "vi", vietnam: "vi", vietnamese: "vi", "viet nam": "vi",
+  ko: "ko", korean: "ko", korea: "ko", "han quoc": "ko", "tieng han": "ko",
+  he: "he", hebrew: "he", "do thai": "he",
+  ar: "ar", arabic: "ar", tr: "tr", turkish: "tr",
+  ja: "ja", jp: "ja", japanese: "ja", nhat: "ja",
+  es: "es", spanish: "es", "tay ban nha": "es",
+};
+function guideLanguageCodes(guide: Guide) {
+  return Array.from(new Set((guide.languages || [])
+    .flatMap((value) => String(value || "").split(/[,;|/]+/))
+    .map((value) => guideKey(value)).filter(Boolean)
+    .map((value) => GUIDE_LANGUAGE_ALIASES[value] || value)));
+}
 
 function localISO(date = new Date()) {
   const y = date.getFullYear();
@@ -184,6 +239,10 @@ export default function OperationsCenter() {
   const [calendarMonth, setCalendarMonth] = useState(monthValue());
   const [mobileCalendarFilter, setMobileCalendarFilter] = useState<"today" | "tomorrow" | "7days" | "month">("month");
   const [languageFilter, setLanguageFilter] = useState("all");
+  const [guideAreaFilter, setGuideAreaFilter] = useState("all");
+  const [guideLanguageFilter, setGuideLanguageFilter] = useState("all");
+  const [guideSearch, setGuideSearch] = useState("");
+  const [guideActiveFilter, setGuideActiveFilter] = useState("all");
 
   const [tours, setTours] = useState<Tour[]>([]);
   const [guides, setGuides] = useState<Guide[]>([]);
@@ -476,6 +535,46 @@ export default function OperationsCenter() {
     () => guides.filter((g) => g.active && (languageFilter === "all" || (g.languages || []).includes(languageFilter))),
     [guides, languageFilter]
   );
+  const guideAreaOptions = useMemo(() => {
+    const areas = new Map<string, { label: string; count: number }>();
+    let missing = 0;
+    guides.forEach((guide) => {
+      const keys = guideAreas(guide);
+      if (!keys.length) missing++;
+      guideAreaLabels(guide).forEach((label) => {
+        const key = guideKey(label);
+        areas.set(key, { label, count: (areas.get(key)?.count || 0) + 1 });
+      });
+    });
+    const preferred = ["Phú Quốc", "Đà Nẵng", "Hội An", "Huế", "Hà Nội", "Hồ Tràm"].map(guideKey);
+    const options = [...areas].sort(([a, av], [b, bv]) => {
+      const ai = preferred.indexOf(a), bi = preferred.indexOf(b);
+      return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi) || av.label.localeCompare(bv.label, "vi");
+    }).map(([key, value]) => ({ key, ...value }));
+    if (missing) options.push({ key: "__missing__", label: "Chưa có khu vực", count: missing });
+    return options;
+  }, [guides]);
+  const guideLanguageOptions = useMemo(() => {
+    const languageCodes = new Set(guides.flatMap(guideLanguageCodes));
+    return [...languageCodes].sort((a, b) => langLabel(a).localeCompare(langLabel(b), "vi"));
+  }, [guides]);
+  const filteredGuides = useMemo(() => {
+    const query = guideKey(guideSearch);
+    const phoneQuery = guideSearch.replace(/\D/g, "");
+    return guides.filter((guide) => {
+      const areas = guideAreas(guide);
+      const languages = guideLanguageCodes(guide);
+      if (guideActiveFilter === "active" && !guide.active) return false;
+      if (guideActiveFilter === "inactive" && guide.active) return false;
+      if (guideAreaFilter !== "all" && (guideAreaFilter === "__missing__" ? areas.length > 0 : !areas.includes(guideAreaFilter))) return false;
+      if (guideLanguageFilter !== "all" && !languages.includes(guideLanguageFilter)) return false;
+      if (!query) return true;
+      const searchable = guideKey([guide.full_name, guide.phone, guide.whatsapp, guide.zalo,
+        ...(guide.service_areas || []), ...languages.map(langLabel), ...(guide.languages || [])].join(" "));
+      const contacts = [guide.phone, guide.whatsapp, guide.zalo].join(" ").replace(/\D/g, "");
+      return searchable.includes(query) || (!!phoneQuery && contacts.includes(phoneQuery));
+    });
+  }, [guides, guideAreaFilter, guideLanguageFilter, guideActiveFilter, guideSearch]);
   const sevenDayBookings = useMemo(() => {
     const start = localISO();
     const end = addDays(start, 6);
@@ -1139,9 +1238,38 @@ export default function OperationsCenter() {
 
     {view === "guides" && isAdmin && <section className="gvo-card">
       <div className="gvo-card-head"><div><h2>Database hướng dẫn viên</h2><p>Mỗi HDV một hồ sơ; lịch rảnh lưu riêng theo ngày/khung giờ.</p></div><button className="gva-btn" onClick={() => setModal("guide")}>+ Thêm HDV</button></div>
-      <div className="gvo-table-wrap"><table className="gvo-table"><thead><tr><th>HDV</th><th>Ngôn ngữ</th><th>Khu vực</th><th>Liên hệ</th><th>Nửa ngày</th><th>Cả ngày</th><th>License</th></tr></thead><tbody>
-        {guides.map((g) => <tr key={g.id}><td><b>{g.full_name}</b>{!g.active && <div className="gvo-small">inactive</div>}</td><td>{(g.languages || []).map(langLabel).join(", ") || "—"}</td><td>{(g.service_areas || []).join(", ") || "—"}</td><td>{g.whatsapp || g.phone || g.zalo || "—"}</td><td>{money(g.half_day_rate_vnd)}</td><td>{money(g.full_day_rate_vnd)}</td><td>{g.license_status}</td></tr>)}
-        {!guides.length && <tr><td colSpan={7}><div className="gvo-empty">Chưa có hướng dẫn viên. Hãy thêm hồ sơ đầu tiên.</div></td></tr>}
+      <div className="gvo-guide-filters" role="search" aria-label="Tìm hướng dẫn viên">
+        <label className="gvo-guide-filter-field"><span>Khu vực</span><select className="gva-select" value={guideAreaFilter} onChange={(e) => setGuideAreaFilter(e.target.value)}>
+          <option value="all">📍 Tất cả khu vực</option>
+          {guideAreaOptions.map((area) => <option key={area.key} value={area.key}>{area.label} ({area.count})</option>)}
+        </select></label>
+        <label className="gvo-guide-filter-field"><span>Ngôn ngữ</span><select className="gva-select" value={guideLanguageFilter} onChange={(e) => setGuideLanguageFilter(e.target.value)}>
+          <option value="all">Tất cả ngôn ngữ</option>
+          {guideLanguageOptions.map((code) => <option key={code} value={code}>{langLabel(code)}</option>)}
+        </select></label>
+        <label className="gvo-guide-filter-field"><span>Trạng thái</span><select className="gva-select" value={guideActiveFilter} onChange={(e) => setGuideActiveFilter(e.target.value)}>
+          <option value="all">Tất cả hồ sơ</option><option value="active">Đang hợp tác</option><option value="inactive">Ngừng hợp tác</option>
+        </select></label>
+        <label className="gvo-guide-filter-field gvo-guide-search"><span>Tìm nhanh</span><input type="search" className="gva-input" value={guideSearch} onChange={(e) => setGuideSearch(e.target.value)} placeholder="Tên HDV hoặc số điện thoại..." /></label>
+      </div>
+      <div className="gvo-guide-filter-summary">
+        <span>Hiển thị <b>{filteredGuides.length}</b> / {guides.length} hướng dẫn viên</span>
+        {(guideAreaFilter !== "all" || guideLanguageFilter !== "all" || guideActiveFilter !== "all" || guideSearch) && <button type="button" className="gvo-guide-reset" onClick={() => { setGuideAreaFilter("all"); setGuideLanguageFilter("all"); setGuideActiveFilter("all"); setGuideSearch(""); }}>Xóa bộ lọc</button>}
+      </div>
+      <div className="gvo-table-wrap gvo-guide-table-wrap"><table className="gvo-table gvo-guide-table"><thead><tr><th>HDV</th><th>Ngôn ngữ</th><th>Khu vực</th><th>Liên hệ</th><th>Nửa ngày</th><th>Cả ngày</th><th>License</th></tr></thead><tbody>
+        {filteredGuides.map((g) => <tr key={g.id}>
+          <td data-label="HDV"><b className="gvo-guide-name">{g.full_name}</b>{!g.active && <div className="gvo-small">Ngừng hợp tác</div>}</td>
+          <td data-label="Ngôn ngữ">{guideLanguageCodes(g).map(langLabel).join(", ") || "—"}</td>
+          <td data-label="Khu vực">{guideAreaLabels(g).join(", ") || "Chưa cập nhật"}</td>
+          <td data-label="Liên hệ"><div className="gvo-guide-contacts">
+            {g.phone && <a href={`tel:${g.phone.replace(/[^\d+]/g, "")}`}>📞 {g.phone}</a>}
+            {g.whatsapp && <a href={`https://wa.me/${g.whatsapp.replace(/\D/g, "").replace(/^0/, "84")}`} target="_blank" rel="noopener noreferrer">WhatsApp: {g.whatsapp}</a>}
+            {g.zalo && <a href={`https://zalo.me/${g.zalo.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer">Zalo: {g.zalo}</a>}
+            {!g.phone && !g.whatsapp && !g.zalo && "—"}
+          </div></td>
+          <td data-label="Nửa ngày">{money(g.half_day_rate_vnd)}</td><td data-label="Cả ngày">{money(g.full_day_rate_vnd)}</td><td data-label="License">{g.license_status}</td>
+        </tr>)}
+        {!filteredGuides.length && <tr><td colSpan={7}><div className="gvo-empty">{guides.length ? "Không tìm thấy HDV phù hợp. Thử đổi khu vực, ngôn ngữ hoặc xóa bộ lọc." : "Chưa có hướng dẫn viên. Hãy thêm hồ sơ đầu tiên."}</div></td></tr>}
       </tbody></table></div>
     </section>}
 
