@@ -198,7 +198,6 @@ export default function AdminV5() {
       if(near&&b.status==="confirmed"){
         if(!b.pickup_time&&!b.start_time)issues.push("Thiếu giờ đón");
         if(!b.hotel)issues.push("Thiếu khách sạn / điểm đón");
-        if(!b.internal_itinerary_vi?.trim())issues.push("Thiếu lịch trình tiếng Việt");
         if(b.guide_language&&!assigned.length&&!b.operator_supplier_id)issues.push("Chưa ghi nhận HDV");
       }
       return {booking:b,daysToTour,guideNames,supplier,balance,issues};
@@ -641,7 +640,7 @@ export default function AdminV5() {
         const upcoming=open.filter(b=>b.tour_date&&b.tour_date>=today&&b.tour_date<until).sort((a,b)=>(a.tour_date||"").localeCompare(b.tour_date||""));
         const overdue=open.filter(b=>b.tour_date&&b.tour_date<today);
         const pending=open.filter(b=>b.status==="pending");
-        const missingItinerary=upcoming.filter(b=>!b.internal_itinerary_vi?.trim());
+        const savedItineraries=upcoming.filter(b=>Boolean(b.internal_itinerary_vi?.trim()));
         const moneyMap=Object.fromEntries(financials.map(f=>[f.booking_id,f]));
         const unpaidDone=bookings.filter(b=>["completed","closed"].includes(b.status)&&Number(moneyMap[b.id]?.amount_received_vnd||0)<Number(b.net_revenue_vnd||0));
         const unpaidBalance=unpaidDone.reduce((n,b)=>n+Math.max(0,Number(b.net_revenue_vnd||0)-Number(moneyMap[b.id]?.amount_received_vnd||0)),0);
@@ -652,7 +651,7 @@ export default function AdminV5() {
             <KPI label="Tour 7 ngày tới" value={upcoming.length} hint="Lịch cần điều phối" tone="upcoming"/>
             <KPI label="Chờ xác nhận" value={pending.length} hint="Cần phản hồi khách" tone="pending"/>
             <KPI label="Tour quá hạn" value={overdue.length} hint="Chưa cập nhật trạng thái" tone="overdue"/>
-            <KPI label="Thiếu lịch trình" value={missingItinerary.length} hint="Trong 7 ngày tới" tone="missing"/>
+            <KPI label="Có lịch trình Việt" value={savedItineraries.length} hint="Ghi chú tùy chọn · 7 ngày tới" tone="upcoming"/>
           </div>
           <div className="gva-status-board" aria-label="Trạng thái tour">
             <div className="gva-status-board-head"><div><b>Trạng thái đặt tour</b><span>Màu trạng thái tour riêng với tình trạng thanh toán</span></div><button type="button" className="gva-btn secondary" onClick={()=>{setBookingView("all");setTab("bookings")}}>Tất cả booking</button></div>
@@ -666,7 +665,7 @@ export default function AdminV5() {
             <div className="gva-card"><h3>Việc cần xử lý</h3>
               <div className="gva-booking-hint">Các cảnh báo được tính từ booking hiện có. Phân công xe và hướng dẫn viên cần kiểm tra ở Điều hành.</div>
               <div className="gva-booking-hint">{overdue.length} tour đã qua ngày chưa chốt · {pending.length} booking đang chờ xác nhận</div>
-              <div className="gva-booking-hint">{missingItinerary.length} tour sắp tới thiếu lịch trình tiếng Việt · {unpaidDone.length} tour hoàn thành còn số dư theo dữ liệu tài chính</div>
+              <div className="gva-booking-hint">{savedItineraries.length} tour sắp tới có lịch trình tiếng Việt (tùy chọn) · {unpaidDone.length} tour hoàn thành còn số dư theo dữ liệu tài chính</div>
               <div className="gva-booking-hint">Tổng số dư cần kiểm tra: <b>{money(unpaidBalance)}</b>. Số liệu dựa trên khoản đã thu được ghi nhận, cần đối chiếu Finance.</div>
               <button className="gva-btn secondary" onClick={()=>setTab("operations")}>Mở điều hành</button>
               <button className="gva-btn secondary" style={{marginLeft:8}} onClick={()=>setTab("finance")}>Mở tài chính</button>
@@ -1025,7 +1024,7 @@ export default function AdminV5() {
                 <div><span>Ngôn ngữ HDV</span><b>{GVS_BOOKING_LANGUAGES.find(([code])=>code===b.guide_language)?.[1]||"Chưa cập nhật"}</b></div>
                 <div><span>Nhà tổ chức</span><b>{supplier?.name||"Chưa ghi nhận"}</b></div>
                 <div><span>WhatsApp khách</span><b>{contact?.whatsapp||"Chưa có"}</b></div>
-                <div><span>Lịch trình tiếng Việt</span><b>{b.internal_itinerary_vi?.trim()?"Đã lưu":"Chưa có"}</b></div>
+                {b.internal_itinerary_vi?.trim()&&<div><span>Lịch trình tiếng Việt</span><b>Đã lưu · tùy chọn</b></div>}
                 <div><span>Số dư cần đối chiếu</span><b>{money(balance)}</b></div>
                 {[1,3,7].includes(Number(daysToTour))&&<p className="gva-ops-reminder">Mốc kiểm tra nhắc tour trước {daysToTour} ngày, chưa xác nhận đã gửi.</p>}
                 <div className="gva-ops-detail-actions">
@@ -1092,7 +1091,7 @@ export default function AdminV5() {
         </div>
         {bookingView==="active"&&<div className="gva-booking-hint">Ưu tiên theo ngày tour gần nhất · Tour quá ngày nhưng chưa chốt vẫn hiển thị để tránh bỏ sót. <b>Hoàn thành tour không đồng nghĩa đã thu đủ tiền.</b></div>}
         <div className="gva-card"><div className="gva-table-wrap"><table className="gva-table"><thead><tr><th>Code</th><th>Ngày tour</th><th>Khách</th><th>Tour</th><th>Pax</th><th>Revenue</th><th>Payment</th><th>Status</th><th></th></tr></thead><tbody>
-          {bookingGroups.rows.map(b=><tr className={bookingRowClass(b.status)} key={b.id}><td><b>{b.booking_code||"—"}</b></td><td>{b.tour_date||"—"}{b.tour_date&&b.tour_date<bookingGroups.today&&!['completed','closed','cancelled','refunded'].includes(b.status)&&<div className="gva-booking-overdue">⚠ Quá ngày, chưa chốt</div>}</td><td>{contactMap[b.contact_id||""]?.full_name||"—"}</td><td>{bookingTourName(b,tourMap)}{(b.booking_mode==="custom"||b.custom_tour_name)&&<div className="gva-mini">Custom Tour</div>}{b.internal_itinerary_vi?<div className="gva-mini">🇻🇳 Đã có lịch trình tiếng Việt</div>:<div className="gva-mini">⚠ Thiếu lịch trình tiếng Việt</div>}</td><td>{b.pax}</td><td>{money(b.net_revenue_vnd)}</td><td><span className={bookingPaymentClass(b.payment_status)}>{bookingPaymentLabel(b.payment_status)}</span>{['completed','closed'].includes(b.status)&&b.payment_status!=='paid'&&<div className="gva-booking-overdue">⚠ Kiểm tra công nợ</div>}</td><td><span className={bookingStatusClass(b.status)}>{bookingStatusLabel(b.status)}</span></td><td><button type="button" className="gva-btn secondary" style={{padding:"7px 10px"}} onClick={()=>setEditingBooking(b)}>Sửa</button></td></tr>)}
+          {bookingGroups.rows.map(b=><tr className={bookingRowClass(b.status)} key={b.id}><td><b>{b.booking_code||"—"}</b></td><td>{b.tour_date||"—"}{b.tour_date&&b.tour_date<bookingGroups.today&&!['completed','closed','cancelled','refunded'].includes(b.status)&&<div className="gva-booking-overdue">⚠ Quá ngày, chưa chốt</div>}</td><td>{contactMap[b.contact_id||""]?.full_name||"—"}</td><td>{bookingTourName(b,tourMap)}{(b.booking_mode==="custom"||b.custom_tour_name)&&<div className="gva-mini">Custom Tour</div>}{b.internal_itinerary_vi?.trim()&&<div className="gva-mini">🇻🇳 Có lịch trình vận hành</div>}</td><td>{b.pax}</td><td>{money(b.net_revenue_vnd)}</td><td><span className={bookingPaymentClass(b.payment_status)}>{bookingPaymentLabel(b.payment_status)}</span>{['completed','closed'].includes(b.status)&&b.payment_status!=='paid'&&<div className="gva-booking-overdue">⚠ Kiểm tra công nợ</div>}</td><td><span className={bookingStatusClass(b.status)}>{bookingStatusLabel(b.status)}</span></td><td><button type="button" className="gva-btn secondary" style={{padding:"7px 10px"}} onClick={()=>setEditingBooking(b)}>Sửa</button></td></tr>)}
           {!bookingGroups.rows.length&&<tr><td colSpan={9}><div className="gva-empty">Không có booking phù hợp bộ lọc. Chọn “Tất cả” để xem toàn bộ dữ liệu.</div></td></tr>}
         </tbody></table></div></div>
       </>}
@@ -1192,8 +1191,8 @@ function BookingModal({tours,partners,onClose,onSubmit,saving}:any){
     {GVS_BOOKING_LANGUAGES.filter(([value])=>value).map(([value,label])=><option key={value} value={value}>{label} Guide</option>)}
   </select></F><F label="Nguồn"><select name="source" className="gva-select"><option>whatsapp</option><option>website</option><option>google_maps</option><option>partner_qr</option><option>desk</option><option>direct</option></select></F>
   <F label="Partner"><select name="partner_id" className="gva-select"><option value="">Không có</option>{partners.map((x:any)=><option value={x.id} key={x.id}>{x.name} · {x.ref_code}</option>)}</select></F><F label="Khách sạn"><input name="hotel" className="gva-input" /></F>
-  <F label="🇻🇳 Lịch trình nội bộ tiếng Việt" wide><textarea name="internal_itinerary_vi" className="gva-input" rows={6} placeholder={"08:00 Đón khách tại khách sạn\n09:00 Tham quan...\n12:00 Ăn trưa..."} /></F>
   <F label="Ghi chú" wide><textarea name="notes" className="gva-input" rows={3} /></F>
+  <OptionalItineraryField />
 </div><div style={{display:"flex",gap:8,justifyContent:"flex-end",marginTop:16}}><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button className="gva-btn" disabled={saving}>{saving?"Đang lưu…":"Lưu Booking"}</button></div></form></div>}
 
 function EditBookingModal({booking,contact,tours,partners,onClose,onSubmit,saving}:any){
@@ -1227,12 +1226,22 @@ function EditBookingModal({booking,contact,tours,partners,onClose,onSubmit,savin
     </>}
     <F label="Guide language"><select name="guide_language" className="gva-select" defaultValue={booking.guide_language||""}><option value="">—</option>{GVS_BOOKING_LANGUAGES.filter(([value])=>value).map(([value,label])=><option key={value} value={value}>{label} Guide</option>)}</select></F><F label="Partner"><select name="partner_id" className="gva-select" defaultValue={booking.partner_id||""}><option value="">Không có</option>{partners.map((x:any)=><option value={x.id} key={x.id}>{x.name} · {x.ref_code}</option>)}</select></F>
     <F label="Khách sạn"><input name="hotel" className="gva-input" defaultValue={booking.hotel||""} /></F><F label="Lưu ý Revenue"><div className="gva-analytics-note" style={{margin:0}}>Đổi PAX không tự tính lại doanh thu. Revenue chỉ thay đổi khi anh sửa ô Revenue.</div></F>
-    <F label="🇻🇳 Lịch trình nội bộ tiếng Việt" wide><textarea name="internal_itinerary_vi" className="gva-input" rows={8} defaultValue={booking.internal_itinerary_vi||""} placeholder={"08:00 Đón khách\n09:00 Tham quan..."} /></F>
     <F label="Ghi chú" wide><textarea name="notes" className="gva-input" rows={3} defaultValue={booking.notes||""} /></F>
+    <OptionalItineraryField value={booking.internal_itinerary_vi||""}/>
   </div><div style={{display:"flex",gap:8,justifyContent:"flex-end",marginTop:16}}><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button className="gva-btn" disabled={saving}>{saving?"Đang lưu…":"Lưu thay đổi"}</button></div></form></div>
 }
 
 function F({label,children,wide}:any){return <div className={"gva-field "+(wide?"wide":"")}><label>{label}</label>{children}</div>}
+
+function OptionalItineraryField({value=""}:{value?:string}){
+  return <div className="gva-field wide">
+    <details open={Boolean(value.trim())} style={{border:"1px solid #cbd5e1",borderRadius:12,padding:"12px 14px",background:"#f8fafc"}}>
+      <summary style={{cursor:"pointer",fontWeight:700,color:"#175cd3"}}>🇻🇳 {value.trim()?"Xem / sửa lịch trình tiếng Việt":"+ Thêm lịch trình tiếng Việt (nếu cần)"}</summary>
+      <p className="gva-mini" style={{margin:"9px 0"}}>Tùy chọn cho tour riêng, lịch trình phức tạp hoặc đặt xa ngày. Tour ghép hằng ngày có thể bỏ qua.</p>
+      <textarea name="internal_itinerary_vi" className="gva-input" rows={8} defaultValue={value} placeholder={"08:00 Đón khách\n09:00 Tham quan...\n12:00 Ăn trưa..."}/>
+    </details>
+  </div>;
+}
 
 
 
