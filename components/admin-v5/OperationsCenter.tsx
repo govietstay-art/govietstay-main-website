@@ -127,6 +127,16 @@ function guideAreaLabels(guide: Guide) {
 function guideAreas(guide: Guide) {
   return guideAreaLabels(guide).map(guideKey);
 }
+function transportAreaLabels(serviceArea: string | null) {
+  const raw = String(serviceArea || "").trim();
+  const normalized = guideKey(raw);
+  if (!normalized) return [];
+  const recognized = Array.from(new Set(Object.entries(GUIDE_AREAS)
+    .filter(([alias]) => (` ${normalized} `).includes(` ${alias} `))
+    .map(([, label]) => label)));
+  if (recognized.length) return recognized;
+  return Array.from(new Set(raw.split(/[,;|/&+]+/).map((area) => area.trim()).filter(Boolean)));
+}
 const GUIDE_LANGUAGE_ALIASES: Record<string, string> = {
   en: "en", eng: "en", english: "en", anh: "en", "tieng anh": "en",
   ru: "ru", rus: "ru", russian: "ru", nga: "ru", "tieng nga": "ru",
@@ -243,6 +253,9 @@ export default function OperationsCenter() {
   const [guideLanguageFilter, setGuideLanguageFilter] = useState("all");
   const [guideSearch, setGuideSearch] = useState("");
   const [guideActiveFilter, setGuideActiveFilter] = useState("all");
+  const [transportAreaFilter, setTransportAreaFilter] = useState("all");
+  const [transportActiveFilter, setTransportActiveFilter] = useState("all");
+  const [transportSearch, setTransportSearch] = useState("");
 
   const [tours, setTours] = useState<Tour[]>([]);
   const [guides, setGuides] = useState<Guide[]>([]);
@@ -575,6 +588,40 @@ export default function OperationsCenter() {
       return searchable.includes(query) || (!!phoneQuery && contacts.includes(phoneQuery));
     });
   }, [guides, guideAreaFilter, guideLanguageFilter, guideActiveFilter, guideSearch]);
+  const transportAreaOptions = useMemo(() => {
+    const counts = new Map<string, { label: string; count: number }>();
+    let missing = 0;
+    transportSuppliers.forEach((supplier) => {
+      const labels = transportAreaLabels(supplier.service_area);
+      if (!labels.length) missing++;
+      labels.forEach((label) => {
+        const key = guideKey(label);
+        counts.set(key, { label, count: (counts.get(key)?.count || 0) + 1 });
+      });
+    });
+    const preferred = ["Phú Quốc", "Đà Nẵng", "Hội An", "Huế", "Hà Nội", "Hồ Tràm"].map(guideKey);
+    const options = [...counts].sort(([a, av], [b, bv]) => {
+      const ai = preferred.indexOf(a), bi = preferred.indexOf(b);
+      return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi) || av.label.localeCompare(bv.label, "vi");
+    }).map(([key, value]) => ({ key, ...value }));
+    if (missing) options.push({ key: "__missing__", label: "Chưa có khu vực", count: missing });
+    return options;
+  }, [transportSuppliers]);
+  const filteredTransportSuppliers = useMemo(() => {
+    const query = guideKey(transportSearch);
+    const phoneQuery = transportSearch.replace(/\D/g, "");
+    return transportSuppliers.filter((supplier) => {
+      const areas = transportAreaLabels(supplier.service_area).map(guideKey);
+      if (transportAreaFilter !== "all" && (transportAreaFilter === "__missing__" ? areas.length > 0 : !areas.includes(transportAreaFilter))) return false;
+      if (transportActiveFilter === "active" && !supplier.active) return false;
+      if (transportActiveFilter === "inactive" && supplier.active) return false;
+      if (!query) return true;
+      const searchable = guideKey([supplier.name, supplier.contact_name, supplier.phone, supplier.whatsapp,
+        supplier.service_area, supplier.notes].join(" "));
+      const phones = [supplier.phone, supplier.whatsapp].join(" ").replace(/\D/g, "");
+      return searchable.includes(query) || (!!phoneQuery && phones.includes(phoneQuery));
+    });
+  }, [transportSuppliers, transportAreaFilter, transportActiveFilter, transportSearch]);
   const sevenDayBookings = useMemo(() => {
     const start = localISO();
     const end = addDays(start, 6);
@@ -1213,26 +1260,44 @@ export default function OperationsCenter() {
     </>}
 
     {view === "transport" && isAdmin && <section className="gvo-card">
-      <div className="gvo-card-head">
+      <div className="gvo-card-head gvo-transport-head">
         <div><h2>Danh bạ nhà xe & tài xế</h2><p>Đối tác vận chuyển dùng chung với Finance. Mỗi chuyến gắn Booking ID để dễ tra cứu và đối soát.</p></div>
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        <div className="gvo-transport-actions">
           <button className="gva-btn secondary" onClick={() => setModal("transport_booking")}>+ Gán xe cho booking</button>
           <button className="gva-btn" onClick={() => setModal("transport")}>+ Thêm nhà xe</button>
         </div>
       </div>
-      <div className="gvo-table-wrap"><table className="gvo-table"><thead><tr><th>Nhà xe / người phụ trách</th><th>Khu vực</th><th>Liên hệ nhanh</th><th>Loại xe / giá / ghi chú</th><th>Booking liên quan</th></tr></thead><tbody>
-        {transportSuppliers.map((s) => {
+      <div className="gvo-transport-filters" role="search" aria-label="Tìm nhà xe và tài xế">
+        <label className="gvo-guide-filter-field"><span>Khu vực</span><select className="gva-select" value={transportAreaFilter} onChange={(e) => setTransportAreaFilter(e.target.value)}>
+          <option value="all">📍 Tất cả khu vực</option>
+          {transportAreaOptions.map((area) => <option key={area.key} value={area.key}>{area.label} ({area.count})</option>)}
+        </select></label>
+        <label className="gvo-guide-filter-field"><span>Trạng thái</span><select className="gva-select" value={transportActiveFilter} onChange={(e) => setTransportActiveFilter(e.target.value)}>
+          <option value="all">Tất cả đối tác</option><option value="active">Đang hợp tác</option><option value="inactive">Ngừng hợp tác</option>
+        </select></label>
+        <label className="gvo-guide-filter-field"><span>Tìm nhanh</span><input type="search" className="gva-input" value={transportSearch} onChange={(e) => setTransportSearch(e.target.value)} placeholder="Tên, SĐT, xe 7 chỗ, 16 chỗ..." /></label>
+      </div>
+      <div className="gvo-guide-filter-summary">
+        <span>Hiển thị <b>{filteredTransportSuppliers.length}</b> / {transportSuppliers.length} nhà xe & tài xế</span>
+        {(transportAreaFilter !== "all" || transportActiveFilter !== "all" || transportSearch) && <button type="button" className="gvo-guide-reset" onClick={() => { setTransportAreaFilter("all"); setTransportActiveFilter("all"); setTransportSearch(""); }}>Xóa bộ lọc</button>}
+      </div>
+      <div className="gvo-table-wrap gvo-transport-table-wrap"><table className="gvo-table gvo-transport-table"><thead><tr><th>Nhà xe / người phụ trách</th><th>Khu vực</th><th>Liên hệ nhanh</th><th>Loại xe / giá / ghi chú</th><th>Booking liên quan</th></tr></thead><tbody>
+        {filteredTransportSuppliers.map((s) => {
           const linked = transportBookings.filter((x) => x.supplier_id === s.id);
-          const phone = (s.whatsapp || s.phone || "").replace(/[^\d+]/g, "");
+          const whatsapp = (s.whatsapp || "").replace(/\D/g, "").replace(/^0/, "84");
           return <tr key={s.id}>
-            <td><b>{s.name}</b><div className="gvo-small">{s.contact_name || "Chưa có người phụ trách"}{!s.active ? " · Ngừng hợp tác" : ""}</div></td>
-            <td>{s.service_area || "—"}</td>
-            <td>{s.phone && <div><a href={`tel:${s.phone.replace(/[^\d+]/g, "")}`}>{s.phone}</a></div>}{s.whatsapp && <div><a href={`https://wa.me/${phone.replace(/^0/, "84").replace(/^\+/, "")}`} target="_blank" rel="noopener noreferrer">WhatsApp ↗</a></div>}{!s.phone && !s.whatsapp && "—"}</td>
-            <td style={{ whiteSpace: "pre-line", minWidth: 210 }}>{s.notes || "—"}</td>
-            <td>{linked.length ? linked.map((a) => <div key={a.id} style={{ marginBottom: 5 }}><b>{bookings.find((b) => b.id === a.booking_id)?.booking_code || "Booking"}</b> · {money(a.amount_vnd)}<div className="gvo-small">{a.description} · {a.status}</div></div>) : "Chưa gán"}</td>
+            <td data-label="Nhà xe"><b className="gvo-transport-name">{s.name}</b><div className="gvo-small">{s.contact_name || "Chưa có người phụ trách"}{!s.active ? " · Ngừng hợp tác" : ""}</div></td>
+            <td data-label="Khu vực">{transportAreaLabels(s.service_area).join(", ") || "Chưa cập nhật"}</td>
+            <td data-label="Liên hệ"><div className="gvo-guide-contacts">
+              {s.phone && <a href={`tel:${s.phone.replace(/[^\d+]/g, "")}`}>📞 {s.phone}</a>}
+              {s.whatsapp && <a href={`https://wa.me/${whatsapp}`} target="_blank" rel="noopener noreferrer">WhatsApp: {s.whatsapp}</a>}
+              {!s.phone && !s.whatsapp && "—"}
+            </div></td>
+            <td data-label="Loại xe / giá" className="gvo-transport-notes">{s.notes || "—"}</td>
+            <td data-label="Booking">{linked.length ? linked.map((a) => <div key={a.id} style={{ marginBottom: 5 }}><b>{bookings.find((b) => b.id === a.booking_id)?.booking_code || "Booking"}</b> · {money(a.amount_vnd)}<div className="gvo-small">{a.description} · {a.status}</div></div>) : "Chưa gán"}</td>
           </tr>;
         })}
-        {!transportSuppliers.length && <tr><td colSpan={5}><div className="gvo-empty">Chưa có nhà xe. Bấm “+ Thêm nhà xe” để tạo hồ sơ đầu tiên.</div></td></tr>}
+        {!filteredTransportSuppliers.length && <tr><td colSpan={5}><div className="gvo-empty">{transportSuppliers.length ? "Không tìm thấy nhà xe phù hợp. Thử đổi khu vực hoặc xóa bộ lọc." : "Chưa có nhà xe. Bấm “+ Thêm nhà xe” để tạo hồ sơ đầu tiên."}</div></td></tr>}
       </tbody></table></div>
     </section>}
 

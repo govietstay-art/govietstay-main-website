@@ -30,6 +30,10 @@
 .gvo-guide-filter-summary{display:flex;justify-content:space-between;align-items:center;gap:9px;flex-wrap:wrap;margin:0 0 10px;color:#667085;font-size:12px}.gvo-guide-filter-summary b{color:#175cd3}
 .gvo-guide-reset{background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8;border-radius:8px;padding:7px 10px;font-size:12px;font-weight:800;cursor:pointer}
 .gvo-guide-table{min-width:750px}.gvo-guide-name{font-size:13px}.gvo-guide-contacts{display:flex;flex-direction:column;align-items:flex-start;gap:4px}.gvo-guide-contacts a{color:#175cd3;text-decoration:none;font-weight:700;overflow-wrap:anywhere}.gvo-guide-contacts a:hover{text-decoration:underline}
+.gvo-transport-head .gvo-transport-actions{display:flex;gap:8px;flex-wrap:wrap}.gvo-transport-head .gvo-transport-actions .gva-btn{white-space:normal}
+.gvo-transport-filters{display:grid;grid-template-columns:minmax(160px,1fr) minmax(140px,.8fr) minmax(220px,1.5fr);gap:10px;margin:15px 0 8px;padding:13px;background:#f8fafc;border:1px solid #e4e7ec;border-radius:13px}
+.gvo-transport-filters .gva-select,.gvo-transport-filters .gva-input{width:100%;min-width:0;min-height:42px;font-size:13px}
+.gvo-transport-table{min-width:800px}.gvo-transport-name{font-size:13px}.gvo-transport-notes{white-space:pre-line;min-width:210px}
 @media(max-width:900px){.gvo-guide-filters{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:640px){
   .gvo-guide-filters{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;padding:10px}
@@ -42,6 +46,16 @@
   .gvo-guide-table td:first-child{display:block;border-bottom:1px solid #dbeafe;padding:5px 0 10px;margin-bottom:2px}.gvo-guide-table td:first-child::before{display:none}
   .gvo-guide-table .gvo-guide-name{font-size:16px;color:#101828}.gvo-guide-table .gvo-guide-contacts{align-items:flex-end;text-align:right}
   .gvo-guide-table td[colspan]{display:block}.gvo-guide-table td[colspan]::before{display:none}
+  .gvo-transport-head{flex-direction:column}.gvo-transport-head .gvo-transport-actions{display:grid;grid-template-columns:1fr 1fr;width:100%}.gvo-transport-actions .gva-btn{min-height:46px;font-size:12px;padding:9px 7px}
+  .gvo-transport-filters{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;padding:10px}
+  .gvo-transport-filters .gvo-guide-filter-field:last-child{grid-column:1/-1}
+  .gvo-transport-table-wrap{overflow:visible}.gvo-transport-table{min-width:0;width:100%;display:block}.gvo-transport-table thead{display:none}
+  .gvo-transport-table tbody{display:flex;flex-direction:column;gap:10px}.gvo-transport-table tr{display:block;border:1px solid #e4e7ec;border-radius:12px;padding:10px 12px;background:#fff;box-shadow:0 1px 4px rgba(16,24,40,.04)}
+  .gvo-transport-table td{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:7px 0;border-bottom:1px solid #f2f4f7;font-size:13px;overflow-wrap:anywhere;min-width:0}
+  .gvo-transport-table td:last-child{border-bottom:0}.gvo-transport-table td::before{content:attr(data-label);flex:0 0 88px;font-size:11px;font-weight:800;color:#667085}
+  .gvo-transport-table td:first-child{display:block;border-bottom:1px solid #dbeafe;padding:5px 0 10px;margin-bottom:2px}.gvo-transport-table td:first-child::before{display:none}
+  .gvo-transport-table .gvo-transport-name{font-size:16px;color:#101828}.gvo-transport-table .gvo-guide-contacts{align-items:flex-end;text-align:right}
+  .gvo-transport-table .gvo-transport-notes{white-space:pre-line;min-width:0}.gvo-transport-table td[colspan]{display:block}.gvo-transport-table td[colspan]::before{display:none}
 }
 .gvo-login{min-height:100vh;background:#f5f7fb;display:grid;place-items:center;padding:20px}.gvo-login-card{width:min(430px,100%);background:#fff;border:1px solid #e4e7ec;border-radius:16px;padding:22px;box-shadow:0 10px 30px rgba(16,24,40,.08)}.gvo-login-card label{display:block;font-size:12px;font-weight:800;margin:11px 0 5px}.gvo-brand{font-size:22px;font-weight:900}.gvo-back-link{display:block;text-align:center;margin-top:13px;color:#475467;text-decoration:none}
 .gvo-modal-bg{position:fixed;inset:0;background:rgba(16,24,40,.56);z-index:3000;display:grid;place-items:center;padding:18px;overflow:auto}.gvo-modal{width:min(820px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:17px;padding:18px;box-shadow:0 24px 70px rgba(16,24,40,.25)}
