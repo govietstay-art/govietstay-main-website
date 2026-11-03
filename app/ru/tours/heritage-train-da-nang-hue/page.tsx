@@ -201,7 +201,7 @@ const structuredData = [
     inLanguage: "ru",
     thumbnailUrl: `${ROOT}${MEDIA}/hai-van-heritage-train-coast.jpeg`,
     contentUrl: `${ROOT}${VIDEO}`,
-    uploadDate: "2026-10-29",
+    uploadDate: "2026-10-29T00:00:00+07:00",
     duration: "PT1M16S",
   },
 ];
