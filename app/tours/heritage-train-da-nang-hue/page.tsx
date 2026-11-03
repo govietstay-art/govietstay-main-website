@@ -203,7 +203,7 @@ const structuredData = [
     description: "Traveler-supplied vertical footage showing coastal scenery from a train window along Central Vietnam's railway.",
     thumbnailUrl: `${baseUrl}${MEDIA}/hai-van-heritage-train-coast.jpeg`,
     contentUrl: `${baseUrl}${VIDEO}`,
-    uploadDate: "2026-10-29",
+    uploadDate: "2026-10-29T00:00:00+07:00",
     duration: "PT1M16S",
   },
 ];
