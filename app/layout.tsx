@@ -239,7 +239,7 @@ export default async function RootLayout({
                 name: "GoVietStay",
                 alternateName: "GoVietStay.com",
                 url: "https://www.govietstay.com",
-                inLanguage: ["en", "ru", "it-IT", "vi", "ko-KR", "zh-CN", "zh-TW", "fr-FR", "de-DE", "ja-JP", "tr-TR", "ar", "he-IL", "en-PH", "en-IN", "mn", "ru-KZ"],
+                inLanguage: ["en", "ru", "it-IT", "vi", "ko-KR", "zh-CN", "zh-TW", "fr-FR", "de-DE", "ja-JP", "tr-TR", "ar", "he-IL", "en-PH", "en-IN", "mn", "ru-KZ", "cs-CZ"],
                 publisher: { "@id": "https://www.govietstay.com/#organization" },
               },
             ]),
@@ -269,6 +269,7 @@ export default async function RootLayout({
             }}
           >
             <strong style={{ color: "#17352e", marginRight: "4px" }}>Vietnam travel guides:</strong>
+            <a href="/cs/stredni-vietnam" hrefLang="cs-CZ" style={{ color: "#315c51" }}>Čeština</a>
             <a href="/ru" hrefLang="ru" style={{ color: "#315c51" }}>Русский</a>
             <a href="/it" hrefLang="it-IT" style={{ color: "#315c51" }}>Italiano</a>
             <a href="/id" hrefLang="id-ID" style={{ color: "#315c51" }}>Bahasa Indonesia</a>

@@ -79,6 +79,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.86,
       alternates: { languages: { "fi-FI": BASE_URL + path } },
     })),
+    ...["/cs/stredni-vietnam","/cs/phu-quoc","/cs/ho-tram"].map(path => ({
+      url: BASE_URL + path,
+      lastModified: new Date("2026-11-04T00:00:00.000Z"),
+      changeFrequency: "monthly" as const,
+      priority: 0.85,
+      alternates: {languages: {"cs-CZ": BASE_URL + path}},
+    })),
     ...["/pl/phu-quoc-przewodnik", "/pl/phu-quoc-wycieczki-prywatne", "/pl/danang-hoi-an-hue"].map(path => ({
       url: BASE_URL + path,
       lastModified: new Date("2026-10-11T00:00:00.000Z"),
