@@ -51,7 +51,7 @@ export default function HotelPartnersLanding(){
         </div>
         <div className="hp-art" aria-label="Minh họa bảng quản lý nhiều khách sạn">
           <div className="hp-dashboard">
-            <div className="hp-dash-top"><span className="hp-dash-brand"><Image className="hp-dash-logo" src="/logo.png" alt="" width={38} height={38} quality={70}/><span>GoVietStay <small>Partner Portal</small></span></span><span className="hp-dash-avatar">PT</span></div>
+            <div className="hp-dash-top"><span className="hp-dash-brand"><Image className="hp-dash-logo" src="/logo.png" alt="" width={38} height={38} quality={75}/><span>GoVietStay <small>Partner Portal</small></span></span><span className="hp-dash-avatar">PT</span></div>
             <div className="hp-dash-heading"><div><small>DANH MỤC CỦA CÔNG TY</small><strong>Khách sạn của chúng tôi</strong></div><span className="hp-dash-add">＋ Thêm khách sạn</span></div>
             <div className="hp-dash-stats"><div><small>TỔNG KHÁCH SẠN</small><strong>12</strong></div><div><small>HẠNG PHÒNG</small><strong>68</strong></div><div><small>ĐANG CHỜ DUYỆT</small><strong>03</strong></div></div>
             <div className="hp-dash-list">
