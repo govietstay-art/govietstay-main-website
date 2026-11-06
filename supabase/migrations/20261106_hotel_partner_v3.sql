@@ -220,10 +220,10 @@ using(bucket_id='hotel-partner-private' and exists(
     and public.hotel_partner_can_access(p.org_id)
 ));
 create or replace function public.hotel_storage_within_quota(p_name text)
-returns boolean language sql stable security definer set search_path=storage,pg_catalog as $
+returns boolean language sql stable security definer set search_path=storage,pg_catalog as $hotel$
   select (select count(*) from storage.objects o where o.bucket_id='hotel-partner-private'
     and o.name like split_part(p_name,'/',1)||'/'||split_part(p_name,'/',2)||'/%') < 24;
-$;
+$hotel$;
 revoke all on function public.hotel_storage_within_quota(text) from public,anon;
 grant execute on function public.hotel_storage_within_quota(text) to authenticated;
 create policy hotel_storage_upload on storage.objects for insert to authenticated
