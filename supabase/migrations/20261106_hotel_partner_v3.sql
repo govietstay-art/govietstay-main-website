@@ -93,7 +93,11 @@ create table if not exists public.hotel_change_requests(
   reviewed_by uuid references auth.users(id),
   reviewed_at timestamptz,
   created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
+  updated_at timestamptz not null default now(),
+  constraint hotel_review_status_consistency check (
+    (status in ('draft','submitted') and reviewed_by is null and reviewed_at is null)
+    or (status in ('approved','rejected') and reviewed_by is not null and reviewed_at is not null)
+  )
 );
 create table if not exists public.hotel_audit_events(
   id bigint generated always as identity primary key,
@@ -215,8 +219,16 @@ using(bucket_id='hotel-partner-private' and exists(
     and p.org_id::text=split_part(name,'/',1)
     and public.hotel_partner_can_access(p.org_id)
 ));
+create or replace function public.hotel_storage_within_quota(p_name text)
+returns boolean language sql stable security definer set search_path=storage,pg_catalog as $
+  select (select count(*) from storage.objects o where o.bucket_id='hotel-partner-private'
+    and o.name like split_part(p_name,'/',1)||'/'||split_part(p_name,'/',2)||'/%') < 24;
+$;
+revoke all on function public.hotel_storage_within_quota(text) from public,anon;
+grant execute on function public.hotel_storage_within_quota(text) to authenticated;
 create policy hotel_storage_upload on storage.objects for insert to authenticated
-with check(bucket_id='hotel-partner-private' and name like '%.webp' and exists(
+with check(bucket_id='hotel-partner-private' and name like '%.webp'
+  and public.hotel_storage_within_quota(name) and exists(
   select 1 from public.hotel_properties p
   where p.id::text=split_part(name,'/',2)
     and p.org_id::text=split_part(name,'/',1)
@@ -285,6 +297,11 @@ begin
       v_room=(j->>'room_id')::uuid;
       if not exists(select 1 from public.hotel_room_types where id=v_room and property_id=r.property_id)
         then raise exception 'Room mismatch'; end if;
+      perform 1 from public.hotel_room_types where id=v_room for update;
+      if exists(select 1 from public.hotel_net_rates n where n.room_id=v_room
+        and n.valid_from <= (j->>'valid_until')::date
+        and n.valid_until >= (j->>'valid_from')::date)
+      then raise exception 'Rate dates overlap existing period'; end if;
       insert into public.hotel_net_rates(property_id,room_id,valid_from,valid_until,supplier_price_vnd,discount_percent,includes_breakfast,includes_tax,conditions)
       values(r.property_id,v_room,(j->>'valid_from')::date,(j->>'valid_until')::date,
         (j->>'supplier_price_vnd')::bigint,coalesce((j->>'discount_percent')::numeric,0),
