@@ -151,15 +151,19 @@ export default function HotelPartnerV3() {
   const roomPhoto=(id:string)=>photos.find(p=>p.room_id===id)?.url;
   const roomRate=(id:string)=>rates.filter(p=>p.room_id===id).sort((a,b)=>b.valid_from.localeCompare(a.valid_from))[0];
 
-  function openProperty(h:Property){setSelected(h.id);setPage("property");setMessage("");}
+  function openProperty(h:Property){
+    setSelected(h.id);setDraftId(null);setPriceForm(v=>({...v,room_id:""}));setPhotoTarget("hotel");
+    setPropertyDraft({name:h.name,address:h.address||"",city:h.city||"",description:h.description||"",maps_url:h.maps_url||"",entrance_notes:h.entrance_notes||""});
+    setPage("property");setMessage("");
+  }
   function editProperty(){if(!hotel)return;setPropertyDraft({name:hotel.name,address:hotel.address||"",city:hotel.city||"",description:hotel.description||"",maps_url:hotel.maps_url||"",entrance_notes:hotel.entrance_notes||""});setDraftId(null);setPage("property");}
   function addRoom(copy?:Room){
-    if(copy){setRoomDraft({name:copy.name+" (bản sao)",template:copy.template,area_sqm:String(copy.area_sqm??""),bed_details:copy.bed_details||"1 King",max_adults:String(copy.max_adults??2),max_children:String(copy.max_children??0),view_details:copy.view_details||"",breakfast_included:Boolean(copy.breakfast_included),extra_bed:copy.extra_bed||"Không",amenities:copy.amenities||[],notes:copy.notes||""});}
+    if(copy){setRoomDraft({name:copy.name+" (bản sao)",template:TEMPLATES.find(t=>t.toLowerCase()===copy.template.toLowerCase())||"Khác",area_sqm:String(copy.area_sqm??""),bed_details:copy.bed_details||"1 King",max_adults:String(copy.max_adults??2),max_children:String(copy.max_children??0),view_details:copy.view_details||"",breakfast_included:Boolean(copy.breakfast_included),extra_bed:copy.extra_bed||"Không",amenities:copy.amenities||[],notes:copy.notes||""});}
     else setRoomDraft(freshRoom());
     setEditingRoom(null);setDraftId(null);setMessage("");setPage("room");
   }
   function modifyRoom(room:Room){
-    setRoomDraft({name:room.name,template:room.template,area_sqm:String(room.area_sqm??""),bed_details:room.bed_details||"",max_adults:String(room.max_adults??2),max_children:String(room.max_children??0),view_details:room.view_details||"",breakfast_included:Boolean(room.breakfast_included),extra_bed:room.extra_bed||"",amenities:room.amenities||[],notes:room.notes||""});
+    setRoomDraft({name:room.name,template:TEMPLATES.find(t=>t.toLowerCase()===room.template.toLowerCase())||"Khác",area_sqm:String(room.area_sqm??""),bed_details:room.bed_details||"",max_adults:String(room.max_adults??2),max_children:String(room.max_children??0),view_details:room.view_details||"",breakfast_included:Boolean(room.breakfast_included),extra_bed:room.extra_bed||"",amenities:room.amenities||[],notes:room.notes||""});
     setEditingRoom(room.id);setDraftId(null);setMessage("");setPage("room");
   }
   async function login(e:React.FormEvent){
@@ -181,7 +185,8 @@ export default function HotelPartnerV3() {
       if(kind==="room"&&!String(payload.name||"").trim())throw new Error("Phải có tên hạng phòng.");
       if(kind==="rate" && (!payload.valid_from||!payload.valid_until||Number(payload.supplier_price_vnd)<1)) throw new Error("Hãy nhập ngày áp dụng và giá hợp lệ.");
       const entry={property_id:hotel.id,created_by:authUser,kind,target_id,payload,status:asDraft?"draft":"submitted"};
-      const result=draftId?
+      const canReuse=Boolean(draftId&&requests.some(r=>r.id===draftId&&r.property_id===hotel.id&&r.kind===kind&&r.status==="draft"));
+      const result=canReuse?
         await supabase.from("hotel_change_requests").update(entry).eq("id",draftId).eq("status","draft").select("id").single():
         await supabase.from("hotel_change_requests").insert(entry).select("id").single();
       if(result.error)throw result.error;
@@ -280,10 +285,10 @@ export default function HotelPartnerV3() {
         <button className={page==="catalog"?"active":""} onClick={()=>setPage("catalog")}>▦ <span>Danh mục khách sạn</span></button>
         <button className={page==="property"?"active":""} onClick={()=>{editProperty();setPage("property");}}>⌂ <span>Hồ sơ khách sạn</span></button>
         <button className={page==="room"?"active":""} onClick={()=>addRoom()}>▤ <span>Thêm hạng phòng nhanh</span></button>
-        <button className={page==="photo"?"active":""} onClick={()=>setPage("photo")}>▧ <span>Hình ảnh & nhận diện</span></button>
-        <button className={page==="rate"?"active":""} onClick={()=>setPage("rate")}>₫ <span>Giá & chính sách</span></button>
-        <button className={page==="queue"?"active":""} onClick={()=>setPage("queue")}>✓ <span>{admin?"Kiểm duyệt":"Yêu cầu đã gửi"}</span><b>{pending.length}</b></button>
-        {admin&&<button className={page==="onboard"?"active":""} onClick={()=>setPage("onboard")}>＋ <span>Cấp tài khoản đối tác</span></button>}
+        <button className={page==="photo"?"active":""} onClick={()=>{setDraftId(null);setPage("photo");}}>▧ <span>Hình ảnh & nhận diện</span></button>
+        <button className={page==="rate"?"active":""} onClick={()=>{setDraftId(null);setPage("rate");}}>₫ <span>Giá & chính sách</span></button>
+        <button className={page==="queue"?"active":""} onClick={()=>{setDraftId(null);setPage("queue");}}>✓ <span>{admin?"Kiểm duyệt":"Yêu cầu đã gửi"}</span><b>{pending.length}</b></button>
+        {admin&&<button className={page==="onboard"?"active":""} onClick={()=>{setDraftId(null);setPage("onboard");}}>＋ <span>Cấp tài khoản đối tác</span></button>}
       </nav>
       <div className="hv3-side-foot"><span>● Dữ liệu Supabase thật</span><small>{admin?"Quyền chủ hệ thống":"Quyền đối tác khách sạn"}</small><button onClick={()=>void logout()}>Đăng xuất</button></div>
     </aside>
@@ -303,7 +308,7 @@ export default function HotelPartnerV3() {
 
       {page!=="catalog"&&page!=="onboard"&&<div className="hv3-context">
         <label htmlFor="hv3-hotel">ĐANG LÀM VIỆC VỚI</label>
-        <select id="hv3-hotel" value={selected} onChange={e=>{const p=properties.find(x=>x.id===e.target.value);if(p){setSelected(p.id);setDraftId(null);setPropertyDraft({name:p.name,address:p.address||"",city:p.city||"",description:p.description||"",maps_url:p.maps_url||"",entrance_notes:p.entrance_notes||""});}}}>
+        <select id="hv3-hotel" value={selected} onChange={e=>{const p=properties.find(x=>x.id===e.target.value);if(p){setSelected(p.id);setDraftId(null);setPhotoTarget("hotel");setPriceForm(v=>({...v,room_id:""}));setPropertyDraft({name:p.name,address:p.address||"",city:p.city||"",description:p.description||"",maps_url:p.maps_url||"",entrance_notes:p.entrance_notes||""});}}}>
           {properties.map(p=><option value={p.id} key={p.id}>{p.name}</option>)}
         </select><span>{hotel?.status==="published"?"Thông tin đã công bố":"Chưa công bố — cần duyệt"}</span>
       </div>}
@@ -327,7 +332,7 @@ export default function HotelPartnerV3() {
       {page==="room"&&hotel&&<div className="hv3-cols"><section className="hv3-panel"><div className="hv3-panel-head"><h2>{editingRoom?"Đề nghị sửa phòng":"Tạo hạng phòng nhanh"}</h2><span>BƯỚC 2 / 5</span></div>
         <div className="hv3-two"><label>Mẫu hạng phòng<select value={roomDraft.template} onChange={e=>setRoomDraft(v=>({...v,template:e.target.value,name:v.name||e.target.value}))}>{TEMPLATES.map(t=><option key={t}>{t}</option>)}</select></label><label>Tên hạng phòng *<input value={roomDraft.name} onChange={e=>setRoomDraft(v=>({...v,name:e.target.value}))} placeholder="Deluxe Ocean King"/></label></div>
         <div className="hv3-three"><label>Diện tích (m²)<input inputMode="decimal" value={roomDraft.area_sqm} onChange={e=>setRoomDraft(v=>({...v,area_sqm:e.target.value}))}/></label><label>Người lớn tối đa<input type="number" min={1} max={30} value={roomDraft.max_adults} onChange={e=>setRoomDraft(v=>({...v,max_adults:e.target.value}))}/></label><label>Trẻ em tối đa<input type="number" min={0} max={30} value={roomDraft.max_children} onChange={e=>setRoomDraft(v=>({...v,max_children:e.target.value}))}/></label></div>
-        <div className="hv3-two"><label>Giường<select value={roomDraft.bed_details} onChange={e=>setRoomDraft(v=>({...v,bed_details:e.target.value}))}>{BEDS.map(t=><option key={t}>{t}</option>)}</select></label><label>Hướng nhìn<select value={roomDraft.view_details} onChange={e=>setRoomDraft(v=>({...v,view_details:e.target.value}))}>{VIEWS.map(t=><option key={t}>{t}</option>)}</select></label></div>
+        <div className="hv3-two"><label>Giường<select value={roomDraft.bed_details} onChange={e=>setRoomDraft(v=>({...v,bed_details:e.target.value}))}>{BEDS.map(t=><option key={t}>{t}</option>)}{!BEDS.includes(roomDraft.bed_details)&&<option value={roomDraft.bed_details}>{roomDraft.bed_details}</option>}</select></label><label>Hướng nhìn<select value={roomDraft.view_details} onChange={e=>setRoomDraft(v=>({...v,view_details:e.target.value}))}>{VIEWS.map(t=><option key={t}>{t}</option>)}{!VIEWS.includes(roomDraft.view_details)&&<option value={roomDraft.view_details}>{roomDraft.view_details}</option>}</select></label></div>
         <div className="hv3-two"><label>Giường phụ<select value={roomDraft.extra_bed} onChange={e=>setRoomDraft(v=>({...v,extra_bed:e.target.value}))}>{["Không","Có, tính phí","Có, miễn phí","Theo yêu cầu","Chưa rõ"].map(t=><option key={t}>{t}</option>)}</select></label><label className="hv3-check"> <input type="checkbox" checked={roomDraft.breakfast_included} onChange={e=>setRoomDraft(v=>({...v,breakfast_included:e.target.checked}))}/> Bao gồm ăn sáng</label></div>
         <label className="hv3-field-label">Tiện nghi — tích chọn nhanh</label><div className="hv3-chipgrid">{AMENITIES.map(t=><button type="button" key={t} className={roomDraft.amenities.includes(t)?"chosen":""} onClick={()=>setRoomDraft(v=>({...v,amenities:v.amenities.includes(t)?v.amenities.filter(s=>s!==t):[...v.amenities,t]}))}>{roomDraft.amenities.includes(t)?"✓ ":"+ "}{t}</button>)}</div>
         <label>Ghi chú / chính sách riêng<textarea value={roomDraft.notes} onChange={e=>setRoomDraft(v=>({...v,notes:e.target.value}))} rows={2}/></label>
