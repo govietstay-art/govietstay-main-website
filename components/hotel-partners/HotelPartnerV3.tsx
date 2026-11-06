@@ -67,6 +67,9 @@ export default function HotelPartnerV3() {
   const [loginEmail,setLoginEmail]=useState("");
   const [loginPassword,setLoginPassword]=useState("");
   const [signup,setSignup]=useState(false);
+  useEffect(()=>{
+    if(new URLSearchParams(window.location.search).get("signup")==="1")setSignup(true);
+  },[]);
   const [orgs,setOrgs]=useState<Org[]>([]);
   const [editableOrgIds,setEditableOrgIds]=useState<string[]>([]);
   const [properties,setProperties]=useState<Property[]>([]);
@@ -175,7 +178,7 @@ export default function HotelPartnerV3() {
     e.preventDefault();setWorking(true);setError("");setMessage("");
     try{
       const out=signup?
-        await supabase.auth.signUp({email:loginEmail,password:loginPassword}):
+        await supabase.auth.signUp({email:loginEmail,password:loginPassword,options:{emailRedirectTo:window.location.origin+"/admin/hotels-v3"}}):
         await supabase.auth.signInWithPassword({email:loginEmail,password:loginPassword});
       if(out.error)throw out.error;
       setMessage(signup?"Đã đăng ký. Vui lòng xác nhận email, sau đó nhờ GoVietStay cấp quyền.":"Đăng nhập thành công.");
@@ -293,7 +296,7 @@ export default function HotelPartnerV3() {
     <button className="hv3-primary" disabled={working}>{signup?"Tạo tài khoản":"Đăng nhập"}</button>
     <button type="button" className="hv3-text-button" onClick={()=>setSignup(!signup)}>{signup?"Đã có tài khoản? Đăng nhập":"Chưa có tài khoản? Đăng ký để GoVietStay cấp quyền"}</button>
     {error&&<p className="hv3-error">{error}</p>}{message&&<p className="hv3-note">{message}</p>}
-    <a href="/admin">Về Admin Operations</a>
+    <a href="/hotel-partners">← Trang giới thiệu đối tác</a>
   </form></div>;
   if(!authorized) return <div className="hv3-center"><div className="hv3-auth"><div className="hv3-logo">GVS</div>
     <h1>Chờ cấp quyền khách sạn</h1><p>Tài khoản đã đăng nhập, nhưng chưa được gắn với khách sạn. Vui lòng gửi email đăng ký cho quản trị viên GoVietStay để được cấp quyền đúng đơn vị.</p>
