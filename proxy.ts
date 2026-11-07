@@ -6,6 +6,10 @@ const SOURCES:Record<string,string>={
 };
 export function proxy(request:NextRequest){
  const pathname=request.nextUrl.pathname,parts=pathname.split("/").filter(Boolean);
+ // Only the partner subdomain root is redirected. The production website is unaffected.
+ if(request.nextUrl.hostname.toLowerCase()==="partners.govietstay.com" && pathname==="/"){
+  return NextResponse.redirect(new URL("/hotel-partners",request.url),307);
+ }
  if(parts[0]==="go"){
   // Preserve the established marketing-attribution route.
   const source=SOURCES[String(parts[1]||"").toLowerCase()];
