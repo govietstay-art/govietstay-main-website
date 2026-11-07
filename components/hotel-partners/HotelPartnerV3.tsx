@@ -68,6 +68,7 @@ export default function HotelPartnerV3() {
   const [loginEmail,setLoginEmail]=useState("");
   const [loginPassword,setLoginPassword]=useState("");
   const [signup,setSignup]=useState(false);
+  const [verificationEmail,setVerificationEmail]=useState("");
   useEffect(()=>{
     const params=new URLSearchParams(window.location.search);
     if(params.get("signup")==="1")setSignup(true);
@@ -83,6 +84,7 @@ export default function HotelPartnerV3() {
   const [accessForm,setAccessForm]=useState({company_name:"",hotel_name:"",contact_phone:"",note:""});
   const [accessOrgById,setAccessOrgById]=useState<Record<string,string>>({});
   const [accessRoleById,setAccessRoleById]=useState<Record<string,string>>({});
+  const [accessCreateOrgById,setAccessCreateOrgById]=useState<Record<string,boolean>>({});
   const [accessNoteById,setAccessNoteById]=useState<Record<string,string>>({});
   const [photos,setPhotos]=useState<Photo[]>([]);
   const [rates,setRates]=useState<Array<{id:string;room_id:string;net_price_vnd:number;valid_from:string;valid_until:string}>>([]);
@@ -227,10 +229,23 @@ export default function HotelPartnerV3() {
           }
         }}):
         await supabase.auth.signInWithPassword({email:loginEmail,password:loginPassword});
-      if(out.error)throw out.error;
-      setMessage(signup
-        ?"Đã tạo tài khoản. Hãy mở email và xác minh, sau đó đăng nhập. Hệ thống sẽ tự chuyển thông tin công ty cho GoVietStay duyệt."
-        :"Đăng nhập thành công.");
+      if(out.error){
+        if(signup && /already registered|already exists|user_already_exists/i.test(out.error.message)){
+          setSignup(false);
+          setMessage("Email này đã có tài khoản. Vui lòng đăng nhập hoặc gửi lại email xác minh; không cần đăng ký lần nữa.");
+          return;
+        }
+        if(!signup && /email not confirmed/i.test(out.error.message)){
+          throw new Error("Email chưa xác minh. Hãy bấm Gửi lại email xác minh, sau đó mở thư mới nhất.");
+        }
+        throw out.error;
+      }
+      if(signup){
+        setVerificationEmail(loginEmail.trim());
+        setMessage("");
+      }else{
+        setMessage("Đăng nhập thành công.");
+      }
       await refresh();
     }catch(e){setError(e instanceof Error?e.message:String(e));}finally{setWorking(false);}
   }
@@ -357,10 +372,12 @@ export default function HotelPartnerV3() {
     setWorking(true);setError("");setMessage("");
     try {
       const orgId=accessOrgById[req.id]||"";
-      if(decision==="approved"&&!orgId)throw new Error("Chọn đúng công ty trước khi cấp quyền.");
-      const {error}=await supabase.rpc("hotel_admin_resolve_access_request",{
+      const createOrg=Boolean(accessCreateOrgById[req.id]);
+      if(decision==="approved"&&!orgId&&!createOrg)throw new Error("Chọn công ty hiện có hoặc tích chọn tạo công ty mới.");
+      const {error}=await supabase.rpc("hotel_admin_resolve_access_request_v2",{
         p_request_id:req.id,p_decision:decision,
-        p_org_id:decision==="approved"?orgId:null,
+        p_org_id:decision==="approved"&&!createOrg?orgId:null,
+        p_create_org:decision==="approved"&&createOrg,
         p_role:accessRoleById[req.id]||"editor",
         p_note:accessNoteById[req.id]||null
       });
@@ -386,9 +403,26 @@ export default function HotelPartnerV3() {
   }
 
   if(checking) return <div className="hv3-center"><div className="hv3-loading">Đang xác thực dữ liệu và phân quyền…</div></div>;
+  if(!authUser && verificationEmail) return <div className="hv3-center"><div className="hv3-auth">
+    <div className="hv3-logo">GVS</div>
+    <h1>Kiểm tra email để xác minh</h1>
+    <p>Yêu cầu đăng ký đã được tiếp nhận. Nếu đây là tài khoản mới, hệ thống sẽ gửi thư xác minh đến:</p>
+    <div className="hv3-verify-email">{verificationEmail}</div>
+    <div className="hv3-steps"><span>1. Mở thư xác minh mới nhất</span><span>2. Nhấp liên kết để xác minh email</span><span>3. Hồ sơ công ty tự vào hàng chờ GoVietStay duyệt</span></div>
+    <p>Không cần điền thông tin lần nữa. Nếu email đã có tài khoản, hãy chuyển sang đăng nhập.</p>
+    <button type="button" className="hv3-primary" disabled={working} onClick={()=>void resendConfirmation()}>{working?"Đang gửi…":"Gửi lại email xác minh"}</button>
+    <button type="button" className="hv3-secondary" onClick={()=>{setVerificationEmail("");setSignup(false);setMessage("");}}>Đã có tài khoản? Đăng nhập</button>
+    {error&&<p className="hv3-error">{error}</p>}
+    {message&&<p className="hv3-note">{message}</p>}
+    <a href="/hotel-partners">← Trang giới thiệu đối tác</a>
+  </div></div>;
   if(!authUser) return <div className="hv3-center"><form className="hv3-auth" onSubmit={login}>
     <div className="hv3-logo">GVS</div><h1>GoVietStay Hotel Partner</h1>
-    <p>{signup?"Khai báo thông tin đối tác một lần. Sau khi xác minh email, hồ sơ sẽ tự chuyển đến GoVietStay để duyệt.":"Cổng nhập liệu khách sạn · Đăng nhập bằng tài khoản được GoVietStay cấp quyền"}</p>
+    <div className="hv3-auth-tabs" role="group" aria-label="Chọn đăng nhập hoặc đăng ký">
+      <button type="button" aria-pressed={!signup} className={!signup?"selected":""} onClick={()=>{setSignup(false);setError("");setMessage("");}}>Đã có tài khoản</button>
+      <button type="button" aria-pressed={signup} className={signup?"selected":""} onClick={()=>{setSignup(true);setError("");setMessage("");}}>Đăng ký mới</button>
+    </div>
+    <p>{signup?"Một lần khai báo · Xác minh email · GoVietStay xét duyệt. Sau khi xác minh, hồ sơ tự gửi, không cần điền lại.":"Đăng nhập để quản lý các khách sạn của công ty hoặc theo dõi yêu cầu cấp quyền."}</p>
     {signup&&<>
       <label>Tên công ty hoặc đơn vị quản lý *</label>
       <input required minLength={2} maxLength={200} autoComplete="organization"
@@ -405,9 +439,9 @@ export default function HotelPartnerV3() {
     </>}
     <label>Email</label><input type="email" required value={loginEmail} onChange={e=>setLoginEmail(e.target.value)} placeholder="hotel@example.com"/>
     <label>Mật khẩu</label><input type="password" required minLength={6} value={loginPassword} onChange={e=>setLoginPassword(e.target.value)}/>
-    <button className="hv3-primary" disabled={working}>{working?"Đang xử lý…":signup?"Tạo tài khoản & gửi hồ sơ":"Đăng nhập"}</button>
-    <button type="button" className="hv3-text-button" onClick={()=>setSignup(!signup)}>{signup?"Đã có tài khoản? Đăng nhập":"Chưa có tài khoản? Đăng ký để GoVietStay cấp quyền"}</button>
-    <button type="button" className="hv3-text-button" disabled={working||!loginEmail.trim()} onClick={()=>void resendConfirmation()}>Chưa xác minh được email? Gửi lại liên kết xác nhận</button>
+    <button className="hv3-primary" disabled={working}>{working?"Đang xử lý…":signup?"Đăng ký & nhận email xác minh":"Đăng nhập tài khoản"}</button>
+    <button type="button" className="hv3-text-button" disabled={working||!loginEmail.trim()} onClick={()=>void resendConfirmation()}>Đã đăng ký nhưng chưa xác minh? Gửi lại email</button>
+    {signup&&<p className="hv3-muted">Đã từng đăng ký bằng email này? Chọn <strong>Đã có tài khoản</strong> ở phía trên; đừng tạo lần hai.</p>}
     {error&&<p className="hv3-error">{error}</p>}{message&&<p className="hv3-note">{message}</p>}
     <a href="/hotel-partners">← Trang giới thiệu đối tác</a>
   </form></div>;
@@ -556,10 +590,15 @@ export default function HotelPartnerV3() {
             <span><b>Ghi chú:</b> {r.note||"Không có"}</span>
           </div>
           <label>Liên kết với công ty đã xác minh
-            <select value={accessOrgById[r.id]||""} onChange={e=>setAccessOrgById(v=>({...v,[r.id]:e.target.value}))}>
-              <option value="">— Chọn công ty, không tự động gán —</option>
+            <select disabled={Boolean(accessCreateOrgById[r.id])} value={accessCreateOrgById[r.id]?"":accessOrgById[r.id]||""}
+              onChange={e=>setAccessOrgById(v=>({...v,[r.id]:e.target.value}))}>
+              <option value="">— Chọn công ty đã có —</option>
               {orgs.map(o=><option key={o.id} value={o.id}>{o.name}</option>)}
             </select></label>
+          <label className="hv3-check"><input type="checkbox" checked={Boolean(accessCreateOrgById[r.id])}
+            onChange={e=>setAccessCreateOrgById(v=>({...v,[r.id]:e.target.checked}))}/>
+            Đây là công ty mới — tạo công ty khi duyệt</label>
+          {accessCreateOrgById[r.id]&&<p className="hv3-muted">Sau khi xác minh, hệ thống sẽ tạo công ty <strong>{r.company_name}</strong> và cấp quyền cho tài khoản này. Không chọn nếu công ty đã tồn tại.</p>}
           <label>Vai trò
             <select value={accessRoleById[r.id]||"editor"} onChange={e=>setAccessRoleById(v=>({...v,[r.id]:e.target.value}))}>
               <option value="editor">Biên tập viên — nhập hồ sơ</option>
@@ -574,7 +613,7 @@ export default function HotelPartnerV3() {
           </label>
           <div className="hv3-review-actions">
             <button className="hv3-secondary" disabled={working} onClick={()=>void decideAccess(r,"rejected")}>Từ chối / yêu cầu bổ sung</button>
-            <button className="hv3-primary" disabled={working||!accessOrgById[r.id]} onClick={()=>void decideAccess(r,"approved")}>✓ Xác minh & cấp quyền</button>
+            <button className="hv3-primary" disabled={working||(!accessCreateOrgById[r.id]&&!accessOrgById[r.id])} onClick={()=>void decideAccess(r,"approved")}>✓ Xác minh & cấp quyền</button>
           </div>
         </article>)}</div>
         {!pendingAccess.length&&<div className="hv3-empty">Không có yêu cầu đăng ký nào đang chờ.</div>}
