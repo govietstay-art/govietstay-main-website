@@ -68,11 +68,15 @@ DECLARE
 BEGIN
   IF TG_TABLE_NAME='hotel_change_requests' THEN
     IF NEW.status<>'submitted' THEN RETURN NEW; END IF;
-    IF TG_OP='UPDATE' AND OLD.status='submitted' THEN RETURN NEW; END IF;
+    IF TG_OP='UPDATE' THEN
+      IF OLD.status='submitted' THEN RETURN NEW; END IF;
+    END IF;
     v_kind:='hotel_partner_review';
   ELSIF TG_TABLE_NAME='hotel_partner_access_requests' THEN
     IF NEW.status<>'pending' THEN RETURN NEW; END IF;
-    IF TG_OP='UPDATE' AND OLD.status='pending' THEN RETURN NEW; END IF;
+    IF TG_OP='UPDATE' THEN
+      IF OLD.status='pending' THEN RETURN NEW; END IF;
+    END IF;
     v_kind:='hotel_partner_access';
   ELSE RETURN NEW;
   END IF;
