@@ -19,7 +19,8 @@ type Property = { id:string; org_id:string; pilot_code:string|null; name:string;
 type Room = { id:string; property_id:string; pilot_code:string|null; name:string; template:string; area_sqm:number|null; bed_details:string|null; max_adults:number|null; max_children:number|null; view_details:string|null; breakfast_included:boolean|null; extra_bed:string|null; amenities:string[]; notes:string|null; status:string };
 type Request = { id:string; property_id:string; created_by:string; kind:string; target_id:string|null; payload:Record<string,unknown>; status:string; review_note:string|null; created_at:string };
 type Photo = { id:string; property_id:string; room_id:string|null; storage_path:string; is_cover:boolean; alt_text:string|null; url?:string };
-type Page = "catalog"|"property"|"room"|"photo"|"rate"|"queue"|"onboard";
+type AccessRequest = { id:string; user_id:string; applicant_email:string; company_name:string; hotel_name:string|null; contact_phone:string|null; note:string|null; status:"pending"|"approved"|"rejected"; assigned_org_id:string|null; assigned_role:string|null; review_note:string|null; created_at:string };
+type Page = "catalog"|"property"|"room"|"photo"|"rate"|"queue"|"onboard"|"access";
 type RoomDraft = { name:string; template:string; area_sqm:string; bed_details:string; max_adults:string; max_children:string; view_details:string; breakfast_included:boolean; extra_bed:string; amenities:string[]; notes:string };
 const freshRoom = ():RoomDraft => ({name:"",template:"Deluxe",area_sqm:"",bed_details:"1 King",max_adults:"2",max_children:"1",view_details:"Hướng phố",breakfast_included:true,extra_bed:"Không",amenities:["Wi-Fi","Điều hòa","TV"],notes:""});
 const today = () => new Date().toISOString().slice(0,10);
@@ -75,6 +76,11 @@ export default function HotelPartnerV3() {
   const [properties,setProperties]=useState<Property[]>([]);
   const [rooms,setRooms]=useState<Room[]>([]);
   const [requests,setRequests]=useState<Request[]>([]);
+  const [accessRequests,setAccessRequests]=useState<AccessRequest[]>([]);
+  const [accessForm,setAccessForm]=useState({company_name:"",hotel_name:"",contact_phone:"",note:""});
+  const [accessOrgById,setAccessOrgById]=useState<Record<string,string>>({});
+  const [accessRoleById,setAccessRoleById]=useState<Record<string,string>>({});
+  const [accessNoteById,setAccessNoteById]=useState<Record<string,string>>({});
   const [photos,setPhotos]=useState<Photo[]>([]);
   const [rates,setRates]=useState<Array<{id:string;room_id:string;net_price_vnd:number;valid_from:string;valid_until:string}>>([]);
   const [page,setPage]=useState<Page>("catalog");
@@ -111,6 +117,12 @@ export default function HotelPartnerV3() {
       const canAccess=Boolean(isAdmin || (members.data?.length||0)>0);
       setAdmin(Boolean(isAdmin));setAuthorized(canAccess);
       setEditableOrgIds((members.data||[]).filter(m=>["owner","manager","editor"].includes(m.role)).map(m=>m.org_id));
+      // RLS shows the applicant only their own requests, and admins the entire queue.
+      const accessResult=await supabase.from("hotel_partner_access_requests")
+        .select("id,user_id,applicant_email,company_name,hotel_name,contact_phone,note,status,assigned_org_id,assigned_role,review_note,created_at")
+        .order("created_at",{ascending:false}).limit(150);
+      if(accessResult.error)throw accessResult.error;
+      setAccessRequests((accessResult.data||[]) as AccessRequest[]);
       if(!canAccess){setChecking(false);return;}
       const [orgResult,hotelResult,roomResult,requestResult,photoResult]=await Promise.all([
         supabase.from("hotel_partner_orgs").select("id,name,kind").eq("active",true).order("name"),
@@ -155,6 +167,7 @@ export default function HotelPartnerV3() {
   const hotelRooms=rooms.filter(r=>r.property_id===selected);
   const hotelPhotos=photos.filter(p=>p.property_id===selected && !p.room_id);
   const pending=requests.filter(r=>r.status==="submitted");
+  const pendingAccess=admin?accessRequests.filter(r=>r.status==="pending"):[];
   const filtered=useMemo(()=>properties.filter(p=>(p.name+" "+(p.city||"")+" "+(p.pilot_code||"")).toLowerCase().includes(search.toLowerCase())),[properties,search]);
   const roomPhoto=(id:string)=>photos.find(p=>p.room_id===id)?.url;
   const roomRate=(id:string)=>rates.filter(p=>p.room_id===id).sort((a,b)=>b.valid_from.localeCompare(a.valid_from))[0];
@@ -274,6 +287,42 @@ export default function HotelPartnerV3() {
       setMemberEmail("");
     }catch(err){setError(err instanceof Error?err.message:String(err));}finally{setWorking(false);}
   }
+  async function requestAccess(e:React.FormEvent) {
+    e.preventDefault();setWorking(true);setError("");setMessage("");
+    try {
+      if(accessForm.company_name.trim().length<2)throw new Error("Vui lòng nhập tên công ty hoặc đơn vị.");
+      const {error}=await supabase.rpc("hotel_partner_request_access",{
+        p_company_name:accessForm.company_name.trim(),
+        p_hotel_name:accessForm.hotel_name.trim()||null,
+        p_contact_phone:accessForm.contact_phone.trim()||null,
+        p_note:accessForm.note.trim()||null
+      });
+      if(error)throw error;
+      setMessage("Đã gửi hồ sơ. GoVietStay sẽ kiểm tra trước khi cấp quyền.");
+      await refresh();
+    }catch(err){setError(err instanceof Error?err.message:String(err));}
+    finally{setWorking(false);}
+  }
+  async function decideAccess(req:AccessRequest,decision:"approved"|"rejected"){
+    if(!admin)return;
+    setWorking(true);setError("");setMessage("");
+    try {
+      const orgId=accessOrgById[req.id]||"";
+      if(decision==="approved"&&!orgId)throw new Error("Chọn đúng công ty trước khi cấp quyền.");
+      const {error}=await supabase.rpc("hotel_admin_resolve_access_request",{
+        p_request_id:req.id,p_decision:decision,
+        p_org_id:decision==="approved"?orgId:null,
+        p_role:accessRoleById[req.id]||"editor",
+        p_note:accessNoteById[req.id]||null
+      });
+      if(error)throw error;
+      setMessage(decision==="approved"
+        ?"Đã cấp quyền cho "+req.applicant_email+" theo đúng công ty."
+        :"Đã từ chối yêu cầu; tài khoản có thể gửi lại hồ sơ sau.");
+      await refresh();
+    }catch(err){setError(err instanceof Error?err.message:String(err));}
+    finally{setWorking(false);}
+  }
   function restoreDraft(r:Request){
     setSelected(r.property_id);setDraftId(r.id);
     if(r.kind==="room"){
@@ -298,10 +347,40 @@ export default function HotelPartnerV3() {
     {error&&<p className="hv3-error">{error}</p>}{message&&<p className="hv3-note">{message}</p>}
     <a href="/hotel-partners">← Trang giới thiệu đối tác</a>
   </form></div>;
-  if(!authorized) return <div className="hv3-center"><div className="hv3-auth"><div className="hv3-logo">GVS</div>
-    <h1>Chờ cấp quyền khách sạn</h1><p>Tài khoản đã đăng nhập, nhưng chưa được gắn với khách sạn. Vui lòng gửi email đăng ký cho quản trị viên GoVietStay để được cấp quyền đúng đơn vị.</p>
-    <button className="hv3-primary" onClick={()=>void refresh()}>Kiểm tra lại quyền</button><button className="hv3-text-button" onClick={()=>void logout()}>Đăng xuất</button>
-  </div></div>;
+  if(!authorized) {
+    const myPending=accessRequests.find(r=>r.status==="pending");
+    const lastRejected=accessRequests.find(r=>r.status==="rejected");
+    return <div className="hv3-center"><div className="hv3-auth">
+      <div className="hv3-logo">GVS</div>
+      <h1>{myPending?"Hồ sơ đang được tiếp nhận":"Đăng ký trở thành đối tác"}</h1>
+      <p>GoVietStay xác minh công ty trước khi cho phép truy cập danh mục khách sạn. Mỗi tài khoản được cấp quyền theo đúng đơn vị.</p>
+      {myPending?<div className="hv3-note">
+        <strong>✓ Đã tiếp nhận yêu cầu</strong>
+        <p>Đơn vị: {myPending.company_name}</p>
+        <p>Đăng ký lúc: {new Date(myPending.created_at).toLocaleString("vi-VN")}</p>
+        <p>Trạng thái: Chờ GoVietStay xác minh và gắn quyền công ty.</p>
+      </div>:<form onSubmit={e=>void requestAccess(e)}>
+        {lastRejected&&<p className="hv3-error">Hồ sơ trước cần bổ sung: {lastRejected.review_note||"Vui lòng liên hệ GoVietStay để xác nhận thông tin."}</p>}
+        <label>Tên công ty hoặc đơn vị quản lý *</label>
+        <input required minLength={2} maxLength={200} value={accessForm.company_name}
+          onChange={e=>setAccessForm(v=>({...v,company_name:e.target.value}))} placeholder="Ví dụ: ABC Hotel Group"/>
+        <label>Tên khách sạn đầu tiên (nếu có)</label>
+        <input maxLength={200} value={accessForm.hotel_name}
+          onChange={e=>setAccessForm(v=>({...v,hotel_name:e.target.value}))} placeholder="Ví dụ: ABC Boutique Đà Nẵng"/>
+        <label>Số điện thoại liên hệ</label>
+        <input type="tel" maxLength={40} value={accessForm.contact_phone}
+          onChange={e=>setAccessForm(v=>({...v,contact_phone:e.target.value}))} placeholder="+84..."/>
+        <label>Thông tin xác minh thêm</label>
+        <textarea maxLength={1000} rows={2} value={accessForm.note}
+          onChange={e=>setAccessForm(v=>({...v,note:e.target.value}))} placeholder="Website khách sạn, vị trí công tác hoặc thông tin liên hệ"/>
+        <button className="hv3-primary" disabled={working}>{working?"Đang gửi…":"Gửi yêu cầu tham gia →"}</button>
+      </form>}
+      {error&&<p className="hv3-error">{error}</p>}
+      {message&&<p className="hv3-note">{message}</p>}
+      <button className="hv3-secondary" onClick={()=>void refresh()}>↻ Kiểm tra trạng thái quyền</button>
+      <button className="hv3-text-button" onClick={()=>void logout()}>Đăng xuất</button>
+    </div></div>;
+  }
 
   return <div className="hv3-app">
     <aside className="hv3-sidebar">
@@ -315,11 +394,12 @@ export default function HotelPartnerV3() {
         <button className={page==="rate"?"active":""} onClick={()=>{setDraftId(null);setPage("rate");}}>₫ <span>Giá & chính sách</span></button>
         <button className={page==="queue"?"active":""} onClick={()=>{setDraftId(null);setPage("queue");}}>✓ <span>{admin?"Kiểm duyệt":"Yêu cầu đã gửi"}</span><b>{pending.length}</b></button>
         {canAddHotel&&<button className={page==="onboard"?"active":""} onClick={()=>{setDraftId(null);setPage("onboard");}}>＋ <span>Thêm khách sạn</span></button>}
+        {admin&&<button className={page==="access"?"active":""} onClick={()=>setPage("access")}>♙ <span>Yêu cầu cấp tài khoản</span><b>{pendingAccess.length}</b></button>}
       </nav>
       <div className="hv3-side-foot"><span>● Dữ liệu Supabase thật</span><small>{admin?"Quyền chủ hệ thống":"Quyền đối tác khách sạn"}</small><button onClick={()=>void logout()}>Đăng xuất</button></div>
     </aside>
     <main className="hv3-main">
-      <header className="hv3-header"><div><span className="hv3-eyebrow">GO VIETSTAY / OPERATIONS / HOTEL MANAGEMENT</span><h1>{page==="catalog"?"Hệ thống khách sạn":page==="room"?"Nhập hạng phòng nhanh":page==="property"?"Hồ sơ khách sạn":page==="photo"?"Hình ảnh khách sạn":page==="rate"?"Giá NET & chính sách":page==="queue"?"Trung tâm kiểm duyệt":"Thêm khách sạn mới"}</h1></div><div className="hv3-header-right"><span className="hv3-secure">🔒 Phân quyền Supabase</span><button onClick={()=>void refresh()} className="hv3-refresh">↻ Làm mới</button></div></header>
+      <header className="hv3-header"><div><span className="hv3-eyebrow">GO VIETSTAY / OPERATIONS / HOTEL MANAGEMENT</span><h1>{page==="catalog"?"Hệ thống khách sạn":page==="room"?"Nhập hạng phòng nhanh":page==="property"?"Hồ sơ khách sạn":page==="photo"?"Hình ảnh khách sạn":page==="rate"?"Giá NET & chính sách":page==="queue"?"Trung tâm kiểm duyệt":page==="access"?"Duyệt tài khoản đối tác":"Thêm khách sạn mới"}</h1></div><div className="hv3-header-right"><span className="hv3-secure">🔒 Phân quyền Supabase</span><button onClick={()=>void refresh()} className="hv3-refresh">↻ Làm mới</button></div></header>
       {(error||message)&&<div role="status" className={error?"hv3-error":"hv3-success"}>{error||message}<button onClick={()=>{setError("");setMessage("");}} aria-label="Đóng thông báo">×</button></div>}
       <div className="hv3-stats"><div><small>KHÁCH SẠN ĐƯỢC QUẢN LÝ</small><strong>{properties.length}</strong><span>Tách biệt theo từng đối tác</span></div><div><small>HẠNG PHÒNG HIỆN CÓ</small><strong>{rooms.length}</strong><span>Chọn mẫu hoặc nhân bản</span></div><div><small>CHỜ GO VIETSTAY DUYỆT</small><strong>{pending.length}</strong><span>Thông tin chưa công bố</span></div><div><small>HÌNH ẢNH ĐÃ DUYỆT</small><strong>{photos.length}</strong><span>WebP · ảnh riêng tư</span></div></div>
 
@@ -393,6 +473,47 @@ export default function HotelPartnerV3() {
           {admin&&r.status==="submitted"&&<div className="hv3-review-actions"><input placeholder="Ghi chú (nếu cần)" value={reviewNote} onChange={e=>setReviewNote(e.target.value)}/><button className="hv3-secondary" disabled={working} onClick={()=>void review(r,"rejected")}>Yêu cầu sửa / từ chối</button><button className="hv3-primary" disabled={working} onClick={()=>void review(r,"approved")}>✓ Duyệt & lưu</button></div>}
         </article>)}</div>
         {!requests.length&&<div className="hv3-empty">Chưa có yêu cầu. Đối tác bắt đầu nhập thông tin và bấm “Gửi duyệt”.</div>}
+      </>}
+
+      {page==="access"&&admin&&<>
+        <div className="hv3-section-head"><div><h2>Đối tác mới chờ xác minh</h2>
+          <p>Chỉ cấp quyền khi đã kiểm tra người đăng ký và chọn đúng công ty. Không tự động liên kết dựa vào tên trùng nhau.</p></div>
+          <span className="hv3-code">{pendingAccess.length} yêu cầu đang chờ</span>
+        </div>
+        <div className="hv3-queue">{pendingAccess.map(r=><article key={r.id} className="hv3-request">
+          <div className="hv3-request-top"><div><span className="hv3-code">ĐĂNG KÝ ĐỐI TÁC</span>
+            <h3>{r.company_name}</h3><p>{r.applicant_email}</p>
+            <small>{new Date(r.created_at).toLocaleString("vi-VN")}</small>
+          </div><span className="hv3-status">Chờ xác minh</span></div>
+          <div className="hv3-request-details">
+            <span><b>Khách sạn:</b> {r.hotel_name||"Chưa cung cấp"}</span>
+            <span><b>Liên hệ:</b> {r.contact_phone||"Chưa cung cấp"}</span>
+            <span><b>Ghi chú:</b> {r.note||"Không có"}</span>
+          </div>
+          <label>Liên kết với công ty đã xác minh
+            <select value={accessOrgById[r.id]||""} onChange={e=>setAccessOrgById(v=>({...v,[r.id]:e.target.value}))}>
+              <option value="">— Chọn công ty, không tự động gán —</option>
+              {orgs.map(o=><option key={o.id} value={o.id}>{o.name}</option>)}
+            </select></label>
+          <label>Vai trò
+            <select value={accessRoleById[r.id]||"editor"} onChange={e=>setAccessRoleById(v=>({...v,[r.id]:e.target.value}))}>
+              <option value="editor">Biên tập viên — nhập hồ sơ</option>
+              <option value="manager">Quản lý — nhập hồ sơ</option>
+              <option value="viewer">Chỉ xem</option>
+              <option value="owner">Chủ công ty — nhập hồ sơ</option>
+            </select></label>
+          <label>Ghi chú xác minh
+            <textarea rows={2} maxLength={1000} value={accessNoteById[r.id]||""}
+              onChange={e=>setAccessNoteById(v=>({...v,[r.id]:e.target.value}))}
+              placeholder="Ví dụ: Đã xác minh qua số liên hệ chính thức của khách sạn"/>
+          </label>
+          <div className="hv3-review-actions">
+            <button className="hv3-secondary" disabled={working} onClick={()=>void decideAccess(r,"rejected")}>Từ chối / yêu cầu bổ sung</button>
+            <button className="hv3-primary" disabled={working||!accessOrgById[r.id]} onClick={()=>void decideAccess(r,"approved")}>✓ Xác minh & cấp quyền</button>
+          </div>
+        </article>)}</div>
+        {!pendingAccess.length&&<div className="hv3-empty">Không có yêu cầu đăng ký nào đang chờ.</div>}
+        <p className="hv3-muted">Nếu đây là công ty hoàn toàn mới, hãy vào “Thêm khách sạn” để tạo công ty trước, sau đó trở lại duyệt yêu cầu.</p>
       </>}
 
       {page==="onboard"&&canAddHotel&&<div className="hv3-cols">
