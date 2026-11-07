@@ -129,3 +129,14 @@
 .hv3-catalog-actions{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap}
 .hv3-catalog-actions .hv3-primary{white-space:nowrap}
 @media(max-width:520px){.hv3-catalog-actions{display:grid;grid-template-columns:1fr;width:100%}.hv3-catalog-actions input{width:100%}.hv3-catalog-actions .hv3-primary{width:100%}}
+
+/* V5 verified signup journey: clearly separate new applications from existing accounts. */
+.hv3-auth-tabs{display:grid;grid-template-columns:1fr 1fr;background:#e9f2f3;padding:4px;border-radius:12px;gap:4px}
+.hv3-auth-tabs button{background:transparent;color:#416978;border:0;border-radius:9px;padding:11px 7px;font-size:12px;font-weight:750;cursor:pointer}
+.hv3-auth-tabs button.selected{background:white;color:#007f81;box-shadow:0 2px 8px #183d4b18}
+.hv3-auth .hv3-verify-email{font-weight:800;color:#153c51;font-size:15px;overflow-wrap:anywhere;border:1px solid #cde8e6;background:#eef9f8;border-radius:11px;padding:13px}
+.hv3-auth .hv3-steps{display:grid;gap:10px;margin:3px 0 8px}
+.hv3-auth .hv3-steps span{display:block;border-left:3px solid #14ab9f;padding:5px 10px;color:#3e6073;font-size:12px;line-height:1.55;background:#f3f9fa}
+.hv3-auth .hv3-muted{font-size:11px;line-height:1.6;color:#648090}
+.hv3-auth .hv3-primary,.hv3-auth .hv3-secondary{cursor:pointer;font-size:13px}
+.hv3-auth .hv3-primary:disabled,.hv3-auth .hv3-secondary:disabled{cursor:wait;opacity:.62}
