@@ -69,6 +69,7 @@ export default function HotelPartnerV3() {
   const [loginPassword,setLoginPassword]=useState("");
   const [signup,setSignup]=useState(false);
   const [verificationEmail,setVerificationEmail]=useState("");
+  const [resendPause,setResendPause]=useState(false);
   useEffect(()=>{
     const params=new URLSearchParams(window.location.search);
     if(params.get("signup")==="1")setSignup(true);
@@ -214,6 +215,19 @@ export default function HotelPartnerV3() {
     setRoomDraft({name:room.name,template:TEMPLATES.find(t=>t.toLowerCase()===room.template.toLowerCase())||"Khác",area_sqm:String(room.area_sqm??""),bed_details:room.bed_details||"",max_adults:String(room.max_adults??2),max_children:String(room.max_children??0),view_details:room.view_details||"",breakfast_included:Boolean(room.breakfast_included),extra_bed:room.extra_bed||"",amenities:room.amenities||[],notes:room.notes||""});
     setEditingRoom(room.id);setDraftId(null);setMessage("");setPage("room");
   }
+  function explainAuthError(err:unknown){
+    const raw=err instanceof Error?err.message:String(err);
+    if(/email rate limit exceeded|over_email_send_rate_limit|rate limit.*email|email.*rate limit/i.test(raw)){
+      setResendPause(true);
+      return "Hệ thống email tạm đạt giới hạn gửi. Vui lòng KHÔNG bấm gửi lại liên tục. Hãy kiểm tra thư xác minh đã nhận (kể cả Spam), hoặc thử lại sau khi giới hạn được làm mới. GoVietStay đang nâng cấp dịch vụ gửi email.";
+    }
+    if(/security purposes.*seconds|over_request_rate_limit|too many requests/i.test(raw)){
+      setResendPause(true);
+      return "Bạn vừa yêu cầu email quá nhiều lần. Vui lòng đợi một lúc rồi thử lại; không cần tạo tài khoản mới.";
+    }
+    if(/email not confirmed/i.test(raw))return "Email chưa được xác minh. Vui lòng kiểm tra thư xác nhận đã nhận hoặc dùng chức năng gửi lại khi hệ thống cho phép.";
+    return raw;
+  }
   async function login(e:React.FormEvent){
     e.preventDefault();setWorking(true);setError("");setMessage("");
     try{
@@ -247,7 +261,7 @@ export default function HotelPartnerV3() {
         setMessage("Đăng nhập thành công.");
       }
       await refresh();
-    }catch(e){setError(e instanceof Error?e.message:String(e));}finally{setWorking(false);}
+    }catch(e){setError(explainAuthError(e));}finally{setWorking(false);}
   }
   async function resendConfirmation(){
     setWorking(true);setError("");setMessage("");
@@ -258,8 +272,9 @@ export default function HotelPartnerV3() {
         emailRedirectTo:window.location.origin+"/admin/hotels-v3"
       }});
       if(error)throw error;
-      setMessage("Nếu tài khoản đang chờ xác minh, email mới đã được yêu cầu gửi. Vui lòng kiểm tra cả Spam. Không cần đăng ký lại.");
-    }catch(err){setError(err instanceof Error?err.message:String(err));}
+      setResendPause(true);
+      setMessage("Đã yêu cầu gửi email xác minh. Hãy kiểm tra thư mới nhất và Spam. Không cần nhấn nhiều lần hoặc đăng ký lại.");
+    }catch(err){setError(explainAuthError(err));}
     finally{setWorking(false);}
   }
   async function logout(){await supabase.auth.signOut();setAuthorized(false);setAuthUser(null);}
@@ -410,7 +425,7 @@ export default function HotelPartnerV3() {
     <div className="hv3-verify-email">{verificationEmail}</div>
     <div className="hv3-steps"><span>1. Mở thư xác minh mới nhất</span><span>2. Nhấp liên kết để xác minh email</span><span>3. Hồ sơ công ty tự vào hàng chờ GoVietStay duyệt</span></div>
     <p>Không cần điền thông tin lần nữa. Nếu email đã có tài khoản, hãy chuyển sang đăng nhập.</p>
-    <button type="button" className="hv3-primary" disabled={working} onClick={()=>void resendConfirmation()}>{working?"Đang gửi…":"Gửi lại email xác minh"}</button>
+    <button type="button" className="hv3-primary" disabled={working||resendPause} onClick={()=>void resendConfirmation()}>{working?"Đang gửi…":resendPause?"Đã yêu cầu email — thử lại sau":"Gửi lại email xác minh"}</button>
     <button type="button" className="hv3-secondary" onClick={()=>{setVerificationEmail("");setSignup(false);setMessage("");}}>Đã có tài khoản? Đăng nhập</button>
     {error&&<p className="hv3-error">{error}</p>}
     {message&&<p className="hv3-note">{message}</p>}
@@ -440,7 +455,7 @@ export default function HotelPartnerV3() {
     <label>Email</label><input type="email" required value={loginEmail} onChange={e=>setLoginEmail(e.target.value)} placeholder="hotel@example.com"/>
     <label>Mật khẩu</label><input type="password" required minLength={6} value={loginPassword} onChange={e=>setLoginPassword(e.target.value)}/>
     <button className="hv3-primary" disabled={working}>{working?"Đang xử lý…":signup?"Đăng ký & nhận email xác minh":"Đăng nhập tài khoản"}</button>
-    <button type="button" className="hv3-text-button" disabled={working||!loginEmail.trim()} onClick={()=>void resendConfirmation()}>Đã đăng ký nhưng chưa xác minh? Gửi lại email</button>
+    <button type="button" className="hv3-text-button" disabled={working||resendPause||!loginEmail.trim()} onClick={()=>void resendConfirmation()}>{resendPause?"Đã yêu cầu email — kiểm tra hộp thư, thử lại sau":"Đã đăng ký nhưng chưa xác minh? Gửi lại email"}</button>
     {signup&&<p className="hv3-muted">Đã từng đăng ký bằng email này? Chọn <strong>Đã có tài khoản</strong> ở phía trên; đừng tạo lần hai.</p>}
     {error&&<p className="hv3-error">{error}</p>}{message&&<p className="hv3-note">{message}</p>}
     <a href="/hotel-partners">← Trang giới thiệu đối tác</a>
