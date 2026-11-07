@@ -69,7 +69,10 @@ export default function HotelPartnerV3() {
   const [loginPassword,setLoginPassword]=useState("");
   const [signup,setSignup]=useState(false);
   useEffect(()=>{
-    if(new URLSearchParams(window.location.search).get("signup")==="1")setSignup(true);
+    const params=new URLSearchParams(window.location.search);
+    if(params.get("signup")==="1")setSignup(true);
+    const view=params.get("view");
+    if(view==="queue"||view==="access")setPage(view);
   },[]);
   const [orgs,setOrgs]=useState<Org[]>([]);
   const [editableOrgIds,setEditableOrgIds]=useState<string[]>([]);
