@@ -234,6 +234,19 @@ export default function HotelPartnerV3() {
       await refresh();
     }catch(e){setError(e instanceof Error?e.message:String(e));}finally{setWorking(false);}
   }
+  async function resendConfirmation(){
+    setWorking(true);setError("");setMessage("");
+    try {
+      const email=loginEmail.trim();
+      if(!email)throw new Error("Vui lòng nhập email đã đăng ký trước.");
+      const {error}=await supabase.auth.resend({type:"signup",email,options:{
+        emailRedirectTo:window.location.origin+"/admin/hotels-v3"
+      }});
+      if(error)throw error;
+      setMessage("Nếu tài khoản đang chờ xác minh, email mới đã được yêu cầu gửi. Vui lòng kiểm tra cả Spam. Không cần đăng ký lại.");
+    }catch(err){setError(err instanceof Error?err.message:String(err));}
+    finally{setWorking(false);}
+  }
   async function logout(){await supabase.auth.signOut();setAuthorized(false);setAuthUser(null);}
   async function submit(kind:Request["kind"],payload:Record<string,unknown>,target_id:string|null=null,asDraft=false) {
     if(!authUser||!hotel) return;
@@ -394,6 +407,7 @@ export default function HotelPartnerV3() {
     <label>Mật khẩu</label><input type="password" required minLength={6} value={loginPassword} onChange={e=>setLoginPassword(e.target.value)}/>
     <button className="hv3-primary" disabled={working}>{working?"Đang xử lý…":signup?"Tạo tài khoản & gửi hồ sơ":"Đăng nhập"}</button>
     <button type="button" className="hv3-text-button" onClick={()=>setSignup(!signup)}>{signup?"Đã có tài khoản? Đăng nhập":"Chưa có tài khoản? Đăng ký để GoVietStay cấp quyền"}</button>
+    <button type="button" className="hv3-text-button" disabled={working||!loginEmail.trim()} onClick={()=>void resendConfirmation()}>Chưa xác minh được email? Gửi lại liên kết xác nhận</button>
     {error&&<p className="hv3-error">{error}</p>}{message&&<p className="hv3-note">{message}</p>}
     <a href="/hotel-partners">← Trang giới thiệu đối tác</a>
   </form></div>;
