@@ -125,7 +125,29 @@ export default function HotelPartnerV3() {
         .select("id,user_id,applicant_email,company_name,hotel_name,contact_phone,note,status,assigned_org_id,assigned_role,review_note,created_at")
         .order("created_at",{ascending:false}).limit(150);
       if(accessResult.error)throw accessResult.error;
-      setAccessRequests((accessResult.data||[]) as AccessRequest[]);
+      let currentAccess=(accessResult.data||[]) as AccessRequest[];
+      // New applicants already supplied company details at signup. Once their
+      // email is confirmed and they authenticate, submit the request exactly
+      // once using the existing RLS-protected RPC. No unverified-email alerts.
+      const metadata=user.user_metadata||{};
+      if(!canAccess && currentAccess.length===0 && Boolean(user.email_confirmed_at)
+        && metadata.hotel_partner_signup===true
+        && typeof metadata.hotel_partner_company_name==="string"
+        && metadata.hotel_partner_company_name.trim().length>=2) {
+        const {error:autoError}=await supabase.rpc("hotel_partner_request_access",{
+          p_company_name:metadata.hotel_partner_company_name.trim(),
+          p_hotel_name:typeof metadata.hotel_partner_hotel_name==="string"?metadata.hotel_partner_hotel_name.trim()||null:null,
+          p_contact_phone:typeof metadata.hotel_partner_phone==="string"?metadata.hotel_partner_phone.trim()||null:null,
+          p_note:null
+        });
+        if(autoError)throw new Error("Chưa thể tự gửi yêu cầu cấp quyền: "+autoError.message);
+        const updated=await supabase.from("hotel_partner_access_requests")
+          .select("id,user_id,applicant_email,company_name,hotel_name,contact_phone,note,status,assigned_org_id,assigned_role,review_note,created_at")
+          .order("created_at",{ascending:false}).limit(150);
+        if(updated.error)throw updated.error;
+        currentAccess=(updated.data||[]) as AccessRequest[];
+      }
+      setAccessRequests(currentAccess);
       if(!canAccess){setChecking(false);return;}
       const [orgResult,hotelResult,roomResult,requestResult,photoResult]=await Promise.all([
         supabase.from("hotel_partner_orgs").select("id,name,kind").eq("active",true).order("name"),
@@ -193,11 +215,22 @@ export default function HotelPartnerV3() {
   async function login(e:React.FormEvent){
     e.preventDefault();setWorking(true);setError("");setMessage("");
     try{
+      if(signup && accessForm.company_name.trim().length<2)throw new Error("Vui lòng nhập tên công ty/đơn vị quản lý.");
       const out=signup?
-        await supabase.auth.signUp({email:loginEmail,password:loginPassword,options:{emailRedirectTo:window.location.origin+"/admin/hotels-v3"}}):
+        await supabase.auth.signUp({email:loginEmail,password:loginPassword,options:{
+          emailRedirectTo:window.location.origin+"/admin/hotels-v3",
+          data:{
+            hotel_partner_signup:true,
+            hotel_partner_company_name:accessForm.company_name.trim(),
+            hotel_partner_hotel_name:accessForm.hotel_name.trim(),
+            hotel_partner_phone:accessForm.contact_phone.trim()
+          }
+        }}):
         await supabase.auth.signInWithPassword({email:loginEmail,password:loginPassword});
       if(out.error)throw out.error;
-      setMessage(signup?"Đã đăng ký. Vui lòng xác nhận email, sau đó nhờ GoVietStay cấp quyền.":"Đăng nhập thành công.");
+      setMessage(signup
+        ?"Đã tạo tài khoản. Hãy mở email và xác minh, sau đó đăng nhập. Hệ thống sẽ tự chuyển thông tin công ty cho GoVietStay duyệt."
+        :"Đăng nhập thành công.");
       await refresh();
     }catch(e){setError(e instanceof Error?e.message:String(e));}finally{setWorking(false);}
   }
@@ -342,10 +375,24 @@ export default function HotelPartnerV3() {
   if(checking) return <div className="hv3-center"><div className="hv3-loading">Đang xác thực dữ liệu và phân quyền…</div></div>;
   if(!authUser) return <div className="hv3-center"><form className="hv3-auth" onSubmit={login}>
     <div className="hv3-logo">GVS</div><h1>GoVietStay Hotel Partner</h1>
-    <p>Cổng nhập liệu khách sạn · Đăng nhập bằng tài khoản được GoVietStay cấp quyền</p>
+    <p>{signup?"Khai báo thông tin đối tác một lần. Sau khi xác minh email, hồ sơ sẽ tự chuyển đến GoVietStay để duyệt.":"Cổng nhập liệu khách sạn · Đăng nhập bằng tài khoản được GoVietStay cấp quyền"}</p>
+    {signup&&<>
+      <label>Tên công ty hoặc đơn vị quản lý *</label>
+      <input required minLength={2} maxLength={200} autoComplete="organization"
+        value={accessForm.company_name} onChange={e=>setAccessForm(v=>({...v,company_name:e.target.value}))}
+        placeholder="Ví dụ: ABC Hotel Group"/>
+      <label>Tên khách sạn đầu tiên (nếu có)</label>
+      <input maxLength={200} value={accessForm.hotel_name}
+        onChange={e=>setAccessForm(v=>({...v,hotel_name:e.target.value}))}
+        placeholder="Ví dụ: ABC Boutique Hotel"/>
+      <label>Số điện thoại liên hệ</label>
+      <input type="tel" maxLength={40} autoComplete="tel"
+        value={accessForm.contact_phone} onChange={e=>setAccessForm(v=>({...v,contact_phone:e.target.value}))}
+        placeholder="+84..."/>
+    </>}
     <label>Email</label><input type="email" required value={loginEmail} onChange={e=>setLoginEmail(e.target.value)} placeholder="hotel@example.com"/>
     <label>Mật khẩu</label><input type="password" required minLength={6} value={loginPassword} onChange={e=>setLoginPassword(e.target.value)}/>
-    <button className="hv3-primary" disabled={working}>{signup?"Tạo tài khoản":"Đăng nhập"}</button>
+    <button className="hv3-primary" disabled={working}>{working?"Đang xử lý…":signup?"Tạo tài khoản & gửi hồ sơ":"Đăng nhập"}</button>
     <button type="button" className="hv3-text-button" onClick={()=>setSignup(!signup)}>{signup?"Đã có tài khoản? Đăng nhập":"Chưa có tài khoản? Đăng ký để GoVietStay cấp quyền"}</button>
     {error&&<p className="hv3-error">{error}</p>}{message&&<p className="hv3-note">{message}</p>}
     <a href="/hotel-partners">← Trang giới thiệu đối tác</a>
@@ -364,6 +411,7 @@ export default function HotelPartnerV3() {
         <p>Trạng thái: Chờ GoVietStay xác minh và gắn quyền công ty.</p>
       </div>:<form onSubmit={e=>void requestAccess(e)}>
         {lastRejected&&<p className="hv3-error">Hồ sơ trước cần bổ sung: {lastRejected.review_note||"Vui lòng liên hệ GoVietStay để xác nhận thông tin."}</p>}
+        <p className="hv3-muted">Nếu tài khoản được tạo trước khi biểu mẫu đăng ký mới ra mắt, vui lòng hoàn tất thông tin dưới đây một lần. Các tài khoản tạo mới sẽ tự gửi hồ sơ sau khi xác minh email.</p>
         <label>Tên công ty hoặc đơn vị quản lý *</label>
         <input required minLength={2} maxLength={200} value={accessForm.company_name}
           onChange={e=>setAccessForm(v=>({...v,company_name:e.target.value}))} placeholder="Ví dụ: ABC Hotel Group"/>
