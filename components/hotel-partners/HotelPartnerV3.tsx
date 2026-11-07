@@ -70,6 +70,13 @@ export default function HotelPartnerV3() {
   const [signup,setSignup]=useState(false);
   const [verificationEmail,setVerificationEmail]=useState("");
   const [resendPause,setResendPause]=useState(false);
+  // A client-side pause reduces accidental resend bursts. Supabase enforces
+  // the actual (possibly longer) email limit on the server.
+  useEffect(()=>{
+    if(!resendPause)return;
+    const id=window.setTimeout(()=>setResendPause(false),5*60*1000);
+    return ()=>window.clearTimeout(id);
+  },[resendPause]);
   useEffect(()=>{
     const params=new URLSearchParams(window.location.search);
     if(params.get("signup")==="1")setSignup(true);
