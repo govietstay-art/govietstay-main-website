@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import EsimShop from "./EsimShop";
+import "./esim.css";
 export const metadata: Metadata = {
  title:"Vietnam eSIM 5GB/Day from 100,000 VND | Buy Before Arrival | GoVietStay",
  description:"Buy your Vietnam travel eSIM before arrival. MobiFone 5GB daily data plans for 3–31 days, from 100,000 VND. Pay by bank transfer and receive your QR via WhatsApp after confirmation.",
