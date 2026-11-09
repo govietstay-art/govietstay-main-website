@@ -82,7 +82,7 @@ export default function HotelPartnerV3() {
     const params=new URLSearchParams(window.location.search);
     if(params.get("signup")==="1")setSignup(true);
     const view=params.get("view");
-    if(view==="queue"||view==="access")setPage(view);
+    if(view==="queue"||view==="access"||view==="demo")setPage(view);
   },[]);
   const [orgs,setOrgs]=useState<Org[]>([]);
   const [editableOrgIds,setEditableOrgIds]=useState<string[]>([]);
