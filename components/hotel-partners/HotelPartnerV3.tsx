@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import "./hotel-partner-v3.css";
+import HotelPartnerDemo from "./HotelPartnerDemo";
 
 const supabase = createClient("https://vscffgnxaexestnayvae.supabase.co",
   "sb_publishable_BI1rIhiGB5cEUyJbnKGI5w_kCMI--oV",
@@ -20,7 +21,7 @@ type Room = { id:string; property_id:string; pilot_code:string|null; name:string
 type Request = { id:string; property_id:string; created_by:string; kind:string; target_id:string|null; payload:Record<string,unknown>; status:string; review_note:string|null; created_at:string };
 type Photo = { id:string; property_id:string; room_id:string|null; storage_path:string; is_cover:boolean; alt_text:string|null; url?:string };
 type AccessRequest = { id:string; user_id:string; applicant_email:string; company_name:string; hotel_name:string|null; contact_phone:string|null; note:string|null; status:"pending"|"approved"|"rejected"; assigned_org_id:string|null; assigned_role:string|null; review_note:string|null; created_at:string };
-type Page = "catalog"|"property"|"room"|"photo"|"rate"|"queue"|"onboard"|"access";
+type Page = "catalog"|"property"|"room"|"photo"|"rate"|"queue"|"onboard"|"access"|"demo";
 type RoomDraft = { name:string; template:string; area_sqm:string; bed_details:string; max_adults:string; max_children:string; view_details:string; breakfast_included:boolean; extra_bed:string; amenities:string[]; notes:string };
 const freshRoom = ():RoomDraft => ({name:"",template:"Deluxe",area_sqm:"",bed_details:"1 King",max_adults:"2",max_children:"1",view_details:"Hướng phố",breakfast_included:true,extra_bed:"Không",amenities:["Wi-Fi","Điều hòa","TV"],notes:""});
 const today = () => new Date().toISOString().slice(0,10);
@@ -516,13 +517,14 @@ export default function HotelPartnerV3() {
         <button className={page==="queue"?"active":""} onClick={()=>{setDraftId(null);setPage("queue");}}>✓ <span>{admin?"Kiểm duyệt":"Yêu cầu đã gửi"}</span><b>{pending.length}</b></button>
         {canAddHotel&&<button className={page==="onboard"?"active":""} onClick={()=>{setDraftId(null);setPage("onboard");}}>＋ <span>Thêm khách sạn</span></button>}
         {admin&&<button className={page==="access"?"active":""} onClick={()=>setPage("access")}>♙ <span>Yêu cầu cấp tài khoản</span><b>{pendingAccess.length}</b></button>}
+        {admin&&<button className={page==="demo"?"active":""} onClick={()=>{setPage("demo");setError("");setMessage("");}}>◇ <span>Trải nghiệm như đối tác</span></button>}
       </nav>
       <div className="hv3-side-foot"><span>● Dữ liệu Supabase thật</span><small>{admin?"Quyền chủ hệ thống":"Quyền đối tác khách sạn"}</small><button onClick={()=>void logout()}>Đăng xuất</button></div>
     </aside>
     <main className="hv3-main">
-      <header className="hv3-header"><div><span className="hv3-eyebrow">GO VIETSTAY / OPERATIONS / HOTEL MANAGEMENT</span><h1>{page==="catalog"?"Hệ thống khách sạn":page==="room"?"Nhập hạng phòng nhanh":page==="property"?"Hồ sơ khách sạn":page==="photo"?"Hình ảnh khách sạn":page==="rate"?"Giá NET & chính sách":page==="queue"?"Trung tâm kiểm duyệt":page==="access"?"Duyệt tài khoản đối tác":"Thêm khách sạn mới"}</h1></div><div className="hv3-header-right"><span className="hv3-secure">🔒 Phân quyền Supabase</span><button onClick={()=>void refresh()} className="hv3-refresh">↻ Làm mới</button></div></header>
+      <header className="hv3-header"><div><span className="hv3-eyebrow">GO VIETSTAY / OPERATIONS / HOTEL MANAGEMENT</span><h1>{page==="catalog"?"Hệ thống khách sạn":page==="room"?"Nhập hạng phòng nhanh":page==="property"?"Hồ sơ khách sạn":page==="photo"?"Hình ảnh khách sạn":page==="rate"?"Giá NET & chính sách":page==="queue"?"Trung tâm kiểm duyệt":page==="access"?"Duyệt tài khoản đối tác":page==="demo"?"Trải nghiệm như đối tác":"Thêm khách sạn mới"}</h1></div><div className="hv3-header-right"><span className="hv3-secure">🔒 Phân quyền Supabase</span><button onClick={()=>void refresh()} className="hv3-refresh">↻ Làm mới</button></div></header>
       {(error||message)&&<div role="status" className={error?"hv3-error":"hv3-success"}>{error||message}<button onClick={()=>{setError("");setMessage("");}} aria-label="Đóng thông báo">×</button></div>}
-      <div className="hv3-stats"><div><small>KHÁCH SẠN ĐƯỢC QUẢN LÝ</small><strong>{properties.length}</strong><span>Tách biệt theo từng đối tác</span></div><div><small>HẠNG PHÒNG HIỆN CÓ</small><strong>{rooms.length}</strong><span>Chọn mẫu hoặc nhân bản</span></div><div><small>CHỜ GO VIETSTAY DUYỆT</small><strong>{pending.length}</strong><span>Thông tin chưa công bố</span></div><div><small>HÌNH ẢNH ĐÃ DUYỆT</small><strong>{photos.length}</strong><span>WebP · ảnh riêng tư</span></div></div>
+      {page!=="demo"&&<div className="hv3-stats"><div><small>KHÁCH SẠN ĐƯỢC QUẢN LÝ</small><strong>{properties.length}</strong><span>Tách biệt theo từng đối tác</span></div><div><small>HẠNG PHÒNG HIỆN CÓ</small><strong>{rooms.length}</strong><span>Chọn mẫu hoặc nhân bản</span></div><div><small>CHỜ GO VIETSTAY DUYỆT</small><strong>{pending.length}</strong><span>Thông tin chưa công bố</span></div><div><small>HÌNH ẢNH ĐÃ DUYỆT</small><strong>{photos.length}</strong><span>WebP · ảnh riêng tư</span></div></div>}
 
       {page==="catalog"&&<>
         <div className="hv3-section-head"><div><h2>Danh mục khách sạn của {admin?"hệ thống":"đối tác"}</h2><p>Mỗi tài khoản đối tác được phép quản lý và thêm nhiều khách sạn trong công ty mình, không cần cấp tài khoản mới.</p></div>
@@ -536,13 +538,14 @@ export default function HotelPartnerV3() {
         {!filtered.length&&<p>Chưa tìm thấy khách sạn phù hợp.</p>}
       </>}
 
-      {page!=="catalog"&&page!=="onboard"&&<div className="hv3-context">
+      {page!=="catalog"&&page!=="onboard"&&page!=="demo"&&<div className="hv3-context">
         <label htmlFor="hv3-hotel">ĐANG LÀM VIỆC VỚI</label>
         <select id="hv3-hotel" value={selected} onChange={e=>{const p=properties.find(x=>x.id===e.target.value);if(p){setSelected(p.id);setDraftId(null);setPhotoTarget("hotel");setPriceForm(v=>({...v,room_id:""}));setPropertyDraft({name:p.name,address:p.address||"",city:p.city||"",description:p.description||"",maps_url:p.maps_url||"",entrance_notes:p.entrance_notes||""});}}}>
           {properties.map(p=><option value={p.id} key={p.id}>{p.name}</option>)}
         </select><span>{hotel?.status==="published"?"Thông tin đã công bố":"Chưa công bố — cần duyệt"}</span>
       </div>}
 
+      {page==="demo"&&admin&&<HotelPartnerDemo onExit={()=>setPage("catalog")}/>}
       {page==="property"&&hotel&&<>
         <div className="hv3-cols">
           <section className="hv3-panel"><div className="hv3-panel-head"><h2>Thông tin khách sạn</h2><span>BƯỚC 1 / 5</span></div>
