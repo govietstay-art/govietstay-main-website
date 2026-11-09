@@ -1,10 +1,38 @@
 import Link from "next/link";
 import Image from "next/image";
+import type { Metadata } from "next";
 import "./hotel-partners.css";
 
-export const metadata = {
-  title: "Đối tác khách sạn | GoVietStay — Đăng ký và quản lý danh mục",
-  description: "Cổng dành cho đối tác khách sạn của GoVietStay. Một tài khoản quản lý nhiều khách sạn, cập nhật phòng, hình ảnh và bảng giá, gửi thông tin kiểm duyệt.",
+// Dedicated social preview for partners.govietstay.com. Never inherit
+// the travel-tour OG tags from the main www.govietstay.com root layout.
+const partnerTitle = "GoVietStay Hotel Partner | Liên minh Khách sạn";
+const partnerDescription =
+  "Cổng đăng ký và quản lý dành cho đối tác khách sạn GoVietStay. Một tài khoản quản lý nhiều khách sạn, cập nhật phòng, hình ảnh, giá hợp tác và gửi phê duyệt.";
+const partnerUrl = "https://partners.govietstay.com/hotel-partners";
+const partnerImage = "https://partners.govietstay.com/hotel-partners/opengraph-image";
+
+export const metadata: Metadata = {
+  metadataBase: new URL("https://partners.govietstay.com"),
+  title: { absolute: partnerTitle },
+  description: partnerDescription,
+  applicationName: "GoVietStay Hotel Partner",
+  keywords: ["GoVietStay Hotel Partner", "Liên minh Khách sạn", "Đối tác khách sạn", "Quản lý khách sạn", "Hotel Partner Portal"],
+  alternates: { canonical: partnerUrl },
+  openGraph: {
+    type: "website",
+    locale: "vi_VN",
+    url: partnerUrl,
+    siteName: "GoVietStay Hotel Partner",
+    title: partnerTitle,
+    description: partnerDescription,
+    images: [{ url: partnerImage, width: 1200, height: 630, alt: "GoVietStay Hotel Partner – Cổng dành cho đối tác khách sạn" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: partnerTitle,
+    description: partnerDescription,
+    images: [partnerImage],
+  },
   robots: { index: false, follow: false },
 };
 
