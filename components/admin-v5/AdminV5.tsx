@@ -179,6 +179,9 @@ export default function AdminV5() {
   const [msg,setMsg]=useState("");
   const [err,setErr]=useState("");
   const [tab,setTab]=useState<"dashboard"|"operations"|"customers"|"supplier_directory"|"analytics"|"marketing"|"partners"|"pi_partners"|"merchant_network"|"seo"|"leads"|"bookings"|"reviews"|"finance"|"team"|"operator_payables"|"yandex"|"phuquoc"|"web_inquiries">("dashboard");
+  useEffect(()=>{
+    if(new URLSearchParams(window.location.search).get("view")==="web_inquiries") setTab("web_inquiries");
+  },[]);
   const [days,setDays]=useState(7);
   const [metrics,setMetrics]=useState<any>(null);
   const [breakdown,setBreakdown]=useState<any[]>([]);
@@ -1104,7 +1107,7 @@ export default function AdminV5() {
 
       {tab==="yandex"&&<YandexSeoPanel supabase={supabase} days={days}/>}
 
-      {tab==="web_inquiries"&&<PublicInquiryPanel supabase={supabase}/>}
+      {tab==="web_inquiries"&&<><StaffSalesTeam supabase={supabase} adminStaff={staff} mode="website"/><PublicInquiryPanel supabase={supabase}/></>}
 
       {tab==="leads"&&<>
         <div className="gva-section-head"><h2>Leads</h2><button className="gva-btn" onClick={()=>setModal("lead")}>+ Tạo Lead</button></div>
