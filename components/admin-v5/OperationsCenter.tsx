@@ -67,6 +67,8 @@ type Booking = {
   room: string | null;
   notes: string | null;
   guide_language: string | null;
+  requires_guide: boolean | null;
+  requires_transport: boolean | null;
   booking_mode: "catalog" | "custom";
   custom_tour_name: string | null;
   custom_destination: string | null;
@@ -80,7 +82,7 @@ type BookingCost = { id: string; booking_id: string; cost_type: string; descript
 type BookingFinancial = { booking_id: string; amount_received_vnd: number };
 type TransportSupplier = { id: string; name: string; contact_name: string | null; phone: string | null; whatsapp: string | null; service_area: string | null; notes: string | null; active: boolean; payment_terms_days: number };
 type TransportBooking = { id: string; booking_id: string; supplier_id: string; description: string | null; amount_vnd: number; status: string; notes: string | null };
-type Modal = null | "guide" | "availability" | "booking" | "cost" | "quick" | "transport" | "transport_booking" | "replace_guide" | "internal_itinerary";
+type Modal = null | "guide" | "availability" | "booking" | "cost" | "quick" | "requirements" | "transport" | "transport_booking" | "replace_guide" | "internal_itinerary";
 
 const LANGUAGES = [
   ["en", "🇬🇧 English"],
@@ -350,7 +352,7 @@ export default function OperationsCenter() {
         supabase.from("guides").select("*").order("active", { ascending: false }).order("full_name"),
         supabase.from("guide_availability").select("*").gte("work_date", from).lte("work_date", to).order("work_date"),
         supabase.from("bookings")
-          .select("id,booking_code,contact_id,tour_id,staff_id,tour_date,adults,children,pax,gross_revenue_vnd,net_revenue_vnd,deposit_required_vnd,status,payment_status,pickup_time,start_time,end_time,hotel,hotel_address,room,notes,guide_language,booking_mode,custom_tour_name,custom_destination,custom_itinerary,internal_itinerary_vi,created_at")
+          .select("id,booking_code,contact_id,tour_id,staff_id,tour_date,adults,children,pax,gross_revenue_vnd,net_revenue_vnd,deposit_required_vnd,status,payment_status,pickup_time,start_time,end_time,hotel,hotel_address,room,notes,guide_language,requires_guide,requires_transport,booking_mode,custom_tour_name,custom_destination,custom_itinerary,internal_itinerary_vi,created_at")
           .gte("tour_date", from).lte("tour_date", to).order("tour_date", { ascending: true }).order("start_time", { ascending: true }),
         supabase.from("contacts").select("id,full_name,whatsapp,country,preferred_language").order("created_at", { ascending: false }).limit(1000),
         supabase.from("booking_guides").select("id,booking_id,guide_id,status,agreed_fee_vnd,notes").limit(2000),
@@ -508,20 +510,33 @@ export default function OperationsCenter() {
   function activeAssignments(bookingId: string) {
     return assignments.filter((x) => x.booking_id === bookingId && x.status !== "cancelled");
   }
+  function requiresGuide(b: Booking) { return b.requires_guide ?? Boolean(b.guide_language?.trim()); }
+  function requiresTransport(b: Booking) { return b.requires_transport ?? false; }
+  function hasConfirmedGuide(bookingId: string) {
+    return activeAssignments(bookingId).some((a) => a.status === "confirmed" || a.status === "completed");
+  }
+  function hasAssignedTransport(bookingId: string) {
+    return transportBookings.some((x) => x.booking_id === bookingId && x.status !== "void");
+  }
+  function missingDispatch(b: Booking) {
+    return { guide: requiresGuide(b) && !hasConfirmedGuide(b.id), transport: requiresTransport(b) && !hasAssignedTransport(b.id) };
+  }
   function flowStatusLabel(status: string) {
     return status === "pending" ? "DRAFT" : status === "confirmed" ? "CONFIRMED" : status === "ready" ? "READY" : status === "completed" ? "COMPLETED" : status === "closed" ? "CLOSED" : status.toUpperCase();
   }
   function nextAction(b: Booking) {
     const missingHotel = !String(b.hotel || "").trim();
     const missingPickup = !(b.pickup_time || b.start_time);
-    const missingGuide = !!b.guide_language && activeAssignments(b.id).length === 0;
+    const missingGuide = missingDispatch(b).guide;
+    const missingTransport = missingDispatch(b).transport;
     if (b.status === "pending") {
       if (missingHotel || missingPickup) return { label: "Hoàn thiện thông tin booking", kind: "edit" };
       return { label: "Xác nhận booking", kind: "confirmed" };
     }
     if (missingHotel) return { label: "Bổ sung khách sạn", kind: "edit" };
     if (missingPickup) return { label: "Bổ sung giờ đón", kind: "edit" };
-    if (missingGuide) return { label: canOperate ? "Gán hướng dẫn viên" : "Chờ Operations gán HDV", kind: canOperate ? "guide" : "wait" };
+    if (missingGuide) return { label: canOperate ? "Gán và xác nhận hướng dẫn viên" : "Chờ Operations gán HDV", kind: canOperate ? "guide" : "wait" };
+    if (missingTransport) return { label: isAdmin ? "Gán nhà xe & tài xế" : "Chờ Operations gán xe", kind: isAdmin ? "transport" : "wait" };
     if (b.status === "confirmed") return { label: canOperate ? "Đánh dấu READY" : "Chờ Operations READY", kind: canOperate ? "ready" : "wait" };
     if (b.status === "ready") return { label: canOperate ? "Đánh dấu COMPLETED" : "Tour đã READY", kind: canOperate ? "completed" : "wait" };
     if (b.status === "completed") return { label: isAdmin ? "Đóng booking" : "Chờ Finance close", kind: isAdmin ? "closed" : "wait" };
@@ -534,7 +549,7 @@ export default function OperationsCenter() {
     return <div style={{ marginTop: 10, padding: "9px 10px", borderRadius: 10, background: next.kind === "done" ? "#ecfdf3" : "#fff8e6", display: "flex", gap: 8, alignItems: "center", justifyContent: "space-between", flexWrap: "wrap" }}>
       <span style={{ fontSize: 12 }}><b>Next Action:</b> {next.label}</span>
       <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-        {actionable && <button type="button" className="gva-btn secondary" style={{ minHeight: 30, padding: "5px 9px", fontSize: 12 }} disabled={saving} onClick={() => next.kind === "edit" ? openQuick(b) : advanceBooking(b, next.kind)}>Xử lý</button>}
+        {actionable && <button type="button" className="gva-btn secondary" style={{ minHeight: 30, padding: "5px 9px", fontSize: 12 }} disabled={saving} onClick={() => next.kind === "edit" ? openQuick(b) : next.kind === "transport" ? openTransportBooking(b.id) : advanceBooking(b, next.kind)}>Xử lý</button>}
         {(isAdmin || isDesk || (isSales && b.staff_id === staff?.id)) && <>
           <button type="button" className="gva-btn secondary" style={{ minHeight: 30, padding: "5px 9px", fontSize: 12 }} disabled={saving} onClick={() => openQuick(b)}>Sửa nhanh</button>
           <button type="button" className="gva-btn secondary" style={{ minHeight: 30, padding: "5px 9px", fontSize: 12 }} disabled={saving} onClick={() => openDuplicateBooking(b)}>📋 Nhân bản</button>
@@ -661,7 +676,7 @@ export default function OperationsCenter() {
     const end = addDays(start, 6);
     return bookings.filter((b) => b.tour_date && b.tour_date >= start && b.tour_date <= end && b.status !== "cancelled");
   }, [bookings]);
-  const needGuide = sevenDayBookings.filter((b) => b.guide_language && activeAssignments(b.id).length === 0).length;
+  const needGuide = sevenDayBookings.filter((b) => missingDispatch(b).guide).length;
   const sevenDayPax = sevenDayBookings.reduce((sum, b) => sum + Number(b.pax ?? b.adults + b.children), 0);
   const customCount = sevenDayBookings.filter((b) => b.booking_mode === "custom").length;
   const calendarDates = useMemo(() => monthCalendarDates(calendarMonth), [calendarMonth]);
@@ -669,7 +684,7 @@ export default function OperationsCenter() {
   const activeMonthBookings = useMemo(() => monthBookings.filter((b) => b.status !== "cancelled"), [monthBookings]);
   const monthPax = activeMonthBookings.reduce((sum, b) => sum + Number(b.pax ?? b.adults + b.children), 0);
   const monthRevenue = activeMonthBookings.reduce((sum, b) => sum + Number(b.net_revenue_vnd ?? b.gross_revenue_vnd ?? 0), 0);
-  const monthNeedGuide = activeMonthBookings.filter((b) => b.guide_language && activeAssignments(b.id).length === 0).length;
+  const monthNeedGuide = activeMonthBookings.filter((b) => missingDispatch(b).guide).length;
   const monthByDate = useMemo(() => {
     const result: Record<string, Booking[]> = {};
     for (const b of bookings) {
@@ -694,7 +709,7 @@ export default function OperationsCenter() {
 
   function calendarBookingState(b: Booking) {
     if (b.status === "cancelled") return "cancelled";
-    if (b.guide_language && activeAssignments(b.id).length === 0) return "need-guide";
+    if (missingDispatch(b).guide || missingDispatch(b).transport) return "need-guide";
     if (b.status === "pending") return "pending";
     if (b.status === "completed") return "completed";
     return "confirmed";
@@ -721,16 +736,37 @@ export default function OperationsCenter() {
     e.preventDefault(); setSaving(true); setError("");
     const v = Object.fromEntries(new FormData(e.currentTarget).entries()) as Record<string, string>;
     try {
-      const { error: insertError } = await supabase.from("booking_supplier_payables").insert({
+      if (!v.booking_id || !v.supplier_id) throw new Error("Cần chọn booking và nhà xe.");
+      const { data: saved, error: insertError } = await supabase.from("booking_supplier_payables").insert({
         booking_id: v.booking_id, supplier_id: v.supplier_id,
         description: `Vận chuyển · ${v.vehicle_type || "Xe theo yêu cầu"}`,
         amount_vnd: Number(v.amount_vnd || 0), status: "open",
         notes: [v.pickup_details, v.notes].filter(Boolean).join(" · ") || null,
         source: "transport_operations", auto_managed: false,
-      });
-      if (insertError) throw insertError;
-      setModal(null); setSelectedBooking(null); setMessage("Đã nối nhà xe với booking và công nợ nhà cung cấp."); await loadAll();
+      }).select("id").single();
+      if (insertError || !saved) throw insertError || new Error("Không xác nhận được bản ghi phân xe.");
+      setModal(null); setSelectedBooking(null); setMessage("Đã lưu phân xe và đồng bộ công nợ nhà cung cấp."); await loadAll();
     } catch (err: any) { setError(err.message || "Không gán được nhà xe."); }
+    finally { setSaving(false); }
+  }
+
+  function openTransportBooking(bookingId: string) {
+    setError(""); setSelectedBooking(bookingId); setModal("transport_booking");
+  }
+
+  async function saveRequirements(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!selectedBooking) return;
+    setSaving(true); setError("");
+    const form = new FormData(e.currentTarget);
+    try {
+      const { data, error: updateError } = await supabase.from("bookings")
+        .update({ requires_guide: form.has("requires_guide"), requires_transport: form.has("requires_transport") })
+        .eq("id", selectedBooking).select("id").single();
+      if (updateError || !data) throw updateError || new Error("Không thể lưu yêu cầu điều phối.");
+      setModal(null); setSelectedBooking(null); setMessage("Đã cập nhật yêu cầu điều phối. Giá bán, tiền cọc và lịch trình giữ nguyên.");
+      await loadAll();
+    } catch (err: any) { setError(err.message || "Không thể lưu yêu cầu điều phối."); }
     finally { setSaving(false); }
   }
 
@@ -824,6 +860,8 @@ export default function OperationsCenter() {
         notes: String(v.notes || "").trim() || null,
         source: "manual", created_via: "operations_v1",
         guide_language: v.guide_language || null,
+        requires_guide: v.requires_guide === "on",
+        requires_transport: v.requires_transport === "on",
         booking_mode: mode,
         custom_tour_name: mode === "custom" ? String(v.custom_tour_name || "").trim() : null,
         custom_destination: mode === "custom" ? String(v.custom_destination || "").trim() || null : null,
@@ -922,7 +960,7 @@ export default function OperationsCenter() {
   }
 
   function openQuick(b: Booking) {
-    setSelectedBooking(b.id);
+    setError(""); setSelectedBooking(b.id);
     setModal("quick");
   }
 
@@ -1066,7 +1104,8 @@ export default function OperationsCenter() {
   function totalCost(bookingId: string) {
     const extra = costs.filter((x) => x.booking_id === bookingId).reduce((sum, x) => sum + Number(x.amount_vnd || 0), 0);
     const guideFees = activeAssignments(bookingId).reduce((sum, x) => sum + Number(x.agreed_fee_vnd || 0), 0);
-    return extra + guideFees;
+    const transportFees = transportBookings.filter((x) => x.booking_id === bookingId && x.status !== "void").reduce((sum, x) => sum + Number(x.amount_vnd || 0), 0);
+    return extra + guideFees + transportFees;
   }
 
   if (loading) return <div className="gvo-login"><div className="gvo-login-card">Đang mở Operations Center…</div></div>;
@@ -1191,7 +1230,7 @@ export default function OperationsCenter() {
               .filter((b) => b.status !== "cancelled")
               .sort((a,b) => String(a.start_time || a.pickup_time || "99:99").localeCompare(String(b.start_time || b.pickup_time || "99:99")));
             const dayPax = dayBookings.reduce((sum, b) => sum + Number(b.pax ?? b.adults + b.children), 0);
-            const dayNeedGuide = dayBookings.filter((b) => b.guide_language && activeAssignments(b.id).length === 0).length;
+            const dayNeedGuide = dayBookings.filter((b) => missingDispatch(b).guide).length;
             const dateLabel = new Intl.DateTimeFormat("vi-VN", { weekday: "short", day: "2-digit", month: "2-digit" }).format(new Date(`${date}T12:00:00`));
             return <section className={`gvo-mobile-day ${date === localISO() ? "today" : ""}`} key={date}>
               <button type="button" className="gvo-mobile-day-head" onClick={() => { setFocusDate(date); setView("dispatch"); }}>
@@ -1258,6 +1297,7 @@ export default function OperationsCenter() {
               const revenue = Number(b.net_revenue_vnd ?? b.gross_revenue_vnd ?? 0);
               const preferredArea = bookingGuideAreaKey(b, tourMap[b.tour_id || ""]);
               const eligibleGuides = eligibleGuidesForBooking(b);
+              const missing = missingDispatch(b);
               return <article className="gvo-booking" key={b.id}>
                 <div className="gvo-booking-top">
                   <div><b>{b.booking_code || "Booking"}</b><span className={`gvo-mode ${b.booking_mode}`}>{b.booking_mode === "custom" ? "CUSTOM" : "CATALOG"}</span></div>
@@ -1276,7 +1316,15 @@ export default function OperationsCenter() {
                 {b.booking_mode === "custom" && b.custom_itinerary && <div className="gvo-itinerary"><b>Lịch trình gốc</b><div>{b.custom_itinerary}</div></div>}
                 {isAdmin && <button type="button" className="gvo-cost-btn" onClick={() => openInternalItinerary(b)}>✎ {b.internal_itinerary_vi ? "Sửa lịch Việt" : "+ Lịch trình tiếng Việt"}</button>}
                 <div className="gvo-assignment">
-                  {transportBookings.filter((x) => x.booking_id === b.id).map((x) => {
+                  <div className="gvo-dispatch-requirements">
+                    <span className={missing.guide || missing.transport ? "gvo-dispatch-pending" : "gvo-dispatch-ready"}>
+                      {missing.guide || missing.transport ? "⚠ Điều phối chưa đủ" : "✓ Đã đủ dịch vụ yêu cầu"}
+                    </span>
+                    <span>HDV: {requiresGuide(b) ? (hasConfirmedGuide(b.id) ? "Đã gán" : "Cần gán") : "Không cần"}</span>
+                    <span>Xe: {requiresTransport(b) ? (hasAssignedTransport(b.id) ? "Đã gán" : "Cần gán") : "Không cần"}</span>
+                    {isAdmin && <button type="button" className="gvo-cost-btn" onClick={() => { setError(""); setSelectedBooking(b.id); setModal("requirements"); }}>⚙ Yêu cầu điều phối</button>}
+                  </div>
+                  {transportBookings.filter((x) => x.booking_id === b.id && x.status !== "void").map((x) => {
                     const supplier = transportSuppliers.find((s) => s.id === x.supplier_id);
                     return <div className="gvo-assigned" key={x.id}><span>🚐 Nhà xe: <b>{supplier?.name || "Đối tác vận chuyển"}</b> · {x.description}{isAdmin ? ` · ${money(x.amount_vnd)}` : ""}</span>
                       {supplier?.phone && <a href={`tel:${supplier.phone.replace(/[^\d+]/g, "")}`}>Gọi nhà xe</a>}
@@ -1288,15 +1336,15 @@ export default function OperationsCenter() {
                       <option value="pending">pending</option><option value="confirmed">confirmed</option><option value="completed">completed</option><option value="cancelled">cancelled</option>
                     </select>}
                     {canOperate && (a.status === "pending" || a.status === "confirmed") && <button type="button" className="gvo-cost-btn" onClick={() => openReplaceGuide(b.id, a.id)} disabled={saving}>🔄 Đổi HDV</button>}
-                  </div>) : <div className="gvo-need-guide">⚠️ Chưa gán hướng dẫn viên</div>}
-                  {!ass.length && canOperate && <div className="gvo-assign-row">
+                  </div>) : requiresGuide(b) ? <div className="gvo-need-guide">⚠️ Chưa gán hướng dẫn viên</div> : <div className="gvo-assigned">HDV: Không yêu cầu</div>}
+                  {!ass.length && requiresGuide(b) && canOperate && <div className="gvo-assign-row">
                     <select className="gva-select" defaultValue="" onChange={(e) => { if (e.target.value) assignGuide(b.id, e.target.value); }} disabled={saving}>
                       <option value="">Chọn HDV phù hợp…</option>
                       {eligibleGuides.map((g) => <option key={g.id} value={g.id}>{preferredArea && guideAreas(g).includes(preferredArea) ? "📍 " : ""}{g.full_name} · {statusText(guideStatus(g.id, focusDate))}{isAdmin ? ` · ${money(suggestedFee(g, b))}` : ""}</option>)}
                     </select>
                     {!eligibleGuides.length && <div className="gvo-need-guide">Không có HDV phù hợp chưa bị gán lịch. Kiểm tra ngôn ngữ hoặc cập nhật lịch HDV.</div>}
                   </div>}
-                  {isAdmin && <div className="gvo-assign-row"><button type="button" className="gvo-cost-btn" onClick={() => { setError(""); setSelectedBooking(b.id); setModal("transport_booking"); }} disabled={saving}>🚐 {transportBookings.some((x) => x.booking_id === b.id) ? "+ Gán thêm xe" : "Gán xe"}</button></div>}
+                  {isAdmin && <div className="gvo-assign-row"><button type="button" className="gvo-cost-btn" onClick={() => openTransportBooking(b.id)} disabled={saving}>🚐 {hasAssignedTransport(b.id) ? "+ Gán thêm xe" : "Gán xe"}</button></div>}
                 </div>
                 {isAdmin ? <>
                   <div className="gvo-finance-row">
@@ -1454,6 +1502,22 @@ export default function OperationsCenter() {
       <ModalActions saving={saving} onClose={() => setModal(null)} label="Lưu nhà xe" />
     </form></ModalFrame>}
 
+    {modal === "requirements" && isAdmin && selectedBooking && (() => {
+      const b = bookings.find((x) => x.id === selectedBooking);
+      if (!b) return null;
+      return <ModalFrame title={`Yêu cầu điều phối · ${b.booking_code || "Booking"}`} onClose={() => { setModal(null); setSelectedBooking(null); }}>
+        <form onSubmit={saveRequirements} className="gvo-form-grid">
+          <div className="gva-analytics-note" style={{ gridColumn: "1/-1" }}>Chọn dịch vụ thực sự cần bố trí cho ngày tour này. Giá bán, tiền cọc và lịch trình không thay đổi.</div>
+          <Field label="Dịch vụ cần bố trí" wide>
+            <label className="gvo-service-option"><input type="checkbox" name="requires_guide" defaultChecked={requiresGuide(b)} /> Cần hướng dẫn viên</label>
+            <label className="gvo-service-option"><input type="checkbox" name="requires_transport" defaultChecked={requiresTransport(b)} /> Cần xe & tài xế</label>
+          </Field>
+          {error && <div className="gva-msg err" style={{ gridColumn: "1/-1" }} role="alert">{error}</div>}
+          <ModalActions saving={saving} onClose={() => { setModal(null); setSelectedBooking(null); }} label="Lưu yêu cầu điều phối" />
+        </form>
+      </ModalFrame>;
+    })()}
+
     {modal === "transport_booking" && isAdmin && <ModalFrame title="Gán nhà xe cho booking" onClose={() => { setModal(null); setSelectedBooking(null); }}><form onSubmit={assignTransport} className="gvo-form-grid">
       <Field label="Booking"><select name="booking_id" className="gva-select" defaultValue={selectedBooking || ""} required><option value="">Chọn booking</option>{bookings.filter((b) => b.status !== "cancelled").map((b) => <option value={b.id} key={b.id}>{b.booking_code || b.id.slice(0, 8)} · {b.tour_date} · {bookingName(b)}</option>)}</select></Field>
       <Field label="Nhà xe"><select name="supplier_id" className="gva-select" required><option value="">Chọn nhà xe</option>{transportSuppliers.filter((s) => s.active).map((s) => <option value={s.id} key={s.id}>{s.name} · {s.service_area || "Toàn quốc"}</option>)}</select></Field>
@@ -1461,6 +1525,7 @@ export default function OperationsCenter() {
       <Field label="Chi phí thỏa thuận (VND)"><input name="amount_vnd" className="gva-input" type="number" min="0" required /></Field>
       <Field label="Điểm đón / giờ đón" wide><input name="pickup_details" className="gva-input" placeholder="08:00 · Khách sạn..." /></Field>
       <Field label="Ghi chú điều phối" wide><textarea name="notes" className="gva-input" rows={3} /></Field>
+      {error && <div className="gva-msg err" role="alert" style={{ gridColumn: "1/-1" }}>{error}</div>}
       <ModalActions saving={saving} onClose={() => { setModal(null); setSelectedBooking(null); }} label="Lưu phân xe" />
     </form></ModalFrame>}
 
@@ -1532,6 +1597,7 @@ export default function OperationsCenter() {
       saving={saving}
       onClose={() => { setModal(null); setSelectedBooking(null); }}
       onSubmit={saveQuick}
+      onOpenRequirements={() => setModal("requirements")}
     />}
 
     {shareBookingId && bookings.find((b) => b.id === shareBookingId) && (() => {
@@ -1682,7 +1748,7 @@ function CostEditorRow({ item, saving, onSave, onDelete }: any) {
   </div>;
 }
 
-function QuickBookingModal({ booking, received, saving, onClose, onSubmit }: any) {
+function QuickBookingModal({ booking, received, saving, onClose, onSubmit, onOpenRequirements }: any) {
   const [deposit, setDeposit] = useState(String(booking.deposit_required_vnd || 0));
   return <ModalFrame title={`Sửa nhanh · ${booking.booking_code || "Booking"}`} onClose={onClose}><form onSubmit={onSubmit} className="gvo-form-grid">
     <Field label="Khách sạn"><input name="hotel" className="gva-input" defaultValue={booking.hotel || ""} placeholder="Tên khách sạn" /></Field>
@@ -1691,6 +1757,7 @@ function QuickBookingModal({ booking, received, saving, onClose, onSubmit }: any
     <Field label="Deposit required / Cọc yêu cầu"><input name="deposit" className="gva-input" inputMode="numeric" value={deposit} onChange={(e) => setDeposit(e.target.value)} /></Field>
     <Field label="Actual received / Đã nhận"><input className="gva-input" readOnly value={money(received)} /></Field>
     <Field label="Balance / Còn lại" wide><input className="gva-input" readOnly value={money(Math.max(0, Number(booking.net_revenue_vnd ?? booking.gross_revenue_vnd ?? 0) - Number(received || 0)))} /></Field>
+    <div className="gvo-field wide"><button type="button" className="gva-btn secondary" onClick={onOpenRequirements}>⚙ Yêu cầu điều phối (HDV / xe)</button></div>
     <ModalActions saving={saving} onClose={onClose} label="Lưu cập nhật" />
   </form></ModalFrame>;
 }
@@ -1738,6 +1805,10 @@ function BookingModal({ tours, sourceBooking, sourceContact, saving, onClose, on
     <Field label="Số phòng"><input name="room" className="gva-input" defaultValue={sourceBooking?.room || ""} placeholder="Nếu có" /></Field>
     <Field label="Adults"><input name="adults" type="number" min="0" defaultValue={sourceBooking?.adults ?? 1} className="gva-input" /></Field>
     <Field label="Children"><input name="children" type="number" min="0" defaultValue={sourceBooking?.children ?? 0} className="gva-input" /></Field>
+    <Field label="Yêu cầu điều phối" wide>
+      <label className="gvo-service-option"><input type="checkbox" name="requires_guide" defaultChecked={sourceBooking ? (sourceBooking.requires_guide ?? Boolean(sourceBooking.guide_language)) : true} /> Cần HDV</label>
+      <label className="gvo-service-option"><input type="checkbox" name="requires_transport" defaultChecked={sourceBooking ? (sourceBooking.requires_transport ?? false) : true} /> Cần xe & tài xế</label>
+    </Field>
     <Field label="Ngôn ngữ HDV"><select name="guide_language" className="gva-select" defaultValue={sourceBooking?.guide_language || ""}><option value="">Không cần / chưa xác định</option>{LANGUAGES.map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select></Field>
     <Field label="Giá bán VND"><input name="revenue" inputMode="numeric" className="gva-input" placeholder="3200000" value={revenue} onChange={(e) => setRevenue(e.target.value)} required /></Field>
     <Field label="Deposit required / Cọc yêu cầu"><input name="deposit" inputMode="numeric" className="gva-input" placeholder="0" value={deposit} onChange={(e) => setDeposit(e.target.value)} /></Field>
