@@ -60,6 +60,92 @@ type Booking = {
   created_at:string;
 };
 
+type BookingPayment = {
+  id:string;
+  booking_id:string;
+  amount_vnd:number;
+  amount_original:number|null;
+  currency:string;
+  payment_type:string;
+  method:string;
+  external_reference:string|null;
+  status:string;
+  paid_at:string|null;
+  created_at:string;
+  notes:string|null;
+};
+
+type DepositEntry = {
+  amount_vnd:number;
+  amount_original:number;
+  currency:string;
+  status:"pending"|"received";
+  method:string;
+  external_reference:string|null;
+  paid_at:string|null;
+  notes:string|null;
+};
+
+const DEPOSIT_METHODS = [
+  ["bank_transfer","Chuyển khoản ngân hàng"], ["vietqr","VietQR"],
+  ["paypal","PayPal"], ["revolut","Revolut"], ["cash","Tiền mặt"],
+  ["card","Thẻ"], ["other","Khác"]
+] as const;
+const DEPOSIT_CURRENCIES = ["VND","USD","EUR","TWD","CNY","RUB","KRW","MYR","THB"] as const;
+
+function parseDepositEntry(vals:Record<string,unknown>,maxAvailableVnd:number):DepositEntry|null {
+  const rawAmount=String(vals.deposit_amount||"").trim();
+  if(!rawAmount)return null;
+  const original=Number(rawAmount);
+  if(!Number.isFinite(original)||original<0)throw new Error("Số tiền cọc không hợp lệ.");
+  if(original===0)return null;
+  const currency=String(vals.deposit_currency||"VND");
+  if(!DEPOSIT_CURRENCIES.some(c=>c===currency))throw new Error("Loại tiền đặt cọc không hợp lệ.");
+  const rate=currency==="VND"?1:Number(vals.deposit_exchange_rate);
+  if(!Number.isFinite(rate)||rate<=0)throw new Error("Vui lòng nhập tỷ giá quy đổi sang VND của khoản cọc.");
+  if(currency==="VND"&&!Number.isInteger(original))throw new Error("Tiền cọc VND phải là số nguyên.");
+  const amountVnd=Math.round(original*rate);
+  if(!Number.isSafeInteger(amountVnd)||amountVnd<=0)throw new Error("Giá trị cọc quy đổi không hợp lệ.");
+  if(amountVnd>maxAvailableVnd)throw new Error("Số cọc lớn hơn số tiền còn phải thu của Booking.");
+  const status=vals.deposit_status==="pending"?"pending":"received";
+  if(status==="received"&&vals.deposit_verified!=="yes")throw new Error("Hãy xác nhận tiền đã thực sự vào tài khoản trước khi ghi nhận đã thu.");
+  const method=String(vals.deposit_method||"other");
+  if(!DEPOSIT_METHODS.some(([key])=>key===method))throw new Error("Phương thức nhận cọc không hợp lệ.");
+  const date=String(vals.deposit_date||"").trim();
+  if(date&&!/^\d{4}-\d{2}-\d{2}$/.test(date))throw new Error("Ngày nhận cọc không hợp lệ.");
+  const userNote=String(vals.deposit_notes||"").trim();
+  return {
+    amount_vnd:amountVnd,amount_original:original,currency,status,method,
+    external_reference:String(vals.deposit_reference||"").trim()||null,
+    paid_at:status==="received"?(date?new Date(date+"T12:00:00+07:00").toISOString():new Date().toISOString()):null,
+    notes:[currency!=="VND"?`Tỷ giá: 1 ${currency} = ${rate} VND`:"",userNote].filter(Boolean).join(" · ")||null
+  };
+}
+
+async function saveDepositPayment(bookingId:string,entry:DepositEntry,staffId:string|null) {
+  if(entry.external_reference){
+    const {data:duplicate,error:lookupError}=await supabase.from("payments")
+      .select("id").eq("booking_id",bookingId).eq("external_reference",entry.external_reference)
+      .neq("status","failed").limit(1);
+    if(lookupError)throw lookupError;
+    if(duplicate?.length)throw new Error("Mã giao dịch này đã được ghi nhận trong Booking. Kiểm tra lịch sử thanh toán để tránh tính trùng tiền cọc.");
+  }
+  const {error}=await supabase.from("payments").insert({
+    booking_id:bookingId,payment_type:"deposit",amount_vnd:entry.amount_vnd,
+    amount_original:entry.amount_original,currency:entry.currency,
+    method:entry.method,external_reference:entry.external_reference,status:entry.status,
+    paid_at:entry.paid_at,notes:entry.notes,provider:"manual_admin_booking",
+    verified_at:entry.status==="received"?new Date().toISOString():null,
+    verified_by_staff_id:entry.status==="received"?staffId:null
+  });
+  if(error)throw error;
+}
+
+function recordedPaymentTotal(payments:BookingPayment[]) {
+  return Math.max(0,payments.reduce((sum,p)=>
+    sum+(p.status==="received"?(p.payment_type==="refund"?-1:1)*Number(p.amount_vnd||0):0),0));
+}
+
 function money(v:any) { return new Intl.NumberFormat("vi-VN").format(Number(v || 0)) + " ₫"; }
 function d(v:string|null) { return v ? new Date(v).toLocaleString("vi-VN") : "—"; }
 function code() { return "GVS-" + new Date().toISOString().slice(2,10).replace(/-/g,"") + "-" + Math.random().toString(36).slice(2,7).toUpperCase(); }
@@ -109,6 +195,7 @@ export default function AdminV5() {
   const [leads,setLeads]=useState<Lead[]>([]);
   const [bookings,setBookings]=useState<Booking[]>([]);
   const [financials,setFinancials]=useState<any[]>([]);
+  const [bookingPayments,setBookingPayments]=useState<BookingPayment[]>([]);
   const [assignedGuides,setAssignedGuides]=useState<any[]>([]);
   const [guideDirectory,setGuideDirectory]=useState<any[]>([]);
   const [supplierDirectory,setSupplierDirectory]=useState<any[]>([]);
@@ -334,6 +421,7 @@ export default function AdminV5() {
         supabase.from("leads").select("id,contact_id,interested_tour_id,partner_id,status,source,message,created_at").order("created_at",{ascending:false}).limit(100),
         loadAllRows("bookings","id,booking_code,contact_id,tour_id,partner_id,status,payment_status,tour_date,adults,children,pax,gross_revenue_vnd,net_revenue_vnd,booking_mode,custom_tour_name,guide_language,hotel,pickup_time,start_time,end_time,operator_supplier_id,notes,internal_itinerary_vi,source,created_at","created_at"),
         loadAllRows("booking_financials","booking_id,amount_received_vnd,total_direct_cost_vnd,finance_finalized","created_at"),
+        loadAllRows("payments","id,booking_id,amount_vnd,amount_original,currency,payment_type,method,external_reference,status,paid_at,created_at,notes","created_at"),
         loadAllRows("booking_guides","booking_id,guide_id,status","created_at"),
         supabase.from("guides").select("id,full_name,languages,active").limit(1000),
         supabase.from("suppliers").select("id,name,supplier_type,service_area,contact_name,phone,whatsapp,payment_terms_days,notes,active").order("name").limit(1000),
@@ -342,7 +430,7 @@ export default function AdminV5() {
       ]);
 
       for(const r of results) if(r.error) throw r.error;
-      const [m,b,mk,t,p,c,l,bo,fin,ag,g,sup,...rest] = results;
+      const [m,b,mk,t,p,c,l,bo,fin,payments,ag,g,sup,...rest] = results;
       setMetrics(m.data);
       setBreakdown((b.data||[]) as any);
 
@@ -353,6 +441,7 @@ export default function AdminV5() {
       setLeads((l.data||[]) as any);
       setBookings((bo||[]) as any);
       setFinancials((fin||[]) as any);
+      setBookingPayments((payments||[]) as BookingPayment[]);
       setAssignedGuides((ag||[]) as any);
       setGuideDirectory((g.data||[]) as any);
       setSupplierDirectory((sup.data||[]) as any);
@@ -484,23 +573,34 @@ export default function AdminV5() {
     try {
       const vals=Object.fromEntries(f.entries()) as any;
       const partner=partners.find(x=>x.id===vals.partner_id);
-      const contactId=await createContact({...vals,ref_code:partner?.ref_code||""});
       const adults=Math.max(0,Math.trunc(Number(vals.adults||0))), children=Math.max(0,Math.trunc(Number(vals.children||0)));
       if(adults+children<1) throw new Error("PAX phải có ít nhất 1 khách.");
       const revenue=Math.max(0,Number(String(vals.revenue||"0").replace(/[^0-9]/g,"")));
+      const depositEntry=parseDepositEntry(vals,revenue);
       const isCustom=vals.tour_id==="__custom__";
       const customTourName=String(vals.custom_tour_name||"").trim();
       if(isCustom&&!customTourName) throw new Error("Vui lòng nhập tên Custom Tour.");
       if(!isCustom&&!vals.tour_id) throw new Error("Vui lòng chọn tour hoặc chọn Custom Tour.");
-      const {error}=await supabase.from("bookings").insert({
+      const contactId=await createContact({...vals,ref_code:partner?.ref_code||""});
+      const {data:createdBooking,error}=await supabase.from("bookings").insert({
         booking_code:code(), contact_id:contactId, tour_id:isCustom?null:vals.tour_id||null, partner_id:vals.partner_id||null,
         staff_id:staff?.id, tour_date:vals.tour_date||null, adults, children, gross_revenue_vnd:revenue, guide_language:vals.guide_language||null,
         booking_mode:isCustom?"custom":"catalog", custom_tour_name:isCustom?customTourName:null,
         discount_vnd:0, deposit_required_vnd:0, status:"confirmed", payment_status:"unpaid",
         hotel:vals.hotel||null, notes:vals.notes||null, internal_itinerary_vi:String(vals.internal_itinerary_vi||"").trim()||null, source:vals.source||"manual", ref_code:partner?.ref_code||null
-      });
+      }).select("id,booking_code").single();
       if(error) throw error;
+      if(depositEntry){
+        try { await saveDepositPayment(createdBooking.id,depositEntry,staff?.id||null); }
+        catch(paymentError){
+          setModal(null);
+          await loadAll();
+          setErr(`Booking ${createdBooking.booking_code||""} đã tạo nhưng CHƯA ghi được cọc: ${paymentError instanceof Error?paymentError.message:"Lỗi lưu giao dịch"}. Hãy sửa Booking này để nhập lại cọc; không tạo Booking mới.`);
+          return;
+        }
+      }
       setModal(null); await loadAll();
+      setMsg(depositEntry?`Đã tạo Booking và ${depositEntry.status==="received"?"ghi nhận tiền cọc đã thu":"lưu cọc chờ đối soát"}.`:"Đã tạo Booking.");
     }catch(e:any){setErr(e.message)}finally{setSaving(false)}
   }
 
@@ -512,12 +612,15 @@ export default function AdminV5() {
       const adults=Math.max(0,Math.trunc(Number(vals.adults||0))), children=Math.max(0,Math.trunc(Number(vals.children||0)));
       if(adults+children<1) throw new Error("PAX phải có ít nhất 1 khách.");
       const revenue=Math.max(0,Number(String(vals.revenue||"0").replace(/[^0-9]/g,"")));
+      const previousReceived=Number(financeMap[booking.id]?.amount_received_vnd||0);
+      const historicalPayments=bookingPayments.filter(p=>p.booking_id===booking.id);
+      const depositEntry=parseDepositEntry(vals,Math.max(0,revenue-previousReceived));
+      if(depositEntry&&recordedPaymentTotal(historicalPayments)!==previousReceived)
+        throw new Error("Booking có số đã thu nhập từ Finance cũ nhưng chưa có giao dịch Payments tương ứng. Vui lòng đối soát trước khi nhập thêm cọc để tránh ghi đè tiền đã thu.");
       const isCustom=vals.tour_id==="__custom__";
       const customTourName=String(vals.custom_tour_name||"").trim();
       if(isCustom&&!customTourName) throw new Error("Vui lòng nhập tên Custom Tour.");
       if(!isCustom&&!vals.tour_id) throw new Error("Vui lòng chọn tour hoặc chọn Custom Tour.");
-      if(vals.payment_status==="paid"&&booking.payment_status!=="paid")
-        throw new Error("Không đánh dấu đã thu đủ trực tiếp tại Bookings. Vào Tài chính để ghi nhận tiền khách thực trả, sau đó chốt booking.");
       if(vals.status==="refunded"&&booking.status!=="refunded")
         throw new Error("Hoàn tiền phải thực hiện tại mục Tài chính để đối chiếu tiền khách đã nhận.");
       if(vals.status==="cancelled") {
@@ -552,14 +655,52 @@ export default function AdminV5() {
         hotel:vals.hotel||null,
         notes:vals.notes||null,
         internal_itinerary_vi:String(vals.internal_itinerary_vi||"").trim()||null,
-        payment_status:vals.payment_status,
         status:vals.status
       }).eq("id",booking.id);
       if(error) throw error;
+      if(depositEntry){
+        try { await saveDepositPayment(booking.id,depositEntry,staff?.id||null); }
+        catch(paymentError){
+          setEditingBooking(null);
+          await loadAll();
+          setErr(`Đã cập nhật thông tin Booking ${booking.booking_code||""}, nhưng CHƯA ghi được cọc: ${paymentError instanceof Error?paymentError.message:"Lỗi lưu giao dịch"}. Hãy mở lại Booking để kiểm tra trước khi nhập lại.`);
+          return;
+        }
+      }
       setEditingBooking(null);
-      setMsg(`Đã cập nhật booking ${booking.booking_code||""}. PAX thay đổi không tự đổi Revenue.`);
+      setMsg(`Đã cập nhật booking ${booking.booking_code||""}.${depositEntry?depositEntry.status==="received"?" Tiền cọc đã thu được trừ tự động khỏi số còn phải thu.":" Khoản cọc chờ đối soát chưa trừ công nợ.":""} PAX thay đổi không tự đổi Revenue.`);
       await loadAll();
     }catch(e:any){setErr(e.message)}finally{setSaving(false)}
+  }
+
+  async function confirmPendingDeposit(booking:Booking,payment:BookingPayment) {
+    if(payment.status!=="pending"||payment.payment_type!=="deposit")return;
+    const related=bookingPayments.filter(p=>p.booking_id===booking.id);
+    const received=Number(financeMap[booking.id]?.amount_received_vnd||0);
+    if(received!==recordedPaymentTotal(related)){
+      setErr("Booking này có dữ liệu thu tiền cũ chưa khớp lịch sử Payments. Hãy đối soát trước khi xác nhận cọc.");
+      return;
+    }
+    const balance=Math.max(0,Number(booking.net_revenue_vnd||0)-received);
+    if(Number(payment.amount_vnd)>balance){
+      setErr("Cọc chờ xác nhận lớn hơn số còn phải thu. Hãy kiểm tra lại giá tour và giao dịch.");
+      return;
+    }
+    if(!window.confirm(`Anh xác nhận ĐÃ KIỂM TRA tiền cọc ${money(payment.amount_vnd)} thực sự vào tài khoản? Sau khi xác nhận, số còn phải thu sẽ tự giảm.`))return;
+    setSaving(true);setErr("");setMsg("");
+    try {
+      const now=new Date().toISOString();
+      const {data,error}=await supabase.from("payments")
+        .update({status:"received",paid_at:now,verified_at:now,verified_by_staff_id:staff?.id||null})
+        .eq("id",payment.id).eq("booking_id",booking.id).eq("status","pending")
+        .select("id");
+      if(error)throw error;
+      if(!data?.length)throw new Error("Giao dịch có thể đã được cập nhật bởi người khác. Hãy tải lại trước khi tiếp tục.");
+      await loadAll();
+      setEditingBooking(null);
+      setMsg(`Đã xác nhận cọc ${money(payment.amount_vnd)} của ${booking.booking_code||"Booking"}. Công nợ đã tự cập nhật.`);
+    }catch(e){setErr(e instanceof Error?e.message:"Không xác nhận được giao dịch.");}
+    finally{setSaving(false);}
   }
 
   async function changeLeadStatus(id:string,status:string) {
@@ -1090,9 +1231,13 @@ export default function AdminV5() {
           <input className="gva-input gva-booking-search" value={bookingSearch} onChange={e=>setBookingSearch(e.target.value)} placeholder="Tìm mã, khách, tour, khách sạn..." aria-label="Tìm booking" />
         </div>
         {bookingView==="active"&&<div className="gva-booking-hint">Ưu tiên theo ngày tour gần nhất · Tour quá ngày nhưng chưa chốt vẫn hiển thị để tránh bỏ sót. <b>Hoàn thành tour không đồng nghĩa đã thu đủ tiền.</b></div>}
-        <div className="gva-card"><div className="gva-table-wrap"><table className="gva-table"><thead><tr><th>Code</th><th>Ngày tour</th><th>Khách</th><th>Tour</th><th>Pax</th><th>Revenue</th><th>Payment</th><th>Status</th><th></th></tr></thead><tbody>
-          {bookingGroups.rows.map(b=><tr className={bookingRowClass(b.status)} key={b.id}><td><b>{b.booking_code||"—"}</b></td><td>{b.tour_date||"—"}{b.tour_date&&b.tour_date<bookingGroups.today&&!['completed','closed','cancelled','refunded'].includes(b.status)&&<div className="gva-booking-overdue">⚠ Quá ngày, chưa chốt</div>}</td><td>{contactMap[b.contact_id||""]?.full_name||"—"}</td><td>{bookingTourName(b,tourMap)}{(b.booking_mode==="custom"||b.custom_tour_name)&&<div className="gva-mini">Custom Tour</div>}{b.internal_itinerary_vi?.trim()&&<div className="gva-mini">🇻🇳 Có lịch trình vận hành</div>}</td><td>{b.pax}</td><td>{money(b.net_revenue_vnd)}</td><td><span className={bookingPaymentClass(b.payment_status)}>{bookingPaymentLabel(b.payment_status)}</span>{['completed','closed'].includes(b.status)&&b.payment_status!=='paid'&&<div className="gva-booking-overdue">⚠ Kiểm tra công nợ</div>}</td><td><span className={bookingStatusClass(b.status)}>{bookingStatusLabel(b.status)}</span></td><td><button type="button" className="gva-btn secondary" style={{padding:"7px 10px"}} onClick={()=>setEditingBooking(b)}>Sửa</button></td></tr>)}
-          {!bookingGroups.rows.length&&<tr><td colSpan={9}><div className="gva-empty">Không có booking phù hợp bộ lọc. Chọn “Tất cả” để xem toàn bộ dữ liệu.</div></td></tr>}
+        <div className="gva-card"><div className="gva-table-wrap"><table className="gva-table"><thead><tr><th>Code</th><th>Ngày tour</th><th>Khách</th><th>Tour</th><th>Pax</th><th>Revenue</th><th>Đã thu / Còn lại</th><th>Payment</th><th>Status</th><th></th></tr></thead><tbody>
+          {bookingGroups.rows.map(b=>{
+            const received=Number(financeMap[b.id]?.amount_received_vnd||0);
+            const balance=Math.max(0,Number(b.net_revenue_vnd||0)-received);
+            return <tr className={bookingRowClass(b.status)} key={b.id}><td><b>{b.booking_code||"—"}</b></td><td>{b.tour_date||"—"}{b.tour_date&&b.tour_date<bookingGroups.today&&!['completed','closed','cancelled','refunded'].includes(b.status)&&<div className="gva-booking-overdue">⚠ Quá ngày, chưa chốt</div>}</td><td>{contactMap[b.contact_id||""]?.full_name||"—"}</td><td>{bookingTourName(b,tourMap)}{(b.booking_mode==="custom"||b.custom_tour_name)&&<div className="gva-mini">Custom Tour</div>}{b.internal_itinerary_vi?.trim()&&<div className="gva-mini">🇻🇳 Có lịch trình vận hành</div>}</td><td>{b.pax}</td><td>{money(b.net_revenue_vnd)}</td><td><div className="gva-mini">Đã thu: <b>{money(received)}</b></div><div className="gva-mini">Còn: <b>{money(balance)}</b></div></td><td><span className={bookingPaymentClass(b.payment_status)}>{bookingPaymentLabel(b.payment_status)}</span>{['completed','closed'].includes(b.status)&&b.payment_status!=='paid'&&<div className="gva-booking-overdue">⚠ Kiểm tra công nợ</div>}</td><td><span className={bookingStatusClass(b.status)}>{bookingStatusLabel(b.status)}</span></td><td><button type="button" className="gva-btn secondary" style={{padding:"7px 10px"}} onClick={()=>setEditingBooking(b)}>Sửa</button></td></tr>;
+          })}
+          {!bookingGroups.rows.length&&<tr><td colSpan={10}><div className="gva-empty">Không có booking phù hợp bộ lọc. Chọn “Tất cả” để xem toàn bộ dữ liệu.</div></td></tr>}
         </tbody></table></div></div>
       </>}
 
@@ -1110,7 +1255,7 @@ export default function AdminV5() {
     </main>
     {modal==="lead"&&<LeadModal tours={tours} partners={partners} onClose={()=>setModal(null)} onSubmit={addLead} saving={saving}/>}
     {modal==="booking"&&<BookingModal tours={tours} partners={partners} onClose={()=>setModal(null)} onSubmit={addBooking} saving={saving}/>}
-    {editingBooking&&<EditBookingModal booking={editingBooking} contact={contactMap[editingBooking.contact_id||""]} tours={tours} partners={partners} onClose={()=>setEditingBooking(null)} onSubmit={(e:any)=>updateBooking(e,editingBooking)} saving={saving}/>}
+    {editingBooking&&<EditBookingModal booking={editingBooking} contact={contactMap[editingBooking.contact_id||""]} tours={tours} partners={partners} financial={financeMap[editingBooking.id]} payments={bookingPayments.filter(p=>p.booking_id===editingBooking.id)} onConfirmPending={(payment:BookingPayment)=>void confirmPendingDeposit(editingBooking,payment)} onClose={()=>setEditingBooking(null)} onSubmit={(e:any)=>updateBooking(e,editingBooking)} saving={saving}/>}
   </div></div>
 }
 
@@ -1178,6 +1323,7 @@ function LeadModal({tours,partners,onClose,onSubmit,saving}:any){return <div cla
 
 function BookingModal({tours,partners,onClose,onSubmit,saving}:any){
   const [tourChoice,setTourChoice]=useState("");
+  const [revenue,setRevenue]=useState(0);
   return <div className="gva-modal-bg"><form className="gva-modal" onSubmit={onSubmit}><div className="gva-modal-head"><h3>Tạo Booking thật</h3><button type="button" className="gva-close" onClick={onClose}>✕</button></div><div className="gva-form-grid">
   <F label="Tên khách"><input name="full_name" className="gva-input" required /></F><F label="WhatsApp"><input name="whatsapp" className="gva-input" /></F>
   <F label="Quốc gia"><input name="country" className="gva-input" /></F><F label="Ngôn ngữ"><select name="preferred_language" className="gva-select">
@@ -1186,21 +1332,26 @@ function BookingModal({tours,partners,onClose,onSubmit,saving}:any){
   <F label="Tour"><select name="tour_id" className="gva-select" required value={tourChoice} onChange={e=>setTourChoice(e.target.value)}><option value="">Chọn tour</option><option value="__custom__">+ Tour khác / Custom Tour</option>{tours.map((x:any)=><option value={x.id} key={x.id}>{x.name}</option>)}</select></F><F label="Ngày đi"><input name="tour_date" type="date" className="gva-input" required /></F>
   {tourChoice==="__custom__"&&<F label="Tên Custom Tour" wide><input name="custom_tour_name" className="gva-input" placeholder="VD: Private City Tour + Dinner" required /></F>}
   <F label="Adults"><input name="adults" type="number" min="0" step="1" defaultValue="1" className="gva-input" /></F><F label="Children"><input name="children" type="number" min="0" step="1" defaultValue="0" className="gva-input" /></F>
-  <F label="Revenue VND"><input name="revenue" inputMode="numeric" className="gva-input" placeholder="1900000" required /></F><F label="Guide language"><select name="guide_language" className="gva-select" required>
+  <F label="Revenue VND"><input name="revenue" inputMode="numeric" className="gva-input" placeholder="1900000" onChange={e=>setRevenue(Number(e.target.value.replace(/[^0-9]/g,""))||0)} required /></F><F label="Guide language"><select name="guide_language" className="gva-select" required>
     <option value="">Chọn guide</option>
     {GVS_BOOKING_LANGUAGES.filter(([value])=>value).map(([value,label])=><option key={value} value={value}>{label} Guide</option>)}
   </select></F><F label="Nguồn"><select name="source" className="gva-select"><option>whatsapp</option><option>website</option><option>google_maps</option><option>partner_qr</option><option>desk</option><option>direct</option></select></F>
   <F label="Partner"><select name="partner_id" className="gva-select"><option value="">Không có</option>{partners.map((x:any)=><option value={x.id} key={x.id}>{x.name} · {x.ref_code}</option>)}</select></F><F label="Khách sạn"><input name="hotel" className="gva-input" /></F>
+  <DepositFields bookingTotalVnd={revenue} alreadyReceivedVnd={0}/>
   <F label="Ghi chú" wide><textarea name="notes" className="gva-input" rows={3} /></F>
   <OptionalItineraryField />
 </div><div style={{display:"flex",gap:8,justifyContent:"flex-end",marginTop:16}}><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button className="gva-btn" disabled={saving}>{saving?"Đang lưu…":"Lưu Booking"}</button></div></form></div>}
 
-function EditBookingModal({booking,contact,tours,partners,onClose,onSubmit,saving}:any){
+function EditBookingModal({booking,contact,tours,partners,financial,payments,onConfirmPending,onClose,onSubmit,saving}:any){
   const initialTourChoice=(booking.booking_mode==="custom"||booking.custom_tour_name)?"__custom__":booking.tour_id||"";
   const [tourChoice,setTourChoice]=useState(initialTourChoice);
   const [adults,setAdults]=useState(Math.max(0,Number(booking.adults||0)));
   const [children,setChildren]=useState(Math.max(0,Number(booking.children||0)));
+  const [revenue,setRevenue]=useState(Math.max(0,Number(booking.gross_revenue_vnd||0)));
   const [status,setStatus]=useState(booking.status||"confirmed");
+  const existingPayments=(payments||[]) as BookingPayment[];
+  const alreadyReceived=Number(financial?.amount_received_vnd||0);
+  const legacyMismatch=alreadyReceived!==recordedPaymentTotal(existingPayments);
   const [cancellation,setCancellation]=useState<any>(null);
   useEffect(()=>{
     let active=true;
@@ -1215,8 +1366,8 @@ function EditBookingModal({booking,contact,tours,partners,onClose,onSubmit,savin
     <F label="Tour"><select name="tour_id" className="gva-select" required value={tourChoice} onChange={e=>setTourChoice(e.target.value)}><option value="">Chọn tour</option><option value="__custom__">+ Tour khác / Custom Tour</option>{tours.map((x:any)=><option value={x.id} key={x.id}>{x.name}</option>)}</select></F><F label="Ngày đi"><input name="tour_date" type="date" className="gva-input" defaultValue={booking.tour_date||""} required /></F>
     {tourChoice==="__custom__"&&<F label="Tên Custom Tour" wide><input name="custom_tour_name" className="gva-input" defaultValue={booking.custom_tour_name||""} placeholder="VD: Private City Tour + Dinner" required /></F>}
     <F label="Adults"><input name="adults" type="number" min="0" step="1" value={adults} onChange={e=>setAdults(Math.max(0,Number(e.target.value||0)))} className="gva-input" /></F><F label="Children"><input name="children" type="number" min="0" step="1" value={children} onChange={e=>setChildren(Math.max(0,Number(e.target.value||0)))} className="gva-input" /></F>
-    <F label="Tổng PAX"><input className="gva-input" value={adults+children} readOnly /></F><F label="Revenue VND"><input name="revenue" inputMode="numeric" className="gva-input" defaultValue={booking.gross_revenue_vnd||0} required /></F>
-    <F label="Payment"><select name="payment_status" className="gva-select" defaultValue={booking.payment_status||"unpaid"}><option value="unpaid">unpaid</option><option value="deposit">deposit</option><option value="paid">paid</option><option value="refunded">refunded</option><option value="partial_refund">partial_refund</option></select></F><F label="Status"><select name="status" className="gva-select" value={status} onChange={e=>setStatus(e.target.value)}><option value="pending">pending</option><option value="confirmed">confirmed</option><option value="completed">completed</option><option value="cancelled">cancelled</option><option value="refunded">refunded</option></select></F>
+    <F label="Tổng PAX"><input className="gva-input" value={adults+children} readOnly /></F><F label="Revenue VND"><input name="revenue" inputMode="numeric" className="gva-input" value={revenue} onChange={e=>setRevenue(Number(e.target.value.replace(/[^0-9]/g,""))||0)} required /></F>
+    <F label="Payment (tự tính)"><input className="gva-input" value={bookingPaymentLabel(booking.payment_status)} readOnly /></F><F label="Status"><select name="status" className="gva-select" value={status} onChange={e=>setStatus(e.target.value)}><option value="pending">pending</option><option value="confirmed">confirmed</option><option value="completed">completed</option><option value="cancelled">cancelled</option><option value="refunded">refunded</option></select></F>
     {status==="cancelled"&&<>
       <F label="Lý do hủy" wide><textarea key={cancellation?.reason||"new"} name="cancellation_reason" className="gva-input" rows={2} required defaultValue={cancellation?.reason||""} placeholder="Khách yêu cầu hủy tour…" /></F>
       <F label="Phí hủy phải thu khách (VND)"><input key={"due"+(cancellation?.customer_fee_due_vnd??"new")} name="customer_fee_due_vnd" type="number" min="0" step="1" className="gva-input" required defaultValue={cancellation?.customer_fee_due_vnd||0}/></F>
@@ -1226,9 +1377,53 @@ function EditBookingModal({booking,contact,tours,partners,onClose,onSubmit,savin
     </>}
     <F label="Guide language"><select name="guide_language" className="gva-select" defaultValue={booking.guide_language||""}><option value="">—</option>{GVS_BOOKING_LANGUAGES.filter(([value])=>value).map(([value,label])=><option key={value} value={value}>{label} Guide</option>)}</select></F><F label="Partner"><select name="partner_id" className="gva-select" defaultValue={booking.partner_id||""}><option value="">Không có</option>{partners.map((x:any)=><option value={x.id} key={x.id}>{x.name} · {x.ref_code}</option>)}</select></F>
     <F label="Khách sạn"><input name="hotel" className="gva-input" defaultValue={booking.hotel||""} /></F><F label="Lưu ý Revenue"><div className="gva-analytics-note" style={{margin:0}}>Đổi PAX không tự tính lại doanh thu. Revenue chỉ thay đổi khi anh sửa ô Revenue.</div></F>
+    {status!=="cancelled"&&<DepositFields bookingTotalVnd={revenue} alreadyReceivedVnd={alreadyReceived} disabled={legacyMismatch}/>}
+    <F label="Lịch sử thanh toán / Đối soát" wide>
+      <div className="gva-analytics-note" style={{margin:0}}>
+        <div><b>Đã thu: {money(alreadyReceived)}</b> · Còn phải thu: <b>{money(Math.max(0,revenue-alreadyReceived))}</b></div>
+        {legacyMismatch&&<p style={{color:"#a11d30",margin:"8px 0"}}>⚠ Số đã thu trong Finance chưa khớp lịch sử Payments (dữ liệu cũ). Không thêm cọc mới cho đến khi đối soát; thông tin tour vẫn sửa được.</p>}
+        {existingPayments.length===0?<p style={{margin:"8px 0 0"}}>Chưa có giao dịch Payments. Khoản cọc trước đây chỉ ghi trong Ghi chú cần nhập lại sau khi kiểm tra chứng từ.</p>:
+          existingPayments.map(p=><div key={p.id} style={{borderTop:"1px solid #cbd5e1",paddingTop:8,marginTop:8}}>
+            <b>{money(p.amount_vnd)}</b> · {p.amount_original&&p.currency!=="VND"?`${p.amount_original} ${p.currency} · `:""}{DEPOSIT_METHODS.find(([key])=>key===p.method)?.[1]||p.method} · {p.status==="received"?"✓ Đã nhận":p.status==="pending"?"⏳ Chờ đối soát":p.status}
+            <div className="gva-mini">{p.paid_at?new Date(p.paid_at).toLocaleDateString("vi-VN"):new Date(p.created_at).toLocaleDateString("vi-VN")} · Mã GD: {p.external_reference||"Chưa có"}</div>
+            {p.notes&&<div className="gva-mini">Ghi chú chuyển tiền: {p.notes}</div>}
+            {p.status==="pending"&&p.payment_type==="deposit"&&!legacyMismatch&&<button type="button" className="gva-btn secondary" style={{marginTop:5}} disabled={saving} onClick={()=>onConfirmPending(p)}>✓ Xác nhận đã nhận tiền</button>}
+          </div>)}
+      </div>
+    </F>
     <F label="Ghi chú" wide><textarea name="notes" className="gva-input" rows={3} defaultValue={booking.notes||""} /></F>
     <OptionalItineraryField value={booking.internal_itinerary_vi||""}/>
   </div><div style={{display:"flex",gap:8,justifyContent:"flex-end",marginTop:16}}><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button className="gva-btn" disabled={saving}>{saving?"Đang lưu…":"Lưu thay đổi"}</button></div></form></div>
+}
+
+function DepositFields({bookingTotalVnd,alreadyReceivedVnd,disabled=false}:{bookingTotalVnd:number;alreadyReceivedVnd:number;disabled?:boolean}){
+  const [amount,setAmount]=useState("");
+  const [currency,setCurrency]=useState("VND");
+  const [rate,setRate]=useState("");
+  const [status,setStatus]=useState<"pending"|"received">("pending");
+  const amountOriginal=Number(amount);
+  const fx=currency==="VND"?1:Number(rate);
+  const amountVnd=amountOriginal>0&&fx>0&&Number.isFinite(amountOriginal*fx)?Math.round(amountOriginal*fx):0;
+  const remains=Math.max(0,bookingTotalVnd-alreadyReceivedVnd-(status==="received"?amountVnd:0));
+  return <div className="gva-field wide" style={{border:"1px solid #bfdbfe",borderRadius:12,padding:14,background:"#f0f7ff"}}>
+    <label style={{color:"#175cd3",fontWeight:800}}>💰 Deposit / Tiền cọc khách gửi</label>
+    <p className="gva-mini" style={{margin:"4px 0 12px"}}>Chỉ giảm số còn phải thu khi đã xác nhận tiền thực nhận. Revenue vẫn là toàn bộ giá trị tour.</p>
+    <div className="gva-form-grid">
+      <F label="Số tiền cọc"><input className="gva-input" name="deposit_amount" type="number" min="0" step={currency==="VND"?"1":"0.01"} value={amount} onChange={e=>setAmount(e.target.value)} placeholder="0 nếu chưa có cọc" disabled={disabled}/></F>
+      <F label="Loại tiền"><select className="gva-select" name="deposit_currency" value={currency} onChange={e=>setCurrency(e.target.value)} disabled={disabled}>{DEPOSIT_CURRENCIES.map(x=><option key={x} value={x}>{x}</option>)}</select></F>
+      {currency!=="VND"&&<F label={`Tỷ giá 1 ${currency} = ? VND`}><input className="gva-input" name="deposit_exchange_rate" type="number" min="0.0001" step="any" value={rate} onChange={e=>setRate(e.target.value)} placeholder="Nhập tỷ giá thực nhận" required={!!Number(amount)} disabled={disabled}/></F>}
+      <F label="Cách khách gửi tiền"><select className="gva-select" name="deposit_method" defaultValue="bank_transfer" disabled={disabled}>{DEPOSIT_METHODS.map(([key,label])=><option key={key} value={key}>{label}</option>)}</select></F>
+      <F label="Trạng thái đối soát"><select className="gva-select" name="deposit_status" value={status} onChange={e=>setStatus(e.target.value as "pending"|"received")} disabled={disabled}><option value="pending">Chưa xác minh / chờ tiền</option><option value="received">Đã kiểm tra, thực nhận</option></select></F>
+      <F label="Mã giao dịch / Reference"><input className="gva-input" name="deposit_reference" placeholder="Mã PayPal, ngân hàng..." disabled={disabled}/></F>
+      {status==="received"&&<F label="Ngày tiền về"><input className="gva-input" name="deposit_date" type="date" disabled={disabled}/></F>}
+      <F label="Ghi chú riêng khoản cọc" wide><textarea className="gva-input" name="deposit_notes" rows={2} placeholder="VD: Khách gửi USD qua PayPal, tên người chuyển, tài khoản nhận, chênh lệch phí..." disabled={disabled}/></F>
+      {status==="received"&&Number(amount)>0&&<div className="gva-field wide"><label style={{fontWeight:600}}><input name="deposit_verified" type="checkbox" value="yes" required disabled={disabled} style={{marginRight:8}}/>Tôi đã kiểm tra tiền thực vào tài khoản GoVietStay</label></div>}
+    </div>
+    <div className="gva-analytics-note" style={{marginTop:10,marginBottom:0}}>
+      {amountVnd>0?<>Cọc quy đổi: <b>{money(amountVnd)}</b> · </>:""}Đã thu trước đó: <b>{money(alreadyReceivedVnd)}</b> · Còn phải thu sau lần ghi nhận này: <b>{money(remains)}</b>
+      {amountVnd>0&&status==="pending"&&<div className="gva-mini">Khoản cọc chờ đối soát được lưu vào lịch sử nhưng chưa tính là đã thu.</div>}
+    </div>
+  </div>;
 }
 
 function F({label,children,wide}:any){return <div className={"gva-field "+(wide?"wide":"")}><label>{label}</label>{children}</div>}
