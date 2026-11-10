@@ -82,7 +82,7 @@ type BookingCost = { id: string; booking_id: string; cost_type: string; descript
 type BookingFinancial = { booking_id: string; amount_received_vnd: number };
 type TransportSupplier = { id: string; name: string; contact_name: string | null; phone: string | null; whatsapp: string | null; service_area: string | null; notes: string | null; active: boolean; payment_terms_days: number };
 type TransportBooking = { id: string; booking_id: string; supplier_id: string; description: string | null; amount_vnd: number; status: string; notes: string | null };
-type Modal = null | "guide" | "availability" | "booking" | "cost" | "quick" | "requirements" | "transport" | "transport_booking" | "replace_guide" | "internal_itinerary";
+type Modal = null | "guide" | "availability" | "booking" | "cost" | "quick" | "requirements" | "transport" | "transport_booking" | "transport_edit" | "replace_guide" | "internal_itinerary";
 
 const LANGUAGES = [
   ["en", "🇬🇧 English"],
@@ -263,6 +263,7 @@ export default function OperationsCenter() {
   const [modal, setModal] = useState<Modal>(null);
   const [selectedBooking, setSelectedBooking] = useState<string | null>(null);
   const [selectedAssignmentId, setSelectedAssignmentId] = useState<string | null>(null);
+  const [selectedTransportId, setSelectedTransportId] = useState<string | null>(null);
   const [duplicateBookingId, setDuplicateBookingId] = useState<string | null>(null);
   const [shareBookingId, setShareBookingId] = useState<string | null>(null);
   const [view, setView] = useState<"calendar" | "dispatch" | "guides" | "bookings" | "transport">("calendar");
@@ -737,10 +738,20 @@ export default function OperationsCenter() {
     const v = Object.fromEntries(new FormData(e.currentTarget).entries()) as Record<string, string>;
     try {
       if (!v.booking_id || !v.supplier_id) throw new Error("Cần chọn booking và nhà xe.");
+      const amount = Number(v.amount_vnd);
+      if (!Number.isSafeInteger(amount) || amount < 0) throw new Error("Chi phí nhà xe không hợp lệ.");
+      // Read the live database before inserting; multiple staff may work on the same booking.
+      const { data: existing, error: existingError } = await supabase.from("booking_supplier_payables")
+        .select("id").eq("booking_id", v.booking_id).eq("supplier_id", v.supplier_id)
+        .eq("source", "transport_operations").neq("status", "void");
+      if (existingError) throw existingError;
+      if (existing?.length && v.allow_same_supplier !== "on") {
+        throw new Error("Booking đã có nhà xe này. Hãy sửa phân xe hiện tại, hoặc tích xác nhận nếu thực sự cần thêm một xe cùng nhà cung cấp.");
+      }
       const { data: saved, error: insertError } = await supabase.from("booking_supplier_payables").insert({
         booking_id: v.booking_id, supplier_id: v.supplier_id,
         description: `Vận chuyển · ${v.vehicle_type || "Xe theo yêu cầu"}`,
-        amount_vnd: Number(v.amount_vnd || 0), status: "open",
+        amount_vnd: amount, status: "open",
         notes: [v.pickup_details, v.notes].filter(Boolean).join(" · ") || null,
         source: "transport_operations", auto_managed: false,
       }).select("id").single();
@@ -752,6 +763,46 @@ export default function OperationsCenter() {
 
   function openTransportBooking(bookingId: string) {
     setError(""); setSelectedBooking(bookingId); setModal("transport_booking");
+  }
+
+  function openTransportEdit(id: string) {
+    setError(""); setSelectedTransportId(id); setModal("transport_edit");
+  }
+
+  async function saveTransportEdit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!selectedTransportId) return;
+    setSaving(true); setError("");
+    const v = Object.fromEntries(new FormData(e.currentTarget).entries()) as Record<string, string>;
+    try {
+      const amount = Number(v.amount_vnd);
+      if (!Number.isSafeInteger(amount) || amount < 0) throw new Error("Chi phí nhà xe không hợp lệ.");
+      const { data, error: updateError } = await supabase.from("booking_supplier_payables")
+        .update({ description: `Vận chuyển · ${String(v.vehicle_type || "").trim() || "Xe theo yêu cầu"}`,
+          amount_vnd: amount, notes: String(v.notes || "").trim() || null })
+        .eq("id", selectedTransportId).eq("source", "transport_operations").eq("status", "open")
+        .select("id").single();
+      if (updateError || !data) throw updateError || new Error("Không cập nhật được phân xe.");
+      setModal(null); setSelectedTransportId(null);
+      setMessage("Đã cập nhật chi phí xe và đồng bộ công nợ; không tạo thêm dòng.");
+      await loadAll();
+    } catch (err: any) { setError(err.message || "Không sửa được phân xe."); }
+    finally { setSaving(false); }
+  }
+
+  async function voidTransport(id: string) {
+    const item = transportBookings.find((x) => x.id === id && x.status === "open");
+    if (!item || !window.confirm(`Hủy phân xe ${money(item.amount_vnd)}? Công nợ và tổng chi sẽ được trừ lại; lịch sử được giữ.`)) return;
+    setSaving(true); setError("");
+    try {
+      const { data, error: updateError } = await supabase.from("booking_supplier_payables")
+        .update({ status: "void" }).eq("id", id).eq("source", "transport_operations")
+        .eq("status", "open").select("id").single();
+      if (updateError || !data) throw updateError || new Error("Không hủy được phân xe.");
+      setMessage("Đã hủy hiệu lực phân xe, công nợ và chi phí đã đồng bộ.");
+      await loadAll();
+    } catch (err: any) { setError(err.message || "Không hủy được phân xe."); }
+    finally { setSaving(false); }
   }
 
   async function saveRequirements(e: FormEvent<HTMLFormElement>) {
@@ -1328,6 +1379,10 @@ export default function OperationsCenter() {
                     const supplier = transportSuppliers.find((s) => s.id === x.supplier_id);
                     return <div className="gvo-assigned" key={x.id}><span>🚐 Nhà xe: <b>{supplier?.name || "Đối tác vận chuyển"}</b> · {x.description}{isAdmin ? ` · ${money(x.amount_vnd)}` : ""}</span>
                       {supplier?.phone && <a href={`tel:${supplier.phone.replace(/[^\d+]/g, "")}`}>Gọi nhà xe</a>}
+                      {isAdmin && x.status === "open" && <>
+                        <button type="button" className="gvo-cost-btn" onClick={() => openTransportEdit(x.id)} disabled={saving}>✎ Sửa xe / giá</button>
+                        <button type="button" className="gvo-cost-btn" style={{ color: "#b42318" }} onClick={() => voidTransport(x.id)} disabled={saving}>Hủy phân xe</button>
+                      </>}
                     </div>;
                   })}
                   {ass.length ? ass.map((a) => <div className="gvo-assigned" key={a.id}>
@@ -1525,9 +1580,25 @@ export default function OperationsCenter() {
       <Field label="Chi phí thỏa thuận (VND)"><input name="amount_vnd" className="gva-input" type="number" min="0" required /></Field>
       <Field label="Điểm đón / giờ đón" wide><input name="pickup_details" className="gva-input" placeholder="08:00 · Khách sạn..." /></Field>
       <Field label="Ghi chú điều phối" wide><textarea name="notes" className="gva-input" rows={3} /></Field>
+      <div className="gvo-field wide"><label className="gvo-service-option"><input type="checkbox" name="allow_same_supplier" /> Tôi xác nhận cần thêm một xe khác của cùng nhà xe (nếu booking đã gán nhà xe này).</label></div>
       {error && <div className="gva-msg err" role="alert" style={{ gridColumn: "1/-1" }}>{error}</div>}
       <ModalActions saving={saving} onClose={() => { setModal(null); setSelectedBooking(null); }} label="Lưu phân xe" />
     </form></ModalFrame>}
+
+    {modal === "transport_edit" && isAdmin && selectedTransportId && (() => {
+      const x = transportBookings.find((item) => item.id === selectedTransportId && item.status === "open");
+      if (!x) return null;
+      return <ModalFrame title="Sửa phân xe & chi phí" onClose={() => { setModal(null); setSelectedTransportId(null); }}>
+        <form onSubmit={saveTransportEdit} className="gvo-form-grid">
+          <div className="gva-analytics-note" style={{ gridColumn: "1/-1" }}>Sửa bản ghi hiện tại; không tạo thêm công nợ. Chỉ cho phép sửa khi chưa thanh toán.</div>
+          <Field label="Loại xe"><input name="vehicle_type" className="gva-input" defaultValue={(x.description || "").replace(/^Vận chuyển · /, "")} /></Field>
+          <Field label="Chi phí thỏa thuận (VND)"><input name="amount_vnd" type="number" min="0" className="gva-input" defaultValue={x.amount_vnd} required /></Field>
+          <Field label="Ghi chú điều phối" wide><textarea name="notes" className="gva-input" defaultValue={x.notes || ""} rows={3} /></Field>
+          {error && <div className="gva-msg err" role="alert" style={{ gridColumn: "1/-1" }}>{error}</div>}
+          <ModalActions saving={saving} onClose={() => { setModal(null); setSelectedTransportId(null); }} label="Lưu thay đổi" />
+        </form>
+      </ModalFrame>;
+    })()}
 
     {modal === "replace_guide" && canOperate && selectedBooking && selectedAssignmentId && (() => {
       const b = bookings.find((booking) => booking.id === selectedBooking);
