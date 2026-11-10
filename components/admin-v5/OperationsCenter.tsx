@@ -159,6 +159,23 @@ function guideLanguageCodes(guide: Guide) {
     .map((value) => GUIDE_LANGUAGE_ALIASES[value] || value)));
 }
 
+function bookingGuideAreaKey(booking: Booking, tour?: Tour) {
+  const detect = (value: string) => {
+    const text = ` ${guideKey(value)} `;
+    const hints: [string, string[]][] = [
+      ["phu quoc", ["phu quoc", "ganh dau", "cua can", "rach vem", "grand world", "hon thom", "sao beach", "sunset town"]],
+      ["da nang", ["da nang", "son tra", "ba na hills"]],
+      ["hoi an", ["hoi an", "cam thanh", "cua dai"]],
+      ["hue", ["thua thien hue", "hue"]],
+      ["ho tram", ["ho tram", "phuoc buu"]],
+      ["ha noi", ["ha noi", "hanoi"]],
+    ];
+    return hints.find(([, aliases]) => aliases.some((alias) => text.includes(` ${alias} `)))?.[0] || "";
+  };
+  return detect([booking.custom_destination, tour?.destination].filter(Boolean).join(" ")) ||
+    detect([booking.custom_tour_name, booking.internal_itinerary_vi].filter(Boolean).join(" "));
+}
+
 function localISO(date = new Date()) {
   const y = date.getFullYear();
   const m = String(date.getMonth() + 1).padStart(2, "0");
@@ -549,7 +566,7 @@ export default function OperationsCenter() {
     [bookings, focusDate, languageFilter]
   );
   const focusGuides = useMemo(
-    () => guides.filter((g) => g.active && (languageFilter === "all" || (g.languages || []).includes(languageFilter))),
+    () => guides.filter((g) => g.active && (languageFilter === "all" || guideLanguageCodes(g).includes(languageFilter))),
     [guides, languageFilter]
   );
   const guideAreaOptions = useMemo(() => {
@@ -1195,11 +1212,15 @@ export default function OperationsCenter() {
               const ass = activeAssignments(b.id);
               const cost = totalCost(b.id);
               const revenue = Number(b.net_revenue_vnd ?? b.gross_revenue_vnd ?? 0);
+              const preferredArea = bookingGuideAreaKey(b, tourMap[b.tour_id || ""]);
               const eligibleGuides = guides.filter((g) =>
                 g.active &&
-                (!b.guide_language || (g.languages || []).includes(b.guide_language)) &&
+                (!b.guide_language || guideLanguageCodes(g).includes(b.guide_language)) &&
                 guideStatus(g.id, focusDate) !== "unavailable" &&
-                guideStatus(g.id, focusDate) !== "booked"
+                guideStatus(g.id, focusDate) !== "booked" &&
+                guideStatus(g.id, focusDate) !== "pending"
+              ).sort((a, b) =>
+                Number(!guideAreas(a).includes(preferredArea)) - Number(!guideAreas(b).includes(preferredArea))
               );
               return <article className="gvo-booking" key={b.id}>
                 <div className="gvo-booking-top">
@@ -1234,8 +1255,9 @@ export default function OperationsCenter() {
                   {!ass.length && canOperate && <div className="gvo-assign-row">
                     <select className="gva-select" defaultValue="" onChange={(e) => { if (e.target.value) assignGuide(b.id, e.target.value); }} disabled={saving}>
                       <option value="">Chọn HDV phù hợp…</option>
-                      {eligibleGuides.map((g) => <option key={g.id} value={g.id}>{g.full_name} · {statusText(guideStatus(g.id, focusDate))}{isAdmin ? ` · ${money(suggestedFee(g, b))}` : ""}</option>)}
+                      {eligibleGuides.map((g) => <option key={g.id} value={g.id}>{preferredArea && guideAreas(g).includes(preferredArea) ? "📍 " : ""}{g.full_name} · {statusText(guideStatus(g.id, focusDate))}{isAdmin ? ` · ${money(suggestedFee(g, b))}` : ""}</option>)}
                     </select>
+                    {!eligibleGuides.length && <div className="gvo-need-guide">Không có HDV phù hợp chưa bị gán lịch. Kiểm tra ngôn ngữ hoặc cập nhật lịch HDV.</div>}
                   </div>}
                 </div>
                 {isAdmin ? <>
