@@ -1230,12 +1230,12 @@ export default function OperationsCenter() {
               .filter((b) => b.status !== "cancelled")
               .sort((a,b) => String(a.start_time || a.pickup_time || "99:99").localeCompare(String(b.start_time || b.pickup_time || "99:99")));
             const dayPax = dayBookings.reduce((sum, b) => sum + Number(b.pax ?? b.adults + b.children), 0);
-            const dayNeedGuide = dayBookings.filter((b) => missingDispatch(b).guide).length;
+            const dayNeedGuide = dayBookings.filter((b) => missingDispatch(b).guide || missingDispatch(b).transport).length;
             const dateLabel = new Intl.DateTimeFormat("vi-VN", { weekday: "short", day: "2-digit", month: "2-digit" }).format(new Date(`${date}T12:00:00`));
             return <section className={`gvo-mobile-day ${date === localISO() ? "today" : ""}`} key={date}>
               <button type="button" className="gvo-mobile-day-head" onClick={() => { setFocusDate(date); setView("dispatch"); }}>
                 <span><b>{dateLabel}</b><small>{dayBookings.length} tour · {dayPax} khách</small></span>
-                <span className={dayNeedGuide ? "need-guide" : "ready"}>{dayNeedGuide ? `⚠ ${dayNeedGuide} thiếu HDV` : "✓ Đủ HDV"}</span>
+                <span className={dayNeedGuide ? "need-guide" : "ready"}>{dayNeedGuide ? `⚠ ${dayNeedGuide} thiếu điều phối` : "✓ Đủ điều phối"}</span>
               </button>
               <div className="gvo-mobile-tour-list">
                 {dayBookings.map((b) => {
@@ -1508,10 +1508,10 @@ export default function OperationsCenter() {
       return <ModalFrame title={`Yêu cầu điều phối · ${b.booking_code || "Booking"}`} onClose={() => { setModal(null); setSelectedBooking(null); }}>
         <form onSubmit={saveRequirements} className="gvo-form-grid">
           <div className="gva-analytics-note" style={{ gridColumn: "1/-1" }}>Chọn dịch vụ thực sự cần bố trí cho ngày tour này. Giá bán, tiền cọc và lịch trình không thay đổi.</div>
-          <Field label="Dịch vụ cần bố trí" wide>
+          <div className="gvo-field wide"><span>Dịch vụ cần bố trí</span>
             <label className="gvo-service-option"><input type="checkbox" name="requires_guide" defaultChecked={requiresGuide(b)} /> Cần hướng dẫn viên</label>
             <label className="gvo-service-option"><input type="checkbox" name="requires_transport" defaultChecked={requiresTransport(b)} /> Cần xe & tài xế</label>
-          </Field>
+          </div>
           {error && <div className="gva-msg err" style={{ gridColumn: "1/-1" }} role="alert">{error}</div>}
           <ModalActions saving={saving} onClose={() => { setModal(null); setSelectedBooking(null); }} label="Lưu yêu cầu điều phối" />
         </form>
@@ -1805,10 +1805,10 @@ function BookingModal({ tours, sourceBooking, sourceContact, saving, onClose, on
     <Field label="Số phòng"><input name="room" className="gva-input" defaultValue={sourceBooking?.room || ""} placeholder="Nếu có" /></Field>
     <Field label="Adults"><input name="adults" type="number" min="0" defaultValue={sourceBooking?.adults ?? 1} className="gva-input" /></Field>
     <Field label="Children"><input name="children" type="number" min="0" defaultValue={sourceBooking?.children ?? 0} className="gva-input" /></Field>
-    <Field label="Yêu cầu điều phối" wide>
+    <div className="gvo-field wide"><span>Yêu cầu điều phối</span>
       <label className="gvo-service-option"><input type="checkbox" name="requires_guide" defaultChecked={sourceBooking ? (sourceBooking.requires_guide ?? Boolean(sourceBooking.guide_language)) : true} /> Cần HDV</label>
       <label className="gvo-service-option"><input type="checkbox" name="requires_transport" defaultChecked={sourceBooking ? (sourceBooking.requires_transport ?? false) : true} /> Cần xe & tài xế</label>
-    </Field>
+    </div>
     <Field label="Ngôn ngữ HDV"><select name="guide_language" className="gva-select" defaultValue={sourceBooking?.guide_language || ""}><option value="">Không cần / chưa xác định</option>{LANGUAGES.map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select></Field>
     <Field label="Giá bán VND"><input name="revenue" inputMode="numeric" className="gva-input" placeholder="3200000" value={revenue} onChange={(e) => setRevenue(e.target.value)} required /></Field>
     <Field label="Deposit required / Cọc yêu cầu"><input name="deposit" inputMode="numeric" className="gva-input" placeholder="0" value={deposit} onChange={(e) => setDeposit(e.target.value)} /></Field>
