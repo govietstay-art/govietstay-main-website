@@ -24,6 +24,7 @@ export async function POST(req:NextRequest){
     const guest=text(body.fullName,160), phone=text(body.whatsapp,80), tourDate=text(body.tourDate,20);
     if(!guest || !phone || !/^\d{4}-\d{2}-\d{2}$/.test(tourDate)) return NextResponse.json({error:"Missing required booking fields"},{status:400});
     const gross=item.adult*adults+item.child*children;
+    const depositDue=Math.round(gross*0.30);
     const internal=johnsInternalForBooking(text(body.tourCode,40),adults,children,gross);
     if(gross<=0) return NextResponse.json({error:"Selling price is required"},{status:400});
     const bookingCode=code();
@@ -37,7 +38,7 @@ export async function POST(req:NextRequest){
       "Pricing model: customer selling price = John’s Tours Published Rate; no extra markup on join-in tour.",
       `Internal supplier net estimate: ${internal.supplierNet.toLocaleString("en-US")} VND`,
       `Internal agency commission estimate: ${internal.commission.toLocaleString("en-US")} VND`,
-      "Deposit required: to be set only after availability/price confirmation in Payment Center; public form records 0 received."
+      `Deposit requested (30% of published selling price): ${depositDue.toLocaleString("en-US")} VND. Transfer reference: ${bookingCode}. Deposit received: 0 VND until bank receipt is verified by GoVietStay. Availability and final price remain pending admin confirmation.`
     ].join("\n");
 
     const payload={
@@ -115,7 +116,7 @@ export async function POST(req:NextRequest){
         console.warn("GoVietStay pending booking notification transport unavailable");
       }
     });
-    return NextResponse.json({ok:true,booking_code:result?.booking_code || bookingCode,status:result?.status || "pending"});
+    return NextResponse.json({ok:true,booking_code:result?.booking_code || bookingCode,status:result?.status || "pending",total_vnd:gross,deposit_due_vnd:depositDue});
   }catch{
     return NextResponse.json({error:"Invalid request"},{status:400});
   }
