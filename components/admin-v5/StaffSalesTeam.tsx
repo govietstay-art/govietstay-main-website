@@ -195,7 +195,10 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
         {pending.map(r=><div className="gvs-request" key={r.id}>
           <div><b>{r.booking_code}</b><span>{staffMap[r.staff_id]?.display_name||r.sales_code}</span></div>
           <div><strong>{r.guest_name}</strong><small>{r.tour_date} · {r.tour_name||"Tour"} · {r.adults+r.children+r.infants} pax</small></div>
-          <div><strong>{money(num(r.gross_revenue_vnd)-num(r.discount_vnd))}</strong><small>Deposit {money(r.deposit_vnd)}</small></div>
+          <div><strong>{money(num(r.gross_revenue_vnd)-num(r.discount_vnd))}</strong>
+             {r.notes?.includes("Source: public Phu Quoc website booking form")
+               ? <><small>Cần cọc 30%: {money(Math.round((num(r.gross_revenue_vnd)-num(r.discount_vnd))*0.30))}</small><small>Đã nhận (chờ xác minh): {money(r.deposit_vnd)}</small></>
+               : <small>Deposit đã nhận: {money(r.deposit_vnd)}</small>}</div>
           <div className="gvs-request-actions"><button className="gva-btn secondary" onClick={()=>setEditRequest(r)}>Sửa</button><button className="gva-btn" onClick={()=>approveRequest(r.id)} disabled={saving}>Duyệt</button><button className="gvs-danger" onClick={()=>rejectRequest(r.id)} disabled={saving}>Từ chối</button></div>
         </div>)}
         {!pending.length&&<div className="gva-empty">Không có booking request đang chờ.</div>}
