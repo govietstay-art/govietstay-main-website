@@ -5,9 +5,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import "./staff-sales-team.css";
-import PublicInquiryPanel from "./PublicInquiryPanel";
 
-type Props={supabase:any;adminStaff:any};
+type Props={supabase:any;adminStaff:any;mode?:"staff"|"website"};
 type Staff={id:string;display_name:string;sales_code:string;role:string;compensation_plan_code:string;allow_booking_portal:boolean;sales_page:string|null};
 type Payroll={staff_id:string;display_name:string;sales_code:string;plan_code:string;eligible_bookings:number;pax:number;revenue_vnd:number;commissionable_profit_vnd:number;base_salary_vnd:number;commission_rate:number;commission_vnd:number;commission_adjustment_vnd:number;bonus_vnd:number;deduction_vnd:number;advance_paid_vnd:number;total_compensation_vnd:number;payable_vnd:number;override_notes:string|null};
 type Intake={id:string;submitted_at:string;sales_code:string;staff_id:string;booking_code:string;guest_name:string;phone:string|null;tour_date:string;pickup_time:string|null;hotel:string|null;region:string|null;tour_name:string|null;variant_name:string|null;language:string|null;adults:number;children:number;infants:number;gross_revenue_vnd:number;discount_vnd:number;deposit_vnd:number;notes:string|null;status:string;admin_notes:string|null};
@@ -19,7 +18,7 @@ function parseMoney(v:any){return Math.max(0,Number(String(v||"0").replace(/[^0-
 function parseSignedMoney(v:any){const s=String(v||"0").trim();const neg=s.startsWith("-");const n=Number(s.replace(/[^0-9]/g,""))||0;return neg?-n:n;}
 function num(v:any){return Number(v||0);}
 
-export default function StaffSalesTeam({supabase,adminStaff}:Props){
+export default function StaffSalesTeam({supabase,adminStaff,mode="staff"}:Props){
   const [month,setMonth]=useState(monthNow());
   const [staff,setStaff]=useState<Staff[]>([]);
   const [pinStatus,setPinStatus]=useState<Record<string,boolean>>({});
@@ -36,7 +35,7 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
   const [newStaffOpen,setNewStaffOpen]=useState(false);
 
   const staffMap=useMemo(()=>Object.fromEntries(staff.map(x=>[x.id,x])),[staff]);
-  const pending=intake.filter(x=>x.status==="pending");
+  const pending=intake.filter(x=>x.status==="pending" && (mode==="website" ? x.booking_code.startsWith("GVS-PQ-") : !x.booking_code.startsWith("GVS-PQ-")));
   const totalPayroll=payroll.reduce((s,x)=>s+num(x.total_compensation_vnd),0);
   const totalPayable=payroll.reduce((s,x)=>s+num(x.payable_vnd),0);
   const totalCommission=payroll.reduce((s,x)=>s+num(x.commission_vnd)+num(x.commission_adjustment_vnd),0);
@@ -44,11 +43,20 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
   async function load(){
     setLoading(true);setError("");
     try{
+      if(mode==="website"){
+        const {data,error:requestError}=await supabase.from("staff_booking_intake")
+          .select("id,submitted_at,sales_code,staff_id,booking_code,guest_name,phone,tour_date,pickup_time,hotel,region,tour_name,variant_name,language,adults,children,infants,gross_revenue_vnd,discount_vnd,deposit_vnd,notes,status,admin_notes")
+          .like("booking_code","GVS-PQ-%")
+          .order("submitted_at",{ascending:false}).limit(100);
+        if(requestError)throw requestError;
+        setIntake((data||[]) as Intake[]);
+        return;
+      }
       const pMonth=month+"-01";
       const results=await Promise.all([
         supabase.from("staff_profiles").select("id,display_name,sales_code,role,compensation_plan_code,allow_booking_portal,sales_page").not("sales_code","is",null).order("display_name"),
         supabase.rpc("admin_staff_payroll",{p_month:pMonth}),
-        supabase.from("staff_booking_intake").select("id,submitted_at,sales_code,staff_id,booking_code,guest_name,phone,tour_date,pickup_time,hotel,region,tour_name,variant_name,language,adults,children,infants,gross_revenue_vnd,discount_vnd,deposit_vnd,notes,status,admin_notes").order("submitted_at",{ascending:false}).limit(100),
+        supabase.from("staff_booking_intake").select("id,submitted_at,sales_code,staff_id,booking_code,guest_name,phone,tour_date,pickup_time,hotel,region,tour_name,variant_name,language,adults,children,infants,gross_revenue_vnd,discount_vnd,deposit_vnd,notes,status,admin_notes").not("booking_code","like","GVS-PQ-%").order("submitted_at",{ascending:false}).limit(100),
         supabase.rpc("admin_staff_sales_bookings",{p_month:pMonth,p_staff_id:null}),
         supabase.rpc("admin_staff_pin_status")
       ]);
@@ -69,7 +77,7 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
     try{
       const {data,error}=await supabase.rpc("admin_approve_staff_booking_request",{p_request_id:id});
       if(error)throw error;
-      setMessage(`Đã tạo booking ${data?.booking_code||""} trong Admin. Hoa hồng sẽ được tính 12% trên giá bán thực tế khi Completed + Paid + Finance Finalized.`);
+      setMessage(mode==="website" ? `Đã duyệt yêu cầu website và tạo booking ${data?.booking_code||""} trong Booking Master.` : `Đã tạo booking ${data?.booking_code||""} trong Admin. Hoa hồng sẽ được tính theo chính sách nhân viên khi Completed + Paid + Finance Finalized.`);
       await load();
     }catch(e:any){setError(e?.message||"Không duyệt được request.");}finally{setSaving(false)}
   }
@@ -166,12 +174,17 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
     finally{setSaving(false);}
   }
   return <div className="gvs-team">
+    {mode==="website"&&<div className="gvs-team-head">
+      <div><h2>Booking khách tự đặt trên website · {pending.length} chờ duyệt</h2>
+        <p>Yêu cầu từ trang tour Phú Quốc. Kiểm tra thông tin, giá bán và tiền cọc trước khi duyệt vào Booking Master.</p></div>
+      <div className="gvs-team-actions"><button className="gva-btn secondary" onClick={load} disabled={loading}>{loading?"Đang tải…":"Làm mới"}</button></div>
+    </div>}
+    {error&&<div className="gva-msg err">{error}</div>}{message&&<div className="gva-msg">{message}</div>}
+    {mode==="staff"&&<>
     <div className="gvs-team-head">
       <div><h2>Sales Team · Commission 12%</h2><p>Booking từ 16/10/2026: <b>12% trên giá bán thực tế sau giảm giá</b>, gồm cả tour custom/private. Không lương căn bản, không tier PAX, không khác biệt theo hướng dẫn viên. Hoa hồng earned khi Completed + Paid + Finance Finalized.</p></div>
       <div className="gvs-team-actions"><button className="gva-btn" onClick={()=>setNewStaffOpen(true)}>+ Sales Staff</button><input className="gva-input" type="month" value={month} onChange={e=>setMonth(e.target.value)}/><button className="gva-btn secondary" onClick={load} disabled={loading}>{loading?"Đang tải…":"Làm mới"}</button></div>
     </div>
-    {error&&<div className="gva-msg err">{error}</div>}{message&&<div className="gva-msg">{message}</div>}
-
     <div className="gvs-team-kpis">
       <K label="Pending staff requests" value={pending.length} hint="Cần kiểm tra trước khi vào Booking Master"/>
       <K label="Commission earned" value={money(totalCommission)} hint="Completed + payment reconciled"/>
@@ -187,14 +200,16 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
       </tbody></table></div>
     </section>
 
-    <PublicInquiryPanel supabase={supabase}/>
+    </>}
 
     <section className="gva-card gvs-team-section">
-      <div className="gva-section-head"><div><h2>Staff Booking Requests</h2><div className="gva-mini">Booking Request từ bất kỳ trang nhân viên nào đều vào Pending tại đây → Admin Approve → Booking Master → Operations → Finance → Payroll.</div></div></div>
+      <div className="gva-section-head"><div><h2>{mode==="website"?"Website Booking Requests":"Staff Booking Requests"}</h2><div className="gva-mini">{mode==="website"?"Booking khách tự đặt trên GoVietStay. Duyệt vào Booking Master sau khi kiểm tra chỗ và khoản cọc; không thuộc hàng đợi nhân viên.":"Yêu cầu từ trang nhân viên → Admin Approve → Booking Master → Operations → Finance → Payroll."}</div></div></div>
       <div className="gvs-request-list">
         {pending.map(r=><div className="gvs-request" key={r.id}>
-          <div><b>{r.booking_code}</b><span>{staffMap[r.staff_id]?.display_name||r.sales_code}</span></div>
-          <div><strong>{r.guest_name}</strong><small>{r.tour_date} · {r.tour_name||"Tour"} · {r.adults+r.children+r.infants} pax</small></div>
+          <div><b>{r.booking_code}</b><span>{mode==="website"?"Website · Phú Quốc":staffMap[r.staff_id]?.display_name||r.sales_code}</span></div>
+          <div><strong>{r.guest_name}</strong><small>{r.tour_date} · {r.tour_name||"Tour"} · {r.adults+r.children+r.infants} pax</small>
+             {mode==="website"&&<><small>WhatsApp: {r.phone||"Chưa có"} · {r.language||"Chưa có ngôn ngữ"}</small>
+             {r.notes&&<details className="mt-2"><summary className="cursor-pointer font-semibold">Chi tiết yêu cầu / cọc</summary><pre className="mt-2 whitespace-pre-wrap break-words text-xs">{r.notes}</pre></details>}</>}</div>
           <div><strong>{money(num(r.gross_revenue_vnd)-num(r.discount_vnd))}</strong>
              {r.notes?.includes("Source: public Phu Quoc website booking form")
                ? <><small>Cần cọc 30%: {money(Math.round((num(r.gross_revenue_vnd)-num(r.discount_vnd))*0.30))}</small><small>Đã nhận (chờ xác minh): {money(r.deposit_vnd)}</small></>
@@ -205,6 +220,7 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
       </div>
     </section>
 
+    {mode==="staff"&&<>
     <section className="gva-card gvs-team-section">
       <div className="gva-section-head"><div><h2>Monthly Payroll</h2><div className="gva-mini">Hoa hồng chỉ earned khi tour Completed/Closed và payment đã reconcile.</div></div></div>
       <div className="gvs-payroll-grid">
@@ -229,8 +245,9 @@ export default function StaffSalesTeam({supabase,adminStaff}:Props){
       </tbody></table></div>
     </section>
 
+    </>}
     {newStaffOpen&&<NewSalesStaffModal saving={saving} onClose={()=>setNewStaffOpen(false)} onSubmit={createSalesStaff}/>}
-    {editRequest&&<RequestModal row={editRequest} staff={staff} saving={saving} onClose={()=>setEditRequest(null)} onSubmit={saveRequest}/>} 
+    {editRequest&&<RequestModal row={editRequest} staff={staff} mode={mode} saving={saving} onClose={()=>setEditRequest(null)} onSubmit={saveRequest}/>} 
     {editPayroll&&<PayrollModal row={editPayroll} saving={saving} onClose={()=>setEditPayroll(null)} onSubmit={savePayrollOverride}/>} 
     {editBooking&&<BookingControlModal row={editBooking} staff={staff} saving={saving} onClose={()=>setEditBooking(null)} onSubmit={saveBookingControl}/>} 
   </div>;
@@ -244,8 +261,8 @@ function NewSalesStaffModal({saving,onClose,onSubmit}:any){return <div className
 </div><div style={{padding:"10px 12px",background:"#f6f8fb",borderRadius:10,fontSize:13,lineHeight:1.5}}><b>Sau khi tạo:</b> nhân viên xuất hiện ngay trong Monthly Payroll. Booking mang Sales Code của người này sẽ tự giữ staff_id xuyên suốt đến Payroll.</div><div className="gvs-team-modal-actions"><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button className="gva-btn" disabled={saving}>{saving?"Đang tạo…":"Tạo & liên kết tự động"}</button></div></form></div>}
 function K({label,value,hint,strong}:any){return <div className={`gva-card gvs-team-kpi ${strong?"strong":""}`}><div className="gvs-team-label">{label}</div><div className="gvs-team-value">{value}</div><div className="gva-mini">{hint}</div></div>}
 function F({label,children,wide}:any){return <div className={`gva-field ${wide?"wide":""}`}><label>{label}</label>{children}</div>}
-function RequestModal({row,staff,saving,onClose,onSubmit}:any){return <div className="gva-modal-bg"><form className="gva-modal" onSubmit={onSubmit}><div className="gva-modal-head"><div><h3>Sửa Staff Request</h3><div className="gva-mini">{row.booking_code}</div></div><button type="button" className="gva-close" onClick={onClose}>✕</button></div><div className="gva-form-grid">
-  <F label="Sales owner"><select className="gva-select" name="staff_id" defaultValue={row.staff_id}>{staff.map((s:any)=><option value={s.id} key={s.id}>{s.display_name}</option>)}</select></F><F label="Guest"><input className="gva-input" name="guest_name" defaultValue={row.guest_name} required/></F>
+function RequestModal({row,staff,mode,saving,onClose,onSubmit}:any){return <div className="gva-modal-bg"><form className="gva-modal" onSubmit={onSubmit}><div className="gva-modal-head"><div><h3>{mode==="website"?"Sửa yêu cầu website":"Sửa Staff Request"}</h3><div className="gva-mini">{row.booking_code}</div></div><button type="button" className="gva-close" onClick={onClose}>✕</button></div><div className="gva-form-grid">
+  {mode==="website"?<input type="hidden" name="staff_id" value={row.staff_id}/>:<F label="Sales owner"><select className="gva-select" name="staff_id" defaultValue={row.staff_id}>{staff.map((s:any)=><option value={s.id} key={s.id}>{s.display_name}</option>)}</select></F>}<F label="Guest"><input className="gva-input" name="guest_name" defaultValue={row.guest_name} required/></F>
   <F label="WhatsApp"><input className="gva-input" name="phone" defaultValue={row.phone||""}/></F><F label="Tour date"><input className="gva-input" type="date" name="tour_date" defaultValue={row.tour_date} required/></F>
   <F label="Pickup time"><input className="gva-input" name="pickup_time" defaultValue={row.pickup_time||""}/></F><F label="Hotel"><input className="gva-input" name="hotel" defaultValue={row.hotel||""}/></F>
   <F label="Destination"><input className="gva-input" name="region" defaultValue={row.region||""}/></F><F label="Tour"><input className="gva-input" name="tour_name" defaultValue={row.tour_name||""}/></F>
