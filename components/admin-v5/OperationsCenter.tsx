@@ -80,7 +80,7 @@ type BookingCost = { id: string; booking_id: string; cost_type: string; descript
 type BookingFinancial = { booking_id: string; amount_received_vnd: number };
 type TransportSupplier = { id: string; name: string; contact_name: string | null; phone: string | null; whatsapp: string | null; service_area: string | null; notes: string | null; active: boolean; payment_terms_days: number };
 type TransportBooking = { id: string; booking_id: string; supplier_id: string; description: string | null; amount_vnd: number; status: string; notes: string | null };
-type Modal = null | "guide" | "availability" | "booking" | "cost" | "quick" | "transport" | "transport_booking" | "internal_itinerary";
+type Modal = null | "guide" | "availability" | "booking" | "cost" | "quick" | "transport" | "transport_booking" | "replace_guide" | "internal_itinerary";
 
 const LANGUAGES = [
   ["en", "🇬🇧 English"],
@@ -260,6 +260,7 @@ export default function OperationsCenter() {
   const [saving, setSaving] = useState(false);
   const [modal, setModal] = useState<Modal>(null);
   const [selectedBooking, setSelectedBooking] = useState<string | null>(null);
+  const [selectedAssignmentId, setSelectedAssignmentId] = useState<string | null>(null);
   const [duplicateBookingId, setDuplicateBookingId] = useState<string | null>(null);
   const [shareBookingId, setShareBookingId] = useState<string | null>(null);
   const [view, setView] = useState<"calendar" | "dispatch" | "guides" | "bookings" | "transport">("calendar");
@@ -554,6 +555,18 @@ export default function OperationsCenter() {
     if (rows.some((x) => x.status === "available")) return "available";
     return "unknown";
   }
+  function eligibleGuidesForBooking(b: Booking, excludedGuideId?: string) {
+    const date = b.tour_date || focusDate;
+    const area = bookingGuideAreaKey(b, tourMap[b.tour_id || ""]);
+    return guides.filter((g) =>
+      g.active &&
+      g.id !== excludedGuideId &&
+      (!b.guide_language || guideLanguageCodes(g).includes(b.guide_language)) &&
+      !["unavailable", "booked", "pending"].includes(guideStatus(g.id, date))
+    ).sort((a, b) =>
+      Number(!guideAreas(a).includes(area)) - Number(!guideAreas(b).includes(area))
+    );
+  }
   function statusText(status: string) {
     return status === "available" ? "🟢 Available" :
       status === "pending" ? "🟡 Pending" :
@@ -716,7 +729,7 @@ export default function OperationsCenter() {
         source: "transport_operations", auto_managed: false,
       });
       if (insertError) throw insertError;
-      setModal(null); setMessage("Đã nối nhà xe với booking và công nợ nhà cung cấp."); await loadAll();
+      setModal(null); setSelectedBooking(null); setMessage("Đã nối nhà xe với booking và công nợ nhà cung cấp."); await loadAll();
     } catch (err: any) { setError(err.message || "Không gán được nhà xe."); }
     finally { setSaving(false); }
   }
@@ -846,6 +859,37 @@ export default function OperationsCenter() {
       if (assignError) throw assignError;
       setMessage(`Đã gán ${guide.full_name} cho ${booking.booking_code || "booking"}.`); await loadAll();
     } catch (e: any) { setError(e.message); } finally { setSaving(false); }
+  }
+
+  function openReplaceGuide(bookingId: string, assignmentId: string) {
+    setError("");
+    setSelectedBooking(bookingId);
+    setSelectedAssignmentId(assignmentId);
+    setModal("replace_guide");
+  }
+
+  async function replaceGuide(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!selectedAssignmentId || !selectedBooking) return;
+    const newGuideId = String(new FormData(e.currentTarget).get("guide_id") || "");
+    const oldAssignment = assignments.find((a) => a.id === selectedAssignmentId && a.booking_id === selectedBooking);
+    const booking = bookings.find((b) => b.id === selectedBooking);
+    const newGuide = guides.find((g) => g.id === newGuideId);
+    if (!oldAssignment || !booking || !newGuide || oldAssignment.guide_id === newGuideId) return;
+    const oldName = guideMap[oldAssignment.guide_id]?.full_name || "HDV hiện tại";
+    if (!window.confirm(`Đổi HDV từ ${oldName} sang ${newGuide.full_name} cho ${booking.booking_code || "booking"}? Phân công cũ sẽ được lưu ở trạng thái huỷ.`)) return;
+    setSaving(true); setError("");
+    try {
+      const { error: replaceError } = await supabase.rpc("ops_replace_booking_guide", {
+        p_assignment_id: oldAssignment.id,
+        p_new_guide_id: newGuideId,
+      });
+      if (replaceError) throw replaceError;
+      setModal(null); setSelectedBooking(null); setSelectedAssignmentId(null);
+      setMessage(`Đã đổi HDV từ ${oldName} sang ${newGuide.full_name} cho ${booking.booking_code || "booking"}.`);
+      await loadAll();
+    } catch (err: any) { setError(err.message || "Không đổi được HDV. Phân công cũ vẫn được giữ nguyên."); }
+    finally { setSaving(false); }
   }
 
   async function updateAssignment(id: string, status: string) {
@@ -1213,15 +1257,7 @@ export default function OperationsCenter() {
               const cost = totalCost(b.id);
               const revenue = Number(b.net_revenue_vnd ?? b.gross_revenue_vnd ?? 0);
               const preferredArea = bookingGuideAreaKey(b, tourMap[b.tour_id || ""]);
-              const eligibleGuides = guides.filter((g) =>
-                g.active &&
-                (!b.guide_language || guideLanguageCodes(g).includes(b.guide_language)) &&
-                guideStatus(g.id, focusDate) !== "unavailable" &&
-                guideStatus(g.id, focusDate) !== "booked" &&
-                guideStatus(g.id, focusDate) !== "pending"
-              ).sort((a, b) =>
-                Number(!guideAreas(a).includes(preferredArea)) - Number(!guideAreas(b).includes(preferredArea))
-              );
+              const eligibleGuides = eligibleGuidesForBooking(b);
               return <article className="gvo-booking" key={b.id}>
                 <div className="gvo-booking-top">
                   <div><b>{b.booking_code || "Booking"}</b><span className={`gvo-mode ${b.booking_mode}`}>{b.booking_mode === "custom" ? "CUSTOM" : "CATALOG"}</span></div>
@@ -1251,6 +1287,7 @@ export default function OperationsCenter() {
                     {canOperate && <select className="gva-select" value={a.status} onChange={(e) => updateAssignment(a.id, e.target.value)} disabled={saving}>
                       <option value="pending">pending</option><option value="confirmed">confirmed</option><option value="completed">completed</option><option value="cancelled">cancelled</option>
                     </select>}
+                    {canOperate && (a.status === "pending" || a.status === "confirmed") && <button type="button" className="gvo-cost-btn" onClick={() => openReplaceGuide(b.id, a.id)} disabled={saving}>🔄 Đổi HDV</button>}
                   </div>) : <div className="gvo-need-guide">⚠️ Chưa gán hướng dẫn viên</div>}
                   {!ass.length && canOperate && <div className="gvo-assign-row">
                     <select className="gva-select" defaultValue="" onChange={(e) => { if (e.target.value) assignGuide(b.id, e.target.value); }} disabled={saving}>
@@ -1259,6 +1296,7 @@ export default function OperationsCenter() {
                     </select>
                     {!eligibleGuides.length && <div className="gvo-need-guide">Không có HDV phù hợp chưa bị gán lịch. Kiểm tra ngôn ngữ hoặc cập nhật lịch HDV.</div>}
                   </div>}
+                  {isAdmin && <div className="gvo-assign-row"><button type="button" className="gvo-cost-btn" onClick={() => { setError(""); setSelectedBooking(b.id); setModal("transport_booking"); }} disabled={saving}>🚐 {transportBookings.some((x) => x.booking_id === b.id) ? "+ Gán thêm xe" : "Gán xe"}</button></div>}
                 </div>
                 {isAdmin ? <>
                   <div className="gvo-finance-row">
@@ -1303,7 +1341,7 @@ export default function OperationsCenter() {
       <div className="gvo-card-head gvo-transport-head">
         <div><h2>Danh bạ nhà xe & tài xế</h2><p>Đối tác vận chuyển dùng chung với Finance. Mỗi chuyến gắn Booking ID để dễ tra cứu và đối soát.</p></div>
         <div className="gvo-transport-actions">
-          <button className="gva-btn secondary" onClick={() => setModal("transport_booking")}>+ Gán xe cho booking</button>
+          <button className="gva-btn secondary" onClick={() => { setSelectedBooking(null); setModal("transport_booking"); }}>+ Gán xe cho booking</button>
           <button className="gva-btn" onClick={() => setModal("transport")}>+ Thêm nhà xe</button>
         </div>
       </div>
@@ -1416,15 +1454,34 @@ export default function OperationsCenter() {
       <ModalActions saving={saving} onClose={() => setModal(null)} label="Lưu nhà xe" />
     </form></ModalFrame>}
 
-    {modal === "transport_booking" && isAdmin && <ModalFrame title="Gán nhà xe cho booking" onClose={() => setModal(null)}><form onSubmit={assignTransport} className="gvo-form-grid">
-      <Field label="Booking"><select name="booking_id" className="gva-select" required><option value="">Chọn booking</option>{bookings.filter((b) => b.status !== "cancelled").map((b) => <option value={b.id} key={b.id}>{b.booking_code || b.id.slice(0, 8)} · {b.tour_date} · {bookingName(b)}</option>)}</select></Field>
+    {modal === "transport_booking" && isAdmin && <ModalFrame title="Gán nhà xe cho booking" onClose={() => { setModal(null); setSelectedBooking(null); }}><form onSubmit={assignTransport} className="gvo-form-grid">
+      <Field label="Booking"><select name="booking_id" className="gva-select" defaultValue={selectedBooking || ""} required><option value="">Chọn booking</option>{bookings.filter((b) => b.status !== "cancelled").map((b) => <option value={b.id} key={b.id}>{b.booking_code || b.id.slice(0, 8)} · {b.tour_date} · {bookingName(b)}</option>)}</select></Field>
       <Field label="Nhà xe"><select name="supplier_id" className="gva-select" required><option value="">Chọn nhà xe</option>{transportSuppliers.filter((s) => s.active).map((s) => <option value={s.id} key={s.id}>{s.name} · {s.service_area || "Toàn quốc"}</option>)}</select></Field>
       <Field label="Loại xe"><input name="vehicle_type" className="gva-input" placeholder="16 chỗ" /></Field>
       <Field label="Chi phí thỏa thuận (VND)"><input name="amount_vnd" className="gva-input" type="number" min="0" required /></Field>
       <Field label="Điểm đón / giờ đón" wide><input name="pickup_details" className="gva-input" placeholder="08:00 · Khách sạn..." /></Field>
       <Field label="Ghi chú điều phối" wide><textarea name="notes" className="gva-input" rows={3} /></Field>
-      <ModalActions saving={saving} onClose={() => setModal(null)} label="Lưu phân xe" />
+      <ModalActions saving={saving} onClose={() => { setModal(null); setSelectedBooking(null); }} label="Lưu phân xe" />
     </form></ModalFrame>}
+
+    {modal === "replace_guide" && canOperate && selectedBooking && selectedAssignmentId && (() => {
+      const b = bookings.find((booking) => booking.id === selectedBooking);
+      const current = assignments.find((assignment) => assignment.id === selectedAssignmentId && assignment.booking_id === selectedBooking);
+      if (!b || !current) return null;
+      const candidates = eligibleGuidesForBooking(b, current.guide_id);
+      const area = bookingGuideAreaKey(b, tourMap[b.tour_id || ""]);
+      const close = () => { setModal(null); setSelectedBooking(null); setSelectedAssignmentId(null); };
+      return <ModalFrame title="🔄 Đổi hướng dẫn viên" onClose={close}>
+        <form onSubmit={replaceGuide} className="gvo-form-grid">
+          {error && <div className="gva-msg err" style={{ gridColumn: "1/-1" }}>{error}</div>}
+          <div className="gva-analytics-note" style={{ gridColumn: "1/-1" }}><b>{b.booking_code}</b> · {b.tour_date} · {bookingName(b)}<div>HDV hiện tại: <b>{guideMap[current.guide_id]?.full_name || "—"}</b> · {money(current.agreed_fee_vnd)}</div></div>
+          <Field label="Chọn HDV thay thế" wide><select name="guide_id" className="gva-select" defaultValue="" required><option value="">Chọn HDV mới…</option>{candidates.map((g) => <option value={g.id} key={g.id}>{area && guideAreas(g).includes(area) ? "📍 " : ""}{g.full_name} · {statusText(guideStatus(g.id, b.tour_date || focusDate))}{isAdmin ? ` · ${money(suggestedFee(g, b))}` : ""}</option>)}</select></Field>
+          {!candidates.length && <div className="gvo-need-guide" style={{ gridColumn: "1/-1" }}>Chưa có HDV thay thế phù hợp. Vui lòng kiểm tra ngôn ngữ và lịch HDV.</div>}
+          <div className="gva-analytics-note" style={{ gridColumn: "1/-1" }}>Phân công cũ chuyển sang trạng thái cancelled và vẫn lưu lịch sử. Nếu HDV mới trùng lịch, thao tác sẽ không thực hiện và HDV cũ vẫn được giữ nguyên. Vui lòng xác nhận HDV mới trước khi đổi.</div>
+          <ModalActions saving={saving} disabled={!candidates.length} onClose={close} label="Xác nhận đổi HDV" />
+        </form>
+      </ModalFrame>;
+    })()}
 
     {modal === "guide" && isAdmin && <ModalFrame title="Thêm hướng dẫn viên" onClose={() => setModal(null)}><form onSubmit={createGuide} className="gvo-form-grid">
       <Field label="Tên HDV"><input name="full_name" className="gva-input" required /></Field>
@@ -1532,8 +1589,8 @@ function ModalFrame({ title, onClose, children }: any) {
 function Field({ label, children, wide }: any) {
   return <label className={wide ? "gvo-field wide" : "gvo-field"}><span>{label}</span>{children}</label>;
 }
-function ModalActions({ saving, onClose, label }: any) {
-  return <div className="gvo-modal-actions"><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button className="gva-btn" disabled={saving}>{saving ? "Đang lưu…" : label}</button></div>;
+function ModalActions({ saving, disabled, onClose, label }: any) {
+  return <div className="gvo-modal-actions"><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button className="gva-btn" disabled={saving || disabled}>{saving ? "Đang lưu…" : label}</button></div>;
 }
 
 function CostManagerModal({ booking, bookingName, revenue, total, bookingCosts, guideAssignments, guideMap, saving, onAdd, onUpdateCost, onDeleteCost, onUpdateGuideFee, onUpdateRevenue, onClose }: any) {
