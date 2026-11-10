@@ -179,6 +179,9 @@ export default function AdminV5() {
   const [msg,setMsg]=useState("");
   const [err,setErr]=useState("");
   const [tab,setTab]=useState<"dashboard"|"operations"|"customers"|"supplier_directory"|"analytics"|"marketing"|"partners"|"pi_partners"|"merchant_network"|"seo"|"leads"|"bookings"|"reviews"|"finance"|"team"|"operator_payables"|"yandex"|"phuquoc"|"web_inquiries">("dashboard");
+  useEffect(()=>{
+    if(new URLSearchParams(window.location.search).get("view")==="web_inquiries") setTab("web_inquiries");
+  },[]);
   const [days,setDays]=useState(7);
   const [metrics,setMetrics]=useState<any>(null);
   const [breakdown,setBreakdown]=useState<any[]>([]);
