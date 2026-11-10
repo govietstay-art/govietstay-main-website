@@ -7,7 +7,7 @@ const russian = "https://www.govietstay.com/ru/tours/phu-quoc";
 export const metadata: Metadata = {
   title: "Phu Quoc Tours — Prices, Booking & Secure Deposit",
   description:
-    "Join-in and private Phu Quoc tours with published prices, a GoVietStay booking form, local support and a secure deposit link after confirmation.",
+    "Join-in and private Phu Quoc tours with published prices, a GoVietStay booking form, local support and bank transfer instructions and an automatic 30% deposit estimate.",
   alternates: {
     canonical,
     languages: { en: canonical, ru: russian, "x-default": canonical },
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Phu Quoc Tours | GoVietStay",
     description:
-      "Choose a Phu Quoc tour, send one booking request and receive confirmation plus a secure deposit link.",
+      "Choose a Phu Quoc tour, send one booking request and view a 30% deposit estimate and bank transfer details.",
     url: canonical,
     images: [
       {
