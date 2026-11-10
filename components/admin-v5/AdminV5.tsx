@@ -1104,7 +1104,7 @@ export default function AdminV5() {
 
       {tab==="yandex"&&<YandexSeoPanel supabase={supabase} days={days}/>}
 
-      {tab==="web_inquiries"&&<PublicInquiryPanel supabase={supabase}/>}
+      {tab==="web_inquiries"&&<><StaffSalesTeam supabase={supabase} adminStaff={staff} mode="website"/><PublicInquiryPanel supabase={supabase}/></>}
 
       {tab==="leads"&&<>
         <div className="gva-section-head"><h2>Leads</h2><button className="gva-btn" onClick={()=>setModal("lead")}>+ Tạo Lead</button></div>
