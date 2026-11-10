@@ -89,7 +89,7 @@ export default function Page() {
         <div className="mx-auto max-w-7xl">
           <p className="text-sm font-black uppercase tracking-[.15em] text-emerald-800">Сравнение маршрутов и цен</p>
           <h2 id="ru-pq-prices" className="mt-3 max-w-4xl text-3xl font-black md:text-5xl">Сколько стоят 3 и 4 острова на Фукуоке?</h2>
-          <p className="mt-5 max-w-4xl leading-7 text-[#315b56]">Примеры опубликованных тарифов 2026–2027 на групповые программы. Указана цена за человека. Дату, места, состав услуг, возрастные условия и итоговую сумму GoVietStay подтверждает до оплаты.</p>
+          <p className="mt-5 max-w-4xl leading-7 text-[#315b56]">Примеры опубликованных тарифов 2026–2027 на групповые программы. Указана цена за человека. После заявки вы получите предварительный расчёт депозита 30% и реквизиты; дату, места, состав услуг, возрастные условия и итоговую сумму GoVietStay подтвердит отдельно.</p>
           <div className="mt-8 grid gap-5 lg:grid-cols-3">
             {priceExamples.map(({label,code,note,href}) => (
               <article key={code} className="rounded-[1.5rem] border border-emerald-900/10 bg-white p-6 shadow-sm">
