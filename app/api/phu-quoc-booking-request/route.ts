@@ -104,8 +104,8 @@ export async function POST(req:NextRequest){
             message: "Co booking moi cho duyet. Mo GoVietStay Admin de xem.",
             priority: 4,
             tags: ["bell"],
-            click: "https://www.govietstay.com/admin",
-            actions: [{ action: "view", label: "Mo Admin", url: "https://www.govietstay.com/admin" }]
+            click: "https://www.govietstay.com/admin?view=web_inquiries",
+            actions: [{ action: "view", label: "Mo Admin", url: "https://www.govietstay.com/admin?view=web_inquiries" }]
           }),
           signal: AbortSignal.timeout(7000),
           cache: "no-store"
