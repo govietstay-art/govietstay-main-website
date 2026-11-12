@@ -2487,15 +2487,15 @@ export default function RussianPage() {
       <section className="relative overflow-hidden bg-[#0b91bf]">
         <div className="absolute inset-0">
           <Image
-            src="/travel-kit/opt/phu-quoc-beach-960.webp"
-            alt="Солнечный пляж Фукуока: бирюзовое море, пальмы и отдых во Вьетнаме"
+            src="/ru/hero-phu-quoc-sunny-original.svg"
+            alt="Авторская иллюстрация солнечного пляжа Фукуока: бирюзовое море, белый песок и кокосовые пальмы"
             fill
             priority
             sizes="100vw"
             quality={75}
-            className="object-cover object-center saturate-[1.12] brightness-[1.05]"
+            className="object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#075b85]/67 via-[#087b97]/49 to-[#07546a]/46 lg:bg-gradient-to-r lg:from-[#075073]/79 lg:via-[#087791]/44 lg:to-[#087d92]/12" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#024d87]/34 via-[#055b88]/27 to-[#075f82]/24 lg:bg-gradient-to-r lg:from-[#02416d]/62 lg:via-[#036d98]/25 lg:to-transparent" />
         </div>
 
         <div className="relative mx-auto flex min-h-[680px] max-w-7xl flex-col px-4 pb-12 pt-5 md:px-8 md:pb-16 lg:px-12">
