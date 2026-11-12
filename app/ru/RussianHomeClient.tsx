@@ -2484,18 +2484,18 @@ export default function RussianPage() {
           },
         }}
       />
-      <section className="relative overflow-hidden bg-[#04140f]">
+      <section className="relative overflow-hidden bg-[#0b91bf]">
         <div className="absolute inset-0">
           <Image
-            src="/ar-assets/hero-hoian.webp"
-            alt="Туры GoVietStay для русскоговорящих гостей во Вьетнаме"
+            src="/travel-kit/opt/phu-quoc-beach-960.webp"
+            alt="Солнечный пляж Фукуока: бирюзовое море, пальмы и отдых во Вьетнаме"
             fill
             priority
             sizes="100vw"
             quality={75}
-            className="object-cover object-center"
+            className="object-cover object-center saturate-[1.12] brightness-[1.05]"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#04140f]/65 via-[#04140f]/62 to-[#04140f]/92 lg:bg-gradient-to-r lg:from-[#04140f]/92 lg:via-[#04140f]/72 lg:to-[#04140f]/40" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#075b85]/67 via-[#087b97]/49 to-[#07546a]/46 lg:bg-gradient-to-r lg:from-[#075073]/79 lg:via-[#087791]/44 lg:to-[#087d92]/12" />
         </div>
 
         <div className="relative mx-auto flex min-h-[680px] max-w-7xl flex-col px-4 pb-12 pt-5 md:px-8 md:pb-16 lg:px-12">
@@ -2527,13 +2527,13 @@ export default function RussianPage() {
           </div>
 
           <div className="my-auto max-w-3xl py-12 text-white">
-            <p className="inline-flex rounded-full border border-yellow-300/40 bg-black/20 px-4 py-2 text-xs font-extrabold uppercase tracking-[3px] text-yellow-300 backdrop-blur md:text-sm">
+            <p className="inline-flex rounded-full border border-yellow-300/85 bg-[#075676]/55 px-4 py-2 text-xs font-extrabold uppercase tracking-[3px] text-yellow-300 backdrop-blur md:text-sm">
               Экскурсии и поддержка на русском
             </p>
-            <h1 className="mt-5 text-4xl font-extrabold leading-[1.08] drop-shadow-xl md:text-6xl">
-              Путешествуйте по Вьетнаму спокойно и без лишних вопросов
+            <h1 className="mt-5 text-4xl font-extrabold leading-[1.08] drop-shadow-[0_3px_10px_rgba(0,35,60,0.7)] md:text-6xl">
+              Путешествуйте по <span className="text-yellow-300">Вьетнаму</span> спокойно и без лишних вопросов
             </h1>
-            <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/85 md:text-xl">
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-white drop-shadow-[0_2px_8px_rgba(0,47,72,0.8)] md:text-xl">
               Проверенные туры в Дананге, Хойане, Хюэ и на Фукуоке, а также
               готовые поездки из Нячанга. Понятная программа, честная цена и
               помощь GoVietStay до и во время поездки.
@@ -2551,7 +2551,7 @@ export default function RussianPage() {
                 )}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-full border border-white/30 bg-white/10 px-6 py-4 text-center font-extrabold text-white backdrop-blur"
+                className="rounded-full border border-white/80 bg-[#07566b]/60 px-6 py-4 text-center font-extrabold text-white shadow-lg backdrop-blur transition hover:bg-[#06455a]/80"
               >
                 Написать в WhatsApp
               </a>
@@ -2561,7 +2561,7 @@ export default function RussianPage() {
                 (item) => (
                   <div
                     key={item}
-                    className="rounded-2xl border border-white/10 bg-white/10 px-3 py-3 backdrop-blur"
+                    className="rounded-2xl border border-white/80 bg-white/90 px-3 py-3 text-[#07384b] shadow-md backdrop-blur"
                   >
                     ✓ {item}
                   </div>
