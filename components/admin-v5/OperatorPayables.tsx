@@ -105,7 +105,10 @@ function monthBounds(month:string){
 }
 function money(v:any){return new Intl.NumberFormat("vi-VN").format(Number(v||0))+" ₫";}
 function parseMoney(v:any){return Math.max(0,Number(String(v||"0").replace(/[^0-9]/g,""))||0);}
-function isoToday(){return new Date().toISOString().slice(0,10);}
+function isoToday(){
+  const d=new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+}
 function addDaysISO(days:number){
   const d=new Date(); d.setDate(d.getDate()+days);
   return d.toISOString().slice(0,10);
@@ -127,6 +130,7 @@ export default function OperatorPayables({supabase}:Props){
   const [operatorOpen,setOperatorOpen]=useState(false);
   const [rateOpen,setRateOpen]=useState(false);
   const [settle,setSettle]=useState<OperatorSummary|null>(null);
+  const [settlementError,setSettlementError]=useState("");
   const [quickBooking,setQuickBooking]=useState<Booking|null>(null);
 
   const supplierMap=useMemo(()=>Object.fromEntries(suppliers.map(x=>[x.id,x])),[suppliers]);
@@ -295,23 +299,46 @@ export default function OperatorPayables({supabase}:Props){
   }
 
   async function settleOperator(e:any){
-    e.preventDefault(); if(!settle)return;
-    setSaving(true);setError("");setMessage("");
+    e.preventDefault(); if(!settle||saving)return;
+    setSaving(true);setError("");setSettlementError("");setMessage("");
     try{
       const f=new FormData(e.currentTarget); const v=Object.fromEntries(f.entries()) as any;
+      const throughDate=String(v.through_date||"").trim();
+      if(!/^\d{4}-\d{2}-\d{2}$/.test(throughDate)){
+        throw new Error("Vui lòng chọn ngày thanh toán hợp lệ.");
+      }
       const {data,error}=await supabase.rpc("admin_settle_operator_through_date",{
         p_supplier_id:settle.supplier_id,
-        p_through_date:v.through_date,
+        p_through_date:throughDate,
         p_payment_method:String(v.payment_method||"VietQR"),
         p_reference:String(v.reference||"").trim()||null,
         p_notes:String(v.notes||"").trim()||null
       });
       if(error) throw error;
+      const itemCount=Number(data?.items||0);
+      const total=Number(data?.total_vnd||0);
+      const settlementId=String(data?.settlement_id||"");
+      if(!settlementId||itemCount<=0||total<=0){
+        throw new Error("Không có công nợ chưa thanh toán đến ngày đã chọn. Hãy kiểm tra ngày tour và tải lại danh sách.");
+      }
+
+      // Confirm the receipt exists before showing a success state.
+      const {data:record,error:verifyError}=await supabase.from("operator_settlements")
+        .select("id,total_vnd").eq("id",settlementId).maybeSingle();
+      if(verifyError||!record||Number(record.total_vnd)!==total){
+        setSettle(null);
+        await load();
+        setError("Hệ thống đã trả kết quả settlement nhưng chưa đối chiếu được chứng từ. Vui lòng tải lại và kiểm tra công nợ trước khi xác nhận lần nữa.");
+        return;
+      }
       setSettle(null);
-      setMessage(`Đã settlement ${data?.items||0} booking · ${money(data?.total_vnd||0)}.`);
       await load();
-    }catch(e:any){setError(e?.message||"Không settlement được công nợ.");}
-    finally{setSaving(false);}
+      setMessage(`✓ Đã ghi nhận thanh toán ${itemCount} booking · ${money(total)}. Mã chứng từ: ${settlementId}.`);
+    }catch(e:any){
+      const reason=e?.message||"Không lưu được thanh toán. Vui lòng thử lại sau khi kiểm tra kết nối.";
+      setSettlementError(reason);
+      setError(reason);
+    }finally{setSaving(false);}
   }
 
   return <div className="gvs-op">
@@ -344,7 +371,7 @@ export default function OperatorPayables({supabase}:Props){
       </div>
       <div className="gvs-op-summary-grid">
         {operatorSummary.map(x=><article className="gvs-op-summary" key={x.supplier_id}>
-          <div className="gvs-op-summary-title"><div><h3>{x.supplier_name}</h3><small>{x.bookings} bookings · {x.pax} pax</small></div><button className="gva-btn secondary" disabled={Number(x.outstanding_vnd)<=0} onClick={()=>setSettle(x)}>Settlement</button></div>
+          <div className="gvs-op-summary-title"><div><h3>{x.supplier_name}</h3><small>{x.bookings} bookings · {x.pax} pax</small></div><button className="gva-btn secondary" disabled={Number(x.outstanding_vnd)<=0} onClick={()=>{setSettlementError("");setSettle(x);}}>Settlement</button></div>
           <div className="gvs-op-summary-numbers">
             <span><small>Total</small><b>{money(x.total_vnd)}</b></span>
             <span><small>Paid</small><b>{money(x.paid_vnd)}</b></span>
@@ -403,7 +430,7 @@ export default function OperatorPayables({supabase}:Props){
     {quickBooking&&<QuickSupplierRateModal booking={quickBooking} tourName={quickBooking.custom_tour_name||tourMap[quickBooking.tour_id||""]?.name||"Tour"} saving={saving} onClose={()=>setQuickBooking(null)} onSubmit={quickCreateSupplierRate}/>}
     {operatorOpen&&<OperatorModal saving={saving} onClose={()=>setOperatorOpen(false)} onSubmit={createOperator}/>}
     {rateOpen&&<RateModal saving={saving} suppliers={suppliers} tours={tours} onClose={()=>setRateOpen(false)} onSubmit={createRate}/>}
-    {settle&&<SettlementModal row={settle} saving={saving} onClose={()=>setSettle(null)} onSubmit={settleOperator}/>}
+    {settle&&<SettlementModal row={settle} saving={saving} error={settlementError} onClose={()=>{if(!saving){setSettlementError("");setSettle(null);}}} onSubmit={settleOperator}/>}
   </div>;
 }
 
@@ -510,16 +537,17 @@ function RateModal({saving,suppliers,tours,onClose,onSubmit}:any){
   </form></div>;
 }
 
-function SettlementModal({row,saving,onClose,onSubmit}:any){
+function SettlementModal({row,saving,error,onClose,onSubmit}:any){
   return <div className="gva-modal-bg"><form className="gva-modal" onSubmit={onSubmit}>
-    <div className="gva-modal-head"><div><h3>Settlement · {row.supplier_name}</h3><div className="gva-mini">Còn nợ hiện tại: {money(row.outstanding_vnd)}</div></div><button type="button" className="gva-close" onClick={onClose}>✕</button></div>
+    <div className="gva-modal-head"><div><h3>Settlement · {row.supplier_name}</h3><div className="gva-mini">Còn nợ hiện tại: {money(row.outstanding_vnd)}</div></div><button type="button" className="gva-close" disabled={saving} onClick={onClose}>✕</button></div>
     <div className="gva-form-grid">
       <F label="Thanh toán các tour đến ngày"><input className="gva-input" name="through_date" type="date" defaultValue={isoToday()} required/></F>
       <F label="Payment method"><select className="gva-select" name="payment_method"><option>VietQR</option><option>Bank Transfer</option><option>Cash</option><option>Other</option></select></F>
       <F label="Reference"><input className="gva-input" name="reference" placeholder="Mã giao dịch / nội dung CK"/></F>
       <F label="Notes" wide><textarea className="gva-input" name="notes" rows={3}/></F>
     </div>
-    <div className="gvs-op-settle-note">Hệ thống sẽ tự chọn toàn bộ payable đang mở của Operator có tour date ≤ ngày trên và ghi payment cho từng booking.</div>
-    <div className="gvs-op-modal-actions"><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button className="gva-btn" disabled={saving}>{saving?"Đang settlement…":"Xác nhận đã thanh toán"}</button></div>
+    <div className="gvs-op-settle-note">Chỉ xác nhận khi đã thực sự thanh toán cho nhà tổ chức. Hệ thống ghi nhận kế toán, không tự chuyển tiền. Các booking có ngày tour đến ngày chọn sẽ được đối chiếu.</div>
+    {error&&<div className="gva-msg err" role="alert" aria-live="assertive" style={{marginTop:10,whiteSpace:"pre-wrap"}}>{error}</div>}
+    <div className="gvs-op-modal-actions"><button type="button" className="gva-btn secondary" disabled={saving} onClick={onClose}>Hủy</button><button type="submit" className="gva-btn" disabled={saving}>{saving?"Đang lưu và đối chiếu…":"Xác nhận đã thanh toán"}</button></div>
   </form></div>;
 }
