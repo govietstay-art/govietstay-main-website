@@ -303,13 +303,16 @@ export default function OperatorPayables({supabase}:Props){
     setSaving(true);setError("");setSettlementError("");setMessage("");
     try{
       const f=new FormData(e.currentTarget); const v=Object.fromEntries(f.entries()) as any;
-      const throughDate=String(v.through_date||"").trim();
-      if(!/^\d{4}-\d{2}-\d{2}$/.test(throughDate)){
-        throw new Error("Vui lòng chọn ngày thanh toán hợp lệ.");
+      // Settle exactly the visible, selected booking payables (not an ambiguous date cutoff).
+      const selectedIds=f.getAll("payable_ids").map(String).filter(Boolean);
+      const eligibleIds=new Set(payables.filter(p=>p.supplier_id===settle.supplier_id && Number(p.outstanding_vnd)>0).map(p=>p.payable_id));
+      if(!selectedIds.length) throw new Error("Anh cần chọn ít nhất một booking để ghi nhận thanh toán.");
+      if(selectedIds.some(id=>!eligibleIds.has(id))){
+        throw new Error("Danh sách công nợ đã thay đổi. Hãy làm mới trước khi thanh toán.");
       }
-      const {data,error}=await supabase.rpc("admin_settle_operator_through_date",{
+      const {data,error}=await supabase.rpc("admin_settle_operator_selected_payables",{
         p_supplier_id:settle.supplier_id,
-        p_through_date:throughDate,
+        p_payable_ids:selectedIds,
         p_payment_method:String(v.payment_method||"VietQR"),
         p_reference:String(v.reference||"").trim()||null,
         p_notes:String(v.notes||"").trim()||null
@@ -319,7 +322,7 @@ export default function OperatorPayables({supabase}:Props){
       const total=Number(data?.total_vnd||0);
       const settlementId=String(data?.settlement_id||"");
       if(!settlementId||itemCount<=0||total<=0){
-        throw new Error("Không có công nợ chưa thanh toán đến ngày đã chọn. Hãy kiểm tra ngày tour và tải lại danh sách.");
+        throw new Error("Hệ thống không ghi nhận được booking đã chọn. Anh hãy bấm Làm mới để kiểm tra lại trạng thái công nợ.");
       }
 
       // Confirm the receipt exists before showing a success state.
@@ -430,7 +433,7 @@ export default function OperatorPayables({supabase}:Props){
     {quickBooking&&<QuickSupplierRateModal booking={quickBooking} tourName={quickBooking.custom_tour_name||tourMap[quickBooking.tour_id||""]?.name||"Tour"} saving={saving} onClose={()=>setQuickBooking(null)} onSubmit={quickCreateSupplierRate}/>}
     {operatorOpen&&<OperatorModal saving={saving} onClose={()=>setOperatorOpen(false)} onSubmit={createOperator}/>}
     {rateOpen&&<RateModal saving={saving} suppliers={suppliers} tours={tours} onClose={()=>setRateOpen(false)} onSubmit={createRate}/>}
-    {settle&&<SettlementModal row={settle} saving={saving} error={settlementError} onClose={()=>{if(!saving){setSettlementError("");setSettle(null);}}} onSubmit={settleOperator}/>}
+    {settle&&<SettlementModal row={settle} payables={payables.filter(p=>p.supplier_id===settle.supplier_id && Number(p.outstanding_vnd)>0)} saving={saving} error={settlementError} onClose={()=>{if(!saving){setSettlementError("");setSettle(null);}}} onSubmit={settleOperator}/>}
   </div>;
 }
 
@@ -537,17 +540,33 @@ function RateModal({saving,suppliers,tours,onClose,onSubmit}:any){
   </form></div>;
 }
 
-function SettlementModal({row,saving,error,onClose,onSubmit}:any){
+function SettlementModal({row,payables,saving,error,onClose,onSubmit}:any){
+  const [selectedIds,setSelectedIds]=useState<string[]>(payables.map((p:any)=>p.payable_id));
+  const selectedItems=payables.filter((p:any)=>selectedIds.includes(p.payable_id));
+  const selectedTotal=selectedItems.reduce((sum:number,p:any)=>sum+Number(p.outstanding_vnd||0),0);
   return <div className="gva-modal-bg"><form className="gva-modal" onSubmit={onSubmit}>
-    <div className="gva-modal-head"><div><h3>Settlement · {row.supplier_name}</h3><div className="gva-mini">Còn nợ hiện tại: {money(row.outstanding_vnd)}</div></div><button type="button" className="gva-close" disabled={saving} onClick={onClose}>✕</button></div>
+    <div className="gva-modal-head"><div><h3>Settlement · {row.supplier_name}</h3><div className="gva-mini">Chọn booking cần ghi nhận đã thanh toán</div></div><button type="button" className="gva-close" disabled={saving} onClick={onClose}>✕</button></div>
+    <div style={{border:"1px solid #d5dfeb",borderRadius:10,padding:10,marginBottom:14,maxHeight:260,overflowY:"auto"}}>
+      {payables.map((p:any)=><label key={p.payable_id} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"9px 3px",cursor:saving?"wait":"pointer",borderBottom:"1px solid #edf1f5"}}>
+        <input type="checkbox" name="payable_ids" value={p.payable_id} checked={selectedIds.includes(p.payable_id)} disabled={saving} style={{marginTop:3,width:17,height:17}} onChange={e=>setSelectedIds(ids=>e.target.checked?[...ids,p.payable_id]:ids.filter(id=>id!==p.payable_id))}/>
+        <span style={{display:"flex",flexDirection:"column",flex:1,gap:3,fontSize:13}}>
+          <strong>{p.booking_code||"Booking"}</strong>
+          <small>Ngày tour: {p.tour_date||"—"} · {p.tour_name||"Tour"}</small>
+        </span>
+        <strong style={{fontSize:14,whiteSpace:"nowrap"}}>{money(p.outstanding_vnd)}</strong>
+      </label>)}
+      {!payables.length&&<div className="gva-mini">Không có công nợ đang mở trong tháng đang xem.</div>}
+      <div style={{display:"flex",justifyContent:"space-between",gap:10,paddingTop:12,fontSize:14}}>
+        <b>Đã chọn {selectedItems.length} booking</b><b>{money(selectedTotal)}</b>
+      </div>
+    </div>
     <div className="gva-form-grid">
-      <F label="Thanh toán các tour đến ngày"><input className="gva-input" name="through_date" type="date" defaultValue={isoToday()} required/></F>
       <F label="Payment method"><select className="gva-select" name="payment_method"><option>VietQR</option><option>Bank Transfer</option><option>Cash</option><option>Other</option></select></F>
       <F label="Reference"><input className="gva-input" name="reference" placeholder="Mã giao dịch / nội dung CK"/></F>
       <F label="Notes" wide><textarea className="gva-input" name="notes" rows={3}/></F>
     </div>
-    <div className="gvs-op-settle-note">Chỉ xác nhận khi đã thực sự thanh toán cho nhà tổ chức. Hệ thống ghi nhận kế toán, không tự chuyển tiền. Các booking có ngày tour đến ngày chọn sẽ được đối chiếu.</div>
+    <div className="gvs-op-settle-note">Chỉ ghi nhận khi đã thực sự chuyển tiền cho nhà tổ chức. Chức năng này ghi sổ kế toán, không tự chuyển khoản. Chỉ các booking được đánh dấu ở trên mới được thanh toán.</div>
     {error&&<div className="gva-msg err" role="alert" aria-live="assertive" style={{marginTop:10,whiteSpace:"pre-wrap"}}>{error}</div>}
-    <div className="gvs-op-modal-actions"><button type="button" className="gva-btn secondary" disabled={saving} onClick={onClose}>Hủy</button><button type="submit" className="gva-btn" disabled={saving}>{saving?"Đang lưu và đối chiếu…":"Xác nhận đã thanh toán"}</button></div>
+    <div className="gvs-op-modal-actions"><button type="button" className="gva-btn secondary" disabled={saving} onClick={onClose}>Hủy</button><button type="submit" className="gva-btn" disabled={saving||!selectedIds.length}>{saving?"Đang lưu và đối chiếu…":`Xác nhận đã thanh toán · ${money(selectedTotal)}`}</button></div>
   </form></div>;
 }
