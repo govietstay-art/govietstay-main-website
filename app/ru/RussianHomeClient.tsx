@@ -2487,8 +2487,8 @@ export default function RussianPage() {
       <section className="relative overflow-hidden bg-[#0b91bf]">
         <div className="absolute inset-0">
           <Image
-            src="/ru/hero-phu-quoc-sunny-original.svg"
-            alt="Авторская иллюстрация солнечного пляжа Фукуока: бирюзовое море, белый песок и кокосовые пальмы"
+            src="/ru/hero-phu-quoc-premium-photo.png"
+            alt="Солнечный тропический пляж Вьетнама с прозрачным морем, песком и кокосовыми пальмами"
             fill
             priority
             sizes="100vw"
