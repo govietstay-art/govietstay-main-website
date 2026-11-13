@@ -1,7 +1,7 @@
 "use client";
 // GVS-FINANCE-ONE-CLICK-FINALIZE-V1
 
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import "./finance-pl.css";
 
 type Props = { supabase:any };
@@ -126,6 +126,7 @@ export default function FinancePL({supabase}:Props){
   const [message,setMessage]=useState("");
   const [editBooking,setEditBooking]=useState<BookingRow|null>(null);
   const [expenseOpen,setExpenseOpen]=useState(false);
+  const [payablesOpen,setPayablesOpen]=useState(false);
   const [cancelBooking,setCancelBooking]=useState<BookingRow|null>(null);
   const [cancellationSummary,setCancellationSummary]=useState<CancellationSummary>({count:0,supplier_fees_vnd:0,recovered_vnd:0,net_loss_vnd:0,paid_vnd:0,payable_vnd:0});
   const [cancellations,setCancellations]=useState<CancellationRow[]>([]);
@@ -336,7 +337,7 @@ export default function FinancePL({supabase}:Props){
       <MiniStat label="Receivable" value={money(summary.receivable_vnd)} hint="Khách còn phải trả" />
       <MiniStat label="Direct cost committed" value={money(summary.committed_direct_cost_vnd)} hint="Chi phí đã nhập" />
       <MiniStat label="Direct cost paid" value={money(summary.direct_cost_paid_vnd)} hint="Đã thanh toán" />
-      <MiniStat label="Direct cost payable" value={money(summary.direct_cost_payable_vnd)} hint="Còn phải trả" />
+      <MiniStat label="Direct cost payable" value={money(summary.direct_cost_payable_vnd)} hint="Còn phải trả · Bấm để xem chi tiết" onClick={()=>setPayablesOpen(true)} />
       <MiniStat label="Cancellation payable" value={money(cancellationSummary.payable_vnd)} hint={`${cancellationSummary.count||0} booking hủy · Lãi/lỗ ${money(cancellationProfit)}`} />
     </div>
 
@@ -428,14 +429,91 @@ export default function FinancePL({supabase}:Props){
       </div>
       <div className="gvs-modal-actions"><button type="button" className="gva-btn secondary" onClick={()=>setCancelBooking(null)}>Quay lại</button><button className="gva-btn" disabled={saving}>{saving?"Đang lưu…":"Xác nhận hủy & ghi lỗ"}</button></div>
     </form></div>}
-    {expenseOpen&&<ExpenseModal month={month} saving={saving} onClose={()=>setExpenseOpen(false)} onSubmit={addExpense}/>}    
+    {expenseOpen&&<ExpenseModal month={month} saving={saving} onClose={()=>setExpenseOpen(false)} onSubmit={addExpense}/>}
+    {payablesOpen&&<PayablesDrilldown month={month} rows={bookings} summaryTotal={Number(summary.direct_cost_payable_vnd||0)} onClose={()=>setPayablesOpen(false)} onEdit={(row:BookingRow)=>{setPayablesOpen(false);setEditBooking(row);}}/>}    
   </div>;
 }
 
 function PLCard({label,value,hint,tone,strong}:any){
   return <div className={`gva-card gvs-pl-card ${tone||""} ${strong?"strong":""}`}><div className="gvs-label">{label}</div><div className="gvs-pl-value">{value}</div><div className="gva-mini">{hint}</div></div>;
 }
-function MiniStat({label,value,hint}:any){return <div className="gva-card gvs-mini-stat"><div className="gvs-label">{label}</div><b>{value}</b><div className="gva-mini">{hint}</div></div>}
+function MiniStat({label,value,hint,onClick}:any){
+  const content=<><div className="gvs-label">{label}</div><b>{value}</b><div className="gva-mini">{hint}</div></>;
+  return onClick
+    ? <button type="button" className="gva-card gvs-mini-stat gvs-mini-stat-click" onClick={onClick} aria-label={label+": "+value+". Xem chi tiết."}>{content}</button>
+    : <div className="gva-card gvs-mini-stat">{content}</div>;
+}
+
+const FINANCE_COST_CATEGORIES:{key:keyof BookingRow;label:string}[]=[
+  {key:"supplier_cost_vnd",label:"Nhà cung cấp / Operator"},
+  {key:"guide_cost_vnd",label:"Hướng dẫn viên"},
+  {key:"driver_cost_vnd",label:"Xe / Tài xế"},
+  {key:"tickets_cost_vnd",label:"Vé tham quan"},
+  {key:"meals_cost_vnd",label:"Ăn uống"},
+  {key:"boat_cost_vnd",label:"Thuyền / Cano"},
+  {key:"hotel_cost_vnd",label:"Khách sạn"},
+  {key:"partner_commission_vnd",label:"Hoa hồng đối tác"},
+  {key:"payment_fee_vnd",label:"Phí thanh toán"},
+  {key:"refund_recovery_vnd",label:"Hoàn tiền / Xử lý sự cố"},
+  {key:"other_cost_vnd",label:"Chi phí khác"}
+];
+
+function PayablesDrilldown({month,rows,summaryTotal,onClose,onEdit}:{month:string;rows:BookingRow[];summaryTotal:number;onClose:()=>void;onEdit:(row:BookingRow)=>void}){
+  const [search,setSearch]=useState("");
+  const [expanded,setExpanded]=useState<string|null>(null);
+  const payableRows=[...rows].filter(row=>Number(row.direct_cost_payable_vnd||0)>0).sort((a,b)=>Number(b.direct_cost_payable_vnd||0)-Number(a.direct_cost_payable_vnd||0));
+  const detailTotal=payableRows.reduce((sum,row)=>sum+Number(row.direct_cost_payable_vnd||0),0);
+  const paidTotal=payableRows.reduce((sum,row)=>sum+Number(row.direct_cost_paid_vnd||0),0);
+  const difference=Math.round((summaryTotal-detailTotal)*100)/100;
+  const query=search.trim().toLowerCase();
+  const filtered=payableRows.filter(row=>[row.booking_code,row.product,row.guest_name,row.destination,row.status].some(value=>String(value||"").toLowerCase().includes(query)));
+  return <div className="gva-modal-bg">
+    <div className="gva-modal gvs-payables-modal" role="dialog" aria-modal="true" aria-labelledby="gvs-payables-title">
+      <div className="gva-modal-head">
+        <div><h3 id="gvs-payables-title">Chi tiết Direct Cost Payable · {monthLabel(month)}</h3><div className="gva-mini">Số liệu theo từng booking thuộc tháng đang chọn; chỉ xem, không tự ghi thanh toán.</div></div>
+        <button type="button" className="gva-close" onClick={onClose} aria-label="Đóng chi tiết công nợ">✕</button>
+      </div>
+      <div className="gvs-payables-overview">
+        <span><small>Tổng P&amp;L</small><b>{money(summaryTotal)}</b></span>
+        <span><small>Cộng từ booking</small><b>{money(detailTotal)}</b></span>
+        <span><small>Booking còn nợ</small><b>{payableRows.length}</b></span>
+        <span><small>Đã trả trên các booking này</small><b>{money(paidTotal)}</b></span>
+      </div>
+      {difference!==0&&<div className="gvs-payables-warning" role="alert">⚠ Chênh lệch {money(Math.abs(difference))} giữa chỉ số tổng hợp và danh sách booking. Cần kiểm tra phạm vi dữ liệu và quy tắc tính trước khi quyết toán.</div>}
+      <p className="gvs-payables-explain">Mỗi dòng là công nợ <b>cấp booking</b>. Bấm <b>Xem hạng mục</b> để biết chi phí đã nhập vào đâu. Số đã trả hiện được lưu chung cho booking, <b>chưa phân bổ đến từng nhà cung cấp/hạng mục</b>; tên người nhận, chứng từ và hạn thanh toán cần theo dõi ở sổ công nợ chi tiết.</p>
+      <input className="gva-input gvs-payables-search" type="search" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Tìm mã booking, tour, khách, điểm đến…" aria-label="Tìm kiếm công nợ"/>
+      <div className="gva-table-wrap">
+        <table className="gva-table gvs-payables-table">
+          <thead><tr><th>Booking / Dịch vụ</th><th>Ngày tour</th><th>Đã ghi chi phí</th><th>Đã trả</th><th>Còn phải trả</th><th>Chi tiết</th></tr></thead>
+          <tbody>
+            {filtered.map(row=><Fragment key={row.booking_id}>
+              <tr>
+                <td><b>{row.booking_code||row.booking_id}</b><div className="gva-mini">{row.product||"Chưa có tên dịch vụ"} · {row.destination||"—"}</div>{!row.finance_record&&<div className="gvs-payables-flag">Chưa có phiếu P&amp;L</div>}</td>
+                <td>{row.tour_date||"—"}</td>
+                <td>{money(row.total_direct_cost_vnd)}</td>
+                <td>{money(row.direct_cost_paid_vnd)}</td>
+                <td><b>{money(row.direct_cost_payable_vnd)}</b></td>
+                <td><button type="button" className="gva-btn secondary" aria-expanded={expanded===row.booking_id} onClick={()=>setExpanded(current=>current===row.booking_id?null:row.booking_id)}>{expanded===row.booking_id?"Thu gọn":"Xem hạng mục"}</button></td>
+              </tr>
+              {expanded===row.booking_id&&<tr className="gvs-payables-expanded"><td colSpan={6}>
+                <b>Hạng mục chi phí đã ghi nhận</b>
+                <div className="gvs-payables-categories">
+                  {FINANCE_COST_CATEGORIES.filter(part=>Number(row[part.key]||0)>0).map(part=><span key={part.key}><small>{part.label}</small><b>{money(row[part.key])}</b></span>)}
+                  {!FINANCE_COST_CATEGORIES.some(part=>Number(row[part.key]||0)>0)&&<span>Chưa có chi tiết hạng mục được nhập.</span>}
+                </div>
+                {row.finance_notes&&<p className="gva-mini">Ghi chú P&amp;L: {row.finance_notes}</p>}
+                <div className="gvs-payables-row-actions"><small>Số đã thanh toán {money(row.direct_cost_paid_vnd)} là tổng của booking, chưa xác định hạng mục nào đã được trả.</small><button type="button" className="gva-btn secondary" onClick={()=>onEdit(row)}>Mở Edit P&amp;L</button></div>
+              </td></tr>}
+            </Fragment>)}
+            {!filtered.length&&<tr><td colSpan={6}><div className="gva-empty">{query?"Không tìm thấy booking phù hợp.":"Không có booking nào còn Direct Cost Payable trong tháng."}</div></td></tr>}
+          </tbody>
+        </table>
+      </div>
+      <div className="gvs-modal-actions"><button type="button" className="gva-btn secondary" onClick={onClose}>Đóng</button></div>
+    </div>
+  </div>;
+}
+
 function BreakdownCard({title,rows}:any){
   return <div className="gva-card"><h3>{title}</h3><div className="gva-table-wrap"><table className="gva-table">
     <thead><tr><th>Name</th><th>Bookings</th><th>Revenue</th><th>Profit</th><th>Margin</th></tr></thead>
