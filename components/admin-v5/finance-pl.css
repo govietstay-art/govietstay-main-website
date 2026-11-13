@@ -16,3 +16,29 @@
 @media(max-width:1180px){.gvs-pl-kpis{grid-template-columns:repeat(3,1fr)}.gvs-finance-balance-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:760px){.gvs-finance-head{flex-direction:column}.gvs-finance-head-actions{width:100%}.gvs-finance-head-actions .gva-input{flex:1;min-width:155px}.gvs-pl-kpis{grid-template-columns:repeat(2,1fr)}.gvs-finance-balance-grid{grid-template-columns:repeat(2,1fr)}.gvs-finance-insights{grid-template-columns:1fr}.gvs-finance-grid2{grid-template-columns:1fr}.gvs-booking-top{flex-direction:column}.gvs-booking-numbers{grid-template-columns:repeat(2,1fr)}.gvs-booking-top .gva-btn{width:100%}.gvs-pl-value{font-size:20px}}
 @media(max-width:430px){.gvs-pl-kpis{grid-template-columns:1fr 1fr}.gvs-pl-card{min-height:118px;padding:13px}.gvs-pl-value{font-size:18px}.gvs-finance-balance-grid{grid-template-columns:1fr 1fr}.gvs-booking-numbers{grid-template-columns:1fr 1fr}}
+
+/* P&L: transparent payable drilldown without changing existing accounting logic */
+.gvs-mini-stat-click{display:block;width:100%;min-width:0;text-align:left;font:inherit;color:inherit;cursor:pointer;transition:box-shadow .15s ease,border-color .15s ease}
+.gvs-mini-stat-click:hover,.gvs-mini-stat-click:focus-visible{border-color:#3280c9;box-shadow:0 0 0 3px rgba(46,116,190,.12);outline:none}
+.gvs-payables-modal{width:min(1100px,calc(100vw - 24px));max-height:90vh;overflow-y:auto}
+.gvs-payables-overview{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:16px 0}
+.gvs-payables-overview>span{background:#f4f8fc;border:1px solid #dfe8f4;border-radius:10px;padding:12px;min-width:0}
+.gvs-payables-overview small{display:block;font-size:11px;color:#60738a;margin-bottom:8px}
+.gvs-payables-overview b{font-size:17px;color:#173b66;overflow-wrap:anywhere}
+.gvs-payables-explain{font-size:13px;color:#485a70;line-height:1.6;margin:12px 0}
+.gvs-payables-warning{padding:12px;background:#fff4dc;color:#7e4c00;border:1px solid #ffdf91;border-radius:10px;font-size:13px}
+.gvs-payables-search{width:100%;margin:6px 0 14px}
+.gvs-payables-table td,.gvs-payables-table th{vertical-align:top}
+.gvs-payables-table td:nth-child(3),.gvs-payables-table td:nth-child(4),.gvs-payables-table td:nth-child(5){white-space:nowrap;font-variant-numeric:tabular-nums}
+.gvs-payables-table td:nth-child(5){color:#a22d2d}
+.gvs-payables-table .gva-btn{white-space:nowrap}
+.gvs-payables-flag{font-size:11px;font-weight:700;color:#9a5c00;margin-top:4px}
+.gvs-payables-expanded td{background:#f7fbff!important}
+.gvs-payables-categories{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}
+.gvs-payables-categories>span{background:#fff;border:1px solid #e2eaf4;border-radius:8px;padding:9px;display:flex;flex-wrap:wrap;gap:6px;justify-content:space-between}
+.gvs-payables-categories small{color:#53647b}
+.gvs-payables-categories b{font-variant-numeric:tabular-nums;color:#173b66}
+.gvs-payables-row-actions{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:10px}
+.gvs-payables-row-actions small{color:#68778b}
+@media(max-width:760px){.gvs-payables-overview{grid-template-columns:repeat(2,minmax(0,1fr))}.gvs-payables-categories{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:430px){.gvs-payables-overview b{font-size:14px}.gvs-payables-categories{grid-template-columns:1fr}}
