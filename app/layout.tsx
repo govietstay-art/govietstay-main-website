@@ -269,6 +269,7 @@ export default async function RootLayout({
             }}
           >
             <strong style={{ color: "#17352e", marginRight: "4px" }}>Vietnam travel guides:</strong>
+            <a href="/community" style={{ color: "#17352e", fontWeight: 800 }}>GoVietStay Stories</a>
             <a href="/cs/stredni-vietnam" hrefLang="cs-CZ" style={{ color: "#315c51" }}>Čeština</a>
             <a href="/ru" hrefLang="ru" style={{ color: "#315c51" }}>Русский</a>
             <a href="/it" hrefLang="it-IT" style={{ color: "#315c51" }}>Italiano</a>
