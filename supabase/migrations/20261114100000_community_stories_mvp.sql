@@ -159,14 +159,14 @@ create trigger gvs_community_comment_rate before insert on public.gvs_community_
 -- Editing cannot alter the identity or timestamp used for ordering and rate limits.
 create or replace function gvs_private.community_preserve_post_identity()
 returns trigger language plpgsql set search_path = ''
-as $
+as $gvs_guard$
 begin
   new.author_id := old.author_id;
   new.created_at := old.created_at;
   new.updated_at := now();
   return new;
 end;
-$;
+$gvs_guard$;
 revoke all on function gvs_private.community_preserve_post_identity() from public, anon, authenticated;
 create trigger gvs_community_post_preserve before update on public.gvs_community_posts
   for each row execute function gvs_private.community_preserve_post_identity();
