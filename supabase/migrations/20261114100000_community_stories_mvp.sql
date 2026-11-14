@@ -125,13 +125,15 @@ create policy "users remove their own likes" on public.gvs_community_likes
 
 -- Prevent unauthenticated clients from overwhelming the moderation queue.
 create schema if not exists gvs_private;
-revoke all on schema gvs_private from public, anon, authenticated;
+-- Reuse the existing private schema without changing its existing grants.
 
 create or replace function gvs_private.community_rate_limit()
 returns trigger language plpgsql security definer set search_path = ''
 as $$
 declare recent_count bigint;
 begin
+  -- Ignore client-submitted timestamps so users cannot evade submission limits.
+  new.created_at := now();
   if tg_table_name = 'gvs_community_posts' then
     select count(*) into recent_count from public.gvs_community_posts
      where author_id = new.author_id and created_at > now() - interval '10 minutes';
@@ -153,6 +155,21 @@ create trigger gvs_community_post_rate before insert on public.gvs_community_pos
   for each row execute function gvs_private.community_rate_limit();
 create trigger gvs_community_comment_rate before insert on public.gvs_community_comments
   for each row execute function gvs_private.community_rate_limit();
+
+-- Editing cannot alter the identity or timestamp used for ordering and rate limits.
+create or replace function gvs_private.community_preserve_post_identity()
+returns trigger language plpgsql set search_path = ''
+as $
+begin
+  new.author_id := old.author_id;
+  new.created_at := old.created_at;
+  new.updated_at := now();
+  return new;
+end;
+$;
+revoke all on function gvs_private.community_preserve_post_identity() from public, anon, authenticated;
+create trigger gvs_community_post_preserve before update on public.gvs_community_posts
+  for each row execute function gvs_private.community_preserve_post_identity();
 
 -- Small photo uploads; files are private until a moderator publishes a post.
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
