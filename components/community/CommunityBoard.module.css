@@ -139,3 +139,9 @@
   .postText { font-size: 15px; }
   .modal { padding: 28px 20px; }
 }
+
+.optionalDetails { margin-top: 11px; color: #506a5d; font-size: 12.5px; }
+.optionalDetails summary { display: inline-block; cursor: pointer; padding: 6px 2px; font-weight: 700; }
+.optionalDetails summary:hover { color: #1f593f; }
+.optionalDetails[open] summary { margin-bottom: 4px; }
+.optionalDetails .composeOptions { margin-top: 5px; }
