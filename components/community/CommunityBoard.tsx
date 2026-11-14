@@ -425,7 +425,7 @@ export default function CommunityBoard({ focusPostId, moderation = false }: { fo
               {post.status==="published" && <button onClick={()=>void sharePost(post.id)}>{t.share}</button>}
               {!focusPostId && post.status==="published" && <Link href={"/community/post/"+post.id}>{t.view}</Link>}
             </div>
-            {comments[post.id]?.length>0 && <div className={styles.replies}>{comments[post.id].map(c=><div className={styles.reply} key={c.id}>
+            {(comments[post.id]?.length || 0)>0 && <div className={styles.replies}>{comments[post.id].map(c=><div className={styles.reply} key={c.id}>
               <strong>{c.author_name}</strong><span>{fmt(c.created_at,lang)}</span>
               {c.status!=="published" && <small>{t.pending}</small>}
               <p>{c.body}</p>
