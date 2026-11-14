@@ -180,6 +180,12 @@ export default function CommunityBoard({ focusPostId, moderation = false }: { fo
     const fresh = (data || []) as Post[];
     setPosts(fresh);
     if (moderation) {
+      const withImages = fresh.filter(p => p.image_path);
+      const signed = await Promise.all(withImages.map(async p => {
+        const {data: signedData} = await db!.storage.from(BUCKET).createSignedUrl(p.image_path!,3600);
+        return [p.id,signedData?.signedUrl||""] as const;
+      }));
+      setPhotos(Object.fromEntries(signed));
       const {data: awaiting} = await db.from("gvs_community_comments")
         .select("id,post_id,author_id,author_name,body,status,created_at")
         .eq("status","pending").order("created_at",{ascending:true}).limit(100);
@@ -362,13 +368,14 @@ export default function CommunityBoard({ focusPostId, moderation = false }: { fo
           <textarea aria-label={kind==="story"?t.compose:t.question} value={body}
             onChange={e=>setBody(e.target.value)} maxLength={10000}
             placeholder={kind==="question"?t.question:t.compose} rows={4} />
+          <details className={styles.optionalDetails}><summary>{lang === "vi" ? "Thêm tên hoặc địa điểm (tùy chọn)" : "Add name or place (optional)"}</summary>
           <div className={styles.composeOptions}>
             <input className={styles.nameField} aria-label={t.name} placeholder={t.name+" (optional)"} maxLength={60} value={name} onChange={e=>setName(e.target.value)}/>
             <select aria-label={t.place} value={place} onChange={e=>setPlace(e.target.value)}>
               <option value="">{t.place}</option>
               {PLACES.map(p=><option value={p} key={p}>{p}</option>)}
             </select>
-          </div>
+          </div></details>
           <div className={styles.composeBottom}>
             <label className={styles.photoButton}>
               {t.photo}
@@ -466,7 +473,7 @@ export default function CommunityBoard({ focusPostId, moderation = false }: { fo
         <h2 id="community-login">{t.signIn}</h2>
         <p>{loginSent?t.sent:t.emailHelp}</p>
         {!loginSent && <><form onSubmit={signIn}>
-          <input type="email" required placeholder={t.email} value={loginEmail} onChange={e=>setLoginEmail(e.target.value)}/>
+          <input type="email" required aria-label={t.email} placeholder={t.email} value={loginEmail} onChange={e=>setLoginEmail(e.target.value)}/>
           <button className={styles.primaryButton} disabled={busy} type="submit">{busy?t.working:t.sendLink}</button>
         </form>
         <button className={styles.googleButton} type="button" onClick={()=>void googleSignIn()}>{t.google}</button></>}
