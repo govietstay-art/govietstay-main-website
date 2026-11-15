@@ -76,6 +76,14 @@ type BookingRow = {
   finance_finalized:boolean;
 };
 
+type PackageRevenueTarget = {
+  id:string;
+  booking_code:string|null;
+  tour_date:string|null;
+  net_revenue_vnd:number;
+  status:string;
+};
+
 type Expense = {
   id:string;
   expense_date:string;
@@ -128,6 +136,9 @@ export default function FinancePL({supabase}:Props){
   const [expenseOpen,setExpenseOpen]=useState(false);
   const [payablesOpen,setPayablesOpen]=useState(false);
   const [cancelBooking,setCancelBooking]=useState<BookingRow|null>(null);
+  const [zeroBooking,setZeroBooking]=useState<BookingRow|null>(null);
+  const [zeroTargets,setZeroTargets]=useState<PackageRevenueTarget[]>([]);
+  const [zeroRevenueSource,setZeroRevenueSource]=useState("");
   const [cancellationSummary,setCancellationSummary]=useState<CancellationSummary>({count:0,supplier_fees_vnd:0,recovered_vnd:0,net_loss_vnd:0,paid_vnd:0,payable_vnd:0});
   const [cancellations,setCancellations]=useState<CancellationRow[]>([]);
   const cancellationRevenue=Number(cancellationSummary.recovered_vnd||0);
@@ -219,7 +230,63 @@ export default function FinancePL({supabase}:Props){
     finally{setSaving(false)}
   }
 
+  async function openZeroRevenueFinalize(row:BookingRow){
+    setSaving(true);setError("");setMessage("");
+    try{
+      const {data:booking,error:bookingError}=await supabase.from("bookings")
+        .select("contact_id").eq("id",row.booking_id).single();
+      if(bookingError)throw bookingError;
+      if(!booking?.contact_id)throw new Error("Booking chưa có hồ sơ khách hàng, không thể liên kết doanh thu.");
+
+      const {data:possible,error:sourceError}=await supabase.from("bookings")
+        .select("id,booking_code,tour_date,net_revenue_vnd,status")
+        .eq("contact_id",booking.contact_id)
+        .gt("net_revenue_vnd",0)
+        .order("tour_date",{ascending:false}).limit(100);
+      if(sourceError)throw sourceError;
+      const candidates=((possible||[]) as PackageRevenueTarget[]).filter(item=>{
+        if(item.id===row.booking_id||["cancelled","refunded"].includes(String(item.status||"").toLowerCase()))return false;
+        if(row.tour_date&&item.tour_date){
+          const difference=Math.abs(new Date(row.tour_date+"T00:00:00Z").getTime()-new Date(item.tour_date+"T00:00:00Z").getTime())/86400000;
+          if(difference>31)return false;
+        }
+        return true;
+      });
+      if(!candidates.length)throw new Error("Không tìm thấy booking cùng khách có doanh thu lớn hơn 0 trong vòng 31 ngày. Kiểm tra booking chính trước khi chốt.");
+      setZeroTargets(candidates);
+      setZeroRevenueSource(candidates.length===1?candidates[0].id:"");
+      setEditBooking(null);
+      setZeroBooking(row);
+    }catch(e:any){setError(e?.message||"Không tải được booking ghi nhận doanh thu.");}
+    finally{setSaving(false);}
+  }
+
+  async function finalizeZeroRevenueBooking(){
+    if(!zeroBooking||!zeroRevenueSource)return;
+    const source=zeroTargets.find(item=>item.id===zeroRevenueSource);
+    if(!source)return;
+    if(!window.confirm(`Chốt ${zeroBooking.booking_code||"booking"} với doanh thu 0đ?\n\nDoanh thu gói được ghi ở ${source.booking_code||"booking chính"} (${money(source.net_revenue_vnd)}).\nBooking hiện tại sẽ Completed, Paid (0đ phải thu) và Finance Finalized.\nKHÔNG ghi thêm doanh thu, không ghi thêm tiền khách đã trả, không chốt thanh toán booking chính.\nChi phí trực tiếp và công nợ nhà cung cấp vẫn giữ nguyên.`))return;
+    setSaving(true);setError("");setMessage("");
+    try{
+      const {data,error}=await supabase.rpc("admin_finalize_zero_revenue_booking",{
+        p_booking_id:zeroBooking.booking_id,p_revenue_booking_id:zeroRevenueSource
+      });
+      if(error)throw error;
+      setZeroBooking(null);
+      setZeroTargets([]);
+      setZeroRevenueSource("");
+      const costWarning=data?.warning==="NO_DIRECT_COST"?" Lưu ý: booking này chưa có direct cost riêng.":"";
+      setMessage(`${data?.booking_code||"Booking"} đã chốt doanh thu 0đ, liên kết với ${data?.revenue_booking_code||source.booking_code||"booking chính"}. Không cộng trùng doanh thu hoặc thay đổi tiền đã thu ở booking chính.${costWarning}`);
+      await load();
+    }catch(e:any){setError(e?.message||"Không chốt được booking doanh thu 0đ.");}
+    finally{setSaving(false);}
+  }
+
   async function finalizeBookingOneClick(row:BookingRow){
+    if(Number(row.revenue_vnd||0)===0){
+      await openZeroRevenueFinalize(row);
+      return;
+    }
     if(Number(row.balance_vnd||0)>0){
       setError("Booking còn số dư chưa ghi nhận thanh toán. Hãy đối chiếu và cập nhật số tiền đã thu trong P&L trước khi dùng Hoàn tất & chốt. Nếu tour đã kết thúc nhưng khách chưa trả đủ, hãy chuyển trạng thái Completed tại Bookings, không tự xác nhận Paid.");
       return;
@@ -383,6 +450,8 @@ export default function FinancePL({supabase}:Props){
             <span><small>Cost payable</small><b>{money(row.direct_cost_payable_vnd)}</b></span>
           </div>
           {!row.finance_record&&<div className="gvs-row-warning">⚠ Chưa nhập finance record cho booking này.</div>}
+          {Number(row.revenue_vnd||0)===0&&row.finance_notes?.includes("Package day - revenue recorded under booking")&&
+            <div className="gva-mini">{row.finance_notes.split("\n").find(x=>x.includes("Package day - revenue recorded under booking"))}</div>}
         </div>)}
         {!bookings.length&&<div className="gva-empty">Không có booking trong tháng này.</div>}
       </div>
@@ -417,6 +486,30 @@ export default function FinancePL({supabase}:Props){
       </table></div>
     </div>
 
+    {zeroBooking&&<div className="gva-modal-bg">
+      <div className="gva-modal gvs-finance-modal" role="dialog" aria-modal="true" aria-labelledby="gvs-zero-finalize-title">
+        <div className="gva-modal-head">
+          <div><h3 id="gvs-zero-finalize-title">Chốt booking doanh thu 0đ</h3>
+            <div className="gva-mini">{zeroBooking.booking_code||"Booking"} · {zeroBooking.tour_date||"—"} · {zeroBooking.product||"—"}</div></div>
+          <button type="button" className="gva-close" onClick={()=>setZeroBooking(null)} disabled={saving} aria-label="Đóng">✕</button>
+        </div>
+        <p>Ngày này nằm trong gói nhiều ngày. Chọn booking chính đã ghi toàn bộ doanh thu của cùng khách hàng. Hệ thống chỉ chốt ngày dịch vụ này; không cộng thêm doanh thu hay tiền đã thu, và không thay đổi công nợ booking chính.</p>
+        <div className="gva-form-grid">
+          <Field label="Booking ghi nhận doanh thu gói" wide>
+            <select className="gva-select" value={zeroRevenueSource} onChange={e=>setZeroRevenueSource(e.target.value)}>
+              <option value="">Chọn booking chính</option>
+              {zeroTargets.map(item=><option key={item.id} value={item.id}>{item.booking_code||"Booking"} · {item.tour_date||"—"} · {money(item.net_revenue_vnd)}</option>)}
+            </select>
+          </Field>
+        </div>
+        <div className="gvs-finance-note compact">Booking doanh thu 0đ vẫn được tính là tour đã hoàn thành. Hãy kiểm tra chi phí và công nợ nhà cung cấp trước khi chốt; khoản chưa trả không được tự động đánh dấu đã thanh toán.</div>
+        {error&&<div className="gvs-row-warning" role="alert">{error}</div>}
+        <div className="gvs-modal-actions">
+          <button type="button" className="gva-btn secondary" onClick={()=>setZeroBooking(null)} disabled={saving}>Quay lại</button>
+          <button type="button" className="gva-btn" onClick={finalizeZeroRevenueBooking} disabled={saving||!zeroRevenueSource}>{saving?"Đang chốt…":"Xác nhận hoàn tất & chốt"}</button>
+        </div>
+      </div>
+    </div>}
     {editBooking&&<FinanceModal row={editBooking} saving={saving} onClose={()=>setEditBooking(null)} onSubmit={saveBookingFinance} onFinalize={()=>finalizeBookingOneClick(editBooking)}/>}    
     {cancelBooking&&<div className="gva-modal-bg"><form className="gva-modal" onSubmit={submitCancellation}>
       <div className="gva-modal-head"><h3>Hủy booking · {cancelBooking.booking_code}</h3><button type="button" className="gva-close" onClick={()=>setCancelBooking(null)}>✕</button></div>
