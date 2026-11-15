@@ -265,7 +265,7 @@ export default function FinancePL({supabase}:Props){
     if(!zeroBooking||!zeroRevenueSource)return;
     const source=zeroTargets.find(item=>item.id===zeroRevenueSource);
     if(!source)return;
-    if(!window.confirm(`Chốt ${zeroBooking.booking_code||"booking"} với doanh thu 0đ?\\n\\nDoanh thu gói được ghi ở ${source.booking_code||"booking chính"} (${money(source.net_revenue_vnd)}).\\nBooking hiện tại sẽ Completed, Paid (0đ phải thu) và Finance Finalized.\\nKHÔNG ghi thêm doanh thu, không ghi thêm tiền khách đã trả, không chốt thanh toán booking chính.\\nChi phí trực tiếp và công nợ nhà cung cấp vẫn giữ nguyên.`))return;
+    if(!window.confirm(`Chốt ${zeroBooking.booking_code||"booking"} với doanh thu 0đ?\n\nDoanh thu gói được ghi ở ${source.booking_code||"booking chính"} (${money(source.net_revenue_vnd)}).\nBooking hiện tại sẽ Completed, Paid (0đ phải thu) và Finance Finalized.\nKHÔNG ghi thêm doanh thu, không ghi thêm tiền khách đã trả, không chốt thanh toán booking chính.\nChi phí trực tiếp và công nợ nhà cung cấp vẫn giữ nguyên.`))return;
     setSaving(true);setError("");setMessage("");
     try{
       const {data,error}=await supabase.rpc("admin_finalize_zero_revenue_booking",{
@@ -451,7 +451,7 @@ export default function FinancePL({supabase}:Props){
           </div>
           {!row.finance_record&&<div className="gvs-row-warning">⚠ Chưa nhập finance record cho booking này.</div>}
           {Number(row.revenue_vnd||0)===0&&row.finance_notes?.includes("Package day - revenue recorded under booking")&&
-            <div className="gva-mini">{row.finance_notes.split("\\n").find(x=>x.includes("Package day - revenue recorded under booking"))}</div>}
+            <div className="gva-mini">{row.finance_notes.split("\n").find(x=>x.includes("Package day - revenue recorded under booking"))}</div>}
         </div>)}
         {!bookings.length&&<div className="gva-empty">Không có booking trong tháng này.</div>}
       </div>
