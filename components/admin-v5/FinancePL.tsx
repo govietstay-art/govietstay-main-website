@@ -112,6 +112,12 @@ function monthBounds(month:string){
   const end=`${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,"0")}-01`;
   return {start,end};
 }
+function localTodayVN(){return new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Ho_Chi_Minh",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date());}
+function pastThreeDays(date:string|null){
+ if(!date)return false;
+ const today=Date.parse(localTodayVN()+"T00:00:00Z"),tour=Date.parse(date+"T00:00:00Z");
+ return Number.isFinite(tour)&&today-tour>3*86400000;
+}
 function monthLabel(month:string){
   const [y,m]=month.split("-").map(Number);
   return new Intl.DateTimeFormat("en",{month:"long",year:"numeric"}).format(new Date(y,m-1,1));
@@ -127,6 +133,9 @@ export default function FinancePL({supabase}:Props){
   const [summary,setSummary]=useState<Summary>({});
   const [breakdowns,setBreakdowns]=useState<Record<string,Breakdown[]>>({destination:[],product:[],source:[],partner:[]});
   const [bookings,setBookings]=useState<BookingRow[]>([]);
+  const [bookingView,setBookingView]=useState<"active"|"archive"|"reconcile"|"all">("active");
+  const [adminHiddenIds,setAdminHiddenIds]=useState<string[]>([]);
+  const [canOverride,setCanOverride]=useState(false);
   const [expenses,setExpenses]=useState<Expense[]>([]);
   const [loading,setLoading]=useState(true);
   const [saving,setSaving]=useState(false);
@@ -173,6 +182,14 @@ export default function FinancePL({supabase}:Props){
       dims.forEach((d,i)=>next[d]=(results[i+1].data||[]) as Breakdown[]);
       setBreakdowns(next);
       setBookings((results[5].data||[]) as BookingRow[]);
+      const [hiddenResult,ownerResult]=await Promise.all([
+        supabase.from("booking_financials").select("booking_id").not("admin_hidden_at","is",null),
+        supabase.rpc("govietstay_can_admin_override")
+      ]);
+      if(hiddenResult.error)throw hiddenResult.error;
+      if(ownerResult.error)throw ownerResult.error;
+      setAdminHiddenIds((hiddenResult.data||[]).map((x:{booking_id:string})=>x.booking_id));
+      setCanOverride(!!ownerResult.data);
       setExpenses((results[6].data||[]) as Expense[]);
       setCancellationSummary((results[7].data||{}) as CancellationSummary);
       setCancellations((results[8].data||[]) as CancellationRow[]);
@@ -185,6 +202,13 @@ export default function FinancePL({supabase}:Props){
 
   const actualRows=useMemo(()=>bookings.filter(x=>x.recognized),[bookings]);
   const pendingRows=useMemo(()=>bookings.filter(x=>!x.recognized),[bookings]);
+  const visibleBookings=useMemo(()=>{
+    const archived=(b:BookingRow)=>adminHiddenIds.includes(b.booking_id)||pastThreeDays(b.tour_date)||(b.recognized&&b.finance_finalized);
+    if(bookingView==="all")return bookings;
+    if(bookingView==="archive")return bookings.filter(archived);
+    if(bookingView==="reconcile")return bookings.filter(b=>Number(b.balance_vnd||0)>0||Number(b.direct_cost_payable_vnd||0)>0||(b.recognized&&!b.finance_finalized)||!b.finance_record);
+    return bookings.filter(b=>!archived(b));
+  },[bookings,bookingView,adminHiddenIds]);
   const bestProduct=breakdowns.product?.[0];
   const lowestMargin=useMemo(()=>{
     return [...(breakdowns.product||[])].filter(x=>Number(x.revenue_vnd)>0).sort((a,b)=>Number(a.margin_pct)-Number(b.margin_pct))[0];
@@ -282,6 +306,23 @@ export default function FinancePL({supabase}:Props){
     finally{setSaving(false);}
   }
 
+  async function adminOverride(row:BookingRow){
+    if(!canOverride)return;
+    const reason=window.prompt("Lý do chốt đặc biệt (ít nhất 8 ký tự). Không xác nhận tiền đã thu:","");
+    if(reason===null)return;
+    if(reason.trim().length<8){setError("Vui lòng nhập lý do rõ ràng, ít nhất 8 ký tự.");return;}
+    const future=!row.tour_date||row.tour_date>localTodayVN();
+    const serviceCompleted=!future&&window.confirm("Tour đã thực sự hoàn thành?\\nOK = Xác nhận hoàn thành dịch vụ.\\nCancel = Chỉ ẩn hồ sơ, KHÔNG xác nhận tour đã đi.");
+    if(!window.confirm("Xác nhận quyền Owner: "+(serviceCompleted?"ĐÁNH DẤU TOUR ĐÃ HOÀN THÀNH":"CHỈ ẨN HỒ SƠ")+"?\\n\\nSố đã thu, Paid, chi phí và công nợ giữ nguyên. Có lưu nhật ký."))return;
+    setSaving(true);setError("");setMessage("");
+    try{
+      const {error}=await supabase.rpc("admin_override_close_booking",{p_booking_id:row.booking_id,p_reason:reason.trim(),p_service_completed:serviceCompleted});
+      if(error)throw error;
+      setMessage("Đã xử lý đặc biệt "+(row.booking_code||"booking")+". Công nợ giữ nguyên; tra cứu trong Booking cũ / Đã ẩn.");
+      await load();
+    }catch(e:any){setError(e?.message||"Không thể xử lý đặc biệt.");}
+    finally{setSaving(false);}
+  }
   async function finalizeBookingOneClick(row:BookingRow){
     if(Number(row.revenue_vnd||0)===0){
       await openZeroRevenueFinalize(row);
@@ -425,8 +466,12 @@ export default function FinancePL({supabase}:Props){
       <div className="gva-section-head">
         <div><h2>Booking Economics</h2><div className="gva-mini">Bấm Edit để nhập tiền đã thu và toàn bộ direct cost của từng booking.</div></div>
       </div>
+      <div style={{display:"flex",gap:8,flexWrap:"wrap",margin:"12px 0"}}>
+        {([["active","Đang xử lý"],["archive","Booking cũ / Đã ẩn"],["reconcile","Công nợ & Đối soát"],["all","Xem tất cả"]] as const).map(([key,label])=><button key={key} className={"gva-btn "+(bookingView===key?"":"secondary")} onClick={()=>setBookingView(key)}>{label}</button>)}
+      </div>
+      <div className="gva-mini" style={{marginBottom:10}}>Mặc định ẩn tour quá 3 ngày và hồ sơ đã chốt. Chỉ ẩn khỏi danh sách, không xóa dữ liệu hoặc tự chốt. Công nợ vẫn ở tab đối soát.</div>
       <div className="gvs-finance-bookings">
-        {bookings.map(row=><div className="gvs-booking-row" key={row.booking_id}>
+        {visibleBookings.map(row=><div className="gvs-booking-row" key={row.booking_id}>
           <div className="gvs-booking-top">
             <div>
               <div className="gvs-booking-code">{row.booking_code||"Booking"} <span className={`gvs-state ${statusClass(row)}`}>{row.recognized?"ACTUAL":"FORECAST"}</span></div>
@@ -436,9 +481,10 @@ export default function FinancePL({supabase}:Props){
             <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
               <button className="gva-btn secondary" onClick={()=>setEditBooking(row)}>Edit P&amp;L</button>
               <button className="gva-btn secondary" disabled={saving||row.recognized} onClick={()=>setCancelBooking(row)}>Hủy booking</button>
+              {canOverride&&<button className="gva-btn secondary" disabled={saving||["cancelled","refunded"].includes(String(row.status||"").toLowerCase())} onClick={()=>adminOverride(row)} title="Chỉ Owner: đóng hồ sơ có lý do, giữ nguyên công nợ và lưu nhật ký">Chốt đặc biệt</button>}
               {row.status==="completed"&&row.finance_finalized&&row.balance_vnd<=0
                 ? <button className="gva-btn secondary" disabled>✓ Đã chốt</button>
-                : <button className="gva-btn" disabled={saving||Number(row.balance_vnd||0)>0||String(row.status||"").toLowerCase()==="cancelled"} title={Number(row.balance_vnd||0)>0?"Cần đối chiếu tiền đã thu trước khi chốt":undefined} onClick={()=>finalizeBookingOneClick(row)}>✓ Hoàn tất & chốt</button>}
+                : <button className="gva-btn" disabled={saving||Number(row.balance_vnd||0)>0||!row.tour_date||row.tour_date>localTodayVN()||String(row.status||"").toLowerCase()==="cancelled"} title={!row.tour_date||row.tour_date>localTodayVN()?"Chưa tới ngày thực hiện":Number(row.balance_vnd||0)>0?"Cần đối chiếu tiền đã thu trước khi chốt":undefined} onClick={()=>finalizeBookingOneClick(row)}>✓ Hoàn tất & chốt</button>}
             </div>
           </div>
           <div className="gvs-booking-numbers">
@@ -453,7 +499,7 @@ export default function FinancePL({supabase}:Props){
           {Number(row.revenue_vnd||0)===0&&row.finance_notes?.includes("Package day - revenue recorded under booking")&&
             <div className="gva-mini">{row.finance_notes.split("\n").find(x=>x.includes("Package day - revenue recorded under booking"))}</div>}
         </div>)}
-        {!bookings.length&&<div className="gva-empty">Không có booking trong tháng này.</div>}
+        {!visibleBookings.length&&<div className="gva-empty">Không có booking trong nhóm này.</div>}
       </div>
     </div>
 
