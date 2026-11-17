@@ -258,7 +258,12 @@ export default function AdminV5() {
   const bookingGroups=useMemo(()=>{
     const today=new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Ho_Chi_Minh",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date());
     const finished=(b:Booking)=>["completed","closed"].includes(b.status);
-    const active=(b:Booking)=>!finished(b)&&!["cancelled","refunded"].includes(b.status);
+    const active=(b:Booking)=>{
+      if(finished(b)||["cancelled","refunded"].includes(b.status))return false;
+      if(!b.tour_date)return true;
+      const age=Date.parse(today+"T00:00:00Z")-Date.parse(b.tour_date+"T00:00:00Z");
+      return !Number.isFinite(age)||age<=3*86400000;
+    };
     const upcoming=(b:Booking)=>active(b)&&!!b.tour_date&&b.tour_date>=today;
     const counts={active:bookings.filter(active).length,upcoming:bookings.filter(upcoming).length,pending:bookings.filter(b=>b.status==="pending").length,confirmed:bookings.filter(b=>b.status==="confirmed").length,completed:bookings.filter(finished).length,cancelled:bookings.filter(b=>["cancelled","refunded"].includes(b.status)).length,getyourguide:bookings.filter(b=>b.source==="getyourguide").length,all:bookings.length};
     const q=bookingSearch.trim().toLocaleLowerCase();
