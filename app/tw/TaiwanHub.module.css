@@ -63,3 +63,26 @@
   .final>span{font-size:16px}
   .footer{font-size:13px}
 }
+
+
+/* Taiwan 2026 enhancement: native LINE conversion and practical advice */
+.hero{background:linear-gradient(110deg,rgba(7,27,20,.96),rgba(7,42,34,.9)),url('/tour/cham-island/guest-on-island.jpg') center/cover}
+.heroQr{display:flex!important;align-items:center!important;gap:16px!important;margin-top:18px;padding:15px!important;background:#f1f7f0;border-radius:16px!important;border:0!important}
+.heroQr svg{width:112px;height:112px;flex-shrink:0}.heroQr span{display:flex;flex-direction:column;gap:4px;color:#143b31}.heroQr span b{font-size:14px}.heroQr span small{font-size:12px;color:#536e62}
+.welcome{max-width:1180px;margin:0 auto;padding:78px 24px 38px;display:grid;grid-template-columns:1fr 1fr;gap:55px;align-items:center}
+.welcomeVisual{min-height:380px;border-radius:28px;background:linear-gradient(0deg,rgba(13,48,45,.23),transparent),url('/tour/cham-island/guest-on-island.jpg') center/cover;box-shadow:0 15px 55px #06362516}
+.welcome h2,.planner h2,.esim h2{font-size:clamp(28px,3.3vw,43px);line-height:1.25;margin:4px 0 20px;letter-spacing:-.035em}
+.welcome p,.planner p,.esim p{color:#526960;font-size:16px;line-height:1.85}.welcomeNote{font-weight:800!important;color:#087b55!important}
+.inlineLine{display:inline-flex;align-items:center;justify-content:center;background:#06b653;color:#fff!important;border-radius:999px;padding:14px 24px;font-weight:850;font-size:15px;margin-top:8px;box-shadow:0 9px 25px #06b65325}
+.inlineLine:hover{background:#078d47}
+.destinationGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.destinationCard{border-radius:24px;overflow:hidden;border:1px solid #e2eae3;background:#fff;box-shadow:0 14px 38px #062b1810;transition:transform .2s}.destinationCard:hover{transform:translateY(-4px)}
+.destinationPhoto,.destinationGradient,.destinationGradientSea{height:215px;background-size:cover;background-position:center}.destinationGradient,.destinationGradientSea{display:flex;align-items:flex-end;padding:20px;background:linear-gradient(135deg,#b8734f,#cf9957 43%,#382a30);color:#fff;font-size:23px;font-weight:900}.destinationGradientSea{background:linear-gradient(140deg,#27677a,#5caab8 48%,#e9b780)}
+.destinationCard>div:last-child{padding:24px}.destinationCard small{font-size:11px;color:#0b7656;font-weight:850;letter-spacing:.07em}.destinationCard h3{font-size:22px;margin:10px 0}.destinationCard p{font-size:15px;color:#617269;min-height:80px}.destinationCard b{font-size:13px;color:#087550}
+.planner{max-width:1132px;margin:25px auto 35px;border-radius:28px;background:#eaf4ed;padding:54px;display:grid;grid-template-columns:1fr 270px;gap:40px;align-items:center}
+.plannerQr{background:#fff;padding:24px;border-radius:20px;display:flex;flex-direction:column;align-items:center;gap:10px;box-shadow:0 10px 32px #104c2315}.plannerQr strong{font-size:16px}.plannerQr span{font-size:12px;color:#65796d}
+.tipsGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.tipsGrid article{border:1px solid #e0e9e2;border-radius:18px;padding:23px;background:#fbfdfb}.tipsGrid article>b{color:#087956;font-size:12px}.tipsGrid h3{font-size:19px;margin:12px 0}.tipsGrid p{font-size:14px;color:#5b6d62;line-height:1.8}.tipsGrid a{color:#076b4c;font-size:13px;font-weight:850}
+.esim{padding:68px max(24px,calc((100vw - 1130px)/2));background:#eff8f1;display:grid;grid-template-columns:1fr 280px;gap:50px;align-items:center}.esimBadge{height:230px;border-radius:28px;background:radial-gradient(circle at 80% 20%,#87e8a0,transparent 40%),linear-gradient(135deg,#075438,#13b96b);color:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column;font-size:76px;font-weight:900;line-height:1}.esimBadge small{font-size:28px}.esimBadge span{font-size:13px;margin-top:18px}
+.faqList{max-width:940px;margin:auto}.faqList details{border-bottom:1px solid #dfeae3;padding:18px 6px}.faqList summary{font-size:19px;font-weight:800;cursor:pointer}.faqList details p{font-size:16px;line-height:1.85;color:#5a6d60;margin:13px 0 0}.faqList details[open] summary{color:#077348}
+.mobileLine{display:none}
+@media(max-width:900px){.welcome,.planner,.esim{grid-template-columns:1fr}.destinationGrid{grid-template-columns:1fr 1fr}.tipsGrid{grid-template-columns:1fr 1fr}.planner{margin:20px}.plannerQr{max-width:320px}}
+@media(max-width:560px){.page{padding-bottom:62px}.hero h1{font-size:36px}.heroQr svg{height:100px;width:100px}.welcome{grid-template-columns:1fr;padding:45px 18px 20px;gap:22px}.welcomeVisual{min-height:245px}.destinationGrid,.tipsGrid{grid-template-columns:1fr}.destinationPhoto,.destinationGradient,.destinationGradientSea{height:190px}.destinationCard p{min-height:0}.planner{margin:10px 18px;padding:28px 20px}.planner h2,.esim h2{font-size:28px}.esim{padding:50px 18px}.esimBadge{height:180px}.faqList summary{font-size:17px}.mobileLine{display:block;position:fixed;bottom:0;left:0;right:0;z-index:80;background:#fff;padding:10px 14px max(10px,env(safe-area-inset-bottom));box-shadow:0 -4px 22px #0002}.mobileLine a{display:block;background:#05b653;color:#fff!important;text-align:center;padding:13px 10px;border-radius:12px;font-weight:850;font-size:15px}.nav nav a.cta{display:inline-block}}
