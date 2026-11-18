@@ -106,9 +106,9 @@ export default function TaiwanHub() {
       <section className={styles.section} id="destinations">
         <div className={styles.sectionHead}><div><p className={styles.darkEye}>三個值得慢慢探索的地方</p><h2>你想在越南體驗哪一種旅行？</h2></div><p>先選喜歡的旅行風格，再決定交通和每天的路線，行程會更順。</p></div>
         <div className={styles.destinationGrid}>
-          <a href="/tw/danang-travel-guide" className={styles.destinationCard}><div className={styles.destinationPhoto} style={{backgroundImage:"url('/tour/cham-island/guest-on-island.jpg')"}}/><div><small>DA NANG · 峴港</small><h3>海邊城市與巴拿山</h3><p>第一次來中越、想兼顧美食、海景與熱門景點。</p><b>查看峴港攻略 →</b></div></a>
+          <a href="/tw/danang-free-travel" className={styles.destinationCard}><div className={styles.destinationPhoto} style={{backgroundImage:"url('/tour/cham-island/guest-on-island.jpg')"}}/><div><small>DA NANG · 峴港</small><h3>海邊城市與巴拿山</h3><p>第一次來中越、想兼顧美食、海景與熱門景點。</p><b>查看峴港攻略 →</b></div></a>
           <a href="/tw/hoi-an-basket-boat" className={styles.destinationCard}><div className={styles.destinationGradient}><span>會安 · HOI AN</span></div><div><small>HOI AN · 會安</small><h3>古城、燈籠與慢步調</h3><p>下午出發，到晚上看古城燈籠；不一定要排滿整天。</p><b>查看會安攻略 →</b></div></a>
-          <a href="/tw/phu-quoc-travel-guide" className={styles.destinationCard}><div className={styles.destinationGradientSea}><span>富國島 · PHU QUOC</span></div><div><small>PHU QUOC · 富國島</small><h3>海島假期與親子放鬆</h3><p>先看住宿區域與南北島路線，再決定是否需要包車。</p><b>查看富國島攻略 →</b></div></a>
+          <a href="/tw/phu-quoc-free-travel" className={styles.destinationCard}><div className={styles.destinationGradientSea}><span>富國島 · PHU QUOC</span></div><div><small>PHU QUOC · 富國島</small><h3>海島假期與親子放鬆</h3><p>先看住宿區域與南北島路線，再決定是否需要包車。</p><b>查看富國島攻略 →</b></div></a>
         </div>
       </section>
       <section className={styles.planner} id="planner">
@@ -147,7 +147,7 @@ export default function TaiwanHub() {
           <article><b>01 · 交通</b><h3>Grab 還是包車？</h3><p>市區短程可先比較 Grab；一整天跨區跑景點、有長輩或小孩，先確認包車是否更省力。</p><a href="/tw/danang-private-car">看交通攻略 →</a></article>
           <article><b>02 · 機場</b><h3>接送怎麼安排？</h3><p>先準備航班、飯店、人數和行李件數。遇到深夜抵達，最好事先確認接送方式。</p><a href="/tw/danang-airport-transfer">看接送攻略 →</a></article>
           <article><b>03 · 海島</b><h3>海上行程看天氣</h3><p>占婆島與富國島出海活動都要以當天海況及業者安全決定為準，別把最後一天排得太緊。</p><a href="/tw/cham-island-snorkeling">看海島攻略 →</a></article>
-          <article><b>04 · 簽證</b><h3>入境規定先核對官方</h3><p>申請簽證前，請依護照、入境目的與日期確認越南官方最新規定，不要只相信舊貼文。</p><a href="/tw/vietnam-evisa">看電子簽證指南 →</a></article>
+          <article><b>04 · 簽證</b><h3>入境規定先核對官方</h3><p>申請簽證前，請依護照、入境目的與日期確認越南官方最新規定，不要只相信舊貼文。</p><a href="/tw/vietnam-evisa-taiwan">看電子簽證指南 →</a></article>
         </div>
       </section>
       <section className={styles.esim}>
