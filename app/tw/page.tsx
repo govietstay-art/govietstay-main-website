@@ -96,6 +96,18 @@ export default function TaiwanHub() {
           <a className={styles.inlineLine} href={LINE} target="_blank" rel="noopener noreferrer">在 LINE 上問問在地朋友 →</a>
         </div>
       </section>
+      <section className={styles.videoSection} id="travel-video">
+        <div className={styles.videoDescription}>
+          <p className={styles.darkEye}>30 秒看懂我們的在地支援 · 越南旅行靈感</p>
+          <h2>先看看越南，<br/>再慢慢安排你的旅程。</h2>
+          <p>在地海景、旅行節奏、行程規劃與 eSIM 資訊，都濃縮在這段繁體中文影片裡。想知道哪個區域適合你？不必等到看完才問。</p>
+          <a className={styles.inlineLine} href={LINE} target="_blank" rel="noopener noreferrer">立即用 LINE 問問我們 →</a>
+          <p className={styles.videoSmallPrint}>影片內容為旅遊宣傳素材，部分畫面屬示意；實際贈禮與行程安排以確認條件為準。</p>
+        </div>
+        <div className={styles.videoFrame}>
+          <iframe src="https://drive.google.com/file/d/14l07Edp_sYP9C0f_XtMhs-oLi4P_xgsK/preview" title="GoVietStay 越南自由行繁體中文影片" loading="lazy" allow="autoplay; fullscreen; encrypted-media" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" />
+        </div>
+      </section>
       <section className={styles.statbar}>
         <div><small>最常見天數</small><b>5 天 4 夜</b></div>
         <div><small>代表景點</small><b>巴拿山・會安</b></div>
