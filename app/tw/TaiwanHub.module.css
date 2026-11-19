@@ -86,3 +86,13 @@
 .mobileLine{display:none}
 @media(max-width:900px){.welcome,.planner,.esim{grid-template-columns:1fr}.destinationGrid{grid-template-columns:1fr 1fr}.tipsGrid{grid-template-columns:1fr 1fr}.planner{margin:20px}.plannerQr{max-width:320px}}
 @media(max-width:560px){.page{padding-bottom:62px}.hero h1{font-size:36px}.heroQr svg{height:100px;width:100px}.welcome{grid-template-columns:1fr;padding:45px 18px 20px;gap:22px}.welcomeVisual{min-height:245px}.destinationGrid,.tipsGrid{grid-template-columns:1fr}.destinationPhoto,.destinationGradient,.destinationGradientSea{height:190px}.destinationCard p{min-height:0}.planner{margin:10px 18px;padding:28px 20px}.planner h2,.esim h2{font-size:28px}.esim{padding:50px 18px}.esimBadge{height:180px}.faqList summary{font-size:17px}.mobileLine{display:block;position:fixed;bottom:0;left:0;right:0;z-index:80;background:#fff;padding:10px 14px max(10px,env(safe-area-inset-bottom));box-shadow:0 -4px 22px #0002}.mobileLine a{display:block;background:#05b653;color:#fff!important;text-align:center;padding:13px 10px;border-radius:12px;font-weight:850;font-size:15px}.nav nav a.cta{display:inline-block}}
+
+/* Full vertical Taiwan tourism film */
+.videoSection{max-width:1180px;margin:0 auto;padding:78px 24px;display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,390px);gap:80px;align-items:center}
+.videoDescription h2{font-size:clamp(32px,3.5vw,46px);letter-spacing:-.035em;line-height:1.25;margin:8px 0 24px}
+.videoDescription>p:not(.darkEye){font-size:16px;line-height:1.85;color:#556c60}
+.videoDescription .videoSmallPrint{font-size:12px!important;margin-top:20px;color:#6a7971!important}
+.videoFrame{aspect-ratio:9/16;border:10px solid #101f19;background:#0d1d17;border-radius:32px;overflow:hidden;box-shadow:0 24px 60px #071b142f}
+.videoFrame iframe{width:100%;height:100%;border:0;display:block}
+@media(max-width:800px){.videoSection{grid-template-columns:1fr;gap:28px;padding:55px 20px}.videoFrame{width:min(100%,380px);margin:auto}}
+@media(max-width:560px){.videoDescription h2{font-size:30px}.videoFrame{border-width:7px;border-radius:24px}}
