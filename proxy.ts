@@ -6,6 +6,17 @@ const SOURCES:Record<string,string>={
 };
 export function proxy(request:NextRequest){
  const pathname=request.nextUrl.pathname,parts=pathname.split("/").filter(Boolean);
+ // Render the partner landing directly on the partner subdomain root.
+ // A rewrite (rather than a redirect) gives Zalo/Facebook crawlers the hotel
+ // partner metadata even when they share https://partners.govietstay.com/.
+ // The primary tourism website and its "/" route are untouched.
+ if(request.nextUrl.hostname.toLowerCase()==="partners.govietstay.com" && pathname==="/"){
+  const destination=request.nextUrl.clone();
+  destination.pathname="/hotel-partners";
+  const partnerHeaders=new Headers(request.headers);
+  partnerHeaders.set("x-govietstay-locale","vi");
+  return NextResponse.rewrite(destination,{request:{headers:partnerHeaders}});
+ }
  if(parts[0]==="go"){
   // Preserve the established marketing-attribution route.
   const source=SOURCES[String(parts[1]||"").toLowerCase()];
@@ -21,7 +32,9 @@ export function proxy(request:NextRequest){
   return response;
  }
  const requestHeaders=new Headers(request.headers);
- requestHeaders.set("x-govietstay-locale",getPageLocale(pathname));
+ requestHeaders.set("x-govietstay-locale",
+  request.nextUrl.hostname.toLowerCase()==="partners.govietstay.com" &&
+  (pathname==="/hotel-partners" || pathname.startsWith("/admin/hotels-v3")) ? "vi" : getPageLocale(pathname));
  // Isolated Travel Kit surface. No other route sets this header.
  if(/^\/(en|ru|it)\/travel-kit(\/|$)/.test(pathname)){
   requestHeaders.set("x-govietstay-surface","travel-kit");
