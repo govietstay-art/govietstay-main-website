@@ -102,7 +102,7 @@ function numberOnly(value: string | null) {
   return Math.max(0, Number(String(value || "").replace(/\D/g, "")));
 }
 
-export default function PaymentCenter() {
+export default function PaymentCenter({embedded=false}:{embedded?:boolean} = {}) {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [sessionToken, setSessionToken] = useState("");
@@ -396,9 +396,9 @@ export default function PaymentCenter() {
         <p>{data.staff?.display_name || "Admin"} · {data.staff?.role || "owner/admin"} · actual payment ledger</p>
       </div>
       <div className="gpay-top-actions">
-        <a className="gpay-btn light" href="/admin/operations">← Booking Master</a>
+        {!embedded && <a className="gpay-btn light" href="/admin/operations">← Booking Master</a>}
         <button className="gpay-btn light" type="button" onClick={() => void load()} disabled={saving}>↻ Refresh</button>
-        <button className="gpay-btn light" type="button" onClick={() => void logout()}>Logout</button>
+        {!embedded && <button className="gpay-btn light" type="button" onClick={() => void logout()}>Logout</button>}
       </div>
     </header>
 
