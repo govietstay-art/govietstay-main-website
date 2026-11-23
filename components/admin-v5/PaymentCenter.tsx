@@ -352,12 +352,20 @@ export default function PaymentCenter({embedded=false}:{embedded?:boolean} = {})
     const methodRaw = (window.prompt("Method: vietqr / revolut / paypal / bank_transfer / cash / card / other", "vietqr") || "other").trim().toLowerCase();
     const methods = ["vietqr", "revolut", "paypal", "bank_transfer", "cash", "card", "other"];
     const method = methods.includes(methodRaw) ? methodRaw : "other";
-    const reference = window.prompt("Transaction ID / Reference (không bắt buộc):", "") || "";
-    if (!window.confirm(`Xác nhận GoVietStay đã THỰC SỰ nhận ${money(amount)}?`)) return;
+    const reference = window.prompt("Mã giao dịch MỚI / Reference (PayPal bắt buộc có mã):", "");
+    if(reference===null)return;
+    const existing = data.payments.filter(p=>p.booking_id===b.id&&p.status==="received"&&p.payment_type!=="refund"&&Number(p.amount_vnd)===amount);
+    if(method==="paypal"&&!reference.trim())
+      return setError("PayPal đã thanh toán qua link sẽ được tự ghi nhận. Không tạo thêm giao dịch nếu chưa có mã PayPal MỚI.");
+    if(existing.length&&!reference.trim())
+      return setError("Đã có khoản thanh toán cùng số tiền trong lịch sử. Để ghi thêm tiền thực nhận mới, anh phải nhập mã giao dịch riêng để đối soát.");
+    if(existing.some(p=>p.external_reference?.trim()===reference.trim()&&reference.trim()))
+      return setError("Mã giao dịch đã tồn tại. Không được ghi nhận lần thứ hai.");
+    if (!window.confirm(`Xác nhận đã nhận THÊM ${money(amount)} từ khách?\n\nChỉ bấm OK nếu đây là giao dịch mới, chưa được ghi trong Payments. Thanh toán PayPal qua link đã tự ghi nhận.`)) return;
     void runAction(async () => {
       await call("mark_received", {
         booking_id: b.id,
-        payment_link_id: link?.id || null,
+        payment_link_id: null, // Manual receipts must not reuse an active customer payment link.
         amount_vnd: amount,
         method,
         external_reference: reference.trim() || null,
