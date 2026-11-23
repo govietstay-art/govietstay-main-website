@@ -57,6 +57,7 @@ type Booking = {
   gross_revenue_vnd: number;
   net_revenue_vnd: number | null;
   deposit_required_vnd: number;
+  operator_supplier_id: string | null;
   status: string;
   payment_status: string;
   pickup_time: string | null;
@@ -80,6 +81,7 @@ type Contact = { id: string; full_name: string | null; whatsapp: string | null; 
 type Assignment = { id: string; booking_id: string; guide_id: string; status: string; agreed_fee_vnd: number; notes: string | null };
 type BookingCost = { id: string; booking_id: string; cost_type: string; description: string | null; amount_vnd: number };
 type BookingFinancial = { booking_id: string; amount_received_vnd: number };
+type TourSupplier = { id:string; name:string; supplier_type:string; active:boolean; service_area:string|null };
 type TransportSupplier = { id: string; name: string; contact_name: string | null; phone: string | null; whatsapp: string | null; service_area: string | null; notes: string | null; active: boolean; payment_terms_days: number };
 type TransportBooking = { id: string; booking_id: string; supplier_id: string; description: string | null; amount_vnd: number; status: string; notes: string | null };
 type Modal = null | "guide" | "availability" | "booking" | "cost" | "quick" | "requirements" | "transport" | "transport_booking" | "transport_edit" | "replace_guide" | "internal_itinerary";
@@ -288,6 +290,7 @@ export default function OperationsCenter() {
   const [costs, setCosts] = useState<BookingCost[]>([]);
   const [financials, setFinancials] = useState<BookingFinancial[]>([]);
   const [transportSuppliers, setTransportSuppliers] = useState<TransportSupplier[]>([]);
+  const [tourSuppliers,setTourSuppliers]=useState<TourSupplier[]>([]);
   const [transportBookings, setTransportBookings] = useState<TransportBooking[]>([]);
 
   const tourMap = useMemo(() => Object.fromEntries(tours.map((x) => [x.id, x])), [tours]);
@@ -353,7 +356,7 @@ export default function OperationsCenter() {
         supabase.from("guides").select("*").order("active", { ascending: false }).order("full_name"),
         supabase.from("guide_availability").select("*").gte("work_date", from).lte("work_date", to).order("work_date"),
         supabase.from("bookings")
-          .select("id,booking_code,contact_id,tour_id,staff_id,tour_date,adults,children,pax,gross_revenue_vnd,net_revenue_vnd,deposit_required_vnd,status,payment_status,pickup_time,start_time,end_time,hotel,hotel_address,room,notes,guide_language,requires_guide,requires_transport,booking_mode,custom_tour_name,custom_destination,custom_itinerary,internal_itinerary_vi,created_at")
+          .select("id,booking_code,contact_id,tour_id,staff_id,tour_date,adults,children,pax,gross_revenue_vnd,net_revenue_vnd,deposit_required_vnd,operator_supplier_id,status,payment_status,pickup_time,start_time,end_time,hotel,hotel_address,room,notes,guide_language,requires_guide,requires_transport,booking_mode,custom_tour_name,custom_destination,custom_itinerary,internal_itinerary_vi,created_at")
           .gte("tour_date", from).lte("tour_date", to).order("tour_date", { ascending: true }).order("start_time", { ascending: true }),
         supabase.from("contacts").select("id,full_name,whatsapp,country,preferred_language").order("created_at", { ascending: false }).limit(1000),
         supabase.from("booking_guides").select("id,booking_id,guide_id,status,agreed_fee_vnd,notes").limit(2000),
@@ -361,6 +364,7 @@ export default function OperationsCenter() {
         supabase.from("booking_financials").select("booking_id,amount_received_vnd").limit(3000),
         supabase.from("suppliers").select("id,name,contact_name,phone,whatsapp,service_area,notes,active,payment_terms_days").eq("supplier_type", "transport").order("name"),
         supabase.from("booking_supplier_payables").select("id,booking_id,supplier_id,description,amount_vnd,status,notes").eq("source", "transport_operations").limit(2000),
+        supabase.from("suppliers").select("id,name,supplier_type,active,service_area").eq("active",true).order("name"),
       ]);
       for (const r of results) if (r.error) throw r.error;
       setTours((results[0].data || []) as Tour[]);
@@ -373,6 +377,7 @@ export default function OperationsCenter() {
       setFinancials((results[7].data || []) as BookingFinancial[]);
       setTransportSuppliers((results[8].data || []) as TransportSupplier[]);
       setTransportBookings((results[9].data || []) as TransportBooking[]);
+      setTourSuppliers((results[10].data||[]).filter((x:any)=>x.supplier_type!=="transport") as TourSupplier[]);
     } catch (e: any) {
       setError(e.message || "Không tải được Operations Center.");
     }
@@ -511,8 +516,8 @@ export default function OperationsCenter() {
   function activeAssignments(bookingId: string) {
     return assignments.filter((x) => x.booking_id === bookingId && x.status !== "cancelled");
   }
-  function requiresGuide(b: Booking) { return b.requires_guide ?? Boolean(b.guide_language?.trim()); }
-  function requiresTransport(b: Booking) { return b.requires_transport ?? false; }
+  function requiresGuide(b: Booking) { return b.operator_supplier_id ? false : (b.requires_guide ?? Boolean(b.guide_language?.trim())); }
+  function requiresTransport(b: Booking) { return b.operator_supplier_id ? false : (b.requires_transport ?? false); }
   function hasConfirmedGuide(bookingId: string) {
     return activeAssignments(bookingId).some((a) => a.status === "confirmed" || a.status === "completed");
   }
@@ -812,7 +817,11 @@ export default function OperationsCenter() {
     const form = new FormData(e.currentTarget);
     try {
       const { data, error: updateError } = await supabase.from("bookings")
-        .update({ requires_guide: form.has("requires_guide"), requires_transport: form.has("requires_transport") })
+        .update({
+          operator_supplier_id:String(form.get("operator_supplier_id")||"")||null,
+          requires_guide:!form.get("operator_supplier_id")&&form.has("requires_guide"),
+          requires_transport:!form.get("operator_supplier_id")&&form.has("requires_transport")
+        })
         .eq("id", selectedBooking).select("id").single();
       if (updateError || !data) throw updateError || new Error("Không thể lưu yêu cầu điều phối.");
       setModal(null); setSelectedBooking(null); setMessage("Đã cập nhật yêu cầu điều phối. Giá bán, tiền cọc và lịch trình giữ nguyên.");
@@ -1367,6 +1376,7 @@ export default function OperationsCenter() {
                 {b.booking_mode === "custom" && b.custom_itinerary && <div className="gvo-itinerary"><b>Lịch trình gốc</b><div>{b.custom_itinerary}</div></div>}
                 {isAdmin && <button type="button" className="gvo-cost-btn" onClick={() => openInternalItinerary(b)}>✎ {b.internal_itinerary_vi ? "Sửa lịch Việt" : "+ Lịch trình tiếng Việt"}</button>}
                 <div className="gvo-assignment">
+                  {b.operator_supplier_id && <div className="gvo-assigned">Nhà tổ chức trọn gói: <b>{tourSuppliers.find(x=>x.id===b.operator_supplier_id)?.name||"Nhà cung cấp đã chọn"}</b> · Chi phí theo P&L</div>}
                   <div className="gvo-dispatch-requirements">
                     <span className={missing.guide || missing.transport ? "gvo-dispatch-pending" : "gvo-dispatch-ready"}>
                       {missing.guide || missing.transport ? "⚠ Điều phối chưa đủ" : "✓ Đã đủ dịch vụ yêu cầu"}
@@ -1563,7 +1573,14 @@ export default function OperationsCenter() {
       return <ModalFrame title={`Yêu cầu điều phối · ${b.booking_code || "Booking"}`} onClose={() => { setModal(null); setSelectedBooking(null); }}>
         <form onSubmit={saveRequirements} className="gvo-form-grid">
           <div className="gva-analytics-note" style={{ gridColumn: "1/-1" }}>Chọn dịch vụ thực sự cần bố trí cho ngày tour này. Giá bán, tiền cọc và lịch trình không thay đổi.</div>
-          <div className="gvo-field wide"><span>Dịch vụ cần bố trí</span>
+          <div className="gvo-field wide"><span>Nhà cung cấp tổ chức trọn gói (nếu có)</span>
+            <select className="gva-select" name="operator_supplier_id" defaultValue={b.operator_supplier_id||""}>
+              <option value="">GoVietStay tự điều hành (gán HDV / xe theo yêu cầu)</option>
+              {tourSuppliers.map(x=><option value={x.id} key={x.id}>{x.name}{x.service_area?` · ${x.service_area}`:""}</option>)}
+            </select>
+            <small>Chọn nhà tổ chức trọn gói: không yêu cầu HDV và xe riêng. Không tự tạo thêm chi phí hoặc thanh toán; kiểm tra giá vốn trong P&amp;L.</small>
+          </div>
+          <div className="gvo-field wide"><span>Dịch vụ cần bố trí nếu tự điều hành</span>
             <label className="gvo-service-option"><input type="checkbox" name="requires_guide" defaultChecked={requiresGuide(b)} /> Cần hướng dẫn viên</label>
             <label className="gvo-service-option"><input type="checkbox" name="requires_transport" defaultChecked={requiresTransport(b)} /> Cần xe & tài xế</label>
           </div>
