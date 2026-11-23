@@ -516,6 +516,7 @@ export default function FinancePL({supabase}:Props){
             <span><small>Direct cost</small><b>{money(row.total_direct_cost_vnd)}</b></span>
             <span><small>Profit</small><b className={row.gross_profit_vnd>=0?"positive":"negative"}>{money(row.gross_profit_vnd)}</b></span>
             <span><small>Margin</small><b>{Number(row.margin_pct||0).toFixed(1)}%</b></span>
+            <span><small>Deposit đã thu</small><b>{money(depositsByBooking[row.booking_id]?.received||0)}</b></span>
             <span><small>Balance</small><b>{money(row.balance_vnd)}</b></span>
             <span><small>Cost payable</small><b>{money(row.direct_cost_payable_vnd)}</b></span>
           </div>
