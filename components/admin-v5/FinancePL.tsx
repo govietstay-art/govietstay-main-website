@@ -133,6 +133,7 @@ export default function FinancePL({supabase}:Props){
   const [summary,setSummary]=useState<Summary>({});
   const [breakdowns,setBreakdowns]=useState<Record<string,Breakdown[]>>({destination:[],product:[],source:[],partner:[]});
   const [bookings,setBookings]=useState<BookingRow[]>([]);
+  const [depositsByBooking,setDepositsByBooking]=useState<Record<string,{received:number;pending:number}>>({});
   const [bookingView,setBookingView]=useState<"active"|"archive"|"reconcile"|"all">("active");
   const [adminHiddenIds,setAdminHiddenIds]=useState<string[]>([]);
   const [canOverride,setCanOverride]=useState(false);
@@ -181,7 +182,23 @@ export default function FinancePL({supabase}:Props){
       const next:Record<string,Breakdown[]>={destination:[],product:[],source:[],partner:[]};
       dims.forEach((d,i)=>next[d]=(results[i+1].data||[]) as Breakdown[]);
       setBreakdowns(next);
-      setBookings((results[5].data||[]) as BookingRow[]);
+      const bookingRows=(results[5].data||[]) as BookingRow[];
+       setBookings(bookingRows);
+       // Deposit is read from payments and never re-created in P&L.
+       const nextDeposits:Record<string,{received:number;pending:number}>={};
+       const ids=bookingRows.map(row=>row.booking_id);
+       for(let offset=0;offset<ids.length;offset+=100){
+         const {data:paymentRows,error:paymentError}=await supabase.from("payments")
+           .select("booking_id,amount_vnd,status,payment_type")
+           .in("booking_id",ids.slice(offset,offset+100)).eq("payment_type","deposit");
+         if(paymentError)throw paymentError;
+         for(const p of paymentRows||[]){
+           const entry=nextDeposits[p.booking_id]||(nextDeposits[p.booking_id]={received:0,pending:0});
+           if(p.status==="received")entry.received+=Number(p.amount_vnd||0);
+           else if(p.status==="pending")entry.pending+=Number(p.amount_vnd||0);
+         }
+       }
+       setDepositsByBooking(nextDeposits);
       const [hiddenResult,ownerResult]=await Promise.all([
         supabase.from("booking_financials").select("booking_id").not("admin_hidden_at","is",null),
         supabase.rpc("govietstay_can_admin_override")
@@ -486,6 +503,13 @@ export default function FinancePL({supabase}:Props){
                 ? <button className="gva-btn secondary" disabled>✓ Đã chốt</button>
                 : <button className="gva-btn" disabled={saving||Number(row.balance_vnd||0)>0||!row.tour_date||row.tour_date>localTodayVN()||String(row.status||"").toLowerCase()==="cancelled"} title={!row.tour_date||row.tour_date>localTodayVN()?"Chưa tới ngày thực hiện":Number(row.balance_vnd||0)>0?"Cần đối chiếu tiền đã thu trước khi chốt":undefined} onClick={()=>finalizeBookingOneClick(row)}>✓ Hoàn tất & chốt</button>}
             </div>
+          </div>
+          <div className="gva-mini" style={{margin:"8px 0",fontWeight:650}}>
+            Deposit đã nhận: {money(depositsByBooking[row.booking_id]?.received||0)}
+            {(depositsByBooking[row.booking_id]?.pending||0)>0&&<> · Cọc chờ xác nhận: {money(depositsByBooking[row.booking_id].pending)}</>}
+            {" · "}Tổng đã thu (P&L): {money(row.amount_received_vnd)}
+            {(depositsByBooking[row.booking_id]?.received||0)>Number(row.amount_received_vnd||0)&&
+              <span style={{color:"#b42318"}}> · Cần đối soát: tiền cọc đã nhận lớn hơn số đã thu P&L</span>}
           </div>
           <div className="gvs-booking-numbers">
             <span><small>Revenue</small><b>{money(row.revenue_vnd)}</b></span>
