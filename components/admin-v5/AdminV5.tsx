@@ -125,6 +125,20 @@ function parseDepositEntry(vals:Record<string,unknown>,maxAvailableVnd:number):D
 }
 
 async function saveDepositPayment(bookingId:string,entry:DepositEntry,staffId:string|null) {
+  // Guard against re-entering a payment already confirmed via gateway or manually.
+  // The database trigger enforces the same rule atomically, including concurrent submits.
+  if(entry.status==="received"){
+    const {data:matches,error:matchError}=await supabase.from("payments")
+      .select("id,method,provider,external_reference,payment_link_id,amount_vnd")
+      .eq("booking_id",bookingId).eq("status","received")
+      .neq("payment_type","refund").eq("amount_vnd",entry.amount_vnd).limit(20);
+    if(matchError)throw matchError;
+    const noVerifiedReference=!String(entry.external_reference||"").trim();
+    if(noVerifiedReference&&matches?.length)
+      throw new Error("Khoản "+money(entry.amount_vnd)+" đã xuất hiện trong Payments. Không nhập lại tiền cọc! Nếu đây là khoản THỰC NHẬN mới, cần có mã giao dịch/chứng từ riêng để đối soát.");
+    if(entry.method==="paypal"&&noVerifiedReference)
+      throw new Error("Tiền PayPal qua link tự ghi nhận khi thanh toán thành công. Không nhập tay nếu không có mã giao dịch PayPal riêng.");
+  }
   if(entry.external_reference){
     const {data:duplicate,error:lookupError}=await supabase.from("payments")
       .select("id").eq("booking_id",bookingId).eq("external_reference",entry.external_reference)
@@ -140,7 +154,11 @@ async function saveDepositPayment(bookingId:string,entry:DepositEntry,staffId:st
     verified_at:entry.status==="received"?new Date().toISOString():null,
     verified_by_staff_id:entry.status==="received"?staffId:null
   });
-  if(error)throw error;
+  if(error){
+    if(error.code==="23505"||String(error.message||"").includes("GVS_DUPLICATE_GUARD"))
+      throw new Error("Giao dịch đã có hoặc nghi bị ghi trùng. Hãy mở lịch sử Payments, không nhập lại số tiền này.");
+    throw error;
+  }
 }
 
 function recordedPaymentTotal(payments:BookingPayment[]) {
@@ -1397,7 +1415,7 @@ function EditBookingModal({booking,contact,tours,partners,financial,payments,onC
     </>}
     <F label="Guide language"><select name="guide_language" className="gva-select" defaultValue={booking.guide_language||""}><option value="">—</option>{GVS_BOOKING_LANGUAGES.filter(([value])=>value).map(([value,label])=><option key={value} value={value}>{label} Guide</option>)}</select></F><F label="Partner"><select name="partner_id" className="gva-select" defaultValue={booking.partner_id||""}><option value="">Không có</option>{partners.map((x:any)=><option value={x.id} key={x.id}>{x.name} · {x.ref_code}</option>)}</select></F>
     <F label="Khách sạn"><input name="hotel" className="gva-input" defaultValue={booking.hotel||""} /></F><F label="Lưu ý Revenue"><div className="gva-analytics-note" style={{margin:0}}>Đổi PAX không tự tính lại doanh thu. Revenue chỉ thay đổi khi anh sửa ô Revenue.</div></F>
-    {status!=="cancelled"&&<DepositFields bookingTotalVnd={revenue} alreadyReceivedVnd={alreadyReceived} disabled={legacyMismatch}/>}
+    {status!=="cancelled"&&<DepositFields bookingTotalVnd={revenue} alreadyReceivedVnd={alreadyReceived} existingPayments={existingPayments} disabled={legacyMismatch}/>}
     <F label="Lịch sử thanh toán / Đối soát" wide>
       <div className="gva-analytics-note" style={{margin:0}}>
         <div><b>Đã thu: {money(alreadyReceived)}</b> · Còn phải thu: <b>{money(Math.max(0,revenue-alreadyReceived))}</b></div>
@@ -1416,7 +1434,7 @@ function EditBookingModal({booking,contact,tours,partners,financial,payments,onC
   </div><div style={{display:"flex",gap:8,justifyContent:"flex-end",marginTop:16}}><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button className="gva-btn" disabled={saving}>{saving?"Đang lưu…":"Lưu thay đổi"}</button></div></form></div>
 }
 
-function DepositFields({bookingTotalVnd,alreadyReceivedVnd,disabled=false}:{bookingTotalVnd:number;alreadyReceivedVnd:number;disabled?:boolean}){
+function DepositFields({bookingTotalVnd,alreadyReceivedVnd,existingPayments=[],disabled=false}:{bookingTotalVnd:number;alreadyReceivedVnd:number;existingPayments?:BookingPayment[];disabled?:boolean}){
   const [amount,setAmount]=useState("");
   const [currency,setCurrency]=useState("VND");
   const [rate,setRate]=useState("");
@@ -1425,16 +1443,20 @@ function DepositFields({bookingTotalVnd,alreadyReceivedVnd,disabled=false}:{book
   const fx=currency==="VND"?1:Number(rate);
   const amountVnd=amountOriginal>0&&fx>0&&Number.isFinite(amountOriginal*fx)?Math.round(amountOriginal*fx):0;
   const remains=Math.max(0,bookingTotalVnd-alreadyReceivedVnd-(status==="received"?amountVnd:0));
+  const matchingReceived=amountVnd>0&&existingPayments.some(p=>p.status==="received"&&p.payment_type!=="refund"&&Number(p.amount_vnd||0)===amountVnd);
   return <div className="gva-field wide" style={{border:"1px solid #bfdbfe",borderRadius:12,padding:14,background:"#f0f7ff"}}>
     <label style={{color:"#175cd3",fontWeight:800}}>💰 Deposit / Tiền cọc khách gửi</label>
-    <p className="gva-mini" style={{margin:"4px 0 12px"}}>Chỉ giảm số còn phải thu khi đã xác nhận tiền thực nhận. Revenue vẫn là toàn bộ giá trị tour.</p>
+    <p className="gva-mini" style={{margin:"4px 0 12px"}}>Tiền khách trả qua link PayPal/VietQR đã xác nhận sẽ tự xuất hiện trong lịch sử. Không nhập lại khi sửa Booking. Chỉ nhập tại đây khi có một lần thu tiền MỚI.</p>
+    {matchingReceived&&<div role="alert" style={{padding:10,border:"1px solid #e6a23c",borderRadius:8,background:"#fff7df",color:"#92400e",fontWeight:700,marginBottom:10}}>
+       Cảnh báo: đã có giao dịch {money(amountVnd)} được nhận. Không ghi lần thứ hai! Nếu thực sự thu thêm đúng số tiền này, phải có chứng từ và mã giao dịch riêng.
+    </div>}
     <div className="gva-form-grid">
       <F label="Số tiền cọc"><input className="gva-input" name="deposit_amount" type="number" min="0" step={currency==="VND"?"1":"0.01"} value={amount} onChange={e=>setAmount(e.target.value)} placeholder="0 nếu chưa có cọc" disabled={disabled}/></F>
       <F label="Loại tiền"><select className="gva-select" name="deposit_currency" value={currency} onChange={e=>setCurrency(e.target.value)} disabled={disabled}>{DEPOSIT_CURRENCIES.map(x=><option key={x} value={x}>{x}</option>)}</select></F>
       {currency!=="VND"&&<F label={`Tỷ giá 1 ${currency} = ? VND`}><input className="gva-input" name="deposit_exchange_rate" type="number" min="0.0001" step="any" value={rate} onChange={e=>setRate(e.target.value)} placeholder="Nhập tỷ giá thực nhận" required={!!Number(amount)} disabled={disabled}/></F>}
       <F label="Cách khách gửi tiền"><select className="gva-select" name="deposit_method" defaultValue="bank_transfer" disabled={disabled}>{DEPOSIT_METHODS.map(([key,label])=><option key={key} value={key}>{label}</option>)}</select></F>
       <F label="Trạng thái đối soát"><select className="gva-select" name="deposit_status" value={status} onChange={e=>setStatus(e.target.value as "pending"|"received")} disabled={disabled}><option value="pending">Chưa xác minh / chờ tiền</option><option value="received">Đã kiểm tra, thực nhận</option></select></F>
-      <F label="Mã giao dịch / Reference"><input className="gva-input" name="deposit_reference" placeholder="Mã PayPal, ngân hàng..." disabled={disabled}/></F>
+      <F label="Mã giao dịch / Reference"><input className="gva-input" name="deposit_reference" placeholder="Mã PayPal/ngân hàng của giao dịch MỚI" disabled={disabled}/></F>
       {status==="received"&&<F label="Ngày tiền về"><input className="gva-input" name="deposit_date" type="date" disabled={disabled}/></F>}
       <F label="Ghi chú riêng khoản cọc" wide><textarea className="gva-input" name="deposit_notes" rows={2} placeholder="VD: Khách gửi USD qua PayPal, tên người chuyển, tài khoản nhận, chênh lệch phí..." disabled={disabled}/></F>
       {status==="received"&&Number(amount)>0&&<div className="gva-field wide"><label style={{fontWeight:600}}><input name="deposit_verified" type="checkbox" value="yes" required disabled={disabled} style={{marginRight:8}}/>Tôi đã kiểm tra tiền thực vào tài khoản GoVietStay</label></div>}
