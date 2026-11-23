@@ -12,6 +12,8 @@ import PartnerTools from "./PartnerTools";
 import PiPartnerTools from "./PiPartnerTools";
 import MerchantNetworkTools from "./MerchantNetworkTools";
 import FinancePL from "./FinancePL";
+import OperationsCenter from "./OperationsCenter";
+import PaymentCenter from "./PaymentCenter";
 import OperatorPayables from "./OperatorPayables";
 import YandexSeoPanel from "./YandexSeoPanel";
 // GVS_YANDEX_INTELLIGENCE_V1
@@ -178,7 +180,7 @@ export default function AdminV5() {
   const [bootstrap,setBootstrap]=useState("");
   const [msg,setMsg]=useState("");
   const [err,setErr]=useState("");
-  const [tab,setTab]=useState<"dashboard"|"operations"|"customers"|"supplier_directory"|"analytics"|"marketing"|"partners"|"pi_partners"|"merchant_network"|"seo"|"leads"|"bookings"|"reviews"|"finance"|"team"|"operator_payables"|"yandex"|"phuquoc"|"web_inquiries">("dashboard");
+  const [tab,setTab]=useState<"dashboard"|"operations"|"payment_center"|"customers"|"supplier_directory"|"analytics"|"marketing"|"partners"|"pi_partners"|"merchant_network"|"seo"|"leads"|"bookings"|"reviews"|"finance"|"team"|"operator_payables"|"yandex"|"phuquoc"|"web_inquiries">("dashboard");
   useEffect(()=>{
     if(new URLSearchParams(window.location.search).get("view")==="web_inquiries") setTab("web_inquiries");
   },[]);
@@ -749,7 +751,8 @@ export default function AdminV5() {
       <div className="logo">GoVietStay</div><div className="small">Quản lý & Điều hành</div>
       <div className="gva-nav">
         <button className={tab==="dashboard"?"active":""} onClick={()=>setTab("dashboard")}>Tổng quan</button>
-        <button className={tab==="operations"?"active":""} onClick={()=>setTab("operations")}>Điều hành</button>
+        <button className={tab==="operations"?"active":""} onClick={()=>setTab("operations")}>Điều phối tour</button>
+        <button className={tab==="payment_center"?"active":""} onClick={()=>setTab("payment_center")}>Payment Center · Thu tiền</button>
         <button className={tab==="bookings"?"active":""} onClick={()=>setTab("bookings")}>Bookings</button>
         <button className={tab==="customers"?"active":""} onClick={()=>setTab("customers")}>Khách hàng</button>
         <button className={tab==="supplier_directory"?"active":""} onClick={()=>setTab("supplier_directory")}>Nhà cung cấp</button>
@@ -780,6 +783,14 @@ export default function AdminV5() {
       {err&&<div className="gva-msg err">{err}</div>}
       {msg&&<div className="gva-msg">{msg}</div>}
 
+      <div className="gva-daily-workflow" role="navigation" aria-label="Công việc hàng ngày">
+        <span>Thao tác nhanh</span>
+        {([["bookings","1. Bookings"],["operations","2. Điều phối"],["payment_center","3. Thu tiền"],["finance","4. P&L / Kết sổ"]] as const).map(([key,label])=>
+          <button key={key} type="button" className={tab===key?"active":""} onClick={()=>setTab(key)}>{label}</button>
+        )}
+      </div>
+      {tab==="operations"&&<OperationsCenter embedded />}
+      {tab==="payment_center"&&<PaymentCenter embedded />}
       {tab==="dashboard"&&(()=>{
         const today=new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Ho_Chi_Minh",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date());
         const weekEnd=new Date(today+"T00:00:00+07:00");weekEnd.setDate(weekEnd.getDate()+7);
@@ -1122,7 +1133,7 @@ export default function AdminV5() {
         </tbody></table></div></div>
       </>}
 
-      {tab==="operations"&&<>
+      {false && tab==="operations"&&<>
         <div className="gva-section-head gva-ops-heading">
           <div><h2>Trung tâm điều hành tour</h2><div className="gva-mini">Lịch khởi hành, xác nhận booking và checklist chuẩn bị · Giờ Việt Nam</div></div>
           <button className="gva-btn secondary" onClick={loadAll}>Làm mới</button>
@@ -1276,7 +1287,7 @@ function bookingRowClass(s:string){return "gva-booking-row "+(["pending","confir
 function bookingPaymentLabel(s:string){return ({paid:"Đã thu đủ",unpaid:"Chưa thu",partial:"Đã thu một phần",partially_paid:"Đã thu một phần",deposit:"Đã đặt cọc",refunded:"Đã hoàn tiền"} as Record<string,string>)[s]||s||"Chưa cập nhật";}
 function bookingPaymentClass(s:string){const color=s==="paid"?"paid":s==="unpaid"?"unpaid":s==="partial"||s==="partially_paid"||s==="deposit"?"partial":"neutral";return "gva-payment gva-payment-"+color;}
 function adminPageTitle(tab:any){
-  return tab==="operations"?"Điều hành tour":tab==="customers"?"Khách hàng":tab==="supplier_directory"?"Nhà cung cấp":tab==="web_inquiries"?"Yêu cầu đặt vé / tour từ website":tab=="operator_payables"?"Công nợ nhà tổ chức tour ghép":tab==="team"?"Sales Team / Payroll":tab==="finance"?"Monthly P&L":tab==="dashboard"?"Tổng quan":tab==="analytics"?"Analytics khách truy cập":tab==="marketing"?"Marketing Funnel":tab==="partners"?"Partners thường / QR":tab==="pi_partners"?"Pi Community Partners":tab==="merchant_network"?"Merchant Network Lab":tab==="seo"?"SEO Intelligence":tab==="yandex"?"Yandex Search":tab==="leads"?"Quản lý Leads":tab==="reviews"?"Review WhatsApp":"Quản lý Bookings";
+  return tab==="operations"?"Điều phối tour":tab==="payment_center"?"Payment Center · Thu tiền":tab==="customers"?"Khách hàng":tab==="supplier_directory"?"Nhà cung cấp":tab==="web_inquiries"?"Yêu cầu đặt vé / tour từ website":tab=="operator_payables"?"Công nợ nhà tổ chức tour ghép":tab==="team"?"Sales Team / Payroll":tab==="finance"?"Monthly P&L":tab==="dashboard"?"Tổng quan":tab==="analytics"?"Analytics khách truy cập":tab==="marketing"?"Marketing Funnel":tab==="partners"?"Partners thường / QR":tab==="pi_partners"?"Pi Community Partners":tab==="merchant_network"?"Merchant Network Lab":tab==="seo"?"SEO Intelligence":tab==="yandex"?"Yandex Search":tab==="leads"?"Quản lý Leads":tab==="reviews"?"Review WhatsApp":"Quản lý Bookings";
 }
 
 function shortPage(value:any){

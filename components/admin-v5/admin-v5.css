@@ -260,3 +260,11 @@
 @media(max-width:1060px){.gva-ops-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.gva-ops-primary{grid-template-columns:repeat(2,minmax(0,1fr))}.gva-ops-primary>div:last-child{grid-column:1/-1}}
 @media(max-width:760px){.gva-ops-heading{align-items:flex-start}.gva-ops-summary{gap:8px;margin:10px 0 14px}.gva-ops-summary-item{padding:12px}.gva-ops-summary-item strong{font-size:27px}.gva-ops-toolbar{display:block}.gva-ops-tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;padding:3px 1px 9px}.gva-ops-tabs button{flex:0 0 auto}.gva-ops-search{width:100%;max-width:none;margin-top:4px}.gva-ops-tour{padding:13px 12px}.gva-ops-tour-head{gap:8px;align-items:flex-start;flex-wrap:wrap}.gva-ops-date{flex:0 0 100px}.gva-ops-date strong{font-size:12px}.gva-ops-tour-title{flex:1 1 calc(100% - 112px)}.gva-ops-tour-title strong{font-size:14px}.gva-ops-tour-head>.gva-status{margin-top:3px}.gva-ops-primary{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:11px;margin:12px 0}.gva-ops-primary>div:last-child{grid-column:1/-1}.gva-ops-tour-actions .gva-ops-expand{margin-left:0}.gva-ops-detail{grid-template-columns:repeat(2,minmax(0,1fr))}.gva-ops-help small{flex-basis:100%}}
 @media(max-width:380px){.gva-ops-date{flex-basis:95px}.gva-ops-tour-title{flex-basis:calc(100% - 103px)}.gva-ops-tour-actions button{flex:1 1 auto}.gva-ops-detail{grid-template-columns:1fr}}
+
+/* Unified daily workflow: one Admin workspace for booking, dispatch, payments and closeout */
+.gva-daily-workflow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 16px;padding:10px 12px;border:1px solid #dce6f1;border-radius:12px;background:#fff}
+.gva-daily-workflow>span{font-size:12px;font-weight:800;color:#53647d;margin-right:4px}
+.gva-daily-workflow button{border:1px solid #d8e3ef;background:#f4f7fb;color:#183455;border-radius:8px;padding:9px 12px;font-size:13px;font-weight:750;cursor:pointer}
+.gva-daily-workflow button.active{background:#1759a8;color:#fff;border-color:#1759a8}
+.gva-main>.gvo-shell,.gva-main>.gpay-center{max-width:100%;width:100%;margin:0}
+@media(max-width:700px){.gva-daily-workflow{gap:6px;padding:8px}.gva-daily-workflow>span{width:100%}.gva-daily-workflow button{flex:1 1 calc(50% - 6px);padding:9px 6px}}
