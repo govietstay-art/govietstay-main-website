@@ -253,7 +253,7 @@ function customerDate(value: string | null, locale: string) {
   return new Intl.DateTimeFormat(locale, { day: "2-digit", month: "2-digit", year: "numeric" }).format(new Date(`${value}T12:00:00`));
 }
 
-export default function OperationsCenter() {
+export default function OperationsCenter({embedded=false}:{embedded?:boolean} = {}) {
   const [loading, setLoading] = useState(true);
   const [session, setSession] = useState<any>(null);
   const [staff, setStaff] = useState<Staff | null>(null);
@@ -1192,7 +1192,7 @@ export default function OperationsCenter() {
         <p>{staff.display_name} · {staff.role} · 1 Booking ID xuyên suốt Sales → Operations → Finance → Payroll</p>
       </div>
       <div className="gvo-header-actions">
-        {isAdmin && <a className="gva-btn secondary" href="/admin">← Admin chính</a>}
+        {isAdmin && !embedded && <a className="gva-btn secondary" href="/admin">← Admin chính</a>}
         <button className="gva-btn secondary" onClick={loadAll}>Làm mới</button>
       </div>
     </header>
