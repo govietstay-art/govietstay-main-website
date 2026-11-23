@@ -165,6 +165,19 @@ const faq = [
   },
 ];
 
+
+const CRUISE_IMAGES = {
+  ship: "https://images.unsplash.com/photo-1658280114956-2482e46fb4d5?auto=format&fit=crop&w=1600&q=82",
+  hue: "https://images.unsplash.com/photo-1765034841805-8330b54bfdb7?auto=format&fit=crop&w=1100&q=80",
+  hoian: "https://images.unsplash.com/photo-1718942900735-ce42cd0b24dd?auto=format&fit=crop&w=1100&q=80",
+  banahills: "https://images.unsplash.com/photo-1663684591502-93887202a863?auto=format&fit=crop&w=1100&q=80",
+  haivan: "https://images.unsplash.com/photo-1700796502868-463e9b8eb52f?auto=format&fit=crop&w=1100&q=80",
+  mykhe: "https://images.unsplash.com/photo-1723142282970-1fd415eec1ad?auto=format&fit=crop&w=1100&q=80",
+};
+const CHAN_MAY_PHOTOS = [CRUISE_IMAGES.haivan, CRUISE_IMAGES.hue, CRUISE_IMAGES.hue];
+const TIEN_SA_PHOTOS = [CRUISE_IMAGES.mykhe, CRUISE_IMAGES.hoian, CRUISE_IMAGES.banahills];
+const WHATSAPP_CRUISE = "https://wa.me/84937762607?text=" + encodeURIComponent("Здравствуйте, GoVietStay! Интересует экскурсия с круизного лайнера. Название лайнера: __  Дата: __  Порт: __  Количество гостей: __  Время all aboard: __");
+
 function ScheduleTable({ rows }: { rows: string[][] }) {
   return (
     <div className="mt-5 overflow-x-auto rounded-2xl border border-white/10">
@@ -215,38 +228,53 @@ export default function Page() {
   };
 
   return (
-    <main className="min-h-screen bg-slate-950 text-white">
+    <main className="min-h-screen overflow-x-hidden bg-[#071e2c] pb-20 text-white md:pb-0">
       <JsonLd data={graph} />
 
-      <section className="relative overflow-hidden border-b border-white/10">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(14,165,233,0.25),transparent_35%),radial-gradient(circle_at_bottom_left,rgba(16,185,129,0.18),transparent_30%)]" />
-        <div className="relative mx-auto max-w-6xl px-5 py-16 md:py-24">
-          <div className="mb-8 flex flex-wrap items-center justify-between gap-5">
-            <a href="/ru" aria-label="GoVietStay на русском" className="inline-flex rounded-2xl bg-white p-2 shadow-2xl">
-              <img
-                src="/brand/govietstay-official-logo.jpg"
-                alt="Официальный логотип GoVietStay"
-                className="h-16 w-auto rounded-xl object-contain md:h-20"
-              />
+      <section className="relative isolate min-h-[670px] overflow-hidden bg-[#0a2635] md:min-h-[760px]">
+        <img src={CRUISE_IMAGES.ship} alt="Круизный лайнер у причала — иллюстративное фото" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover object-center" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#071a28]/75 via-[#071a28]/45 to-[#071a28]/95 md:bg-gradient-to-r md:from-[#061b2b]/95 md:via-[#061b2b]/75 md:to-[#061b2b]/15" />
+        <div className="relative mx-auto flex min-h-[670px] max-w-6xl flex-col px-5 pb-16 pt-5 md:min-h-[760px] md:px-8 md:pb-24 md:pt-9">
+          <div className="flex items-center justify-between gap-3">
+            <a href="/ru" className="flex items-center gap-3" aria-label="GoVietStay — главная на русском">
+              <span className="overflow-hidden rounded-xl bg-white p-1.5 shadow-lg"><img src="/brand/govietstay-official-logo.jpg" alt="GoVietStay" className="h-10 w-10 object-contain sm:h-12 sm:w-12" /></span>
+              <span className="text-sm font-black tracking-wide sm:text-base">GoVietStay <span className="block text-[10px] font-medium tracking-normal text-sky-100/80">Trusted Local Support</span></span>
             </a>
-            <div className="text-right text-xs leading-6 text-slate-400">
-              <div className="font-bold text-slate-200">GoVietStay • Trusted Local Support</div>
-              <div>Дананг • Хойан • Хюэ • Фукуок</div>
-              <div>WhatsApp +84 937 762 607</div>
+            <a href={WHATSAPP_CRUISE} target="_blank" rel="noopener noreferrer" className="rounded-full border border-white/40 bg-white/15 px-4 py-2 text-xs font-bold text-white backdrop-blur-md transition hover:bg-white/25 sm:text-sm">WhatsApp ↗</a>
+          </div>
+          <div className="mt-auto max-w-3xl">
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/25 bg-black/25 px-3 py-2 text-[11px] font-semibold tracking-wide text-white backdrop-blur-sm sm:text-sm">
+              <span className="h-2 w-2 rounded-full bg-emerald-400" /> Чан Май • Тьен Са • Центральный Вьетнам
             </div>
+            <h1 className="text-[clamp(2.55rem,8vw,5rem)] font-black leading-[1.06] tracking-tight text-white drop-shadow-xl">С лайнера —<br /><span className="text-[#a4efde]">в настоящий Вьетнам</span></h1>
+            <p className="mt-5 max-w-xl text-base font-medium leading-7 text-white/95 sm:text-xl sm:leading-8">Индивидуальные экскурсии в Хюэ, Дананг и Хойан. Встреча у порта, комфортный транспорт и маршрут с учётом времени возвращения на лайнер.</p>
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+              <a href={WHATSAPP_CRUISE} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-14 items-center justify-center rounded-2xl bg-emerald-400 px-7 py-4 text-center text-base font-black text-[#08322a] shadow-[0_12px_35px_rgba(52,211,153,0.3)] transition hover:bg-emerald-300">Узнать маршрут и цену ↗</a>
+              <a href="#itineraries" className="inline-flex min-h-14 items-center justify-center rounded-2xl border border-white/40 bg-white/15 px-7 py-4 text-center text-base font-bold text-white backdrop-blur-sm transition hover:bg-white/25">Посмотреть экскурсии ↓</a>
+            </div>
+            <p className="mt-5 text-xs leading-5 text-white/75">Русскоязычная поддержка по запросу • Частные поездки • Время all aboard — в приоритете</p>
           </div>
-          <p className="mb-4 text-sm font-semibold uppercase tracking-[0.22em] text-sky-300">GoVietStay • Круизная поддержка в Центральном Вьетнаме</p>
-          <h1 className="max-w-5xl text-4xl font-black leading-tight md:text-6xl">Экскурсии из портов Чан Май и Тьен Са</h1>
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">Мы планируем береговой день вокруг главного вопроса: <strong className="text-white">что вы реально успеете увидеть и при этом безопасно вернуться на лайнер?</strong></p>
-
-          <div className="mt-8 flex flex-wrap gap-3 text-sm">
-            {["Частный автомобиль / микроавтобус","Координация встречи в порту","Поддержка на русском и английском","План возврата к лайнеру"].map((x)=><span key={x} className="rounded-full border border-white/15 bg-white/5 px-4 py-2">✓ {x}</span>)}
+        </div>
+        <span className="absolute bottom-3 right-4 text-[10px] text-white/60">Иллюстративное фото лайнера</span>
+      </section>
+      <section className="relative bg-[#f6f8f7] py-12 text-[#112e3d] md:py-16">
+        <div className="mx-auto max-w-6xl px-5 md:px-8">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-teal-700">За один день можно увидеть так много</p>
+          <h2 className="mt-3 max-w-2xl text-3xl font-black leading-tight sm:text-4xl">Ваше путешествие только начинается на берегу</h2>
+          <div className="mt-7 grid grid-cols-3 gap-2 sm:gap-4">
+            {[
+              { image: CRUISE_IMAGES.hue, title: "Хюэ", detail: "Императорский город" },
+              { image: CRUISE_IMAGES.hoian, title: "Хойан", detail: "Старый город" },
+              { image: CRUISE_IMAGES.banahills, title: "Ba Na Hills", detail: "Золотой мост" },
+            ].map((place) => (
+              <a href="#itineraries" key={place.title} className="group relative overflow-hidden rounded-2xl bg-[#123143] shadow-lg sm:rounded-3xl">
+                <div className="aspect-[3/5] sm:aspect-[4/5]"><img src={place.image} alt={place.detail} loading="lazy" decoding="async" className="h-full w-full object-cover transition duration-700 group-hover:scale-105" /></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-2.5 text-white sm:p-5"><strong className="block text-sm font-black sm:text-xl">{place.title}</strong><span className="mt-1 hidden text-xs text-white/85 sm:block">{place.detail}</span></div>
+              </a>
+            ))}
           </div>
-
-          <div className="mt-9 flex flex-wrap gap-3">
-            <a href="https://wa.me/84937762607?text=Здравствуйте%20GoVietStay%21%20Нужна%20экскурсия%20из%20круизного%20порта.%20Лайнер%3A%20__%20Дата%3A%20__%20Порт%3A%20Чан%20Май%20%2F%20Тьен%20Са%20Гостей%3A%20__%20Прибытие%3A%20__%20All%20aboard%3A%20__" className="rounded-xl bg-emerald-500 px-6 py-3 font-bold text-slate-950">Отправить данные лайнера в WhatsApp</a>
-            <a href="#itineraries" className="rounded-xl border border-white/20 px-6 py-3 font-semibold">Посмотреть реальные маршруты</a>
-          </div>
+          <p className="mt-4 text-xs text-slate-500">Фотографии достопримечательностей из Unsplash. Точный маршрут зависит от времени стоянки лайнера.</p>
         </div>
       </section>
 
@@ -256,18 +284,47 @@ export default function Page() {
         </div>
 
         <div className="mt-10 grid gap-6 md:grid-cols-2">
-          {portCards.map((p)=><article key={p.title} className="rounded-3xl border border-white/10 bg-white/5 p-7"><p className="text-sm font-bold uppercase tracking-wider text-sky-300">Круизный порт</p><h2 className="mt-2 text-3xl font-black">{p.title}</h2><p className="mt-2 text-slate-300">{p.subtitle}</p><ul className="mt-6 space-y-3 text-slate-200">{p.facts.map((x)=><li key={x}>• {x}</li>)}</ul><p className="mt-5 text-xs leading-5 text-slate-500">Время в пути является ориентировочным и может меняться из-за трафика, погоды, дорожных работ и портовых процедур.</p></article>)}
+          {portCards.map((p, i)=><article key={p.title} className="group overflow-hidden rounded-3xl border border-white/10 bg-white/[0.06] shadow-xl">
+            <div className="relative h-44 overflow-hidden sm:h-56"><img src={i === 0 ? CRUISE_IMAGES.haivan : CRUISE_IMAGES.mykhe} alt={i === 0 ? "Виды перевала Хайван недалеко от порта Чан Май" : "Побережье Дананга недалеко от порта Тьен Са"} loading="lazy" decoding="async" className="h-full w-full object-cover transition duration-700 group-hover:scale-105" /><div className="absolute inset-0 bg-gradient-to-t from-[#071e2c] to-transparent" /></div>
+            <div className="-mt-7 relative p-6 sm:p-7"><p className="text-xs font-bold uppercase tracking-widest text-emerald-300">Круизный порт</p><h2 className="mt-2 text-3xl font-black">{p.title}</h2><p className="mt-2 text-slate-200">{p.subtitle}</p><ul className="mt-5 grid gap-2 text-sm text-slate-200">{p.facts.map((x)=><li key={x} className="flex items-center gap-2"><span className="text-emerald-300">✓</span>{x}</li>)}</ul><p className="mt-5 text-xs leading-5 text-slate-400">Время в пути ориентировочное и зависит от дорожных и портовых условий.</p></div>
+          </article>)}
         </div>
       </section>
 
+      <section id="itineraries" className="border-y border-white/10 bg-white/[0.03]">
+        <div className="mx-auto max-w-6xl px-5 py-14">
+          <h2 className="text-3xl font-black md:text-4xl">Сколько реально можно увидеть за один круизный день?</h2>
+          <p className="mt-3 max-w-3xl text-slate-300">Ниже — ориентиры. Реальное время на экскурсию начинается после выхода гостей с лайнера и прохождения портовых процедур. Мы сокращаем или расширяем маршрут под конкретную стоянку.</p>
+
+          <h3 className="mt-10 text-2xl font-extrabold text-sky-300">Из порта Чан Май</h3>
+          <div className="mt-5 grid gap-5 lg:grid-cols-3">{chanMayPlans.map((x, i)=><article key={x.time} className="group overflow-hidden rounded-3xl border border-white/10 bg-[#112c3c] shadow-lg"><div className="relative h-44 overflow-hidden"><img src={CHAN_MAY_PHOTOS[i]} alt={x.title} loading="lazy" decoding="async" className="h-full w-full object-cover transition duration-700 group-hover:scale-105" /><div className="absolute inset-0 bg-gradient-to-t from-[#112c3c]/80 to-transparent" /><span className="absolute bottom-3 left-4 rounded-full bg-emerald-400 px-3 py-1.5 text-xs font-black text-slate-950">{x.time}</span></div><div className="p-5 sm:p-6"><h4 className="text-xl font-black">{x.title}</h4><p className="mt-3 text-sm leading-6 text-slate-200">{x.plan}</p><details className="mt-4 rounded-xl bg-white/[0.05] px-4 py-3 text-sm text-slate-300"><summary className="cursor-pointer font-bold text-emerald-200">Что важно знать</summary><p className="mt-2 leading-6">{x.note}</p></details><a href={WHATSAPP_CRUISE} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex items-center font-bold text-emerald-300">Уточнить стоимость →</a></div></article>)}</div>
+
+          <h3 className="mt-12 text-2xl font-extrabold text-sky-300">Из порта Тьен Са</h3>
+          <div className="mt-5 grid gap-5 lg:grid-cols-3">{tienSaPlans.map((x, i)=><article key={x.time} className="group overflow-hidden rounded-3xl border border-white/10 bg-[#112c3c] shadow-lg"><div className="relative h-44 overflow-hidden"><img src={TIEN_SA_PHOTOS[i]} alt={x.title} loading="lazy" decoding="async" className="h-full w-full object-cover transition duration-700 group-hover:scale-105" /><div className="absolute inset-0 bg-gradient-to-t from-[#112c3c]/80 to-transparent" /><span className="absolute bottom-3 left-4 rounded-full bg-emerald-400 px-3 py-1.5 text-xs font-black text-slate-950">{x.time}</span></div><div className="p-5 sm:p-6"><h4 className="text-xl font-black">{x.title}</h4><p className="mt-3 text-sm leading-6 text-slate-200">{x.plan}</p><details className="mt-4 rounded-xl bg-white/[0.05] px-4 py-3 text-sm text-slate-300"><summary className="cursor-pointer font-bold text-emerald-200">Что важно знать</summary><p className="mt-2 leading-6">{x.note}</p></details><a href={WHATSAPP_CRUISE} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex items-center font-bold text-emerald-300">Уточнить стоимость →</a></div></article>)}</div>
+        </div>
+      </section>
+      <section className="bg-[#e9f3f1] py-14 text-[#092c33] md:py-20">
+        <div className="mx-auto max-w-6xl px-5 md:px-8">
+          <p className="text-xs font-black uppercase tracking-widest text-teal-700">Всё просто</p>
+          <h2 className="mt-3 text-3xl font-black sm:text-4xl">От лайнера до ярких впечатлений — три шага</h2>
+          <div className="mt-8 grid gap-4 md:grid-cols-3">
+            {[
+              ["01","Напишите название лайнера","Сообщите дату захода, число гостей и время all aboard."],
+              ["02","Получите понятный маршрут","Подскажем реальную точку встречи и подходящий вариант транспорта."],
+              ["03","Наслаждайтесь поездкой","Поможем спланировать день и возвращение к лайнеру с запасом времени."],
+            ].map((step)=><div key={step[0]} className="rounded-3xl bg-white p-6 shadow-[0_10px_35px_rgba(0,30,30,0.05)]"><span className="text-4xl font-black text-teal-600">{step[0]}</span><h3 className="mt-3 text-xl font-black">{step[1]}</h3><p className="mt-3 text-sm leading-6 text-slate-600">{step[2]}</p></div>)}
+          </div>
+          <a href={WHATSAPP_CRUISE} target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex w-full items-center justify-center rounded-2xl bg-[#075a51] px-6 py-4 text-center font-black text-white shadow-lg sm:w-auto">Обсудить мой круизный день ↗</a>
+        </div>
+      </section>
       <section id="schedule" className="border-y border-white/10 bg-white/[0.03]">
         <div className="mx-auto max-w-6xl px-5 py-14">
           <div className="flex flex-wrap items-end justify-between gap-5">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-emerald-300">Актуальный календарь заходов</p>
-              <h2 className="mt-2 text-3xl font-black md:text-4xl">Ближайшие круизные лайнеры, которые мы отслеживаем</h2>
+              <p className="text-sm font-bold uppercase tracking-[0.2em] text-emerald-300">Расписание — сверяйте с круизной компанией</p>
+              <h2 className="mt-2 text-3xl font-black md:text-4xl">Планируемые заходы круизных лайнеров</h2>
             </div>
-            <div className="rounded-full border border-white/10 px-4 py-2 text-xs text-slate-400">Проверено: {LAST_CHECKED}</div>
+            <div className="rounded-full border border-white/10 px-4 py-2 text-xs text-slate-400">Источник проверен: {LAST_CHECKED}</div>
           </div>
 
           <div className="mt-8 rounded-3xl border border-emerald-400/20 bg-emerald-400/5 p-5 md:p-7">
@@ -275,7 +332,7 @@ export default function Page() {
             <p className="mt-2 max-w-4xl leading-7 text-slate-300">
               Эти заходы пассажирских лайнеров взяты из опубликованного плана порта Чан Мэй. В таблице указаны портовые ETA/ETD, а не персональное время all aboard. Оперативные изменения возможны.
             </p>
-            <ScheduleTable rows={chanMayCalls} />
+            <details className="mt-5 rounded-2xl border border-white/15 bg-black/20 p-3 sm:p-4"><summary className="cursor-pointer py-2 font-bold text-emerald-200">Показать расписание Чан Май ↓</summary><ScheduleTable rows={chanMayCalls} /></details>
             <p className="mt-4 text-xs leading-6 text-slate-400">
               Источник проверен 12 сентября 2026: официальный раздел порта Чан Мэй «Kế hoạch tàu vào cảng». Перед выходом с лайнера обязательно сверяйтесь с актуальной информацией круизной компании.
             </p>
@@ -289,7 +346,7 @@ export default function Page() {
             <p className="mt-2 max-w-4xl leading-7 text-slate-300">
               Эти опубликованные заходы по региону Дананга помогают заранее готовить транспорт и гидов. <strong className="text-white">Они не гарантируют, что финальный причал будет именно Тьен Са.</strong> В круизных расписаниях направление часто указано как “Da Nang”, тогда как фактический причал может быть Чан Мэй, Тьен Са или другая разрешённая точка.
             </p>
-            <ScheduleTable rows={daNangRegionalCalls} />
+            <details className="mt-5 rounded-2xl border border-white/15 bg-black/20 p-3 sm:p-4"><summary className="cursor-pointer py-2 font-bold text-sky-200">Показать расписание Дананга ↓</summary><ScheduleTable rows={daNangRegionalCalls} /></details>
             <p className="mt-4 text-xs leading-6 text-slate-400">
               Предварительные данные перепроверяются по публичным круизным календарям. Финальный порт, разрешение на въезд и точку встречи GoVietStay уточняет под конкретный лайнер.
             </p>
@@ -302,19 +359,6 @@ export default function Page() {
           <div className="mt-6 rounded-2xl border border-amber-300/30 bg-amber-300/10 p-5 leading-7 text-amber-50">
             <strong>Нельзя рассчитывать маршрут только по ETD.</strong> Время all aboard обычно раньше отправления. GoVietStay строит программу назад от вашего официального all aboard и оставляет практический запас на возвращение.
           </div>
-        </div>
-      </section>
-
-      <section id="itineraries" className="border-y border-white/10 bg-white/[0.03]">
-        <div className="mx-auto max-w-6xl px-5 py-14">
-          <h2 className="text-3xl font-black md:text-4xl">Сколько реально можно увидеть за один круизный день?</h2>
-          <p className="mt-3 max-w-3xl text-slate-300">Ниже — ориентиры. Реальное время на экскурсию начинается после выхода гостей с лайнера и прохождения портовых процедур. Мы сокращаем или расширяем маршрут под конкретную стоянку.</p>
-
-          <h3 className="mt-10 text-2xl font-extrabold text-sky-300">Из порта Чан Май</h3>
-          <div className="mt-5 grid gap-5 lg:grid-cols-3">{chanMayPlans.map((x)=><article key={x.time} className="rounded-2xl border border-white/10 bg-slate-900 p-6"><p className="text-sm font-bold text-emerald-300">{x.time}</p><h4 className="mt-2 text-xl font-black">{x.title}</h4><p className="mt-3 leading-7 text-slate-300">{x.plan}</p><p className="mt-4 text-sm leading-6 text-slate-400">{x.note}</p></article>)}</div>
-
-          <h3 className="mt-12 text-2xl font-extrabold text-sky-300">Из порта Тьен Са</h3>
-          <div className="mt-5 grid gap-5 lg:grid-cols-3">{tienSaPlans.map((x)=><article key={x.time} className="rounded-2xl border border-white/10 bg-slate-900 p-6"><p className="text-sm font-bold text-emerald-300">{x.time}</p><h4 className="mt-2 text-xl font-black">{x.title}</h4><p className="mt-3 leading-7 text-slate-300">{x.plan}</p><p className="mt-4 text-sm leading-6 text-slate-400">{x.note}</p></article>)}</div>
         </div>
       </section>
 
@@ -368,6 +412,13 @@ export default function Page() {
           </div>
         </div>
       </section>
+      <div className="mx-auto max-w-6xl px-5 py-5 text-xs leading-5 text-slate-400">
+        <p>Фотографии природы, достопримечательностей и лайнера предоставлены авторами на Unsplash и используются как иллюстрации. Это не фотографии гостей GoVietStay и не подтверждение захода конкретного лайнера.</p>
+        <a href="https://unsplash.com/license" target="_blank" rel="noopener noreferrer" className="mt-1 inline-block underline underline-offset-2">Условия лицензии Unsplash</a>
+      </div>
+      <div className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-[#092734]/95 p-3 backdrop-blur-xl md:hidden">
+        <a href={WHATSAPP_CRUISE} target="_blank" rel="noopener noreferrer" className="flex min-h-12 items-center justify-center rounded-xl bg-emerald-400 px-4 text-center text-sm font-black text-[#06352c] shadow-xl">Рассчитать экскурсию в WhatsApp ↗</a>
+      </div>
     </main>
   );
 }
