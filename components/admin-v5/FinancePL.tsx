@@ -245,7 +245,6 @@ export default function FinancePL({supabase}:Props){
       const discount=parseMoney(vals.discount_vnd);
       const payload={
         booking_id:editBooking.booking_id,
-        amount_received_vnd:parseMoney(vals.amount_received_vnd),
         supplier_cost_vnd:parseMoney(vals.supplier_cost_vnd),
         guide_cost_vnd:parseMoney(vals.guide_cost_vnd),
         driver_cost_vnd:parseMoney(vals.driver_cost_vnd),
@@ -348,14 +347,14 @@ export default function FinancePL({supabase}:Props){
       await openZeroRevenueFinalize(row);
       return;
     }
-    if(Number(row.balance_vnd||0)>0){
-      setError("Booking còn số dư chưa ghi nhận thanh toán. Hãy đối chiếu và cập nhật số tiền đã thu trong P&L trước khi dùng Hoàn tất & chốt. Nếu tour đã kết thúc nhưng khách chưa trả đủ, hãy chuyển trạng thái Completed tại Bookings, không tự xác nhận Paid.");
+    if(!row.finance_record){
+      setError("Booking chưa có phiếu P&L. Hãy lưu chi phí thực tế trước khi chốt.");
       return;
     }
-    if(!window.confirm(`Hoàn tất & chốt ${row.booking_code||"booking"}?\n\nTự động:\n• Completed\n• Paid\n• Amount Received = ${money(row.revenue_vnd)}\n• Finance Finalized\n• Payroll recalculated\n\nChi phí hiện tại được giữ nguyên.`))return;
+    if(!window.confirm(`Xác nhận hoàn thành tour ${row.booking_code||"booking"}?\n\nDoanh thu: ${money(row.revenue_vnd)}\nChi phí: ${money(row.total_direct_cost_vnd)}\nĐã thu: ${money(row.amount_received_vnd)}\nKhách còn nợ: ${money(row.balance_vnd)}\nCòn phải trả NCC: ${money(row.direct_cost_payable_vnd)}\n\nKhông thay đổi tiền đã thu hoặc trạng thái thanh toán. Công nợ tiếp tục được theo dõi.`))return;
     setSaving(true);setError("");setMessage("");
     try{
-      const {data,error}=await supabase.rpc("admin_finalize_booking_one_click",{p_booking_id:row.booking_id});
+      const {data,error}=await supabase.rpc("admin_finalize_booking_preserve_payments",{p_booking_id:row.booking_id});
       if(error)throw error;
       setEditBooking(null);
       const warning=data?.warning==="NO_DIRECT_COST"?" ⚠ Chưa có direct cost; anh có thể bổ sung sau.":"";
@@ -504,7 +503,7 @@ export default function FinancePL({supabase}:Props){
               {canOverride&&<button className="gva-btn secondary" disabled={saving||["cancelled","refunded"].includes(String(row.status||"").toLowerCase())} onClick={()=>adminOverride(row)} title="Chỉ Owner: đóng hồ sơ có lý do, giữ nguyên công nợ và lưu nhật ký">Chốt đặc biệt</button>}
               {row.status==="completed"&&row.finance_finalized&&row.balance_vnd<=0
                 ? <button className="gva-btn secondary" disabled>✓ Đã chốt</button>
-                : <button className="gva-btn" disabled={saving||Number(row.balance_vnd||0)>0||!row.tour_date||row.tour_date>localTodayVN()||String(row.status||"").toLowerCase()==="cancelled"} title={!row.tour_date||row.tour_date>localTodayVN()?"Chưa tới ngày thực hiện":Number(row.balance_vnd||0)>0?"Cần đối chiếu tiền đã thu trước khi chốt":undefined} onClick={()=>finalizeBookingOneClick(row)}>✓ Hoàn tất & chốt</button>}
+                : <button className="gva-btn" disabled={saving||!row.finance_record||!row.tour_date||row.tour_date>localTodayVN()||["cancelled","refunded"].includes(String(row.status||"").toLowerCase())} title={!row.finance_record?"Lưu P&L trước khi chốt":!row.tour_date||row.tour_date>localTodayVN()?"Chưa tới ngày thực hiện":undefined} onClick={()=>finalizeBookingOneClick(row)}>✓ Hoàn tất & chốt</button>}
             </div>
           </div>
           <div className="gva-mini" style={{margin:"8px 0",fontWeight:650}}>
@@ -715,7 +714,10 @@ function FinanceModal({row,deposit,saving,onClose,onSubmit,onFinalize}:any){
     <div className="gva-form-grid">
       <MoneyField name="gross_revenue_vnd" label="Gross selling price" value={row.gross_revenue_vnd}/>
       <MoneyField name="discount_vnd" label="Discount" value={row.discount_vnd}/>
-      <MoneyField name="amount_received_vnd" label="Amount received" value={row.amount_received_vnd}/>
+      <Field label="Amount received · tự đồng bộ Payments">
+        <div className="gva-input" style={{background:"#f1f5f9",fontWeight:700}}>{money(row.amount_received_vnd)}</div>
+        <a href={`/admin/payments?q=${encodeURIComponent(row.booking_code||"")}`} target="_blank" rel="noopener noreferrer" style={{fontSize:12}}>Ghi nhận / đối soát tại Payment Center</a>
+      </Field>
       <MoneyField name="direct_cost_paid_vnd" label="Direct cost already paid" value={row.direct_cost_paid_vnd}/>
       <MoneyField name="supplier_cost_vnd" label="Supplier / operator" value={row.supplier_cost_vnd}/>
       <MoneyField name="guide_cost_vnd" label="Guide" value={row.guide_cost_vnd}/>
@@ -732,7 +734,7 @@ function FinanceModal({row,deposit,saving,onClose,onSubmit,onFinalize}:any){
       <Field label="Finance notes" wide><textarea className="gva-input" name="notes" rows={3} defaultValue={row.finance_notes||""}/></Field>
     </div>
     <div className="gvs-modal-summary"><span>Current revenue <b>{money(row.revenue_vnd)}</b></span><span>Direct cost <b>{money(row.total_direct_cost_vnd)}</b></span><span>Profit <b>{money(row.gross_profit_vnd)}</b></span></div>
-    <div className="gvs-modal-actions"><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button type="button" className="gva-btn" disabled={saving||Number(row.balance_vnd||0)>0||String(row.status||"").toLowerCase()==="cancelled"} title={Number(row.balance_vnd||0)>0?"Cần đối chiếu thanh toán":undefined} onClick={onFinalize}>✓ Hoàn tất & chốt</button><button className="gva-btn secondary" disabled={saving}>{saving?"Đang lưu…":"Lưu P&L"}</button></div>
+    <div className="gvs-modal-actions"><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button type="button" className="gva-btn" disabled={saving||!row.finance_record||!row.tour_date||row.tour_date>localTodayVN()||["cancelled","refunded"].includes(String(row.status||"").toLowerCase())} title={!row.finance_record?"Lưu P&L trước khi chốt":undefined} onClick={onFinalize}>✓ Hoàn tất & chốt</button><button className="gva-btn secondary" disabled={saving}>{saving?"Đang lưu…":"Lưu P&L"}</button></div>
   </form></div>;
 }
 
