@@ -3,6 +3,8 @@
 
 import { Fragment, useEffect, useMemo, useState } from "react";
 import "./finance-pl.css";
+import {downloadFinanceXlsx} from "./finance-xlsx";
+import type {FinanceSheet} from "./finance-xlsx";
 
 type Props = { supabase:any };
 
@@ -141,6 +143,7 @@ export default function FinancePL({supabase}:Props){
   const [expenses,setExpenses]=useState<Expense[]>([]);
   const [loading,setLoading]=useState(true);
   const [saving,setSaving]=useState(false);
+  const [exporting,setExporting]=useState(false);
   const [error,setError]=useState("");
   const [message,setMessage]=useState("");
   const [closeFeedback,setCloseFeedback]=useState<{id:string;text:string;failed:boolean}|null>(null);
@@ -235,6 +238,138 @@ export default function FinancePL({supabase}:Props){
   const lowestMargin=useMemo(()=>{
     return [...(breakdowns.product||[])].filter(x=>Number(x.revenue_vnd)>0).sort((a,b)=>Number(a.margin_pct)-Number(b.margin_pct))[0];
   },[breakdowns.product]);
+
+  async function exportExcel(){
+    if(exporting||saving)return;
+    setExporting(true);setError("");setMessage("");
+    const exportMonth=month;
+    const n=(v:any)=>Number(v||0);
+    const sum=(rows:any[],key:string)=>rows.reduce((a,b)=>a+n(b[key]),0);
+    const F=(formula:string,value:number)=>({formula,value});
+    const range=(name:string,column:string,len:number)=>"'" + name + "'!"+column+"2:"+column+Math.max(2,len+1);
+    const SUM=(name:string,column:string,len:number)=>"SUM("+range(name,column,len)+")";
+    async function allRows(factory:()=>any):Promise<any[]>{
+      const rows:any[]=[];
+      for(let offset=0;;offset+=500){
+        const {data,error}=await factory().range(offset,offset+499);
+        if(error)throw error;
+        const batch=data||[];
+        rows.push(...batch);
+        if(batch.length<500)return rows;
+      }
+    }
+    try{
+      const {start,end}=monthBounds(exportMonth);
+      const pMonth=exportMonth+"-01";
+      // Same monthly RPCs used by the on-screen report; include archived bookings.
+      const sr=await supabase.rpc("admin_monthly_pl",{p_month:pMonth});
+      if(sr.error)throw sr.error;
+      const cs=await supabase.rpc("admin_monthly_cancellation_summary",{p_month:pMonth});
+      if(cs.error)throw cs.error;
+      const sm=sr.data||{}, cm=cs.data||{};
+      const [bs,es,cc]=await Promise.all([
+        allRows(()=>supabase.rpc("admin_monthly_pl_bookings",{p_month:pMonth}).order("booking_id")),
+        allRows(()=>supabase.from("monthly_operating_expenses").select("id,expense_date,category,description,amount_vnd,payment_method,notes").gte("expense_date",start).lt("expense_date",end).order("id")),
+        allRows(()=>supabase.from("booking_cancellations").select("booking_id,cancelled_at,reason,supplier_fee_vnd,customer_fee_due_vnd,customer_recovery_vnd,fee_paid_vnd,bookings(booking_code,custom_tour_name,pax)").gte("cancelled_at",start).lt("cancelled_at",end).order("booking_id"))
+      ]);
+      if(bs.length!==n(sm.bookings_all)||cc.length!==n(cm.count))throw new Error("Số booking chi tiết không khớp tổng hợp. Vui lòng làm mới P&L và thử lại.");
+      const ids=Array.from(new Set([...bs,...cc].map(x=>x.booking_id)));
+      const payments:any[]=[],fin:any[]=[];
+      for(let i=0;i<ids.length;i+=100){
+        const chunk=ids.slice(i,i+100);
+        const [pr,fr]=await Promise.all([
+          allRows(()=>supabase.from("payments").select("id,booking_id,amount_vnd,payment_type,status,method,paid_at,created_at,external_reference").in("booking_id",chunk).order("id")),
+          allRows(()=>supabase.from("booking_financials").select("booking_id,revenue_recorded_in_booking_id,staff_commission_vnd").in("booking_id",chunk).order("booking_id"))
+        ]);
+        payments.push(...pr);fin.push(...fr);
+      }
+      const byId=new Map<string,any>(bs.map(b=>[b.booking_id,b]));
+      const byFin=new Map<string,any>(fin.map(f=>[f.booking_id,f]));
+      const cancelCode=new Map<string,string>(cc.map(c=>[c.booking_id,c.bookings?.booking_code||""]));
+      const ledger=new Map<string,{deposit:number;received:number}>();
+      for(const p of payments){
+        if(p.status!=="received")continue;
+        const e=ledger.get(p.booking_id)||{deposit:0,received:0};
+        e.received+=(p.payment_type==="refund"?-1:1)*n(p.amount_vnd);
+        if(p.payment_type==="deposit")e.deposit+=n(p.amount_vnd);
+        ledger.set(p.booking_id,e);
+      }
+      const parentCode=(b:any)=>{
+        const pid=byFin.get(b.booking_id)?.revenue_recorded_in_booking_id;
+        return pid?(byId.get(pid)?.booking_code||"Ngoài tháng: "+pid):"";
+      };
+      const bRows:FinanceSheet["rows"]=[["Mã booking","Ngày tour","Khách","Tour","Điểm đến","Trạng thái tour","Actual (1/0)","Đã chốt","Pax","Giá bán gộp","Giảm giá","Doanh thu thuần","Cọc đã nhận","Payments thực nhận","P&L đã thu","Chênh lệch thu","Khách còn nợ","Direct cost (gồm HH nhân sự)","Đã trả NCC","Còn trả NCC","Lợi nhuận","Đối soát","Booking doanh thu gói","Nguồn","Đối tác","Ghi chú","Supplier","Guide","Driver","Tickets","Meals","Boat","Hotel","HH đối tác","Phí thanh toán","Refund recovery","Chi phí khác","HH nhân sự"]];
+      const recRows:FinanceSheet["rows"]=[["Mã booking","Ngày tour","Khách","Doanh thu","Đã thu P&L","Còn phải thu","Chênh lệch Payments"]];
+      const payRows:FinanceSheet["rows"]=[["Mã booking","Ngày tour","Loại giao dịch","Trạng thái","Hình thức","Số tiền","Thực nhận ròng","Ngày thanh toán","Ngày ghi nhận","Tham chiếu","ID giao dịch"]];
+      const payableRows:FinanceSheet["rows"]=[["Mã booking","Ngày tour","Tour","Direct cost (gồm HH nhân sự)","Đã trả NCC","Còn trả NCC"]];
+      for(const b of bs){
+        const i=bRows.length+1, e=ledger.get(b.booking_id)||{deposit:0,received:0};
+        const received=Math.max(0,e.received), diff=n(b.amount_received_vnd)-received;
+        const status=diff!==0?"CHÊNH LỆCH":!b.finance_record?"THIẾU DỮ LIỆU":!b.finance_finalized?"CHƯA CHỐT":n(b.balance_vnd)>0||n(b.direct_cost_payable_vnd)>0?"CÒN CÔNG NỢ":"KHỚP";
+        bRows.push([b.booking_code||b.booking_id,b.tour_date||"",b.guest_name||"",b.product||"",b.destination||"",b.status||"",b.recognized?1:0,b.finance_finalized?"Có":"Không",n(b.pax),n(b.gross_revenue_vnd),n(b.discount_vnd),n(b.revenue_vnd),e.deposit,received,n(b.amount_received_vnd),F("O"+i+"-N"+i,diff),F("MAX(0,L"+i+"-O"+i+")",n(b.balance_vnd)),n(b.total_direct_cost_vnd),n(b.direct_cost_paid_vnd),n(b.direct_cost_payable_vnd),F("L"+i+"-R"+i,n(b.gross_profit_vnd)),status,parentCode(b),b.source||"",b.partner||"",b.finance_notes||"",n(b.supplier_cost_vnd),n(b.guide_cost_vnd),n(b.driver_cost_vnd),n(b.tickets_cost_vnd),n(b.meals_cost_vnd),n(b.boat_cost_vnd),n(b.hotel_cost_vnd),n(b.partner_commission_vnd),n(b.payment_fee_vnd),n(b.refund_recovery_vnd),n(b.other_cost_vnd),n(byFin.get(b.booking_id)?.staff_commission_vnd)]);
+        if(n(b.balance_vnd)>0||diff!==0)recRows.push([b.booking_code||b.booking_id,b.tour_date||"",b.guest_name||"",n(b.revenue_vnd),n(b.amount_received_vnd),n(b.balance_vnd),diff]);
+        if(n(b.direct_cost_payable_vnd)>0)payableRows.push([b.booking_code||b.booking_id,b.tour_date||"",b.product||"",n(b.total_direct_cost_vnd),n(b.direct_cost_paid_vnd),n(b.direct_cost_payable_vnd)]);
+      }
+      for(const p of payments){
+        const b=byId.get(p.booking_id);
+        payRows.push([b?.booking_code||cancelCode.get(p.booking_id)||p.booking_id,b?.tour_date||"",p.payment_type||"",p.status||"",p.method||"",n(p.amount_vnd),p.status==="received"?(p.payment_type==="refund"?-1:1)*n(p.amount_vnd):0,p.paid_at||"",p.created_at||"",p.external_reference||"",p.id]);
+      }
+      const oRows:FinanceSheet["rows"]=[["Ngày","Nhóm chi phí","Nội dung","Số tiền","Hình thức","Ghi chú"]];
+      for(const e of es)oRows.push([e.expense_date,e.category||"",e.description||"",n(e.amount_vnd),e.payment_method||"",e.notes||""]);
+      oRows.push([exportMonth,"STAFF OPEX","Lương cơ bản + điều chỉnh hoa hồng + thưởng - khấu trừ",n(sm.staff_opex_vnd),"","Tổng hợp từ payroll; không cộng trùng direct cost"]);
+      const cRows:FinanceSheet["rows"]=[["Mã booking","Ngày hủy","Tour","Lý do","Phí NCC","Phí khách phải trả","Phí đã thu","Đã trả NCC","Còn phải trả NCC","Lãi/lỗ phí hủy"]];
+      for(const c of cc){
+        const i=cRows.length+1;
+        cRows.push([c.bookings?.booking_code||c.booking_id,c.cancelled_at,c.bookings?.custom_tour_name||"",c.reason||"",n(c.supplier_fee_vnd),n(c.customer_fee_due_vnd),n(c.customer_recovery_vnd),n(c.fee_paid_vnd),F("E"+i+"-H"+i,n(c.supplier_fee_vnd)-n(c.fee_paid_vnd)),F("G"+i+"-E"+i,n(c.customer_recovery_vnd)-n(c.supplier_fee_vnd))]);
+      }
+      const groups=new Map<string,any[]>();
+      const parents=new Set(fin.filter(f=>f.revenue_recorded_in_booking_id).map(f=>f.revenue_recorded_in_booking_id));
+      for(const b of bs){
+        const pid=byFin.get(b.booking_id)?.revenue_recorded_in_booking_id;
+        if(!pid&&!parents.has(b.booking_id))continue;
+        const key=pid||b.booking_id; const group=groups.get(key)||[];group.push(b);groups.set(key,group);
+      }
+      const gRows:FinanceSheet["rows"]=[["Booking doanh thu gói","Khách","Số booking trong tháng","Doanh thu actual","Chi phí actual","Lợi nhuận actual","Ghi chú"]];
+      for(const [id,rows] of groups){
+        const a=rows.filter(b=>b.recognized), i=gRows.length+1, rev=sum(a,"revenue_vnd"), cost=sum(a,"total_direct_cost_vnd");
+        gRows.push([byId.get(id)?.booking_code||id,rows[0]?.guest_name||"",rows.length,rev,cost,F("D"+i+"-E"+i,rev-cost),byId.has(id)?"Chỉ các ngày thuộc tháng xuất; không cộng lại vào Summary":"Booking doanh thu chính ngoài tháng; không phải tổng cả gói"]);
+      }
+      const actual=bs.filter(b=>b.recognized), ar=sum(actual,"revenue_vnd"), ac=sum(actual,"total_direct_cost_vnd"), cr=sum(cc,"customer_recovery_vnd"), cCost=sum(cc,"supplier_fee_vnd"), op=sum(es,"amount_vnd")+n(sm.staff_opex_vnd);
+      const actualFormula=(column:string)=>"SUMIF("+range("02 Bookings","G",bs.length)+",1,"+range("02 Bookings",column,bs.length)+")";
+      const summaryRows:FinanceSheet["rows"]=[["Chỉ tiêu (VND)","Tính từ Excel","P&L hệ thống","Chênh lệch","Ghi chú"]];
+      function metric(label:string,formula:string,value:number,system:number,note=""){
+        const i=summaryRows.length+1;
+        summaryRows.push([label,F(formula,value),system,F("B"+i+"-C"+i,value-system),note]);
+      }
+      metric("Doanh thu tour actual",actualFormula("L"),ar,n(sm.revenue_vnd));
+      metric("Phí hủy đã thu",SUM("07 Cancellations","G",cc.length),cr,n(cm.recovered_vnd));
+      metric("Tổng doanh thu","B2+B3",ar+cr,n(sm.revenue_vnd)+n(cm.recovered_vnd));
+      metric("Direct cost tour",actualFormula("R"),ac,n(sm.direct_costs_vnd));
+      metric("Phí hủy NCC",SUM("07 Cancellations","E",cc.length),cCost,n(cm.supplier_fees_vnd));
+      metric("Tổng direct cost","B5+B6",ac+cCost,n(sm.direct_costs_vnd)+n(cm.supplier_fees_vnd));
+      metric("Gross profit","B4-B7",ar+cr-ac-cCost,n(sm.revenue_vnd)+n(cm.recovered_vnd)-n(sm.direct_costs_vnd)-n(cm.supplier_fees_vnd));
+      metric("OPEX",SUM("06 OPEX","D",es.length+1),op,n(sm.opex_vnd),"Gồm chi phí nhập tay và staff OPEX");
+      metric("Net operating profit","B8-B9",ar+cr-ac-cCost-op,n(sm.revenue_vnd)+n(cm.recovered_vnd)-n(sm.direct_costs_vnd)-n(cm.supplier_fees_vnd)-n(sm.opex_vnd));
+      metric("Đã thu booking (lũy kế)",SUM("02 Bookings","O",bs.length),sum(bs,"amount_received_vnd"),n(sm.amount_received_vnd),"Không phải dòng tiền thu riêng trong tháng");
+      metric("Khách còn phải thu",SUM("02 Bookings","Q",bs.length),sum(bs,"balance_vnd"),n(sm.receivable_vnd));
+      metric("Còn trả NCC tour",SUM("02 Bookings","T",bs.length),sum(bs,"direct_cost_payable_vnd"),n(sm.direct_cost_payable_vnd));
+      metric("Còn trả phí hủy NCC",SUM("07 Cancellations","I",cc.length),sum(cc,"supplier_fee_vnd")-sum(cc,"fee_paid_vnd"),n(cm.payable_vnd));
+      summaryRows.push(["Kỳ báo cáo",exportMonth,"","","Theo ngày tour; hủy theo ngày hủy"],["Nguồn","GoVietStay Admin / P&L","","","https://govietstay.com/admin"],["Thời điểm xuất",new Date().toISOString(),"","","UTC"],["Phạm vi Payments","Giao dịch của booking thuộc kỳ","","","Bao gồm giao dịch trước/sau tháng; không phải báo cáo dòng tiền theo ngày thu"],["Booking chưa hoàn tất tài chính",n(sm.missing_finance_count),"","","Theo P&L hệ thống"],["Lưu ý","Chênh lệch cột D khác 0 cần kiểm tra","","","File đối soát; sửa Excel không cập nhật database"]);
+      const sheets:FinanceSheet[]=[
+        {name:"01 Summary",rows:summaryRows,widths:[32,24,22,20,64]},
+        {name:"02 Bookings",rows:bRows,widths:[24,14,28,42,20,18,14,14,10,20,16,20,18,22,20,20,20,26,20,20,20,22,28,18,22,56],statusColumn:21},
+        {name:"03 Payments",rows:payRows,widths:[24,14,18,16,18,20,20,28,28,36,40]},
+        {name:"04 Receivables",rows:recRows,widths:[24,14,28,20,20,20,24]},
+        {name:"05 Payables",rows:payableRows,widths:[24,14,42,28,20,20]},
+        {name:"06 OPEX",rows:oRows,widths:[18,22,60,20,20,48]},
+        {name:"07 Cancellations",rows:cRows,widths:[24,28,40,48,20,20,20,20,22,22]},
+        {name:"08 Packages",rows:gRows,widths:[30,28,20,20,20,20,68]}
+      ];
+      downloadFinanceXlsx(sheets,exportMonth);
+      setMessage("Đã xuất Excel P&L "+exportMonth+" ("+bs.length+" booking). Kiểm tra chênh lệch trong file.");
+    }catch(e:any){setError(e?.message||"Không xuất được Excel P&L.");}
+    finally{setExporting(false);}
+  }
 
   async function saveBookingFinance(e:any){
     e.preventDefault();
@@ -445,6 +580,7 @@ export default function FinancePL({supabase}:Props){
       <div className="gvs-finance-head-actions">
         <input className="gva-input" type="month" value={month} onChange={e=>setMonth(e.target.value)} />
         <button className="gva-btn secondary" onClick={load} disabled={loading}>{loading?"Đang tải…":"Làm mới"}</button>
+        <button type="button" className="gva-btn" style={{background:"#167345",color:"white"}} disabled={loading||saving||exporting||!month} onClick={()=>void exportExcel()}>{exporting?"Đang xuất Excel…":"↓ Xuất Excel (.xlsx)"}</button>
         <button className="gva-btn" onClick={()=>setExpenseOpen(true)}>+ OPEX</button>
       </div>
     </div>
