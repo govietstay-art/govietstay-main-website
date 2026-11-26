@@ -111,6 +111,7 @@ export default function PaymentCenter({embedded=false}:{embedded?:boolean} = {})
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [search, setSearch] = useState("");
+  const [bookingView, setBookingView] = useState<"active"|"archive"|"receivable"|"all">("active");
   const [data, setData] = useState<LoadData>({
     staff: null,
     bookings: [],
@@ -128,7 +129,7 @@ export default function PaymentCenter({embedded=false}:{embedded?:boolean} = {})
       const token = authData.session?.access_token || "";
       setSessionToken(token);
       const q = new URLSearchParams(window.location.search).get("q") || "";
-      if (q) setSearch(q);
+      if (q) { setSearch(q); setBookingView("all"); }
       if (token) void load(token);
       else setLoading(false);
     });
@@ -238,24 +239,24 @@ export default function PaymentCenter({embedded=false}:{embedded?:boolean} = {})
     return `${window.location.origin}/pay/${link.token}`;
   }
 
+  const groups = useMemo(() => {
+    const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Ho_Chi_Minh", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+    const cutoff = Date.parse(today + "T00:00:00Z") - 3 * 86400000;
+    const archived = (b: Booking) => ["completed","closed","cancelled","canceled","refunded"].includes(String(b.status||"").toLowerCase()) || (!!b.tour_date && Date.parse(b.tour_date + "T00:00:00Z") < cutoff);
+    const receivable = (b: Booking) => !["cancelled","canceled","refunded"].includes(String(b.status||"").toLowerCase()) && Math.max(0, Number(b.net_revenue_vnd ?? b.gross_revenue_vnd ?? 0) - Math.max(0, Number(financialMap[b.id]?.amount_received_vnd || 0))) > 0;
+    return {active:data.bookings.filter(b=>!archived(b)),archive:data.bookings.filter(archived),receivable:data.bookings.filter(receivable),all:data.bookings};
+  }, [data.bookings, financialMap]);
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
-    if (!q) return data.bookings;
-    return data.bookings.filter((b) => {
+    const rows = groups[bookingView];
+    if (!q) return rows;
+    return rows.filter((b) => {
       const contact = contactMap[b.contact_id || ""];
       const tour = tourMap[b.tour_id || ""];
-      return [
-        b.booking_code,
-        serviceName(b),
-        contact?.full_name,
-        contact?.whatsapp,
-        b.custom_destination,
-        tour?.destination,
-      ]
-        .filter(Boolean)
-        .some((x) => String(x).toLowerCase().includes(q));
+      return [b.booking_code, serviceName(b), contact?.full_name, contact?.whatsapp, b.custom_destination, tour?.destination]
+        .filter(Boolean).some((x) => String(x).toLowerCase().includes(q));
     });
-  }, [search, data.bookings, contactMap, tourMap]);
+  }, [search, groups, bookingView, contactMap, tourMap]);
 
   async function runAction(task: () => Promise<void>) {
     if (saving) return;
@@ -419,6 +420,12 @@ export default function PaymentCenter({embedded=false}:{embedded?:boolean} = {})
       <div><span>Active payment links</span><b>{activeLinks}</b></div>
     </section>
 
+    <nav className="gpay-actions" aria-label="Lọc booking thanh toán" style={{margin:"12px 0",flexWrap:"wrap"}}>
+      {([["active","Đang xử lý"],["archive","Booking cũ / Đã ẩn"],["receivable","Công nợ"],["all","Xem tất cả"]] as const).map(([key,label])=>
+        <button key={key} type="button" className={"gpay-btn "+(bookingView===key?"primary":"light")} aria-pressed={bookingView===key} onClick={()=>setBookingView(key)}>{label} ({groups[key].length})</button>
+      )}
+    </nav>
+    <p style={{fontSize:12,margin:"0 0 10px"}}>Tour đã hoàn thành, đã hủy hoặc quá ngày đi 3 ngày được ẩn khỏi danh sách đang xử lý. Công nợ vẫn có thể tra cứu riêng. Bộ lọc không thay đổi tiền đã thu, payment link hay lịch sử giao dịch. Chỉ số trên cùng là tổng toàn bộ dữ liệu đã tải.</p>
     <input className="gpay-input gpay-search" placeholder="Tìm booking, khách, WhatsApp, tour…" value={search} onChange={(e) => setSearch(e.target.value)} />
 
     <section className="gpay-grid">
