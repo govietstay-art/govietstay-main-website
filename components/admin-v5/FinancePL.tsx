@@ -112,6 +112,7 @@ function monthBounds(month:string){
   const end=`${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,"0")}-01`;
   return {start,end};
 }
+function isFinanceClosed(row:BookingRow){return ["completed","closed"].includes(String(row.status||"").toLowerCase())&&row.finance_finalized;}
 function localTodayVN(){return new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Ho_Chi_Minh",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date());}
 function pastThreeDays(date:string|null){
  if(!date)return false;
@@ -142,6 +143,7 @@ export default function FinancePL({supabase}:Props){
   const [saving,setSaving]=useState(false);
   const [error,setError]=useState("");
   const [message,setMessage]=useState("");
+  const [closeFeedback,setCloseFeedback]=useState<{id:string;text:string;failed:boolean}|null>(null);
   const [editBooking,setEditBooking]=useState<BookingRow|null>(null);
   const [expenseOpen,setExpenseOpen]=useState(false);
   const [payablesOpen,setPayablesOpen]=useState(false);
@@ -327,9 +329,10 @@ export default function FinancePL({supabase}:Props){
 
   async function adminOverride(row:BookingRow){
     if(!canOverride)return;
+    setCloseFeedback(null);
     const reason=window.prompt("Lý do chốt đặc biệt (ít nhất 8 ký tự). Không xác nhận tiền đã thu:","");
     if(reason===null)return;
-    if(reason.trim().length<8){setError("Vui lòng nhập lý do rõ ràng, ít nhất 8 ký tự.");return;}
+    if(reason.trim().length<8){setCloseFeedback({id:row.booking_id,text:"Vui lòng nhập lý do rõ ràng, ít nhất 8 ký tự.",failed:true});return;}
     const future=!row.tour_date||row.tour_date>localTodayVN();
     const serviceCompleted=!future&&window.confirm("Tour đã thực sự hoàn thành?\\nOK = Xác nhận hoàn thành dịch vụ.\\nCancel = Chỉ ẩn hồ sơ, KHÔNG xác nhận tour đã đi.");
     if(!window.confirm("Xác nhận quyền Owner: "+(serviceCompleted?"ĐÁNH DẤU TOUR ĐÃ HOÀN THÀNH":"CHỈ ẨN HỒ SƠ")+"?\\n\\nSố đã thu, Paid, chi phí và công nợ giữ nguyên. Có lưu nhật ký."))return;
@@ -339,10 +342,13 @@ export default function FinancePL({supabase}:Props){
       if(error)throw error;
       setMessage("Đã xử lý đặc biệt "+(row.booking_code||"booking")+". Công nợ giữ nguyên; tra cứu trong Booking cũ / Đã ẩn.");
       await load();
-    }catch(e:any){setError(e?.message||"Không thể xử lý đặc biệt.");}
+      setCloseFeedback({id:row.booking_id,text:"Đã xử lý đặc biệt. Công nợ và trạng thái kết sổ giữ nguyên.",failed:false});
+    }catch(e:any){setError(e?.message||"Không thể xử lý đặc biệt.");setCloseFeedback({id:row.booking_id,text:e?.message||"Không thể xử lý đặc biệt.",failed:true});}
     finally{setSaving(false);}
   }
   async function finalizeBookingOneClick(row:BookingRow){
+    setCloseFeedback(null);
+    if(isFinanceClosed(row)){setCloseFeedback({id:row.booking_id,text:"Đã chốt P&L; công nợ vẫn theo dõi riêng.",failed:false});return;}
     if(Number(row.revenue_vnd||0)===0){
       await openZeroRevenueFinalize(row);
       return;
@@ -360,7 +366,7 @@ export default function FinancePL({supabase}:Props){
       const warning=data?.warning==="NO_DIRECT_COST"?" ⚠ Chưa có direct cost; anh có thể bổ sung sau.":"";
       setMessage(`✓ ${data?.booking_code||row.booking_code||"Booking"} đã chốt hoàn tất.${warning}`);
       await load();
-    }catch(e:any){setError(e?.message||"Không chốt được booking.");}
+    }catch(e:any){setError(e?.message||"Không chốt được booking.");setCloseFeedback({id:row.booking_id,text:e?.message||"Không chốt được booking.",failed:true});}
     finally{setSaving(false)}
   }
 
@@ -500,9 +506,9 @@ export default function FinancePL({supabase}:Props){
             <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
               <button className="gva-btn secondary" onClick={()=>setEditBooking(row)}>Edit P&amp;L</button>
               <button className="gva-btn secondary" disabled={saving||row.recognized} onClick={()=>setCancelBooking(row)}>Hủy booking</button>
-              {canOverride&&<button className="gva-btn secondary" disabled={saving||["cancelled","refunded"].includes(String(row.status||"").toLowerCase())} onClick={()=>adminOverride(row)} title="Chỉ Owner: đóng hồ sơ có lý do, giữ nguyên công nợ và lưu nhật ký">Chốt đặc biệt</button>}
-              {row.status==="completed"&&row.finance_finalized&&row.balance_vnd<=0
-                ? <button className="gva-btn secondary" disabled>✓ Đã chốt</button>
+              {canOverride&&!isFinanceClosed(row)&&<button className="gva-btn secondary" disabled={saving||["cancelled","refunded"].includes(String(row.status||"").toLowerCase())} onClick={()=>adminOverride(row)} title="Chỉ Owner: đóng hồ sơ có lý do, giữ nguyên công nợ và lưu nhật ký">Chốt đặc biệt</button>}
+              {isFinanceClosed(row)
+                ? <button className="gva-btn secondary" disabled>✓ Đã chốt P&amp;L</button>
                 : <button className="gva-btn" disabled={saving||!row.finance_record||!row.tour_date||row.tour_date>localTodayVN()||["cancelled","refunded"].includes(String(row.status||"").toLowerCase())} title={!row.finance_record?"Lưu P&L trước khi chốt":!row.tour_date||row.tour_date>localTodayVN()?"Chưa tới ngày thực hiện":undefined} onClick={()=>finalizeBookingOneClick(row)}>✓ Hoàn tất & chốt</button>}
             </div>
           </div>
@@ -522,6 +528,8 @@ export default function FinancePL({supabase}:Props){
             <span><small>Balance</small><b>{money(row.balance_vnd)}</b></span>
             <span><small>Cost payable</small><b>{money(row.direct_cost_payable_vnd)}</b></span>
           </div>
+          {isFinanceClosed(row)&&<div className="gva-mini">Đã hoàn thành và kết sổ P&amp;L. {Number(row.balance_vnd||0)>0||Number(row.direct_cost_payable_vnd||0)>0?"Còn công nợ — theo dõi tại Công nợ & Đối soát.":"Không còn công nợ."}</div>}
+          {closeFeedback?.id===row.booking_id&&<div className={closeFeedback.failed?"gvs-row-warning":"gva-mini"} role={closeFeedback.failed?"alert":"status"}>{closeFeedback.text}</div>}
           {!row.finance_record&&<div className="gvs-row-warning">⚠ Chưa nhập finance record cho booking này.</div>}
           {Number(row.revenue_vnd||0)===0&&row.finance_notes?.includes("Package day - revenue recorded under booking")&&
             <div className="gva-mini">{row.finance_notes.split("\n").find(x=>x.includes("Package day - revenue recorded under booking"))}</div>}
@@ -734,7 +742,7 @@ function FinanceModal({row,deposit,saving,onClose,onSubmit,onFinalize}:any){
       <Field label="Finance notes" wide><textarea className="gva-input" name="notes" rows={3} defaultValue={row.finance_notes||""}/></Field>
     </div>
     <div className="gvs-modal-summary"><span>Current revenue <b>{money(row.revenue_vnd)}</b></span><span>Direct cost <b>{money(row.total_direct_cost_vnd)}</b></span><span>Profit <b>{money(row.gross_profit_vnd)}</b></span></div>
-    <div className="gvs-modal-actions"><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button type="button" className="gva-btn" disabled={saving||!row.finance_record||!row.tour_date||row.tour_date>localTodayVN()||["cancelled","refunded"].includes(String(row.status||"").toLowerCase())} title={!row.finance_record?"Lưu P&L trước khi chốt":undefined} onClick={onFinalize}>✓ Hoàn tất & chốt</button><button className="gva-btn secondary" disabled={saving}>{saving?"Đang lưu…":"Lưu P&L"}</button></div>
+    <div className="gvs-modal-actions"><button type="button" className="gva-btn secondary" onClick={onClose}>Hủy</button><button type="button" className="gva-btn" disabled={saving||isFinanceClosed(row)||!row.finance_record||!row.tour_date||row.tour_date>localTodayVN()||["cancelled","refunded"].includes(String(row.status||"").toLowerCase())} title={!row.finance_record?"Lưu P&L trước khi chốt":undefined} onClick={onFinalize}>{isFinanceClosed(row)?"✓ Đã chốt P&L":"✓ Hoàn tất & chốt"}</button><button className="gva-btn secondary" disabled={saving}>{saving?"Đang lưu…":"Lưu P&L"}</button></div>
   </form></div>;
 }
 
