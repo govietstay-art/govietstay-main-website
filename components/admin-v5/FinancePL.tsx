@@ -357,10 +357,11 @@ export default function FinancePL({supabase}:Props){
       setError("Booking chưa có phiếu P&L. Hãy lưu chi phí thực tế trước khi chốt.");
       return;
     }
-    if(!window.confirm(`Xác nhận hoàn thành tour ${row.booking_code||"booking"}?\n\nDoanh thu: ${money(row.revenue_vnd)}\nChi phí: ${money(row.total_direct_cost_vnd)}\nĐã thu: ${money(row.amount_received_vnd)}\nKhách còn nợ: ${money(row.balance_vnd)}\nCòn phải trả NCC: ${money(row.direct_cost_payable_vnd)}\n\nKhông thay đổi tiền đã thu hoặc trạng thái thanh toán. Công nợ tiếp tục được theo dõi.`))return;
+    const ledgerReceived=Number(depositsByBooking[row.booking_id]?.ledgerReceived||0);
+    if(!window.confirm(`Xác nhận tour ${row.booking_code||"booking"} đã hoàn thành và khách đã thanh toán đủ?\n\nGiá bán: ${money(row.revenue_vnd)}\nĐã ghi nhận Payments: ${money(ledgerReceived)}\nGhi nhận thêm: ${money(Math.max(0,Number(row.revenue_vnd)-ledgerReceived))}\nChi phí: ${money(row.total_direct_cost_vnd)}\n\nKhông cộng trùng cọc. Công nợ NCC giữ nguyên. Chỉ xác nhận nếu khách đã trả đủ.`))return;
     setSaving(true);setError("");setMessage("");
     try{
-      const {data,error}=await supabase.rpc("admin_finalize_booking_preserve_payments",{p_booking_id:row.booking_id});
+      const {data,error}=await supabase.rpc("admin_finalize_booking_confirm_full_payment",{p_booking_id:row.booking_id});
       if(error)throw error;
       setEditBooking(null);
       const warning=data?.warning==="NO_DIRECT_COST"?" ⚠ Chưa có direct cost; anh có thể bổ sung sau.":"";
