@@ -56,7 +56,7 @@ export default function TaiwanHub() {
           <span><b>GoVietStay</b><small>TAIWAN TRAVEL HUB</small></span>
         </a>
         <nav>
-          <a href="#guides">旅遊攻略</a><a href="#essentials">熱門行程</a>
+          <a href="/tw/cruise-port-shore-excursions">2027 郵輪岸上遊</a><a href="#guides">旅遊攻略</a><a href="#essentials">熱門行程</a>
           <a href="/ko">한국어</a><a href="/in">India</a><a href="/ru">Русский</a>
           <a className={styles.cta} href={LINE} target="_blank" rel="noopener noreferrer">LINE 免費諮詢</a>
         </nav>
