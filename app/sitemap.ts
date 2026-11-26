@@ -32,6 +32,13 @@ const languageAlternates = (englishPath: string, russianPath: string) => ({
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const corePages: MetadataRoute.Sitemap = [
+    ...["cn","tw"].map(m=>({
+      url: BASE_URL + "/" + m + "/cruise-port-shore-excursions",
+      lastModified: new Date("2026-11-26T00:00:00Z"),
+      changeFrequency: "weekly" as const,
+      priority: 0.95,
+      alternates: {languages: {"zh-CN": BASE_URL+"/cn/cruise-port-shore-excursions","zh-TW": BASE_URL+"/tw/cruise-port-shore-excursions"}},
+    })),
     {
       url: `${BASE_URL}/tours/heritage-train-da-nang-hue`,
       lastModified: new Date("2026-10-29T00:00:00.000Z"),
