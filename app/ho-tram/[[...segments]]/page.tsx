@@ -64,12 +64,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const isIndexable = localeConfig[locale].indexable;
 
   const hubTitle: Record<HotramLocale, string> = {
-    en: "Private Ho Tram Tours from Long Thanh & HCMC | GoVietStay",
+    en: "Ho Tram Private Tours, Golf & Luxury Travel | GoVietStay",
     ru: "Индивидуальные экскурсии Хочам из Лонгтханя и Хошимина | GoVietStay",
     it: "Tour privati a Ho Tram da Long Thanh e Ho Chi Minh City | GoVietStay",
   };
   const hubDescription: Record<HotramLocale, string> = {
-    en: "Six focused private Ho Tram experiences for international travelers, with pickup from Ho Tram resorts, Long Thanh Airport or Ho Chi Minh City.",
+    en: "Six private Ho Tram tours, The Bluffs golf travel assistance, luxury resorts and private transfers from Ho Chi Minh City. Independent local concierge.",
     ru: "Шесть индивидуальных маршрутов по Хочаму с трансфером из отелей, аэропорта Лонгтхань или Хошимина.",
     it: "Sei esperienze private a Ho Tram con pickup dal resort, dall'aeroporto Long Thanh o da Ho Chi Minh City.",
   };
@@ -210,8 +210,8 @@ function Hub({ locale }: { locale: HotramLocale }) {
       <section className={styles.hero}>
         <div className={styles.heroCopy}>
           <p className={styles.eyebrow}>{copy.eyebrow}</p>
-          <h1>{copy.h1}</h1>
-          <p className={styles.lead}>{copy.intro}</p>
+          <h1>{locale === "en" ? "Discover Ho Tram, at your own pace." : copy.h1}</h1>
+          <p className={styles.lead}>{locale === "en" ? "Six signature private tours, The Bluffs golf travel, luxury resort stays and personal local support — all tailored to your trip." : copy.intro}</p>
           <div className={styles.heroActions}>
             <a
               className={styles.primary}
@@ -224,6 +224,7 @@ function Hub({ locale }: { locale: HotramLocale }) {
             <a className={styles.secondary} href="#six-experiences">
               {copy.toursTitle}
             </a>
+            {locale === "en" && <a className={styles.secondary} href="#luxury-concierge">Golf & luxury travel</a>}
           </div>
         </div>
         <div className={styles.heroVisual}>
@@ -280,6 +281,36 @@ function Hub({ locale }: { locale: HotramLocale }) {
           </figure>
         ))}
       </section>
+
+      {locale === "en" && (
+        <section className={styles.tours} id="luxury-concierge" aria-labelledby="concierge-title">
+          <div className={styles.sectionHead}>
+            <p>GOVIETSTAY · LOCAL CONCIERGE</p>
+            <h2 id="concierge-title">Golf, luxury stays and private travel in Ho Tram</h2>
+            <p style={{letterSpacing:"normal",textTransform:"none",fontSize:16,fontWeight:400,marginTop:16}}>
+              Our founder previously worked at The Bluffs Ho Tram. We bring firsthand local knowledge to your trip, independently of the golf course and resort operators.
+            </p>
+          </div>
+          <div className={styles.grid}>
+            {[
+              { title:"The Bluffs Grand Ho Tram golf", detail:"Plan a coastal golf holiday, ask about tee-time availability, equipment rental, caddie and buggy arrangements, and private transport with room for golf bags. All fees and availability are confirmed before booking.", request:"Hello GoVietStay, I would like help planning golf at The Bluffs Ho Tram. My travel date, number of golfers and preferred tee time are:" },
+              { title:"Luxury resorts and villas", detail:"Find a beachfront stay that suits your group, from couples to families and golf groups. Ask about room options, resort locations, dining and combining your stay with one of our six private local experiences.", request:"Hello GoVietStay, I would like help planning a Ho Tram resort stay. My dates, group size and budget are:" },
+              { title:"Private and VIP transfers", detail:"Request a private vehicle between Ho Chi Minh City, Tan Son Nhat Airport and Ho Tram, or a local resort pickup. Tell us your luggage, golf bags and passenger count so we can confirm a suitable vehicle and quote.", request:"Hello GoVietStay, I need a private Ho Tram transfer. My pickup, destination, date, passengers and luggage are:" }
+            ].map((service,index)=>(
+              <article className={styles.card} key={service.title}>
+                <div className={styles.cardTop}><span>{String(index+1).padStart(2,"0")}</span><small>On request</small></div>
+                <h3>{service.title}</h3><p>{service.detail}</p>
+                <a className={styles.primary} href={whatsappUrl(service.request)} target="_blank" rel="noreferrer" style={{marginTop:"auto"}}>Ask for a quote</a>
+              </article>
+            ))}
+          </div>
+          <div className={styles.sectionHead} style={{marginTop:32,marginBottom:0}}>
+            <h3>The Grand Ho Tram: visitor information</h3>
+            <div style={{lineHeight:1.7,maxWidth:900}}>The resort complex includes accommodation, dining, entertainment and a casino. Casino access is subject to applicable law and the operator’s current eligibility and identification requirements. Confirm those requirements directly with the operator before visiting. GoVietStay provides independent travel assistance, not gambling services or casino privileges.</div>
+            <div style={{marginTop:16}}><a className={styles.secondary} href="#six-experiences">Explore our six private Ho Tram tours</a></div>
+          </div>
+        </section>
+      )}
 
       <section className={styles.tours} id="six-experiences">
         <div className={styles.sectionHead}>
