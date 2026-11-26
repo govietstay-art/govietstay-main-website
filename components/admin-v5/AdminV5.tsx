@@ -203,6 +203,7 @@ export default function AdminV5() {
     if(new URLSearchParams(window.location.search).get("view")==="web_inquiries") setTab("web_inquiries");
   },[]);
   const [days,setDays]=useState(7);
+  const [bookingDays,setBookingDays]=useState(7);
   const [metrics,setMetrics]=useState<any>(null);
   const [breakdown,setBreakdown]=useState<any[]>([]);
 
@@ -285,9 +286,15 @@ export default function AdminV5() {
       return !Number.isFinite(age)||age<=3*86400000;
     };
     const upcoming=(b:Booking)=>active(b)&&!!b.tour_date&&b.tour_date>=today;
-    const counts={active:bookings.filter(active).length,upcoming:bookings.filter(upcoming).length,pending:bookings.filter(b=>b.status==="pending").length,confirmed:bookings.filter(b=>b.status==="confirmed").length,completed:bookings.filter(finished).length,cancelled:bookings.filter(b=>["cancelled","refunded"].includes(b.status)).length,getyourguide:bookings.filter(b=>b.source==="getyourguide").length,all:bookings.length};
+    const todayMs=Date.parse(today+"T00:00:00Z");
+    const scoped=tab!=="bookings"||bookingDays===0?bookings:bookings.filter(b=>{
+      if(!b.tour_date)return false;
+      const distance=Math.abs(Date.parse(b.tour_date+"T00:00:00Z")-todayMs)/86400000;
+      return Number.isFinite(distance)&&distance<bookingDays;
+    });
+    const counts={active:scoped.filter(active).length,upcoming:scoped.filter(upcoming).length,pending:scoped.filter(b=>b.status==="pending").length,confirmed:scoped.filter(b=>b.status==="confirmed").length,completed:scoped.filter(finished).length,cancelled:scoped.filter(b=>["cancelled","refunded"].includes(b.status)).length,getyourguide:scoped.filter(b=>b.source==="getyourguide").length,all:scoped.length};
     const q=bookingSearch.trim().toLocaleLowerCase();
-    const rows=bookings.filter(b=>{
+    const rows=scoped.filter(b=>{
       const match=bookingView==="all"||bookingView==="active"&&active(b)||bookingView==="upcoming"&&upcoming(b)||bookingView==="pending"&&b.status==="pending"||bookingView==="confirmed"&&b.status==="confirmed"||bookingView==="completed"&&finished(b)||bookingView==="cancelled"&&["cancelled","refunded"].includes(b.status)||bookingView==="getyourguide"&&b.source==="getyourguide";
       return match&&(!q||[b.booking_code,contactMap[b.contact_id||""]?.full_name,bookingTourName(b,tourMap),b.hotel,b.tour_date].some(v=>String(v||"").toLocaleLowerCase().includes(q)));
     }).sort((a,b)=>{
@@ -295,7 +302,7 @@ export default function AdminV5() {
       return bookingView==="completed"||bookingView==="cancelled"?bDate.localeCompare(aDate):aDate.localeCompare(bDate);
     });
     return {today,counts,rows};
-  },[bookings,bookingView,bookingSearch,contactMap,tourMap]);
+  },[bookings,bookingView,bookingSearch,contactMap,tourMap,tab,bookingDays]);
 
   // All operations filters are read-only projections of existing booking records.
   const operationRows=useMemo(()=>{
@@ -794,7 +801,7 @@ export default function AdminV5() {
       <div className="gva-top">
         <div className="gva-title"><h1>{adminPageTitle(tab)}</h1><p>{staff.display_name} · {staff.role}</p></div>
         <div className="gva-top-actions">
-          <select className="gva-select" value={days} onChange={e=>setDays(Number(e.target.value))}><option value={1}>Hôm nay</option><option value={7}>7 ngày</option><option value={28}>28 ngày</option><option value={30}>30 ngày</option><option value={90}>90 ngày</option></select>
+          <select className="gva-select" aria-label={tab==="bookings"?"Khoảng ngày tour":"Khoảng thống kê"} value={tab==="bookings"?bookingDays:days} onChange={e=>tab==="bookings"?setBookingDays(Number(e.target.value)):setDays(Number(e.target.value))}><option value={1}>Hôm nay</option><option value={7}>7 ngày</option><option value={28}>28 ngày</option><option value={30}>30 ngày</option><option value={90}>90 ngày</option>{tab==="bookings"&&<option value={0}>Mọi ngày</option>}</select>
           <button className="gva-btn secondary" onClick={loadAll}>Làm mới</button><button className="gva-btn secondary" onClick={logout}>Đăng xuất</button>
         </div>
       </div>
@@ -1262,20 +1269,21 @@ export default function AdminV5() {
           <span className="gva-status gva-status-cancelled">Xám · Đã hủy</span>
         </div>
         <div className="gva-booking-toolbar">
+          <div className="gva-mini" style={{width:"100%"}}>{bookingDays===0?"Mọi ngày tour (bao gồm chưa xếp lịch).":bookingDays===1?"Chỉ tour hôm nay.":`Ngày tour: từ ${bookingDays-1} ngày trước đến ${bookingDays-1} ngày tới, gồm hôm nay.`} Số lượng trên từng tab theo khoảng ngày đã chọn.</div>
           <div className="gva-booking-filters" aria-label="Lọc booking theo trạng thái">
             {([ ["active","Cần xử lý"],["pending","Chờ xác nhận"],["confirmed","Đã xác nhận"],["upcoming","Sắp tới"],["completed","Hoàn thành"],["cancelled","Đã hủy"],["getyourguide","GetYourGuide"],["all","Tất cả"] ] as const).map(([key,label])=><button type="button" key={key} className={"gva-filter-"+key+(bookingView===key?" active":"")} onClick={()=>setBookingView(key)} aria-pressed={bookingView===key}>{label}<span>{bookingGroups.counts[key]}</span></button>)}
           </div>
           <input className="gva-input gva-booking-search" value={bookingSearch} onChange={e=>setBookingSearch(e.target.value)} placeholder="Tìm mã, khách, tour, khách sạn..." aria-label="Tìm booking" />
         </div>
         {bookingView==="getyourguide"&&<div className="gva-booking-hint">Booking được ghi nhận từ email GetYourGuide; cần kiểm tra giờ đón, khách sạn, xác nhận dịch vụ và đối soát tiền trên Supplier Portal. Không thu tiền mặt theo trạng thái “Chưa thu” nội bộ.</div>}
-        {bookingView==="active"&&<div className="gva-booking-hint">Ưu tiên theo ngày tour gần nhất · Tour quá ngày nhưng chưa chốt vẫn hiển thị để tránh bỏ sót. <b>Hoàn thành tour không đồng nghĩa đã thu đủ tiền.</b></div>}
+        {bookingView==="active"&&<div className="gva-booking-hint">Ưu tiên theo ngày tour gần nhất · Tour quá ngày tối đa 3 ngày chưa chốt vẫn hiển thị trong khoảng lọc. <b>Hoàn thành tour không đồng nghĩa đã thu đủ tiền.</b></div>}
         <div className="gva-card"><div className="gva-table-wrap"><table className="gva-table"><thead><tr><th>Code</th><th>Ngày tour</th><th>Khách</th><th>Tour</th><th>Pax</th><th>Revenue</th><th>Đã thu / Còn lại</th><th>Payment</th><th>Status</th><th></th></tr></thead><tbody>
           {bookingGroups.rows.map(b=>{
             const received=Number(financeMap[b.id]?.amount_received_vnd||0);
             const balance=Math.max(0,Number(b.net_revenue_vnd||0)-received);
             return <tr className={bookingRowClass(b.status)} key={b.id}><td><b>{b.booking_code||"—"}</b>{b.source==="getyourguide"&&<div className="gva-mini" style={{fontWeight:800,color:"#b45309"}}>GetYourGuide · Booking từ email</div>}</td><td>{b.tour_date||"—"}{b.tour_date&&b.tour_date<bookingGroups.today&&!['completed','closed','cancelled','refunded'].includes(b.status)&&<div className="gva-booking-overdue">⚠ Quá ngày, chưa chốt</div>}</td><td>{contactMap[b.contact_id||""]?.full_name||"—"}</td><td>{bookingTourName(b,tourMap)}{(b.booking_mode==="custom"||b.custom_tour_name)&&<div className="gva-mini">Custom Tour</div>}{b.internal_itinerary_vi?.trim()&&<div className="gva-mini">🇻🇳 Có lịch trình vận hành</div>}</td><td>{b.pax}</td><td>{b.source==="getyourguide"?<span className="gva-mini" title="Giá bán trên GetYourGuide không đồng nghĩa tiền đã thanh toán cho GoVietStay. Đối soát riêng trên Supplier Portal.">Đối soát GYG</span>:money(b.net_revenue_vnd)}</td><td><div className="gva-mini">Đã thu: <b>{money(received)}</b></div><div className="gva-mini">Còn: <b>{money(balance)}</b></div></td><td>{b.source==="getyourguide"?<span className="gva-payment gva-payment-neutral">GYG thanh toán đối tác</span>:<span className={bookingPaymentClass(b.payment_status)}>{bookingPaymentLabel(b.payment_status)}</span>}{['completed','closed'].includes(b.status)&&b.payment_status!=='paid'&&<div className="gva-booking-overdue">⚠ Kiểm tra công nợ</div>}</td><td><span className={bookingStatusClass(b.status)}>{bookingStatusLabel(b.status)}</span></td><td><button type="button" className="gva-btn secondary" style={{padding:"7px 10px"}} onClick={()=>setEditingBooking(b)}>Sửa</button></td></tr>;
           })}
-          {!bookingGroups.rows.length&&<tr><td colSpan={10}><div className="gva-empty">Không có booking phù hợp bộ lọc. Chọn “Tất cả” để xem toàn bộ dữ liệu.</div></td></tr>}
+          {!bookingGroups.rows.length&&<tr><td colSpan={10}><div className="gva-empty">Không có booking phù hợp. Chọn “Mọi ngày” ở bộ lọc ngày và “Tất cả” ở bộ lọc trạng thái để tra cứu toàn bộ.</div></td></tr>}
         </tbody></table></div></div>
       </>}
 
