@@ -229,6 +229,7 @@ export default function Page() {
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#071e2c] pb-20 text-white md:pb-0">
+      <nav className="mx-auto flex max-w-6xl flex-wrap gap-5 px-5 py-4 text-sm"><a className="underline" href="/cn/cruise-port-shore-excursions" lang="zh-CN">2027 简体中文</a><a className="underline" href="/tw/cruise-port-shore-excursions" lang="zh-TW">2027 繁體中文</a></nav>
       <JsonLd data={graph} />
 
       <section className="relative isolate min-h-[670px] overflow-hidden bg-[#0a2635] md:min-h-[760px]">
